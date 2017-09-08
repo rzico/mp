@@ -44,6 +44,6 @@ public class TestActivity extends AppCompatActivity {
 
             }
         });
-        mWeexInstance.render("qijianWeex", WXFileUtils.loadAsset("index0.js", this), null, null, -1, -1, WXRenderStrategy.APPEND_ASYNC);
+        mWeexInstance.render("qijianWeex", WXFileUtils.loadAsset("home.js", this), null, null, -1, -1, WXRenderStrategy.APPEND_ASYNC);
     }
 }
