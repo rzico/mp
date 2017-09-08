@@ -1,0 +1,26 @@
+{
+    "nat-camera": {
+        "source": {
+            "type": "registry",
+            "id": "nat-camera"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "weex-chart": {
+        "source": {
+            "type": "registry",
+            "id": "weex-chart"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "nat-device-info": {
+        "source": {
+            "type": "registry",
+            "id": "nat-device-info"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
