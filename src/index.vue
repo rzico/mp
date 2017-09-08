@@ -1,30 +1,62 @@
 <template>
-  <div class="wrapper" @click="update">
-    <image :src="logoUrl" class="logo"></image>
-    <text class="title">Hello {{target}}</text>
-    <text class="desc">1</text>
+  <div class="wrapper">
+    <navbar
+            :dataRole="dataRole"
+            :height="height"
+            :backgroundColor="backgroundColor"
+            :title="title"
+            :titleColor="titleColor"
+            :leftItemSrc="leftItemSrc"
+            :leftItemTitle="leftItemTitle"
+            :leftItemColor="leftItemColor"
+            :rightItemSrc="rightItemSrc"
+            :rightItemTitle="rightItemTitle"
+            :rightItemColor="rightItemColor"
+            @naviBarRightItemClick="naviBarRightItemClick"
+            @naviBarLeftItemClick="naviBarLeftItemClick"
+    ></navbar>
+    <div class="wrapper" :style="{ marginTop: height }">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <style>
-  .wrapper { align-items: center; margin-top: 120px; }
-  .title { padding-top:40px; padding-bottom: 40px; font-size: 48px; }
-  .logo { width: 360px; height: 156px; }
-  .desc { padding-top: 20px; color:#888; font-size: 24px;}
+  .wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 750;
+  }
 </style>
 
 <script>
-  export default {
-    data: {
-      logoUrl: 'http://img1.vued.vanthink.cn/vued08aa73a9ab65dcbd360ec54659ada97c.png',
-      target: 'Success Yes!555'
-    },
-    methods: {
-      update: function (e) {
-//        this.target = 'Weex'
-//        console.log('target:', this.target)
-
-      }
+    module.exports = {
+        components: {
+            navbar: require('./navbar.vue')
+        },
+        props: {
+            dataRole: { default: 'navbar' },
+            backgroundColor: { default: 'black' },
+            height: { default: 88 },
+            title: { default: "" },
+            titleColor: { default: 'black' },
+            rightItemSrc: { default: '' },
+            rightItemTitle: { default: '' },
+            rightItemColor: { default: 'black' },
+            leftItemSrc: { default: '' },
+            leftItemTitle: { default: '' },
+            leftItemColor: { default: 'black' }
+        },
+        methods: {
+            naviBarRightItemClick: function (e) {
+                this.$emit('naviBarRightItemClick', e)
+            },
+            naviBarLeftItemClick: function (e) {
+                this.$emit('naviBarLeftItemClick', e)
+            }
+        }
     }
-  }
 </script>
