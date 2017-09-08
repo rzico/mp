@@ -68,10 +68,10 @@
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/Users/macOS/Documents/mopian/weexMoPian/src/index.vue"
+	__vue_options__.__file = "/Users/macOS/Documents/mopian/mp/src/index.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	__vue_options__._scopeId = "data-v-1282e18d"
+	__vue_options__._scopeId = "data-v-90a974b2"
 	__vue_options__.style = __vue_options__.style || {}
 	__vue_styles__.forEach(function (module) {
 	  for (var name in module) {
@@ -144,8 +144,9 @@
 	  },
 	  methods: {
 	    update: function update(e) {
-	      this.target = 'Weex';
-	      console.log('target:', this.target);
+	      //        this.target = 'Weex'
+	      //        console.log('target:', this.target)
+
 	    }
 	  }
 	};
@@ -170,7 +171,7 @@
 	    staticClass: ["title"]
 	  }, [_vm._v("Hello " + _vm._s(_vm.target))]), _c('text', {
 	    staticClass: ["desc"]
-	  }, [_vm._v("Now, let's use vue to build your weex app.")])])
+	  }, [_vm._v("1")])])
 	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 

@@ -5,33 +5,40 @@
     density="xxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="14277870635220"
+    timestamp="16980209386279"
     token="-990341584128448715"
-    verifier="FULL_BUILD_REQUESTED" >
+    verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="120" />
+        duration="0" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="24" />
+        duration="0" />
     <task
         name="verifier"
-        duration="1" />
+        duration="0" />
 
     <artifact
-        location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/outputs/apk/playground.apk"
-        type="MAIN" />
+        location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
+        type="RESOURCES" />
 
     <build
-        timestamp="14277870635220"
+        timestamp="16819334274602"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/outputs/apk/playground.apk"
             type="MAIN" />
+    </build>
+    <build
+        timestamp="16980209386279"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
+            type="RESOURCES" />
     </build>
 
 </instant-run>

@@ -5,7 +5,9 @@
     <color name="colorAccent">#282828</color>
     <color name="colorNew">#282828</color>
 
-    <color name="colorBefore">#ff6d06</color>
+    <color name="colorBefore">#F0AD3C</color>
+
+    <color name="wxColor">#F0AD3C</color>
 
     <color name="colorYellow">#FFD705</color>
     <color name="YellowPressed">#edc501</color>
