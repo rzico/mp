@@ -8,9 +8,9 @@ package com.alibaba.weex.pluginmanager;
 
 public final class R {
 	public static final class string {
-		public static final int app_name = 0x7f080018;
+		public static final int app_name = 0x7f090019;
 	}
 	public static final class xml {
-		public static final int config = 0x7f060001;
+		public static final int config = 0x7f070001;
 	}
 }

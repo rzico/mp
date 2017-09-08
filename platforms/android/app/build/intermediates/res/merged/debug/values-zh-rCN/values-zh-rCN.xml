@@ -22,6 +22,7 @@
     <string name="app_name">WEEX</string>
     <string name="capture_qrcode_prompt">请将条码置于取景框内扫描</string>
     <string name="cpu_not_support_tip">对不起,您当前的设备是X86架构.\n我们只支持ARM架构的设备!</string>
+    <string msgid="146198913615257606" name="search_menu_title">"搜索"</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
     <string name="zxing_app_name">条码扫描器</string>
     <string name="zxing_button_ok">确定</string>

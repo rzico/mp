@@ -21,4 +21,15 @@
     <item name="android:windowActionBarOverlay">true</item>
     <item name="android:windowActionModeOverlay">true</item>
   </style>
+  <style name="DefaultExplainingPermissionsTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <!-- Used for the buttons -->
+    <item name="colorAccent">@color/colorBefore</item>
+
+    <!-- Used for the title and text -->
+    <item name="android:textColorPrimary">@color/colorBefore</item>
+
+    <!-- Used for the background -->
+    <item name="android:background">@color/colorBefore</item>
+  </style>
 </resources>
+

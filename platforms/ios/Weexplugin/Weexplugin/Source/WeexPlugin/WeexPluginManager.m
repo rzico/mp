@@ -8,7 +8,7 @@
 
 #import "WeexPluginManager.h"
 #import "WeexPluginLoader.h"
-#import <WeexSDK/WeexSDK.h>
+#import "WeexSDK/WeexSDK.h"
 
 @implementation WeexPluginManager
 

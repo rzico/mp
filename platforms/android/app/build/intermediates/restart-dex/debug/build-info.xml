@@ -5,32 +5,32 @@
     density="xxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="21584035527133"
-    token="3034393791385231765"
+    timestamp="14277870635220"
+    token="-990341584128448715"
     verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="120" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="24" />
     <task
         name="verifier"
-        duration="0" />
+        duration="1" />
 
     <artifact
-        location="/Users/macOS/Documents/mopian/weexMoPian/platforms/android/app/build/outputs/apk/playground.apk"
+        location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/outputs/apk/playground.apk"
         type="MAIN" />
 
     <build
-        timestamp="21584035527133"
+        timestamp="14277870635220"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="/Users/macOS/Documents/mopian/weexMoPian/platforms/android/app/build/outputs/apk/playground.apk"
+            location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/outputs/apk/playground.apk"
             type="MAIN" />
     </build>
 

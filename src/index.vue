@@ -2,7 +2,7 @@
   <div class="wrapper" @click="update">
     <image :src="logoUrl" class="logo"></image>
     <text class="title">Hello {{target}}</text>
-    <text class="desc">Now, let's use vue to build your weex app.</text>
+    <text class="desc">1</text>
   </div>
 </template>
 
@@ -21,8 +21,9 @@
     },
     methods: {
       update: function (e) {
-        this.target = 'Weex'
-        console.log('target:', this.target)
+//        this.target = 'Weex'
+//        console.log('target:', this.target)
+
       }
     }
   }

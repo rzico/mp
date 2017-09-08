@@ -36,7 +36,7 @@
         android:required="false" />
 
     <application
-        android:name="com.alibaba.weex.WXApplication"
+        android:name="com.rzico.weex.WXApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -49,7 +49,7 @@
             android:value="db6a973159cb0c2639ad02c617a786ae" />
 
         <activity
-            android:name="com.alibaba.weex.SplashActivity"
+            android:name="com.rzico.weex.activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.alibaba.weex.WXPageActivity"
+            android:name="com.rzico.weex.activity.WXPageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
@@ -77,6 +77,7 @@
                 <data android:scheme="file" />
             </intent-filter>
         </activity>
+        <activity android:name="com.rzico.weex.activity.MainActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:clearTaskOnLaunch="true"
@@ -84,12 +85,28 @@
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name="com.rzico.weex.activity.TestActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.alibaba.weex.provider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <receiver
             android:name="com.taobao.weex.WXGlobalEventReceiver"
             android:enabled="true"
             android:exported="false" >
         </receiver>
+
+        <activity
+            android:name="com.karumi.dexter.DexterActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.Transparent" />
     </application>
 
 </manifest>

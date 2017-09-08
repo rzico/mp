@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/macOS/Documents/mopian/weexMoPian/platforms/android/weexplugin/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
+        "outputFile": "/Users/macOS/Documents/mopian/mp/platforms/android/weexplugin/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 98
                 },
                 "from": {
-                    "file": "/Users/macOS/Documents/mopian/weexMoPian/platforms/android/weexplugin/build/intermediates/bundles/debug/res/values/values.xml",
+                    "file": "/Users/macOS/Documents/mopian/mp/platforms/android/weexplugin/build/intermediates/bundles/debug/res/values/values.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
