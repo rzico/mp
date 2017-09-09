@@ -60,7 +60,7 @@ function walk(dir) {
 walk();
 // web need vue-loader
 const plugins = [
-  new webpack.optimize.UglifyJsPlugin({minimize: true}),
+ // new webpack.optimize.UglifyJsPlugin({minimize: true}),
   new webpack.BannerPlugin({
     banner: '// { "framework": ' + (fileType === '.vue' ? '"Vue"' : '"Weex"') + '} \n',
     raw: true,
