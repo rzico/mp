@@ -4,58 +4,83 @@
         <list class="list">
             <cell class="cell">
                 <div class="cell-row"  @click="setup">
-                    <div class="left">
+                    <text class="text name">头像</text>
+                    <div class="last">
                         <image class="logo" resize="cover"
                                src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
                         </image>
-                        <div style="flex-direction: column;">
-                            <text class="text name">张三</text>
-                            <text class="autograph">点击设置个性签名</text>
-                        </div>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                </div>
-                <div class="cell-row">
-                    <div class="left">
-                       <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
-                       <text class="text">通用设置</text>
-                    </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="cell-row clear-row">
-                    <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
-                        <text class="text">专栏认证</text>
+                    <text class="text name">昵称</text>
+                    <div class="last">
+                        <text class="sub_title">已认证</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                </div>
-                <div class="cell-row">
-                    <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
-                        <text class="text">商品管理</text>
-                    </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="cell-row clear-row">
-                    <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">订单管理</text>
+                    <text class="text name">登录名</text>
+                    <div class="last">
+                        <text class="sub_title">17364</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                </div>
-                <div class="cell-row">
-                    <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                        <text class="text">推荐给好友</text>
-                    </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="cell-row clear-row">
-                    <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
-                        <text class="text">联系客服</text>
+                    <text class="text name">性别</text>
+                    <div class="last">
+                        <text class="sub_title">男</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+                <div class="cell-row clear-row">
+                    <text class="text name">生日</text>
+                    <div class="last">
+                        <text class="sub_title">已设置</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-row clear-row">
+                    <text class="text name">职业</text>
+                    <div class="last">
+                        <text class="sub_title">服务业</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-row clear-row">
+                    <text class="text name">所在地</text>
+                    <div class="last">
+                        <text class="sub_title">福建厦门</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-row clear-row">
+                    <text class="text name">个性签名</text>
+                    <div class="last">
+                        <text class="sub_title">未填写</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-row">
+                    <text class="text name">密码</text>
+                    <div class="last">
+                        <text class="sub_title">已设置</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-row clear-row">
+                    <text class="text name">绑定微信号</text>
+                    <div class="last">
+                        <text class="sub_title">已绑定</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-row clear-row">
+                    <text class="text name">绑定手机号</text>
+                    <div class="last">
+                        <text class="sub_title">未绑定</text>
+                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                 </div>
             </cell>
         </list>
@@ -69,11 +94,10 @@
         font-size: 32px;
     }
 
-    .ico {
-        margin-top: 8px;
-        margin-left:10px;
-        font-size: 58px;
-        color: #F0AD3C;
+    .sub_title {
+        margin: 10px;
+        font-size: 24px;
+        color: #ccc;
     }
 
     .wrapper {
@@ -104,27 +128,22 @@
     }
 
     .logo {
-        width:150px;
-        height:150px;
+        width:120px;
+        height:120px;
         margin:10px;
-        border-radius:70px;
+        border-radius:60px;
         overflow:hidden;
     }
 
-    .autograph {
-        font-size: 28px;
-        color: #ccc;
-        margin-left:10px;
-    }
-
-    .left {
+    .last {
         flex-direction: row;
         align-items: center;
     }
 
     .arrow {
-        font-size: 44px;
+        font-size: 32px;
         color: #ccc;
+        margin-left:0px;
     }
 
 </style>
@@ -136,7 +155,7 @@
             navbar
         },
         props: {
-            title: { default: "设置" }
+            title: { default: "账号设置" }
         },
         methods: {
             goback: function (e) {
