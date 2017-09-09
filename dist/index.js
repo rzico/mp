@@ -49,14 +49,14 @@
 	var __vue_styles__ = []
 
 	/* styles */
-	__vue_styles__.push(__webpack_require__(1)
+	__vue_styles__.push(__webpack_require__(4)
 	)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(2)
+	__vue_exports__ = __webpack_require__(5)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(3)
+	var __vue_template__ = __webpack_require__(10)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -68,10 +68,10 @@
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/Users/macOS/Documents/mopian/mp/src/index.vue"
+	__vue_options__.__file = "/Users/zhangsr/Documents/GitHub/weex/mp/src/index.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	__vue_options__._scopeId = "data-v-90a974b2"
+	__vue_options__._scopeId = "data-v-49602690"
 	__vue_options__.style = __vue_options__.style || {}
 	__vue_styles__.forEach(function (module) {
 	  for (var name in module) {
@@ -88,39 +88,266 @@
 
 
 /***/ }),
-/* 1 */
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */
 /***/ (function(module, exports) {
 
 	module.exports = {
 	  "wrapper": {
-	    "alignItems": "center",
-	    "marginTop": 120
-	  },
-	  "title": {
-	    "paddingTop": 40,
-	    "paddingBottom": 40,
-	    "fontSize": 48
-	  },
-	  "logo": {
-	    "width": 360,
-	    "height": 156
-	  },
-	  "desc": {
-	    "paddingTop": 20,
-	    "color": "#888888",
-	    "fontSize": 24
+	    "position": "absolute",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "width": 750
 	  }
 	}
 
 /***/ }),
-/* 2 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
+	module.exports = {
+	    components: {
+	        navbar: __webpack_require__(6)
+	    },
+	    props: {
+	        dataRole: { default: 'navbar' },
+	        backgroundColor: { default: 'black' },
+	        height: { default: 88 },
+	        title: { default: "" },
+	        titleColor: { default: 'black' },
+	        rightItemSrc: { default: '' },
+	        rightItemTitle: { default: '' },
+	        rightItemColor: { default: 'black' },
+	        leftItemSrc: { default: '' },
+	        leftItemTitle: { default: '' },
+	        leftItemColor: { default: 'black' }
+	    },
+	    methods: {
+	        naviBarRightItemClick: function naviBarRightItemClick(e) {
+	            this.$emit('naviBarRightItemClick', e);
+	        },
+	        naviBarLeftItemClick: function naviBarLeftItemClick(e) {
+	            this.$emit('naviBarLeftItemClick', e);
+	        }
+	    }
+	};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = []
+
+	/* styles */
+	__vue_styles__.push(__webpack_require__(7)
+	)
+
+	/* script */
+	__vue_exports__ = __webpack_require__(8)
+
+	/* template */
+	var __vue_template__ = __webpack_require__(9)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	__vue_options__.__file = "/Users/zhangsr/Documents/GitHub/weex/mp/src/navbar.vue"
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	__vue_options__._scopeId = "data-v-a7ca717c"
+	__vue_options__.style = __vue_options__.style || {}
+	__vue_styles__.forEach(function (module) {
+	  for (var name in module) {
+	    __vue_options__.style[name] = module[name]
+	  }
+	})
+	if (typeof __register_static_styles__ === "function") {
+	  __register_static_styles__(__vue_options__._scopeId, __vue_styles__)
+	}
+
+	module.exports = __vue_exports__
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+	  "container": {
+	    "flexDirection": "row",
+	    "position": "fixed",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "width": 750
+	  },
+	  "right-text": {
+	    "position": "absolute",
+	    "bottom": 28,
+	    "right": 32,
+	    "textAlign": "right",
+	    "fontSize": 32,
+	    "fontFamily": "'Open Sans', sans-serif"
+	  },
+	  "left-text": {
+	    "position": "absolute",
+	    "bottom": 28,
+	    "left": 32,
+	    "textAlign": "left",
+	    "fontSize": 32,
+	    "fontFamily": "'Open Sans', sans-serif"
+	  },
+	  "center-text": {
+	    "position": "absolute",
+	    "bottom": 25,
+	    "left": 172,
+	    "right": 172,
+	    "textAlign": "center",
+	    "fontSize": 36,
+	    "fontWeight": "bold"
+	  },
+	  "left-image": {
+	    "position": "absolute",
+	    "bottom": 20,
+	    "left": 28,
+	    "width": 50,
+	    "height": 50
+	  },
+	  "right-image": {
+	    "position": "absolute",
+	    "bottom": 20,
+	    "right": 28,
+	    "width": 50,
+	    "height": 50
+	  }
+	}
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports) {
 
 	'use strict';
 
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 	//
 	//
 	//
@@ -137,41 +364,137 @@
 	//
 	//
 
-	exports.default = {
-	  data: {
-	    logoUrl: 'http://img1.vued.vanthink.cn/vued08aa73a9ab65dcbd360ec54659ada97c.png',
-	    target: 'Success Yes!555'
+	module.exports = {
+	  props: {
+	    dataRole: { default: 'navbar' },
+	    //导航条背景色
+	    backgroundColor: { default: 'black' },
+	    //导航条高度
+	    height: { default: 88 },
+	    //导航条标题 
+	    title: { default: '' },
+	    //导航条标题颜色
+	    titleColor: { default: 'black' },
+	    //右侧按钮图片
+	    rightItemSrc: { default: '' },
+	    //右侧按钮标题
+	    rightItemTitle: { default: '' },
+	    //右侧按钮标题颜色
+	    rightItemColor: { default: 'black' },
+	    //左侧按钮图片
+	    leftItemSrc: { default: '' },
+	    //左侧按钮标题
+	    leftItemTitle: { default: '' },
+	    //左侧按钮颜色
+	    leftItemColor: { default: 'black' }
 	  },
 	  methods: {
-	    update: function update(e) {
-	      //        this.target = 'Weex'
-	      //        console.log('target:', this.target)
-
+	    onclickrightitem: function onclickrightitem(e) {
+	      this.$emit('naviBarRightItemClick');
+	    },
+	    onclickleftitem: function onclickleftitem(e) {
+	      this.$emit('naviBarLeftItemClick');
 	    }
 	  }
 	};
-	module.exports = exports['default'];
 
 /***/ }),
-/* 3 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
 	  return _c('div', {
-	    staticClass: ["wrapper"],
-	    on: {
-	      "click": _vm.update
-	    }
-	  }, [_c('image', {
-	    staticClass: ["logo"],
+	    staticClass: ["container"],
+	    style: {
+	      height: _vm.height,
+	      backgroundColor: _vm.backgroundColor
+	    },
 	    attrs: {
-	      "src": _vm.logoUrl
+	      "dataRole": _vm.dataRole
 	    }
-	  }), _c('text', {
-	    staticClass: ["title"]
-	  }, [_vm._v("Hello " + _vm._s(_vm.target))]), _c('text', {
-	    staticClass: ["desc"]
-	  }, [_vm._v("1")])])
+	  }, [(!_vm.rightItemSrc) ? _c('text', {
+	    staticClass: ["right-text"],
+	    style: {
+	      color: _vm.rightItemColor
+	    },
+	    attrs: {
+	      "naviItemPosition": "right"
+	    },
+	    on: {
+	      "click": _vm.onclickrightitem
+	    }
+	  }, [_vm._v(_vm._s(_vm.rightItemTitle))]) : _vm._e(), (_vm.rightItemSrc) ? _c('image', {
+	    staticClass: ["right-image"],
+	    attrs: {
+	      "naviItemPosition": "right",
+	      "src": _vm.rightItemSrc
+	    },
+	    on: {
+	      "click": _vm.onclickrightitem
+	    }
+	  }) : _vm._e(), (!_vm.leftItemSrc) ? _c('text', {
+	    staticClass: ["left-text"],
+	    style: {
+	      color: _vm.leftItemColor
+	    },
+	    attrs: {
+	      "naviItemPosition": "left"
+	    },
+	    on: {
+	      "click": _vm.onclickleftitem
+	    }
+	  }, [_vm._v(_vm._s(_vm.leftItemTitle))]) : _vm._e(), (_vm.leftItemSrc) ? _c('image', {
+	    staticClass: ["left-image"],
+	    attrs: {
+	      "naviItemPosition": "left",
+	      "src": _vm.leftItemSrc
+	    },
+	    on: {
+	      "click": _vm.onclickleftitem
+	    }
+	  }) : _vm._e(), _c('text', {
+	    staticClass: ["center-text"],
+	    style: {
+	      color: _vm.titleColor
+	    },
+	    attrs: {
+	      "naviItemPosition": "center"
+	    }
+	  }, [_vm._v(_vm._s(_vm.title))])])
+	},staticRenderFns: []}
+	module.exports.render._withStripped = true
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: ["wrapper"]
+	  }, [_c('navbar', {
+	    attrs: {
+	      "dataRole": _vm.dataRole,
+	      "height": _vm.height,
+	      "backgroundColor": _vm.backgroundColor,
+	      "title": _vm.title,
+	      "titleColor": _vm.titleColor,
+	      "leftItemSrc": _vm.leftItemSrc,
+	      "leftItemTitle": _vm.leftItemTitle,
+	      "leftItemColor": _vm.leftItemColor,
+	      "rightItemSrc": _vm.rightItemSrc,
+	      "rightItemTitle": _vm.rightItemTitle,
+	      "rightItemColor": _vm.rightItemColor
+	    },
+	    on: {
+	      "naviBarRightItemClick": _vm.naviBarRightItemClick,
+	      "naviBarLeftItemClick": _vm.naviBarLeftItemClick
+	    }
+	  }), _c('div', {
+	    staticClass: ["wrapper"],
+	    style: {
+	      marginTop: _vm.height
+	    }
+	  }, [_vm._t("default")], 2)], 1)
 	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 

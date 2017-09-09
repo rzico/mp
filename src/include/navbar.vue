@@ -1,28 +1,46 @@
 <template>
-    <header class="navbar" dataRole="navbar">
-        <text class="navbar-left" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-        <text class="navbar-title">{{title}}</text>
-    </header>
-</template>
+    <div class="header">
+        <div class="back" @click="goback('/')">
+            <text class="image" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+        </div>
+        <div class="nav">
+            <text class="title">{{title}}</text>
+         </div>
+    </div>
+ </template>
 <style scoped>
-
-    .navbar {
-        background: #F0AD3C;
-        border-color: #707070;
+    .header {
         height: 96px;
-        align-items:center;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
+        background-color: #F0AD3C;
         flex-direction: row;
+        position:sticky;
     }
-    .navbar-left {
-        font-size: 48px;
-        width:96px;
-        align-items:center;
+    .back {
+        position: relative;
+        width: 96px;
+        height: 96px;
+        align-items: center;
     }
-    .navbar-title {
-        font-size: 48px;
-        text-align: left;
-        color: #707070;
+    .image {
+        font-size: 44px;
+        width: 44px;
+        height: 44px;
+        top:25px;
+        color: #fff;
     }
+    .nav {
+        flex-direction: row;
+        align-items: center;
+    }
+    .title {
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 38px;
+        line-height: 38px;
+        color: #FFFFFF;
+     }
 
 </style>
 <script>
