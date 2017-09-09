@@ -3,8 +3,8 @@
         <!--顶部个人信息栏-->
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
-            <image  class="backgroundImage" :src="imageUrl"></image>
-            <div class="topHead">
+            <image   class="backgroundImage" :src="imageUrl"></image>
+            <div @click="toPage('member/manager.js')" class="topHead">
                 <!--用户头像-->
                 <image class="testImage" :src="imageUrl"></image>
                 <!--用户昵称-->
@@ -307,6 +307,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
+    const native = weex.requireModule('wxNativeModule');
     var he = require('he');
 
 
@@ -395,6 +396,12 @@
             })
         },
         methods: {
+            toPage: function(url){
+//                native.pageTo(url, false);
+                native.wxConfig(function (data) {
+                    native.showToast(data.color);
+                });
+            },
             jump:function (vueName) {
 //                this.$router.push(vueName);
 

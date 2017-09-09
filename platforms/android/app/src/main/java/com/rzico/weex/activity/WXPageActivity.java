@@ -29,6 +29,7 @@ import com.alibaba.weex.constants.Constants;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.rzico.weex.R;
+import com.rzico.weex.utils.BarTextColorUtils;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXRenderErrorCode;
 import com.taobao.weex.WXSDKEngine;
@@ -38,7 +39,9 @@ import com.taobao.weex.utils.WXSoInstallMgrSdk;
 
 import java.util.LinkedHashMap;
 
-
+/**
+ * 装载wxpage的activity
+ */
 public class WXPageActivity extends AbsWeexActivity implements
     WXSDKInstance.NestedInstanceInterceptor {
 
@@ -153,6 +156,8 @@ public class WXPageActivity extends AbsWeexActivity implements
 
   @Override
   public void onRenderSuccess(WXSDKInstance instance, int width, int height) {
+    //渲染成功后
+    BarTextColorUtils.StatusBarLightMode(this, R.color.wxColor);
     mProgressBar.setVisibility(View.GONE);
     mTipView.setVisibility(View.GONE);
   }

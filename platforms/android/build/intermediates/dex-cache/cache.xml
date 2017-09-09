@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="58d07cf3208b7ec7b7ceb19c587899995d94644f">
+        sha1="40b5e19720cfa0b255916a7e153674dc0c2690d6">
         <dex dex="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_08ab4c4fe9ca6ab1aeee58315daccb00043b5722/classes.dex" />
     </item>
     <item
@@ -322,7 +322,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="b0ff58e926fe7540c85f59b712931c0b4c29dc95">
+        sha1="58c1541c3c2810d12a00a71fb2faaf538a7bf2b8">
         <dex dex="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_984e6dd0c421a760b74f17ab3087212687bd3329/classes.dex" />
     </item>
 

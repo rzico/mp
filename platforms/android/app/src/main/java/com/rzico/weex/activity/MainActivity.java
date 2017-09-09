@@ -1,22 +1,15 @@
 package com.rzico.weex.activity;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -24,10 +17,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.rzico.weex.R;
 import com.rzico.weex.adapter.WeexPageAdapter;
-import com.rzico.weex.model.VersionEntity;
-import com.rzico.weex.net.HttpRequest;
-import com.rzico.weex.net.XRequest;
-import com.rzico.weex.utils.Utils;
+import com.rzico.weex.pageview.NoScrollPageView;
+import com.rzico.weex.utils.BarTextColorUtils;
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.WXRenderStrategy;
@@ -57,7 +48,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
 
 //    private FrameLayout mContainer;
 
-    private ViewPager mContainer;
+    private NoScrollPageView mContainer;
 
     protected  Map<String, WXSDKInstance> wxsdkInstanceMap;
     protected List<View> viewLists;
@@ -69,8 +60,12 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        StatusBarUtils.setWindowStatusBarColor(this, R.color.wxColor);
+        //设置顶部透明 如果传入第二个参数的话就是设置顶部颜色
+        BarTextColorUtils.StatusBarLightMode(MainActivity.this, 0);
         setContentView(R.layout.activity_main);
 
+        //设置高亮标题
         initWeexView();
         CheckPermissions();
         initView();
@@ -123,7 +118,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
 
     /*初始化weexview*/
     private void initWeexView(){
-        mContainer = (ViewPager) findViewById(R.id.viewpager_content);
+        mContainer = (NoScrollPageView) findViewById(R.id.viewpager_content);
         wxsdkInstanceMap = new HashMap<>();
         viewLists = new ArrayList<>();
         WXSDKInstance mWeexInstanceHome = new WXSDKInstance(this);
@@ -147,24 +142,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
 
         mWeexPageAdapter = new WeexPageAdapter(viewLists);
         mContainer.setAdapter(mWeexPageAdapter);
-        mContainer.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            //ViewPager 改变时改变图标的颜色
-            @Override
-            public void onPageSelected(int arg0) {
-                int currentItem = mContainer.getCurrentItem();
-                setBottonChange(currentItem);
-            }
 
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-
-            }
-        });
     }
     public void initView(){
 
@@ -203,7 +181,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
     private void setBottonChange(int page){
         switch (page){
             case 0:
-                rgGroupHomeIm.setImageResource(R.mipmap.ico_home_fous);
+                rgGroupHomeIm.setImageResource(R.mipmap.ico_home_focus);
                 rgGroupFriendIm.setImageResource(R.mipmap.ico_friend);
                 rgGroupMsgIm.setImageResource(R.mipmap.ico_msg);
                 rgGroupMyIm.setImageResource(R.mipmap.ico_my);
@@ -215,7 +193,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
                 break;
             case 1:
                 rgGroupHomeIm.setImageResource(R.mipmap.ico_home);
-                rgGroupFriendIm.setImageResource(R.mipmap.ico_friend_fous);
+                rgGroupFriendIm.setImageResource(R.mipmap.ico_friend_focus);
                 rgGroupMsgIm.setImageResource(R.mipmap.ico_msg);
                 rgGroupMyIm.setImageResource(R.mipmap.ico_my);
 
@@ -227,7 +205,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
             case 2:
                 rgGroupHomeIm.setImageResource(R.mipmap.ico_home);
                 rgGroupFriendIm.setImageResource(R.mipmap.ico_friend);
-                rgGroupMsgIm.setImageResource(R.mipmap.ico_msg_fous);
+                rgGroupMsgIm.setImageResource(R.mipmap.ico_msg_focus);
                 rgGroupMyIm.setImageResource(R.mipmap.ico_my);
 
                 rgGroupHomeTv.setTextColor(getResources().getColor(R.color.text_default));
@@ -239,7 +217,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
                 rgGroupHomeIm.setImageResource(R.mipmap.ico_home);
                 rgGroupFriendIm.setImageResource(R.mipmap.ico_friend);
                 rgGroupMsgIm.setImageResource(R.mipmap.ico_msg);
-                rgGroupMyIm.setImageResource(R.mipmap.ico_my_fous);
+                rgGroupMyIm.setImageResource(R.mipmap.ico_my_focus);
 
                 rgGroupHomeTv.setTextColor(getResources().getColor(R.color.text_default));
                 rgGroupFriendTv.setTextColor(getResources().getColor(R.color.text_default));
@@ -275,6 +253,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
         //设置底部图标
         setBottonChange(page);
         mContainer.setCurrentItem(page);
+
     }
 
     @Override
@@ -283,6 +262,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
         if(mWeexPageAdapter != null){
             mWeexPageAdapter.notifyDataSetChanged();
         }
+
     }
 
     @Override

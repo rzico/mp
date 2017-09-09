@@ -12,9 +12,12 @@ import com.alibaba.weex.extend.module.WXEventModule;
 import com.alibaba.weex.pluginmanager.PluginManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.imagepicker.ImagePickerModule;
+import com.rzico.weex.module.WxNativeModule;
 import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
+import com.taobao.weex.WXSDKInstance;
+import com.taobao.weex.appfram.navigator.WXNavigatorModule;
 import com.taobao.weex.common.WXException;
 import com.taobao.weex.devtools.common.ExceptionUtil;
 
@@ -43,10 +46,10 @@ public class WXApplication extends Application {
 
     try{
       WXSDKEngine.registerModule("imagePicker", ImagePickerModule.class);
+      WXSDKEngine.registerModule("wxNativeModule", WxNativeModule.class);
     }catch (Exception e){
       e.printStackTrace();
     }
-
     WXSDKEngine.addCustomOptions("appName", "WXSample");
     WXSDKEngine.addCustomOptions("appGroup", "WXApp");
     WXSDKEngine.initialize(this,
