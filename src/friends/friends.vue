@@ -559,7 +559,9 @@
             ontouchstart:function(count){
                 if(count == 0){//判断是否点击回到顶部
                     const el = this.$refs.linkref[count]//跳转到相应的cell
-                    dom.scrollToElement(el, {})
+                    dom.scrollToElement(el, {
+                        animated:false
+                    })
                 }else{
                     for(var i = 0;i<this.friendsList.length ;i++){//循环判断是否有相应首字母的朋友
                         if(this.friendsList[i].letter == this.allLetter[count]){
@@ -597,6 +599,7 @@
                                     const el = this.$refs.listref[i]//跳转到相应的cell
                                     dom.scrollToElement(el, {
                                         animated:false
+
                                     })
                                 }else if(moveLetter == 0){//判断是否滑到 顶部按钮
                                     const el = this.$refs.linkref[moveLetter]//跳转到相应的cell
