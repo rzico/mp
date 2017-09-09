@@ -13,21 +13,49 @@
                             <text class="autograph">点击设置个性签名</text>
                         </div>
                     </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe62b;</text>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="cell-row">
                     <div class="left">
                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
                        <text class="text">通用设置</text>
                     </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe62b;</text>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
-                        <text class="text">通用设置</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
+                        <text class="text">专栏认证</text>
                     </div>
-                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe62b;</text>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+                <div class="cell-row">
+                    <div class="left">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
+                        <text class="text">商品管理</text>
+                    </div>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+                <div class="cell-row clear-row">
+                    <div class="left">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="text">订单管理</text>
+                    </div>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+                <div class="cell-row">
+                    <div class="left">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                        <text class="text">推荐给好友</text>
+                    </div>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+                <div class="cell-row clear-row">
+                    <div class="left">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
+                        <text class="text">联系客服</text>
+                    </div>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
             </cell>
         </list>
