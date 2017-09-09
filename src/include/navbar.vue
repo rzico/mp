@@ -44,6 +44,7 @@
 
 </style>
 <script>
+    const native = weex.requireModule('wxNativeModule');
     export default {
         props: {
             title: { default: "navbar" }
