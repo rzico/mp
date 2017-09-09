@@ -159,17 +159,18 @@
         methods: {
             goback: function (e) {
                 navigator.pop({
-                    url: 'manager.js',
+                    url: 'http://cdn.rzico.com/weex/app/member/manager.js',
                     animated: "true"
-                })
+                },function (msg) {
+                    msg = "pop ";
+                } )
             },
             setup: function (e) {
                 navigator.push({
-                    url: 'setup.js',
+                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
                     animated: "true"
                 })
             }
         }
-
     }
 </script>
