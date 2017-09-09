@@ -1,64 +1,33 @@
 <template>
     <div class="wrapper">
-        <list class="list" style="margin: 0px;border: 0px;">
-            <navbar :title="title" @goback="goback"> </navbar>
+        <navbar :title="title" @goback="goback"> </navbar>
+        <list class="list">
             <cell class="cell">
-                <div class="panel ">
-                    <image class="logo" resize="cover"
-                           src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-                    </image>
-                    <div style="flex-direction: column;">
-                        <text class="text name">张三</text>
-                        <text class="autograph">点击设置个性签名</text>
+                <div class="cell-row"  @click="setup">
+                    <div class="left">
+                        <image class="logo" resize="cover"
+                               src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
+                        </image>
+                        <div style="flex-direction: column;">
+                            <text class="text name">张三</text>
+                            <text class="autograph">点击设置个性签名</text>
+                        </div>
                     </div>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe62b;</text>
                 </div>
-            </cell>
-            <cell class="cell">
-                <div class="panel">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">通用设置</text>
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
+                <div class="cell-row">
+                    <div class="left">
+                       <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
+                       <text class="text">通用设置</text>
+                    </div>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe62b;</text>
                 </div>
-            </cell>
-            <cell class="cell">
-                <div class="panel">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">专栏认证</text>
-                    <text class="text last" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                </div>
-                <div class="panel clear">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">商品管理</text>
-                    <text class="text last" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                </div>
-                <div class="panel clear">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">我的订单</text>
-                    <text class="text last" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                </div>
-                <div class="panel clear">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">评论管理</text>
-                    <text class="text last" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                </div>
-                <div class="panel clear">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">评论管理</text>
-                    <text class="text last" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                </div>
-            </cell>
-            <cell class="cell">
-                <div class="panel">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">推荐给朋友</text>
-                    <text class="text last" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                </div>
-            </cell>
-            <cell class="cell">
-                <div class="panel clear">
-                    <text class="text" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
-                    <text class="text name">关于美篇</text>
-                    <text class="text last" :style="{fontFamily:'iconfont'}" v-on:click="goback">&#xe669;</text>
+                <div class="cell-row clear-row">
+                    <div class="left">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
+                        <text class="text">通用设置</text>
+                    </div>
+                    <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe62b;</text>
                 </div>
             </cell>
         </list>
@@ -68,7 +37,15 @@
 <style scoped>
 
     .text {
-        font-size: 38px;
+        margin: 10px;
+        font-size: 32px;
+    }
+
+    .ico {
+        margin-top: 8px;
+        margin-left:10px;
+        font-size: 58px;
+        color: #F0AD3C;
     }
 
     .wrapper {
@@ -81,44 +58,47 @@
         background-color: #eeeeee;
     }
 
-    .cell {
-        background-color: #eeeeee;
-    }
-
-    .panel {
-        align-items:center;
+    .cell-row {
         min-height: 100px;
         flex-direction: row;
         background-color: #ffffff;
-        margin: 20px 0px 20px 0px;
-        padding: 20px;
+        margin-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
         border-top:1px solid #ccc;
         border-bottom:1px solid #ccc;
+        justify-content: space-between;
+        align-items: center;
     }
-    .clear {
-        margin: 0px 0px 00px 0px;
-        padding: 20px;
-        border-top:1px solid #ccc;
-        border-bottom:1px solid #ccc;
+
+    .clear-row {
+        margin-top: 1px;
     }
 
     .logo {
         width:150px;
         height:150px;
         margin:10px;
-        border-radius:50%;
+        border-radius:70px;
         overflow:hidden;
     }
 
     .autograph {
         font-size: 28px;
-        text-align: left;
+        color: #ccc;
+        margin-left:10px;
+    }
+
+    .left {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .arrow {
+        font-size: 44px;
         color: #ccc;
     }
 
-    .last {
-
-    }
 </style>
 <script>
     var navigator = weex.requireModule('navigator')
@@ -133,6 +113,12 @@
         methods: {
             goback: function (e) {
                 navigator.push({
+                    url: 'http://dotwe.org/raw/dist/519962541fcf6acd911986357ad9c2ed.js',
+                    animated: "true"
+                })
+            },
+            setup: function (e) {
+                navigator.pop({
                     url: 'http://dotwe.org/raw/dist/519962541fcf6acd911986357ad9c2ed.js',
                     animated: "true"
                 })
