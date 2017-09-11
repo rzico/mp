@@ -14,11 +14,11 @@
             </div>
             <!--功能按钮-->
             <div class="topBtnBox">
-                <div class="topBtnSmallBox topBtnOne" @click="jump('sss')">
+                <div class="topBtnSmallBox topBtnOne" @click="jumpPage()">
                     <text class="topBtn topBtnBigFont">{{collectNum}}</text>
                     <text class=" topBtn " >收藏</text>
                 </div>
-                <div class="topBtnSmallBox topBtnTwo" @click="jump('sss')">
+                <div class="topBtnSmallBox topBtnTwo" @click="jumpPage()">
                     <text class="topBtn topBtnBigFont">¥ {{moneyNum}}</text>
                     <text class="topBtn  " >钱包</text>
                 </div>
@@ -32,8 +32,8 @@
         <div>
             <!--全部文章、回收站栏-->
             <div class="articleClass">
-                <text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : '']">全部文章</text>
-                <text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : '']">回收站</text>
+                <text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>
+                <text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>
             </div>
             <div v-if="isAllArticle" v-cloak   transition="slide-edit-box">
                 <transition name="fade">
@@ -43,7 +43,7 @@
                 </transition>
                 <!--文章模块-->
                 <div>
-                    <div class="articleBox" v-for="item in articleList" @click="jump('sss')" @swipe="swipeHappen($event)">
+                    <div class="articleBox" v-for="item in articleList" @click="jumpPage()" @swipe="swipeHappen($event)">
                         <div class="atricleHead">
                             <text class="articleSign">{{item.articleSign}}</text>
                             <text class="articleTitle">{{item.articleTitle}}</text>
@@ -207,6 +207,9 @@
         border-style: solid;
         border-bottom-width:4px;
     }
+    .noActive{
+        border-bottom-width:0px;
+    }
     .articleClass{
         flex-direction: row;
         padding-left: 10px;
@@ -244,7 +247,7 @@
         position: absolute;
         width:750px;
         top:0;
-        height:400px;
+        height:420px;
         filter: blur(4px);
         opacity: 0.8;
         /*-moz-filter: blur(4px);*/
@@ -255,8 +258,8 @@
     }
     .topBox{
         position: relative;
-        padding-top:20px;
-        height: 400px;
+        padding-top:40px;
+        height: 420px;
     }
     .topBtnBox{
         flex-direction: row;
@@ -309,10 +312,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    var he = require('he');
-
-
-        const navigator = weex.requireModule('navigator');
+    const navigator = weex.requireModule('navigator');
     export default {
         data:function() {
             return{
@@ -381,11 +381,6 @@
                 }]
             }
         },
-        computed: {
-            getFontName: function() {
-                return he.decode(this.fontName)
-            }
-        },
         created:function(){
             if(JSON.stringify(this.articleList) == "[]"){//从对象解析出字符串
                 isNoArticle = true;
@@ -397,16 +392,23 @@
             })
         },
         methods: {
-            jump:function (vueName) {
+            jumpPage:function (event) {
 //                this.$router.push(vueName);
 
-                    var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
-                    url = url.split('/').slice(0,-2).join('/') + 'index.js';  //獲取sss.vue編譯後的b.js的相對路徑
-                    navigator.push({
-                        url: url,
-                        animated: true
-                    })
-
+//                    var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
+//                    url = url.split('/').slice(0,-2).join('/') + 'index.js';  //獲取sss.vue編譯後的b.js的相對路徑
+//                    navigator.push({
+//                        url: url,
+//                        animated: true
+//                    })
+                console.log('will jump')
+                modal.toast({ message: 'will jump: ' + event })
+                navigator.push({
+                    url: 'http://cdn.rzico.com/weex/app/member/manager.js?test=1',
+                    animated: "true"
+                }, event => {
+                    modal.toast({ message: 'callback: ' + event })
+                })
             },
             allArticle:function(){
                 this.isAllArticle = true;
