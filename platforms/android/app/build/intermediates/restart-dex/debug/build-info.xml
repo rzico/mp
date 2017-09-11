@@ -5,40 +5,40 @@
     density="xxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="16980209386279"
+    timestamp="19047650270961"
     token="-990341584128448715"
     verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="294" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="482" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="15" />
     <task
         name="verifier"
         duration="0" />
 
     <artifact
-        location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
-        type="RESOURCES" />
+        location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/reload-dex/debug/classes.dex"
+        type="RELOAD_DEX" />
 
     <build
-        timestamp="16819334274602"
+        timestamp="18930705202310"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/outputs/apk/playground.apk"
             type="MAIN" />
     </build>
     <build
-        timestamp="16980209386279"
+        timestamp="19047650270961"
         verifier="COMPATIBLE" >
         <artifact
-            location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
-            type="RESOURCES" />
+            location="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/reload-dex/debug/classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

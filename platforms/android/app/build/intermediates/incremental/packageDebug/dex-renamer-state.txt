@@ -1,4 +1,4 @@
-#Fri Sep 08 15:29:13 CST 2017
+#Sat Sep 09 17:43:55 CST 2017
 base.0=/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_984e6dd0c421a760b74f17ab3087212687bd3329
 renamed.1=classes.dex
 renamed.0=classes2.dex

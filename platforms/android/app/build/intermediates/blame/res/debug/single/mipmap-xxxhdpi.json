@@ -4,47 +4,39 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_friend.png"
     },
     {
-        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_home_fous.png",
-        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_home_fous.png"
-    },
-    {
-        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_my_fous.png",
-        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_my_fous.png"
-    },
-    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_add.png",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_add.png"
-    },
-    {
-        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_add_fous.png",
-        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_add_fous.png"
     },
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_my.png",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_my.png"
     },
     {
-        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ic_launcher.png",
-        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
-    },
-    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_msg.png",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_msg.png"
     },
     {
-        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_msg_fous.png",
-        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_msg_fous.png"
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ic_launcher.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_my_focus.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_my_focus.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_msg_focus.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_msg_focus.png"
     },
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_home.png",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_home.png"
     },
     {
-        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_friend_fous.png",
-        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_friend_fous.png"
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_friend_focus.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_friend_focus.png"
     },
     {
-        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/zhongxiangquan.png",
-        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/zhongxiangquan.png"
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ico_home_focus.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/mipmap-xxxhdpi/ico_home_focus.png"
     }
 ]

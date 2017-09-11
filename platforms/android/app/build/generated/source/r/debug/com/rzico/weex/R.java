@@ -2652,31 +2652,31 @@ containing a value of this type.
     }
     public static final class color {
         public static final int YellowPressed=0x7f0e0001;
-        public static final int abc_background_cache_hint_selector_material_dark=0x7f0e00a5;
-        public static final int abc_background_cache_hint_selector_material_light=0x7f0e00a6;
-        public static final int abc_btn_colored_borderless_text_material=0x7f0e00a7;
-        public static final int abc_btn_colored_text_material=0x7f0e00a8;
-        public static final int abc_color_highlight_material=0x7f0e00a9;
-        public static final int abc_hint_foreground_material_dark=0x7f0e00aa;
-        public static final int abc_hint_foreground_material_light=0x7f0e00ab;
+        public static final int abc_background_cache_hint_selector_material_dark=0x7f0e00a6;
+        public static final int abc_background_cache_hint_selector_material_light=0x7f0e00a7;
+        public static final int abc_btn_colored_borderless_text_material=0x7f0e00a8;
+        public static final int abc_btn_colored_text_material=0x7f0e00a9;
+        public static final int abc_color_highlight_material=0x7f0e00aa;
+        public static final int abc_hint_foreground_material_dark=0x7f0e00ab;
+        public static final int abc_hint_foreground_material_light=0x7f0e00ac;
         public static final int abc_input_method_navigation_guard=0x7f0e0002;
-        public static final int abc_primary_text_disable_only_material_dark=0x7f0e00ac;
-        public static final int abc_primary_text_disable_only_material_light=0x7f0e00ad;
-        public static final int abc_primary_text_material_dark=0x7f0e00ae;
-        public static final int abc_primary_text_material_light=0x7f0e00af;
-        public static final int abc_search_url_text=0x7f0e00b0;
+        public static final int abc_primary_text_disable_only_material_dark=0x7f0e00ad;
+        public static final int abc_primary_text_disable_only_material_light=0x7f0e00ae;
+        public static final int abc_primary_text_material_dark=0x7f0e00af;
+        public static final int abc_primary_text_material_light=0x7f0e00b0;
+        public static final int abc_search_url_text=0x7f0e00b1;
         public static final int abc_search_url_text_normal=0x7f0e0003;
         public static final int abc_search_url_text_pressed=0x7f0e0004;
         public static final int abc_search_url_text_selected=0x7f0e0005;
-        public static final int abc_secondary_text_material_dark=0x7f0e00b1;
-        public static final int abc_secondary_text_material_light=0x7f0e00b2;
-        public static final int abc_tint_btn_checkable=0x7f0e00b3;
-        public static final int abc_tint_default=0x7f0e00b4;
-        public static final int abc_tint_edittext=0x7f0e00b5;
-        public static final int abc_tint_seek_thumb=0x7f0e00b6;
-        public static final int abc_tint_spinner=0x7f0e00b7;
-        public static final int abc_tint_switch_thumb=0x7f0e00b8;
-        public static final int abc_tint_switch_track=0x7f0e00b9;
+        public static final int abc_secondary_text_material_dark=0x7f0e00b2;
+        public static final int abc_secondary_text_material_light=0x7f0e00b3;
+        public static final int abc_tint_btn_checkable=0x7f0e00b4;
+        public static final int abc_tint_default=0x7f0e00b5;
+        public static final int abc_tint_edittext=0x7f0e00b6;
+        public static final int abc_tint_seek_thumb=0x7f0e00b7;
+        public static final int abc_tint_spinner=0x7f0e00b8;
+        public static final int abc_tint_switch_thumb=0x7f0e00b9;
+        public static final int abc_tint_switch_track=0x7f0e00ba;
         public static final int accent_material_dark=0x7f0e0006;
         public static final int accent_material_light=0x7f0e0007;
         public static final int background_floating_material_dark=0x7f0e0008;
@@ -2712,7 +2712,7 @@ containing a value of this type.
         public static final int colorYellow=0x7f0e0026;
         public static final int dark_oranger=0x7f0e0027;
         public static final int design_bottom_navigation_shadow_color=0x7f0e0028;
-        public static final int design_error=0x7f0e00ba;
+        public static final int design_error=0x7f0e00bb;
         public static final int design_fab_shadow_end_color=0x7f0e0029;
         public static final int design_fab_shadow_mid_color=0x7f0e002a;
         public static final int design_fab_shadow_start_color=0x7f0e002b;
@@ -2723,7 +2723,7 @@ containing a value of this type.
         public static final int design_snackbar_background_color=0x7f0e0030;
         public static final int design_textinput_error_color_dark=0x7f0e0031;
         public static final int design_textinput_error_color_light=0x7f0e0032;
-        public static final int design_tint_password_toggle=0x7f0e00bb;
+        public static final int design_tint_password_toggle=0x7f0e00bc;
         public static final int dim_foreground_disabled_material_dark=0x7f0e0033;
         public static final int dim_foreground_disabled_material_light=0x7f0e0034;
         public static final int dim_foreground_material_dark=0x7f0e0035;
@@ -2791,8 +2791,8 @@ containing a value of this type.
         public static final int short_color=0x7f0e0072;
         public static final int switch_thumb_disabled_material_dark=0x7f0e0073;
         public static final int switch_thumb_disabled_material_light=0x7f0e0074;
-        public static final int switch_thumb_material_dark=0x7f0e00bc;
-        public static final int switch_thumb_material_light=0x7f0e00bd;
+        public static final int switch_thumb_material_dark=0x7f0e00bd;
+        public static final int switch_thumb_material_light=0x7f0e00be;
         public static final int switch_thumb_normal_material_dark=0x7f0e0075;
         public static final int switch_thumb_normal_material_light=0x7f0e0076;
         public static final int text_dark=0x7f0e0077;
@@ -2830,17 +2830,18 @@ containing a value of this type.
         public static final int worker_4=0x7f0e0097;
         public static final int worker_5=0x7f0e0098;
         public static final int worker_6=0x7f0e0099;
-        public static final int yellow=0x7f0e009a;
-        public static final int zxing_custom_possible_result_points=0x7f0e009b;
-        public static final int zxing_custom_result_view=0x7f0e009c;
-        public static final int zxing_custom_viewfinder_laser=0x7f0e009d;
-        public static final int zxing_custom_viewfinder_mask=0x7f0e009e;
-        public static final int zxing_possible_result_points=0x7f0e009f;
-        public static final int zxing_result_view=0x7f0e00a0;
-        public static final int zxing_status_text=0x7f0e00a1;
-        public static final int zxing_transparent=0x7f0e00a2;
-        public static final int zxing_viewfinder_laser=0x7f0e00a3;
-        public static final int zxing_viewfinder_mask=0x7f0e00a4;
+        public static final int wxColor=0x7f0e009a;
+        public static final int yellow=0x7f0e009b;
+        public static final int zxing_custom_possible_result_points=0x7f0e009c;
+        public static final int zxing_custom_result_view=0x7f0e009d;
+        public static final int zxing_custom_viewfinder_laser=0x7f0e009e;
+        public static final int zxing_custom_viewfinder_mask=0x7f0e009f;
+        public static final int zxing_possible_result_points=0x7f0e00a0;
+        public static final int zxing_result_view=0x7f0e00a1;
+        public static final int zxing_status_text=0x7f0e00a2;
+        public static final int zxing_transparent=0x7f0e00a3;
+        public static final int zxing_viewfinder_laser=0x7f0e00a4;
+        public static final int zxing_viewfinder_mask=0x7f0e00a5;
     }
     public static final class dimen {
         public static final int abc_action_bar_content_inset_material=0x7f0a000c;
@@ -3419,21 +3420,17 @@ containing a value of this type.
         public static final int main_scan=0x7f100001;
     }
     public static final class mipmap {
-        public static final int ic_launcher=0x7f030000;
-        public static final int ico_add=0x7f030001;
-        public static final int ico_add_fous=0x7f030002;
+        public static final int bg_tab_nav=0x7f030000;
+        public static final int ic_launcher=0x7f030001;
+        public static final int ico_add=0x7f030002;
         public static final int ico_friend=0x7f030003;
-        public static final int ico_friend_fous=0x7f030004;
+        public static final int ico_friend_focus=0x7f030004;
         public static final int ico_home=0x7f030005;
-        public static final int ico_home_fous=0x7f030006;
-        public static final int ico_mine=0x7f030007;
-        public static final int ico_msg=0x7f030008;
-        public static final int ico_msg_fous=0x7f030009;
-        public static final int ico_my=0x7f03000a;
-        public static final int ico_my_fous=0x7f03000b;
-        public static final int null_data=0x7f03000c;
-        public static final int tab_bgg=0x7f03000d;
-        public static final int zhongxiangquan=0x7f03000e;
+        public static final int ico_home_focus=0x7f030006;
+        public static final int ico_msg=0x7f030007;
+        public static final int ico_msg_focus=0x7f030008;
+        public static final int ico_my=0x7f030009;
+        public static final int ico_my_focus=0x7f03000a;
     }
     public static final class raw {
         public static final int zxing_beep=0x7f080000;
@@ -3892,6 +3889,7 @@ containing a value of this type.
         public static final int DefaultExplainingPermissionsTheme=0x7f0b00d9;
         public static final int FullscreenActionBarStyle=0x7f0b00da;
         public static final int FullscreenTheme=0x7f0b00db;
+        public static final int FullscreenTheme_haveActionBar=0x7f0b00dc;
         public static final int Platform_AppCompat=0x7f0b001f;
         public static final int Platform_AppCompat_Light=0x7f0b0020;
         public static final int Platform_ThemeOverlay_AppCompat=0x7f0b0088;
@@ -3920,80 +3918,80 @@ containing a value of this type.
         public static final int RtlOverlay_Widget_AppCompat_SearchView_MagIcon=0x7f0b003e;
         public static final int RtlUnderlay_Widget_AppCompat_ActionButton=0x7f0b003f;
         public static final int RtlUnderlay_Widget_AppCompat_ActionButton_Overflow=0x7f0b0040;
-        public static final int TextAppearance_AppCompat=0x7f0b00dc;
-        public static final int TextAppearance_AppCompat_Body1=0x7f0b00dd;
-        public static final int TextAppearance_AppCompat_Body2=0x7f0b00de;
-        public static final int TextAppearance_AppCompat_Button=0x7f0b00df;
-        public static final int TextAppearance_AppCompat_Caption=0x7f0b00e0;
-        public static final int TextAppearance_AppCompat_Display1=0x7f0b00e1;
-        public static final int TextAppearance_AppCompat_Display2=0x7f0b00e2;
-        public static final int TextAppearance_AppCompat_Display3=0x7f0b00e3;
-        public static final int TextAppearance_AppCompat_Display4=0x7f0b00e4;
-        public static final int TextAppearance_AppCompat_Headline=0x7f0b00e5;
-        public static final int TextAppearance_AppCompat_Inverse=0x7f0b00e6;
-        public static final int TextAppearance_AppCompat_Large=0x7f0b00e7;
-        public static final int TextAppearance_AppCompat_Large_Inverse=0x7f0b00e8;
-        public static final int TextAppearance_AppCompat_Light_SearchResult_Subtitle=0x7f0b00e9;
-        public static final int TextAppearance_AppCompat_Light_SearchResult_Title=0x7f0b00ea;
-        public static final int TextAppearance_AppCompat_Light_Widget_PopupMenu_Large=0x7f0b00eb;
-        public static final int TextAppearance_AppCompat_Light_Widget_PopupMenu_Small=0x7f0b00ec;
-        public static final int TextAppearance_AppCompat_Medium=0x7f0b00ed;
-        public static final int TextAppearance_AppCompat_Medium_Inverse=0x7f0b00ee;
-        public static final int TextAppearance_AppCompat_Menu=0x7f0b00ef;
+        public static final int TextAppearance_AppCompat=0x7f0b00dd;
+        public static final int TextAppearance_AppCompat_Body1=0x7f0b00de;
+        public static final int TextAppearance_AppCompat_Body2=0x7f0b00df;
+        public static final int TextAppearance_AppCompat_Button=0x7f0b00e0;
+        public static final int TextAppearance_AppCompat_Caption=0x7f0b00e1;
+        public static final int TextAppearance_AppCompat_Display1=0x7f0b00e2;
+        public static final int TextAppearance_AppCompat_Display2=0x7f0b00e3;
+        public static final int TextAppearance_AppCompat_Display3=0x7f0b00e4;
+        public static final int TextAppearance_AppCompat_Display4=0x7f0b00e5;
+        public static final int TextAppearance_AppCompat_Headline=0x7f0b00e6;
+        public static final int TextAppearance_AppCompat_Inverse=0x7f0b00e7;
+        public static final int TextAppearance_AppCompat_Large=0x7f0b00e8;
+        public static final int TextAppearance_AppCompat_Large_Inverse=0x7f0b00e9;
+        public static final int TextAppearance_AppCompat_Light_SearchResult_Subtitle=0x7f0b00ea;
+        public static final int TextAppearance_AppCompat_Light_SearchResult_Title=0x7f0b00eb;
+        public static final int TextAppearance_AppCompat_Light_Widget_PopupMenu_Large=0x7f0b00ec;
+        public static final int TextAppearance_AppCompat_Light_Widget_PopupMenu_Small=0x7f0b00ed;
+        public static final int TextAppearance_AppCompat_Medium=0x7f0b00ee;
+        public static final int TextAppearance_AppCompat_Medium_Inverse=0x7f0b00ef;
+        public static final int TextAppearance_AppCompat_Menu=0x7f0b00f0;
         public static final int TextAppearance_AppCompat_Notification=0x7f0b002c;
         public static final int TextAppearance_AppCompat_Notification_Info=0x7f0b008d;
         public static final int TextAppearance_AppCompat_Notification_Info_Media=0x7f0b008e;
-        public static final int TextAppearance_AppCompat_Notification_Line2=0x7f0b00f0;
-        public static final int TextAppearance_AppCompat_Notification_Line2_Media=0x7f0b00f1;
+        public static final int TextAppearance_AppCompat_Notification_Line2=0x7f0b00f1;
+        public static final int TextAppearance_AppCompat_Notification_Line2_Media=0x7f0b00f2;
         public static final int TextAppearance_AppCompat_Notification_Media=0x7f0b008f;
         public static final int TextAppearance_AppCompat_Notification_Time=0x7f0b0090;
         public static final int TextAppearance_AppCompat_Notification_Time_Media=0x7f0b0091;
         public static final int TextAppearance_AppCompat_Notification_Title=0x7f0b002d;
         public static final int TextAppearance_AppCompat_Notification_Title_Media=0x7f0b0092;
-        public static final int TextAppearance_AppCompat_SearchResult_Subtitle=0x7f0b00f2;
-        public static final int TextAppearance_AppCompat_SearchResult_Title=0x7f0b00f3;
-        public static final int TextAppearance_AppCompat_Small=0x7f0b00f4;
-        public static final int TextAppearance_AppCompat_Small_Inverse=0x7f0b00f5;
-        public static final int TextAppearance_AppCompat_Subhead=0x7f0b00f6;
-        public static final int TextAppearance_AppCompat_Subhead_Inverse=0x7f0b00f7;
-        public static final int TextAppearance_AppCompat_Title=0x7f0b00f8;
-        public static final int TextAppearance_AppCompat_Title_Inverse=0x7f0b00f9;
-        public static final int TextAppearance_AppCompat_Widget_ActionBar_Menu=0x7f0b00fa;
-        public static final int TextAppearance_AppCompat_Widget_ActionBar_Subtitle=0x7f0b00fb;
-        public static final int TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse=0x7f0b00fc;
-        public static final int TextAppearance_AppCompat_Widget_ActionBar_Title=0x7f0b00fd;
-        public static final int TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse=0x7f0b00fe;
-        public static final int TextAppearance_AppCompat_Widget_ActionMode_Subtitle=0x7f0b00ff;
-        public static final int TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse=0x7f0b0100;
-        public static final int TextAppearance_AppCompat_Widget_ActionMode_Title=0x7f0b0101;
-        public static final int TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse=0x7f0b0102;
-        public static final int TextAppearance_AppCompat_Widget_Button=0x7f0b0103;
-        public static final int TextAppearance_AppCompat_Widget_Button_Borderless_Colored=0x7f0b0104;
-        public static final int TextAppearance_AppCompat_Widget_Button_Colored=0x7f0b0105;
-        public static final int TextAppearance_AppCompat_Widget_Button_Inverse=0x7f0b0106;
-        public static final int TextAppearance_AppCompat_Widget_DropDownItem=0x7f0b0107;
-        public static final int TextAppearance_AppCompat_Widget_PopupMenu_Header=0x7f0b0108;
-        public static final int TextAppearance_AppCompat_Widget_PopupMenu_Large=0x7f0b0109;
-        public static final int TextAppearance_AppCompat_Widget_PopupMenu_Small=0x7f0b010a;
-        public static final int TextAppearance_AppCompat_Widget_Switch=0x7f0b010b;
-        public static final int TextAppearance_AppCompat_Widget_TextView_SpinnerItem=0x7f0b010c;
-        public static final int TextAppearance_Design_CollapsingToolbar_Expanded=0x7f0b010d;
-        public static final int TextAppearance_Design_Counter=0x7f0b010e;
-        public static final int TextAppearance_Design_Counter_Overflow=0x7f0b010f;
-        public static final int TextAppearance_Design_Error=0x7f0b0110;
-        public static final int TextAppearance_Design_Hint=0x7f0b0111;
-        public static final int TextAppearance_Design_Snackbar_Message=0x7f0b0112;
-        public static final int TextAppearance_Design_Tab=0x7f0b0113;
+        public static final int TextAppearance_AppCompat_SearchResult_Subtitle=0x7f0b00f3;
+        public static final int TextAppearance_AppCompat_SearchResult_Title=0x7f0b00f4;
+        public static final int TextAppearance_AppCompat_Small=0x7f0b00f5;
+        public static final int TextAppearance_AppCompat_Small_Inverse=0x7f0b00f6;
+        public static final int TextAppearance_AppCompat_Subhead=0x7f0b00f7;
+        public static final int TextAppearance_AppCompat_Subhead_Inverse=0x7f0b00f8;
+        public static final int TextAppearance_AppCompat_Title=0x7f0b00f9;
+        public static final int TextAppearance_AppCompat_Title_Inverse=0x7f0b00fa;
+        public static final int TextAppearance_AppCompat_Widget_ActionBar_Menu=0x7f0b00fb;
+        public static final int TextAppearance_AppCompat_Widget_ActionBar_Subtitle=0x7f0b00fc;
+        public static final int TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse=0x7f0b00fd;
+        public static final int TextAppearance_AppCompat_Widget_ActionBar_Title=0x7f0b00fe;
+        public static final int TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse=0x7f0b00ff;
+        public static final int TextAppearance_AppCompat_Widget_ActionMode_Subtitle=0x7f0b0100;
+        public static final int TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse=0x7f0b0101;
+        public static final int TextAppearance_AppCompat_Widget_ActionMode_Title=0x7f0b0102;
+        public static final int TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse=0x7f0b0103;
+        public static final int TextAppearance_AppCompat_Widget_Button=0x7f0b0104;
+        public static final int TextAppearance_AppCompat_Widget_Button_Borderless_Colored=0x7f0b0105;
+        public static final int TextAppearance_AppCompat_Widget_Button_Colored=0x7f0b0106;
+        public static final int TextAppearance_AppCompat_Widget_Button_Inverse=0x7f0b0107;
+        public static final int TextAppearance_AppCompat_Widget_DropDownItem=0x7f0b0108;
+        public static final int TextAppearance_AppCompat_Widget_PopupMenu_Header=0x7f0b0109;
+        public static final int TextAppearance_AppCompat_Widget_PopupMenu_Large=0x7f0b010a;
+        public static final int TextAppearance_AppCompat_Widget_PopupMenu_Small=0x7f0b010b;
+        public static final int TextAppearance_AppCompat_Widget_Switch=0x7f0b010c;
+        public static final int TextAppearance_AppCompat_Widget_TextView_SpinnerItem=0x7f0b010d;
+        public static final int TextAppearance_Design_CollapsingToolbar_Expanded=0x7f0b010e;
+        public static final int TextAppearance_Design_Counter=0x7f0b010f;
+        public static final int TextAppearance_Design_Counter_Overflow=0x7f0b0110;
+        public static final int TextAppearance_Design_Error=0x7f0b0111;
+        public static final int TextAppearance_Design_Hint=0x7f0b0112;
+        public static final int TextAppearance_Design_Snackbar_Message=0x7f0b0113;
+        public static final int TextAppearance_Design_Tab=0x7f0b0114;
         public static final int TextAppearance_StatusBar_EventContent=0x7f0b002e;
         public static final int TextAppearance_StatusBar_EventContent_Info=0x7f0b002f;
         public static final int TextAppearance_StatusBar_EventContent_Line2=0x7f0b0030;
         public static final int TextAppearance_StatusBar_EventContent_Time=0x7f0b0031;
         public static final int TextAppearance_StatusBar_EventContent_Title=0x7f0b0032;
-        public static final int TextAppearance_Widget_AppCompat_ExpandedMenu_Item=0x7f0b0114;
-        public static final int TextAppearance_Widget_AppCompat_Toolbar_Subtitle=0x7f0b0115;
-        public static final int TextAppearance_Widget_AppCompat_Toolbar_Title=0x7f0b0116;
-        public static final int Theme_AppCompat=0x7f0b0117;
-        public static final int Theme_AppCompat_CompactMenu=0x7f0b0118;
+        public static final int TextAppearance_Widget_AppCompat_ExpandedMenu_Item=0x7f0b0115;
+        public static final int TextAppearance_Widget_AppCompat_Toolbar_Subtitle=0x7f0b0116;
+        public static final int TextAppearance_Widget_AppCompat_Toolbar_Title=0x7f0b0117;
+        public static final int Theme_AppCompat=0x7f0b0118;
+        public static final int Theme_AppCompat_CompactMenu=0x7f0b0119;
         public static final int Theme_AppCompat_DayNight=0x7f0b0005;
         public static final int Theme_AppCompat_DayNight_DarkActionBar=0x7f0b0006;
         public static final int Theme_AppCompat_DayNight_Dialog=0x7f0b0007;
@@ -4001,117 +3999,117 @@ containing a value of this type.
         public static final int Theme_AppCompat_DayNight_Dialog_MinWidth=0x7f0b0009;
         public static final int Theme_AppCompat_DayNight_DialogWhenLarge=0x7f0b000a;
         public static final int Theme_AppCompat_DayNight_NoActionBar=0x7f0b000b;
-        public static final int Theme_AppCompat_Dialog=0x7f0b0119;
-        public static final int Theme_AppCompat_Dialog_Alert=0x7f0b011a;
-        public static final int Theme_AppCompat_Dialog_MinWidth=0x7f0b011b;
-        public static final int Theme_AppCompat_DialogWhenLarge=0x7f0b011c;
-        public static final int Theme_AppCompat_Light=0x7f0b011d;
-        public static final int Theme_AppCompat_Light_DarkActionBar=0x7f0b011e;
-        public static final int Theme_AppCompat_Light_Dialog=0x7f0b011f;
-        public static final int Theme_AppCompat_Light_Dialog_Alert=0x7f0b0120;
-        public static final int Theme_AppCompat_Light_Dialog_MinWidth=0x7f0b0121;
-        public static final int Theme_AppCompat_Light_DialogWhenLarge=0x7f0b0122;
-        public static final int Theme_AppCompat_Light_NoActionBar=0x7f0b0123;
-        public static final int Theme_AppCompat_NoActionBar=0x7f0b0124;
-        public static final int Theme_Design=0x7f0b0125;
-        public static final int Theme_Design_BottomSheetDialog=0x7f0b0126;
-        public static final int Theme_Design_Light=0x7f0b0127;
-        public static final int Theme_Design_Light_BottomSheetDialog=0x7f0b0128;
-        public static final int Theme_Design_Light_NoActionBar=0x7f0b0129;
-        public static final int Theme_Design_NoActionBar=0x7f0b012a;
-        public static final int Theme_Transparent=0x7f0b012b;
-        public static final int ThemeOverlay_AppCompat=0x7f0b012c;
-        public static final int ThemeOverlay_AppCompat_ActionBar=0x7f0b012d;
-        public static final int ThemeOverlay_AppCompat_Dark=0x7f0b012e;
-        public static final int ThemeOverlay_AppCompat_Dark_ActionBar=0x7f0b012f;
-        public static final int ThemeOverlay_AppCompat_Dialog=0x7f0b0130;
-        public static final int ThemeOverlay_AppCompat_Dialog_Alert=0x7f0b0131;
-        public static final int ThemeOverlay_AppCompat_Light=0x7f0b0132;
-        public static final int Widget_AppCompat_ActionBar=0x7f0b0133;
-        public static final int Widget_AppCompat_ActionBar_Solid=0x7f0b0134;
-        public static final int Widget_AppCompat_ActionBar_TabBar=0x7f0b0135;
-        public static final int Widget_AppCompat_ActionBar_TabText=0x7f0b0136;
-        public static final int Widget_AppCompat_ActionBar_TabView=0x7f0b0137;
-        public static final int Widget_AppCompat_ActionButton=0x7f0b0138;
-        public static final int Widget_AppCompat_ActionButton_CloseMode=0x7f0b0139;
-        public static final int Widget_AppCompat_ActionButton_Overflow=0x7f0b013a;
-        public static final int Widget_AppCompat_ActionMode=0x7f0b013b;
-        public static final int Widget_AppCompat_ActivityChooserView=0x7f0b013c;
-        public static final int Widget_AppCompat_AutoCompleteTextView=0x7f0b013d;
-        public static final int Widget_AppCompat_Button=0x7f0b013e;
-        public static final int Widget_AppCompat_Button_Borderless=0x7f0b013f;
-        public static final int Widget_AppCompat_Button_Borderless_Colored=0x7f0b0140;
-        public static final int Widget_AppCompat_Button_ButtonBar_AlertDialog=0x7f0b0141;
-        public static final int Widget_AppCompat_Button_Colored=0x7f0b0142;
-        public static final int Widget_AppCompat_Button_Small=0x7f0b0143;
-        public static final int Widget_AppCompat_ButtonBar=0x7f0b0144;
-        public static final int Widget_AppCompat_ButtonBar_AlertDialog=0x7f0b0145;
-        public static final int Widget_AppCompat_CompoundButton_CheckBox=0x7f0b0146;
-        public static final int Widget_AppCompat_CompoundButton_RadioButton=0x7f0b0147;
-        public static final int Widget_AppCompat_CompoundButton_Switch=0x7f0b0148;
-        public static final int Widget_AppCompat_DrawerArrowToggle=0x7f0b0149;
-        public static final int Widget_AppCompat_DropDownItem_Spinner=0x7f0b014a;
-        public static final int Widget_AppCompat_EditText=0x7f0b014b;
-        public static final int Widget_AppCompat_ImageButton=0x7f0b014c;
-        public static final int Widget_AppCompat_Light_ActionBar=0x7f0b014d;
-        public static final int Widget_AppCompat_Light_ActionBar_Solid=0x7f0b014e;
-        public static final int Widget_AppCompat_Light_ActionBar_Solid_Inverse=0x7f0b014f;
-        public static final int Widget_AppCompat_Light_ActionBar_TabBar=0x7f0b0150;
-        public static final int Widget_AppCompat_Light_ActionBar_TabBar_Inverse=0x7f0b0151;
-        public static final int Widget_AppCompat_Light_ActionBar_TabText=0x7f0b0152;
-        public static final int Widget_AppCompat_Light_ActionBar_TabText_Inverse=0x7f0b0153;
-        public static final int Widget_AppCompat_Light_ActionBar_TabView=0x7f0b0154;
-        public static final int Widget_AppCompat_Light_ActionBar_TabView_Inverse=0x7f0b0155;
-        public static final int Widget_AppCompat_Light_ActionButton=0x7f0b0156;
-        public static final int Widget_AppCompat_Light_ActionButton_CloseMode=0x7f0b0157;
-        public static final int Widget_AppCompat_Light_ActionButton_Overflow=0x7f0b0158;
-        public static final int Widget_AppCompat_Light_ActionMode_Inverse=0x7f0b0159;
-        public static final int Widget_AppCompat_Light_ActivityChooserView=0x7f0b015a;
-        public static final int Widget_AppCompat_Light_AutoCompleteTextView=0x7f0b015b;
-        public static final int Widget_AppCompat_Light_DropDownItem_Spinner=0x7f0b015c;
-        public static final int Widget_AppCompat_Light_ListPopupWindow=0x7f0b015d;
-        public static final int Widget_AppCompat_Light_ListView_DropDown=0x7f0b015e;
-        public static final int Widget_AppCompat_Light_PopupMenu=0x7f0b015f;
-        public static final int Widget_AppCompat_Light_PopupMenu_Overflow=0x7f0b0160;
-        public static final int Widget_AppCompat_Light_SearchView=0x7f0b0161;
-        public static final int Widget_AppCompat_Light_Spinner_DropDown_ActionBar=0x7f0b0162;
-        public static final int Widget_AppCompat_ListMenuView=0x7f0b0163;
-        public static final int Widget_AppCompat_ListPopupWindow=0x7f0b0164;
-        public static final int Widget_AppCompat_ListView=0x7f0b0165;
-        public static final int Widget_AppCompat_ListView_DropDown=0x7f0b0166;
-        public static final int Widget_AppCompat_ListView_Menu=0x7f0b0167;
+        public static final int Theme_AppCompat_Dialog=0x7f0b011a;
+        public static final int Theme_AppCompat_Dialog_Alert=0x7f0b011b;
+        public static final int Theme_AppCompat_Dialog_MinWidth=0x7f0b011c;
+        public static final int Theme_AppCompat_DialogWhenLarge=0x7f0b011d;
+        public static final int Theme_AppCompat_Light=0x7f0b011e;
+        public static final int Theme_AppCompat_Light_DarkActionBar=0x7f0b011f;
+        public static final int Theme_AppCompat_Light_Dialog=0x7f0b0120;
+        public static final int Theme_AppCompat_Light_Dialog_Alert=0x7f0b0121;
+        public static final int Theme_AppCompat_Light_Dialog_MinWidth=0x7f0b0122;
+        public static final int Theme_AppCompat_Light_DialogWhenLarge=0x7f0b0123;
+        public static final int Theme_AppCompat_Light_NoActionBar=0x7f0b0124;
+        public static final int Theme_AppCompat_NoActionBar=0x7f0b0125;
+        public static final int Theme_Design=0x7f0b0126;
+        public static final int Theme_Design_BottomSheetDialog=0x7f0b0127;
+        public static final int Theme_Design_Light=0x7f0b0128;
+        public static final int Theme_Design_Light_BottomSheetDialog=0x7f0b0129;
+        public static final int Theme_Design_Light_NoActionBar=0x7f0b012a;
+        public static final int Theme_Design_NoActionBar=0x7f0b012b;
+        public static final int Theme_Transparent=0x7f0b012c;
+        public static final int ThemeOverlay_AppCompat=0x7f0b012d;
+        public static final int ThemeOverlay_AppCompat_ActionBar=0x7f0b012e;
+        public static final int ThemeOverlay_AppCompat_Dark=0x7f0b012f;
+        public static final int ThemeOverlay_AppCompat_Dark_ActionBar=0x7f0b0130;
+        public static final int ThemeOverlay_AppCompat_Dialog=0x7f0b0131;
+        public static final int ThemeOverlay_AppCompat_Dialog_Alert=0x7f0b0132;
+        public static final int ThemeOverlay_AppCompat_Light=0x7f0b0133;
+        public static final int Widget_AppCompat_ActionBar=0x7f0b0134;
+        public static final int Widget_AppCompat_ActionBar_Solid=0x7f0b0135;
+        public static final int Widget_AppCompat_ActionBar_TabBar=0x7f0b0136;
+        public static final int Widget_AppCompat_ActionBar_TabText=0x7f0b0137;
+        public static final int Widget_AppCompat_ActionBar_TabView=0x7f0b0138;
+        public static final int Widget_AppCompat_ActionButton=0x7f0b0139;
+        public static final int Widget_AppCompat_ActionButton_CloseMode=0x7f0b013a;
+        public static final int Widget_AppCompat_ActionButton_Overflow=0x7f0b013b;
+        public static final int Widget_AppCompat_ActionMode=0x7f0b013c;
+        public static final int Widget_AppCompat_ActivityChooserView=0x7f0b013d;
+        public static final int Widget_AppCompat_AutoCompleteTextView=0x7f0b013e;
+        public static final int Widget_AppCompat_Button=0x7f0b013f;
+        public static final int Widget_AppCompat_Button_Borderless=0x7f0b0140;
+        public static final int Widget_AppCompat_Button_Borderless_Colored=0x7f0b0141;
+        public static final int Widget_AppCompat_Button_ButtonBar_AlertDialog=0x7f0b0142;
+        public static final int Widget_AppCompat_Button_Colored=0x7f0b0143;
+        public static final int Widget_AppCompat_Button_Small=0x7f0b0144;
+        public static final int Widget_AppCompat_ButtonBar=0x7f0b0145;
+        public static final int Widget_AppCompat_ButtonBar_AlertDialog=0x7f0b0146;
+        public static final int Widget_AppCompat_CompoundButton_CheckBox=0x7f0b0147;
+        public static final int Widget_AppCompat_CompoundButton_RadioButton=0x7f0b0148;
+        public static final int Widget_AppCompat_CompoundButton_Switch=0x7f0b0149;
+        public static final int Widget_AppCompat_DrawerArrowToggle=0x7f0b014a;
+        public static final int Widget_AppCompat_DropDownItem_Spinner=0x7f0b014b;
+        public static final int Widget_AppCompat_EditText=0x7f0b014c;
+        public static final int Widget_AppCompat_ImageButton=0x7f0b014d;
+        public static final int Widget_AppCompat_Light_ActionBar=0x7f0b014e;
+        public static final int Widget_AppCompat_Light_ActionBar_Solid=0x7f0b014f;
+        public static final int Widget_AppCompat_Light_ActionBar_Solid_Inverse=0x7f0b0150;
+        public static final int Widget_AppCompat_Light_ActionBar_TabBar=0x7f0b0151;
+        public static final int Widget_AppCompat_Light_ActionBar_TabBar_Inverse=0x7f0b0152;
+        public static final int Widget_AppCompat_Light_ActionBar_TabText=0x7f0b0153;
+        public static final int Widget_AppCompat_Light_ActionBar_TabText_Inverse=0x7f0b0154;
+        public static final int Widget_AppCompat_Light_ActionBar_TabView=0x7f0b0155;
+        public static final int Widget_AppCompat_Light_ActionBar_TabView_Inverse=0x7f0b0156;
+        public static final int Widget_AppCompat_Light_ActionButton=0x7f0b0157;
+        public static final int Widget_AppCompat_Light_ActionButton_CloseMode=0x7f0b0158;
+        public static final int Widget_AppCompat_Light_ActionButton_Overflow=0x7f0b0159;
+        public static final int Widget_AppCompat_Light_ActionMode_Inverse=0x7f0b015a;
+        public static final int Widget_AppCompat_Light_ActivityChooserView=0x7f0b015b;
+        public static final int Widget_AppCompat_Light_AutoCompleteTextView=0x7f0b015c;
+        public static final int Widget_AppCompat_Light_DropDownItem_Spinner=0x7f0b015d;
+        public static final int Widget_AppCompat_Light_ListPopupWindow=0x7f0b015e;
+        public static final int Widget_AppCompat_Light_ListView_DropDown=0x7f0b015f;
+        public static final int Widget_AppCompat_Light_PopupMenu=0x7f0b0160;
+        public static final int Widget_AppCompat_Light_PopupMenu_Overflow=0x7f0b0161;
+        public static final int Widget_AppCompat_Light_SearchView=0x7f0b0162;
+        public static final int Widget_AppCompat_Light_Spinner_DropDown_ActionBar=0x7f0b0163;
+        public static final int Widget_AppCompat_ListMenuView=0x7f0b0164;
+        public static final int Widget_AppCompat_ListPopupWindow=0x7f0b0165;
+        public static final int Widget_AppCompat_ListView=0x7f0b0166;
+        public static final int Widget_AppCompat_ListView_DropDown=0x7f0b0167;
+        public static final int Widget_AppCompat_ListView_Menu=0x7f0b0168;
         public static final int Widget_AppCompat_NotificationActionContainer=0x7f0b0093;
         public static final int Widget_AppCompat_NotificationActionText=0x7f0b0094;
-        public static final int Widget_AppCompat_PopupMenu=0x7f0b0168;
-        public static final int Widget_AppCompat_PopupMenu_Overflow=0x7f0b0169;
-        public static final int Widget_AppCompat_PopupWindow=0x7f0b016a;
-        public static final int Widget_AppCompat_ProgressBar=0x7f0b016b;
-        public static final int Widget_AppCompat_ProgressBar_Horizontal=0x7f0b016c;
-        public static final int Widget_AppCompat_RatingBar=0x7f0b016d;
-        public static final int Widget_AppCompat_RatingBar_Indicator=0x7f0b016e;
-        public static final int Widget_AppCompat_RatingBar_Small=0x7f0b016f;
-        public static final int Widget_AppCompat_SearchView=0x7f0b0170;
-        public static final int Widget_AppCompat_SearchView_ActionBar=0x7f0b0171;
-        public static final int Widget_AppCompat_SeekBar=0x7f0b0172;
-        public static final int Widget_AppCompat_SeekBar_Discrete=0x7f0b0173;
-        public static final int Widget_AppCompat_Spinner=0x7f0b0174;
-        public static final int Widget_AppCompat_Spinner_DropDown=0x7f0b0175;
-        public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0b0176;
-        public static final int Widget_AppCompat_Spinner_Underlined=0x7f0b0177;
-        public static final int Widget_AppCompat_TextView_SpinnerItem=0x7f0b0178;
-        public static final int Widget_AppCompat_Toolbar=0x7f0b0179;
-        public static final int Widget_AppCompat_Toolbar_Button_Navigation=0x7f0b017a;
+        public static final int Widget_AppCompat_PopupMenu=0x7f0b0169;
+        public static final int Widget_AppCompat_PopupMenu_Overflow=0x7f0b016a;
+        public static final int Widget_AppCompat_PopupWindow=0x7f0b016b;
+        public static final int Widget_AppCompat_ProgressBar=0x7f0b016c;
+        public static final int Widget_AppCompat_ProgressBar_Horizontal=0x7f0b016d;
+        public static final int Widget_AppCompat_RatingBar=0x7f0b016e;
+        public static final int Widget_AppCompat_RatingBar_Indicator=0x7f0b016f;
+        public static final int Widget_AppCompat_RatingBar_Small=0x7f0b0170;
+        public static final int Widget_AppCompat_SearchView=0x7f0b0171;
+        public static final int Widget_AppCompat_SearchView_ActionBar=0x7f0b0172;
+        public static final int Widget_AppCompat_SeekBar=0x7f0b0173;
+        public static final int Widget_AppCompat_SeekBar_Discrete=0x7f0b0174;
+        public static final int Widget_AppCompat_Spinner=0x7f0b0175;
+        public static final int Widget_AppCompat_Spinner_DropDown=0x7f0b0176;
+        public static final int Widget_AppCompat_Spinner_DropDown_ActionBar=0x7f0b0177;
+        public static final int Widget_AppCompat_Spinner_Underlined=0x7f0b0178;
+        public static final int Widget_AppCompat_TextView_SpinnerItem=0x7f0b0179;
+        public static final int Widget_AppCompat_Toolbar=0x7f0b017a;
+        public static final int Widget_AppCompat_Toolbar_Button_Navigation=0x7f0b017b;
         public static final int Widget_Design_AppBarLayout=0x7f0b0095;
-        public static final int Widget_Design_BottomNavigationView=0x7f0b017b;
-        public static final int Widget_Design_BottomSheet_Modal=0x7f0b017c;
-        public static final int Widget_Design_CollapsingToolbar=0x7f0b017d;
-        public static final int Widget_Design_CoordinatorLayout=0x7f0b017e;
-        public static final int Widget_Design_FloatingActionButton=0x7f0b017f;
-        public static final int Widget_Design_NavigationView=0x7f0b0180;
-        public static final int Widget_Design_ScrimInsetsFrameLayout=0x7f0b0181;
-        public static final int Widget_Design_Snackbar=0x7f0b0182;
+        public static final int Widget_Design_BottomNavigationView=0x7f0b017c;
+        public static final int Widget_Design_BottomSheet_Modal=0x7f0b017d;
+        public static final int Widget_Design_CollapsingToolbar=0x7f0b017e;
+        public static final int Widget_Design_CoordinatorLayout=0x7f0b017f;
+        public static final int Widget_Design_FloatingActionButton=0x7f0b0180;
+        public static final int Widget_Design_NavigationView=0x7f0b0181;
+        public static final int Widget_Design_ScrimInsetsFrameLayout=0x7f0b0182;
+        public static final int Widget_Design_Snackbar=0x7f0b0183;
         public static final int Widget_Design_TabLayout=0x7f0b0001;
-        public static final int Widget_Design_TextInputLayout=0x7f0b0183;
+        public static final int Widget_Design_TextInputLayout=0x7f0b0184;
         public static final int zxing_CaptureTheme=0x7f0b0024;
     }
     public static final class xml {
@@ -4126,35 +4124,35 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ActionBar_background com.alibaba.weex:background}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_backgroundSplit com.alibaba.weex:backgroundSplit}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_backgroundStacked com.alibaba.weex:backgroundStacked}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_contentInsetEnd com.alibaba.weex:contentInsetEnd}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_contentInsetEndWithActions com.alibaba.weex:contentInsetEndWithActions}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_contentInsetLeft com.alibaba.weex:contentInsetLeft}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_contentInsetRight com.alibaba.weex:contentInsetRight}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_contentInsetStart com.alibaba.weex:contentInsetStart}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_contentInsetStartWithNavigation com.alibaba.weex:contentInsetStartWithNavigation}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_customNavigationLayout com.alibaba.weex:customNavigationLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_displayOptions com.alibaba.weex:displayOptions}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_divider com.alibaba.weex:divider}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_elevation com.alibaba.weex:elevation}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_height com.alibaba.weex:height}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_hideOnContentScroll com.alibaba.weex:hideOnContentScroll}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_homeAsUpIndicator com.alibaba.weex:homeAsUpIndicator}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_homeLayout com.alibaba.weex:homeLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_icon com.alibaba.weex:icon}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_indeterminateProgressStyle com.alibaba.weex:indeterminateProgressStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_itemPadding com.alibaba.weex:itemPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_logo com.alibaba.weex:logo}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_navigationMode com.alibaba.weex:navigationMode}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_popupTheme com.alibaba.weex:popupTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_progressBarPadding com.alibaba.weex:progressBarPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_progressBarStyle com.alibaba.weex:progressBarStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_subtitle com.alibaba.weex:subtitle}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_subtitleTextStyle com.alibaba.weex:subtitleTextStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_title com.alibaba.weex:title}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionBar_titleTextStyle com.alibaba.weex:titleTextStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_background com.rzico.weex:background}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_backgroundSplit com.rzico.weex:backgroundSplit}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_backgroundStacked com.rzico.weex:backgroundStacked}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_contentInsetEnd com.rzico.weex:contentInsetEnd}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_contentInsetEndWithActions com.rzico.weex:contentInsetEndWithActions}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_contentInsetLeft com.rzico.weex:contentInsetLeft}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_contentInsetRight com.rzico.weex:contentInsetRight}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_contentInsetStart com.rzico.weex:contentInsetStart}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_contentInsetStartWithNavigation com.rzico.weex:contentInsetStartWithNavigation}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_customNavigationLayout com.rzico.weex:customNavigationLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_displayOptions com.rzico.weex:displayOptions}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_divider com.rzico.weex:divider}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_elevation com.rzico.weex:elevation}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_height com.rzico.weex:height}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_hideOnContentScroll com.rzico.weex:hideOnContentScroll}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_homeAsUpIndicator com.rzico.weex:homeAsUpIndicator}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_homeLayout com.rzico.weex:homeLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_icon com.rzico.weex:icon}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_indeterminateProgressStyle com.rzico.weex:indeterminateProgressStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_itemPadding com.rzico.weex:itemPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_logo com.rzico.weex:logo}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_navigationMode com.rzico.weex:navigationMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_popupTheme com.rzico.weex:popupTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_progressBarPadding com.rzico.weex:progressBarPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_progressBarStyle com.rzico.weex:progressBarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_subtitle com.rzico.weex:subtitle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_subtitleTextStyle com.rzico.weex:subtitleTextStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_title com.rzico.weex:title}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionBar_titleTextStyle com.rzico.weex:titleTextStyle}</code></td><td></td></tr>
            </table>
            @see #ActionBar_background
            @see #ActionBar_backgroundSplit
@@ -4197,17 +4195,17 @@ containing a value of this type.
             0x7f010060
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#background}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#background}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:background
+          @attr name com.rzico.weex:background
         */
         public static final int ActionBar_background = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundSplit}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundSplit}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4215,11 +4213,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:backgroundSplit
+          @attr name com.rzico.weex:backgroundSplit
         */
         public static final int ActionBar_backgroundSplit = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundStacked}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundStacked}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4227,11 +4225,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:backgroundStacked
+          @attr name com.rzico.weex:backgroundStacked
         */
         public static final int ActionBar_backgroundStacked = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetEnd}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetEnd}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4243,11 +4241,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetEnd
+          @attr name com.rzico.weex:contentInsetEnd
         */
         public static final int ActionBar_contentInsetEnd = 21;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetEndWithActions}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetEndWithActions}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4259,11 +4257,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetEndWithActions
+          @attr name com.rzico.weex:contentInsetEndWithActions
         */
         public static final int ActionBar_contentInsetEndWithActions = 25;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetLeft}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetLeft}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4275,11 +4273,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetLeft
+          @attr name com.rzico.weex:contentInsetLeft
         */
         public static final int ActionBar_contentInsetLeft = 22;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetRight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetRight}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4291,11 +4289,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetRight
+          @attr name com.rzico.weex:contentInsetRight
         */
         public static final int ActionBar_contentInsetRight = 23;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetStart}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetStart}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4307,11 +4305,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetStart
+          @attr name com.rzico.weex:contentInsetStart
         */
         public static final int ActionBar_contentInsetStart = 20;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetStartWithNavigation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetStartWithNavigation}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4323,21 +4321,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetStartWithNavigation
+          @attr name com.rzico.weex:contentInsetStartWithNavigation
         */
         public static final int ActionBar_contentInsetStartWithNavigation = 24;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#customNavigationLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#customNavigationLayout}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:customNavigationLayout
+          @attr name com.rzico.weex:customNavigationLayout
         */
         public static final int ActionBar_customNavigationLayout = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#displayOptions}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#displayOptions}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4355,21 +4353,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>showCustom</code></td><td>0x10</td><td></td></tr>
 <tr><td><code>disableHome</code></td><td>0x20</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:displayOptions
+          @attr name com.rzico.weex:displayOptions
         */
         public static final int ActionBar_displayOptions = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#divider}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#divider}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:divider
+          @attr name com.rzico.weex:divider
         */
         public static final int ActionBar_divider = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#elevation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#elevation}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4381,11 +4379,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:elevation
+          @attr name com.rzico.weex:elevation
         */
         public static final int ActionBar_elevation = 26;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#height}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#height}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4397,11 +4395,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:height
+          @attr name com.rzico.weex:height
         */
         public static final int ActionBar_height = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#hideOnContentScroll}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#hideOnContentScroll}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4411,51 +4409,51 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:hideOnContentScroll
+          @attr name com.rzico.weex:hideOnContentScroll
         */
         public static final int ActionBar_hideOnContentScroll = 19;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#homeAsUpIndicator}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#homeAsUpIndicator}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:homeAsUpIndicator
+          @attr name com.rzico.weex:homeAsUpIndicator
         */
         public static final int ActionBar_homeAsUpIndicator = 28;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#homeLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#homeLayout}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:homeLayout
+          @attr name com.rzico.weex:homeLayout
         */
         public static final int ActionBar_homeLayout = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#icon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#icon}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:icon
+          @attr name com.rzico.weex:icon
         */
         public static final int ActionBar_icon = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#indeterminateProgressStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#indeterminateProgressStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:indeterminateProgressStyle
+          @attr name com.rzico.weex:indeterminateProgressStyle
         */
         public static final int ActionBar_indeterminateProgressStyle = 16;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemPadding}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4467,21 +4465,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:itemPadding
+          @attr name com.rzico.weex:itemPadding
         */
         public static final int ActionBar_itemPadding = 18;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#logo}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#logo}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:logo
+          @attr name com.rzico.weex:logo
         */
         public static final int ActionBar_logo = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#navigationMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#navigationMode}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4495,21 +4493,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>listMode</code></td><td>1</td><td></td></tr>
 <tr><td><code>tabMode</code></td><td>2</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:navigationMode
+          @attr name com.rzico.weex:navigationMode
         */
         public static final int ActionBar_navigationMode = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#popupTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#popupTheme}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:popupTheme
+          @attr name com.rzico.weex:popupTheme
         */
         public static final int ActionBar_popupTheme = 27;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#progressBarPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#progressBarPadding}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4521,21 +4519,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:progressBarPadding
+          @attr name com.rzico.weex:progressBarPadding
         */
         public static final int ActionBar_progressBarPadding = 17;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#progressBarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#progressBarStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:progressBarStyle
+          @attr name com.rzico.weex:progressBarStyle
         */
         public static final int ActionBar_progressBarStyle = 15;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#subtitle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#subtitle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4545,21 +4543,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:subtitle
+          @attr name com.rzico.weex:subtitle
         */
         public static final int ActionBar_subtitle = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#subtitleTextStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#subtitleTextStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:subtitleTextStyle
+          @attr name com.rzico.weex:subtitleTextStyle
         */
         public static final int ActionBar_subtitleTextStyle = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#title}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#title}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
@@ -4569,17 +4567,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:title
+          @attr name com.rzico.weex:title
         */
         public static final int ActionBar_title = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleTextStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleTextStyle}
           attribute's value can be found in the {@link #ActionBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:titleTextStyle
+          @attr name com.rzico.weex:titleTextStyle
         */
         public static final int ActionBar_titleTextStyle = 5;
         /** Attributes that can be used with a ActionBarLayout.
@@ -4631,12 +4629,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ActionMode_background com.alibaba.weex:background}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionMode_backgroundSplit com.alibaba.weex:backgroundSplit}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionMode_closeItemLayout com.alibaba.weex:closeItemLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionMode_height com.alibaba.weex:height}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionMode_subtitleTextStyle com.alibaba.weex:subtitleTextStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActionMode_titleTextStyle com.alibaba.weex:titleTextStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionMode_background com.rzico.weex:background}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionMode_backgroundSplit com.rzico.weex:backgroundSplit}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionMode_closeItemLayout com.rzico.weex:closeItemLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionMode_height com.rzico.weex:height}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionMode_subtitleTextStyle com.rzico.weex:subtitleTextStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActionMode_titleTextStyle com.rzico.weex:titleTextStyle}</code></td><td></td></tr>
            </table>
            @see #ActionMode_background
            @see #ActionMode_backgroundSplit
@@ -4650,17 +4648,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f01000e, 0x7f01001e
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#background}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#background}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:background
+          @attr name com.rzico.weex:background
         */
         public static final int ActionMode_background = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundSplit}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundSplit}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -4668,21 +4666,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:backgroundSplit
+          @attr name com.rzico.weex:backgroundSplit
         */
         public static final int ActionMode_backgroundSplit = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#closeItemLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#closeItemLayout}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:closeItemLayout
+          @attr name com.rzico.weex:closeItemLayout
         */
         public static final int ActionMode_closeItemLayout = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#height}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#height}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
@@ -4694,27 +4692,27 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:height
+          @attr name com.rzico.weex:height
         */
         public static final int ActionMode_height = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#subtitleTextStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#subtitleTextStyle}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:subtitleTextStyle
+          @attr name com.rzico.weex:subtitleTextStyle
         */
         public static final int ActionMode_subtitleTextStyle = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleTextStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleTextStyle}
           attribute's value can be found in the {@link #ActionMode} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:titleTextStyle
+          @attr name com.rzico.weex:titleTextStyle
         */
         public static final int ActionMode_titleTextStyle = 1;
         /** Attributes that can be used with a ActivityChooserView.
@@ -4723,8 +4721,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ActivityChooserView_expandActivityOverflowButtonDrawable com.alibaba.weex:expandActivityOverflowButtonDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #ActivityChooserView_initialActivityCount com.alibaba.weex:initialActivityCount}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActivityChooserView_expandActivityOverflowButtonDrawable com.rzico.weex:expandActivityOverflowButtonDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #ActivityChooserView_initialActivityCount com.rzico.weex:initialActivityCount}</code></td><td></td></tr>
            </table>
            @see #ActivityChooserView_expandActivityOverflowButtonDrawable
            @see #ActivityChooserView_initialActivityCount
@@ -4733,17 +4731,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f01001f, 0x7f010020
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandActivityOverflowButtonDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandActivityOverflowButtonDrawable}
           attribute's value can be found in the {@link #ActivityChooserView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:expandActivityOverflowButtonDrawable
+          @attr name com.rzico.weex:expandActivityOverflowButtonDrawable
         */
         public static final int ActivityChooserView_expandActivityOverflowButtonDrawable = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#initialActivityCount}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#initialActivityCount}
           attribute's value can be found in the {@link #ActivityChooserView} array.
 
 
@@ -4753,7 +4751,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:initialActivityCount
+          @attr name com.rzico.weex:initialActivityCount
         */
         public static final int ActivityChooserView_initialActivityCount = 0;
         /** Attributes that can be used with a AlertDialog.
@@ -4763,12 +4761,12 @@ containing a value of this type.
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #AlertDialog_android_layout android:layout}</code></td><td></td></tr>
-           <tr><td><code>{@link #AlertDialog_buttonPanelSideLayout com.alibaba.weex:buttonPanelSideLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #AlertDialog_listItemLayout com.alibaba.weex:listItemLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #AlertDialog_listLayout com.alibaba.weex:listLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #AlertDialog_multiChoiceItemLayout com.alibaba.weex:multiChoiceItemLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #AlertDialog_showTitle com.alibaba.weex:showTitle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AlertDialog_singleChoiceItemLayout com.alibaba.weex:singleChoiceItemLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #AlertDialog_buttonPanelSideLayout com.rzico.weex:buttonPanelSideLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #AlertDialog_listItemLayout com.rzico.weex:listItemLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #AlertDialog_listLayout com.rzico.weex:listLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #AlertDialog_multiChoiceItemLayout com.rzico.weex:multiChoiceItemLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #AlertDialog_showTitle com.rzico.weex:showTitle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AlertDialog_singleChoiceItemLayout com.rzico.weex:singleChoiceItemLayout}</code></td><td></td></tr>
            </table>
            @see #AlertDialog_android_layout
            @see #AlertDialog_buttonPanelSideLayout
@@ -4789,47 +4787,47 @@ containing a value of this type.
         */
         public static final int AlertDialog_android_layout = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonPanelSideLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonPanelSideLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonPanelSideLayout
+          @attr name com.rzico.weex:buttonPanelSideLayout
         */
         public static final int AlertDialog_buttonPanelSideLayout = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listItemLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listItemLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:listItemLayout
+          @attr name com.rzico.weex:listItemLayout
         */
         public static final int AlertDialog_listItemLayout = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:listLayout
+          @attr name com.rzico.weex:listLayout
         */
         public static final int AlertDialog_listLayout = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#multiChoiceItemLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#multiChoiceItemLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:multiChoiceItemLayout
+          @attr name com.rzico.weex:multiChoiceItemLayout
         */
         public static final int AlertDialog_multiChoiceItemLayout = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#showTitle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#showTitle}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
@@ -4839,17 +4837,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:showTitle
+          @attr name com.rzico.weex:showTitle
         */
         public static final int AlertDialog_showTitle = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#singleChoiceItemLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#singleChoiceItemLayout}
           attribute's value can be found in the {@link #AlertDialog} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:singleChoiceItemLayout
+          @attr name com.rzico.weex:singleChoiceItemLayout
         */
         public static final int AlertDialog_singleChoiceItemLayout = 4;
         /** Attributes that can be used with a AppBarLayout.
@@ -4859,8 +4857,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #AppBarLayout_android_background android:background}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppBarLayout_elevation com.alibaba.weex:elevation}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppBarLayout_expanded com.alibaba.weex:expanded}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppBarLayout_elevation com.rzico.weex:elevation}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppBarLayout_expanded com.rzico.weex:expanded}</code></td><td></td></tr>
            </table>
            @see #AppBarLayout_android_background
            @see #AppBarLayout_elevation
@@ -4876,7 +4874,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppBarLayout_android_background = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#elevation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#elevation}
           attribute's value can be found in the {@link #AppBarLayout} array.
 
 
@@ -4888,11 +4886,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:elevation
+          @attr name com.rzico.weex:elevation
         */
         public static final int AppBarLayout_elevation = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expanded}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expanded}
           attribute's value can be found in the {@link #AppBarLayout} array.
 
 
@@ -4902,7 +4900,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:expanded
+          @attr name com.rzico.weex:expanded
         */
         public static final int AppBarLayout_expanded = 2;
         /** Attributes that can be used with a AppBarLayoutStates.
@@ -4911,8 +4909,8 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #AppBarLayoutStates_state_collapsed com.alibaba.weex:state_collapsed}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppBarLayoutStates_state_collapsible com.alibaba.weex:state_collapsible}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppBarLayoutStates_state_collapsed com.rzico.weex:state_collapsed}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppBarLayoutStates_state_collapsible com.rzico.weex:state_collapsible}</code></td><td></td></tr>
            </table>
            @see #AppBarLayoutStates_state_collapsed
            @see #AppBarLayoutStates_state_collapsible
@@ -4921,7 +4919,7 @@ containing a value of this type.
             0x7f010028, 0x7f010029
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#state_collapsed}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#state_collapsed}
           attribute's value can be found in the {@link #AppBarLayoutStates} array.
 
 
@@ -4931,11 +4929,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:state_collapsed
+          @attr name com.rzico.weex:state_collapsed
         */
         public static final int AppBarLayoutStates_state_collapsed = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#state_collapsible}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#state_collapsible}
           attribute's value can be found in the {@link #AppBarLayoutStates} array.
 
 
@@ -4945,7 +4943,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:state_collapsible
+          @attr name com.rzico.weex:state_collapsible
         */
         public static final int AppBarLayoutStates_state_collapsible = 1;
         /** Attributes that can be used with a AppBarLayout_Layout.
@@ -4954,8 +4952,8 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #AppBarLayout_Layout_layout_scrollFlags com.alibaba.weex:layout_scrollFlags}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppBarLayout_Layout_layout_scrollInterpolator com.alibaba.weex:layout_scrollInterpolator}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppBarLayout_Layout_layout_scrollFlags com.rzico.weex:layout_scrollFlags}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppBarLayout_Layout_layout_scrollInterpolator com.rzico.weex:layout_scrollInterpolator}</code></td><td></td></tr>
            </table>
            @see #AppBarLayout_Layout_layout_scrollFlags
            @see #AppBarLayout_Layout_layout_scrollInterpolator
@@ -4964,7 +4962,7 @@ containing a value of this type.
             0x7f01002a, 0x7f01002b
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_scrollFlags}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_scrollFlags}
           attribute's value can be found in the {@link #AppBarLayout_Layout} array.
 
 
@@ -4980,17 +4978,17 @@ containing a value of this type.
 <tr><td><code>enterAlwaysCollapsed</code></td><td>0x8</td><td></td></tr>
 <tr><td><code>snap</code></td><td>0x10</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:layout_scrollFlags
+          @attr name com.rzico.weex:layout_scrollFlags
         */
         public static final int AppBarLayout_Layout_layout_scrollFlags = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_scrollInterpolator}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_scrollInterpolator}
           attribute's value can be found in the {@link #AppBarLayout_Layout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:layout_scrollInterpolator
+          @attr name com.rzico.weex:layout_scrollInterpolator
         */
         public static final int AppBarLayout_Layout_layout_scrollInterpolator = 1;
         /** Attributes that can be used with a AppCompatImageView.
@@ -5000,7 +4998,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #AppCompatImageView_android_src android:src}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatImageView_srcCompat com.alibaba.weex:srcCompat}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatImageView_srcCompat com.rzico.weex:srcCompat}</code></td><td></td></tr>
            </table>
            @see #AppCompatImageView_android_src
            @see #AppCompatImageView_srcCompat
@@ -5015,13 +5013,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatImageView_android_src = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#srcCompat}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#srcCompat}
           attribute's value can be found in the {@link #AppCompatImageView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:srcCompat
+          @attr name com.rzico.weex:srcCompat
         */
         public static final int AppCompatImageView_srcCompat = 1;
         /** Attributes that can be used with a AppCompatSeekBar.
@@ -5031,9 +5029,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #AppCompatSeekBar_android_thumb android:thumb}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatSeekBar_tickMark com.alibaba.weex:tickMark}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatSeekBar_tickMarkTint com.alibaba.weex:tickMarkTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatSeekBar_tickMarkTintMode com.alibaba.weex:tickMarkTintMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatSeekBar_tickMark com.rzico.weex:tickMark}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatSeekBar_tickMarkTint com.rzico.weex:tickMarkTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatSeekBar_tickMarkTintMode com.rzico.weex:tickMarkTintMode}</code></td><td></td></tr>
            </table>
            @see #AppCompatSeekBar_android_thumb
            @see #AppCompatSeekBar_tickMark
@@ -5050,17 +5048,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatSeekBar_android_thumb = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tickMark}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tickMark}
           attribute's value can be found in the {@link #AppCompatSeekBar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:tickMark
+          @attr name com.rzico.weex:tickMark
         */
         public static final int AppCompatSeekBar_tickMark = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tickMarkTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tickMarkTint}
           attribute's value can be found in the {@link #AppCompatSeekBar} array.
 
 
@@ -5071,11 +5069,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tickMarkTint
+          @attr name com.rzico.weex:tickMarkTint
         */
         public static final int AppCompatSeekBar_tickMarkTint = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tickMarkTintMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tickMarkTintMode}
           attribute's value can be found in the {@link #AppCompatSeekBar} array.
 
 
@@ -5092,7 +5090,7 @@ containing a value of this type.
 <tr><td><code>screen</code></td><td>15</td><td></td></tr>
 <tr><td><code>add</code></td><td>16</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:tickMarkTintMode
+          @attr name com.rzico.weex:tickMarkTintMode
         */
         public static final int AppCompatSeekBar_tickMarkTintMode = 3;
         /** Attributes that can be used with a AppCompatTextHelper.
@@ -5170,7 +5168,7 @@ containing a value of this type.
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #AppCompatTextView_android_textAppearance android:textAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTextView_textAllCaps com.alibaba.weex:textAllCaps}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTextView_textAllCaps com.rzico.weex:textAllCaps}</code></td><td></td></tr>
            </table>
            @see #AppCompatTextView_android_textAppearance
            @see #AppCompatTextView_textAllCaps
@@ -5185,14 +5183,14 @@ containing a value of this type.
         */
         public static final int AppCompatTextView_android_textAppearance = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAllCaps}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAllCaps}
           attribute's value can be found in the {@link #AppCompatTextView} array.
 
 
           <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-          @attr name com.alibaba.weex:textAllCaps
+          @attr name com.rzico.weex:textAllCaps
         */
         public static final int AppCompatTextView_textAllCaps = 1;
         /** Attributes that can be used with a AppCompatTheme.
@@ -5201,121 +5199,121 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarDivider com.alibaba.weex:actionBarDivider}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarItemBackground com.alibaba.weex:actionBarItemBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarPopupTheme com.alibaba.weex:actionBarPopupTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarSize com.alibaba.weex:actionBarSize}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarSplitStyle com.alibaba.weex:actionBarSplitStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarStyle com.alibaba.weex:actionBarStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarTabBarStyle com.alibaba.weex:actionBarTabBarStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarTabStyle com.alibaba.weex:actionBarTabStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarTabTextStyle com.alibaba.weex:actionBarTabTextStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarTheme com.alibaba.weex:actionBarTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionBarWidgetTheme com.alibaba.weex:actionBarWidgetTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionButtonStyle com.alibaba.weex:actionButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionDropDownStyle com.alibaba.weex:actionDropDownStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionMenuTextAppearance com.alibaba.weex:actionMenuTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionMenuTextColor com.alibaba.weex:actionMenuTextColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeBackground com.alibaba.weex:actionModeBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeCloseButtonStyle com.alibaba.weex:actionModeCloseButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeCloseDrawable com.alibaba.weex:actionModeCloseDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeCopyDrawable com.alibaba.weex:actionModeCopyDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeCutDrawable com.alibaba.weex:actionModeCutDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeFindDrawable com.alibaba.weex:actionModeFindDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModePasteDrawable com.alibaba.weex:actionModePasteDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModePopupWindowStyle com.alibaba.weex:actionModePopupWindowStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeSelectAllDrawable com.alibaba.weex:actionModeSelectAllDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeShareDrawable com.alibaba.weex:actionModeShareDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeSplitBackground com.alibaba.weex:actionModeSplitBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeStyle com.alibaba.weex:actionModeStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionModeWebSearchDrawable com.alibaba.weex:actionModeWebSearchDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionOverflowButtonStyle com.alibaba.weex:actionOverflowButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_actionOverflowMenuStyle com.alibaba.weex:actionOverflowMenuStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_activityChooserViewStyle com.alibaba.weex:activityChooserViewStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_alertDialogButtonGroupStyle com.alibaba.weex:alertDialogButtonGroupStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_alertDialogCenterButtons com.alibaba.weex:alertDialogCenterButtons}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_alertDialogStyle com.alibaba.weex:alertDialogStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_alertDialogTheme com.alibaba.weex:alertDialogTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarDivider com.rzico.weex:actionBarDivider}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarItemBackground com.rzico.weex:actionBarItemBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarPopupTheme com.rzico.weex:actionBarPopupTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarSize com.rzico.weex:actionBarSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarSplitStyle com.rzico.weex:actionBarSplitStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarStyle com.rzico.weex:actionBarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarTabBarStyle com.rzico.weex:actionBarTabBarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarTabStyle com.rzico.weex:actionBarTabStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarTabTextStyle com.rzico.weex:actionBarTabTextStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarTheme com.rzico.weex:actionBarTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionBarWidgetTheme com.rzico.weex:actionBarWidgetTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionButtonStyle com.rzico.weex:actionButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionDropDownStyle com.rzico.weex:actionDropDownStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionMenuTextAppearance com.rzico.weex:actionMenuTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionMenuTextColor com.rzico.weex:actionMenuTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeBackground com.rzico.weex:actionModeBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeCloseButtonStyle com.rzico.weex:actionModeCloseButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeCloseDrawable com.rzico.weex:actionModeCloseDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeCopyDrawable com.rzico.weex:actionModeCopyDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeCutDrawable com.rzico.weex:actionModeCutDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeFindDrawable com.rzico.weex:actionModeFindDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModePasteDrawable com.rzico.weex:actionModePasteDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModePopupWindowStyle com.rzico.weex:actionModePopupWindowStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeSelectAllDrawable com.rzico.weex:actionModeSelectAllDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeShareDrawable com.rzico.weex:actionModeShareDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeSplitBackground com.rzico.weex:actionModeSplitBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeStyle com.rzico.weex:actionModeStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionModeWebSearchDrawable com.rzico.weex:actionModeWebSearchDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionOverflowButtonStyle com.rzico.weex:actionOverflowButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_actionOverflowMenuStyle com.rzico.weex:actionOverflowMenuStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_activityChooserViewStyle com.rzico.weex:activityChooserViewStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_alertDialogButtonGroupStyle com.rzico.weex:alertDialogButtonGroupStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_alertDialogCenterButtons com.rzico.weex:alertDialogCenterButtons}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_alertDialogStyle com.rzico.weex:alertDialogStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_alertDialogTheme com.rzico.weex:alertDialogTheme}</code></td><td></td></tr>
            <tr><td><code>{@link #AppCompatTheme_android_windowAnimationStyle android:windowAnimationStyle}</code></td><td></td></tr>
            <tr><td><code>{@link #AppCompatTheme_android_windowIsFloating android:windowIsFloating}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_autoCompleteTextViewStyle com.alibaba.weex:autoCompleteTextViewStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_borderlessButtonStyle com.alibaba.weex:borderlessButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_buttonBarButtonStyle com.alibaba.weex:buttonBarButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_buttonBarNegativeButtonStyle com.alibaba.weex:buttonBarNegativeButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_buttonBarNeutralButtonStyle com.alibaba.weex:buttonBarNeutralButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_buttonBarPositiveButtonStyle com.alibaba.weex:buttonBarPositiveButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_buttonBarStyle com.alibaba.weex:buttonBarStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_buttonStyle com.alibaba.weex:buttonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_buttonStyleSmall com.alibaba.weex:buttonStyleSmall}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_checkboxStyle com.alibaba.weex:checkboxStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_checkedTextViewStyle com.alibaba.weex:checkedTextViewStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorAccent com.alibaba.weex:colorAccent}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorBackgroundFloating com.alibaba.weex:colorBackgroundFloating}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorButtonNormal com.alibaba.weex:colorButtonNormal}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorControlActivated com.alibaba.weex:colorControlActivated}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorControlHighlight com.alibaba.weex:colorControlHighlight}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorControlNormal com.alibaba.weex:colorControlNormal}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorPrimary com.alibaba.weex:colorPrimary}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorPrimaryDark com.alibaba.weex:colorPrimaryDark}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_colorSwitchThumbNormal com.alibaba.weex:colorSwitchThumbNormal}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_controlBackground com.alibaba.weex:controlBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_dialogPreferredPadding com.alibaba.weex:dialogPreferredPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_dialogTheme com.alibaba.weex:dialogTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_dividerHorizontal com.alibaba.weex:dividerHorizontal}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_dividerVertical com.alibaba.weex:dividerVertical}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_dropDownListViewStyle com.alibaba.weex:dropDownListViewStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_dropdownListPreferredItemHeight com.alibaba.weex:dropdownListPreferredItemHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_editTextBackground com.alibaba.weex:editTextBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_editTextColor com.alibaba.weex:editTextColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_editTextStyle com.alibaba.weex:editTextStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_homeAsUpIndicator com.alibaba.weex:homeAsUpIndicator}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_imageButtonStyle com.alibaba.weex:imageButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listChoiceBackgroundIndicator com.alibaba.weex:listChoiceBackgroundIndicator}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listDividerAlertDialog com.alibaba.weex:listDividerAlertDialog}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listMenuViewStyle com.alibaba.weex:listMenuViewStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listPopupWindowStyle com.alibaba.weex:listPopupWindowStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listPreferredItemHeight com.alibaba.weex:listPreferredItemHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listPreferredItemHeightLarge com.alibaba.weex:listPreferredItemHeightLarge}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listPreferredItemHeightSmall com.alibaba.weex:listPreferredItemHeightSmall}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listPreferredItemPaddingLeft com.alibaba.weex:listPreferredItemPaddingLeft}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_listPreferredItemPaddingRight com.alibaba.weex:listPreferredItemPaddingRight}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_panelBackground com.alibaba.weex:panelBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_panelMenuListTheme com.alibaba.weex:panelMenuListTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_panelMenuListWidth com.alibaba.weex:panelMenuListWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_popupMenuStyle com.alibaba.weex:popupMenuStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_popupWindowStyle com.alibaba.weex:popupWindowStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_radioButtonStyle com.alibaba.weex:radioButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_ratingBarStyle com.alibaba.weex:ratingBarStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_ratingBarStyleIndicator com.alibaba.weex:ratingBarStyleIndicator}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_ratingBarStyleSmall com.alibaba.weex:ratingBarStyleSmall}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_searchViewStyle com.alibaba.weex:searchViewStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_seekBarStyle com.alibaba.weex:seekBarStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_selectableItemBackground com.alibaba.weex:selectableItemBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_selectableItemBackgroundBorderless com.alibaba.weex:selectableItemBackgroundBorderless}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_spinnerDropDownItemStyle com.alibaba.weex:spinnerDropDownItemStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_spinnerStyle com.alibaba.weex:spinnerStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_switchStyle com.alibaba.weex:switchStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textAppearanceLargePopupMenu com.alibaba.weex:textAppearanceLargePopupMenu}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textAppearanceListItem com.alibaba.weex:textAppearanceListItem}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textAppearanceListItemSmall com.alibaba.weex:textAppearanceListItemSmall}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textAppearancePopupMenuHeader com.alibaba.weex:textAppearancePopupMenuHeader}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textAppearanceSearchResultSubtitle com.alibaba.weex:textAppearanceSearchResultSubtitle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textAppearanceSearchResultTitle com.alibaba.weex:textAppearanceSearchResultTitle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textAppearanceSmallPopupMenu com.alibaba.weex:textAppearanceSmallPopupMenu}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textColorAlertDialogListItem com.alibaba.weex:textColorAlertDialogListItem}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_textColorSearchUrl com.alibaba.weex:textColorSearchUrl}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_toolbarNavigationButtonStyle com.alibaba.weex:toolbarNavigationButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_toolbarStyle com.alibaba.weex:toolbarStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowActionBar com.alibaba.weex:windowActionBar}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowActionBarOverlay com.alibaba.weex:windowActionBarOverlay}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowActionModeOverlay com.alibaba.weex:windowActionModeOverlay}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowFixedHeightMajor com.alibaba.weex:windowFixedHeightMajor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowFixedHeightMinor com.alibaba.weex:windowFixedHeightMinor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowFixedWidthMajor com.alibaba.weex:windowFixedWidthMajor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowFixedWidthMinor com.alibaba.weex:windowFixedWidthMinor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowMinWidthMajor com.alibaba.weex:windowMinWidthMajor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowMinWidthMinor com.alibaba.weex:windowMinWidthMinor}</code></td><td></td></tr>
-           <tr><td><code>{@link #AppCompatTheme_windowNoTitle com.alibaba.weex:windowNoTitle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_autoCompleteTextViewStyle com.rzico.weex:autoCompleteTextViewStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_borderlessButtonStyle com.rzico.weex:borderlessButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_buttonBarButtonStyle com.rzico.weex:buttonBarButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_buttonBarNegativeButtonStyle com.rzico.weex:buttonBarNegativeButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_buttonBarNeutralButtonStyle com.rzico.weex:buttonBarNeutralButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_buttonBarPositiveButtonStyle com.rzico.weex:buttonBarPositiveButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_buttonBarStyle com.rzico.weex:buttonBarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_buttonStyle com.rzico.weex:buttonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_buttonStyleSmall com.rzico.weex:buttonStyleSmall}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_checkboxStyle com.rzico.weex:checkboxStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_checkedTextViewStyle com.rzico.weex:checkedTextViewStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorAccent com.rzico.weex:colorAccent}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorBackgroundFloating com.rzico.weex:colorBackgroundFloating}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorButtonNormal com.rzico.weex:colorButtonNormal}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorControlActivated com.rzico.weex:colorControlActivated}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorControlHighlight com.rzico.weex:colorControlHighlight}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorControlNormal com.rzico.weex:colorControlNormal}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorPrimary com.rzico.weex:colorPrimary}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorPrimaryDark com.rzico.weex:colorPrimaryDark}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_colorSwitchThumbNormal com.rzico.weex:colorSwitchThumbNormal}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_controlBackground com.rzico.weex:controlBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_dialogPreferredPadding com.rzico.weex:dialogPreferredPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_dialogTheme com.rzico.weex:dialogTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_dividerHorizontal com.rzico.weex:dividerHorizontal}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_dividerVertical com.rzico.weex:dividerVertical}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_dropDownListViewStyle com.rzico.weex:dropDownListViewStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_dropdownListPreferredItemHeight com.rzico.weex:dropdownListPreferredItemHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_editTextBackground com.rzico.weex:editTextBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_editTextColor com.rzico.weex:editTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_editTextStyle com.rzico.weex:editTextStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_homeAsUpIndicator com.rzico.weex:homeAsUpIndicator}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_imageButtonStyle com.rzico.weex:imageButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listChoiceBackgroundIndicator com.rzico.weex:listChoiceBackgroundIndicator}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listDividerAlertDialog com.rzico.weex:listDividerAlertDialog}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listMenuViewStyle com.rzico.weex:listMenuViewStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listPopupWindowStyle com.rzico.weex:listPopupWindowStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listPreferredItemHeight com.rzico.weex:listPreferredItemHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listPreferredItemHeightLarge com.rzico.weex:listPreferredItemHeightLarge}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listPreferredItemHeightSmall com.rzico.weex:listPreferredItemHeightSmall}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listPreferredItemPaddingLeft com.rzico.weex:listPreferredItemPaddingLeft}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_listPreferredItemPaddingRight com.rzico.weex:listPreferredItemPaddingRight}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_panelBackground com.rzico.weex:panelBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_panelMenuListTheme com.rzico.weex:panelMenuListTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_panelMenuListWidth com.rzico.weex:panelMenuListWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_popupMenuStyle com.rzico.weex:popupMenuStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_popupWindowStyle com.rzico.weex:popupWindowStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_radioButtonStyle com.rzico.weex:radioButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_ratingBarStyle com.rzico.weex:ratingBarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_ratingBarStyleIndicator com.rzico.weex:ratingBarStyleIndicator}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_ratingBarStyleSmall com.rzico.weex:ratingBarStyleSmall}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_searchViewStyle com.rzico.weex:searchViewStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_seekBarStyle com.rzico.weex:seekBarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_selectableItemBackground com.rzico.weex:selectableItemBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_selectableItemBackgroundBorderless com.rzico.weex:selectableItemBackgroundBorderless}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_spinnerDropDownItemStyle com.rzico.weex:spinnerDropDownItemStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_spinnerStyle com.rzico.weex:spinnerStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_switchStyle com.rzico.weex:switchStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textAppearanceLargePopupMenu com.rzico.weex:textAppearanceLargePopupMenu}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textAppearanceListItem com.rzico.weex:textAppearanceListItem}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textAppearanceListItemSmall com.rzico.weex:textAppearanceListItemSmall}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textAppearancePopupMenuHeader com.rzico.weex:textAppearancePopupMenuHeader}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textAppearanceSearchResultSubtitle com.rzico.weex:textAppearanceSearchResultSubtitle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textAppearanceSearchResultTitle com.rzico.weex:textAppearanceSearchResultTitle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textAppearanceSmallPopupMenu com.rzico.weex:textAppearanceSmallPopupMenu}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textColorAlertDialogListItem com.rzico.weex:textColorAlertDialogListItem}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_textColorSearchUrl com.rzico.weex:textColorSearchUrl}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_toolbarNavigationButtonStyle com.rzico.weex:toolbarNavigationButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_toolbarStyle com.rzico.weex:toolbarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowActionBar com.rzico.weex:windowActionBar}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowActionBarOverlay com.rzico.weex:windowActionBarOverlay}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowActionModeOverlay com.rzico.weex:windowActionModeOverlay}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowFixedHeightMajor com.rzico.weex:windowFixedHeightMajor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowFixedHeightMinor com.rzico.weex:windowFixedHeightMinor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowFixedWidthMajor com.rzico.weex:windowFixedWidthMajor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowFixedWidthMinor com.rzico.weex:windowFixedWidthMinor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowMinWidthMajor com.rzico.weex:windowMinWidthMajor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowMinWidthMinor com.rzico.weex:windowMinWidthMinor}</code></td><td></td></tr>
+           <tr><td><code>{@link #AppCompatTheme_windowNoTitle com.rzico.weex:windowNoTitle}</code></td><td></td></tr>
            </table>
            @see #AppCompatTheme_actionBarDivider
            @see #AppCompatTheme_actionBarItemBackground
@@ -5465,37 +5463,37 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f01009f, 0x7f0100a0, 0x7f0100a1
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarDivider}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarDivider}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarDivider
+          @attr name com.rzico.weex:actionBarDivider
         */
         public static final int AppCompatTheme_actionBarDivider = 23;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarItemBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarItemBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarItemBackground
+          @attr name com.rzico.weex:actionBarItemBackground
         */
         public static final int AppCompatTheme_actionBarItemBackground = 24;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarPopupTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarPopupTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarPopupTheme
+          @attr name com.rzico.weex:actionBarPopupTheme
         */
         public static final int AppCompatTheme_actionBarPopupTheme = 17;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarSize}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarSize}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5515,111 +5513,111 @@ containing a value of this type.
 <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
 <tr><td><code>wrap_content</code></td><td>0</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:actionBarSize
+          @attr name com.rzico.weex:actionBarSize
         */
         public static final int AppCompatTheme_actionBarSize = 22;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarSplitStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarSplitStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarSplitStyle
+          @attr name com.rzico.weex:actionBarSplitStyle
         */
         public static final int AppCompatTheme_actionBarSplitStyle = 19;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarStyle
+          @attr name com.rzico.weex:actionBarStyle
         */
         public static final int AppCompatTheme_actionBarStyle = 18;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarTabBarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarTabBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarTabBarStyle
+          @attr name com.rzico.weex:actionBarTabBarStyle
         */
         public static final int AppCompatTheme_actionBarTabBarStyle = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarTabStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarTabStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarTabStyle
+          @attr name com.rzico.weex:actionBarTabStyle
         */
         public static final int AppCompatTheme_actionBarTabStyle = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarTabTextStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarTabTextStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarTabTextStyle
+          @attr name com.rzico.weex:actionBarTabTextStyle
         */
         public static final int AppCompatTheme_actionBarTabTextStyle = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarTheme
+          @attr name com.rzico.weex:actionBarTheme
         */
         public static final int AppCompatTheme_actionBarTheme = 20;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionBarWidgetTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionBarWidgetTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionBarWidgetTheme
+          @attr name com.rzico.weex:actionBarWidgetTheme
         */
         public static final int AppCompatTheme_actionBarWidgetTheme = 21;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionButtonStyle
+          @attr name com.rzico.weex:actionButtonStyle
         */
         public static final int AppCompatTheme_actionButtonStyle = 50;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionDropDownStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionDropDownStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionDropDownStyle
+          @attr name com.rzico.weex:actionDropDownStyle
         */
         public static final int AppCompatTheme_actionDropDownStyle = 46;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionMenuTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionMenuTextAppearance}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionMenuTextAppearance
+          @attr name com.rzico.weex:actionMenuTextAppearance
         */
         public static final int AppCompatTheme_actionMenuTextAppearance = 25;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionMenuTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionMenuTextColor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5627,181 +5625,181 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:actionMenuTextColor
+          @attr name com.rzico.weex:actionMenuTextColor
         */
         public static final int AppCompatTheme_actionMenuTextColor = 26;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeBackground
+          @attr name com.rzico.weex:actionModeBackground
         */
         public static final int AppCompatTheme_actionModeBackground = 29;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeCloseButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeCloseButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeCloseButtonStyle
+          @attr name com.rzico.weex:actionModeCloseButtonStyle
         */
         public static final int AppCompatTheme_actionModeCloseButtonStyle = 28;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeCloseDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeCloseDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeCloseDrawable
+          @attr name com.rzico.weex:actionModeCloseDrawable
         */
         public static final int AppCompatTheme_actionModeCloseDrawable = 31;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeCopyDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeCopyDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeCopyDrawable
+          @attr name com.rzico.weex:actionModeCopyDrawable
         */
         public static final int AppCompatTheme_actionModeCopyDrawable = 33;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeCutDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeCutDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeCutDrawable
+          @attr name com.rzico.weex:actionModeCutDrawable
         */
         public static final int AppCompatTheme_actionModeCutDrawable = 32;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeFindDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeFindDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeFindDrawable
+          @attr name com.rzico.weex:actionModeFindDrawable
         */
         public static final int AppCompatTheme_actionModeFindDrawable = 37;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModePasteDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModePasteDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModePasteDrawable
+          @attr name com.rzico.weex:actionModePasteDrawable
         */
         public static final int AppCompatTheme_actionModePasteDrawable = 34;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModePopupWindowStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModePopupWindowStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModePopupWindowStyle
+          @attr name com.rzico.weex:actionModePopupWindowStyle
         */
         public static final int AppCompatTheme_actionModePopupWindowStyle = 39;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeSelectAllDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeSelectAllDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeSelectAllDrawable
+          @attr name com.rzico.weex:actionModeSelectAllDrawable
         */
         public static final int AppCompatTheme_actionModeSelectAllDrawable = 35;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeShareDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeShareDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeShareDrawable
+          @attr name com.rzico.weex:actionModeShareDrawable
         */
         public static final int AppCompatTheme_actionModeShareDrawable = 36;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeSplitBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeSplitBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeSplitBackground
+          @attr name com.rzico.weex:actionModeSplitBackground
         */
         public static final int AppCompatTheme_actionModeSplitBackground = 30;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeStyle
+          @attr name com.rzico.weex:actionModeStyle
         */
         public static final int AppCompatTheme_actionModeStyle = 27;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionModeWebSearchDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionModeWebSearchDrawable}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionModeWebSearchDrawable
+          @attr name com.rzico.weex:actionModeWebSearchDrawable
         */
         public static final int AppCompatTheme_actionModeWebSearchDrawable = 38;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionOverflowButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionOverflowButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionOverflowButtonStyle
+          @attr name com.rzico.weex:actionOverflowButtonStyle
         */
         public static final int AppCompatTheme_actionOverflowButtonStyle = 15;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionOverflowMenuStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionOverflowMenuStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionOverflowMenuStyle
+          @attr name com.rzico.weex:actionOverflowMenuStyle
         */
         public static final int AppCompatTheme_actionOverflowMenuStyle = 16;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#activityChooserViewStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#activityChooserViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:activityChooserViewStyle
+          @attr name com.rzico.weex:activityChooserViewStyle
         */
         public static final int AppCompatTheme_activityChooserViewStyle = 58;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#alertDialogButtonGroupStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#alertDialogButtonGroupStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:alertDialogButtonGroupStyle
+          @attr name com.rzico.weex:alertDialogButtonGroupStyle
         */
         public static final int AppCompatTheme_alertDialogButtonGroupStyle = 94;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#alertDialogCenterButtons}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#alertDialogCenterButtons}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5811,27 +5809,27 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:alertDialogCenterButtons
+          @attr name com.rzico.weex:alertDialogCenterButtons
         */
         public static final int AppCompatTheme_alertDialogCenterButtons = 95;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#alertDialogStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#alertDialogStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:alertDialogStyle
+          @attr name com.rzico.weex:alertDialogStyle
         */
         public static final int AppCompatTheme_alertDialogStyle = 93;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#alertDialogTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#alertDialogTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:alertDialogTheme
+          @attr name com.rzico.weex:alertDialogTheme
         */
         public static final int AppCompatTheme_alertDialogTheme = 96;
         /**
@@ -5847,117 +5845,117 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int AppCompatTheme_android_windowIsFloating = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#autoCompleteTextViewStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#autoCompleteTextViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:autoCompleteTextViewStyle
+          @attr name com.rzico.weex:autoCompleteTextViewStyle
         */
         public static final int AppCompatTheme_autoCompleteTextViewStyle = 101;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#borderlessButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#borderlessButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:borderlessButtonStyle
+          @attr name com.rzico.weex:borderlessButtonStyle
         */
         public static final int AppCompatTheme_borderlessButtonStyle = 55;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonBarButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonBarButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonBarButtonStyle
+          @attr name com.rzico.weex:buttonBarButtonStyle
         */
         public static final int AppCompatTheme_buttonBarButtonStyle = 52;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonBarNegativeButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonBarNegativeButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonBarNegativeButtonStyle
+          @attr name com.rzico.weex:buttonBarNegativeButtonStyle
         */
         public static final int AppCompatTheme_buttonBarNegativeButtonStyle = 99;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonBarNeutralButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonBarNeutralButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonBarNeutralButtonStyle
+          @attr name com.rzico.weex:buttonBarNeutralButtonStyle
         */
         public static final int AppCompatTheme_buttonBarNeutralButtonStyle = 100;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonBarPositiveButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonBarPositiveButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonBarPositiveButtonStyle
+          @attr name com.rzico.weex:buttonBarPositiveButtonStyle
         */
         public static final int AppCompatTheme_buttonBarPositiveButtonStyle = 98;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonBarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonBarStyle
+          @attr name com.rzico.weex:buttonBarStyle
         */
         public static final int AppCompatTheme_buttonBarStyle = 51;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonStyle
+          @attr name com.rzico.weex:buttonStyle
         */
         public static final int AppCompatTheme_buttonStyle = 102;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonStyleSmall}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonStyleSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:buttonStyleSmall
+          @attr name com.rzico.weex:buttonStyleSmall
         */
         public static final int AppCompatTheme_buttonStyleSmall = 103;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#checkboxStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#checkboxStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:checkboxStyle
+          @attr name com.rzico.weex:checkboxStyle
         */
         public static final int AppCompatTheme_checkboxStyle = 104;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#checkedTextViewStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#checkedTextViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:checkedTextViewStyle
+          @attr name com.rzico.weex:checkedTextViewStyle
         */
         public static final int AppCompatTheme_checkedTextViewStyle = 105;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorAccent}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorAccent}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5968,11 +5966,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorAccent
+          @attr name com.rzico.weex:colorAccent
         */
         public static final int AppCompatTheme_colorAccent = 85;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorBackgroundFloating}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorBackgroundFloating}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5983,11 +5981,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorBackgroundFloating
+          @attr name com.rzico.weex:colorBackgroundFloating
         */
         public static final int AppCompatTheme_colorBackgroundFloating = 92;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorButtonNormal}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorButtonNormal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -5998,11 +5996,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorButtonNormal
+          @attr name com.rzico.weex:colorButtonNormal
         */
         public static final int AppCompatTheme_colorButtonNormal = 89;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorControlActivated}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorControlActivated}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6013,11 +6011,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorControlActivated
+          @attr name com.rzico.weex:colorControlActivated
         */
         public static final int AppCompatTheme_colorControlActivated = 87;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorControlHighlight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorControlHighlight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6028,11 +6026,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorControlHighlight
+          @attr name com.rzico.weex:colorControlHighlight
         */
         public static final int AppCompatTheme_colorControlHighlight = 88;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorControlNormal}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorControlNormal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6043,11 +6041,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorControlNormal
+          @attr name com.rzico.weex:colorControlNormal
         */
         public static final int AppCompatTheme_colorControlNormal = 86;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorPrimary}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorPrimary}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6058,11 +6056,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorPrimary
+          @attr name com.rzico.weex:colorPrimary
         */
         public static final int AppCompatTheme_colorPrimary = 83;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorPrimaryDark}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorPrimaryDark}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6073,11 +6071,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorPrimaryDark
+          @attr name com.rzico.weex:colorPrimaryDark
         */
         public static final int AppCompatTheme_colorPrimaryDark = 84;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#colorSwitchThumbNormal}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#colorSwitchThumbNormal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6088,21 +6086,21 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:colorSwitchThumbNormal
+          @attr name com.rzico.weex:colorSwitchThumbNormal
         */
         public static final int AppCompatTheme_colorSwitchThumbNormal = 90;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#controlBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#controlBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:controlBackground
+          @attr name com.rzico.weex:controlBackground
         */
         public static final int AppCompatTheme_controlBackground = 91;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#dialogPreferredPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#dialogPreferredPadding}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6114,51 +6112,51 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:dialogPreferredPadding
+          @attr name com.rzico.weex:dialogPreferredPadding
         */
         public static final int AppCompatTheme_dialogPreferredPadding = 44;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#dialogTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#dialogTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:dialogTheme
+          @attr name com.rzico.weex:dialogTheme
         */
         public static final int AppCompatTheme_dialogTheme = 43;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#dividerHorizontal}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#dividerHorizontal}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:dividerHorizontal
+          @attr name com.rzico.weex:dividerHorizontal
         */
         public static final int AppCompatTheme_dividerHorizontal = 57;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#dividerVertical}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#dividerVertical}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:dividerVertical
+          @attr name com.rzico.weex:dividerVertical
         */
         public static final int AppCompatTheme_dividerVertical = 56;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#dropDownListViewStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#dropDownListViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:dropDownListViewStyle
+          @attr name com.rzico.weex:dropDownListViewStyle
         */
         public static final int AppCompatTheme_dropDownListViewStyle = 75;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#dropdownListPreferredItemHeight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#dropdownListPreferredItemHeight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6170,21 +6168,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:dropdownListPreferredItemHeight
+          @attr name com.rzico.weex:dropdownListPreferredItemHeight
         */
         public static final int AppCompatTheme_dropdownListPreferredItemHeight = 47;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#editTextBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#editTextBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:editTextBackground
+          @attr name com.rzico.weex:editTextBackground
         */
         public static final int AppCompatTheme_editTextBackground = 64;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#editTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#editTextColor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6192,81 +6190,81 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:editTextColor
+          @attr name com.rzico.weex:editTextColor
         */
         public static final int AppCompatTheme_editTextColor = 63;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#editTextStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#editTextStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:editTextStyle
+          @attr name com.rzico.weex:editTextStyle
         */
         public static final int AppCompatTheme_editTextStyle = 106;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#homeAsUpIndicator}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#homeAsUpIndicator}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:homeAsUpIndicator
+          @attr name com.rzico.weex:homeAsUpIndicator
         */
         public static final int AppCompatTheme_homeAsUpIndicator = 49;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#imageButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#imageButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:imageButtonStyle
+          @attr name com.rzico.weex:imageButtonStyle
         */
         public static final int AppCompatTheme_imageButtonStyle = 65;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listChoiceBackgroundIndicator}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listChoiceBackgroundIndicator}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:listChoiceBackgroundIndicator
+          @attr name com.rzico.weex:listChoiceBackgroundIndicator
         */
         public static final int AppCompatTheme_listChoiceBackgroundIndicator = 82;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listDividerAlertDialog}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listDividerAlertDialog}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:listDividerAlertDialog
+          @attr name com.rzico.weex:listDividerAlertDialog
         */
         public static final int AppCompatTheme_listDividerAlertDialog = 45;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listMenuViewStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listMenuViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:listMenuViewStyle
+          @attr name com.rzico.weex:listMenuViewStyle
         */
         public static final int AppCompatTheme_listMenuViewStyle = 114;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listPopupWindowStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listPopupWindowStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:listPopupWindowStyle
+          @attr name com.rzico.weex:listPopupWindowStyle
         */
         public static final int AppCompatTheme_listPopupWindowStyle = 76;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listPreferredItemHeight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listPreferredItemHeight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6278,11 +6276,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:listPreferredItemHeight
+          @attr name com.rzico.weex:listPreferredItemHeight
         */
         public static final int AppCompatTheme_listPreferredItemHeight = 70;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listPreferredItemHeightLarge}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listPreferredItemHeightLarge}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6294,11 +6292,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:listPreferredItemHeightLarge
+          @attr name com.rzico.weex:listPreferredItemHeightLarge
         */
         public static final int AppCompatTheme_listPreferredItemHeightLarge = 72;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listPreferredItemHeightSmall}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listPreferredItemHeightSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6310,11 +6308,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:listPreferredItemHeightSmall
+          @attr name com.rzico.weex:listPreferredItemHeightSmall
         */
         public static final int AppCompatTheme_listPreferredItemHeightSmall = 71;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listPreferredItemPaddingLeft}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listPreferredItemPaddingLeft}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6326,11 +6324,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:listPreferredItemPaddingLeft
+          @attr name com.rzico.weex:listPreferredItemPaddingLeft
         */
         public static final int AppCompatTheme_listPreferredItemPaddingLeft = 73;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#listPreferredItemPaddingRight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#listPreferredItemPaddingRight}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6342,31 +6340,31 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:listPreferredItemPaddingRight
+          @attr name com.rzico.weex:listPreferredItemPaddingRight
         */
         public static final int AppCompatTheme_listPreferredItemPaddingRight = 74;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#panelBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#panelBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:panelBackground
+          @attr name com.rzico.weex:panelBackground
         */
         public static final int AppCompatTheme_panelBackground = 79;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#panelMenuListTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#panelMenuListTheme}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:panelMenuListTheme
+          @attr name com.rzico.weex:panelMenuListTheme
         */
         public static final int AppCompatTheme_panelMenuListTheme = 81;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#panelMenuListWidth}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#panelMenuListWidth}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6378,211 +6376,211 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:panelMenuListWidth
+          @attr name com.rzico.weex:panelMenuListWidth
         */
         public static final int AppCompatTheme_panelMenuListWidth = 80;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#popupMenuStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#popupMenuStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:popupMenuStyle
+          @attr name com.rzico.weex:popupMenuStyle
         */
         public static final int AppCompatTheme_popupMenuStyle = 61;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#popupWindowStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#popupWindowStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:popupWindowStyle
+          @attr name com.rzico.weex:popupWindowStyle
         */
         public static final int AppCompatTheme_popupWindowStyle = 62;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#radioButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#radioButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:radioButtonStyle
+          @attr name com.rzico.weex:radioButtonStyle
         */
         public static final int AppCompatTheme_radioButtonStyle = 107;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#ratingBarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#ratingBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:ratingBarStyle
+          @attr name com.rzico.weex:ratingBarStyle
         */
         public static final int AppCompatTheme_ratingBarStyle = 108;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#ratingBarStyleIndicator}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#ratingBarStyleIndicator}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:ratingBarStyleIndicator
+          @attr name com.rzico.weex:ratingBarStyleIndicator
         */
         public static final int AppCompatTheme_ratingBarStyleIndicator = 109;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#ratingBarStyleSmall}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#ratingBarStyleSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:ratingBarStyleSmall
+          @attr name com.rzico.weex:ratingBarStyleSmall
         */
         public static final int AppCompatTheme_ratingBarStyleSmall = 110;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#searchViewStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#searchViewStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:searchViewStyle
+          @attr name com.rzico.weex:searchViewStyle
         */
         public static final int AppCompatTheme_searchViewStyle = 69;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#seekBarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#seekBarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:seekBarStyle
+          @attr name com.rzico.weex:seekBarStyle
         */
         public static final int AppCompatTheme_seekBarStyle = 111;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#selectableItemBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#selectableItemBackground}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:selectableItemBackground
+          @attr name com.rzico.weex:selectableItemBackground
         */
         public static final int AppCompatTheme_selectableItemBackground = 53;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#selectableItemBackgroundBorderless}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#selectableItemBackgroundBorderless}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:selectableItemBackgroundBorderless
+          @attr name com.rzico.weex:selectableItemBackgroundBorderless
         */
         public static final int AppCompatTheme_selectableItemBackgroundBorderless = 54;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#spinnerDropDownItemStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#spinnerDropDownItemStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:spinnerDropDownItemStyle
+          @attr name com.rzico.weex:spinnerDropDownItemStyle
         */
         public static final int AppCompatTheme_spinnerDropDownItemStyle = 48;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#spinnerStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#spinnerStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:spinnerStyle
+          @attr name com.rzico.weex:spinnerStyle
         */
         public static final int AppCompatTheme_spinnerStyle = 112;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#switchStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#switchStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:switchStyle
+          @attr name com.rzico.weex:switchStyle
         */
         public static final int AppCompatTheme_switchStyle = 113;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAppearanceLargePopupMenu}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAppearanceLargePopupMenu}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:textAppearanceLargePopupMenu
+          @attr name com.rzico.weex:textAppearanceLargePopupMenu
         */
         public static final int AppCompatTheme_textAppearanceLargePopupMenu = 40;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAppearanceListItem}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAppearanceListItem}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:textAppearanceListItem
+          @attr name com.rzico.weex:textAppearanceListItem
         */
         public static final int AppCompatTheme_textAppearanceListItem = 77;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAppearanceListItemSmall}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAppearanceListItemSmall}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:textAppearanceListItemSmall
+          @attr name com.rzico.weex:textAppearanceListItemSmall
         */
         public static final int AppCompatTheme_textAppearanceListItemSmall = 78;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAppearancePopupMenuHeader}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAppearancePopupMenuHeader}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:textAppearancePopupMenuHeader
+          @attr name com.rzico.weex:textAppearancePopupMenuHeader
         */
         public static final int AppCompatTheme_textAppearancePopupMenuHeader = 42;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAppearanceSearchResultSubtitle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAppearanceSearchResultSubtitle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:textAppearanceSearchResultSubtitle
+          @attr name com.rzico.weex:textAppearanceSearchResultSubtitle
         */
         public static final int AppCompatTheme_textAppearanceSearchResultSubtitle = 67;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAppearanceSearchResultTitle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAppearanceSearchResultTitle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:textAppearanceSearchResultTitle
+          @attr name com.rzico.weex:textAppearanceSearchResultTitle
         */
         public static final int AppCompatTheme_textAppearanceSearchResultTitle = 66;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAppearanceSmallPopupMenu}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAppearanceSmallPopupMenu}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:textAppearanceSmallPopupMenu
+          @attr name com.rzico.weex:textAppearanceSmallPopupMenu
         */
         public static final int AppCompatTheme_textAppearanceSmallPopupMenu = 41;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textColorAlertDialogListItem}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textColorAlertDialogListItem}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6590,11 +6588,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:textColorAlertDialogListItem
+          @attr name com.rzico.weex:textColorAlertDialogListItem
         */
         public static final int AppCompatTheme_textColorAlertDialogListItem = 97;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textColorSearchUrl}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textColorSearchUrl}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6602,31 +6600,31 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:textColorSearchUrl
+          @attr name com.rzico.weex:textColorSearchUrl
         */
         public static final int AppCompatTheme_textColorSearchUrl = 68;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#toolbarNavigationButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#toolbarNavigationButtonStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:toolbarNavigationButtonStyle
+          @attr name com.rzico.weex:toolbarNavigationButtonStyle
         */
         public static final int AppCompatTheme_toolbarNavigationButtonStyle = 60;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#toolbarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#toolbarStyle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:toolbarStyle
+          @attr name com.rzico.weex:toolbarStyle
         */
         public static final int AppCompatTheme_toolbarStyle = 59;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowActionBar}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowActionBar}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6636,11 +6634,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowActionBar
+          @attr name com.rzico.weex:windowActionBar
         */
         public static final int AppCompatTheme_windowActionBar = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowActionBarOverlay}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowActionBarOverlay}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6650,11 +6648,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowActionBarOverlay
+          @attr name com.rzico.weex:windowActionBarOverlay
         */
         public static final int AppCompatTheme_windowActionBarOverlay = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowActionModeOverlay}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowActionModeOverlay}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6664,11 +6662,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowActionModeOverlay
+          @attr name com.rzico.weex:windowActionModeOverlay
         */
         public static final int AppCompatTheme_windowActionModeOverlay = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowFixedHeightMajor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowFixedHeightMajor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6683,11 +6681,11 @@ some parent container.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowFixedHeightMajor
+          @attr name com.rzico.weex:windowFixedHeightMajor
         */
         public static final int AppCompatTheme_windowFixedHeightMajor = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowFixedHeightMinor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowFixedHeightMinor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6702,11 +6700,11 @@ some parent container.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowFixedHeightMinor
+          @attr name com.rzico.weex:windowFixedHeightMinor
         */
         public static final int AppCompatTheme_windowFixedHeightMinor = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowFixedWidthMajor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowFixedWidthMajor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6721,11 +6719,11 @@ some parent container.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowFixedWidthMajor
+          @attr name com.rzico.weex:windowFixedWidthMajor
         */
         public static final int AppCompatTheme_windowFixedWidthMajor = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowFixedWidthMinor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowFixedWidthMinor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6740,11 +6738,11 @@ some parent container.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowFixedWidthMinor
+          @attr name com.rzico.weex:windowFixedWidthMinor
         */
         public static final int AppCompatTheme_windowFixedWidthMinor = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowMinWidthMajor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowMinWidthMajor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6759,11 +6757,11 @@ some parent container.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowMinWidthMajor
+          @attr name com.rzico.weex:windowMinWidthMajor
         */
         public static final int AppCompatTheme_windowMinWidthMajor = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowMinWidthMinor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowMinWidthMinor}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6778,11 +6776,11 @@ some parent container.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowMinWidthMinor
+          @attr name com.rzico.weex:windowMinWidthMinor
         */
         public static final int AppCompatTheme_windowMinWidthMinor = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#windowNoTitle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#windowNoTitle}
           attribute's value can be found in the {@link #AppCompatTheme} array.
 
 
@@ -6792,7 +6790,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:windowNoTitle
+          @attr name com.rzico.weex:windowNoTitle
         */
         public static final int AppCompatTheme_windowNoTitle = 3;
         /** Attributes that can be used with a BottomNavigationView.
@@ -6801,11 +6799,11 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #BottomNavigationView_elevation com.alibaba.weex:elevation}</code></td><td></td></tr>
-           <tr><td><code>{@link #BottomNavigationView_itemBackground com.alibaba.weex:itemBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #BottomNavigationView_itemIconTint com.alibaba.weex:itemIconTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #BottomNavigationView_itemTextColor com.alibaba.weex:itemTextColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #BottomNavigationView_menu com.alibaba.weex:menu}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomNavigationView_elevation com.rzico.weex:elevation}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomNavigationView_itemBackground com.rzico.weex:itemBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomNavigationView_itemIconTint com.rzico.weex:itemIconTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomNavigationView_itemTextColor com.rzico.weex:itemTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomNavigationView_menu com.rzico.weex:menu}</code></td><td></td></tr>
            </table>
            @see #BottomNavigationView_elevation
            @see #BottomNavigationView_itemBackground
@@ -6818,7 +6816,7 @@ containing a value of this type.
             0x7f0100fe
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#elevation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#elevation}
           attribute's value can be found in the {@link #BottomNavigationView} array.
 
 
@@ -6830,21 +6828,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:elevation
+          @attr name com.rzico.weex:elevation
         */
         public static final int BottomNavigationView_elevation = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemBackground}
           attribute's value can be found in the {@link #BottomNavigationView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:itemBackground
+          @attr name com.rzico.weex:itemBackground
         */
         public static final int BottomNavigationView_itemBackground = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemIconTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemIconTint}
           attribute's value can be found in the {@link #BottomNavigationView} array.
 
 
@@ -6855,11 +6853,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:itemIconTint
+          @attr name com.rzico.weex:itemIconTint
         */
         public static final int BottomNavigationView_itemIconTint = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemTextColor}
           attribute's value can be found in the {@link #BottomNavigationView} array.
 
 
@@ -6870,17 +6868,17 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:itemTextColor
+          @attr name com.rzico.weex:itemTextColor
         */
         public static final int BottomNavigationView_itemTextColor = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#menu}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#menu}
           attribute's value can be found in the {@link #BottomNavigationView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:menu
+          @attr name com.rzico.weex:menu
         */
         public static final int BottomNavigationView_menu = 1;
         /** Attributes that can be used with a BottomSheetBehavior_Layout.
@@ -6889,9 +6887,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #BottomSheetBehavior_Layout_behavior_hideable com.alibaba.weex:behavior_hideable}</code></td><td></td></tr>
-           <tr><td><code>{@link #BottomSheetBehavior_Layout_behavior_peekHeight com.alibaba.weex:behavior_peekHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #BottomSheetBehavior_Layout_behavior_skipCollapsed com.alibaba.weex:behavior_skipCollapsed}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomSheetBehavior_Layout_behavior_hideable com.rzico.weex:behavior_hideable}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomSheetBehavior_Layout_behavior_peekHeight com.rzico.weex:behavior_peekHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #BottomSheetBehavior_Layout_behavior_skipCollapsed com.rzico.weex:behavior_skipCollapsed}</code></td><td></td></tr>
            </table>
            @see #BottomSheetBehavior_Layout_behavior_hideable
            @see #BottomSheetBehavior_Layout_behavior_peekHeight
@@ -6901,7 +6899,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f0100a2, 0x7f0100a3, 0x7f0100a4
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#behavior_hideable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#behavior_hideable}
           attribute's value can be found in the {@link #BottomSheetBehavior_Layout} array.
 
 
@@ -6911,11 +6909,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:behavior_hideable
+          @attr name com.rzico.weex:behavior_hideable
         */
         public static final int BottomSheetBehavior_Layout_behavior_hideable = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#behavior_peekHeight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#behavior_peekHeight}
           attribute's value can be found in the {@link #BottomSheetBehavior_Layout} array.
 
 
@@ -6935,11 +6933,11 @@ containing a value of this type.
 <tr><th>Constant</th><th>Value</th><th>Description</th></tr>
 <tr><td><code>auto</code></td><td>-1</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:behavior_peekHeight
+          @attr name com.rzico.weex:behavior_peekHeight
         */
         public static final int BottomSheetBehavior_Layout_behavior_peekHeight = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#behavior_skipCollapsed}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#behavior_skipCollapsed}
           attribute's value can be found in the {@link #BottomSheetBehavior_Layout} array.
 
 
@@ -6949,7 +6947,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:behavior_skipCollapsed
+          @attr name com.rzico.weex:behavior_skipCollapsed
         */
         public static final int BottomSheetBehavior_Layout_behavior_skipCollapsed = 2;
         /** Attributes that can be used with a ButtonBarContainerTheme.
@@ -6958,8 +6956,8 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ButtonBarContainerTheme_metaButtonBarButtonStyle com.alibaba.weex:metaButtonBarButtonStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #ButtonBarContainerTheme_metaButtonBarStyle com.alibaba.weex:metaButtonBarStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ButtonBarContainerTheme_metaButtonBarButtonStyle com.rzico.weex:metaButtonBarButtonStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #ButtonBarContainerTheme_metaButtonBarStyle com.rzico.weex:metaButtonBarStyle}</code></td><td></td></tr>
            </table>
            @see #ButtonBarContainerTheme_metaButtonBarButtonStyle
            @see #ButtonBarContainerTheme_metaButtonBarStyle
@@ -6968,23 +6966,23 @@ containing a value of this type.
             0x7f0100a5, 0x7f0100a6
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#metaButtonBarButtonStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#metaButtonBarButtonStyle}
           attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:metaButtonBarButtonStyle
+          @attr name com.rzico.weex:metaButtonBarButtonStyle
         */
         public static final int ButtonBarContainerTheme_metaButtonBarButtonStyle = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#metaButtonBarStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#metaButtonBarStyle}
           attribute's value can be found in the {@link #ButtonBarContainerTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:metaButtonBarStyle
+          @attr name com.rzico.weex:metaButtonBarStyle
         */
         public static final int ButtonBarContainerTheme_metaButtonBarStyle = 0;
         /** Attributes that can be used with a ButtonBarLayout.
@@ -6993,7 +6991,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ButtonBarLayout_allowStacking com.alibaba.weex:allowStacking}</code></td><td></td></tr>
+           <tr><td><code>{@link #ButtonBarLayout_allowStacking com.rzico.weex:allowStacking}</code></td><td></td></tr>
            </table>
            @see #ButtonBarLayout_allowStacking
          */
@@ -7001,7 +6999,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f0100a7
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#allowStacking}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#allowStacking}
           attribute's value can be found in the {@link #ButtonBarLayout} array.
 
 
@@ -7011,7 +7009,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:allowStacking
+          @attr name com.rzico.weex:allowStacking
         */
         public static final int ButtonBarLayout_allowStacking = 0;
         /** Attributes that can be used with a CircleImageView.
@@ -7020,9 +7018,9 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CircleImageView_border_color com.alibaba.weex:border_color}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleImageView_border_overlay com.alibaba.weex:border_overlay}</code></td><td></td></tr>
-           <tr><td><code>{@link #CircleImageView_border_width com.alibaba.weex:border_width}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircleImageView_border_color com.rzico.weex:border_color}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircleImageView_border_overlay com.rzico.weex:border_overlay}</code></td><td></td></tr>
+           <tr><td><code>{@link #CircleImageView_border_width com.rzico.weex:border_width}</code></td><td></td></tr>
            </table>
            @see #CircleImageView_border_color
            @see #CircleImageView_border_overlay
@@ -7032,7 +7030,7 @@ containing a value of this type.
             0x7f0100a8, 0x7f0100a9, 0x7f0100aa
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#border_color}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#border_color}
           attribute's value can be found in the {@link #CircleImageView} array.
 
 
@@ -7043,11 +7041,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:border_color
+          @attr name com.rzico.weex:border_color
         */
         public static final int CircleImageView_border_color = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#border_overlay}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#border_overlay}
           attribute's value can be found in the {@link #CircleImageView} array.
 
 
@@ -7057,11 +7055,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:border_overlay
+          @attr name com.rzico.weex:border_overlay
         */
         public static final int CircleImageView_border_overlay = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#border_width}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#border_width}
           attribute's value can be found in the {@link #CircleImageView} array.
 
 
@@ -7073,7 +7071,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:border_width
+          @attr name com.rzico.weex:border_width
         */
         public static final int CircleImageView_border_width = 0;
         /** Attributes that can be used with a CollapsingToolbarLayout.
@@ -7082,22 +7080,22 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_collapsedTitleGravity com.alibaba.weex:collapsedTitleGravity}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_collapsedTitleTextAppearance com.alibaba.weex:collapsedTitleTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_contentScrim com.alibaba.weex:contentScrim}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleGravity com.alibaba.weex:expandedTitleGravity}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMargin com.alibaba.weex:expandedTitleMargin}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginBottom com.alibaba.weex:expandedTitleMarginBottom}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginEnd com.alibaba.weex:expandedTitleMarginEnd}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginStart com.alibaba.weex:expandedTitleMarginStart}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginTop com.alibaba.weex:expandedTitleMarginTop}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleTextAppearance com.alibaba.weex:expandedTitleTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_scrimAnimationDuration com.alibaba.weex:scrimAnimationDuration}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_scrimVisibleHeightTrigger com.alibaba.weex:scrimVisibleHeightTrigger}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_statusBarScrim com.alibaba.weex:statusBarScrim}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_title com.alibaba.weex:title}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_titleEnabled com.alibaba.weex:titleEnabled}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_toolbarId com.alibaba.weex:toolbarId}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_collapsedTitleGravity com.rzico.weex:collapsedTitleGravity}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_collapsedTitleTextAppearance com.rzico.weex:collapsedTitleTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_contentScrim com.rzico.weex:contentScrim}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleGravity com.rzico.weex:expandedTitleGravity}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMargin com.rzico.weex:expandedTitleMargin}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginBottom com.rzico.weex:expandedTitleMarginBottom}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginEnd com.rzico.weex:expandedTitleMarginEnd}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginStart com.rzico.weex:expandedTitleMarginStart}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleMarginTop com.rzico.weex:expandedTitleMarginTop}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_expandedTitleTextAppearance com.rzico.weex:expandedTitleTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_scrimAnimationDuration com.rzico.weex:scrimAnimationDuration}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_scrimVisibleHeightTrigger com.rzico.weex:scrimVisibleHeightTrigger}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_statusBarScrim com.rzico.weex:statusBarScrim}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_title com.rzico.weex:title}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_titleEnabled com.rzico.weex:titleEnabled}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_toolbarId com.rzico.weex:toolbarId}</code></td><td></td></tr>
            </table>
            @see #CollapsingToolbarLayout_collapsedTitleGravity
            @see #CollapsingToolbarLayout_collapsedTitleTextAppearance
@@ -7123,7 +7121,7 @@ containing a value of this type.
             0x7f0100b6, 0x7f0100b7, 0x7f0100b8, 0x7f0100b9
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#collapsedTitleGravity}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#collapsedTitleGravity}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7144,21 +7142,21 @@ containing a value of this type.
 <tr><td><code>start</code></td><td>0x00800003</td><td></td></tr>
 <tr><td><code>end</code></td><td>0x00800005</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:collapsedTitleGravity
+          @attr name com.rzico.weex:collapsedTitleGravity
         */
         public static final int CollapsingToolbarLayout_collapsedTitleGravity = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#collapsedTitleTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#collapsedTitleTextAppearance}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:collapsedTitleTextAppearance
+          @attr name com.rzico.weex:collapsedTitleTextAppearance
         */
         public static final int CollapsingToolbarLayout_collapsedTitleTextAppearance = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentScrim}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentScrim}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7169,11 +7167,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentScrim
+          @attr name com.rzico.weex:contentScrim
         */
         public static final int CollapsingToolbarLayout_contentScrim = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandedTitleGravity}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandedTitleGravity}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7194,11 +7192,11 @@ containing a value of this type.
 <tr><td><code>start</code></td><td>0x00800003</td><td></td></tr>
 <tr><td><code>end</code></td><td>0x00800005</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:expandedTitleGravity
+          @attr name com.rzico.weex:expandedTitleGravity
         */
         public static final int CollapsingToolbarLayout_expandedTitleGravity = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandedTitleMargin}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandedTitleMargin}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7210,11 +7208,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:expandedTitleMargin
+          @attr name com.rzico.weex:expandedTitleMargin
         */
         public static final int CollapsingToolbarLayout_expandedTitleMargin = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandedTitleMarginBottom}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandedTitleMarginBottom}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7226,11 +7224,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:expandedTitleMarginBottom
+          @attr name com.rzico.weex:expandedTitleMarginBottom
         */
         public static final int CollapsingToolbarLayout_expandedTitleMarginBottom = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandedTitleMarginEnd}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandedTitleMarginEnd}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7242,11 +7240,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:expandedTitleMarginEnd
+          @attr name com.rzico.weex:expandedTitleMarginEnd
         */
         public static final int CollapsingToolbarLayout_expandedTitleMarginEnd = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandedTitleMarginStart}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandedTitleMarginStart}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7258,11 +7256,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:expandedTitleMarginStart
+          @attr name com.rzico.weex:expandedTitleMarginStart
         */
         public static final int CollapsingToolbarLayout_expandedTitleMarginStart = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandedTitleMarginTop}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandedTitleMarginTop}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7274,21 +7272,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:expandedTitleMarginTop
+          @attr name com.rzico.weex:expandedTitleMarginTop
         */
         public static final int CollapsingToolbarLayout_expandedTitleMarginTop = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#expandedTitleTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#expandedTitleTextAppearance}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:expandedTitleTextAppearance
+          @attr name com.rzico.weex:expandedTitleTextAppearance
         */
         public static final int CollapsingToolbarLayout_expandedTitleTextAppearance = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#scrimAnimationDuration}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#scrimAnimationDuration}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7298,11 +7296,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:scrimAnimationDuration
+          @attr name com.rzico.weex:scrimAnimationDuration
         */
         public static final int CollapsingToolbarLayout_scrimAnimationDuration = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#scrimVisibleHeightTrigger}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#scrimVisibleHeightTrigger}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7314,11 +7312,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:scrimVisibleHeightTrigger
+          @attr name com.rzico.weex:scrimVisibleHeightTrigger
         */
         public static final int CollapsingToolbarLayout_scrimVisibleHeightTrigger = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#statusBarScrim}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#statusBarScrim}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7329,11 +7327,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:statusBarScrim
+          @attr name com.rzico.weex:statusBarScrim
         */
         public static final int CollapsingToolbarLayout_statusBarScrim = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#title}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#title}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7343,11 +7341,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:title
+          @attr name com.rzico.weex:title
         */
         public static final int CollapsingToolbarLayout_title = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleEnabled}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleEnabled}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
@@ -7357,17 +7355,17 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleEnabled
+          @attr name com.rzico.weex:titleEnabled
         */
         public static final int CollapsingToolbarLayout_titleEnabled = 15;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#toolbarId}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#toolbarId}
           attribute's value can be found in the {@link #CollapsingToolbarLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:toolbarId
+          @attr name com.rzico.weex:toolbarId
         */
         public static final int CollapsingToolbarLayout_toolbarId = 10;
         /** Attributes that can be used with a CollapsingToolbarLayout_Layout.
@@ -7376,8 +7374,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_Layout_layout_collapseMode com.alibaba.weex:layout_collapseMode}</code></td><td></td></tr>
-           <tr><td><code>{@link #CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier com.alibaba.weex:layout_collapseParallaxMultiplier}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_Layout_layout_collapseMode com.rzico.weex:layout_collapseMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier com.rzico.weex:layout_collapseParallaxMultiplier}</code></td><td></td></tr>
            </table>
            @see #CollapsingToolbarLayout_Layout_layout_collapseMode
            @see #CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier
@@ -7386,7 +7384,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f0100ba, 0x7f0100bb
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_collapseMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_collapseMode}
           attribute's value can be found in the {@link #CollapsingToolbarLayout_Layout} array.
 
 
@@ -7400,11 +7398,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>pin</code></td><td>1</td><td></td></tr>
 <tr><td><code>parallax</code></td><td>2</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:layout_collapseMode
+          @attr name com.rzico.weex:layout_collapseMode
         */
         public static final int CollapsingToolbarLayout_Layout_layout_collapseMode = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_collapseParallaxMultiplier}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_collapseParallaxMultiplier}
           attribute's value can be found in the {@link #CollapsingToolbarLayout_Layout} array.
 
 
@@ -7414,7 +7412,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:layout_collapseParallaxMultiplier
+          @attr name com.rzico.weex:layout_collapseParallaxMultiplier
         */
         public static final int CollapsingToolbarLayout_Layout_layout_collapseParallaxMultiplier = 1;
         /** Attributes that can be used with a ColorStateListItem.
@@ -7423,7 +7421,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ColorStateListItem_alpha com.alibaba.weex:alpha}</code></td><td></td></tr>
+           <tr><td><code>{@link #ColorStateListItem_alpha com.rzico.weex:alpha}</code></td><td></td></tr>
            <tr><td><code>{@link #ColorStateListItem_android_alpha android:alpha}</code></td><td></td></tr>
            <tr><td><code>{@link #ColorStateListItem_android_color android:color}</code></td><td></td></tr>
            </table>
@@ -7435,7 +7433,7 @@ containing a value of this type.
             0x010101a5, 0x0101031f, 0x7f0100bc
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#alpha}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#alpha}
           attribute's value can be found in the {@link #ColorStateListItem} array.
 
 
@@ -7445,7 +7443,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:alpha
+          @attr name com.rzico.weex:alpha
         */
         public static final int ColorStateListItem_alpha = 2;
         /**
@@ -7467,8 +7465,8 @@ containing a value of this type.
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #CompoundButton_android_button android:button}</code></td><td></td></tr>
-           <tr><td><code>{@link #CompoundButton_buttonTint com.alibaba.weex:buttonTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #CompoundButton_buttonTintMode com.alibaba.weex:buttonTintMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #CompoundButton_buttonTint com.rzico.weex:buttonTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #CompoundButton_buttonTintMode com.rzico.weex:buttonTintMode}</code></td><td></td></tr>
            </table>
            @see #CompoundButton_android_button
            @see #CompoundButton_buttonTint
@@ -7484,7 +7482,7 @@ containing a value of this type.
         */
         public static final int CompoundButton_android_button = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonTint}
           attribute's value can be found in the {@link #CompoundButton} array.
 
 
@@ -7495,11 +7493,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:buttonTint
+          @attr name com.rzico.weex:buttonTint
         */
         public static final int CompoundButton_buttonTint = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonTintMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonTintMode}
           attribute's value can be found in the {@link #CompoundButton} array.
 
 
@@ -7515,7 +7513,7 @@ containing a value of this type.
 <tr><td><code>multiply</code></td><td>14</td><td></td></tr>
 <tr><td><code>screen</code></td><td>15</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:buttonTintMode
+          @attr name com.rzico.weex:buttonTintMode
         */
         public static final int CompoundButton_buttonTintMode = 2;
         /** Attributes that can be used with a CoordinatorLayout.
@@ -7524,8 +7522,8 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CoordinatorLayout_keylines com.alibaba.weex:keylines}</code></td><td></td></tr>
-           <tr><td><code>{@link #CoordinatorLayout_statusBarBackground com.alibaba.weex:statusBarBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_keylines com.rzico.weex:keylines}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_statusBarBackground com.rzico.weex:statusBarBackground}</code></td><td></td></tr>
            </table>
            @see #CoordinatorLayout_keylines
            @see #CoordinatorLayout_statusBarBackground
@@ -7534,23 +7532,23 @@ containing a value of this type.
             0x7f0100bf, 0x7f0100c0
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#keylines}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#keylines}
           attribute's value can be found in the {@link #CoordinatorLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:keylines
+          @attr name com.rzico.weex:keylines
         */
         public static final int CoordinatorLayout_keylines = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#statusBarBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#statusBarBackground}
           attribute's value can be found in the {@link #CoordinatorLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:statusBarBackground
+          @attr name com.rzico.weex:statusBarBackground
         */
         public static final int CoordinatorLayout_statusBarBackground = 1;
         /** Attributes that can be used with a CoordinatorLayout_Layout.
@@ -7560,12 +7558,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #CoordinatorLayout_Layout_android_layout_gravity android:layout_gravity}</code></td><td></td></tr>
-           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_anchor com.alibaba.weex:layout_anchor}</code></td><td></td></tr>
-           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_anchorGravity com.alibaba.weex:layout_anchorGravity}</code></td><td></td></tr>
-           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_behavior com.alibaba.weex:layout_behavior}</code></td><td></td></tr>
-           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_dodgeInsetEdges com.alibaba.weex:layout_dodgeInsetEdges}</code></td><td></td></tr>
-           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_insetEdge com.alibaba.weex:layout_insetEdge}</code></td><td></td></tr>
-           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_keyline com.alibaba.weex:layout_keyline}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_anchor com.rzico.weex:layout_anchor}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_anchorGravity com.rzico.weex:layout_anchorGravity}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_behavior com.rzico.weex:layout_behavior}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_dodgeInsetEdges com.rzico.weex:layout_dodgeInsetEdges}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_insetEdge com.rzico.weex:layout_insetEdge}</code></td><td></td></tr>
+           <tr><td><code>{@link #CoordinatorLayout_Layout_layout_keyline com.rzico.weex:layout_keyline}</code></td><td></td></tr>
            </table>
            @see #CoordinatorLayout_Layout_android_layout_gravity
            @see #CoordinatorLayout_Layout_layout_anchor
@@ -7586,17 +7584,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int CoordinatorLayout_Layout_android_layout_gravity = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_anchor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_anchor}
           attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:layout_anchor
+          @attr name com.rzico.weex:layout_anchor
         */
         public static final int CoordinatorLayout_Layout_layout_anchor = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_anchorGravity}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_anchorGravity}
           attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
 
 
@@ -7621,11 +7619,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>start</code></td><td>0x00800003</td><td></td></tr>
 <tr><td><code>end</code></td><td>0x00800005</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:layout_anchorGravity
+          @attr name com.rzico.weex:layout_anchorGravity
         */
         public static final int CoordinatorLayout_Layout_layout_anchorGravity = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_behavior}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_behavior}
           attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
 
 
@@ -7635,11 +7633,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:layout_behavior
+          @attr name com.rzico.weex:layout_behavior
         */
         public static final int CoordinatorLayout_Layout_layout_behavior = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_dodgeInsetEdges}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_dodgeInsetEdges}
           attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
 
 
@@ -7658,11 +7656,11 @@ containing a value of this type.
 <tr><td><code>end</code></td><td>0x00800005</td><td></td></tr>
 <tr><td><code>all</code></td><td>0x77</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:layout_dodgeInsetEdges
+          @attr name com.rzico.weex:layout_dodgeInsetEdges
         */
         public static final int CoordinatorLayout_Layout_layout_dodgeInsetEdges = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_insetEdge}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_insetEdge}
           attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
 
 
@@ -7680,11 +7678,11 @@ containing a value of this type.
 <tr><td><code>start</code></td><td>0x00800003</td><td></td></tr>
 <tr><td><code>end</code></td><td>0x00800005</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:layout_insetEdge
+          @attr name com.rzico.weex:layout_insetEdge
         */
         public static final int CoordinatorLayout_Layout_layout_insetEdge = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout_keyline}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout_keyline}
           attribute's value can be found in the {@link #CoordinatorLayout_Layout} array.
 
 
@@ -7694,7 +7692,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:layout_keyline
+          @attr name com.rzico.weex:layout_keyline
         */
         public static final int CoordinatorLayout_Layout_layout_keyline = 3;
         /** Attributes that can be used with a DesignTheme.
@@ -7703,9 +7701,9 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #DesignTheme_bottomSheetDialogTheme com.alibaba.weex:bottomSheetDialogTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #DesignTheme_bottomSheetStyle com.alibaba.weex:bottomSheetStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #DesignTheme_textColorError com.alibaba.weex:textColorError}</code></td><td></td></tr>
+           <tr><td><code>{@link #DesignTheme_bottomSheetDialogTheme com.rzico.weex:bottomSheetDialogTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #DesignTheme_bottomSheetStyle com.rzico.weex:bottomSheetStyle}</code></td><td></td></tr>
+           <tr><td><code>{@link #DesignTheme_textColorError com.rzico.weex:textColorError}</code></td><td></td></tr>
            </table>
            @see #DesignTheme_bottomSheetDialogTheme
            @see #DesignTheme_bottomSheetStyle
@@ -7715,27 +7713,27 @@ containing a value of this type.
             0x7f0100c7, 0x7f0100c8, 0x7f0100c9
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#bottomSheetDialogTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#bottomSheetDialogTheme}
           attribute's value can be found in the {@link #DesignTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:bottomSheetDialogTheme
+          @attr name com.rzico.weex:bottomSheetDialogTheme
         */
         public static final int DesignTheme_bottomSheetDialogTheme = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#bottomSheetStyle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#bottomSheetStyle}
           attribute's value can be found in the {@link #DesignTheme} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:bottomSheetStyle
+          @attr name com.rzico.weex:bottomSheetStyle
         */
         public static final int DesignTheme_bottomSheetStyle = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textColorError}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textColorError}
           attribute's value can be found in the {@link #DesignTheme} array.
 
 
@@ -7746,7 +7744,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:textColorError
+          @attr name com.rzico.weex:textColorError
         */
         public static final int DesignTheme_textColorError = 2;
         /** Attributes that can be used with a DrawerArrowToggle.
@@ -7755,14 +7753,14 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_arrowHeadLength com.alibaba.weex:arrowHeadLength}</code></td><td></td></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_arrowShaftLength com.alibaba.weex:arrowShaftLength}</code></td><td></td></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_barLength com.alibaba.weex:barLength}</code></td><td></td></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_color com.alibaba.weex:color}</code></td><td></td></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_drawableSize com.alibaba.weex:drawableSize}</code></td><td></td></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_gapBetweenBars com.alibaba.weex:gapBetweenBars}</code></td><td></td></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_spinBars com.alibaba.weex:spinBars}</code></td><td></td></tr>
-           <tr><td><code>{@link #DrawerArrowToggle_thickness com.alibaba.weex:thickness}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_arrowHeadLength com.rzico.weex:arrowHeadLength}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_arrowShaftLength com.rzico.weex:arrowShaftLength}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_barLength com.rzico.weex:barLength}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_color com.rzico.weex:color}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_drawableSize com.rzico.weex:drawableSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_gapBetweenBars com.rzico.weex:gapBetweenBars}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_spinBars com.rzico.weex:spinBars}</code></td><td></td></tr>
+           <tr><td><code>{@link #DrawerArrowToggle_thickness com.rzico.weex:thickness}</code></td><td></td></tr>
            </table>
            @see #DrawerArrowToggle_arrowHeadLength
            @see #DrawerArrowToggle_arrowShaftLength
@@ -7778,7 +7776,7 @@ containing a value of this type.
             0x7f0100ce, 0x7f0100cf, 0x7f0100d0, 0x7f0100d1
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#arrowHeadLength}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#arrowHeadLength}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7790,11 +7788,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:arrowHeadLength
+          @attr name com.rzico.weex:arrowHeadLength
         */
         public static final int DrawerArrowToggle_arrowHeadLength = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#arrowShaftLength}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#arrowShaftLength}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7806,11 +7804,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:arrowShaftLength
+          @attr name com.rzico.weex:arrowShaftLength
         */
         public static final int DrawerArrowToggle_arrowShaftLength = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#barLength}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#barLength}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7822,11 +7820,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:barLength
+          @attr name com.rzico.weex:barLength
         */
         public static final int DrawerArrowToggle_barLength = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#color}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#color}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7837,11 +7835,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:color
+          @attr name com.rzico.weex:color
         */
         public static final int DrawerArrowToggle_color = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#drawableSize}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#drawableSize}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7853,11 +7851,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:drawableSize
+          @attr name com.rzico.weex:drawableSize
         */
         public static final int DrawerArrowToggle_drawableSize = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#gapBetweenBars}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#gapBetweenBars}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7869,11 +7867,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:gapBetweenBars
+          @attr name com.rzico.weex:gapBetweenBars
         */
         public static final int DrawerArrowToggle_gapBetweenBars = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#spinBars}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#spinBars}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7883,11 +7881,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:spinBars
+          @attr name com.rzico.weex:spinBars
         */
         public static final int DrawerArrowToggle_spinBars = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#thickness}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#thickness}
           attribute's value can be found in the {@link #DrawerArrowToggle} array.
 
 
@@ -7899,7 +7897,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:thickness
+          @attr name com.rzico.weex:thickness
         */
         public static final int DrawerArrowToggle_thickness = 7;
         /** Attributes that can be used with a FloatingActionButton.
@@ -7908,14 +7906,14 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #FloatingActionButton_backgroundTint com.alibaba.weex:backgroundTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #FloatingActionButton_backgroundTintMode com.alibaba.weex:backgroundTintMode}</code></td><td></td></tr>
-           <tr><td><code>{@link #FloatingActionButton_borderWidth com.alibaba.weex:borderWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #FloatingActionButton_elevation com.alibaba.weex:elevation}</code></td><td></td></tr>
-           <tr><td><code>{@link #FloatingActionButton_fabSize com.alibaba.weex:fabSize}</code></td><td></td></tr>
-           <tr><td><code>{@link #FloatingActionButton_pressedTranslationZ com.alibaba.weex:pressedTranslationZ}</code></td><td></td></tr>
-           <tr><td><code>{@link #FloatingActionButton_rippleColor com.alibaba.weex:rippleColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #FloatingActionButton_useCompatPadding com.alibaba.weex:useCompatPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_backgroundTint com.rzico.weex:backgroundTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_backgroundTintMode com.rzico.weex:backgroundTintMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_borderWidth com.rzico.weex:borderWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_elevation com.rzico.weex:elevation}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_fabSize com.rzico.weex:fabSize}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_pressedTranslationZ com.rzico.weex:pressedTranslationZ}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_rippleColor com.rzico.weex:rippleColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_useCompatPadding com.rzico.weex:useCompatPadding}</code></td><td></td></tr>
            </table>
            @see #FloatingActionButton_backgroundTint
            @see #FloatingActionButton_backgroundTintMode
@@ -7931,7 +7929,7 @@ containing a value of this type.
             0x7f0100d5, 0x7f0100d6, 0x7f010156, 0x7f010157
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundTint}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -7942,11 +7940,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:backgroundTint
+          @attr name com.rzico.weex:backgroundTint
         */
         public static final int FloatingActionButton_backgroundTint = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundTintMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundTintMode}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -7962,11 +7960,11 @@ containing a value of this type.
 <tr><td><code>multiply</code></td><td>14</td><td></td></tr>
 <tr><td><code>screen</code></td><td>15</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:backgroundTintMode
+          @attr name com.rzico.weex:backgroundTintMode
         */
         public static final int FloatingActionButton_backgroundTintMode = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#borderWidth}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#borderWidth}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -7978,11 +7976,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:borderWidth
+          @attr name com.rzico.weex:borderWidth
         */
         public static final int FloatingActionButton_borderWidth = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#elevation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#elevation}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -7994,11 +7992,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:elevation
+          @attr name com.rzico.weex:elevation
         */
         public static final int FloatingActionButton_elevation = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#fabSize}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#fabSize}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -8012,11 +8010,11 @@ containing a value of this type.
 <tr><td><code>normal</code></td><td>0</td><td></td></tr>
 <tr><td><code>mini</code></td><td>1</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:fabSize
+          @attr name com.rzico.weex:fabSize
         */
         public static final int FloatingActionButton_fabSize = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#pressedTranslationZ}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#pressedTranslationZ}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -8028,11 +8026,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:pressedTranslationZ
+          @attr name com.rzico.weex:pressedTranslationZ
         */
         public static final int FloatingActionButton_pressedTranslationZ = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#rippleColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#rippleColor}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -8043,11 +8041,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:rippleColor
+          @attr name com.rzico.weex:rippleColor
         */
         public static final int FloatingActionButton_rippleColor = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#useCompatPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#useCompatPadding}
           attribute's value can be found in the {@link #FloatingActionButton} array.
 
 
@@ -8057,7 +8055,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:useCompatPadding
+          @attr name com.rzico.weex:useCompatPadding
         */
         public static final int FloatingActionButton_useCompatPadding = 5;
         /** Attributes that can be used with a FloatingActionButton_Behavior_Layout.
@@ -8066,7 +8064,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #FloatingActionButton_Behavior_Layout_behavior_autoHide com.alibaba.weex:behavior_autoHide}</code></td><td></td></tr>
+           <tr><td><code>{@link #FloatingActionButton_Behavior_Layout_behavior_autoHide com.rzico.weex:behavior_autoHide}</code></td><td></td></tr>
            </table>
            @see #FloatingActionButton_Behavior_Layout_behavior_autoHide
          */
@@ -8074,7 +8072,7 @@ containing a value of this type.
             0x7f0100d7
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#behavior_autoHide}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#behavior_autoHide}
           attribute's value can be found in the {@link #FloatingActionButton_Behavior_Layout} array.
 
 
@@ -8084,7 +8082,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:behavior_autoHide
+          @attr name com.rzico.weex:behavior_autoHide
         */
         public static final int FloatingActionButton_Behavior_Layout_behavior_autoHide = 0;
         /** Attributes that can be used with a ForegroundLinearLayout.
@@ -8095,7 +8093,7 @@ containing a value of this type.
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #ForegroundLinearLayout_android_foreground android:foreground}</code></td><td></td></tr>
            <tr><td><code>{@link #ForegroundLinearLayout_android_foregroundGravity android:foregroundGravity}</code></td><td></td></tr>
-           <tr><td><code>{@link #ForegroundLinearLayout_foregroundInsidePadding com.alibaba.weex:foregroundInsidePadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #ForegroundLinearLayout_foregroundInsidePadding com.rzico.weex:foregroundInsidePadding}</code></td><td></td></tr>
            </table>
            @see #ForegroundLinearLayout_android_foreground
            @see #ForegroundLinearLayout_android_foregroundGravity
@@ -8117,7 +8115,7 @@ containing a value of this type.
         */
         public static final int ForegroundLinearLayout_android_foregroundGravity = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#foregroundInsidePadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#foregroundInsidePadding}
           attribute's value can be found in the {@link #ForegroundLinearLayout} array.
 
 
@@ -8127,7 +8125,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:foregroundInsidePadding
+          @attr name com.rzico.weex:foregroundInsidePadding
         */
         public static final int ForegroundLinearLayout_foregroundInsidePadding = 2;
         /** Attributes that can be used with a GenericDraweeHierarchy.
@@ -8136,31 +8134,31 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_actualImageScaleType com.alibaba.weex:actualImageScaleType}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_backgroundImage com.alibaba.weex:backgroundImage}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_fadeDuration com.alibaba.weex:fadeDuration}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_failureImage com.alibaba.weex:failureImage}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_failureImageScaleType com.alibaba.weex:failureImageScaleType}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_overlayImage com.alibaba.weex:overlayImage}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_placeholderImage com.alibaba.weex:placeholderImage}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_placeholderImageScaleType com.alibaba.weex:placeholderImageScaleType}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_pressedStateOverlayImage com.alibaba.weex:pressedStateOverlayImage}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_progressBarAutoRotateInterval com.alibaba.weex:progressBarAutoRotateInterval}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_progressBarImage com.alibaba.weex:progressBarImage}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_progressBarImageScaleType com.alibaba.weex:progressBarImageScaleType}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_retryImage com.alibaba.weex:retryImage}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_retryImageScaleType com.alibaba.weex:retryImageScaleType}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundAsCircle com.alibaba.weex:roundAsCircle}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundBottomLeft com.alibaba.weex:roundBottomLeft}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundBottomRight com.alibaba.weex:roundBottomRight}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundTopLeft com.alibaba.weex:roundTopLeft}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundTopRight com.alibaba.weex:roundTopRight}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundWithOverlayColor com.alibaba.weex:roundWithOverlayColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundedCornerRadius com.alibaba.weex:roundedCornerRadius}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundingBorderColor com.alibaba.weex:roundingBorderColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundingBorderPadding com.alibaba.weex:roundingBorderPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_roundingBorderWidth com.alibaba.weex:roundingBorderWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #GenericDraweeHierarchy_viewAspectRatio com.alibaba.weex:viewAspectRatio}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_actualImageScaleType com.rzico.weex:actualImageScaleType}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_backgroundImage com.rzico.weex:backgroundImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_fadeDuration com.rzico.weex:fadeDuration}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_failureImage com.rzico.weex:failureImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_failureImageScaleType com.rzico.weex:failureImageScaleType}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_overlayImage com.rzico.weex:overlayImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_placeholderImage com.rzico.weex:placeholderImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_placeholderImageScaleType com.rzico.weex:placeholderImageScaleType}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_pressedStateOverlayImage com.rzico.weex:pressedStateOverlayImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_progressBarAutoRotateInterval com.rzico.weex:progressBarAutoRotateInterval}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_progressBarImage com.rzico.weex:progressBarImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_progressBarImageScaleType com.rzico.weex:progressBarImageScaleType}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_retryImage com.rzico.weex:retryImage}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_retryImageScaleType com.rzico.weex:retryImageScaleType}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundAsCircle com.rzico.weex:roundAsCircle}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundBottomLeft com.rzico.weex:roundBottomLeft}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundBottomRight com.rzico.weex:roundBottomRight}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundTopLeft com.rzico.weex:roundTopLeft}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundTopRight com.rzico.weex:roundTopRight}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundWithOverlayColor com.rzico.weex:roundWithOverlayColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundedCornerRadius com.rzico.weex:roundedCornerRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundingBorderColor com.rzico.weex:roundingBorderColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundingBorderPadding com.rzico.weex:roundingBorderPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_roundingBorderWidth com.rzico.weex:roundingBorderWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #GenericDraweeHierarchy_viewAspectRatio com.rzico.weex:viewAspectRatio}</code></td><td></td></tr>
            </table>
            @see #GenericDraweeHierarchy_actualImageScaleType
            @see #GenericDraweeHierarchy_backgroundImage
@@ -8198,7 +8196,7 @@ containing a value of this type.
             0x7f0100f1
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actualImageScaleType}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actualImageScaleType}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8218,21 +8216,21 @@ containing a value of this type.
 <tr><td><code>centerCrop</code></td><td>6</td><td></td></tr>
 <tr><td><code>focusCrop</code></td><td>7</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:actualImageScaleType
+          @attr name com.rzico.weex:actualImageScaleType
         */
         public static final int GenericDraweeHierarchy_actualImageScaleType = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundImage}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundImage}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:backgroundImage
+          @attr name com.rzico.weex:backgroundImage
         */
         public static final int GenericDraweeHierarchy_backgroundImage = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#fadeDuration}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#fadeDuration}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8242,21 +8240,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:fadeDuration
+          @attr name com.rzico.weex:fadeDuration
         */
         public static final int GenericDraweeHierarchy_fadeDuration = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#failureImage}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#failureImage}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:failureImage
+          @attr name com.rzico.weex:failureImage
         */
         public static final int GenericDraweeHierarchy_failureImage = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#failureImageScaleType}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#failureImageScaleType}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8276,31 +8274,31 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>centerCrop</code></td><td>6</td><td></td></tr>
 <tr><td><code>focusCrop</code></td><td>7</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:failureImageScaleType
+          @attr name com.rzico.weex:failureImageScaleType
         */
         public static final int GenericDraweeHierarchy_failureImageScaleType = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#overlayImage}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#overlayImage}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:overlayImage
+          @attr name com.rzico.weex:overlayImage
         */
         public static final int GenericDraweeHierarchy_overlayImage = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#placeholderImage}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#placeholderImage}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:placeholderImage
+          @attr name com.rzico.weex:placeholderImage
         */
         public static final int GenericDraweeHierarchy_placeholderImage = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#placeholderImageScaleType}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#placeholderImageScaleType}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8320,21 +8318,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>centerCrop</code></td><td>6</td><td></td></tr>
 <tr><td><code>focusCrop</code></td><td>7</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:placeholderImageScaleType
+          @attr name com.rzico.weex:placeholderImageScaleType
         */
         public static final int GenericDraweeHierarchy_placeholderImageScaleType = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#pressedStateOverlayImage}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#pressedStateOverlayImage}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:pressedStateOverlayImage
+          @attr name com.rzico.weex:pressedStateOverlayImage
         */
         public static final int GenericDraweeHierarchy_pressedStateOverlayImage = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#progressBarAutoRotateInterval}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#progressBarAutoRotateInterval}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8344,21 +8342,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:progressBarAutoRotateInterval
+          @attr name com.rzico.weex:progressBarAutoRotateInterval
         */
         public static final int GenericDraweeHierarchy_progressBarAutoRotateInterval = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#progressBarImage}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#progressBarImage}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:progressBarImage
+          @attr name com.rzico.weex:progressBarImage
         */
         public static final int GenericDraweeHierarchy_progressBarImage = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#progressBarImageScaleType}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#progressBarImageScaleType}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8378,21 +8376,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>centerCrop</code></td><td>6</td><td></td></tr>
 <tr><td><code>focusCrop</code></td><td>7</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:progressBarImageScaleType
+          @attr name com.rzico.weex:progressBarImageScaleType
         */
         public static final int GenericDraweeHierarchy_progressBarImageScaleType = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#retryImage}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#retryImage}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:retryImage
+          @attr name com.rzico.weex:retryImage
         */
         public static final int GenericDraweeHierarchy_retryImage = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#retryImageScaleType}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#retryImageScaleType}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8412,11 +8410,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <tr><td><code>centerCrop</code></td><td>6</td><td></td></tr>
 <tr><td><code>focusCrop</code></td><td>7</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:retryImageScaleType
+          @attr name com.rzico.weex:retryImageScaleType
         */
         public static final int GenericDraweeHierarchy_retryImageScaleType = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundAsCircle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundAsCircle}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8426,11 +8424,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundAsCircle
+          @attr name com.rzico.weex:roundAsCircle
         */
         public static final int GenericDraweeHierarchy_roundAsCircle = 15;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundBottomLeft}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundBottomLeft}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8440,11 +8438,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundBottomLeft
+          @attr name com.rzico.weex:roundBottomLeft
         */
         public static final int GenericDraweeHierarchy_roundBottomLeft = 20;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundBottomRight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundBottomRight}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8454,11 +8452,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundBottomRight
+          @attr name com.rzico.weex:roundBottomRight
         */
         public static final int GenericDraweeHierarchy_roundBottomRight = 19;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundTopLeft}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundTopLeft}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8468,11 +8466,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundTopLeft
+          @attr name com.rzico.weex:roundTopLeft
         */
         public static final int GenericDraweeHierarchy_roundTopLeft = 17;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundTopRight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundTopRight}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8482,11 +8480,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundTopRight
+          @attr name com.rzico.weex:roundTopRight
         */
         public static final int GenericDraweeHierarchy_roundTopRight = 18;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundWithOverlayColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundWithOverlayColor}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8497,11 +8495,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundWithOverlayColor
+          @attr name com.rzico.weex:roundWithOverlayColor
         */
         public static final int GenericDraweeHierarchy_roundWithOverlayColor = 21;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundedCornerRadius}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundedCornerRadius}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8513,11 +8511,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundedCornerRadius
+          @attr name com.rzico.weex:roundedCornerRadius
         */
         public static final int GenericDraweeHierarchy_roundedCornerRadius = 16;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundingBorderColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundingBorderColor}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8528,11 +8526,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundingBorderColor
+          @attr name com.rzico.weex:roundingBorderColor
         */
         public static final int GenericDraweeHierarchy_roundingBorderColor = 23;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundingBorderPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundingBorderPadding}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8544,11 +8542,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundingBorderPadding
+          @attr name com.rzico.weex:roundingBorderPadding
         */
         public static final int GenericDraweeHierarchy_roundingBorderPadding = 24;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#roundingBorderWidth}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#roundingBorderWidth}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8560,11 +8558,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:roundingBorderWidth
+          @attr name com.rzico.weex:roundingBorderWidth
         */
         public static final int GenericDraweeHierarchy_roundingBorderWidth = 22;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#viewAspectRatio}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#viewAspectRatio}
           attribute's value can be found in the {@link #GenericDraweeHierarchy} array.
 
 
@@ -8574,7 +8572,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:viewAspectRatio
+          @attr name com.rzico.weex:viewAspectRatio
         */
         public static final int GenericDraweeHierarchy_viewAspectRatio = 1;
         /** Attributes that can be used with a LinearLayoutCompat.
@@ -8588,10 +8586,10 @@ containing a value of this type.
            <tr><td><code>{@link #LinearLayoutCompat_android_gravity android:gravity}</code></td><td></td></tr>
            <tr><td><code>{@link #LinearLayoutCompat_android_orientation android:orientation}</code></td><td></td></tr>
            <tr><td><code>{@link #LinearLayoutCompat_android_weightSum android:weightSum}</code></td><td></td></tr>
-           <tr><td><code>{@link #LinearLayoutCompat_divider com.alibaba.weex:divider}</code></td><td></td></tr>
-           <tr><td><code>{@link #LinearLayoutCompat_dividerPadding com.alibaba.weex:dividerPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #LinearLayoutCompat_measureWithLargestChild com.alibaba.weex:measureWithLargestChild}</code></td><td></td></tr>
-           <tr><td><code>{@link #LinearLayoutCompat_showDividers com.alibaba.weex:showDividers}</code></td><td></td></tr>
+           <tr><td><code>{@link #LinearLayoutCompat_divider com.rzico.weex:divider}</code></td><td></td></tr>
+           <tr><td><code>{@link #LinearLayoutCompat_dividerPadding com.rzico.weex:dividerPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #LinearLayoutCompat_measureWithLargestChild com.rzico.weex:measureWithLargestChild}</code></td><td></td></tr>
+           <tr><td><code>{@link #LinearLayoutCompat_showDividers com.rzico.weex:showDividers}</code></td><td></td></tr>
            </table>
            @see #LinearLayoutCompat_android_baselineAligned
            @see #LinearLayoutCompat_android_baselineAlignedChildIndex
@@ -8639,17 +8637,17 @@ containing a value of this type.
         */
         public static final int LinearLayoutCompat_android_weightSum = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#divider}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#divider}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:divider
+          @attr name com.rzico.weex:divider
         */
         public static final int LinearLayoutCompat_divider = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#dividerPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#dividerPadding}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
@@ -8661,11 +8659,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:dividerPadding
+          @attr name com.rzico.weex:dividerPadding
         */
         public static final int LinearLayoutCompat_dividerPadding = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#measureWithLargestChild}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#measureWithLargestChild}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
@@ -8675,11 +8673,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:measureWithLargestChild
+          @attr name com.rzico.weex:measureWithLargestChild
         */
         public static final int LinearLayoutCompat_measureWithLargestChild = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#showDividers}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#showDividers}
           attribute's value can be found in the {@link #LinearLayoutCompat} array.
 
 
@@ -8694,7 +8692,7 @@ containing a value of this type.
 <tr><td><code>middle</code></td><td>2</td><td></td></tr>
 <tr><td><code>end</code></td><td>4</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:showDividers
+          @attr name com.rzico.weex:showDividers
         */
         public static final int LinearLayoutCompat_showDividers = 7;
         /** Attributes that can be used with a LinearLayoutCompat_Layout.
@@ -8833,9 +8831,9 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #MenuItem_actionLayout com.alibaba.weex:actionLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #MenuItem_actionProviderClass com.alibaba.weex:actionProviderClass}</code></td><td></td></tr>
-           <tr><td><code>{@link #MenuItem_actionViewClass com.alibaba.weex:actionViewClass}</code></td><td></td></tr>
+           <tr><td><code>{@link #MenuItem_actionLayout com.rzico.weex:actionLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #MenuItem_actionProviderClass com.rzico.weex:actionProviderClass}</code></td><td></td></tr>
+           <tr><td><code>{@link #MenuItem_actionViewClass com.rzico.weex:actionViewClass}</code></td><td></td></tr>
            <tr><td><code>{@link #MenuItem_android_alphabeticShortcut android:alphabeticShortcut}</code></td><td></td></tr>
            <tr><td><code>{@link #MenuItem_android_checkable android:checkable}</code></td><td></td></tr>
            <tr><td><code>{@link #MenuItem_android_checked android:checked}</code></td><td></td></tr>
@@ -8849,7 +8847,7 @@ containing a value of this type.
            <tr><td><code>{@link #MenuItem_android_title android:title}</code></td><td></td></tr>
            <tr><td><code>{@link #MenuItem_android_titleCondensed android:titleCondensed}</code></td><td></td></tr>
            <tr><td><code>{@link #MenuItem_android_visible android:visible}</code></td><td></td></tr>
-           <tr><td><code>{@link #MenuItem_showAsAction com.alibaba.weex:showAsAction}</code></td><td></td></tr>
+           <tr><td><code>{@link #MenuItem_showAsAction com.rzico.weex:showAsAction}</code></td><td></td></tr>
            </table>
            @see #MenuItem_actionLayout
            @see #MenuItem_actionProviderClass
@@ -8877,17 +8875,17 @@ containing a value of this type.
             0x7f0100f8
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionLayout}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:actionLayout
+          @attr name com.rzico.weex:actionLayout
         */
         public static final int MenuItem_actionLayout = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionProviderClass}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionProviderClass}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -8897,11 +8895,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:actionProviderClass
+          @attr name com.rzico.weex:actionProviderClass
         */
         public static final int MenuItem_actionProviderClass = 16;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#actionViewClass}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#actionViewClass}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -8911,7 +8909,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:actionViewClass
+          @attr name com.rzico.weex:actionViewClass
         */
         public static final int MenuItem_actionViewClass = 15;
         /**
@@ -8993,7 +8991,7 @@ containing a value of this type.
         */
         public static final int MenuItem_android_visible = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#showAsAction}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#showAsAction}
           attribute's value can be found in the {@link #MenuItem} array.
 
 
@@ -9009,7 +9007,7 @@ containing a value of this type.
 <tr><td><code>withText</code></td><td>4</td><td></td></tr>
 <tr><td><code>collapseActionView</code></td><td>8</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:showAsAction
+          @attr name com.rzico.weex:showAsAction
         */
         public static final int MenuItem_showAsAction = 13;
         /** Attributes that can be used with a MenuView.
@@ -9025,8 +9023,8 @@ containing a value of this type.
            <tr><td><code>{@link #MenuView_android_itemTextAppearance android:itemTextAppearance}</code></td><td></td></tr>
            <tr><td><code>{@link #MenuView_android_verticalDivider android:verticalDivider}</code></td><td></td></tr>
            <tr><td><code>{@link #MenuView_android_windowAnimationStyle android:windowAnimationStyle}</code></td><td></td></tr>
-           <tr><td><code>{@link #MenuView_preserveIconSpacing com.alibaba.weex:preserveIconSpacing}</code></td><td></td></tr>
-           <tr><td><code>{@link #MenuView_subMenuArrow com.alibaba.weex:subMenuArrow}</code></td><td></td></tr>
+           <tr><td><code>{@link #MenuView_preserveIconSpacing com.rzico.weex:preserveIconSpacing}</code></td><td></td></tr>
+           <tr><td><code>{@link #MenuView_subMenuArrow com.rzico.weex:subMenuArrow}</code></td><td></td></tr>
            </table>
            @see #MenuView_android_headerBackground
            @see #MenuView_android_horizontalDivider
@@ -9086,7 +9084,7 @@ containing a value of this type.
         */
         public static final int MenuView_android_windowAnimationStyle = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#preserveIconSpacing}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#preserveIconSpacing}
           attribute's value can be found in the {@link #MenuView} array.
 
 
@@ -9096,17 +9094,17 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:preserveIconSpacing
+          @attr name com.rzico.weex:preserveIconSpacing
         */
         public static final int MenuView_preserveIconSpacing = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#subMenuArrow}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#subMenuArrow}
           attribute's value can be found in the {@link #MenuView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:subMenuArrow
+          @attr name com.rzico.weex:subMenuArrow
         */
         public static final int MenuView_subMenuArrow = 8;
         /** Attributes that can be used with a NavigationView.
@@ -9118,13 +9116,13 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <tr><td><code>{@link #NavigationView_android_background android:background}</code></td><td></td></tr>
            <tr><td><code>{@link #NavigationView_android_fitsSystemWindows android:fitsSystemWindows}</code></td><td></td></tr>
            <tr><td><code>{@link #NavigationView_android_maxWidth android:maxWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #NavigationView_elevation com.alibaba.weex:elevation}</code></td><td></td></tr>
-           <tr><td><code>{@link #NavigationView_headerLayout com.alibaba.weex:headerLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #NavigationView_itemBackground com.alibaba.weex:itemBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #NavigationView_itemIconTint com.alibaba.weex:itemIconTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #NavigationView_itemTextAppearance com.alibaba.weex:itemTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #NavigationView_itemTextColor com.alibaba.weex:itemTextColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #NavigationView_menu com.alibaba.weex:menu}</code></td><td></td></tr>
+           <tr><td><code>{@link #NavigationView_elevation com.rzico.weex:elevation}</code></td><td></td></tr>
+           <tr><td><code>{@link #NavigationView_headerLayout com.rzico.weex:headerLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #NavigationView_itemBackground com.rzico.weex:itemBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #NavigationView_itemIconTint com.rzico.weex:itemIconTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #NavigationView_itemTextAppearance com.rzico.weex:itemTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #NavigationView_itemTextColor com.rzico.weex:itemTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #NavigationView_menu com.rzico.weex:menu}</code></td><td></td></tr>
            </table>
            @see #NavigationView_android_background
            @see #NavigationView_android_fitsSystemWindows
@@ -9161,7 +9159,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int NavigationView_android_maxWidth = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#elevation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#elevation}
           attribute's value can be found in the {@link #NavigationView} array.
 
 
@@ -9173,31 +9171,31 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:elevation
+          @attr name com.rzico.weex:elevation
         */
         public static final int NavigationView_elevation = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#headerLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#headerLayout}
           attribute's value can be found in the {@link #NavigationView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:headerLayout
+          @attr name com.rzico.weex:headerLayout
         */
         public static final int NavigationView_headerLayout = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemBackground}
           attribute's value can be found in the {@link #NavigationView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:itemBackground
+          @attr name com.rzico.weex:itemBackground
         */
         public static final int NavigationView_itemBackground = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemIconTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemIconTint}
           attribute's value can be found in the {@link #NavigationView} array.
 
 
@@ -9208,21 +9206,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:itemIconTint
+          @attr name com.rzico.weex:itemIconTint
         */
         public static final int NavigationView_itemIconTint = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemTextAppearance}
           attribute's value can be found in the {@link #NavigationView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:itemTextAppearance
+          @attr name com.rzico.weex:itemTextAppearance
         */
         public static final int NavigationView_itemTextAppearance = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#itemTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#itemTextColor}
           attribute's value can be found in the {@link #NavigationView} array.
 
 
@@ -9233,17 +9231,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:itemTextColor
+          @attr name com.rzico.weex:itemTextColor
         */
         public static final int NavigationView_itemTextColor = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#menu}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#menu}
           attribute's value can be found in the {@link #NavigationView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:menu
+          @attr name com.rzico.weex:menu
         */
         public static final int NavigationView_menu = 4;
         /** Attributes that can be used with a PopupWindow.
@@ -9254,7 +9252,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #PopupWindow_android_popupAnimationStyle android:popupAnimationStyle}</code></td><td></td></tr>
            <tr><td><code>{@link #PopupWindow_android_popupBackground android:popupBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #PopupWindow_overlapAnchor com.alibaba.weex:overlapAnchor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PopupWindow_overlapAnchor com.rzico.weex:overlapAnchor}</code></td><td></td></tr>
            </table>
            @see #PopupWindow_android_popupAnimationStyle
            @see #PopupWindow_android_popupBackground
@@ -9276,7 +9274,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int PopupWindow_android_popupBackground = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#overlapAnchor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#overlapAnchor}
           attribute's value can be found in the {@link #PopupWindow} array.
 
 
@@ -9286,7 +9284,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:overlapAnchor
+          @attr name com.rzico.weex:overlapAnchor
         */
         public static final int PopupWindow_overlapAnchor = 2;
         /** Attributes that can be used with a PopupWindowBackgroundState.
@@ -9295,7 +9293,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #PopupWindowBackgroundState_state_above_anchor com.alibaba.weex:state_above_anchor}</code></td><td></td></tr>
+           <tr><td><code>{@link #PopupWindowBackgroundState_state_above_anchor com.rzico.weex:state_above_anchor}</code></td><td></td></tr>
            </table>
            @see #PopupWindowBackgroundState_state_above_anchor
          */
@@ -9303,7 +9301,7 @@ containing a value of this type.
             0x7f010102
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#state_above_anchor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#state_above_anchor}
           attribute's value can be found in the {@link #PopupWindowBackgroundState} array.
 
 
@@ -9313,7 +9311,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:state_above_anchor
+          @attr name com.rzico.weex:state_above_anchor
         */
         public static final int PopupWindowBackgroundState_state_above_anchor = 0;
         /** Attributes that can be used with a RecycleListView.
@@ -9322,8 +9320,8 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #RecycleListView_paddingBottomNoButtons com.alibaba.weex:paddingBottomNoButtons}</code></td><td></td></tr>
-           <tr><td><code>{@link #RecycleListView_paddingTopNoTitle com.alibaba.weex:paddingTopNoTitle}</code></td><td></td></tr>
+           <tr><td><code>{@link #RecycleListView_paddingBottomNoButtons com.rzico.weex:paddingBottomNoButtons}</code></td><td></td></tr>
+           <tr><td><code>{@link #RecycleListView_paddingTopNoTitle com.rzico.weex:paddingTopNoTitle}</code></td><td></td></tr>
            </table>
            @see #RecycleListView_paddingBottomNoButtons
            @see #RecycleListView_paddingTopNoTitle
@@ -9332,7 +9330,7 @@ containing a value of this type.
             0x7f010103, 0x7f010104
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#paddingBottomNoButtons}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#paddingBottomNoButtons}
           attribute's value can be found in the {@link #RecycleListView} array.
 
 
@@ -9344,11 +9342,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:paddingBottomNoButtons
+          @attr name com.rzico.weex:paddingBottomNoButtons
         */
         public static final int RecycleListView_paddingBottomNoButtons = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#paddingTopNoTitle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#paddingTopNoTitle}
           attribute's value can be found in the {@link #RecycleListView} array.
 
 
@@ -9360,7 +9358,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:paddingTopNoTitle
+          @attr name com.rzico.weex:paddingTopNoTitle
         */
         public static final int RecycleListView_paddingTopNoTitle = 1;
         /** Attributes that can be used with a RecyclerView.
@@ -9371,10 +9369,10 @@ containing a value of this type.
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #RecyclerView_android_descendantFocusability android:descendantFocusability}</code></td><td></td></tr>
            <tr><td><code>{@link #RecyclerView_android_orientation android:orientation}</code></td><td></td></tr>
-           <tr><td><code>{@link #RecyclerView_layoutManager com.alibaba.weex:layoutManager}</code></td><td></td></tr>
-           <tr><td><code>{@link #RecyclerView_reverseLayout com.alibaba.weex:reverseLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #RecyclerView_spanCount com.alibaba.weex:spanCount}</code></td><td></td></tr>
-           <tr><td><code>{@link #RecyclerView_stackFromEnd com.alibaba.weex:stackFromEnd}</code></td><td></td></tr>
+           <tr><td><code>{@link #RecyclerView_layoutManager com.rzico.weex:layoutManager}</code></td><td></td></tr>
+           <tr><td><code>{@link #RecyclerView_reverseLayout com.rzico.weex:reverseLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #RecyclerView_spanCount com.rzico.weex:spanCount}</code></td><td></td></tr>
+           <tr><td><code>{@link #RecyclerView_stackFromEnd com.rzico.weex:stackFromEnd}</code></td><td></td></tr>
            </table>
            @see #RecyclerView_android_descendantFocusability
            @see #RecyclerView_android_orientation
@@ -9400,7 +9398,7 @@ containing a value of this type.
         */
         public static final int RecyclerView_android_orientation = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layoutManager}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layoutManager}
           attribute's value can be found in the {@link #RecyclerView} array.
 
 
@@ -9410,11 +9408,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:layoutManager
+          @attr name com.rzico.weex:layoutManager
         */
         public static final int RecyclerView_layoutManager = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#reverseLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#reverseLayout}
           attribute's value can be found in the {@link #RecyclerView} array.
 
 
@@ -9424,11 +9422,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:reverseLayout
+          @attr name com.rzico.weex:reverseLayout
         */
         public static final int RecyclerView_reverseLayout = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#spanCount}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#spanCount}
           attribute's value can be found in the {@link #RecyclerView} array.
 
 
@@ -9438,11 +9436,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:spanCount
+          @attr name com.rzico.weex:spanCount
         */
         public static final int RecyclerView_spanCount = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#stackFromEnd}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#stackFromEnd}
           attribute's value can be found in the {@link #RecyclerView} array.
 
 
@@ -9452,7 +9450,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:stackFromEnd
+          @attr name com.rzico.weex:stackFromEnd
         */
         public static final int RecyclerView_stackFromEnd = 5;
         /** Attributes that can be used with a ScrimInsetsFrameLayout.
@@ -9461,7 +9459,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ScrimInsetsFrameLayout_insetForeground com.alibaba.weex:insetForeground}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScrimInsetsFrameLayout_insetForeground com.rzico.weex:insetForeground}</code></td><td></td></tr>
            </table>
            @see #ScrimInsetsFrameLayout_insetForeground
          */
@@ -9469,7 +9467,7 @@ containing a value of this type.
             0x7f010109
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#insetForeground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#insetForeground}
           attribute's value can be found in the {@link #ScrimInsetsFrameLayout} array.
 
 
@@ -9477,7 +9475,7 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          @attr name com.alibaba.weex:insetForeground
+          @attr name com.rzico.weex:insetForeground
         */
         public static final int ScrimInsetsFrameLayout_insetForeground = 0;
         /** Attributes that can be used with a ScrollingViewBehavior_Layout.
@@ -9486,7 +9484,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ScrollingViewBehavior_Layout_behavior_overlapTop com.alibaba.weex:behavior_overlapTop}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScrollingViewBehavior_Layout_behavior_overlapTop com.rzico.weex:behavior_overlapTop}</code></td><td></td></tr>
            </table>
            @see #ScrollingViewBehavior_Layout_behavior_overlapTop
          */
@@ -9494,7 +9492,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
             0x7f01010a
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#behavior_overlapTop}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#behavior_overlapTop}
           attribute's value can be found in the {@link #ScrollingViewBehavior_Layout} array.
 
 
@@ -9506,7 +9504,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:behavior_overlapTop
+          @attr name com.rzico.weex:behavior_overlapTop
         */
         public static final int ScrollingViewBehavior_Layout_behavior_overlapTop = 0;
         /** Attributes that can be used with a SearchView.
@@ -9519,19 +9517,19 @@ containing a value of this type.
            <tr><td><code>{@link #SearchView_android_imeOptions android:imeOptions}</code></td><td></td></tr>
            <tr><td><code>{@link #SearchView_android_inputType android:inputType}</code></td><td></td></tr>
            <tr><td><code>{@link #SearchView_android_maxWidth android:maxWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_closeIcon com.alibaba.weex:closeIcon}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_commitIcon com.alibaba.weex:commitIcon}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_defaultQueryHint com.alibaba.weex:defaultQueryHint}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_goIcon com.alibaba.weex:goIcon}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_iconifiedByDefault com.alibaba.weex:iconifiedByDefault}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_layout com.alibaba.weex:layout}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_queryBackground com.alibaba.weex:queryBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_queryHint com.alibaba.weex:queryHint}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_searchHintIcon com.alibaba.weex:searchHintIcon}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_searchIcon com.alibaba.weex:searchIcon}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_submitBackground com.alibaba.weex:submitBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_suggestionRowLayout com.alibaba.weex:suggestionRowLayout}</code></td><td></td></tr>
-           <tr><td><code>{@link #SearchView_voiceIcon com.alibaba.weex:voiceIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_closeIcon com.rzico.weex:closeIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_commitIcon com.rzico.weex:commitIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_defaultQueryHint com.rzico.weex:defaultQueryHint}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_goIcon com.rzico.weex:goIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_iconifiedByDefault com.rzico.weex:iconifiedByDefault}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_layout com.rzico.weex:layout}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_queryBackground com.rzico.weex:queryBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_queryHint com.rzico.weex:queryHint}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_searchHintIcon com.rzico.weex:searchHintIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_searchIcon com.rzico.weex:searchIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_submitBackground com.rzico.weex:submitBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_suggestionRowLayout com.rzico.weex:suggestionRowLayout}</code></td><td></td></tr>
+           <tr><td><code>{@link #SearchView_voiceIcon com.rzico.weex:voiceIcon}</code></td><td></td></tr>
            </table>
            @see #SearchView_android_focusable
            @see #SearchView_android_imeOptions
@@ -9583,27 +9581,27 @@ containing a value of this type.
         */
         public static final int SearchView_android_maxWidth = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#closeIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#closeIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:closeIcon
+          @attr name com.rzico.weex:closeIcon
         */
         public static final int SearchView_closeIcon = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#commitIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#commitIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:commitIcon
+          @attr name com.rzico.weex:commitIcon
         */
         public static final int SearchView_commitIcon = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#defaultQueryHint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#defaultQueryHint}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -9613,21 +9611,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:defaultQueryHint
+          @attr name com.rzico.weex:defaultQueryHint
         */
         public static final int SearchView_defaultQueryHint = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#goIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#goIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:goIcon
+          @attr name com.rzico.weex:goIcon
         */
         public static final int SearchView_goIcon = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#iconifiedByDefault}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#iconifiedByDefault}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -9637,31 +9635,31 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:iconifiedByDefault
+          @attr name com.rzico.weex:iconifiedByDefault
         */
         public static final int SearchView_iconifiedByDefault = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#layout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#layout}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:layout
+          @attr name com.rzico.weex:layout
         */
         public static final int SearchView_layout = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#queryBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#queryBackground}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:queryBackground
+          @attr name com.rzico.weex:queryBackground
         */
         public static final int SearchView_queryBackground = 15;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#queryHint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#queryHint}
           attribute's value can be found in the {@link #SearchView} array.
 
 
@@ -9671,57 +9669,57 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:queryHint
+          @attr name com.rzico.weex:queryHint
         */
         public static final int SearchView_queryHint = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#searchHintIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#searchHintIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:searchHintIcon
+          @attr name com.rzico.weex:searchHintIcon
         */
         public static final int SearchView_searchHintIcon = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#searchIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#searchIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:searchIcon
+          @attr name com.rzico.weex:searchIcon
         */
         public static final int SearchView_searchIcon = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#submitBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#submitBackground}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:submitBackground
+          @attr name com.rzico.weex:submitBackground
         */
         public static final int SearchView_submitBackground = 16;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#suggestionRowLayout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#suggestionRowLayout}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:suggestionRowLayout
+          @attr name com.rzico.weex:suggestionRowLayout
         */
         public static final int SearchView_suggestionRowLayout = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#voiceIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#voiceIcon}
           attribute's value can be found in the {@link #SearchView} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:voiceIcon
+          @attr name com.rzico.weex:voiceIcon
         */
         public static final int SearchView_voiceIcon = 12;
         /** Attributes that can be used with a SnackbarLayout.
@@ -9731,8 +9729,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #SnackbarLayout_android_maxWidth android:maxWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #SnackbarLayout_elevation com.alibaba.weex:elevation}</code></td><td></td></tr>
-           <tr><td><code>{@link #SnackbarLayout_maxActionInlineWidth com.alibaba.weex:maxActionInlineWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #SnackbarLayout_elevation com.rzico.weex:elevation}</code></td><td></td></tr>
+           <tr><td><code>{@link #SnackbarLayout_maxActionInlineWidth com.rzico.weex:maxActionInlineWidth}</code></td><td></td></tr>
            </table>
            @see #SnackbarLayout_android_maxWidth
            @see #SnackbarLayout_elevation
@@ -9748,7 +9746,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SnackbarLayout_android_maxWidth = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#elevation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#elevation}
           attribute's value can be found in the {@link #SnackbarLayout} array.
 
 
@@ -9760,11 +9758,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:elevation
+          @attr name com.rzico.weex:elevation
         */
         public static final int SnackbarLayout_elevation = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#maxActionInlineWidth}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#maxActionInlineWidth}
           attribute's value can be found in the {@link #SnackbarLayout} array.
 
 
@@ -9776,7 +9774,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:maxActionInlineWidth
+          @attr name com.rzico.weex:maxActionInlineWidth
         */
         public static final int SnackbarLayout_maxActionInlineWidth = 2;
         /** Attributes that can be used with a Spinner.
@@ -9789,7 +9787,7 @@ containing a value of this type.
            <tr><td><code>{@link #Spinner_android_entries android:entries}</code></td><td></td></tr>
            <tr><td><code>{@link #Spinner_android_popupBackground android:popupBackground}</code></td><td></td></tr>
            <tr><td><code>{@link #Spinner_android_prompt android:prompt}</code></td><td></td></tr>
-           <tr><td><code>{@link #Spinner_popupTheme com.alibaba.weex:popupTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #Spinner_popupTheme com.rzico.weex:popupTheme}</code></td><td></td></tr>
            </table>
            @see #Spinner_android_dropDownWidth
            @see #Spinner_android_entries
@@ -9826,13 +9824,13 @@ containing a value of this type.
         */
         public static final int Spinner_android_prompt = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#popupTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#popupTheme}
           attribute's value can be found in the {@link #Spinner} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:popupTheme
+          @attr name com.rzico.weex:popupTheme
         */
         public static final int Spinner_popupTheme = 4;
         /** Attributes that can be used with a SwitchCompat.
@@ -9844,17 +9842,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <tr><td><code>{@link #SwitchCompat_android_textOff android:textOff}</code></td><td></td></tr>
            <tr><td><code>{@link #SwitchCompat_android_textOn android:textOn}</code></td><td></td></tr>
            <tr><td><code>{@link #SwitchCompat_android_thumb android:thumb}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_showText com.alibaba.weex:showText}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_splitTrack com.alibaba.weex:splitTrack}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_switchMinWidth com.alibaba.weex:switchMinWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_switchPadding com.alibaba.weex:switchPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_switchTextAppearance com.alibaba.weex:switchTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_thumbTextPadding com.alibaba.weex:thumbTextPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_thumbTint com.alibaba.weex:thumbTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_thumbTintMode com.alibaba.weex:thumbTintMode}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_track com.alibaba.weex:track}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_trackTint com.alibaba.weex:trackTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #SwitchCompat_trackTintMode com.alibaba.weex:trackTintMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_showText com.rzico.weex:showText}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_splitTrack com.rzico.weex:splitTrack}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_switchMinWidth com.rzico.weex:switchMinWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_switchPadding com.rzico.weex:switchPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_switchTextAppearance com.rzico.weex:switchTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_thumbTextPadding com.rzico.weex:thumbTextPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_thumbTint com.rzico.weex:thumbTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_thumbTintMode com.rzico.weex:thumbTintMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_track com.rzico.weex:track}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_trackTint com.rzico.weex:trackTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #SwitchCompat_trackTintMode com.rzico.weex:trackTintMode}</code></td><td></td></tr>
            </table>
            @see #SwitchCompat_android_textOff
            @see #SwitchCompat_android_textOn
@@ -9896,7 +9894,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int SwitchCompat_android_thumb = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#showText}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#showText}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -9906,11 +9904,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:showText
+          @attr name com.rzico.weex:showText
         */
         public static final int SwitchCompat_showText = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#splitTrack}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#splitTrack}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -9920,11 +9918,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:splitTrack
+          @attr name com.rzico.weex:splitTrack
         */
         public static final int SwitchCompat_splitTrack = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#switchMinWidth}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#switchMinWidth}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -9936,11 +9934,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:switchMinWidth
+          @attr name com.rzico.weex:switchMinWidth
         */
         public static final int SwitchCompat_switchMinWidth = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#switchPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#switchPadding}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -9952,21 +9950,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:switchPadding
+          @attr name com.rzico.weex:switchPadding
         */
         public static final int SwitchCompat_switchPadding = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#switchTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#switchTextAppearance}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:switchTextAppearance
+          @attr name com.rzico.weex:switchTextAppearance
         */
         public static final int SwitchCompat_switchTextAppearance = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#thumbTextPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#thumbTextPadding}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -9978,11 +9976,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:thumbTextPadding
+          @attr name com.rzico.weex:thumbTextPadding
         */
         public static final int SwitchCompat_thumbTextPadding = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#thumbTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#thumbTint}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -9993,11 +9991,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:thumbTint
+          @attr name com.rzico.weex:thumbTint
         */
         public static final int SwitchCompat_thumbTint = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#thumbTintMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#thumbTintMode}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -10014,21 +10012,21 @@ containing a value of this type.
 <tr><td><code>screen</code></td><td>15</td><td></td></tr>
 <tr><td><code>add</code></td><td>16</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:thumbTintMode
+          @attr name com.rzico.weex:thumbTintMode
         */
         public static final int SwitchCompat_thumbTintMode = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#track}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#track}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:track
+          @attr name com.rzico.weex:track
         */
         public static final int SwitchCompat_track = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#trackTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#trackTint}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -10039,11 +10037,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:trackTint
+          @attr name com.rzico.weex:trackTint
         */
         public static final int SwitchCompat_trackTint = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#trackTintMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#trackTintMode}
           attribute's value can be found in the {@link #SwitchCompat} array.
 
 
@@ -10060,7 +10058,7 @@ containing a value of this type.
 <tr><td><code>screen</code></td><td>15</td><td></td></tr>
 <tr><td><code>add</code></td><td>16</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:trackTintMode
+          @attr name com.rzico.weex:trackTintMode
         */
         public static final int SwitchCompat_trackTintMode = 7;
         /** Attributes that can be used with a TabItem.
@@ -10104,22 +10102,22 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #TabLayout_tabBackground com.alibaba.weex:tabBackground}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabContentStart com.alibaba.weex:tabContentStart}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabGravity com.alibaba.weex:tabGravity}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabIndicatorColor com.alibaba.weex:tabIndicatorColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabIndicatorHeight com.alibaba.weex:tabIndicatorHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabMaxWidth com.alibaba.weex:tabMaxWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabMinWidth com.alibaba.weex:tabMinWidth}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabMode com.alibaba.weex:tabMode}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabPadding com.alibaba.weex:tabPadding}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabPaddingBottom com.alibaba.weex:tabPaddingBottom}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabPaddingEnd com.alibaba.weex:tabPaddingEnd}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabPaddingStart com.alibaba.weex:tabPaddingStart}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabPaddingTop com.alibaba.weex:tabPaddingTop}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabSelectedTextColor com.alibaba.weex:tabSelectedTextColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabTextAppearance com.alibaba.weex:tabTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #TabLayout_tabTextColor com.alibaba.weex:tabTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabBackground com.rzico.weex:tabBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabContentStart com.rzico.weex:tabContentStart}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabGravity com.rzico.weex:tabGravity}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabIndicatorColor com.rzico.weex:tabIndicatorColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabIndicatorHeight com.rzico.weex:tabIndicatorHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabMaxWidth com.rzico.weex:tabMaxWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabMinWidth com.rzico.weex:tabMinWidth}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabMode com.rzico.weex:tabMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabPadding com.rzico.weex:tabPadding}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabPaddingBottom com.rzico.weex:tabPaddingBottom}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabPaddingEnd com.rzico.weex:tabPaddingEnd}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabPaddingStart com.rzico.weex:tabPaddingStart}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabPaddingTop com.rzico.weex:tabPaddingTop}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabSelectedTextColor com.rzico.weex:tabSelectedTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabTextAppearance com.rzico.weex:tabTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #TabLayout_tabTextColor com.rzico.weex:tabTextColor}</code></td><td></td></tr>
            </table>
            @see #TabLayout_tabBackground
            @see #TabLayout_tabContentStart
@@ -10145,17 +10143,17 @@ containing a value of this type.
             0x7f010130, 0x7f010131, 0x7f010132, 0x7f010133
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabBackground}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabBackground}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:tabBackground
+          @attr name com.rzico.weex:tabBackground
         */
         public static final int TabLayout_tabBackground = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabContentStart}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabContentStart}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10167,11 +10165,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabContentStart
+          @attr name com.rzico.weex:tabContentStart
         */
         public static final int TabLayout_tabContentStart = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabGravity}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabGravity}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10184,11 +10182,11 @@ containing a value of this type.
 <tr><td><code>fill</code></td><td>0</td><td></td></tr>
 <tr><td><code>center</code></td><td>1</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:tabGravity
+          @attr name com.rzico.weex:tabGravity
         */
         public static final int TabLayout_tabGravity = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabIndicatorColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabIndicatorColor}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10199,11 +10197,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabIndicatorColor
+          @attr name com.rzico.weex:tabIndicatorColor
         */
         public static final int TabLayout_tabIndicatorColor = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabIndicatorHeight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabIndicatorHeight}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10215,11 +10213,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabIndicatorHeight
+          @attr name com.rzico.weex:tabIndicatorHeight
         */
         public static final int TabLayout_tabIndicatorHeight = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabMaxWidth}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabMaxWidth}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10231,11 +10229,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabMaxWidth
+          @attr name com.rzico.weex:tabMaxWidth
         */
         public static final int TabLayout_tabMaxWidth = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabMinWidth}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabMinWidth}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10247,11 +10245,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabMinWidth
+          @attr name com.rzico.weex:tabMinWidth
         */
         public static final int TabLayout_tabMinWidth = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabMode}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10264,11 +10262,11 @@ containing a value of this type.
 <tr><td><code>scrollable</code></td><td>0</td><td></td></tr>
 <tr><td><code>fixed</code></td><td>1</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:tabMode
+          @attr name com.rzico.weex:tabMode
         */
         public static final int TabLayout_tabMode = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabPadding}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabPadding}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10280,11 +10278,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabPadding
+          @attr name com.rzico.weex:tabPadding
         */
         public static final int TabLayout_tabPadding = 15;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabPaddingBottom}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabPaddingBottom}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10296,11 +10294,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabPaddingBottom
+          @attr name com.rzico.weex:tabPaddingBottom
         */
         public static final int TabLayout_tabPaddingBottom = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabPaddingEnd}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabPaddingEnd}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10312,11 +10310,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabPaddingEnd
+          @attr name com.rzico.weex:tabPaddingEnd
         */
         public static final int TabLayout_tabPaddingEnd = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabPaddingStart}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabPaddingStart}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10328,11 +10326,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabPaddingStart
+          @attr name com.rzico.weex:tabPaddingStart
         */
         public static final int TabLayout_tabPaddingStart = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabPaddingTop}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabPaddingTop}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10344,11 +10342,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabPaddingTop
+          @attr name com.rzico.weex:tabPaddingTop
         */
         public static final int TabLayout_tabPaddingTop = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabSelectedTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabSelectedTextColor}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10359,21 +10357,21 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabSelectedTextColor
+          @attr name com.rzico.weex:tabSelectedTextColor
         */
         public static final int TabLayout_tabSelectedTextColor = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabTextAppearance}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:tabTextAppearance
+          @attr name com.rzico.weex:tabTextAppearance
         */
         public static final int TabLayout_tabTextAppearance = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#tabTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#tabTextColor}
           attribute's value can be found in the {@link #TabLayout} array.
 
 
@@ -10384,7 +10382,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:tabTextColor
+          @attr name com.rzico.weex:tabTextColor
         */
         public static final int TabLayout_tabTextColor = 9;
         /** Attributes that can be used with a TextAppearance.
@@ -10402,7 +10400,7 @@ containing a value of this type.
            <tr><td><code>{@link #TextAppearance_android_textSize android:textSize}</code></td><td></td></tr>
            <tr><td><code>{@link #TextAppearance_android_textStyle android:textStyle}</code></td><td></td></tr>
            <tr><td><code>{@link #TextAppearance_android_typeface android:typeface}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextAppearance_textAllCaps com.alibaba.weex:textAllCaps}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextAppearance_textAllCaps com.rzico.weex:textAllCaps}</code></td><td></td></tr>
            </table>
            @see #TextAppearance_android_shadowColor
            @see #TextAppearance_android_shadowDx
@@ -10475,14 +10473,14 @@ containing a value of this type.
         */
         public static final int TextAppearance_android_typeface = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#textAllCaps}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#textAllCaps}
           attribute's value can be found in the {@link #TextAppearance} array.
 
 
           <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-          @attr name com.alibaba.weex:textAllCaps
+          @attr name com.rzico.weex:textAllCaps
         */
         public static final int TextAppearance_textAllCaps = 9;
         /** Attributes that can be used with a TextInputLayout.
@@ -10493,20 +10491,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #TextInputLayout_android_hint android:hint}</code></td><td></td></tr>
            <tr><td><code>{@link #TextInputLayout_android_textColorHint android:textColorHint}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_counterEnabled com.alibaba.weex:counterEnabled}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_counterMaxLength com.alibaba.weex:counterMaxLength}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_counterOverflowTextAppearance com.alibaba.weex:counterOverflowTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_counterTextAppearance com.alibaba.weex:counterTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_errorEnabled com.alibaba.weex:errorEnabled}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_errorTextAppearance com.alibaba.weex:errorTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_hintAnimationEnabled com.alibaba.weex:hintAnimationEnabled}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_hintEnabled com.alibaba.weex:hintEnabled}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_hintTextAppearance com.alibaba.weex:hintTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_passwordToggleContentDescription com.alibaba.weex:passwordToggleContentDescription}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_passwordToggleDrawable com.alibaba.weex:passwordToggleDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_passwordToggleEnabled com.alibaba.weex:passwordToggleEnabled}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_passwordToggleTint com.alibaba.weex:passwordToggleTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #TextInputLayout_passwordToggleTintMode com.alibaba.weex:passwordToggleTintMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_counterEnabled com.rzico.weex:counterEnabled}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_counterMaxLength com.rzico.weex:counterMaxLength}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_counterOverflowTextAppearance com.rzico.weex:counterOverflowTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_counterTextAppearance com.rzico.weex:counterTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_errorEnabled com.rzico.weex:errorEnabled}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_errorTextAppearance com.rzico.weex:errorTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_hintAnimationEnabled com.rzico.weex:hintAnimationEnabled}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_hintEnabled com.rzico.weex:hintEnabled}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_hintTextAppearance com.rzico.weex:hintTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_passwordToggleContentDescription com.rzico.weex:passwordToggleContentDescription}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_passwordToggleDrawable com.rzico.weex:passwordToggleDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_passwordToggleEnabled com.rzico.weex:passwordToggleEnabled}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_passwordToggleTint com.rzico.weex:passwordToggleTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #TextInputLayout_passwordToggleTintMode com.rzico.weex:passwordToggleTintMode}</code></td><td></td></tr>
            </table>
            @see #TextInputLayout_android_hint
            @see #TextInputLayout_android_textColorHint
@@ -10544,7 +10542,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int TextInputLayout_android_textColorHint = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#counterEnabled}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#counterEnabled}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10554,11 +10552,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:counterEnabled
+          @attr name com.rzico.weex:counterEnabled
         */
         public static final int TextInputLayout_counterEnabled = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#counterMaxLength}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#counterMaxLength}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10568,31 +10566,31 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:counterMaxLength
+          @attr name com.rzico.weex:counterMaxLength
         */
         public static final int TextInputLayout_counterMaxLength = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#counterOverflowTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#counterOverflowTextAppearance}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:counterOverflowTextAppearance
+          @attr name com.rzico.weex:counterOverflowTextAppearance
         */
         public static final int TextInputLayout_counterOverflowTextAppearance = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#counterTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#counterTextAppearance}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:counterTextAppearance
+          @attr name com.rzico.weex:counterTextAppearance
         */
         public static final int TextInputLayout_counterTextAppearance = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#errorEnabled}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#errorEnabled}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10602,21 +10600,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:errorEnabled
+          @attr name com.rzico.weex:errorEnabled
         */
         public static final int TextInputLayout_errorEnabled = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#errorTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#errorTextAppearance}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:errorTextAppearance
+          @attr name com.rzico.weex:errorTextAppearance
         */
         public static final int TextInputLayout_errorTextAppearance = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#hintAnimationEnabled}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#hintAnimationEnabled}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10626,11 +10624,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:hintAnimationEnabled
+          @attr name com.rzico.weex:hintAnimationEnabled
         */
         public static final int TextInputLayout_hintAnimationEnabled = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#hintEnabled}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#hintEnabled}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10640,21 +10638,21 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:hintEnabled
+          @attr name com.rzico.weex:hintEnabled
         */
         public static final int TextInputLayout_hintEnabled = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#hintTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#hintTextAppearance}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:hintTextAppearance
+          @attr name com.rzico.weex:hintTextAppearance
         */
         public static final int TextInputLayout_hintTextAppearance = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#passwordToggleContentDescription}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#passwordToggleContentDescription}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10664,21 +10662,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:passwordToggleContentDescription
+          @attr name com.rzico.weex:passwordToggleContentDescription
         */
         public static final int TextInputLayout_passwordToggleContentDescription = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#passwordToggleDrawable}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#passwordToggleDrawable}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:passwordToggleDrawable
+          @attr name com.rzico.weex:passwordToggleDrawable
         */
         public static final int TextInputLayout_passwordToggleDrawable = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#passwordToggleEnabled}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#passwordToggleEnabled}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10688,11 +10686,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:passwordToggleEnabled
+          @attr name com.rzico.weex:passwordToggleEnabled
         */
         public static final int TextInputLayout_passwordToggleEnabled = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#passwordToggleTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#passwordToggleTint}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10703,11 +10701,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:passwordToggleTint
+          @attr name com.rzico.weex:passwordToggleTint
         */
         public static final int TextInputLayout_passwordToggleTint = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#passwordToggleTintMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#passwordToggleTintMode}
           attribute's value can be found in the {@link #TextInputLayout} array.
 
 
@@ -10723,7 +10721,7 @@ containing a value of this type.
 <tr><td><code>multiply</code></td><td>14</td><td></td></tr>
 <tr><td><code>screen</code></td><td>15</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:passwordToggleTintMode
+          @attr name com.rzico.weex:passwordToggleTintMode
         */
         public static final int TextInputLayout_passwordToggleTintMode = 15;
         /** Attributes that can be used with a Toolbar.
@@ -10734,33 +10732,33 @@ containing a value of this type.
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #Toolbar_android_gravity android:gravity}</code></td><td></td></tr>
            <tr><td><code>{@link #Toolbar_android_minHeight android:minHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_buttonGravity com.alibaba.weex:buttonGravity}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_collapseContentDescription com.alibaba.weex:collapseContentDescription}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_collapseIcon com.alibaba.weex:collapseIcon}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_contentInsetEnd com.alibaba.weex:contentInsetEnd}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_contentInsetEndWithActions com.alibaba.weex:contentInsetEndWithActions}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_contentInsetLeft com.alibaba.weex:contentInsetLeft}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_contentInsetRight com.alibaba.weex:contentInsetRight}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_contentInsetStart com.alibaba.weex:contentInsetStart}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_contentInsetStartWithNavigation com.alibaba.weex:contentInsetStartWithNavigation}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_logo com.alibaba.weex:logo}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_logoDescription com.alibaba.weex:logoDescription}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_maxButtonHeight com.alibaba.weex:maxButtonHeight}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_navigationContentDescription com.alibaba.weex:navigationContentDescription}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_navigationIcon com.alibaba.weex:navigationIcon}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_popupTheme com.alibaba.weex:popupTheme}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_subtitle com.alibaba.weex:subtitle}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_subtitleTextAppearance com.alibaba.weex:subtitleTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_subtitleTextColor com.alibaba.weex:subtitleTextColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_title com.alibaba.weex:title}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleMargin com.alibaba.weex:titleMargin}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleMarginBottom com.alibaba.weex:titleMarginBottom}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleMarginEnd com.alibaba.weex:titleMarginEnd}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleMarginStart com.alibaba.weex:titleMarginStart}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleMarginTop com.alibaba.weex:titleMarginTop}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleMargins com.alibaba.weex:titleMargins}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleTextAppearance com.alibaba.weex:titleTextAppearance}</code></td><td></td></tr>
-           <tr><td><code>{@link #Toolbar_titleTextColor com.alibaba.weex:titleTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_buttonGravity com.rzico.weex:buttonGravity}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_collapseContentDescription com.rzico.weex:collapseContentDescription}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_collapseIcon com.rzico.weex:collapseIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_contentInsetEnd com.rzico.weex:contentInsetEnd}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_contentInsetEndWithActions com.rzico.weex:contentInsetEndWithActions}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_contentInsetLeft com.rzico.weex:contentInsetLeft}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_contentInsetRight com.rzico.weex:contentInsetRight}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_contentInsetStart com.rzico.weex:contentInsetStart}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_contentInsetStartWithNavigation com.rzico.weex:contentInsetStartWithNavigation}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_logo com.rzico.weex:logo}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_logoDescription com.rzico.weex:logoDescription}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_maxButtonHeight com.rzico.weex:maxButtonHeight}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_navigationContentDescription com.rzico.weex:navigationContentDescription}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_navigationIcon com.rzico.weex:navigationIcon}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_popupTheme com.rzico.weex:popupTheme}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_subtitle com.rzico.weex:subtitle}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_subtitleTextAppearance com.rzico.weex:subtitleTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_subtitleTextColor com.rzico.weex:subtitleTextColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_title com.rzico.weex:title}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleMargin com.rzico.weex:titleMargin}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleMarginBottom com.rzico.weex:titleMarginBottom}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleMarginEnd com.rzico.weex:titleMarginEnd}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleMarginStart com.rzico.weex:titleMarginStart}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleMarginTop com.rzico.weex:titleMarginTop}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleMargins com.rzico.weex:titleMargins}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleTextAppearance com.rzico.weex:titleTextAppearance}</code></td><td></td></tr>
+           <tr><td><code>{@link #Toolbar_titleTextColor com.rzico.weex:titleTextColor}</code></td><td></td></tr>
            </table>
            @see #Toolbar_android_gravity
            @see #Toolbar_android_minHeight
@@ -10815,7 +10813,7 @@ containing a value of this type.
         */
         public static final int Toolbar_android_minHeight = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#buttonGravity}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#buttonGravity}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10828,11 +10826,11 @@ containing a value of this type.
 <tr><td><code>top</code></td><td>0x30</td><td></td></tr>
 <tr><td><code>bottom</code></td><td>0x50</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:buttonGravity
+          @attr name com.rzico.weex:buttonGravity
         */
         public static final int Toolbar_buttonGravity = 21;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#collapseContentDescription}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#collapseContentDescription}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10842,21 +10840,21 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:collapseContentDescription
+          @attr name com.rzico.weex:collapseContentDescription
         */
         public static final int Toolbar_collapseContentDescription = 23;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#collapseIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#collapseIcon}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:collapseIcon
+          @attr name com.rzico.weex:collapseIcon
         */
         public static final int Toolbar_collapseIcon = 22;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetEnd}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetEnd}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10868,11 +10866,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetEnd
+          @attr name com.rzico.weex:contentInsetEnd
         */
         public static final int Toolbar_contentInsetEnd = 6;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetEndWithActions}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetEndWithActions}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10884,11 +10882,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetEndWithActions
+          @attr name com.rzico.weex:contentInsetEndWithActions
         */
         public static final int Toolbar_contentInsetEndWithActions = 10;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetLeft}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetLeft}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10900,11 +10898,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetLeft
+          @attr name com.rzico.weex:contentInsetLeft
         */
         public static final int Toolbar_contentInsetLeft = 7;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetRight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetRight}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10916,11 +10914,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetRight
+          @attr name com.rzico.weex:contentInsetRight
         */
         public static final int Toolbar_contentInsetRight = 8;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetStart}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetStart}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10932,11 +10930,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetStart
+          @attr name com.rzico.weex:contentInsetStart
         */
         public static final int Toolbar_contentInsetStart = 5;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#contentInsetStartWithNavigation}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#contentInsetStartWithNavigation}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10948,21 +10946,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:contentInsetStartWithNavigation
+          @attr name com.rzico.weex:contentInsetStartWithNavigation
         */
         public static final int Toolbar_contentInsetStartWithNavigation = 9;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#logo}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#logo}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:logo
+          @attr name com.rzico.weex:logo
         */
         public static final int Toolbar_logo = 4;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#logoDescription}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#logoDescription}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10972,11 +10970,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:logoDescription
+          @attr name com.rzico.weex:logoDescription
         */
         public static final int Toolbar_logoDescription = 26;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#maxButtonHeight}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#maxButtonHeight}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -10988,11 +10986,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:maxButtonHeight
+          @attr name com.rzico.weex:maxButtonHeight
         */
         public static final int Toolbar_maxButtonHeight = 20;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#navigationContentDescription}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#navigationContentDescription}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11002,31 +11000,31 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:navigationContentDescription
+          @attr name com.rzico.weex:navigationContentDescription
         */
         public static final int Toolbar_navigationContentDescription = 25;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#navigationIcon}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#navigationIcon}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:navigationIcon
+          @attr name com.rzico.weex:navigationIcon
         */
         public static final int Toolbar_navigationIcon = 24;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#popupTheme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#popupTheme}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:popupTheme
+          @attr name com.rzico.weex:popupTheme
         */
         public static final int Toolbar_popupTheme = 11;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#subtitle}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#subtitle}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11036,21 +11034,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:subtitle
+          @attr name com.rzico.weex:subtitle
         */
         public static final int Toolbar_subtitle = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#subtitleTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#subtitleTextAppearance}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:subtitleTextAppearance
+          @attr name com.rzico.weex:subtitleTextAppearance
         */
         public static final int Toolbar_subtitleTextAppearance = 13;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#subtitleTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#subtitleTextColor}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11061,11 +11059,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:subtitleTextColor
+          @attr name com.rzico.weex:subtitleTextColor
         */
         public static final int Toolbar_subtitleTextColor = 28;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#title}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#title}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11075,11 +11073,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:title
+          @attr name com.rzico.weex:title
         */
         public static final int Toolbar_title = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleMargin}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleMargin}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11091,11 +11089,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleMargin
+          @attr name com.rzico.weex:titleMargin
         */
         public static final int Toolbar_titleMargin = 14;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleMarginBottom}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleMarginBottom}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11107,11 +11105,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleMarginBottom
+          @attr name com.rzico.weex:titleMarginBottom
         */
         public static final int Toolbar_titleMarginBottom = 18;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleMarginEnd}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleMarginEnd}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11123,11 +11121,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleMarginEnd
+          @attr name com.rzico.weex:titleMarginEnd
         */
         public static final int Toolbar_titleMarginEnd = 16;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleMarginStart}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleMarginStart}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11139,11 +11137,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleMarginStart
+          @attr name com.rzico.weex:titleMarginStart
         */
         public static final int Toolbar_titleMarginStart = 15;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleMarginTop}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleMarginTop}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11155,11 +11153,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleMarginTop
+          @attr name com.rzico.weex:titleMarginTop
         */
         public static final int Toolbar_titleMarginTop = 17;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleMargins}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleMargins}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11171,21 +11169,21 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleMargins
+          @attr name com.rzico.weex:titleMargins
         */
         public static final int Toolbar_titleMargins = 19;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleTextAppearance}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleTextAppearance}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:titleTextAppearance
+          @attr name com.rzico.weex:titleTextAppearance
         */
         public static final int Toolbar_titleTextAppearance = 12;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#titleTextColor}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#titleTextColor}
           attribute's value can be found in the {@link #Toolbar} array.
 
 
@@ -11196,7 +11194,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:titleTextColor
+          @attr name com.rzico.weex:titleTextColor
         */
         public static final int Toolbar_titleTextColor = 27;
         /** Attributes that can be used with a View.
@@ -11207,9 +11205,9 @@ containing a value of this type.
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #View_android_focusable android:focusable}</code></td><td></td></tr>
            <tr><td><code>{@link #View_android_theme android:theme}</code></td><td></td></tr>
-           <tr><td><code>{@link #View_paddingEnd com.alibaba.weex:paddingEnd}</code></td><td></td></tr>
-           <tr><td><code>{@link #View_paddingStart com.alibaba.weex:paddingStart}</code></td><td></td></tr>
-           <tr><td><code>{@link #View_theme com.alibaba.weex:theme}</code></td><td></td></tr>
+           <tr><td><code>{@link #View_paddingEnd com.rzico.weex:paddingEnd}</code></td><td></td></tr>
+           <tr><td><code>{@link #View_paddingStart com.rzico.weex:paddingStart}</code></td><td></td></tr>
+           <tr><td><code>{@link #View_theme com.rzico.weex:theme}</code></td><td></td></tr>
            </table>
            @see #View_android_focusable
            @see #View_android_theme
@@ -11234,7 +11232,7 @@ containing a value of this type.
         */
         public static final int View_android_theme = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#paddingEnd}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#paddingEnd}
           attribute's value can be found in the {@link #View} array.
 
 
@@ -11246,11 +11244,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:paddingEnd
+          @attr name com.rzico.weex:paddingEnd
         */
         public static final int View_paddingEnd = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#paddingStart}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#paddingStart}
           attribute's value can be found in the {@link #View} array.
 
 
@@ -11262,17 +11260,17 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:paddingStart
+          @attr name com.rzico.weex:paddingStart
         */
         public static final int View_paddingStart = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#theme}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#theme}
           attribute's value can be found in the {@link #View} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:theme
+          @attr name com.rzico.weex:theme
         */
         public static final int View_theme = 4;
         /** Attributes that can be used with a ViewBackgroundHelper.
@@ -11282,8 +11280,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #ViewBackgroundHelper_android_background android:background}</code></td><td></td></tr>
-           <tr><td><code>{@link #ViewBackgroundHelper_backgroundTint com.alibaba.weex:backgroundTint}</code></td><td></td></tr>
-           <tr><td><code>{@link #ViewBackgroundHelper_backgroundTintMode com.alibaba.weex:backgroundTintMode}</code></td><td></td></tr>
+           <tr><td><code>{@link #ViewBackgroundHelper_backgroundTint com.rzico.weex:backgroundTint}</code></td><td></td></tr>
+           <tr><td><code>{@link #ViewBackgroundHelper_backgroundTintMode com.rzico.weex:backgroundTintMode}</code></td><td></td></tr>
            </table>
            @see #ViewBackgroundHelper_android_background
            @see #ViewBackgroundHelper_backgroundTint
@@ -11299,7 +11297,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         */
         public static final int ViewBackgroundHelper_android_background = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundTint}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundTint}
           attribute's value can be found in the {@link #ViewBackgroundHelper} array.
 
 
@@ -11310,11 +11308,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:backgroundTint
+          @attr name com.rzico.weex:backgroundTint
         */
         public static final int ViewBackgroundHelper_backgroundTint = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#backgroundTintMode}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#backgroundTintMode}
           attribute's value can be found in the {@link #ViewBackgroundHelper} array.
 
 
@@ -11330,7 +11328,7 @@ containing a value of this type.
 <tr><td><code>multiply</code></td><td>14</td><td></td></tr>
 <tr><td><code>screen</code></td><td>15</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:backgroundTintMode
+          @attr name com.rzico.weex:backgroundTintMode
         */
         public static final int ViewBackgroundHelper_backgroundTintMode = 2;
         /** Attributes that can be used with a ViewStubCompat.
@@ -11374,10 +11372,10 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #zxing_camera_preview_zxing_framing_rect_height com.alibaba.weex:zxing_framing_rect_height}</code></td><td></td></tr>
-           <tr><td><code>{@link #zxing_camera_preview_zxing_framing_rect_width com.alibaba.weex:zxing_framing_rect_width}</code></td><td></td></tr>
-           <tr><td><code>{@link #zxing_camera_preview_zxing_preview_scaling_strategy com.alibaba.weex:zxing_preview_scaling_strategy}</code></td><td></td></tr>
-           <tr><td><code>{@link #zxing_camera_preview_zxing_use_texture_view com.alibaba.weex:zxing_use_texture_view}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_camera_preview_zxing_framing_rect_height com.rzico.weex:zxing_framing_rect_height}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_camera_preview_zxing_framing_rect_width com.rzico.weex:zxing_framing_rect_width}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_camera_preview_zxing_preview_scaling_strategy com.rzico.weex:zxing_preview_scaling_strategy}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_camera_preview_zxing_use_texture_view com.rzico.weex:zxing_use_texture_view}</code></td><td></td></tr>
            </table>
            @see #zxing_camera_preview_zxing_framing_rect_height
            @see #zxing_camera_preview_zxing_framing_rect_width
@@ -11388,7 +11386,7 @@ containing a value of this type.
             0x7f010158, 0x7f010159, 0x7f01015a, 0x7f01015b
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_framing_rect_height}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_framing_rect_height}
           attribute's value can be found in the {@link #zxing_camera_preview} array.
 
 
@@ -11400,11 +11398,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:zxing_framing_rect_height
+          @attr name com.rzico.weex:zxing_framing_rect_height
         */
         public static final int zxing_camera_preview_zxing_framing_rect_height = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_framing_rect_width}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_framing_rect_width}
           attribute's value can be found in the {@link #zxing_camera_preview} array.
 
 
@@ -11416,11 +11414,11 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:zxing_framing_rect_width
+          @attr name com.rzico.weex:zxing_framing_rect_width
         */
         public static final int zxing_camera_preview_zxing_framing_rect_width = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_preview_scaling_strategy}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_preview_scaling_strategy}
           attribute's value can be found in the {@link #zxing_camera_preview} array.
 
 
@@ -11434,11 +11432,11 @@ containing a value of this type.
 <tr><td><code>fitCenter</code></td><td>2</td><td></td></tr>
 <tr><td><code>fitXY</code></td><td>3</td><td></td></tr>
 </table>
-          @attr name com.alibaba.weex:zxing_preview_scaling_strategy
+          @attr name com.rzico.weex:zxing_preview_scaling_strategy
         */
         public static final int zxing_camera_preview_zxing_preview_scaling_strategy = 3;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_use_texture_view}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_use_texture_view}
           attribute's value can be found in the {@link #zxing_camera_preview} array.
 
 
@@ -11448,7 +11446,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:zxing_use_texture_view
+          @attr name com.rzico.weex:zxing_use_texture_view
         */
         public static final int zxing_camera_preview_zxing_use_texture_view = 2;
         /** Attributes that can be used with a zxing_finder.
@@ -11457,10 +11455,10 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #zxing_finder_zxing_possible_result_points com.alibaba.weex:zxing_possible_result_points}</code></td><td></td></tr>
-           <tr><td><code>{@link #zxing_finder_zxing_result_view com.alibaba.weex:zxing_result_view}</code></td><td></td></tr>
-           <tr><td><code>{@link #zxing_finder_zxing_viewfinder_laser com.alibaba.weex:zxing_viewfinder_laser}</code></td><td></td></tr>
-           <tr><td><code>{@link #zxing_finder_zxing_viewfinder_mask com.alibaba.weex:zxing_viewfinder_mask}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_finder_zxing_possible_result_points com.rzico.weex:zxing_possible_result_points}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_finder_zxing_result_view com.rzico.weex:zxing_result_view}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_finder_zxing_viewfinder_laser com.rzico.weex:zxing_viewfinder_laser}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_finder_zxing_viewfinder_mask com.rzico.weex:zxing_viewfinder_mask}</code></td><td></td></tr>
            </table>
            @see #zxing_finder_zxing_possible_result_points
            @see #zxing_finder_zxing_result_view
@@ -11471,7 +11469,7 @@ containing a value of this type.
             0x7f01015c, 0x7f01015d, 0x7f01015e, 0x7f01015f
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_possible_result_points}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_possible_result_points}
           attribute's value can be found in the {@link #zxing_finder} array.
 
 
@@ -11482,11 +11480,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:zxing_possible_result_points
+          @attr name com.rzico.weex:zxing_possible_result_points
         */
         public static final int zxing_finder_zxing_possible_result_points = 0;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_result_view}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_result_view}
           attribute's value can be found in the {@link #zxing_finder} array.
 
 
@@ -11497,11 +11495,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:zxing_result_view
+          @attr name com.rzico.weex:zxing_result_view
         */
         public static final int zxing_finder_zxing_result_view = 1;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_viewfinder_laser}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_viewfinder_laser}
           attribute's value can be found in the {@link #zxing_finder} array.
 
 
@@ -11512,11 +11510,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:zxing_viewfinder_laser
+          @attr name com.rzico.weex:zxing_viewfinder_laser
         */
         public static final int zxing_finder_zxing_viewfinder_laser = 2;
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_viewfinder_mask}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_viewfinder_mask}
           attribute's value can be found in the {@link #zxing_finder} array.
 
 
@@ -11527,7 +11525,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.alibaba.weex:zxing_viewfinder_mask
+          @attr name com.rzico.weex:zxing_viewfinder_mask
         */
         public static final int zxing_finder_zxing_viewfinder_mask = 3;
         /** Attributes that can be used with a zxing_view.
@@ -11536,7 +11534,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #zxing_view_zxing_scanner_layout com.alibaba.weex:zxing_scanner_layout}</code></td><td></td></tr>
+           <tr><td><code>{@link #zxing_view_zxing_scanner_layout com.rzico.weex:zxing_scanner_layout}</code></td><td></td></tr>
            </table>
            @see #zxing_view_zxing_scanner_layout
          */
@@ -11544,13 +11542,13 @@ containing a value of this type.
             0x7f010160
         };
         /**
-          <p>This symbol is the offset where the {@link com.alibaba.weex.R.attr#zxing_scanner_layout}
+          <p>This symbol is the offset where the {@link com.rzico.weex.R.attr#zxing_scanner_layout}
           attribute's value can be found in the {@link #zxing_view} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.alibaba.weex:zxing_scanner_layout
+          @attr name com.rzico.weex:zxing_scanner_layout
         */
         public static final int zxing_view_zxing_scanner_layout = 0;
     };

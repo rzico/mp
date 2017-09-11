@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alibaba.weex.test" >
+    package="com.rzico.weex.test" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -10,8 +10,8 @@
         android:name="android.support.test.runner.AndroidJUnitRunner"
         android:functionalTest="false"
         android:handleProfiling="false"
-        android:label="Tests for com.alibaba.weex"
-        android:targetPackage="com.alibaba.weex" />
+        android:label="Tests for com.rzico.weex"
+        android:targetPackage="com.rzico.weex" />
 
     <application>
         <uses-library android:name="android.test.runner" />

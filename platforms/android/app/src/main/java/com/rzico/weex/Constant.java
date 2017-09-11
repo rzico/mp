@@ -13,7 +13,10 @@ import java.util.Map;
  * http://192.168.0.63:8080/tiaohuo/
  */
 public class Constant {
-    public static String app = "com.rzico.weex";
+
+    public static String wxURL = "http://cdn.rzico.com/weex/app/";
+
+    public static String app = "com.rzico.assistant";
     public static String uid;
     public static String xkey;
     public static int isVipTab = 1;
@@ -134,21 +137,6 @@ public class Constant {
         article
     }
 
-    //七天退换规则
-    public static int isReturnSeven = 0;
-    public static int isSecured = 0;
-    /*打折模式*/
-//    public static Map<String, Integer> promoptionsIcon = new HashMap<String, Integer>() {
-//        {
-//            put("buyfree", R.drawable.zeng);
-//            put("discount", R.drawable.zhe);
-//            put("mail", R.drawable.you);
-//            put("coupon", R.drawable.quan);
-//            put("activity", R.drawable.zhe);
-//            put("points", R.drawable.quan);
-//            put("seckill", R.drawable.zhe);
-//        }
-//    };
 
     public static final String TODAY = "今天";
     public static final String YESTERDAY = "昨天";

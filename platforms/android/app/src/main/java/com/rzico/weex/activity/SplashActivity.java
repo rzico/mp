@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 
 import com.alibaba.weex.commons.util.AppConfig;
 import com.rzico.weex.R;
+import com.rzico.weex.module.WxNativeModule;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -60,8 +61,9 @@ public class SplashActivity extends AppCompatActivity {
 //        }
         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         startActivity(intent);
-//        Intent intent = new Intent(SplashActivity.this, TestActivity.class);
-//        startActivity(intent);
+        finish();
+//        WxNativeModule wxNativeModule = new WxNativeModule();
+//        wxNativeModule.pageTo("my", true);
       }
 
       @Override

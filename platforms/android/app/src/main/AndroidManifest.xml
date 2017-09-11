@@ -61,12 +61,19 @@
                 <data android:scheme="file" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.MainActivity"
+            android:theme="@style/FullscreenTheme_haveActionBar">
+
+
+        </activity>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
-        <activity android:name=".activity.TestActivity"></activity>
+        <activity android:name=".activity.TestActivity">
+
+
+        </activity>
     </application>
 
 </manifest>
