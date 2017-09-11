@@ -58,11 +58,11 @@
                                 <text class="articleDate">{{item.articleDate}}</text>
                             </div>
                             <div class="relevantInfo">
-                                <image :src="imageUrl" class="relevantImage"></image>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                 <text class="relevantText">{{item.browse}}</text>
-                                <image :src="imageUrl" class="relevantImage"></image>
+                                <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                                 <text class="relevantText">{{item.praise}}</text>
-                                <image :src="imageUrl" class="relevantImage"></image>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                                 <text class="relevantText">{{item.comments}}</text>
                             </div>
                         </div>
@@ -91,11 +91,11 @@
                                 <text class="articleDate">{{item.articleDate}}</text>
                             </div>
                             <div class="relevantInfo">
-                                <text class="testClass" :style="{fontFamily:'iconfont'}">&#xe643;</text>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                 <text class="relevantText">{{item.browse}}</text>
-                                <image :src="imageUrl" class="relevantImage"></image>
+                                <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                                 <text class="relevantText">{{item.praise}}</text>
-                                <image :src="imageUrl" class="relevantImage"></image>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                                 <text class="relevantText">{{item.comments}}</text>
                             </div>
                         </div>
@@ -113,14 +113,16 @@
 
     .relevantImage {
         flex-direction: row;
-        width: 30px;
-        height: 30px;
+        font-size: 32px;
+        color: #888;
         margin-right: 5px;
         margin-left: 5px;
+        align-items: center;
     }
 
     .relevantText {
         color: #888;
+        font-size: 26px;
     }
 
     .relevantInfo {
