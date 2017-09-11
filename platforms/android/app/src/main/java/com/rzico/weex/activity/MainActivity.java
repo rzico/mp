@@ -1,6 +1,7 @@
 package com.rzico.weex.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -70,6 +71,8 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
         CheckPermissions();
         initView();
     }
+
+
     private void CheckPermissions() {
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new com.karumi.dexter.listener.single.PermissionListener() {
@@ -136,9 +139,12 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
         wxsdkInstanceMap.put("my", mWeexInstanceMy);
 
         wxsdkInstanceMap.get("home").render("home", WXFileUtils.loadAsset( "home" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
-        wxsdkInstanceMap.get("friends").render("home", WXFileUtils.loadAsset( "friends" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
-        wxsdkInstanceMap.get("msg").render("home", WXFileUtils.loadAsset( "msg" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
-        wxsdkInstanceMap.get("my").render("home", WXFileUtils.loadAsset( "my" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
+        wxsdkInstanceMap.get("friends").render("friends", WXFileUtils.loadAsset( "friends" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
+//        wxsdkInstanceMap.get("friends").renderByUrl("friends", "http://cdn.rzico.com/weex/app/member/friends.js",null, null, WXRenderStrategy.APPEND_ASYNC);
+        wxsdkInstanceMap.get("msg").render("msg", WXFileUtils.loadAsset( "msg" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
+//        wxsdkInstanceMap.get("my").render("my", WXFileUtils.loadAsset( "my" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
+
+        wxsdkInstanceMap.get("my").renderByUrl("my", "http://cdn.rzico.com/weex/app/member/member.js",null, null, WXRenderStrategy.APPEND_ASYNC);
 
         mWeexPageAdapter = new WeexPageAdapter(viewLists);
         mContainer.setAdapter(mWeexPageAdapter);

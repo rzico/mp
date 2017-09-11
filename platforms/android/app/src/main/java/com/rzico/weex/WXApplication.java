@@ -44,12 +44,6 @@ public class WXApplication extends Application {
     instance = this;
     init();
 
-    try{
-      WXSDKEngine.registerModule("imagePicker", ImagePickerModule.class);
-      WXSDKEngine.registerModule("wxNativeModule", WxNativeModule.class);
-    }catch (Exception e){
-      e.printStackTrace();
-    }
     WXSDKEngine.addCustomOptions("appName", "WXSample");
     WXSDKEngine.addCustomOptions("appGroup", "WXApp");
     WXSDKEngine.initialize(this,
@@ -59,6 +53,8 @@ public class WXApplication extends Application {
     );
 
     try {
+      WXSDKEngine.registerModule("imagePicker", ImagePickerModule.class);
+      WXSDKEngine.registerModule("wxNativeModule", WxNativeModule.class);
       WXSDKEngine.registerModule("event", WXEventModule.class);
     } catch (WXException e) {
       e.printStackTrace();

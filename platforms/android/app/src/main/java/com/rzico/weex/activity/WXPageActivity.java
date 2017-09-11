@@ -153,7 +153,6 @@ public class WXPageActivity extends AbsWeexActivity implements
     LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
   }
 
-
   @Override
   public void onRenderSuccess(WXSDKInstance instance, int width, int height) {
     //渲染成功后
