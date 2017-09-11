@@ -16,7 +16,7 @@
             <cell>
                 <div class="cell-row">
                     <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe64f;</text>
                         <text class="title">银行卡</text>
                     </div>
                     <div class="last">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="cell-row clear-one">
                     <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
                         <text class="title">提现</text>
                     </div>
                     <div class="last">
@@ -35,7 +35,7 @@
                 </div>
                 <div class="cell-row">
                     <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
                         <text class="title">我的账单</text>
                     </div>
                     <div class="last">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="cell-row">
                     <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe698;</text>
                         <text class="title">我的赏金</text>
                     </div>
                     <div class="last">
@@ -53,7 +53,7 @@
                 </div>
                 <div class="cell-row clear-one">
                     <div class="left">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                         <text class="title">我的奖励</text>
                     </div>
                     <div class="last">
