@@ -6,54 +6,54 @@
             <cell class="cell">
                 <div class="cell-row"  @click="setup">
                     <div class="left">
-                        <text class="text">头像</text>
+                        <text class="title">头像</text>
                     </div>
                     <div class="last">
                         <image class="logo" resize="cover"
                                src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
                         </image>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">昵称</text>
+                        <text class="title">昵称</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">已认证1</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">登录名</text>
+                        <text class="title">登录名</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">17364</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">性别</text>
+                        <text class="title">性别</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">男</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">生日</text>
+                        <text class="title">生日</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">已设置</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">职业</text>
+                        <text class="title">职业</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">服务业</text>
@@ -62,47 +62,47 @@
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">所在地</text>
+                        <text class="title">所在地</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">福建厦门</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">个性签名</text>
+                        <text class="title">个性签名</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">未填写</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row">
                     <div class="left">
-                        <text class="text">密码</text>
+                        <text class="title">密码</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">已设置</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">绑定微信号</text>
+                        <text class="title">绑定微信号</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">已绑定</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
-                        <text class="text">绑定手机号</text>
+                        <text class="title">绑定手机号</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">未绑定</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </cell>

@@ -8,15 +8,10 @@
     background-color: #eeeeee;
 }
 
-.text {
-    margin: 10px;
-    font-size: 32px;
-}
-
 .title {
+    margin-left:10px;
     font-size: 32px;
-    color: #fff;
-    margin-left:42px;
+    color: #000;
 }
 
 .sub_title {
@@ -30,8 +25,8 @@
     flex-direction: row;
     background-color: #ffffff;
     margin-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     justify-content: space-between;
 }
 
@@ -50,6 +45,7 @@
 }
 
 .ico {
+    margin-left:10px;
     font-size: 48px;
     color: #F0AD3C;
 }
@@ -57,5 +53,4 @@
 .arrow {
     font-size: 32px;
     color: #ccc;
-    margin-left:0px;
 }

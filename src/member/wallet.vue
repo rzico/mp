@@ -6,7 +6,7 @@
             <cell class="cell">
                 <div class="panel">
                     <div class="flex1">
-                        <text class="title">钱包余额（元）</text>
+                        <text class="wallet-title">钱包余额（元）</text>
                     </div>
                     <div class="flex2">
                         <text class="balance">1000000.00</text>
@@ -17,47 +17,47 @@
                 <div class="cell-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">银行卡</text>
+                        <text class="title">银行卡</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">已绑定</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">提现</text>
+                        <text class="title">提现</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">我的账单</text>
+                        <text class="title">我的账单</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">我的赏金</text>
+                        <text class="title">我的赏金</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">我的奖励</text>
+                        <text class="title">我的奖励</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </cell>
@@ -67,8 +67,15 @@
 </template>
 <style src='../style/wx.css' />
 <style scoped>
+
+    .wallet-title {
+        font-size: 32px;
+        color: #fff;
+        margin-left:60px;
+    }
+
     .panel {
-        background-color: #999;
+        background-color: #F0AD3C;
         flex-direction: column;
         height:400px;
     }

@@ -9,88 +9,88 @@
                                src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
                         </image>
                         <div style="flex-direction: column;">
-                            <text class="text name">张三</text>
+                            <text class="title">张三</text>
                             <text class="autograph">点击设置个性签名</text>
                         </div>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row">
                     <div class="left">
                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
-                       <text class="text">通用设置</text>
+                       <text class="title">通用设置</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
-                        <text class="text">专栏认证</text>
+                        <text class="title">专栏认证</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">已认证</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
-                        <text class="text">商品管理</text>
+                        <text class="title">商品管理</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">订单管理</text>
+                        <text class="title">订单管理</text>
                     </div>
                     <div class="last">
                         <text class="sub_title">0个待处理</text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">评价管理</text>
+                        <text class="title">评价管理</text>
                     </div>
                     <div class="last">
                         <text class="sub_title"></text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="text">投票管理</text>
+                        <text class="title">投票管理</text>
                     </div>
                     <div class="last">
                         <text class="sub_title"></text>
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                        <text class="text">推荐给好友</text>
+                        <text class="title">推荐给好友</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row clear-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
-                        <text class="text">联系客服</text>
+                        <text class="title">联系客服</text>
                     </div>
                     <div class="last">
-                        <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </cell>
@@ -112,6 +112,7 @@
         font-size: 28px;
         color: #ccc;
         margin-left:10px;
+        margin-top:10px;
     }
 
 </style>
