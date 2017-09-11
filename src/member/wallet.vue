@@ -68,7 +68,7 @@
 <style src='../style/wx.css' />
 <style scoped>
     .panel {
-        background-color: #F0AD3C;
+        background-color: #999;
         flex-direction: column;
         height:400px;
     }
@@ -76,6 +76,7 @@
     .flex1 {
         flex: 1;
         justify-content: center;
+
     }
     .flex2 {
         flex: 1;
