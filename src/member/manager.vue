@@ -26,7 +26,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
                         <text class="title">专栏认证</text>
@@ -45,7 +45,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title">订单管理</text>
@@ -55,7 +55,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title">评价管理</text>
@@ -65,7 +65,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title">投票管理</text>
@@ -84,7 +84,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
                         <text class="title">联系客服</text>

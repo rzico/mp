@@ -15,7 +15,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">昵称</text>
                     </div>
@@ -24,7 +24,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">登录名</text>
                     </div>
@@ -33,7 +33,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">性别</text>
                     </div>
@@ -42,7 +42,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">生日</text>
                     </div>
@@ -51,7 +51,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">职业</text>
                     </div>
@@ -60,7 +60,7 @@
                         <text class="text arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">所在地</text>
                     </div>
@@ -69,7 +69,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">个性签名</text>
                     </div>
@@ -87,7 +87,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">绑定微信号</text>
                     </div>
@@ -96,7 +96,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="title">绑定手机号</text>
                     </div>

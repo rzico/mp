@@ -20,6 +20,20 @@
     color: #ccc;
 }
 
+.cell-header {
+    min-height: 70px;
+    flex-direction: row;
+    background-color: #eee;
+    padding-left: 10px;
+    padding-right: 10px;
+    justify-content: space-between;
+    border-top-width: 1px;
+    border-top-color: #ddd;
+    border-top-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #ddd;
+    border-bottom-style: solid;
+}
 .cell-row {
     min-height: 100px;
     flex-direction: row;
@@ -31,6 +45,9 @@
 }
 
 .clear-row {
+    margin-top: 0px;
+}
+.clear-one {
     margin-top: 1px;
 }
 

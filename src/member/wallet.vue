@@ -24,7 +24,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title">提现</text>
@@ -42,7 +42,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title">我的赏金</text>
@@ -51,7 +51,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-row">
+                <div class="cell-row clear-one">
                     <div class="left">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title">我的奖励</text>
