@@ -41,15 +41,14 @@ import com.rzico.weex.net.HttpRequest;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import static com.rzico.weex.WXApplication.removeActivity;
+
 
 public class BaseActivity extends AppCompatActivity {
     public static final int REQUEST_CODE_LOGIN = 0xFFFF;
 
 
     public Context mContext;
-    protected Toast toast;
-    private ImageView mQrodImg;
-    private LinearLayout layoutContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +62,6 @@ public class BaseActivity extends AppCompatActivity {
         WXApplication.getInstance().addActivity(this);
 
     }
-
-
-
-
-
-
-
 
     @Override
     protected void onDestroy() {

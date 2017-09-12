@@ -8,6 +8,7 @@ import com.rzico.weex.Constant;
 import com.rzico.weex.activity.BaseActivity;
 import com.rzico.weex.model.RequestBean;
 import com.rzico.weex.model.info.BaseEntity;
+import com.rzico.weex.model.info.Message;
 import com.rzico.weex.utils.PhoneUtil;
 import com.rzico.weex.utils.Utils;
 
@@ -151,9 +152,9 @@ public class HttpRequest {
             @Override
             public void onSuccess(String result) {
                 try {
-                    BaseEntity entity= new Gson().fromJson(result, BaseEntity.class);
-                    String type= entity.getMessage().getType();
-                    String content=entity.getMessage().getContent();
+                    Message entity= new Gson().fromJson(result, Message.class);
+                    String type= entity.getType();
+                    String content=entity.getContent();
                     if ("error".equals(type) && "session.invaild".equals(content)) {
                         if (task.activity != null) {
                             //跳转至登录页面

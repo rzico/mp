@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.weex.commons.AbsWeexActivity;
 import com.alibaba.weex.commons.util.CommonUtils;
 import com.alibaba.weex.commons.util.DevOptionHandler;
 import com.alibaba.weex.commons.util.ShakeDetector;
@@ -29,6 +28,7 @@ import com.alibaba.weex.constants.Constants;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.rzico.weex.R;
+import com.rzico.weex.WXApplication;
 import com.rzico.weex.utils.BarTextColorUtils;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXRenderErrorCode;
@@ -38,6 +38,8 @@ import com.taobao.weex.ui.component.NestedContainer;
 import com.taobao.weex.utils.WXSoInstallMgrSdk;
 
 import java.util.LinkedHashMap;
+
+import static com.rzico.weex.WXApplication.removeActivity;
 
 /**
  * 装载wxpage的activity

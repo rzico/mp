@@ -216,11 +216,13 @@ import com.taobao.weex.adapter.IWXImgLoaderAdapter;
 import com.taobao.weex.common.WXImageStrategy;
 import com.taobao.weex.dom.WXImageQuality;
 
+import java.io.File;
+
 public class ImageAdapter implements IWXImgLoaderAdapter {
 
   public ImageAdapter() {
-  }
 
+  }
   @Override
   public void setImage(final String url, final ImageView view,
                        WXImageQuality quality, final WXImageStrategy strategy) {
@@ -229,6 +231,8 @@ public class ImageAdapter implements IWXImgLoaderAdapter {
 
       @Override
       public void run() {
+        boolean isLocalImg = false;
+        File img = null;
         if(view==null||view.getLayoutParams()==null){
           return;
         }
@@ -237,8 +241,9 @@ public class ImageAdapter implements IWXImgLoaderAdapter {
           return;
         }
         String temp = url;
-        if (url.startsWith("//")) {
-          temp = "http:" + url;
+        if (url.startsWith("/")) {//如果是斜杠开头的则是加载本地图片
+          isLocalImg = true;
+          img = new File(temp);
         }
         if (view.getLayoutParams().width <= 0 || view.getLayoutParams().height <= 0) {
           return;
@@ -253,28 +258,53 @@ public class ImageAdapter implements IWXImgLoaderAdapter {
           view.setTag(strategy.placeHolder.hashCode(),picasso);
         }
 
+        if(!isLocalImg){
+          Picasso.with(WXEnvironment.getApplication())
+                  .load(temp)
+                  .into(view, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                      if(strategy.getImageListener()!=null){
+                        strategy.getImageListener().onImageFinish(url,view,true,null);
+                      }
 
-        Picasso.with(WXEnvironment.getApplication())
-            .load(temp)
-            .into(view, new Callback() {
-              @Override
-              public void onSuccess() {
-                if(strategy.getImageListener()!=null){
-                  strategy.getImageListener().onImageFinish(url,view,true,null);
-                }
+                      if(!TextUtils.isEmpty(strategy.placeHolder)){
+                        ((Picasso) view.getTag(strategy.placeHolder.hashCode())).cancelRequest(view);
+                      }
+                    }
 
-                if(!TextUtils.isEmpty(strategy.placeHolder)){
-                  ((Picasso) view.getTag(strategy.placeHolder.hashCode())).cancelRequest(view);
-                }
-              }
+                    @Override
+                    public void onError() {
+                      if(strategy.getImageListener()!=null){
+                        strategy.getImageListener().onImageFinish(url,view,false,null);
+                      }
+                    }
+                  });
+        }else{
+          //这里是处理本地图片的
+          Picasso.with(WXEnvironment.getApplication())
+                  .load(img)
+                  .into(view, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                      if(strategy.getImageListener()!=null){
+                        strategy.getImageListener().onImageFinish(url,view,true,null);
+                      }
 
-              @Override
-              public void onError() {
-                if(strategy.getImageListener()!=null){
-                  strategy.getImageListener().onImageFinish(url,view,false,null);
-                }
-              }
-            });
+                      if(!TextUtils.isEmpty(strategy.placeHolder)){
+                        ((Picasso) view.getTag(strategy.placeHolder.hashCode())).cancelRequest(view);
+                      }
+                    }
+
+                    @Override
+                    public void onError() {
+                      if(strategy.getImageListener()!=null){
+                        strategy.getImageListener().onImageFinish(url,view,false,null);
+                      }
+                    }
+                  });
+        }
+
       }
     },0);
   }

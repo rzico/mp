@@ -4,10 +4,10 @@ package com.rzico.weex.net;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
-
 import com.rzico.weex.Constant;
 import com.rzico.weex.activity.BaseActivity;
 import com.rzico.weex.model.RequestBean;
+import com.rzico.weex.net.HttpRequest;
 
 import java.util.List;
 import java.util.Map;

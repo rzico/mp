@@ -26,7 +26,6 @@ public class BaseEntity {
         public void setType(String type) {
             this.type = type;
         }
-
         public String getContent() {
             return content;
         }
