@@ -1,5 +1,8 @@
 <template>
     <list class="wrapper">
+        <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+            <text class="indicator">下拉刷新 ...</text>
+        </refresh>
         <!--朋友信息-->
         <cell v-for="item in messageList" >
             <div class="friendsLine" @click="jump('/member')">
@@ -26,6 +29,13 @@
 </template>
 
 <style>
+
+    .indicator{
+        width:750px;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
     .messageTotal{
         background-color: red;
         line-height: 38px;
@@ -47,7 +57,7 @@
     }
     .messageTimeBox{
         padding-top: 8px;
-        flex: 2;
+        flex: 1;
         align-items: flex-end;
         padding-right: 10px;
     }
@@ -67,7 +77,7 @@
     .messageText{
         padding-top: 8px;
         padding-bottom: 8px;
-        flex:4;
+        flex:5;
         height: 100px;
         justify-content: space-between;
         margin-left: 20px;
@@ -100,9 +110,12 @@
 </style>
 
 <script>
+    const modal = weex.requireModule('modal');
     export default {
         data:function(){
             return{
+
+                refreshing: false,
                 messageList:[{
                     friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     friendName:'信徒',
@@ -143,7 +156,7 @@
                     friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     friendName:'豪客来',
                     friendMessage:'秋天，又到了吃货的季节。快上库鲁子网挑选吧！',
-                    messageTime:'2016年9月8日',
+                    messageTime:'9月8日',
                     messageTotal:'1'
                 },{
                     friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -163,10 +176,48 @@
                     friendMessage:'',
                     messageTime:'昨天',
                     messageTotal:''
+                },{
+                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    friendName:'陈小春',
+                    friendMessage:'',
+                    messageTime:'12:07',
+                    messageTotal:''
+                },{
+                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    friendName:'番茄',
+                    friendMessage:'炒蛋吗？',
+                    messageTime:'9月8日',
+                    messageTotal:'1'
+                },{
+                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    friendName:'豪客来',
+                    friendMessage:'秋天，又到了吃货的季节。快上库鲁子网挑选吧！',
+                    messageTime:'9月8日',
+                    messageTotal:'1'
+                },{
+                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    friendName:'中国有嘻哈',
+                    friendMessage:'你会freestyle吗？',
+                    messageTime:'昨天',
+                    messageTotal:''
+                },{
+                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    friendName:'那英',
+                    friendMessage:'！',
+                    messageTime:'昨天',
+                    messageTotal:''
                 }]
             }
         },
         methods:{
+            //            下拉刷新
+            onrefresh (event) {
+                modal.toast({ message: '加载中...', duration: 1})
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 2000)
+            },
             jump:function(page){
 
             }

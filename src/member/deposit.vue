@@ -5,12 +5,13 @@
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
             <text class="indicator">下拉刷新 ...</text>
             </refresh>
-            <cell>
-                 <div class="cell-header clear-row">
+            <cell v-for="(deposit,index) in depositList" >
+                <!--如果月份重复就不渲染该区域-->
+                 <div class="cell-header clear-row" v-if="isRepeat(index)">
                     <div class="left">
-                        <text class="title">8月份</text>
+                        <text class="title" >{{deposit.create_date | detailMonth}}月份</text>
                     </div>
-                    <div class="last">
+                    <div class="last" @click="setup()">
                         <text class="sub_title">查看账单</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
@@ -29,47 +30,46 @@
                         <!--<text class="money">+84,356.00</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="cell-row clear-one" v-for="deposit in depositList">
+                <div class="cell-row clear-one" >
                     <div class="left">
                         <image class="logo" resize="cover"
                                src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
                         </image>
                         <div style="flex-direction: column;">
                             <text class="title">{{deposit.memo}}</text>
-                            <text class="datetime">08-21 10：24</text>
+                            <text class="datetime">{{deposit.create_date | detailTime}}</text>
                         </div>
                     </div>
                     <div class="">
                         <text class="money">{{deposit.amount}}</text>
                     </div>
                 </div>
-
             </cell>
-            <cell>
-                <div class="cell-header clear-row">
-                    <div class="left">
-                        <text class="title">17年8月</text>
-                    </div>
-                    <div class="last">
-                        <text class="sub_title">查看账单</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-row clear-one">
-                    <div class="left">
-                        <image class="logo" resize="cover"
-                               src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-                        </image>
-                        <div style="flex-direction: column;">
-                            <text class="title">购买定制台卡</text>
-                            <text class="datetime">08-21 10：24</text>
-                        </div>
-                    </div>
-                    <div class="">
-                        <text class="money">-84,356.00</text>
-                    </div>
-                </div>
-            </cell>
+            <!--<cell>-->
+                <!--<div class="cell-header clear-row">-->
+                    <!--<div class="left">-->
+                        <!--<text class="title">17年8月</text>-->
+                    <!--</div>-->
+                    <!--<div class="last">-->
+                        <!--<text class="sub_title">查看账单</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-row clear-one">-->
+                    <!--<div class="left">-->
+                        <!--<image class="logo" resize="cover"-->
+                               <!--src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">-->
+                        <!--</image>-->
+                        <!--<div style="flex-direction: column;">-->
+                            <!--<text class="title">购买定制台卡</text>-->
+                            <!--<text class="datetime">08-21 10：24</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="">-->
+                        <!--<text class="money">-84,356.00</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</cell>-->
             <loading class="loading" @loading="onloading" :display="showLoading">
                 <text class="indicator">Loading ...</text>
             </loading>
@@ -114,8 +114,6 @@
     export default {
         data:function(){
           return{
-              testTest:[],
-              testTest2:[],
               depositList:[],
               refreshing: false,
               showLoading: 'hide',
@@ -124,10 +122,49 @@
         components: {
             navbar
         },
+//        过滤器
+        filters: {
+            detailMonth: function (value) {
+                var date = new Date(value);
+                var    m = date.getMonth() + 1;
+                return m;
+         },
+            detailTime: function (value) {
+                var date = new Date(value);
+                var    m = date.getMonth() + 1;
+                var    d = date.getDate();
+                var    H = date.getHours();
+                var    i = date.getMinutes();
+                if (m < 10) {
+                    m = '0' + m;
+                }
+                if (d < 10) {
+                    d = '0' + d;
+                }
+                if (H < 10) {
+                    H = '0' + H;
+                }
+                if (i < 10) {
+                    i = '0' + i;
+                }
+                var t = m + '-' + d + '  ' + H + ':' + i ;
+                return t;
+
+            }
+        },
         props: {
             title: { default: "账单" }
         },
         methods: {
+//            判断月份是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if(this.getDate(this.depositList[index].create_date,true) == this.getDate(this.depositList[index - 1].create_date,true)){
+                        return false;
+                    }
+                }
+                return true;
+            },
             goback: function (e) {
                 navigator.pop({
                     url: 'http://cdn.rzico.com/weex/app/member/setup.js',
@@ -135,7 +172,7 @@
                 })
             },
             setup: function (e) {
-
+                toPage(e);
             },
             getStarCount ( pageNumber,callback) {
                 return stream.fetch({
@@ -157,7 +194,6 @@
                         }
                         this.showLoading = 'hide'
                     })
-                resetLoadmore();
             },
 //            下拉刷新
             onrefresh (event) {
@@ -170,14 +206,43 @@
                         }else{
                             modal.toast({ message: '系统繁忙', duration: 1 })
                         }
-
                         this.refreshing = false
                     })
+            },
+//            获取月份
+            getDate: function(value) {
+                var date = new Date(value);
+//                var    Y = date.getFullYear();
+                var     m = date.getMonth() + 1;
+//                var     d = date.getDate();
+//                var    H = date.getHours();
+//                var    i = date.getMinutes();
+//                var    s = date.getSeconds();
+//                if (d < 10) {
+//                    d = '0' + d;
+//                }
+//                if (H < 10) {
+//                    H = '0' + H;
+//                }
+//                if (i < 10) {
+//                    i = '0' + i;
+//                }
+//                if (s < 10) {
+//                    s = '0' + s;
+//                }
+                return m;
+
+//                if (m < 10) {
+//                    m = '0' + m;
+//                }
+//                var t = Y + '-' + m + '-' + d + ' ' + H + ':' + i +  ':' + s;
+//                return t;
             }
-        },
+    },
         created:function () {
 //              页面创建时请求数据
             this.getStarCount( pageNumber,res => {
+//                this.test1 = res.data.data;
                 if(res.data.message.type == 'success'){
                     this.depositList = res.data.data;
                 }else{
@@ -186,9 +251,7 @@
                         duration: 0.3
                     })
                 }
-            })
+            });
         }
-
-
     }
 </script>
