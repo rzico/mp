@@ -1,18 +1,18 @@
 //
-//  RootViewController.m
+//  XMTabBarController.m
 //  Weex
 //
-//  Created by 郭书智 on 2017/9/6.
-//  Copyright © 2017年 rsico. All rights reserved.
+//  Created by 郭书智 on 2017/9/12.
+//  Copyright © 2017年 rzico. All rights reserved.
 //
 
-#import "RootViewController.h"
+#import "XMTabBarController.h"
 
-@interface RootViewController ()
+@interface XMTabBarController ()
 
 @end
 
-@implementation RootViewController
+@implementation XMTabBarController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
