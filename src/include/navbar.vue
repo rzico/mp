@@ -11,12 +11,12 @@
 <style scoped>
     .header {
         height: 96px;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
         background-color: #F0AD3C;
         flex-direction: row;
         position:sticky;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
     }
     .back {
         position: relative;
@@ -47,7 +47,7 @@
     const native = weex.requireModule('wxNativeModule');
     export default {
         props: {
-            title: { default: "navbar" }
+            title: { default: "navbar" },
         },
         created(){
             var domModule=weex.requireModule("dom");
