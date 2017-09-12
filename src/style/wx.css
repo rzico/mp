@@ -1,3 +1,4 @@
+/**每个页面都必须的，墙纸**/
 .wrapper {
     position: absolute;
     top: 0;
@@ -8,61 +9,192 @@
     background-color: #eeeeee;
 }
 
+/**默认标题字体**/
 .title {
-    margin-left:10px;
     font-size: 32px;
     color: #000;
 }
 
+/**默认子标题字体**/
 .sub_title {
-    margin: 10px;
     font-size: 28px;
     color: #ccc;
 }
 
+/**margin 大小**/
+.m10 {
+    margin: 10px;
+}
+.m20 {
+    margin: 20px;
+}
+.m30 {
+    margin: 30px;
+}
+.mt10 {
+    margin-top: 10px;
+}
+.mt20 {
+    margin-top: 20px;
+}
+.mt30 {
+    margin-top: 30px;
+}
+/**left 大小**/
+.l10 {
+    left: 10px;
+}
+.l20 {
+    left: 20px;
+}
+.l30 {
+    left: 30px;
+}
+/**左边 大小**/
+.r10 {
+    right: 10px;
+}
+.r20 {
+    right: 20px;
+}
+.r30 {
+    right: 30px;
+}
+
+/**padding 大小**/
+.p10 {
+    padding: 10px;
+}
+.p20 {
+    padding: 20px;
+}
+.p30 {
+    padding: 30px;
+}
+
+
+/**顶部划画**/
 .border-top-line {
     border-top-width: 1px;
     border-top-color: #ddd;
     border-top-style: solid;
 }
 
+/**低部划画**/
 .border-bottom-line {
     border-bottom-width: 1px;
     border-bottom-color: #ddd;
     border-bottom-style: solid;
 }
 
+/**cell 分组头**/
 .cell-header {
     min-height: 70px;
     flex-direction: row;
     background-color: #eee;
-    padding-left: 10px;
-    padding-right: 10px;
-    justify-content: space-between;
-    border-top-width: 1px;
-    border-top-color: #ddd;
-    border-top-style: solid;
-    border-bottom-width: 1px;
-    border-bottom-color: #ddd;
-    border-bottom-style: solid;
+    padding-left: 20px;
+    padding-right: 20px;
 }
+
+/**cell 行**/
 .cell-row {
     min-height: 100px;
-    flex-direction: row;
+    flex-direction: column;
     background-color: #ffffff;
+    padding-left: 20px;
     margin-top: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
+}
+
+.cell-line {
+    border-top-width: 1px;
+    border-top-color: #ccc;
+    border-top-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #ccc;
+    border-bottom-style: solid;
+}
+
+/**cell 内面行**/
+.cell-panel {
+    height: 98px;
+    min-height: 98px;
+    flex-direction: row;
+    align-items: center;
+    border-bottom-width: 1px;
+    border-bottom-color: #ccc;
+    border-bottom-style: solid;
+}
+
+.cell-clear {
+    margin: 0px;
+    border:0px;
+}
+
+/**两边对齐**/
+.space-between {
     justify-content: space-between;
+    flex-direction: row;
+}
+.flex-start {
+    justify-content:flex-start;
+    flex-direction: row;
+}
+.flex-end {
+    justify-content:flex-end;
+    flex-direction: row;
+}
+.flex-center {
+    justify-content:center;
+    flex-direction: row;
+}
+.space-around {
+    justify-content:space-around;
+    flex-direction: row;
 }
 
-.clear-row {
-    margin-top: 0px;
+/**横向部局居中对齐**/
+.flex-row {
+    flex-direction: row;
+    align-items: center;
 }
-.clear-one {
-    margin-top: 1px;
+.flex-column {
+    flex-direction: column;
+    align-items: center;
+}
+.align-items {
+    align-items: center;
 }
 
+/**flex 部局比例**/
+.flex1 {
+    flex:1;
+}
+.flex2 {
+    flex:2;
+}
+.flex3 {
+    flex:3;
+}
+.flex4 {
+    flex:4;
+}
+.flex5 {
+    flex:6;
+}
+.flex6 {
+    flex:6;
+}
+.flex7 {
+    flex:7;
+}
+.flex8 {
+    flex:8;
+}
+.flex9 {
+    flex:9;
+}
+
+/**常用背景颜色**/
 .bkg-white {
     background-color: white;
 }
@@ -79,6 +211,7 @@
     background-color:#eeeeee;
 }
 
+/**常用字体颜色**/
 .white {
     color: white;
 }
@@ -95,31 +228,22 @@
     color:#eeeeee;
 }
 
-.left {
-    flex-direction: row;
-    align-items: center;
-}
-
-.last {
-    flex-direction: row;
-    align-items: center;
-}
-
+/**ico 字体大小与颜色**/
 .ico {
-    margin-left:10px;
     font-size: 48px;
     color: #F0AD3C;
 }
 
+/**右箭头 字体大小与颜色**/
 .arrow {
     font-size: 32px;
     color: #ccc;
+    width: 40px;
 }
 
+/**默认按钮类型**/
 .button {
-    min-height:60px;
     font-size: 36px;
-    line-height: 50px;
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
