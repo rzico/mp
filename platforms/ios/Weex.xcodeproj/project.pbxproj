@@ -14,7 +14,8 @@
 		226611F11F5FEB9900A7EAE6 /* weex-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 226611ED1F5FEB9900A7EAE6 /* weex-icon.png */; };
 		226611F21F5FEB9900A7EAE6 /* weex.png in Resources */ = {isa = PBXBuildFile; fileRef = 226611EE1F5FEB9900A7EAE6 /* weex.png */; };
 		226611F31F5FEB9900A7EAE6 /* weex@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 226611EF1F5FEB9900A7EAE6 /* weex@2x.png */; };
-		226611F71F5FF63A00A7EAE6 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 226611F61F5FF63A00A7EAE6 /* RootViewController.m */; };
+		2283A48B1F6791FC007F299F /* XMTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2283A48A1F6791FC007F299F /* XMTabBarController.m */; };
+		2283A48F1F679285007F299F /* UIColor+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2283A48E1F679285007F299F /* UIColor+Util.m */; };
 		C495C09C0066787D87367EAF /* libPods-Weex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA35805924730B65BB33C53 /* libPods-Weex.a */; };
 /* End PBXBuildFile section */
 
@@ -30,8 +31,10 @@
 		226611EE1F5FEB9900A7EAE6 /* weex.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weex.png; sourceTree = "<group>"; };
 		226611EF1F5FEB9900A7EAE6 /* weex@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weex@2x.png"; sourceTree = "<group>"; };
 		226611F41F5FF11100A7EAE6 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		226611F51F5FF63A00A7EAE6 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		226611F61F5FF63A00A7EAE6 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		2283A4891F6791FC007F299F /* XMTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMTabBarController.h; sourceTree = "<group>"; };
+		2283A48A1F6791FC007F299F /* XMTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMTabBarController.m; sourceTree = "<group>"; };
+		2283A48D1F679285007F299F /* UIColor+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Util.h"; sourceTree = "<group>"; };
+		2283A48E1F679285007F299F /* UIColor+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Util.m"; sourceTree = "<group>"; };
 		4B036F049C37DA7CF0473BA2 /* Pods-Weex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.release.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.release.xcconfig"; sourceTree = "<group>"; };
 		5761AE58B9CC77A2150E3980 /* Pods-Weex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.debug.xcconfig"; sourceTree = "<group>"; };
 		7FA35805924730B65BB33C53 /* libPods-Weex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Weex.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,14 +74,17 @@
 		226611D31F5FE63E00A7EAE6 /* Weex */ = {
 			isa = PBXGroup;
 			children = (
+				2283A48C1F679270007F299F /* Utils */,
+				2283A48D1F679285007F299F /* UIColor+Util.h */,
+				2283A48E1F679285007F299F /* UIColor+Util.m */,
 				226611D71F5FE63E00A7EAE6 /* AppDelegate.h */,
 				226611D81F5FE63E00A7EAE6 /* AppDelegate.m */,
 				226611E01F5FE63E00A7EAE6 /* Assets.xcassets */,
 				226611E51F5FE63E00A7EAE6 /* Info.plist */,
 				226611D41F5FE63E00A7EAE6 /* Supporting Files */,
 				226611F41F5FF11100A7EAE6 /* PrefixHeader.pch */,
-				226611F51F5FF63A00A7EAE6 /* RootViewController.h */,
-				226611F61F5FF63A00A7EAE6 /* RootViewController.m */,
+				2283A4891F6791FC007F299F /* XMTabBarController.h */,
+				2283A48A1F6791FC007F299F /* XMTabBarController.m */,
 			);
 			path = Weex;
 			sourceTree = "<group>";
@@ -100,6 +106,13 @@
 				226611EF1F5FEB9900A7EAE6 /* weex@2x.png */,
 			);
 			name = resource;
+			sourceTree = "<group>";
+		};
+		2283A48C1F679270007F299F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		43D1D57CC10C85DDA426C811 /* Pods */ = {
@@ -246,7 +259,8 @@
 			files = (
 				226611D91F5FE63E00A7EAE6 /* AppDelegate.m in Sources */,
 				226611D61F5FE63E00A7EAE6 /* main.m in Sources */,
-				226611F71F5FF63A00A7EAE6 /* RootViewController.m in Sources */,
+				2283A48B1F6791FC007F299F /* XMTabBarController.m in Sources */,
+				2283A48F1F679285007F299F /* UIColor+Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
