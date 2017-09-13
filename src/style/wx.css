@@ -18,19 +18,10 @@
 /**默认子标题字体**/
 .sub_title {
     font-size: 28px;
-    color: #ccc;
+    color: #999;
 }
 
 /**margin 大小**/
-.m10 {
-    margin: 10px;
-}
-.m20 {
-    margin: 20px;
-}
-.m30 {
-    margin: 30px;
-}
 .mt10 {
     margin-top: 10px;
 }
@@ -41,59 +32,22 @@
     margin-top: 30px;
 }
 /**left 大小**/
-.l10 {
-    left: 10px;
+.ml10 {
+    margin-left: 10px;
 }
-.l20 {
-    left: 20px;
+.ml20 {
+    margin-left: 20px;
 }
-.l30 {
-    left: 30px;
-}
-/**左边 大小**/
-.r10 {
-    right: 10px;
-}
-.r20 {
-    right: 20px;
-}
-.r30 {
-    right: 30px;
-}
-
-/**padding 大小**/
-.p10 {
-    padding: 10px;
-}
-.p20 {
-    padding: 20px;
-}
-.p30 {
-    padding: 30px;
-}
-
-
-/**顶部划画**/
-.border-top-line {
-    border-top-width: 1px;
-    border-top-color: #ddd;
-    border-top-style: solid;
-}
-
-/**低部划画**/
-.border-bottom-line {
-    border-bottom-width: 1px;
-    border-bottom-color: #ddd;
-    border-bottom-style: solid;
+.ml30 {
+    margin-left: 30px;
 }
 
 /**cell 分组头**/
 .cell-header {
-    min-height: 70px;
+    height: 70px;
     flex-direction: row;
-    background-color: #eee;
+    background-color: #ddd;
     padding-left: 20px;
-    padding-right: 20px;
 }
 
 /**cell 行**/
@@ -126,30 +80,37 @@
 }
 
 .cell-clear {
-    margin: 0px;
-    border:0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-bottom-width:0px;
+    border-top-width:0px;
 }
 
 /**两边对齐**/
 .space-between {
     justify-content: space-between;
     flex-direction: row;
+    align-items: center;
 }
 .flex-start {
     justify-content:flex-start;
     flex-direction: row;
+    align-items: center;
 }
 .flex-end {
     justify-content:flex-end;
     flex-direction: row;
+    align-items: center;
 }
 .flex-center {
     justify-content:center;
     flex-direction: row;
+    align-items: center;
 }
 .space-around {
     justify-content:space-around;
     flex-direction: row;
+    align-items: center;
 }
 
 /**横向部局居中对齐**/
@@ -181,18 +142,6 @@
 .flex5 {
     flex:6;
 }
-.flex6 {
-    flex:6;
-}
-.flex7 {
-    flex:7;
-}
-.flex8 {
-    flex:8;
-}
-.flex9 {
-    flex:9;
-}
 
 /**常用背景颜色**/
 .bkg-white {
@@ -208,7 +157,7 @@
 }
 
 .bkg-color {
-    background-color:#eeeeee;
+    background-color:#eee;
 }
 
 /**常用字体颜色**/
@@ -221,11 +170,11 @@
 }
 
 .gray {
-    color:#ccc;
+    color:#999;
 }
 
 .color {
-    color:#eeeeee;
+    color:#eee;
 }
 
 /**ico 字体大小与颜色**/
@@ -245,11 +194,28 @@
 .button {
     font-size: 36px;
     text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    color:lightgoldenrodyellow;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-width: 1px;
     border-style: solid;
-    border-color: #ccc;
-    background-color: rgba(162, 217, 192, 0.2);
+    border-color: #999;
+    background-color: #F0AD3C;
     border-radius:8px;
+}
+
+/**上拉刷新，下拉加载样式**/
+
+.indicator{
+    font-size: 36px;
+    color:#ccc;
+    width:750px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+/**超长用省略号**/
+.lines-ellipsis {
+   lines:1;
+   text-overflow: ellipsis;
 }

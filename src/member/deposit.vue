@@ -7,69 +7,32 @@
             </refresh>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
-                 <div class="cell-header clear-row" v-if="isRepeat(index)">
-                    <div class="left">
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
+                    <div class="flex-row flex-start">
                         <text class="title" >{{deposit.create_date | detailMonth}}月份</text>
                     </div>
-                    <div class="last" @click="setup()">
+                    <div class="flex-row flex-end">
                         <text class="sub_title">查看账单</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <!--<div class="cell-row clear-row">-->
-                    <!--<div class="left">-->
-                        <!--<image class="logo" resize="cover"-->
-                               <!--src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">-->
-                        <!--</image>-->
-                        <!--<div style="flex-direction: column;">-->
-                            <!--<text class="title">张三给你转账</text>-->
-                            <!--<text class="datetime">08-21 10：24</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="">-->
-                        <!--<text class="money">+84,356.00</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <div class="cell-row clear-one" >
-                    <div class="left">
-                        <image class="logo" resize="cover"
-                               src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-                        </image>
-                        <div style="flex-direction: column;">
-                            <text class="title">{{deposit.memo}}</text>
-                            <text class="datetime">{{deposit.create_date | detailTime}}</text>
+                <div class="cell-row cell-clear" >
+                    <div class="cell-panel" style="height: 130px;">
+                        <div class="flex1">
+                            <image class="logo" resize="cover"
+                                   src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
+                            </image>
                         </div>
-                    </div>
-                    <div class="">
-                        <text class="money">{{deposit.amount}}</text>
+                        <div class="content flex5">
+                            <text class="title lines-ellipsis">{{deposit.memo}}</text>
+                            <div class="flex-row space-between align-bottom">
+                                <text class="datetime">{{deposit.create_date | detailTime}}</text>
+                                <text class="money">{{deposit.amount}}</text>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </cell>
-            <!--<cell>-->
-                <!--<div class="cell-header clear-row">-->
-                    <!--<div class="left">-->
-                        <!--<text class="title">17年8月</text>-->
-                    <!--</div>-->
-                    <!--<div class="last">-->
-                        <!--<text class="sub_title">查看账单</text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="cell-row clear-one">-->
-                    <!--<div class="left">-->
-                        <!--<image class="logo" resize="cover"-->
-                               <!--src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">-->
-                        <!--</image>-->
-                        <!--<div style="flex-direction: column;">-->
-                            <!--<text class="title">购买定制台卡</text>-->
-                            <!--<text class="datetime">08-21 10：24</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="">-->
-                        <!--<text class="money">-84,356.00</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</cell>-->
             <loading class="loading" @loading="onloading" :display="showLoading">
                 <text class="indicator">Loading ...</text>
             </loading>
@@ -79,29 +42,30 @@
 </template>
 <style src='../style/wx.css' />
 <style scoped>
-    .indicator{
-        width:750px;
-        text-align: center;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
+
     .logo {
         height:100px;
         width:100px;
-        margin:20px;
         border-radius:50px;
         overflow:hidden;
     }
 
+    .align-bottom {
+        align-items: flex-end;
+    }
+
+    .content {
+        margin-left: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
     .datetime {
         color:#ccc;
         font-size: 28px;
-        margin-top:15px;
-        margin-left:10px;
     }
     .money {
-        margin-top:25px;
         font-weight: 700;
+        margin-right: 20px;
     }
 
 </style>
@@ -130,7 +94,7 @@
                 return m;
          },
             detailTime: function (value) {
-                var date = new Date(value);
+                var    date = new Date(value);
                 var    m = date.getMonth() + 1;
                 var    d = date.getDate();
                 var    H = date.getHours();
@@ -156,7 +120,7 @@
             title: { default: "账单" }
         },
         methods: {
-//            判断月份是否重复
+            //判断月份是否重复
             isRepeat(index){
                 if(index != 0){
                     if(this.getDate(this.depositList[index].create_date,true) == this.getDate(this.depositList[index - 1].create_date,true)){
@@ -174,7 +138,7 @@
             setup: function (e) {
                 toPage(e);
             },
-            getStarCount ( pageNumber,callback) {
+            open (pageNumber,callback) {
                 return stream.fetch({
                     method: 'GET',
                     type: 'json',
@@ -212,36 +176,13 @@
 //            获取月份
             getDate: function(value) {
                 var date = new Date(value);
-//                var    Y = date.getFullYear();
                 var     m = date.getMonth() + 1;
-//                var     d = date.getDate();
-//                var    H = date.getHours();
-//                var    i = date.getMinutes();
-//                var    s = date.getSeconds();
-//                if (d < 10) {
-//                    d = '0' + d;
-//                }
-//                if (H < 10) {
-//                    H = '0' + H;
-//                }
-//                if (i < 10) {
-//                    i = '0' + i;
-//                }
-//                if (s < 10) {
-//                    s = '0' + s;
-//                }
                 return m;
-
-//                if (m < 10) {
-//                    m = '0' + m;
-//                }
-//                var t = Y + '-' + m + '-' + d + ' ' + H + ':' + i +  ':' + s;
-//                return t;
             }
     },
         created:function () {
 //              页面创建时请求数据
-            this.getStarCount( pageNumber,res => {
+            this.open( pageNumber,res => {
 //                this.test1 = res.data.data;
                 if(res.data.message.type == 'success'){
                     this.depositList = res.data.data;

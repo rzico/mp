@@ -1,67 +1,64 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
-        <list class="list">
+        <scroller class="scroller">
+            <div class="wallet-panel">
+                <text class="wallet-title">钱包余额（元）</text>
+                <text class="balance">1000000.00</text>
+            </div>
 
-            <cell class="cell">
-                <div class="panel">
-                    <div class="flex1">
-                        <text class="wallet-title">钱包余额（元）</text>
-                    </div>
-                    <div class="flex2">
-                        <text class="balance">1000000.00</text>
-                    </div>
-                </div>
-            </cell>
-            <cell>
-                <div class="cell-row">
-                    <div class="left">
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between">
+                    <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe64f;</text>
-                        <text class="title">银行卡</text>
+                        <text class="title ml10">银行卡</text>
                     </div>
-                    <div class="last">
+                    <div class="flex-row flex-end">
                         <text class="sub_title">已绑定</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-one">
-                    <div class="left">
+
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
-                        <text class="title">提现</text>
+                        <text class="title ml10">提现到银行卡</text>
                     </div>
-                    <div class="last">
+                    <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row">
-                    <div class="left">
+            </div>
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between">
+                <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
-                        <text class="title">我的账单</text>
+                        <text class="title ml10">我的账单</text>
                     </div>
-                    <div class="last">
+                    <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row">
-                    <div class="left">
+                <div class="cell-panel space-between">
+                    <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe698;</text>
-                        <text class="title">我的赏金</text>
+                        <text class="title ml10">我的赏金</text>
                     </div>
-                    <div class="last">
+                    <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row clear-one">
-                    <div class="left">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                        <text class="title">我的奖励</text>
+                        <text class="title ml10">我的奖励</text>
                     </div>
-                    <div class="last">
+                    <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-            </cell>
-        </list>
+            </div>
+        </scroller>
     </div>
 
 </template>
@@ -69,27 +66,23 @@
 <style scoped>
 
     .wallet-title {
+        margin-top: 70px;
+        flex:1;
         font-size: 32px;
         color: #fff;
         margin-left:60px;
-    }
-
-    .panel {
-        background-color: #F0AD3C;
-        flex-direction: column;
-        height:400px;
-    }
-
-    .flex1 {
-        flex: 1;
         justify-content: center;
-
     }
-    .flex2 {
-        flex: 1;
+
+    .wallet-panel {
+        background-color: #F0AD3C;
+        height:400px;
+        flex-direction: column;
+        align-items:flex-start;
     }
 
     .balance {
+        flex:3;
         font-size: 120px;
         color: #fff;
         margin-left:40px;

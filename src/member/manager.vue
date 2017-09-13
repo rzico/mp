@@ -1,10 +1,9 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
-        <list class="list">
-            <cell class="cell">
-                <div class="cell-row cell-line"  @click="setup">
-                    <div class="cell-panel space-between cell-clear" style="height:150px;">
+        <scroller class="scroller">
+            <div class="cell-row cell-line">
+                    <div class="cell-panel space-between cell-clear"   @click="setup" style="height:160px;">
                         <div class="flex-start">
                             <image class="logo" resize="cover"
                                    src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
@@ -19,11 +18,13 @@
                         </div>
                     </div>
                 </div>
+
+            <div class="cell-row cell-line">
                 <div class="cell-row cell-line">
                     <div class="cell-panel space-between">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
-                            <text class="title l10">通用设置</text>
+                            <text class="title ml10">通用设置</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -32,7 +33,7 @@
                     <div class="cell-panel space-between cell-clear">
                         <div class="flex-row">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
-                            <text class="title l10">专栏认证</text>
+                            <text class="title ml10">专栏认证</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="sub_title">已认证</text>
@@ -44,7 +45,7 @@
                     <div class="cell-panel space-between">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
-                            <text class="title l10">商品管理</text>
+                            <text class="title ml10">商品管理</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -53,7 +54,7 @@
                     <div class="cell-panel space-between">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                            <text class="title l10">订单管理</text>
+                            <text class="title ml10">订单管理</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="sub_title">0个待处理</text>
@@ -63,7 +64,7 @@
                     <div class="cell-panel space-between">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
-                            <text class="title l10">评价管理</text>
+                            <text class="title ml10">评价管理</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="sub_title"></text>
@@ -73,7 +74,7 @@
                     <div class="cell-panel space-between cell-clear">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65f;</text>
-                            <text class="title l10">投票管理</text>
+                            <text class="title ml10">投票管理</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="sub_title"></text>
@@ -85,7 +86,7 @@
                     <div class="cell-panel space-between">
                          <div class="flex-row flex-start">
                              <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                             <text class="title l10">推荐给好友</text>
+                             <text class="title ml10">推荐给好友</text>
                          </div>
                          <div class="flex-row flex-end">
                              <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -94,15 +95,15 @@
                     <div class="cell-panel space-between cell-clear">
                          <div class="flex-row flex-start">
                              <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
-                             <text class="title l10">联系客服</text>
+                             <text class="title ml10">联系客服</text>
                          </div>
                          <div class="flex-row flex-end">
                              <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                          </div>
                      </div>
                  </div>
-            </cell>
-        </list>
+            </div>
+        </scroller>
     </div>
 </template>
 <style src='../style/wx.css' />
@@ -111,13 +112,12 @@
     .logo {
         width:120px;
         height:120px;
-        margin:10px;
         border-radius:60px;
         overflow:hidden;
     }
 
     .name {
-        left:10px;
+        margin-left:10px;
         flex-direction: column;
         justify-content: center;
         height:180px;
