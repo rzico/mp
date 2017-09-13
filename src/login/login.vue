@@ -30,14 +30,14 @@
                 <div class="flex1">
                 </div>
                 <div class="flex1">
-                    <div class="border-bottom-line" style="height:28px;"></div>
+                    <div class="border-bottom-line" style="height:18px;"></div>
                 </div>
                 <div class="flex1 gray flex-column">
                     <text class="title gray">微信登录</text>
                 </div>
 
                 <div class="flex1">
-                    <div class="border-bottom-line" style="height:28px;"></div>
+                    <div class="border-bottom-line" style="height:18px;"></div>
                 </div>
                 <div class="flex1">
                 </div>
@@ -57,7 +57,7 @@
 <style scoped>
 
     .login-header {
-        height:350px;
+        height:300px;
         background-color: #fff;
         flex-direction: column;
         align-items: center;
@@ -67,7 +67,7 @@
         margin-top:100px;
         height:150px;
         width:150px;
-        border-radius:75px;
+        border-radius:15px;
         overflow:hidden;
     }
 
@@ -91,6 +91,12 @@
         border-bottom-style: solid;
         align-items: center;
         justify-content:space-between;
+    }
+
+    .border-bottom-line {
+        border-bottom-width: 1px;
+        border-bottom-color: #ccc;
+        border-bottom-style: solid;
     }
 
     .login-caption {

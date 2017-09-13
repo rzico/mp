@@ -100,7 +100,7 @@
                 var date = new Date(value);
                 var    m = date.getMonth() + 1;
                 return m;
-         },
+            },
             detailTime: function (value) {
                 var    date = new Date(value);
                 var    m = date.getMonth() + 1;
