@@ -43,6 +43,14 @@
 <style src='../style/wx.css' />
 <style scoped>
 
+    .cell-row {
+        min-height: 120px;
+        flex-direction: column;
+        background-color: #ffffff;
+        padding-left: 20px;
+        margin-top: 20px;
+    }
+
     .logo {
         height:100px;
         width:100px;
