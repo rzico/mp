@@ -164,6 +164,10 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/drawable/abc_item_background_holo_dark.xml"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable/bg_gf_crop_texture.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable/bg_gf_crop_texture.xml"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable/design_bottom_navigation_item_background.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/drawable/design_bottom_navigation_item_background.xml"
     },

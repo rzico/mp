@@ -19,9 +19,16 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- 获取WIFI权限 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取手机任务信息（进程,app列表） -->
+    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 拨打电话 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-feature
         android:name="android.hardware.camera.front"
         android:required="false" />
@@ -37,9 +44,10 @@
 
     <application
         android:name="com.rzico.weex.WXApplication"
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <uses-library android:name="android.test.runner" />
@@ -64,7 +72,7 @@
             android:name="com.rzico.weex.activity.WXPageActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@style/FullscreenTheme_haveActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="com.alibaba.weex.protocol.openurl" />
@@ -79,8 +87,7 @@
         </activity>
         <activity
             android:name="com.rzico.weex.activity.MainActivity"
-            android:theme="@style/FullscreenTheme_haveActionBar" >
-        </activity>
+            android:theme="@style/FullscreenTheme_haveActionBar" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:clearTaskOnLaunch="true"
@@ -88,8 +95,9 @@
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name="com.rzico.weex.activity.TestActivity" >
-        </activity>
+        <activity android:name="com.rzico.weex.activity.TestActivity" />
+        <activity android:name="com.rzico.weex.activity.VerifyCodeLoginActivity" />
+        <activity android:name="com.rzico.weex.activity.EditActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -107,6 +115,18 @@
             android:exported="false" >
         </receiver>
 
+        <activity
+            android:name="cn.finalteam.galleryfinal.PhotoSelectActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="cn.finalteam.galleryfinal.PhotoEditActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="cn.finalteam.galleryfinal.PhotoPreviewActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.karumi.dexter.DexterActivity"
             android:launchMode="singleInstance"

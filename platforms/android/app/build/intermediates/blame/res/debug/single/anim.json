@@ -24,8 +24,16 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/anim/design_bottom_sheet_slide_in.xml"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/anim/gf_flip_horizontal_in.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/anim/gf_flip_horizontal_in.xml"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/anim/abc_slide_out_top.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/anim/gf_flip_horizontal_out.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/anim/gf_flip_horizontal_out.xml"
     },
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/anim/abc_slide_in_bottom.xml",

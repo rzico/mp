@@ -16,7 +16,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="40b5e19720cfa0b255916a7e153674dc0c2690d6">
+        sha1="693383bfc8befb47c71861f431be6715647b5df5">
         <dex dex="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_08ab4c4fe9ca6ab1aeee58315daccb00043b5722/classes.dex" />
     </item>
     <item
@@ -156,6 +156,15 @@
     </item>
     <item
         is-multidex="true"
+        jar="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="c74f0952cfb481882d8cedf4ca9f3c60289a3301">
+        <dex dex="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/cn.finalteam-galleryfinal-1.4.8.7_3ac24a89fa325f6e18fc0231e2af4bff0f45f944/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.2.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
@@ -216,6 +225,15 @@
         revision="24.0.3"
         sha1="152de8da301561dcb0946471697a420d8f7a68c5">
         <dex dex="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.2.0_204037985edea2e3be761abacbf85e7510a87aca/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/toolsfinal/1.1.5/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="966da5b6a8bfdef0bfc660e349f8765dde5cb6f3">
+        <dex dex="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/cn.finalteam-toolsfinal-1.1.5_e74e8449c936452d30d884fea4e78e521377d390/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -322,7 +340,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.3"
-        sha1="58c1541c3c2810d12a00a71fb2faaf538a7bf2b8">
+        sha1="f1a4d97a5068aa1ddbdb37f7f194e6d0ddaeb391">
         <dex dex="/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_984e6dd0c421a760b74f17ab3087212687bd3329/classes.dex" />
     </item>
 
