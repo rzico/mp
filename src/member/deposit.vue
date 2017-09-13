@@ -12,12 +12,12 @@
                         <text class="title" >{{deposit.create_date | detailMonth}}月份</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">查看账单</text>
+                        <text class="sub_title"   >查看账单</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="cell-row cell-clear" >
-                    <div class="cell-panel" style="height: 130px;">
+                    <div class="cell-panel "  style="height: 130px;" :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
                                    src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
@@ -27,7 +27,7 @@
                             <text class="title lines-ellipsis">{{deposit.memo}}</text>
                             <div class="flex-row space-between align-bottom">
                                 <text class="datetime">{{deposit.create_date | detailTime}}</text>
-                                <text class="money">{{deposit.amount}}</text>
+                                <text class="money">{{deposit.amount | formatting}}</text>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,10 @@
 </template>
 <style src='../style/wx.css' />
 <style scoped>
+    .noBorder{
 
+        border-bottom-width: 0px;
+    }
     .cell-row {
         min-height: 120px;
         flex-direction: column;
@@ -97,16 +100,16 @@
 //        过滤器
         filters: {
             detailMonth: function (value) {
-                var date = new Date(value);
-                var    m = date.getMonth() + 1;
+                let date = new Date(value);
+                let    m = date.getMonth() + 1;
                 return m;
          },
             detailTime: function (value) {
-                var    date = new Date(value);
-                var    m = date.getMonth() + 1;
-                var    d = date.getDate();
-                var    H = date.getHours();
-                var    i = date.getMinutes();
+                let    date = new Date(value);
+                let    m = date.getMonth() + 1;
+                let    d = date.getDate();
+                let    H = date.getHours();
+                let    i = date.getMinutes();
                 if (m < 10) {
                     m = '0' + m;
                 }
@@ -119,19 +122,45 @@
                 if (i < 10) {
                     i = '0' + i;
                 }
-                var t = m + '-' + d + '  ' + H + ':' + i ;
+                let t = m + '-' + d + '  ' + H + ':' + i ;
                 return t;
 
+            },
+            formatting:function(value){
+                let dealValue = value.toFixed(2);
+                return dealValue;
             }
         },
+
         props: {
             title: { default: "账单" }
         },
         methods: {
+//            是否添加底部边框
+            addBorder: function (index) {
+                let listLength = this.depositList.length;
+//                判断是否最后一个元素并且是否每月的结尾
+                if(index != listLength - 1 ){
+                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index + 1].create_date)){
+                        return {
+                            borderBottomWidth:'1px'
+                        }
+                    }else{
+                        return {
+                            borderBottomWidth:'0px'
+                        }
+                    }
+                }else{
+                    return {
+                        borderBottomWidth:'0px'
+                    }
+                }
+
+            },
             //判断月份是否重复
             isRepeat(index){
                 if(index != 0){
-                    if(this.getDate(this.depositList[index].create_date,true) == this.getDate(this.depositList[index - 1].create_date,true)){
+                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index - 1].create_date)){
                         return false;
                     }
                 }
@@ -158,7 +187,7 @@
                 pageNumber ++ ;
                 modal.toast({ message: '加载中...', duration: 0.5 })
                 this.showLoading = 'show'
-                    this.getStarCount(pageNumber, res => {
+                    this.open(pageNumber, res => {
                         if(res.data.message.type == 'success'){
                             this.depositList = this.depositList.concat(res.data.data);
                         }else{
@@ -172,7 +201,7 @@
                 pageNumber = 1;
                 modal.toast({ message: '加载中...', duration: 1 })
                 this.refreshing = true
-                    this.getStarCount(pageNumber, res => {
+                    this.open(pageNumber, res => {
                         if(res.data.message.type == 'success'){
                             this.depositList = res.data.data;
                         }else{
@@ -183,15 +212,14 @@
             },
 //            获取月份
             getDate: function(value) {
-                var date = new Date(value);
-                var     m = date.getMonth() + 1;
+                let date = new Date(value);
+                let     m = date.getMonth() + 1;
                 return m;
             }
     },
         created:function () {
 //              页面创建时请求数据
             this.open( pageNumber,res => {
-//                this.test1 = res.data.data;
                 if(res.data.message.type == 'success'){
                     this.depositList = res.data.data;
                 }else{
