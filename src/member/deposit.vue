@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="cell-row cell-clear" >
-                    <div class="cell-panel "  style="height: 130px;" :style="addBorder(index)">
+                    <div class="cell-panel newHeight"  :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
                                    src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
@@ -42,9 +42,8 @@
 </template>
 <style src='../style/wx.css' />
 <style scoped>
-    .noBorder{
-
-        border-bottom-width: 0px;
+    .newHeight{
+        height: 130px;
     }
     .cell-row {
         min-height: 120px;
@@ -63,6 +62,7 @@
 
     .align-bottom {
         align-items: flex-end;
+        width:615px;
     }
 
     .content {
