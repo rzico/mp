@@ -241,6 +241,7 @@
 </style>
 
 <script>
+    const album = weex.requireModule('albumModule');
     var modal = weex.requireModule('modal');
     var lastIndex = -1;
     export default {
@@ -256,7 +257,7 @@
                     show:true
                 },{
                     paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    paraText:'333',
+                    paraText:'前三个段落是死数据',
                     show:true
                 },{
                     paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -264,6 +265,25 @@
                     show:true
                 }]
             }
+        },
+
+//       多选图片
+        created:function(){
+//      调用安卓的相册
+            album.openAlbumMuti(
+            //选完图片后触发回调函数
+                function (data) {
+                    var _this = this;
+                    for(let i = 0;i < data.length;i++){
+                        _this.paraList.push({
+                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                            paraText:'',
+                            show:true
+                        })
+                        _this.paraList[i].paraImage = data[i].originalPath;
+                    }
+                }
+            )
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -361,7 +381,7 @@
                 this.paraList.splice(index + 1,0,upContent);
             },
 //            用户执行删除时触发询问。
-            showConfirm (index) {
+            showConfirm :function(index) {
                 var _this = this;
                 if(this.paraList.length == 1){
                     modal.toast({message: '至少要保留一张图片', duration: 0.5})
@@ -379,8 +399,7 @@
                         }
                     })
                 }
-            },
-
+            }
         }
     }
 </script>
