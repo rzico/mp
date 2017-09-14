@@ -8,7 +8,8 @@
         </div>
     </div>
 </template>
-<style src='../style/wx.css' />
+<style lang="less" src="../../style/wx.less"/>
+
 <style scoped>
     .memo {
         margin-top: 20px;

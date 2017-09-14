@@ -4,7 +4,8 @@
         <captcha :title="cptitle" @onclick="onclick"> </captcha>
     </div>
 </template>
-<style src='../style/wx.css' />
+<style lang="less" src="../../style/wx.less"/>
+
 <style scoped>
 
 </style>

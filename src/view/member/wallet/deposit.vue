@@ -40,7 +40,7 @@
     </div>
 
 </template>
-<style src='../style/wx.css' />
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .newHeight{
         height: 130px;
@@ -83,7 +83,7 @@
 <script>
     const modal = weex.requireModule('modal')
     var navigator = weex.requireModule('navigator')
-    import navbar from '../../include/navbar.vue'
+    import navbar from '../../../include/navbar.vue'
     var stream = weex.requireModule('stream')
     var pageNumber = 1;
     export default {

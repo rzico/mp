@@ -27,6 +27,10 @@ module.exports = {
         test: /\.we(\?[^?]+)?$/,
         loader: 'weex-loader',
       },
+        {
+            test: /\.(less)$/,
+            loader: 'style-loader!css-loader!less-loader'
+        },
       {
         test: /\.vue(\?[^?]+)?$/,
         loader: 'vue',
