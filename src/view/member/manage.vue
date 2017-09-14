@@ -105,7 +105,7 @@
         </scroller>
     </div>
 </template>
-<style src='../style/wx.css' />
+<style lang="less" src="../../style/wx.less"/>
 <style scoped>
 
     .logo {
@@ -137,7 +137,7 @@
             navbar
         },
         props: {
-            title: { default: "管理设置" }
+            title: { default: "账号管理" }
         },
         methods: {
             goback: function (e) {

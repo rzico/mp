@@ -62,7 +62,7 @@
     </div>
 
 </template>
-<style src='../style/wx.css' />
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
 
     .wallet-title {
@@ -91,7 +91,7 @@
 </style>
 <script>
     var navigator = weex.requireModule('navigator')
-    import navbar from '../../include/navbar.vue'
+    import navbar from '../../../include/navbar.vue'
     export default {
         components: {
             navbar

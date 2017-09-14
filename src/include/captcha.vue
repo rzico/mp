@@ -22,7 +22,7 @@
         </div>
     </div>
 </template>
-<style type="less" src='../style/wx.less'/>
+<style lang="less" src="../style/wx.less"/>
 <style scoped>
 
     .captcha {
