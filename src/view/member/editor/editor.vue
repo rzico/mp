@@ -33,8 +33,10 @@
                 </div>
             </div>
         </cell>
-        <cell v-for="(item,index) in paraList">
-            <div >
+        <cell>
+
+            <transition-group name="paraTransition" tag="div">
+            <div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">
                 <!--段落-->
                 <div class="paraBox">
                     <!--左上角关闭按钮"x"-->
@@ -83,12 +85,21 @@
                     </div>
                 </div>
             </div>
+
+            </transition-group>
         </cell>
         <!--用来撑起底部空白区域-->
         <cell><div class="emptyBox"></div></cell>
     </list>
 </template>
 <style>
+    .paraTransition-enter-active, .paraTransition-leave-active {
+        transition: all 0.2s;
+    }
+    .paraTransition-enter, .paraTransition-leave-to{
+        transform: translateX(300px);
+        opacity: 0.2;
+    }
     .greyColor{
         color: #999;
     }
@@ -241,6 +252,7 @@
 </style>
 
 <script>
+    const album = weex.requireModule('albumModule');
     var modal = weex.requireModule('modal');
     var lastIndex = -1;
     export default {
@@ -256,7 +268,7 @@
                     show:true
                 },{
                     paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    paraText:'333',
+                    paraText:'前三个段落是死数据',
                     show:true
                 },{
                     paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -264,6 +276,25 @@
                     show:true
                 }]
             }
+        },
+
+//       多选图片
+        created:function(){
+//      调用安卓的相册
+//            album.openAlbumMuti(
+//            //选完图片后触发回调函数
+//                function (data) {
+//                    var _this = this;
+//                    for(let i = 0;i < data.length;i++){
+//                        _this.paraList.push({
+//                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                            paraText:'',
+//                            show:true
+//                        })
+//                        _this.paraList[i].paraImage = data[i].originalPath;
+//                    }
+//                }
+//            )
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -361,7 +392,7 @@
                 this.paraList.splice(index + 1,0,upContent);
             },
 //            用户执行删除时触发询问。
-            showConfirm (index) {
+            showConfirm :function(index) {
                 var _this = this;
                 if(this.paraList.length == 1){
                     modal.toast({message: '至少要保留一张图片', duration: 0.5})
@@ -375,12 +406,11 @@
                         if(value == '确定'){
                             //                将内容删掉
                             _this.paraList.splice(index,1);
-                            modal.toast({message: '删除成功', duration: 0.5})
+
                         }
                     })
                 }
-            },
-
+            }
         }
     }
 </script>
