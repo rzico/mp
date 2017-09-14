@@ -32,7 +32,7 @@
     </div>
 
 </template>
-<style lang="less" src="style/wx.less"/>
+<style lang="less" src="../style/wx.less"/>
 <style scoped>
 
     .login-header {
@@ -94,7 +94,7 @@
 
 </style>
 <script>
-    import navbar from '../../include/navbar.vue'
+    import navbar from '../include/navbar.vue'
     export default {
         components: {
             navbar,captcha

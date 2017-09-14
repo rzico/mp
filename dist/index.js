@@ -41,25 +41,24 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 0:
+/******/ ([
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = []
 
 	/* styles */
-	__vue_styles__.push(__webpack_require__(19)
+	__vue_styles__.push(__webpack_require__(13)
 	)
-	__vue_styles__.push(__webpack_require__(20)
+	__vue_styles__.push(__webpack_require__(14)
 	)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(21)
+	__vue_exports__ = __webpack_require__(15)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(22)
+	var __vue_template__ = __webpack_require__(16)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -91,8 +90,19 @@
 
 
 /***/ }),
-
-/***/ 19:
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -131,6 +141,15 @@
 	  "ml30": {
 	    "marginLeft": 30
 	  },
+	  "header": {
+	    "height": 96,
+	    "flexDirection": "row",
+	    "position": "sticky",
+	    "borderBottomWidth": 1,
+	    "borderBottomStyle": "solid",
+	    "borderBottomColor": "#999999",
+	    "backgroundColor": "#D9141E"
+	  },
 	  "cell-header": {
 	    "height": 70,
 	    "flexDirection": "row",
@@ -146,10 +165,10 @@
 	  },
 	  "cell-line": {
 	    "borderTopWidth": 1,
-	    "borderTopColor": "#cccccc",
+	    "borderTopColor": "#999999",
 	    "borderTopStyle": "solid",
 	    "borderBottomWidth": 1,
-	    "borderBottomColor": "#cccccc",
+	    "borderBottomColor": "#999999",
 	    "borderBottomStyle": "solid"
 	  },
 	  "cell-panel": {
@@ -158,7 +177,7 @@
 	    "flexDirection": "row",
 	    "alignItems": "center",
 	    "borderBottomWidth": 1,
-	    "borderBottomColor": "#cccccc",
+	    "borderBottomColor": "#999999",
 	    "borderBottomStyle": "solid"
 	  },
 	  "cell-clear": {
@@ -219,12 +238,9 @@
 	    "backgroundColor": "#FFFFFF"
 	  },
 	  "bkg-primary": {
-	    "backgroundColor": "#F0AD3C"
+	    "backgroundColor": "#D9141E"
 	  },
 	  "bkg-gray": {
-	    "backgroundColor": "#cccccc"
-	  },
-	  "bkg-color": {
 	    "backgroundColor": "#eeeeee"
 	  },
 	  "white": {
@@ -236,12 +252,9 @@
 	  "gray": {
 	    "color": "#999999"
 	  },
-	  "color": {
-	    "color": "#eeeeee"
-	  },
 	  "ico": {
 	    "fontSize": 48,
-	    "color": "#F0AD3C"
+	    "color": "#D9141E"
 	  },
 	  "arrow": {
 	    "fontSize": 32,
@@ -257,15 +270,15 @@
 	    "borderWidth": 1,
 	    "borderStyle": "solid",
 	    "borderColor": "#999999",
-	    "backgroundColor": "#F0AD3C",
-	    "borderRadius": 8,
-	    "backgroundColor:active": "#999999",
-	    "backgroundColor:disabled": "#cccccc",
+	    "backgroundColor": "#D9141E",
+	    "borderRadius": 12,
+	    "backgroundColor:active": "#eeeeee",
+	    "backgroundColor:disabled": "#D9141E",
 	    "color:disabled": "#999999"
 	  },
 	  "indicator": {
 	    "fontSize": 36,
-	    "color": "#cccccc",
+	    "color": "#D9141E",
 	    "width": 750,
 	    "textAlign": "center",
 	    "marginTop": 20,
@@ -278,8 +291,7 @@
 	}
 
 /***/ }),
-
-/***/ 20:
+/* 14 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -299,7 +311,7 @@
 	  "register": {
 	    "flexDirection": "column",
 	    "position": "fixed",
-	    "bottom": 10,
+	    "bottom": 0,
 	    "left": 0,
 	    "right": 0,
 	    "width": 750,
@@ -309,17 +321,17 @@
 	    "backgroundColor": "#FFFFFF"
 	  },
 	  "footer": {
-	    "marginTop": 40
+	    "marginTop": 20
 	  },
 	  "btn": {
 	    "backgroundColor": "#32CD32",
-	    "color": "#cccccc"
+	    "color": "#cccccc",
+	    "width": 500
 	  }
 	}
 
 /***/ }),
-
-/***/ 21:
+/* 15 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -419,8 +431,7 @@
 	module.exports = exports['default'];
 
 /***/ }),
-
-/***/ 22:
+/* 16 */
 /***/ (function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -444,7 +455,12 @@
 	    })])
 	  })), _c('div', {
 	    staticClass: ["register"]
-	  }, [_vm._m(0), _c('div', {
+	  }, [_c('text', {
+	    staticClass: ["flex1", "button", "btn"],
+	    attrs: {
+	      "value": "微信快速登录"
+	    }
+	  }, [_vm._v("微信快速登录")]), _c('div', {
 	    staticClass: ["flex-row", "space-between", "footer"]
 	  }, [_c('text', {
 	    staticClass: ["title", "gray"],
@@ -457,18 +473,8 @@
 	      "click": _vm.goback
 	    }
 	  }, [_vm._v("随便看看")])])])])
-	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', {
-	    staticClass: ["flex-row"]
-	  }, [_c('text', {
-	    staticClass: ["flex1", "button", "btn"],
-	    attrs: {
-	      "value": "微信快速登录"
-	    }
-	  }, [_vm._v("微信快速登录")])])
-	}]}
+	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 
 /***/ })
-
-/******/ });
+/******/ ]);
