@@ -1,0 +1,230 @@
+@import "variable/color";
+@import "variable/size";
+
+/**每个页面都必须的，墙纸**/
+.wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 750px;
+    background-color:@bg-gray;
+}
+
+/**默认标题字体**/
+.title {
+    font-size: @title-size;
+    color: #000;
+}
+
+/**默认子标题字体**/
+.sub_title {
+    font-size: @sub-title-size;
+    color: @font-gray;
+}
+
+/**top 大小**/
+.mt10 {
+    margin-top: 10px;
+}
+.mt20 {
+    margin-top: 20px;
+}
+.mt30 {
+    margin-top: 30px;
+}
+/**left 大小**/
+.ml10 {
+    margin-left: 10px;
+}
+.ml20 {
+    margin-left: 20px;
+}
+.ml30 {
+    margin-left: 30px;
+}
+
+.header {
+    height: 96px;
+    flex-direction: row;
+    position:sticky;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: @border-gray;
+    background-color: @baseColor;
+}
+
+/**cell 分组头**/
+.cell-header {
+    height: 70px;
+    flex-direction: row;
+    background-color: @header-gray;
+    padding-left: 20px;
+}
+
+/**cell 行**/
+.cell-row {
+    min-height: 100px;
+    flex-direction: column;
+    background-color: #ffffff;
+    padding-left: 20px;
+    margin-top: 20px;
+}
+
+.cell-line {
+    border-top-width: 1px;
+    border-top-color: @border-gray;
+    border-top-style: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: @border-gray;
+    border-bottom-style: solid;
+}
+
+/**cell 内面行**/
+.cell-panel {
+    height: 98px;
+    min-height: 98px;
+    flex-direction: row;
+    align-items: center;
+    border-bottom-width: 1px;
+    border-bottom-color: @border-gray;
+    border-bottom-style: solid;
+}
+
+.cell-clear {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-bottom-width:0px;
+    border-top-width:0px;
+}
+
+/**两边对齐**/
+.space-between {
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+.flex-start {
+    justify-content:flex-start;
+    flex-direction: row;
+    align-items: center;
+}
+.flex-end {
+    justify-content:flex-end;
+    flex-direction: row;
+    align-items: center;
+}
+.flex-center {
+    justify-content:center;
+    flex-direction: row;
+    align-items: center;
+}
+.space-around {
+    justify-content:space-around;
+    flex-direction: row;
+    align-items: center;
+}
+
+/**横向部局居中对齐**/
+.flex-row {
+    flex-direction: row;
+    align-items: center;
+}
+.flex-column {
+    flex-direction: column;
+    align-items: center;
+}
+
+/**flex 部局比例**/
+.flex1 {
+    flex:1;
+}
+.flex2 {
+    flex:2;
+}
+.flex3 {
+    flex:3;
+}
+.flex4 {
+    flex:4;
+}
+.flex5 {
+    flex:6;
+}
+
+/**常用背景颜色**/
+.bkg-white {
+    background-color: white;
+}
+
+.bkg-primary {
+    background-color: @baseColor;
+}
+
+.bkg-gray {
+    background-color:@bg-gray;
+}
+
+/**常用字体颜色**/
+.white {
+    color: white;
+}
+
+.primary {
+    color: #F0AD3C;
+}
+
+.gray {
+    color:@font-gray;
+}
+
+/**ico 字体大小与颜色**/
+.ico {
+    font-size: @ico-size;
+    color: @baseColor;
+}
+
+/**右箭头 字体大小与颜色**/
+.arrow {
+    font-size: 32px;
+    color: @base-gray;
+    width: 40px;
+}
+
+/**默认按钮类型**/
+.button {
+    font-size: 36px;
+    text-align: center;
+    color:lightgoldenrodyellow;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: @border-gray;
+    background-color: @baseColor;
+    border-radius:12px;
+}
+.button:active {
+    background-color:@bg-gray;
+}
+.button:disabled {
+    background-color:@baseColor;
+    color:#999;
+}
+
+/**上拉刷新，下拉加载样式**/
+
+.indicator{
+    font-size: 36px;
+    color:@baseColor;
+    width:750px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+/**超长用省略号**/
+.lines-ellipsis {
+   lines:1;
+   text-overflow: ellipsis;
+}

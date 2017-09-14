@@ -1,3 +1,6 @@
+@import "variable/color";
+@import "variable/size";
+
 /**每个页面都必须的，墙纸**/
 .wrapper {
     position: absolute;
@@ -6,19 +9,19 @@
     right: 0;
     bottom: 0;
     width: 750px;
-    background-color: #eeeeee;
+    background-color:@bg-gray;
 }
 
 /**默认标题字体**/
 .title {
-    font-size: 32px;
+    font-size: @title-size;
     color: #000;
 }
 
 /**默认子标题字体**/
 .sub_title {
-    font-size: 28px;
-    color: #999;
+    font-size: @sub-title-size;
+    color: @font-gray;
 }
 
 /**margin 大小**/
@@ -42,11 +45,21 @@
     margin-left: 30px;
 }
 
+.header {
+    height: 96px;
+    flex-direction: row;
+    position:sticky;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: @border-gray;
+    background-color: @baseColor;
+}
+
 /**cell 分组头**/
 .cell-header {
     height: 70px;
     flex-direction: row;
-    background-color: #ddd;
+    background-color: @header-gray;
     padding-left: 20px;
 }
 
@@ -61,10 +74,10 @@
 
 .cell-line {
     border-top-width: 1px;
-    border-top-color: #ccc;
+    border-top-color: @border-gray;
     border-top-style: solid;
     border-bottom-width: 1px;
-    border-bottom-color: #ccc;
+    border-bottom-color: @border-gray;
     border-bottom-style: solid;
 }
 
@@ -75,7 +88,7 @@
     flex-direction: row;
     align-items: center;
     border-bottom-width: 1px;
-    border-bottom-color: #ccc;
+    border-bottom-color: @border-gray;
     border-bottom-style: solid;
 }
 
@@ -146,15 +159,11 @@
 }
 
 .bkg-primary {
-    background-color: #F0AD3C;
+    background-color: @baseColor;
 }
 
 .bkg-gray {
-    background-color:#ccc;
-}
-
-.bkg-color {
-    background-color:#eee;
+    background-color:@bg-gray;
 }
 
 /**常用字体颜色**/
@@ -167,23 +176,19 @@
 }
 
 .gray {
-    color:#999;
-}
-
-.color {
-    color:#eee;
+    color:@font-gray;
 }
 
 /**ico 字体大小与颜色**/
 .ico {
-    font-size: 48px;
-    color: #F0AD3C;
+    font-size: @ico-size;
+    color: @baseColor;
 }
 
 /**右箭头 字体大小与颜色**/
 .arrow {
     font-size: 32px;
-    color: #ccc;
+    color: @base-gray;
     width: 40px;
 }
 
@@ -196,15 +201,15 @@
     padding-bottom: 20px;
     border-width: 1px;
     border-style: solid;
-    border-color: #999;
-    background-color: #F0AD3C;
+    border-color: @border-gray;
+    background-color: @baseColor;
     border-radius:12px;
 }
 .button:active {
-    background-color:#999;
+    background-color:@bg-gray;
 }
 .button:disabled {
-    background-color:#ccc;
+    background-color:@baseColor;
     color:#999;
 }
 
@@ -212,7 +217,7 @@
 
 .indicator{
     font-size: 36px;
-    color:#ccc;
+    color:@baseColor;
     width:750px;
     text-align: center;
     margin-top: 20px;

@@ -11,8 +11,8 @@
 <script>
     const modal = weex.requireModule('modal')
     var navigator = weex.requireModule('navigator')
-    import navbar from '../include/navbar.vue'
-    import captcha from '../include/captcha.vue'
+    import navbar from '../../include/navbar.vue'
+    import captcha from '../../include/captcha.vue'
     var stream = weex.requireModule('stream')
     export default {
         components: {

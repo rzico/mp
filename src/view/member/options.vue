@@ -52,7 +52,7 @@
 </style>
 <script>
     var navigator = weex.requireModule('navigator')
-    import navbar from '../include/navbar.vue'
+    import navbar from '../../include/navbar.vue'
     export default {
         components: {
             navbar

@@ -19,7 +19,7 @@
         </div>
     </div>
 </template>
-<style src='../style/wx.css'/>
+<style type="less" src='../style/wx.less'/>
 <style scoped>
 
     .mobile-title {

@@ -83,7 +83,7 @@
 <script>
     const modal = weex.requireModule('modal')
     var navigator = weex.requireModule('navigator')
-    import navbar from '../include/navbar.vue'
+    import navbar from '../../include/navbar.vue'
     var stream = weex.requireModule('stream')
     var pageNumber = 1;
     export default {
