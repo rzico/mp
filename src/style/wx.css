@@ -198,7 +198,7 @@
     border-style: solid;
     border-color: #999;
     background-color: #F0AD3C;
-    border-radius:8px;
+    border-radius:12px;
 }
 .button:active {
     background-color:#999;

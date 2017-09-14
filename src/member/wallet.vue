@@ -32,7 +32,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between">
                 <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                         <text class="title ml10">我的账单</text>
                     </div>
                     <div class="flex-row flex-end">

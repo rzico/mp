@@ -1,153 +1,121 @@
 <template>
     <div class="wrapper bkg-white">
-        <div class="login-header">
-               <image class="logo" resize="cover"
-                   src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-               </image>
-               <text class="title" style="margin-top:20px;">张三</text>
-        </div>
-        <div class="login-panel">
-            <div class="login-row">
-                     <text class="title flex1">账号</text>
-                    <input class="flex4 username" type="text" placeholder="登录名/手机号"  :autofocus=true value="" @change="onchange" @input="oninput"/>
-                       <div class="flex1"></div>
+        <slider class="slider" interval="3000" auto-play="true">
+            <div class="frame" v-for="img in imageList">
+                <image class="image" resize="cover" :src="img.src"></image>
             </div>
-            <div class="login-row">
-                    <text class="title flex1">密码</text>
-                    <input class="flex4 password" type="password" placeholder="请输入登录密码"  @change="onchange" @input="oninput"/>
-                <div class="flex1 flex-column">
-                    <text class="see" :style="{fontFamily:'iconfont'}">&#xe632;</text>
+        </slider>
+        <div class="register">
+            <div class="flex-row">
+                <div class="flex1 btn">
+                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
+                    <text class="btn-text" value="微信快捷登录">微信快捷登录</text>
                 </div>
             </div>
-            <text class="button login-button" value="登录" type="primary" >登录</text>
-            <div class="login-row cell-clear">
-                <text class="title primary">手机验证码登录</text>
-                <text class="title primary">忘记密码?</text>
-            </div>
-        </div>
-        <div class="login-footer">
-            <div class="login-caption">
-                <div class="flex1">
-                </div>
-                <div class="flex1">
-                    <div class="border-bottom-line" style="height:18px;"></div>
-                </div>
-                <div class="flex1 gray flex-column">
-                    <text class="title gray">微信登录</text>
-                </div>
-
-                <div class="flex1">
-                    <div class="border-bottom-line" style="height:18px;"></div>
-                </div>
-                <div class="flex1">
-                </div>
-            </div>
-            <div>
-                <text class="weixin" :style="{fontFamily:'iconfont'}">&#xe619;</text>
-            </div>
-            <div class="register">
-               <text class="title primary">点击注册新用户</text>
+            <div class="flex-row space-between footer">
+                <text class="title gray" @click="account('/')">其他方式登录</text>
+                <text class="title gray" @click="goback('/')">关闭随便看看</text>
             </div>
         </div>
 
     </div>
 
 </template>
-<style src='../style/wx.css' />
+
+<style src='../style/wx.css'/>
+
 <style scoped>
 
-    .login-header {
-        height:300px;
-        background-color: #fff;
-        flex-direction: column;
-        align-items: center;
+    .image {
+        width: 750px;
+        height: 1200px;
     }
-
-    .logo {
-        margin-top:100px;
-        height:150px;
-        width:150px;
-        border-radius:15px;
-        overflow:hidden;
-    }
-
-    .login-footer {
-        background-color: #fff;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .login-panel {
-        flex-direction: column;
-        margin-top: 20px;
-        padding-left: 60px;
-        padding-right: 60px;
-    }
-    .login-row {
-        height:100px;
-        flex-direction: row;
-        border-bottom-width: 1px;
-        border-bottom-color: #ccc;
-        border-bottom-style: solid;
-        align-items: center;
-        justify-content:space-between;
-    }
-
-    .border-bottom-line {
-        border-bottom-width: 1px;
-        border-bottom-color: #ccc;
-        border-bottom-style: solid;
-    }
-
-    .login-caption {
-        margin-top: 20px;
-        width:750px;
-        background-color: #fff;
-        height:60px;
-        flex-direction: row;
-        flex:1;
-    }
-
-    .username {
-        height: 70px;
-        font-size: 32px;
-    }
-
-    .password {
-        height: 70px;
-        font-size: 32px;
-    }
-    .login-button {
-        margin-top: 60px;
-    }
-
-    .see  {
-        font-size: 48px;
-    }
-    .weixin {
-        font-size: 150px;
-        color:green;
+    .slider {
+        width: 750px;
+        height: 800px;
+     }
+    .frame {
+        width: 750px;
+        height: 800px;
+        position: relative;
     }
 
     .register {
-        flex-direction: column;
-        align-items: center;
         position: fixed;
         bottom: 10px;
         left: 0px;
         right: 0px;
+        width:750px;
+        height: 250px;
+        padding-left:60px ;
+        padding-right:60px ;
+        background-color: white;
+    }
+
+    .footer {
+        margin-top: 50px;
+    }
+
+    .btn {
+        background-color:limegreen;
+        border-color:limegreen;
+        flex-direction: row;
+        justify-content: center;
+        padding-top: 0px;
+        padding-top: 0px;
         height: 80px;
+        align-items: center;
+        border-radius:12px;
+    }
+
+    .ico {
+        font-size: 58px;
+        color: white;
+    }
+    .btn-text {
+        margin-left: 20px;
+        color : white;
+        font-size: 34px;
     }
 
 </style>
 <script>
+    const navigator = weex.requireModule('navigator');
     export default {
+        data () {
+            return {
+                imageList: [
+                    { src: 'http://cdn.rzico.com/weex/resources/images/flash1.jpg'},
+                    { src: 'http://cdn.rzico.com/weex/resources/images/flash2.jpg'},
+                    { src: 'http://cdn.rzico.com/weex/resources/images/flash3.jpg'},
+                    { src: 'http://cdn.rzico.com/weex/resources/images/flash4.jpg'}
+                ]
+            }
+        },
         created(){
             var domModule=weex.requireModule("dom");
             domModule.addRule('fontFace',{
                 'fontFamily':'iconfont',
                 'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
             })
+        },
+        methods: {
+            account: function (e) {
+                navigator.pop({
+                    url: 'http://cdn.rzico.com/weex/app/login/account.js',
+                    animated: "true"
+                },function (msg) {
+                    msg = "pop ";
+                } )
+            },
+            goback: function (e) {
+                navigator.pop({
+                    url: 'http://cdn.rzico.com/weex/app/login/login.js',
+                    animated: "true"
+                },function (msg) {
+                    msg = "pop ";
+                } )
+            }
         }
     }
 </script>

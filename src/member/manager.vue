@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller">
-            <div class="cell-row cell-line">
+                <div class="cell-row cell-line">
                     <div class="cell-panel space-between cell-clear"   @click="setup" style="height:160px;">
                         <div class="flex-start">
                             <image class="logo" resize="cover"
@@ -18,8 +18,6 @@
                         </div>
                     </div>
                 </div>
-
-            <div class="cell-row cell-line">
                 <div class="cell-row cell-line">
                     <div class="cell-panel space-between">
                         <div class="flex-row flex-start">
@@ -41,6 +39,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="cell-row cell-line">
                     <div class="cell-panel space-between">
                         <div class="flex-row flex-start">
@@ -73,7 +72,7 @@
                     </div>
                     <div class="cell-panel space-between cell-clear">
                         <div class="flex-row flex-start">
-                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65f;</text>
+                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
                             <text class="title ml10">投票管理</text>
                         </div>
                         <div class="flex-row flex-end">
@@ -102,7 +101,7 @@
                          </div>
                      </div>
                  </div>
-            </div>
+
         </scroller>
     </div>
 </template>

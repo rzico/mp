@@ -4,10 +4,13 @@
         <mobile :title="mbtitle" @onclick="onclick"> </mobile>
     </div>
 </template>
+
 <style src='../style/wx.css' />
+
 <style scoped>
 
 </style>
+
 <script>
     const modal = weex.requireModule('modal')
     var navigator = weex.requireModule('navigator')
