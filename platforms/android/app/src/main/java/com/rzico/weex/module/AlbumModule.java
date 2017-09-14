@@ -61,7 +61,7 @@ public class AlbumModule extends WXModule {
                 .radio()
                 .cropAspectRatioOptions(0, new AspectRatio("3:3", 30, 10))
                 .crop()
-                .imageLoader(ImageLoaderType.FRESCO)
+                .imageLoader(ImageLoaderType.PICASSO)
                 .subscribe(new RxBusResultDisposable<ImageRadioResultEvent>() {
                     @Override
                     protected void onEvent(ImageRadioResultEvent imageRadioResultEvent) throws Exception {
@@ -82,7 +82,7 @@ public class AlbumModule extends WXModule {
                     .selected(list);
         }
         rxGalleryFinal.maxSize(100)
-                .imageLoader(ImageLoaderType.FRESCO)
+                .imageLoader(ImageLoaderType.PICASSO)
                 .subscribe(new RxBusResultDisposable<ImageMultipleResultEvent>() {
 
                     @Override
@@ -129,8 +129,16 @@ public class AlbumModule extends WXModule {
         }).openCrapActivity(imagePath);
     }
 
-    public void openCrapActivity(String imagePath){
-        Uri uri = Uri.parse(imagePath);
+    public void openCrapActivity(final String imagePath){
+//        listener.getSimpleActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//            }
+//        });
+
+        //这里要处理传入的path 因为weex前端没有传入 file：／／
+
+        Uri uri = Uri.parse("file://" + imagePath);
         UCrop of = UCrop.of(uri, Uri.fromFile(getDiskCacheDir()));
         of.start(listener.getSimpleActivity());
     }

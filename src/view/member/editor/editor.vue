@@ -267,7 +267,19 @@
                 coverImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 setTitle:'点击设置标题',
                 addMusic:'添加音乐',
-                paraList:[]
+                paraList:[{
+                    paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    paraText:'',
+                    show:true
+                },{
+                    paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    paraText:'',
+                    show:true
+                },{
+                    paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    paraText:'',
+                    show:true
+                }]
             }
         },
 

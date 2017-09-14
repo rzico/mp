@@ -496,7 +496,24 @@
 	//
 	//
 	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 
+	var album = weex.requireModule('albumModule');
 	var modal = weex.requireModule('modal');
 	var lastIndex = -1;
 	exports.default = {
@@ -506,20 +523,26 @@
 	            coverImage: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
 	            setTitle: '点击设置标题',
 	            addMusic: '添加音乐',
-	            paraList: [{
-	                paraImage: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	                paraText: '',
-	                show: true
-	            }, {
-	                paraImage: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	                paraText: '333',
-	                show: true
-	            }, {
-	                paraImage: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	                paraText: '2',
-	                show: true
-	            }]
+	            paraList: []
 	        };
+	    },
+
+	    //       多选图片
+	    created: function created() {
+	        //      调用安卓的相册
+	        var _this = this;
+	        album.openAlbumMuti(
+	        //选完图片后触发回调函数
+	        function (data) {
+	            for (var i = 0; i < data.length; i++) {
+	                _this.paraList.push({
+	                    paraImage: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+	                    paraText: '',
+	                    show: true
+	                });
+	                _this.paraList[i].paraImage = data[i].originalPath;
+	            }
+	        });
 	    },
 	    mounted: function mounted() {
 	        var domModule = weex.requireModule("dom");
@@ -604,7 +627,9 @@
 	            //                将内容删掉
 	            this.paraList.splice(index, 1);
 	            //                再将删掉的内容插入
+	            //                setTimeout(()=>{
 	            this.paraList.splice(index - 1, 0, upContent);
+	            //                },300)
 	        },
 	        //            下箭头
 	        moveBottom: function moveBottom(index) {
@@ -618,7 +643,9 @@
 	            //                将内容删掉
 	            this.paraList.splice(index, 1);
 	            //                再将删掉的内容插入
+	            //                setTimeout(()=>{
 	            this.paraList.splice(index + 1, 0, upContent);
+	            //                },300)
 	        },
 	        //            用户执行删除时触发询问。
 	        showConfirm: function showConfirm(index) {
@@ -635,10 +662,15 @@
 	                    if (value == '确定') {
 	                        //                将内容删掉
 	                        _this.paraList.splice(index, 1);
-	                        modal.toast({ message: '删除成功', duration: 0.5 });
 	                    }
 	                });
 	            }
+	        },
+	        editParaImage: function editParaImage(imgSrc, index) {
+	            var _this = this;
+	            album.openCrop(imgSrc, function (data) {
+	                _this.paraList[index].paraImage = data;
+	            });
 	        }
 	    }
 	};
@@ -721,13 +753,13 @@
 	    style: {
 	      fontFamily: 'iconfont'
 	    }
-	  }, [_vm._v("")])])])])]), _vm._l((_vm.paraList), function(item, index) {
-	    return _c('cell', {
-	      appendAsTree: true,
-	      attrs: {
-	        "append": "tree"
-	      }
-	    }, [_c('div', [_c('div', {
+	  }, [_vm._v("")])])])])]), _c('cell', {
+	    appendAsTree: true,
+	    attrs: {
+	      "append": "tree"
+	    }
+	  }, _vm._l((_vm.paraList), function(item, index) {
+	    return _c('div', [_c('div', {
 	      staticClass: ["paraBox"]
 	    }, [_c('div', {
 	      staticClass: ["paraClose"],
@@ -769,6 +801,11 @@
 	      staticClass: ["paraImage"],
 	      attrs: {
 	        "src": item.paraImage
+	      },
+	      on: {
+	        "click": function($event) {
+	          _vm.editParaImage(item.paraImage, index)
+	        }
 	      }
 	    })]), _c('div', {
 	      staticClass: ["paraText"]
@@ -819,8 +856,8 @@
 	      style: {
 	        fontFamily: 'iconfont'
 	      }
-	    }, [_vm._v("")])])])])])])
-	  }), _vm._m(0)], 2)
+	    }, [_vm._v("")])])])])])
+	  })), _vm._m(0)])
 	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
 	  return _c('cell', {
 	    appendAsTree: true,
