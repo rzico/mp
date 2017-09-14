@@ -35,8 +35,9 @@
         </cell>
         <cell>
 
-            <transition-group name="paraTransition" tag="div">
-            <div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">
+            <!--<transition-group name="paraTransition" tag="div">-->
+            <!--<div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">-->
+            <div  v-for="(item,index) in paraList" >
                 <!--段落-->
                 <div class="paraBox">
                     <!--左上角关闭按钮"x"-->
@@ -53,7 +54,7 @@
                     </div>
                     <!--图片-->
                     <div>
-                        <image class="paraImage"  :src="item.paraImage"></image>
+                        <image class="paraImage" @click="editParaImage(item.paraImage,index)" :src="item.paraImage"></image>
                     </div>
                     <!--文章内容-->
                     <div class="paraText">
@@ -86,20 +87,24 @@
                 </div>
             </div>
 
-            </transition-group>
+            <!--</transition-group>-->
         </cell>
         <!--用来撑起底部空白区域-->
         <cell><div class="emptyBox"></div></cell>
     </list>
 </template>
 <style>
-    .paraTransition-enter-active, .paraTransition-leave-active {
-        transition: all 0.2s;
-    }
-    .paraTransition-enter, .paraTransition-leave-to{
-        transform: translateX(300px);
-        opacity: 0.2;
-    }
+    /*.paraTransition-enter-active, .paraTransition-leave-active {*/
+        /*transition: all 0.4s;*/
+    /*}*/
+    /*.paraTransition-leave-to{*/
+        /*transform: translateX(300px);*/
+        /*opacity: 0;*/
+    /*}*/
+    /*.paraTransition-enter{*/
+        /*transform: translateX(0px);*/
+        /*opacity: 1;*/
+    /*}*/
     .greyColor{
         color: #999;
     }
@@ -281,20 +286,20 @@
 //       多选图片
         created:function(){
 //      调用安卓的相册
-//            album.openAlbumMuti(
-//            //选完图片后触发回调函数
-//                function (data) {
-//                    var _this = this;
-//                    for(let i = 0;i < data.length;i++){
-//                        _this.paraList.push({
-//                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                            paraText:'',
-//                            show:true
-//                        })
-//                        _this.paraList[i].paraImage = data[i].originalPath;
-//                    }
-//                }
-//            )
+            var _this = this;
+            album.openAlbumMuti(
+            //选完图片后触发回调函数
+                function (data) {
+                    for(let i = 0;i < data.length;i++){
+                        _this.paraList.push({
+                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                            paraText:'',
+                            show:true
+                        })
+                        _this.paraList[i].paraImage = data[i].originalPath;
+                    }
+                }
+            )
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -375,7 +380,10 @@
 //                将内容删掉
                 this.paraList.splice(index,1);
 //                再将删掉的内容插入
-                this.paraList.splice(index - 1,0,upContent);
+//                setTimeout(()=>{
+                    this.paraList.splice(index - 1,0,upContent);
+//                },300)
+
             },
 //            下箭头
             moveBottom:function (index) {
@@ -389,7 +397,9 @@
 //                将内容删掉
                 this.paraList.splice(index,1);
 //                再将删掉的内容插入
-                this.paraList.splice(index + 1,0,upContent);
+//                setTimeout(()=>{
+                    this.paraList.splice(index + 1,0,upContent);
+//                },300)
             },
 //            用户执行删除时触发询问。
             showConfirm :function(index) {
@@ -410,6 +420,12 @@
                         }
                     })
                 }
+            },
+            editParaImage(imgSrc,index){
+                var _this = this;
+                album.openCrop(imgSrc,function (data) {
+                    _this.paraList[index].paraImage = data;
+                })
             }
         }
     }
