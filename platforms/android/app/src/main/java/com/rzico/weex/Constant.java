@@ -24,7 +24,7 @@ public class Constant {
     public static int isVipTab = 1;
 
     //生产环境服务器地址
-    public static final String SERVER = "http://192.168.1.101:8090";
+    public static final String SERVER = "http://192.168.1.106:8090";
 
     //商品预览与文章预览地址
     public static final String SHARE_SERVER = "http://weixin.rzico.com";
