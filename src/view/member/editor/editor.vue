@@ -34,10 +34,10 @@
             </div>
         </cell>
         <cell>
-
-            <!--<transition-group name="paraTransition" tag="div">-->
-            <!--<div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">-->
-            <div  v-for="(item,index) in paraList" >
+            <!--绑定动画-->
+            <transition-group name="paraTransition" tag="div">
+            <div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">
+            <!--<div  v-for="(item,index) in paraList" >-->
                 <!--段落-->
                 <div class="paraBox">
                     <!--左上角关闭按钮"x"-->
@@ -66,11 +66,11 @@
                 <!--加号跟功能盒子-->
                 <div class="addBox" @click="clearIconBox()">
                     <!--加号-->
-                    <div v-if="item.show" @click="showIconBox(index)" ref="plusSignList">
+                    <div v-if="item.show"  @click="showIconBox(index)" >
                         <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
                     </div>
                     <!--图标-->
-                    <div class="iconBox"  v-else>
+                    <div class="iconBox"  v-else >
                         <!--添加文本-->
                         <div class="addIconBox ">
                             <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
@@ -86,25 +86,22 @@
                     </div>
                 </div>
             </div>
-
-            <!--</transition-group>-->
+            </transition-group>
         </cell>
         <!--用来撑起底部空白区域-->
         <cell><div class="emptyBox"></div></cell>
     </list>
 </template>
 <style>
-    /*.paraTransition-enter-active, .paraTransition-leave-active {*/
-        /*transition: all 0.4s;*/
-    /*}*/
-    /*.paraTransition-leave-to{*/
-        /*transform: translateX(300px);*/
-        /*opacity: 0;*/
-    /*}*/
-    /*.paraTransition-enter{*/
-        /*transform: translateX(0px);*/
-        /*opacity: 1;*/
-    /*}*/
+
+
+    .paraTransition-enter-active, .paraTransition-leave-active {
+        transition: all 0.2s;
+    }
+    .paraTransition-leave-to,.paraTransition-enter{
+        transform: translateX(300px);
+        opacity: 0;
+    }
     .greyColor{
         color: #999;
     }
@@ -267,27 +264,36 @@
                 coverImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 setTitle:'点击设置标题',
                 addMusic:'添加音乐',
-                paraList:[]
+                paraList:[{
+                        paraImage:'https://gd2.alicdn.com/bao/uploaded/i2/T14H1LFwBcXXXXXXXX_!!0-item_pic.jpg',
+                            paraText:'',
+                            show:true
+                    },{paraImage:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                    paraText:'2',
+                    show:true}
+                    ,{paraImage:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    paraText:'3',
+                    show:true}]
             }
         },
 
 //       多选图片
         created:function(){
 //      调用安卓的相册
-            var _this = this;
-            album.openAlbumMuti(
-            //选完图片后触发回调函数
-                function (data) {
-                    for(let i = 0;i < data.length;i++){
-                        _this.paraList.push({
-                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                            paraText:'',
-                            show:true
-                        })
-                        _this.paraList[i].paraImage = data[i].originalPath;
-                    }
-                }
-            )
+//            var _this = this;
+//            album.openAlbumMuti(
+//            //选完图片后触发回调函数
+//                function (data) {
+//                    for(let i = 0;i < data.length;i++){
+//                        _this.paraList.push({
+//                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                            paraText:'',
+//                            show:true
+//                        }) ;
+//                        _this.paraList[i].paraImage = data[i].originalPath;
+//                    }
+//                }
+//            )
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -335,6 +341,7 @@
 //                        item.show = !item.show;
 //                    }
 //                });
+
             },
 //            点击空白区域时，将功能盒子隐藏，显示出"+"号
             clearIconBox:function(){
@@ -363,14 +370,28 @@
                     this.paraList[lastIndex].show = true;
                     lastIndex = -1;
                 }
-//                将内容保存
-                let upContent = this.paraList[index];
-//                将内容删掉
-                this.paraList.splice(index,1);
-//                再将删掉的内容插入
-//                setTimeout(()=>{
-                    this.paraList.splice(index - 1,0,upContent);
-//                },300)
+//         方法1       定义一个中转值保存当前元素内容
+//                let transit = this.paraList[index];
+//                Vue.set(this.paraList,index,this.paraList[index - 1]);
+//                Vue.set(this.paraList,index - 1,transit);
+
+
+//         方法2
+                let a = this.paraList[index].paraImage;
+                let b = this.paraList[index].paraText;
+                this.paraList[index].paraImage = this.paraList[index - 1].paraImage;
+                this.paraList[index].paraText = this.paraList[index - 1].paraText;
+                this.paraList[index - 1].paraImage = a;
+                this.paraList[index - 1].paraText = b;
+//         方法3
+////                将内容保存
+//                let upContent = this.paraList[index];
+////                将内容删掉
+//                this.paraList.splice(index,1);
+////                再将删掉的内容插入
+////                setTimeout(()=>{
+//                    this.paraList.splice(index - 1,0,upContent);
+////                },300)
 
             },
 //            下箭头
@@ -380,14 +401,29 @@
                     this.paraList[lastIndex].show = true;
                     lastIndex = -1;
                 }
-//                将内容保存
-                let upContent = this.paraList[index];
-//                将内容删掉
-                this.paraList.splice(index,1);
-//                再将删掉的内容插入
-//                setTimeout(()=>{
-                    this.paraList.splice(index + 1,0,upContent);
-//                },300)
+
+//             方法1  定义一个中转值保存当前元素内容
+//                let transit = this.paraList[index];
+//                Vue.set(this.paraList,index,this.paraList[index + 1]);
+//                Vue.set(this.paraList,index + 1,transit);
+
+//         方法2
+                let a = this.paraList[index].paraImage;
+                let b = this.paraList[index].paraText;
+                this.paraList[index].paraImage = this.paraList[index + 1].paraImage;
+                this.paraList[index].paraText = this.paraList[index + 1].paraText;
+                this.paraList[index + 1].paraImage = a;
+                this.paraList[index + 1].paraText = b;
+
+
+////           方法3     将内容保存
+//                let upContent = this.paraList[index];
+////                将内容删掉
+//                this.paraList.splice(index,1);
+////                再将删掉的内容插入
+////                setTimeout(()=>{
+//                    this.paraList.splice(index + 1,0,upContent);
+////                },300)
             },
 //            用户执行删除时触发询问。
             showConfirm :function(index) {
