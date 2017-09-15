@@ -22,7 +22,6 @@ import com.rzico.weex.pageview.NoScrollPageView;
 import com.rzico.weex.utils.BarTextColorUtils;
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXRenderStrategy;
 import com.taobao.weex.http.WXStreamModule;
 import com.taobao.weex.utils.WXFileUtils;
@@ -252,6 +251,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
                 break;
             case R.id.rg_group_yingxiao:
                 Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                intent.putExtra("url", "edit.js");
                 startActivity(intent);
                 break;
             case R.id.rg_group_me:
