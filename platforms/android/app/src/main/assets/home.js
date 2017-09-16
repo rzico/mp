@@ -199,7 +199,7 @@
                     return stream.fetch({
                         method: 'GET',
                         type: 'json',
-                        url: '/admin/admin/list1.jhtml'
+                        url: '/admin/admin/list.jhtml'
                     }, callback);
                 }
             },
@@ -208,7 +208,7 @@
 
                 this.getStarCount('alibaba/weex', function(res) {
                 if(res.ok){
-                _this.weexStar = res.data.data.data[0].username;
+                _this.weexStar = res;
                 }else{
                 _this.weexStar ="网络请求出错";
                 }
