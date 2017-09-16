@@ -150,6 +150,13 @@
 	    "borderBottomColor": "#999999",
 	    "backgroundColor": "#D9141E"
 	  },
+	  "footer": {
+	    "position": "fixed",
+	    "bottom": 0,
+	    "left": 0,
+	    "right": 0,
+	    "height": 100
+	  },
 	  "cell-header": {
 	    "height": 70,
 	    "flexDirection": "row",
@@ -247,7 +254,7 @@
 	    "color": "#FFFFFF"
 	  },
 	  "primary": {
-	    "color": "#F0AD3C"
+	    "color": "#D9141E"
 	  },
 	  "gray": {
 	    "color": "#999999"

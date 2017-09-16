@@ -1,11 +1,12 @@
 <template>
     <div class="wrapper bkg-white">
-        <slider class="slider" interval="3000" auto-play="true">
-            <div class="frame" v-for="img in imageList">
+        <slider class="slider flex1" interval="3000" auto-play="true">
+            <div class="frame flex1" v-for="img in imageList">
                 <image class="image" resize="cover" :src="img.src"></image>
             </div>
+            <indicator class="indicator"></indicator>
         </slider>
-        <div class="register">
+        <div class="footer flex-column footer-panel ">
             <div class="flex-row">
                 <div class="flex1 btn">
                     <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
@@ -27,24 +28,29 @@
 <style scoped>
 
     .image {
-        width: 750px;
-        height: 1200px;
+        width:750px;
+        flex:1;
     }
     .slider {
-        width: 750px;
-        height: 800px;
+        width:750px;
+        flex:1;
      }
     .frame {
-        width: 750px;
-        height: 800px;
+        flex:1;
         position: relative;
     }
 
-    .register {
+    .indicator {
+        item-color: #ddd;
+        item-selected-color:#888;
+        item-size: 15px;
         position: fixed;
-        bottom: 10px;
-        left: 0px;
-        right: 0px;
+        height:20px;
+        width:750px;
+        bottom:350px;
+    }
+
+    .footer-panel {
         width:750px;
         height: 250px;
         padding-left:60px ;

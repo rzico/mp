@@ -1,6 +1,5 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller">
                 <div class="cell-row cell-line">
                     <div class="cell-panel space-between cell-clear"   @click="setup" style="height:160px;">

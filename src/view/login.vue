@@ -9,7 +9,7 @@
         <div class="login-panel">
             <div class="login-row">
                      <text class="title flex1">账号</text>
-                    <input class="flex4 username" type="text" placeholder="登录名/手机号"  :autofocus=true value="" @change="onchange" @input="oninput"/>
+                    <input class="flex4 username" type="text" placeholder="登录账号"  :autofocus=true value="" @change="onchange" @input="oninput"/>
                        <div class="flex1"></div>
             </div>
             <div class="login-row">
@@ -25,7 +25,7 @@
                 <text class="title primary">忘记密码?</text>
             </div>
         </div>
-        <div class="register">
+        <div class="footer flex-column">
             <text class="title primary">点击注册新用户</text>
         </div>
 
@@ -82,22 +82,12 @@
         font-size: 48px;
     }
 
-    .register {
-        flex-direction: column;
-        align-items: center;
-        position: fixed;
-        bottom: 10px;
-        left: 0px;
-        right: 0px;
-        height: 80px;
-    }
-
 </style>
 <script>
     import navbar from '../include/navbar.vue'
     export default {
         components: {
-            navbar,captcha
+            navbar
         },
         props: {
             title: { default: "登录"},

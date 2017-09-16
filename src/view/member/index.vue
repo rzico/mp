@@ -406,7 +406,7 @@
             jump:function (vueName) {
                 console.log('will jump')
                 navigator.push({
-                    url: 'http://cdn.rzico.com/weex/app/member/manager.js',
+                    url: 'http://cdn.rzico.com/weex/app/view/member/manage.js',
                     animated: "true"
                 })
 //                this.$router.push(vueName);
