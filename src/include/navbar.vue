@@ -11,7 +11,7 @@
 <style lang="less" src="../style/wx.less"/>
 
 <style scoped>
-     .back {
+    .back {
         position: relative;
         width: 96px;
         height: 96px;

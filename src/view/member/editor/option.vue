@@ -1,5 +1,6 @@
 <template>
     <div class="wrapper">
+        <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller" show- show-scrollbar="false">
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
@@ -111,16 +112,13 @@
 </style>
 <script>
     var navigator = weex.requireModule('navigator')
-    navigator.
+    import navbar from '../../../include/navbar.vue'
     export default {
-        props:{
-            'dataRole': {
-                default: function () {
-                    return 'navbar';
-                }
-            },
-            //导航条标题
-            title: {default:"dksdjfkd"},
+        components: {
+            navbar
+        },
+        props: {
+            title: { default: "选项" }
         },
         methods: {
             goback: function (e) {

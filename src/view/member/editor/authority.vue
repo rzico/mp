@@ -1,5 +1,6 @@
 <template>
     <div class="wrapper">
+        <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller"  show-scrollbar="false">
 
                 <div class="cell-row cell-line">
@@ -53,7 +54,11 @@
 </style>
 <script>
     var navigator = weex.requireModule('navigator')
+    import navbar from '../../../include/navbar.vue'
     export default {
+        components: {
+            navbar
+        },
         props: {
             title: { default: "谁可以看" }
         },

@@ -1,21 +1,21 @@
 <template>
     <div class="wrapper bkg-white">
-        <slider class="slider flex1" interval="3000" auto-play="true">
-            <div class="frame flex1" v-for="img in imageList">
+        <slider class="slider" interval="3000" auto-play="true">
+            <div class="frame" v-for="img in imageList">
                 <image class="image" resize="cover" :src="img.src"></image>
             </div>
             <indicator class="indicator"></indicator>
         </slider>
-        <div class="footer flex-column footer-panel ">
+        <div class="footer footer-panel ">
             <div class="flex-row">
                 <div class="flex1 btn">
                     <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信快捷登录">微信快捷登录</text>
+                    <text class="btn-text" value="微信快捷登录" @click="weixin()">微信快捷登录</text>
                 </div>
             </div>
-            <div class="flex-row space-between footer">
-                <text class="title gray" @click="account('/')">其他方式登录</text>
-                <text class="title gray" @click="goback('/')">关闭随便看看</text>
+            <div class="space-between" style="margin-top: 40px;">
+                <text class="title gray" @click="account()">其他方式登录</text>
+                <text class="title gray" @click="goback()">关闭随便看看</text>
             </div>
         </div>
 
@@ -29,12 +29,11 @@
 
     .image {
         width:750px;
-        flex:1;
+        height: 1334px;
     }
     .slider {
-        width:750px;
         flex:1;
-     }
+    }
     .frame {
         flex:1;
         position: relative;
@@ -47,19 +46,15 @@
         position: fixed;
         height:20px;
         width:750px;
-        bottom:350px;
+        bottom:300px;
     }
 
     .footer-panel {
         width:750px;
-        height: 250px;
+        height: 230px;
         padding-left:60px ;
         padding-right:60px ;
         background-color: white;
-    }
-
-    .footer {
-        margin-top: 50px;
     }
 
     .btn {
@@ -87,6 +82,8 @@
 </style>
 <script>
     const navigator = weex.requireModule('navigator');
+    const native = weex.requireModule('nativeModule');
+    const stream = weex.requireModule('stream');
     export default {
         data () {
             return {
@@ -103,12 +100,40 @@
             domModule.addRule('fontFace',{
                 'fontFamily':'iconfont',
                 'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
-            })
+            });
+
+            native.changeWindowsBar();
         },
         methods: {
+            weixin: function (e) {
+                native.wxAuth(
+                    function (message) {
+                        if (message.type=="success") {
+                            return stream.fetch({
+                                method: 'GET',
+                                type: 'json',
+                                url: '/weex/login/weixin.jhtml?code=' + message.data
+                            }, function (weex) {
+                                native.showToast(weex);
+//                                 if (message.type == "success") {
+//                                    navigator.pop({
+//                                        url: 'http://cdn.rzico.com/weex/app/view/index.js',
+//                                        animated: "true"
+//                                    })
+//                                } else {
+//                                    native.showToast(message.content);
+//                                }
+                            })
+                        } else {
+                            native.showToast(message.content);
+                        }
+
+                    }
+                );
+            },
             account: function (e) {
-                navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/login/account.js',
+                navigator.push({
+                    url: 'http://cdn.rzico.com/weex/app/view/login.js',
                     animated: "true"
                 },function (msg) {
                     msg = "pop ";
@@ -116,7 +141,7 @@
             },
             goback: function (e) {
                 navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/login/login.js',
+                    url: 'http://cdn.rzico.com/weex/app/view/index.js',
                     animated: "true"
                 },function (msg) {
                     msg = "pop ";

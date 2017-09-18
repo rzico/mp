@@ -142,13 +142,14 @@
 	    "marginLeft": 30
 	  },
 	  "header": {
-	    "height": 96,
+	    "height": 118,
 	    "flexDirection": "row",
 	    "position": "sticky",
 	    "borderBottomWidth": 1,
 	    "borderBottomStyle": "solid",
 	    "borderBottomColor": "#999999",
-	    "backgroundColor": "#D9141E"
+	    "backgroundColor": "#D9141E",
+	    "paddingTop": 22
 	  },
 	  "footer": {
 	    "position": "fixed",
@@ -156,6 +157,10 @@
 	    "left": 0,
 	    "right": 0,
 	    "height": 100
+	  },
+	  "fill": {
+	    "height": 500,
+	    "backgroundColor": "#eeeeee"
 	  },
 	  "cell-header": {
 	    "height": 70,
