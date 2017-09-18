@@ -36,7 +36,7 @@
 <style scoped>
 
     .login-header {
-        height:300px;
+        height:350px;
         background-color: #fff;
         flex-direction: column;
         align-items: center;
