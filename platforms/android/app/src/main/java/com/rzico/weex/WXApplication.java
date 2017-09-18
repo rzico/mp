@@ -5,21 +5,20 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 
 import com.alibaba.weex.commons.adapter.ImageAdapter;
 import com.alibaba.weex.commons.util.AppConfig;
-import com.alibaba.weex.extend.module.WXEventModule;
 import com.alibaba.weex.pluginmanager.PluginManager;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.imagepicker.ImagePickerModule;
-import com.rzico.weex.module.WxNativeModule;
+import com.rzico.weex.activity.BaseActivity;
+import com.rzico.weex.adapter.WeexHttpAdapter;
+import com.rzico.weex.module.AlbumModule;
+import com.rzico.weex.module.NativeModule;
 import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
-import com.taobao.weex.WXSDKInstance;
-import com.taobao.weex.appfram.navigator.WXNavigatorModule;
 import com.taobao.weex.common.WXException;
-import com.taobao.weex.devtools.common.ExceptionUtil;
 
 import org.xutils.x;
 
@@ -28,11 +27,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+
 public class WXApplication extends Application {
 
   private SharedPreferences SharedPre;
 
-  private  static List<Activity> activityList = new LinkedList<Activity>();
+  private  static List<BaseActivity> activityList = new LinkedList<BaseActivity>();
   private static WXApplication instance;
   public static WXApplication getInstance() {
     return instance;
@@ -43,19 +43,18 @@ public class WXApplication extends Application {
 //    initDebugEnvironment(true, false, "DEBUG_SERVER_HOST");
     instance = this;
     init();
-
-    WXSDKEngine.addCustomOptions("appName", "WXSample");
+    initAlbum();
+    WXSDKEngine.addCustomOptions("appName", "魔篇");
     WXSDKEngine.addCustomOptions("appGroup", "WXApp");
     WXSDKEngine.initialize(this,
         new InitConfig.Builder()
             .setImgAdapter(new ImageAdapter())
+            .setHttpAdapter(new WeexHttpAdapter())
             .build()
     );
-
     try {
-      WXSDKEngine.registerModule("imagePicker", ImagePickerModule.class);
-      WXSDKEngine.registerModule("wxNativeModule", WxNativeModule.class);
-      WXSDKEngine.registerModule("event", WXEventModule.class);
+      WXSDKEngine.registerModule("nativeModule", NativeModule.class);
+      WXSDKEngine.registerModule("albumModule", AlbumModule.class);
     } catch (WXException e) {
       e.printStackTrace();
     }
@@ -64,6 +63,10 @@ public class WXApplication extends Application {
     PluginManager.init(this);
   }
 
+  public void initAlbum(){
+    //设置主题
+
+  }
   /**
    * @param enable enable remote debugger. valid only if host not to be "DEBUG_SERVER_HOST".
    *               true, you can launch a remote debugger and inspector both.
@@ -91,8 +94,12 @@ public class WXApplication extends Application {
 
   }
 
+  public static BaseActivity getActivity(){
+    return activityList.get(activityList.size() - 1);
+  }
+
   //添加Activity 到容器中
-  public static void addActivity(Activity activity) {
+  public static void addActivity(BaseActivity activity) {
     activityList.add(activity);
   }
 

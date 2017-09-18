@@ -8,6 +8,6 @@ package com.taobao.weappplus_sdk;
 
 public final class R {
 	public static final class drawable {
-		public static final int error = 0x7f02005c;
+		public static final int error = 0x7f02005d;
 	}
 }

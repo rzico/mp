@@ -8,17 +8,10 @@
          </div>
     </div>
  </template>
+<style lang="less" src="../style/wx.less"/>
+
 <style scoped>
-    .header {
-        height: 96px;
-        background-color: #F0AD3C;
-        flex-direction: row;
-        position:sticky;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
-    }
-    .back {
+     .back {
         position: relative;
         width: 96px;
         height: 96px;

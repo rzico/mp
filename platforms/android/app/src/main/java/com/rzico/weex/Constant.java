@@ -14,7 +14,9 @@ import java.util.Map;
  */
 public class Constant {
 
-    public static String wxURL = "http://cdn.rzico.com/weex/app/";
+    public static final String wxURL = "http://cdn.rzico.com/weex/app/";
+
+    public static final String resURL = "http://cdn.rzico.com/weex/app/";
 
     public static String app = "com.rzico.assistant";
     public static String uid;
@@ -22,7 +24,7 @@ public class Constant {
     public static int isVipTab = 1;
 
     //生产环境服务器地址
-    public static final String SERVER = "http://zmai.rzico.com";
+    public static final String SERVER = "http://192.168.1.106:8090";
 
     //商品预览与文章预览地址
     public static final String SHARE_SERVER = "http://weixin.rzico.com";
@@ -30,7 +32,7 @@ public class Constant {
     //测试环境服务器地址
 //    public static final String SERVER = "http://dev.tiaohuo.com";
 
-    public static final String helperUrl = SERVER + "/dmao/";
+    public static final String helperUrl = SERVER;
     // public static final String helperUrl = "http://192.168.1.188:8080/dmao/";
 
 

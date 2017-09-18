@@ -23,12 +23,15 @@ import com.rzico.weex.utils.BarTextColorUtils;
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.WXRenderStrategy;
+import com.taobao.weex.http.WXStreamModule;
 import com.taobao.weex.utils.WXFileUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.rzico.weex.Constant.resURL;
 
 
 /**
@@ -65,7 +68,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
         //设置顶部透明 如果传入第二个参数的话就是设置顶部颜色
         BarTextColorUtils.StatusBarLightMode(MainActivity.this, 0);
         setContentView(R.layout.activity_main);
-
+        WXStreamModule wxStreamModule = new WXStreamModule();
         //设置高亮标题
         initWeexView();
         CheckPermissions();
@@ -142,9 +145,7 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
         wxsdkInstanceMap.get("friends").render("friends", WXFileUtils.loadAsset( "friends" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
 //        wxsdkInstanceMap.get("friends").renderByUrl("friends", "http://cdn.rzico.com/weex/app/member/friends.js",null, null, WXRenderStrategy.APPEND_ASYNC);
         wxsdkInstanceMap.get("msg").render("msg", WXFileUtils.loadAsset( "msg" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
-//        wxsdkInstanceMap.get("my").render("my", WXFileUtils.loadAsset( "my" + ".js", this), null, null, WXRenderStrategy.APPEND_ONCE);
-
-        wxsdkInstanceMap.get("my").renderByUrl("my", "http://cdn.rzico.com/weex/app/member/member.js",null, null, WXRenderStrategy.APPEND_ASYNC);
+        wxsdkInstanceMap.get("my").renderByUrl("my", resURL + "member/member.js",null, null, WXRenderStrategy.APPEND_ONCE);
 
         mWeexPageAdapter = new WeexPageAdapter(viewLists);
         mContainer.setAdapter(mWeexPageAdapter);
@@ -175,6 +176,8 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
         rgGroupMsgIm.setImageResource(R.mipmap.ico_msg);
         rgGroupMyIm.setImageResource(R.mipmap.ico_my);
         initEvent();
+        //默认首页
+        setSelectTab(0);
     }
     private void initEvent() {
         rgGroupHome.setOnClickListener(this);
@@ -247,8 +250,9 @@ public class MainActivity extends BaseActivity  implements View.OnClickListener,
                 setSelectTab(2);
                 break;
             case R.id.rg_group_yingxiao:
-
-
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+                intent.putExtra("url", "edit.js");
+                startActivity(intent);
                 break;
             case R.id.rg_group_me:
                 setSelectTab(3);

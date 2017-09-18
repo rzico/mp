@@ -382,7 +382,9 @@
         </attr><attr name="elevation"/><attr format="dimension" name="pressedTranslationZ"/><attr format="dimension" name="borderWidth"/><attr format="boolean" name="useCompatPadding"/></declare-styleable>
     <declare-styleable name="FloatingActionButton_Behavior_Layout"><attr format="boolean" name="behavior_autoHide"/></declare-styleable>
     <declare-styleable name="ForegroundLinearLayout"><attr name="android:foreground"/><attr name="android:foregroundGravity"/><attr format="boolean" name="foregroundInsidePadding"/></declare-styleable>
+    <declare-styleable name="GFFloatingActionButton"><attr format="color" name="fabColorPressed"/><attr format="color" name="fabColorNormal"/><attr format="reference" name="fabIcon"/><attr format="string" name="fabTitle"/></declare-styleable>
     <declare-styleable name="GenericDraweeHierarchy"><attr format="integer" name="fadeDuration"/><attr format="float" name="viewAspectRatio"/><attr format="reference" name="placeholderImage"/><attr name="placeholderImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="retryImage"/><attr name="retryImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="failureImage"/><attr name="failureImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="progressBarImage"/><attr name="progressBarImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="integer" name="progressBarAutoRotateInterval"/><attr name="actualImageScaleType"><enum name="none" value="-1"/><enum name="fitXY" value="0"/><enum name="fitStart" value="1"/><enum name="fitCenter" value="2"/><enum name="fitEnd" value="3"/><enum name="center" value="4"/><enum name="centerInside" value="5"/><enum name="centerCrop" value="6"/><enum name="focusCrop" value="7"/></attr><attr format="reference" name="backgroundImage"/><attr format="reference" name="overlayImage"/><attr format="reference" name="pressedStateOverlayImage"/><attr format="boolean" name="roundAsCircle"/><attr format="dimension" name="roundedCornerRadius"/><attr format="boolean" name="roundTopLeft"/><attr format="boolean" name="roundTopRight"/><attr format="boolean" name="roundBottomRight"/><attr format="boolean" name="roundBottomLeft"/><attr format="color" name="roundWithOverlayColor"/><attr format="dimension" name="roundingBorderWidth"/><attr format="color" name="roundingBorderColor"/><attr format="dimension" name="roundingBorderPadding"/></declare-styleable>
+    <declare-styleable name="HorizontalListView"><attr format="dimension" name="dividerWidth"/><attr name="android:divider"/><attr name="android:requiresFadingEdge"/><attr name="android:fadingEdgeLength"/></declare-styleable>
     <declare-styleable name="LinearLayoutCompat"><attr name="android:orientation"/><attr name="android:gravity"/><attr name="android:baselineAligned"/><attr name="android:baselineAlignedChildIndex"/><attr name="android:weightSum"/><attr format="boolean" name="measureWithLargestChild"/><attr name="divider"/><attr name="showDividers">
             <flag name="none" value="0"/>
             <flag name="beginning" value="1"/>
@@ -604,6 +606,11 @@
     <dimen name="design_tab_text_size_2line">12sp</dimen>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
+    <dimen name="fab_icon_size">24dp</dimen>
+    <dimen name="fab_shadow_offset">3dp</dimen>
+    <dimen name="fab_shadow_radius">9dp</dimen>
+    <dimen name="fab_size_normal">56dp</dimen>
+    <dimen name="fab_stroke_width">0.0dp</dimen>
     <dimen name="font_huge">32sp</dimen>
     <dimen name="font_large">20sp</dimen>
     <dimen name="font_medium">18sp</dimen>
@@ -611,6 +618,7 @@
     <dimen name="font_mini">8sp</dimen>
     <dimen name="font_normal">16sp</dimen>
     <dimen name="font_small">14sp</dimen>
+    <dimen name="gf_title_bar_height">56dp</dimen>
     <item format="float" name="highlight_alpha_material_colored" type="dimen">0.26</item>
     <item format="float" name="highlight_alpha_material_dark" type="dimen">0.20</item>
     <item format="float" name="highlight_alpha_material_light" type="dimen">0.12</item>
@@ -670,6 +678,7 @@
     <item name="action_bar_spinner" type="id"/>
     <item name="action_menu_divider" type="id"/>
     <item name="action_menu_presenter" type="id"/>
+    <item name="fab_label" type="id"/>
     <item name="home" type="id"/>
     <item name="item_touch_helper_previous_elevation" type="id"/>
     <item name="progress_circular" type="id"/>
@@ -738,6 +747,7 @@
     <string name="add_store">添加门店</string>
     <string name="alipay"> 支付宝</string>
     <string name="all_goods">所有商品</string>
+    <string name="all_photo">All Photo</string>
     <string name="app_name">魔篇</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bind_wx">绑定微信</string>
@@ -761,6 +771,8 @@
     <string name="cpu_not_support_tip">Sorry, your current device is x86 architecture.\n We only
         support arm architecture devices!
     </string>
+    <string name="crop_fail">Photo crop failure</string>
+    <string name="crop_suc">Photo crop success</string>
     <string name="deal_agreement">担保交易服务约定</string>
     <string name="delete">删除</string>
     <string name="deliverys">门店管理</string>
@@ -772,9 +784,11 @@
     <string name="dialog_tip">提示</string>
     <string name="dummy_content">WEEX\nPLAYGROUND</string>
     <string name="edit_category">编辑分类</string>
+    <string name="edit_letoff_photo_format">The image format does not support this operation!</string>
     <string name="employee_info">员工信息</string>
     <string name="employee_role">角色</string>
     <string name="employees">员工管理</string>
+    <string name="empty_sdcard">No SD card</string>
     <string name="end_time">结束时间</string>
     <string name="everyone_limit">每人限购</string>
     <string name="exit_security_deal">退出担保交易</string>
@@ -782,6 +796,7 @@
     <string name="exit_seven_days_return_hint">退出后的七天内，目前进行中的订单仍然按照7天退货规则处理。是否确认退出？</string>
     <string name="find_password">找回密码</string>
     <string name="finish">完成</string>
+    <string name="folder_photo_size">%1$d Piece</string>
     <string name="freight_setting">运费设置</string>
     <string name="full_money_unit">元</string>
     <string name="full_package_activity_rule">满包邮活动规则</string>
@@ -789,6 +804,7 @@
     <string name="full_package_activity_rule_2">● 如果你同时设置了以下活动，买家购买时可以同时享受优惠，包括：店铺优惠券，限时折扣</string>
     <string name="full_package_activity_rule_3">● 包邮只对自营商品生效，分销商品只能由供应商设置</string>
     <string name="full_package_email">满包邮</string>
+    <string name="gallery">Gallery</string>
     <string name="get_vertification">获取验证码</string>
     <string name="gift_manager">赠品管理</string>
     <string name="gift_name">赠品名称</string>
@@ -860,6 +876,7 @@
     <string name="marketing_voucher_use_count">使用量</string>
     <string name="marketing_voucher_use_detail">使用详情</string>
     <string name="marketing_voucher_use_person_count">使用人数</string>
+    <string name="maxsize_zero_tip">Maxsize should be greater than zero</string>
     <string name="member_authen_refuse">认证拒绝</string>
     <string name="member_authened">认证通过</string>
     <string name="member_authentication">实名认证</string>
@@ -892,11 +909,13 @@
     <string name="network_error">网络异常</string>
     <string name="new_category">新建分类</string>
     <string name="no_permissions_operation">无权操作</string>
+    <string name="no_photo">Photo empty</string>
     <string name="no_reason">七天退货</string>
     <string name="not_cg_30">不得超过30个字</string>
     <string name="note_taking">随手记</string>
     <string name="off_line">离线状态，是否重新登录</string>
     <string name="oks_share_failed">分享失败</string>
+    <string name="open_gallery_fail">Gallery init failure!</string>
     <string name="open_security_deal">开通担保交易</string>
     <string name="open_store">开通店铺</string>
     <string name="open_store_dingwei">请于门店范围内选择定位</string>
@@ -910,11 +929,18 @@
     <string name="path_password_eye_mask_visible" translatable="false">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
     <string name="pay_result_tip">这个界面用于显示第三方app通过微信支付的结果</string>
+    <string name="permissions_denied_tips">Unable to get pictures</string>
+    <string name="permissions_tips_gallery">This app requesting access to your Gallery</string>
     <string name="phone_hint">请输入联系电话</string>
     <string name="phone_start">+86></string>
+    <string name="photo_crop">Photo Crop</string>
+    <string name="photo_edit">Photo Edit</string>
+    <string name="photo_list_empty">Failed to get the picture!</string>
     <string name="please_input_money">请输入金额</string>
     <string name="please_input_phone">请输入手机号</string>
     <string name="please_input_stores_intro">请输入店铺简介，不得超过127个字</string>
+    <string name="please_reopen_gf">Please reopen Gallery</string>
+    <string name="preview">Preview</string>
     <string name="product_category_selection">选择商品分类</string>
     <string name="qr_code">二维码</string>
     <string name="qr_code_png">二维码图片</string>
@@ -930,12 +956,15 @@
     <string name="return_guantee">退货保障</string>
     <string name="return_guarante">退货保障</string>
     <string name="return_long_str">     注：开通期间已产生的订单，在关闭服务后，仍需按照7天退货服务规则处理。</string>
+    <string name="saving">Saving picture…</string>
     <string name="scan_qr_code">扫码</string>
     <string name="search">搜索</string>
     <string name="search_goods">搜索商品名</string>
     <string name="search_menu_title">Search</string>
     <string name="security_deal_hint">您在开通期间产生的订单，在取消设置后仍属于担保交易订单。是否确认退出？</string>
     <string name="see_seven_days_rules"><u>查看7天退货规则</u></string>
+    <string name="select_max_tips">Has reached the maximum number selection!</string>
+    <string name="selected">selected(%1$d/%2$d)</string>
     <string name="seven_days_detail_rule">七天退货服务详细规则</string>
     <string name="share">分享</string>
     <string name="share_red_to">将红包分享至</string>
@@ -959,6 +988,7 @@
     <string name="stores_preview">预览</string>
     <string name="stores_share">分享</string>
     <string name="stores_short_introduce">店铺简称</string>
+    <string name="take_photo_fail">Take photo failure</string>
     <string name="tam_po">担保交易</string>
     <string name="test">体验账号</string>
     <string name="tiaohuowang_agree">《用户注册协议》</string>
@@ -967,6 +997,7 @@
     <string name="toast_fail">请求失败</string>
     <string name="toast_success">请求成功</string>
     <string name="update">修改</string>
+    <string name="waiting">Please wait…</string>
     <string name="warm_hint">温馨提示:</string>
     <string name="warm_hint_text">买赠搭配的商品，拍下30分钟未付款将自动关闭订单</string>
     <string name="warning_emptycontent">输入的内容不能为空</string>
@@ -995,10 +1026,14 @@
         <item name="android:windowExitAnimation">@anim/design_bottom_sheet_slide_out</item>
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/wxColor</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:screenOrientation">portrait</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.NoActionBar">

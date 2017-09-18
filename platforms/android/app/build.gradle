@@ -88,7 +88,6 @@ dependencies {
     // compile project(':weex_sdk')
     //    compile project('org.weex.plugin:weex-image-picker')
     compile 'com.taobao.android:weex_sdk:0.10.0'
-    compile 'com.weexext:imagepicker:1.0.1'
     compile project(':appframework')
     compile project(':weexplugin')
     compile 'com.google.code.findbugs:jsr305:2.0.1'
@@ -108,4 +107,5 @@ dependencies {
     // PLUGIN GRADLE EXTENSIONS START
     // PLUGIN GRADLE EXTENSIONS END
     compile project(':xutils')
+    compile project(':library')
 }

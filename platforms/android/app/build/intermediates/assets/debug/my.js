@@ -49,14 +49,14 @@
 	var __vue_styles__ = []
 
 	/* styles */
-	__vue_styles__.push(__webpack_require__(1)
+	__vue_styles__.push(__webpack_require__(11)
 	)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(2)
+	__vue_exports__ = __webpack_require__(12)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(26)
+	var __vue_template__ = __webpack_require__(36)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -68,10 +68,10 @@
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/Users/macOS/Documents/mopian/mp/src/member/member.vue"
+	__vue_options__.__file = "/Users/macOS/Documents/mopian/mp/src/member/member2.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	__vue_options__._scopeId = "data-v-76557904"
+	__vue_options__._scopeId = "data-v-547150de"
 	__vue_options__.style = __vue_options__.style || {}
 	__vue_styles__.forEach(function (module) {
 	  for (var name in module) {
@@ -88,7 +88,17 @@
 
 
 /***/ }),
-/* 1 */
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -269,7 +279,7 @@
 	}
 
 /***/ }),
-/* 2 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -278,11 +288,11 @@
 	    value: true
 	});
 
-	var _stringify = __webpack_require__(3);
+	var _stringify = __webpack_require__(13);
 
 	var _stringify2 = _interopRequireDefault(_stringify);
 
-	var _defineProperty2 = __webpack_require__(6);
+	var _defineProperty2 = __webpack_require__(16);
 
 	var _defineProperty3 = _interopRequireDefault(_defineProperty2);
 
@@ -597,8 +607,7 @@
 	//
 
 	var modal = weex.requireModule('modal');
-	var native = weex.requireModule('wxNativeModule');
-	var he = __webpack_require__(24);
+	var he = __webpack_require__(34);
 
 	var navigator = weex.requireModule('navigator');
 	exports.default = {
@@ -685,20 +694,22 @@
 	        });
 	    },
 	    methods: {
-	        toPage: function toPage(url) {
-	            //                native.pageTo(url, false);
-	            native.wxConfig(function (data) {
-	                native.showToast(data.color);
-	            });
-	        },
-	        jump: function jump(vueName) {
+	        jumpPage: function jumpPage(event) {
 	            //                this.$router.push(vueName);
 
-	            var url = this.$getConfig().bundleUrl; //獲取當前a.we頁面的路徑(xxx/a.js)
-	            url = url.split('/').slice(0, -2).join('/') + 'index.js'; //獲取sss.vue編譯後的b.js的相對路徑
+	            //                    var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
+	            //                    url = url.split('/').slice(0,-2).join('/') + 'index.js';  //獲取sss.vue編譯後的b.js的相對路徑
+	            //                    navigator.push({
+	            //                        url: url,
+	            //                        animated: true
+	            //                    })
+	            console.log('will jump');
+	            modal.toast({ message: 'will jump: ' + event });
 	            navigator.push({
-	                url: url,
-	                animated: true
+	                url: 'http://cdn.rzico.com/weex/app/member/manager.js?test=1',
+	                animated: "true"
+	            }, function (event) {
+	                modal.toast({ message: 'callback: ' + event });
 	            });
 	        },
 	        allArticle: function allArticle() {
@@ -740,16 +751,16 @@
 	module.exports = exports['default'];
 
 /***/ }),
-/* 3 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(4), __esModule: true };
+	module.exports = { "default": __webpack_require__(14), __esModule: true };
 
 /***/ }),
-/* 4 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var core = __webpack_require__(5);
+	var core = __webpack_require__(15);
 	var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
 	module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
 	  return $JSON.stringify.apply($JSON, arguments);
@@ -757,7 +768,7 @@
 
 
 /***/ }),
-/* 5 */
+/* 15 */
 /***/ (function(module, exports) {
 
 	var core = module.exports = { version: '2.5.1' };
@@ -765,14 +776,14 @@
 
 
 /***/ }),
-/* 6 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	exports.__esModule = true;
 
-	var _defineProperty = __webpack_require__(7);
+	var _defineProperty = __webpack_require__(17);
 
 	var _defineProperty2 = _interopRequireDefault(_defineProperty);
 
@@ -794,39 +805,39 @@
 	};
 
 /***/ }),
-/* 7 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(8), __esModule: true };
+	module.exports = { "default": __webpack_require__(18), __esModule: true };
 
 /***/ }),
-/* 8 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(9);
-	var $Object = __webpack_require__(5).Object;
+	__webpack_require__(19);
+	var $Object = __webpack_require__(15).Object;
 	module.exports = function defineProperty(it, key, desc) {
 	  return $Object.defineProperty(it, key, desc);
 	};
 
 
 /***/ }),
-/* 9 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var $export = __webpack_require__(10);
+	var $export = __webpack_require__(20);
 	// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
-	$export($export.S + $export.F * !__webpack_require__(19), 'Object', { defineProperty: __webpack_require__(15).f });
+	$export($export.S + $export.F * !__webpack_require__(29), 'Object', { defineProperty: __webpack_require__(25).f });
 
 
 /***/ }),
-/* 10 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var global = __webpack_require__(11);
-	var core = __webpack_require__(5);
-	var ctx = __webpack_require__(12);
-	var hide = __webpack_require__(14);
+	var global = __webpack_require__(21);
+	var core = __webpack_require__(15);
+	var ctx = __webpack_require__(22);
+	var hide = __webpack_require__(24);
 	var PROTOTYPE = 'prototype';
 
 	var $export = function (type, name, source) {
@@ -887,7 +898,7 @@
 
 
 /***/ }),
-/* 11 */
+/* 21 */
 /***/ (function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -899,11 +910,11 @@
 
 
 /***/ }),
-/* 12 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
-	var aFunction = __webpack_require__(13);
+	var aFunction = __webpack_require__(23);
 	module.exports = function (fn, that, length) {
 	  aFunction(fn);
 	  if (that === undefined) return fn;
@@ -925,7 +936,7 @@
 
 
 /***/ }),
-/* 13 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	module.exports = function (it) {
@@ -935,12 +946,12 @@
 
 
 /***/ }),
-/* 14 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var dP = __webpack_require__(15);
-	var createDesc = __webpack_require__(23);
-	module.exports = __webpack_require__(19) ? function (object, key, value) {
+	var dP = __webpack_require__(25);
+	var createDesc = __webpack_require__(33);
+	module.exports = __webpack_require__(29) ? function (object, key, value) {
 	  return dP.f(object, key, createDesc(1, value));
 	} : function (object, key, value) {
 	  object[key] = value;
@@ -949,15 +960,15 @@
 
 
 /***/ }),
-/* 15 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var anObject = __webpack_require__(16);
-	var IE8_DOM_DEFINE = __webpack_require__(18);
-	var toPrimitive = __webpack_require__(22);
+	var anObject = __webpack_require__(26);
+	var IE8_DOM_DEFINE = __webpack_require__(28);
+	var toPrimitive = __webpack_require__(32);
 	var dP = Object.defineProperty;
 
-	exports.f = __webpack_require__(19) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+	exports.f = __webpack_require__(29) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
 	  anObject(O);
 	  P = toPrimitive(P, true);
 	  anObject(Attributes);
@@ -971,10 +982,10 @@
 
 
 /***/ }),
-/* 16 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(17);
+	var isObject = __webpack_require__(27);
 	module.exports = function (it) {
 	  if (!isObject(it)) throw TypeError(it + ' is not an object!');
 	  return it;
@@ -982,7 +993,7 @@
 
 
 /***/ }),
-/* 17 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	module.exports = function (it) {
@@ -991,26 +1002,26 @@
 
 
 /***/ }),
-/* 18 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = !__webpack_require__(19) && !__webpack_require__(20)(function () {
-	  return Object.defineProperty(__webpack_require__(21)('div'), 'a', { get: function () { return 7; } }).a != 7;
+	module.exports = !__webpack_require__(29) && !__webpack_require__(30)(function () {
+	  return Object.defineProperty(__webpack_require__(31)('div'), 'a', { get: function () { return 7; } }).a != 7;
 	});
 
 
 /***/ }),
-/* 19 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// Thank's IE8 for his funny defineProperty
-	module.exports = !__webpack_require__(20)(function () {
+	module.exports = !__webpack_require__(30)(function () {
 	  return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 	});
 
 
 /***/ }),
-/* 20 */
+/* 30 */
 /***/ (function(module, exports) {
 
 	module.exports = function (exec) {
@@ -1023,11 +1034,11 @@
 
 
 /***/ }),
-/* 21 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(17);
-	var document = __webpack_require__(11).document;
+	var isObject = __webpack_require__(27);
+	var document = __webpack_require__(21).document;
 	// typeof document.createElement is 'object' in old IE
 	var is = isObject(document) && isObject(document.createElement);
 	module.exports = function (it) {
@@ -1036,11 +1047,11 @@
 
 
 /***/ }),
-/* 22 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.1 ToPrimitive(input [, PreferredType])
-	var isObject = __webpack_require__(17);
+	var isObject = __webpack_require__(27);
 	// instead of the ES6 spec version, we didn't implement @@toPrimitive case
 	// and the second argument - flag - preferred type is a string
 	module.exports = function (it, S) {
@@ -1054,7 +1065,7 @@
 
 
 /***/ }),
-/* 23 */
+/* 33 */
 /***/ (function(module, exports) {
 
 	module.exports = function (bitmap, value) {
@@ -1068,7 +1079,7 @@
 
 
 /***/ }),
-/* 24 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! https://mths.be/he v1.1.1 by @mathias | MIT license */
@@ -1412,10 +1423,10 @@
 
 	}(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)(module), (function() { return this; }())))
 
 /***/ }),
-/* 25 */
+/* 35 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -1431,7 +1442,7 @@
 
 
 /***/ }),
-/* 26 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1449,12 +1460,7 @@
 	      "src": _vm.imageUrl
 	    }
 	  }), _c('div', {
-	    staticClass: ["topHead"],
-	    on: {
-	      "click": function($event) {
-	        _vm.toPage('member/manager.js')
-	      }
-	    }
+	    staticClass: ["topHead"]
 	  }, [_c('image', {
 	    staticClass: ["testImage"],
 	    attrs: {
@@ -1470,7 +1476,7 @@
 	    staticClass: ["topBtnSmallBox", "topBtnOne"],
 	    on: {
 	      "click": function($event) {
-	        _vm.jump('sss')
+	        _vm.jumpPage()
 	      }
 	    }
 	  }, [_c('text', {
@@ -1481,7 +1487,7 @@
 	    staticClass: ["topBtnSmallBox", "topBtnTwo"],
 	    on: {
 	      "click": function($event) {
-	        _vm.jump('sss')
+	        _vm.jumpPage()
 	      }
 	    }
 	  }, [_c('text', {
@@ -1527,7 +1533,7 @@
 	      staticClass: ["articleBox"],
 	      on: {
 	        "click": function($event) {
-	          _vm.jump('sss')
+	          _vm.jumpPage()
 	        },
 	        "swipe": function($event) {
 	          _vm.swipeHappen($event)

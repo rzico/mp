@@ -120,7 +120,7 @@ public class HttpRequest extends UriRequest {
     public void sendRequest() throws IOException {
         isLoading = false;
 
-        URL url = new URL(queryUrl);
+         URL url = new URL(queryUrl);
         { // init connection
             Proxy proxy = params.getProxy();
             if (proxy != null) {

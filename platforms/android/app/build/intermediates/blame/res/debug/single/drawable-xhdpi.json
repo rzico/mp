@@ -1,10 +1,54 @@
 [
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_back.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_back.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_done.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_done.png"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_action_refresh.png",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/drawable-xhdpi/ic_action_refresh.png"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_clear.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_clear.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_rotate.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_rotate.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_crop.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_crop.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_crop_tile.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_crop_tile.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/gf_ic_preview.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/gf_ic_preview.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_delete_photo.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_delete_photo.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_default_photo.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_default_photo.png"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_action_scan.png",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/drawable-xhdpi/ic_action_scan.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_triangle_arrow.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_triangle_arrow.png"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_gf_camera.png",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/drawable-xhdpi/ic_gf_camera.png"
     }
 ]

@@ -311,8 +311,27 @@
                     "startLine": 18,
                     "startColumn": 4,
                     "startOffset": 1170,
+                    "endColumn": 50,
+                    "endOffset": 1216
+                },
+                "from": {
+                    "file": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/values-sw600dp/values-sw600dp.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 193,
+                        "endColumn": 50,
+                        "endOffset": 239
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 1221,
                     "endColumn": 62,
-                    "endOffset": 1228
+                    "endOffset": 1279
                 },
                 "from": {
                     "file": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/values-sw600dp-v13/values-sw600dp-v13.xml",
@@ -327,12 +346,12 @@
             },
             {
                 "to": {
-                    "startLine": 19,
+                    "startLine": 20,
                     "startColumn": 4,
-                    "startOffset": 1233,
-                    "endLine": 22,
+                    "startOffset": 1284,
+                    "endLine": 23,
                     "endColumn": 12,
-                    "endOffset": 1410
+                    "endOffset": 1461
                 },
                 "from": {
                     "file": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/values-sw600dp-v13/values-sw600dp-v13.xml",

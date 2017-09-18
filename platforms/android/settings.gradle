@@ -1,5 +1,6 @@
 // GENERATED FILE - DO NOT EDIT
 include ":app"
 include ":xutils"
+include ":library"
 include ":weexplugin"
 include ":appframework"

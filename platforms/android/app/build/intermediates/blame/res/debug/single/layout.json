@@ -4,6 +4,10 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/layout/design_layout_snackbar_include.xml"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/activity_login.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/layout/activity_login.xml"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/abc_alert_dialog_title_material.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/abc_alert_dialog_title_material.xml"
     },
@@ -36,6 +40,10 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/notification_template_media_custom.xml"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/gf_adapter_edit_list.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/layout/gf_adapter_edit_list.xml"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/zxing_capture.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.journeyapps/zxing-android-embedded/3.4.0/res/layout/zxing_capture.xml"
     },
@@ -46,6 +54,10 @@
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/abc_action_bar_title_item.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/abc_action_bar_title_item.xml"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/gf_adapter_preview_viewpgaer_item.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/layout/gf_adapter_preview_viewpgaer_item.xml"
     },
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/abc_screen_simple_overlay_action_mode.xml",
@@ -96,6 +108,14 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/abc_activity_chooser_view_list_item.xml"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/gf_activity_photo_select.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/layout/gf_activity_photo_select.xml"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/gf_activity_photo_edit.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/layout/gf_activity_photo_edit.xml"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/design_navigation_item_header.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/design/25.2.0/res/layout/design_navigation_item_header.xml"
     },
@@ -124,6 +144,10 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/abc_popup_menu_header_item_layout.xml"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/gf_adapter_folder_list_item.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/layout/gf_adapter_folder_list_item.xml"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/abc_action_menu_layout.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/abc_action_menu_layout.xml"
     },
@@ -132,8 +156,16 @@
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/abc_screen_toolbar.xml"
     },
     {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/gf_activity_photo_preview.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/layout/gf_activity_photo_preview.xml"
+    },
+    {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/notification_template_part_chronometer.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/activity_edit.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/src/main/res/layout/activity_edit.xml"
     },
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/abc_list_menu_item_radio.xml",
@@ -170,6 +202,10 @@
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/select_dialog_multichoice_material.xml",
         "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.2.0/res/layout/select_dialog_multichoice_material.xml"
+    },
+    {
+        "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/gf_adapter_photo_list_item.xml",
+        "source": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/exploded-aar/cn.finalteam/galleryfinal/1.4.8.7/res/layout/gf_adapter_photo_list_item.xml"
     },
     {
         "merged": "/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/res/merged/debug/layout/list_item.xml",
