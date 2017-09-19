@@ -1,7 +1,6 @@
 <template>
     <list class="wrapperBox" >
-        <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'">
-        </refresh>
+        <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>
         <cell>
             <div>
                 <image class="coverImage" :src="coverImage"></image>

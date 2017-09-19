@@ -1,70 +1,93 @@
 <template>
-    <list class="wrapper">
-        <cell>
+    <scroller class="wrapper">
+        <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <navbar :title="title" > </navbar>
-            <!--整个的上方箱子-->
-            <div class="voteBox mt20 border-radius">
-                <!--第一行 投票描述-->
-                <div class="voteTell addBottomBorder">
-                    <text class="gray tellSize">投票描述</text>
-                    <!--多行文本-->
-                    <div class="textareaBox">
-                        <textarea class="textareaClass ml10 " data-id="0" v-model="textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
-                    </div>
-                </div>
-                <!--第二行开始 选项-->
-                <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in pageBox">
-                    <!--勾选圆形-->
-                    <text class="circle pl10"></text>
-                    <!--多行文本-->
-                    <div class="textareaBox">
-                        <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}"  :rows="item.rowsNum"></textarea>
-                    </div>
-                    <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
-                    <text class="closeIcon" style="width: 40px;"  v-else></text>
-                </div>
-                <div class="voteTell addOptions" @click="addOptions()">
-                    <text class="addSize">+</text>
-                    <text class="addSize ml10">添加选项</text>
-                </div>
-            </div>
-        </cell>
-        <cell>
-            <div class="voteBox mt20 border-radius">
-                <!-- 截止时间-->
-                <div class="voteTell addBottomBorder optionsBox ">
-                    <div class="flexRow">
-                        <text class="gray bottomSize">截止时间</text>
-                        <!--时间-->
-                        <div class="textareaBox ml10 flexRow"  >
-                            <!--选择日期-->
-                            <text class="bottomSize" @click="pickDate()">{{chooseDate}}</text>
-                            <!--选择时间-->
-                            <text class="bottomSize ml10" @click="pickTime()">{{chooseTime}}</text>
+            <div class="voteBigBox" v-for="voteBox in voteList">
+                <!--整个的上方箱子-->
+                <div class="voteBox mt20 border-radius">
+                    <!--第一行 投票描述-->
+                    <div class="voteTell addBottomBorder">
+                        <text class="gray tellSize">投票描述</text>
+                        <!--多行文本-->
+                        <div class="textareaBox">
+                            <textarea class="textareaClass ml10 " data-id="0" v-model="textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
                         </div>
                     </div>
-                    <!--重置时间按钮-->
-                    <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="this.chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
+                    <!--第二行开始 选项-->
+                    <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in pageBox">
+                        <!--勾选圆形-->
+                        <text class="circle pl10"></text>
+                        <!--多行文本-->
+                        <div class="textareaBox">
+                            <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
+                            <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
+                        </div>
+                        <!--删除按钮-->
+                        <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
+                        <!--当隐藏删除按钮时需要有空白区域顶起布局-->
+                        <text class="closeIcon" style="width: 40px;"  v-else></text>
+                    </div>
+                    <!--添加选项-->
+                    <div class="voteTell addOptions " @click="addOptions()">
+                        <text class="addSize">+</text>
+                        <text class="addSize ml10">添加选项</text>
+                    </div>
                 </div>
-                <!-- 投票类型-->
-                <div class="voteTell ">
-                    <text class="gray bottomSize">投票类型</text>
-                    <!--单选-->
-                    <div class="textareaBox ml10" @click="pickOptions()">
-                        <text class="bottomSize">{{chooseOptions}}</text>
+                <div class="voteBox mt20 border-radius">
+                    <!-- 截止时间-->
+                    <div class="voteTell addBottomBorder optionsBox ">
+                        <div class="flexRow">
+                            <text class="gray bottomSize">截止时间</text>
+                            <!--时间-->
+                            <div class="textareaBox ml10 flexRow"  >
+                                <!--选择日期-->
+                                <text class="bottomSize" @click="pickDate()">{{chooseDate}}</text>
+                                <!--选择时间-->
+                                <text class="bottomSize ml10" @click="pickTime()">{{chooseTime}}</text>
+                            </div>
+                        </div>
+                        <!--重置时间按钮-->
+                        <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
+                    </div>
+                    <!-- 投票类型-->
+                    <div class="voteTell ">
+                        <text class="gray bottomSize">投票类型</text>
+                        <!--单选-->
+                        <div class="textareaBox ml10" @click="pickOptions()">
+                            <text class="bottomSize">{{chooseOptions}}</text>
+                        </div>
                     </div>
                 </div>
             </div>
-        </cell>
-    </list>
+            <!--添加投票-->
+            <div class="voteTell addOptions " @click="addVoteBox()">
+                <div class="flexRow addVote">
+                    <text class="addSize" :style="{fontFamily:'iconfont'}">&#xe629;</text>
+                    <text class="addSize ml10">添加投票</text>
+                </div>
+            </div>
+    </scroller>
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .voteBigBox{
+        padding-bottom: 20px;
+        border-bottom-width: 30px;
+        border-style: solid;
+        border-color: #999;
+    }
     .flexRow{
         flex-direction: row;
         align-items: center;
+    }
+    .addVote{
+        padding-bottom: 15px;
+        padding-top: 15px;
+        padding-left: 45px;
+        padding-right: 45px;
+        border-radius: 10px;
+        background-color: #fff;
     }
     .circle{
         width:50px;
@@ -92,6 +115,10 @@
         font-size: 40px;
         color: #999;
         font-weight: 700;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px
     }
     .textareaClass{
         width:485px;
@@ -108,7 +135,7 @@
     }
     .voteTell{
         flex-direction: row;
-        height:120px;
+        height:110px;
         align-items: center;
     }
     .addBottomBorder{
@@ -117,12 +144,13 @@
         border-color: gainsboro;
     }
     .tellSize{
-        font-size:38px;
+        font-size:37px;
     }
     .voteBox{
         width:710px;
         margin-left: 20px;
         padding-left: 25px;
+        border-radius: 20px;
         background-color: #fff;
     }
 </style>
@@ -138,6 +166,8 @@
     export default {
         data:function () {
             return{
+                refreshing: false,
+                voteList:[{}],
                 chooseOptions:'单选(默认)',
                 optionsIndex:0,
                 chooseDate:'无截止时间',
@@ -219,14 +249,17 @@
                     }
                 })
             },
+//            设置每个选项的提示内容
             setPlaceholder:function (index) {
                 return '选项' + parseInt(index+1);
             },
+//            删除制定选项
             deleteOptions:function (index) {
                 console.log(index);
-                modal.toast({message:index,duration:0.3});
+//                modal.toast({message:index,duration:0.3});
                 this.pageBox.splice(index,1);
             },
+//            添加选项
             addOptions:function () {
                 this.pageBox.push({
                     textAreaMessage:'',
@@ -242,8 +275,9 @@
 //            选项输入
             optionsOninput:function (event) {
                 var len = this.getLen(event);
-//                当字符数超过26时，将多行输入改成2行并且高度设为96
-                if(len > 26){
+//                当字符数超过25时，将多行输入改成2行并且高度设为96
+                modal.toast({message:len,duration:0.3})
+                if(len > 25){
 //                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
                     if(this.pageBox[optionIndex].editSign == -1){
                         this.pageBox[optionIndex].rowsNum = 2;
@@ -262,8 +296,8 @@
 //            标题描述输入。
             titleOninput:function (event) {
                 var len = this.getLen(event);
-                //当字符数超过26时，将多行输入改成2行并且高度设为96
-                if(len > 26){
+                //当字符数超过25时，将多行输入改成2行并且高度设为96
+                if(len > 25){
 //                    控制是否切换高度.不用每次输入都执行一次
                     if(isSign == -1){
                         this.titleRows = 2;
@@ -292,6 +326,25 @@
                     }
                 }
                 return len;
+            },
+//            添加投票箱
+            addVoteBox:function () {
+                this.voteList.push({
+
+                })
+            },
+
+//            下拉刷新
+            onrefresh (event) {
+                console.log('is refreshing')
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 2000)
+            },
+//            正在下拉
+            onpullingdown (event) {
+                console.log('is onpulling down')
             }
         }
     }
