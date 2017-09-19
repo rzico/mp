@@ -14,11 +14,12 @@
                 </div>
                 <!--第二行开始 选项-->
                 <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in pageBox">
+                    <!--勾选圆形-->
                     <text class="circle pl10"></text>
                     <!--多行文本-->
                     <div class="textareaBox">
                         <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' :data-id="index" v-model="item.textAreaMessage"  @input="oninput(index)"  :style="{height:item.textHeight + 'px'}"  :rows="item.rowsNum"></textarea>
+                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage"  @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}"  :rows="item.rowsNum"></textarea>
                     </div>
                     <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
                     <text class="closeIcon" style="width: 40px;"  v-else></text>
@@ -58,7 +59,6 @@
         </cell>
     </list>
 </template>
-
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .flexRow{
@@ -83,7 +83,6 @@
     }
     .addOptions{
         justify-content: center;
-
     }
     .pl10{
         margin-left: 20px;
@@ -129,10 +128,16 @@
 
 
 <script>
+    import JsEncrypt from 'jsencrypt/bin/jsencrypt'
+    Vue.prototype.$jsEncrypt = JsEncrypt
+//    let jse = new this.$jsEncrypt.JSEncrypt()
+//    jse.setPublicKey(MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8ygMKjJLSUpnfXqt8lRSAdDxAHWKi9GbTFkCbAjkRCR6VUakxxXLXHQUtPCizKcvNpuYqZ5bO8LEgpY7SL3JEdEI9OuMnZ6ToeHPfcHeS+EgN0oYmdQ49RB5wZkcBEFk80OBEAM6VhnE0IuHGkU5ko9oPHq3boEQ3Ej6r3T+UhQIDAQAB)
+
     import navbar from '../../../include/navbar.vue'
     const modal = weex.requireModule('modal')
     const picker = weex.requireModule('picker')
     var isSign = -1;
+    var optionIndex = 0;
     export default {
         data:function () {
             return{
@@ -146,21 +151,38 @@
                 titleRows:1,
                 pageBox:[{
                     textAreaMessage:'',
-                    textHeight:48,
-                    rowsNum:1
+                    textHeight:'48',
+                    rowsNum:'1',
+                    editSign:-1,
                 },{
                     textAreaMessage:'',
                     textHeight:48,
-                    rowsNum:1
+                    rowsNum:1,
+                    editSign:-1,
                 }]
             }
         },
+        //引入组件
         components: {
             navbar
         },
         props: {
             title: { default: "投票设置"},
         },
+        created(){
+            let jse = new this.$jsEncrypt.JSEncrypt();
+//            设置公钥
+            jse.setPublicKey('MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8ygMKjJLSUpnfXqt8lRSAdDxAHWKi9GbTFkCbAjkRCR6VUakxxXLXHQUtPCizKcvNpuYqZ5bO8LEgpY7SL3JEdEI9OuMnZ6ToeHPfcHeS+EgN0oYmdQ49RB5wZkcBEFk80OBEAM6VhnE0IuHGkU5ko9oPHq3boEQ3Ej6r3T+UhQIDAQAB');
+            let encrypted = jse.encrypt('Hello, world');
+            console.log('===');
+            console.log(encrypted);
+//            设置秘钥
+            jse.setPrivateKey('MIICXgIBAAKBgQC8ygMKjJLSUpnfXqt8lRSAdDxAHWKi9GbTFkCbAjkRCR6VUakxxXLXHQUtPCizKcvNpuYqZ5bO8LEgpY7SL3JEdEI9OuMnZ6ToeHPfcHeS+EgN0oYmdQ49RB5wZkcBEFk80OBEAM6VhnE0IuHGkU5ko9oPHq3boEQ3Ej6r3T+UhQIDAQABAoGBAIO8JwEedHlE4FBovBsT4Bl+gmhu2NxC1NlpBq3jkDSd+3RQZlLvp6IJgwo8l13lxWv8kVF3tVkzxTW1sQJjz0RYShH8vXLl94gf6mFkJbeOPP6uA0mGDG81yINwKUpE0RM6ZM9yKEeVdK3u67TkEBcC6Td5KBl8Yof3q7qxiOWhAkEA4BXEtpnfhgm37s1VjDxdIHTtWL1PihMT+SCOqp+Vv27ABVrxtDW/w2R3ZzR5ezROI2v1DVhj5wvsxPGXx6OpSQJBANetVvazS/5SQNvb+Cmjw9Rt5NilyxfX5IsSswaIojbwhZY2FVZyAlFH9K/YS2FYFyU7iIqN6IIkOxXpOcj/bV0CQQCRYM4MgWuotClmfkSgBJGOew144uj1dUch+2NTgtFOLvXZA5WICs7sXwOwKzUdH2QKSwHitJOr0+q6ItsLpDwxAkBXzvDK+/CCmIZjfMkqWsxN3nf/ZHCtQm5/2Jsem94/M+mPYHGLgltDMGKEfTEjbrPtqrFKh8ATzCBqKUwncybZAkEAmVNW1dftWWoriZZXXMvfFkTDgYvRmytoVEThhnd0J/AOhZiUAs9+kHfGKivlTE209AY6Bw8aRzuTCziSwQhhBQ== ')
+            let decrypted = jse.decrypt(encrypted)
+            console.log("解密");
+            console.log(decrypted);
+        },
+//        引入字体图标
         mounted:function(){
             var domModule = weex.requireModule("dom");
             domModule.addRule('fontFace',{
@@ -215,79 +237,81 @@
                     }
                 })
             },
+//            设置每个多行文本选项的提示字
             setPlaceholder:function (index) {
                 return '选项' + parseInt(index+1);
             },
+//            删除选项
             deleteOptions:function (index) {
                 console.log(index);
-                modal.toast({message:index,duration:0.3});
                 this.pageBox.splice(index,1);
             },
+//            添加选项
             addOptions:function () {
                 this.pageBox.push({
                     textAreaMessage:'',
                     textHeight:48,
-                    rowsNum:1
+                    rowsNum:1,
+                    editSign:-1,
                 })
             },
-            //===========以下代码还需要修改=================
-            oninput:function (index) {
-                var _this = this;
-//                实时判断用户输入的字符长度，来动态改变多行输入框的高度
-                var name = event.value;
-                var len = 0;
-                for (let i = 0; i < name.length; i++) {
-                    var a = name.charAt(i);
-                    if (a.match(/[^\x00-\xff]/ig) != null) {
-                        len += 2;
-                    }
-                    else {
-                        len += 1;
-                    }
-                }
+//            通过获取焦点来获取当前输入的组件下标
+            onfocus:function (index) {
+                optionIndex = index;
+            },
+//            选项输入
+            optionsOninput:function (event) {
+                var len = this.getLen(event);
 //                当字符数超过26时，将多行输入改成2行并且高度设为96
                 if(len > 26){
-                    _this.pageBox[index].rowsNum = 2;
-                    if(isSign == -1){
-                        _this.pageBox[index].textHeight = 96;
-                        isSign = 0;
+//                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
+                    if(this.pageBox[optionIndex].editSign == -1){
+                        this.pageBox[optionIndex].rowsNum = 2;
+                         this.pageBox[optionIndex].textHeight = 96;
+                        this.pageBox[optionIndex].editSign = 0;
                     }
                 }else{//否则将高度与行数改回来
-                    _this.pageBox[index].rowsNum = 1;
-                    if(isSign == 0){
-                        _this.pageBox[index].textHeight = 48;
-                        isSign = -1;
+                    if(this.pageBox[optionIndex].editSign == 0){
+                        this.pageBox[optionIndex].rowsNum = 1;
+                        this.pageBox[optionIndex].textHeight = 48;
+                        this.pageBox[optionIndex].editSign = -1;
                     }
                 }
             },
-            titleOninput:function (event) {
 
-                modal.toast({message: '222', duration: 0.5})
-                var name = event.value;
-                var len = 0;
-                for (let i = 0; i < name.length; i++) {
-                    var a = name.charAt(i);
-                    if (a.match(/[^\x00-\xff]/ig) != null) {
-                        len += 2;
-                    }
-                    else {
-                        len += 1;
-                    }
-                }
+//            标题描述输入。
+            titleOninput:function (event) {
+                var len = this.getLen(event);
                 //当字符数超过26时，将多行输入改成2行并且高度设为96
                 if(len > 26){
-                    this.titleRows = 2;
+//                    控制是否切换高度.不用每次输入都执行一次
                     if(isSign == -1){
+                        this.titleRows = 2;
                         this.titleHeight = 96;
                         isSign = 0;
                     }
                 }else{//否则将高度与行数改回来
-                    this.titleRows = 1;
                     if(isSign == 0){
+                        this.titleRows = 1;
                         this.titleHeight = 48;
                         isSign = -1;
                     }
                 }
+            },
+//            获取已输入的字符总长度
+            getLen(event){
+                var name = event.value;
+                var len = 0;
+                for (let i = 0; i < name.length; i++) {
+                    var a = name.charAt(i);
+                    if (a.match(/[^\x00-\xff]/ig) != null) {
+                        len += 2;
+                    }
+                    else {
+                        len += 1;
+                    }
+                }
+                return len;
             }
         }
     }
