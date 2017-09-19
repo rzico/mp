@@ -1,5 +1,7 @@
 <template>
     <list class="wrapperBox" >
+        <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'">
+        </refresh>
         <cell>
             <div>
                 <image class="coverImage" :src="coverImage"></image>
@@ -39,7 +41,7 @@
             <div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">
             <!--<div  v-for="(item,index) in paraList" >-->
                 <!--段落-->
-                <div class="paraBox">
+                <div class="paraBox paraBoxHeight">
                     <!--左上角关闭按钮"x"-->
                     <div class="paraClose" @click="showConfirm(index)">
                         <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
@@ -88,6 +90,13 @@
             </div>
             </transition-group>
         </cell>
+        <cell>
+                <!--添加投票-->
+                <div class="paraBox flexRow">
+                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
+                    <text class="addVote">添加投票</text>
+                </div>
+        </cell>
         <!--用来撑起底部空白区域-->
         <cell><div class="emptyBox"></div></cell>
     </list>
@@ -101,6 +110,19 @@
     .paraTransition-leave-to,.paraTransition-enter{
         transform: translateX(300px);
         opacity: 0;
+    }
+    .addVoteIcon{
+        font-size: 39px;
+    }
+    .addVote{
+        color: #A89F95;
+        font-size: 34px;
+        margin-left: 10px;
+    }
+    .flexRow{
+        padding-top: 20px;
+        padding-bottom: 20px;
+        justify-content: center;
     }
     .greyColor{
         color: #999;
@@ -149,6 +171,9 @@
         height:155px;
         border-radius: 10px;
     }
+    .paraBoxHeight{
+        height:225px;
+    }
     .paraBox{
         flex-direction: row;
         padding-left: 35px;
@@ -157,7 +182,6 @@
         padding-bottom: 35px;
         width:700px;
         margin-left: 25px;
-        height:225px;
         background-color: #fff;
         border-bottom-right-radius: 20px;
         border-top-right-radius: 20px;
@@ -260,6 +284,7 @@
     export default {
         data:function(){
             return{
+                refreshing: false,
                 firstPlusShow:true,
                 coverImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 setTitle:'点击设置标题',
@@ -271,9 +296,7 @@
                     },{paraImage:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     paraText:'2',
                     show:true}
-                    ,{paraImage:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
-                    paraText:'3',
-                    show:true}]
+                    ,]
             }
         },
 
@@ -440,16 +463,28 @@
                         if(value == '确定'){
                             //                将内容删掉
                             _this.paraList.splice(index,1);
-
                         }
                     })
                 }
             },
+//            编辑段落图片
             editParaImage(imgSrc,index){
                 var _this = this;
                 album.openCrop(imgSrc,function (data) {
                     _this.paraList[index].paraImage = data;
                 })
+            },
+//            下拉刷新
+            onrefresh (event) {
+                console.log('is refreshing')
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 10)
+            },
+//            正在下拉
+            onpullingdown (event) {
+                console.log('is onpulling down')
             }
         }
     }

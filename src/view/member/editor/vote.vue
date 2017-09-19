@@ -19,7 +19,7 @@
                     <!--多行文本-->
                     <div class="textareaBox">
                         <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage"  @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}"  :rows="item.rowsNum"></textarea>
+                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}"  :rows="item.rowsNum"></textarea>
                     </div>
                     <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
                     <text class="closeIcon" style="width: 40px;"  v-else></text>
@@ -59,6 +59,7 @@
         </cell>
     </list>
 </template>
+
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .flexRow{
@@ -75,7 +76,7 @@
         border-color: #999;
     }
     .addSize{
-       color: #D9141E;
+        color: #D9141E;
         font-size: 35px;
     }
     .bottomSize{
@@ -128,10 +129,6 @@
 
 
 <script>
-    import JsEncrypt from 'jsencrypt/bin/jsencrypt'
-    Vue.prototype.$jsEncrypt = JsEncrypt
-//    let jse = new this.$jsEncrypt.JSEncrypt()
-//    jse.setPublicKey(MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8ygMKjJLSUpnfXqt8lRSAdDxAHWKi9GbTFkCbAjkRCR6VUakxxXLXHQUtPCizKcvNpuYqZ5bO8LEgpY7SL3JEdEI9OuMnZ6ToeHPfcHeS+EgN0oYmdQ49RB5wZkcBEFk80OBEAM6VhnE0IuHGkU5ko9oPHq3boEQ3Ej6r3T+UhQIDAQAB)
 
     import navbar from '../../../include/navbar.vue'
     const modal = weex.requireModule('modal')
@@ -162,27 +159,12 @@
                 }]
             }
         },
-        //引入组件
         components: {
             navbar
         },
         props: {
             title: { default: "投票设置"},
         },
-        created(){
-            let jse = new this.$jsEncrypt.JSEncrypt();
-//            设置公钥
-            jse.setPublicKey('MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC8ygMKjJLSUpnfXqt8lRSAdDxAHWKi9GbTFkCbAjkRCR6VUakxxXLXHQUtPCizKcvNpuYqZ5bO8LEgpY7SL3JEdEI9OuMnZ6ToeHPfcHeS+EgN0oYmdQ49RB5wZkcBEFk80OBEAM6VhnE0IuHGkU5ko9oPHq3boEQ3Ej6r3T+UhQIDAQAB');
-            let encrypted = jse.encrypt('Hello, world');
-            console.log('===');
-            console.log(encrypted);
-//            设置秘钥
-            jse.setPrivateKey('MIICXgIBAAKBgQC8ygMKjJLSUpnfXqt8lRSAdDxAHWKi9GbTFkCbAjkRCR6VUakxxXLXHQUtPCizKcvNpuYqZ5bO8LEgpY7SL3JEdEI9OuMnZ6ToeHPfcHeS+EgN0oYmdQ49RB5wZkcBEFk80OBEAM6VhnE0IuHGkU5ko9oPHq3boEQ3Ej6r3T+UhQIDAQABAoGBAIO8JwEedHlE4FBovBsT4Bl+gmhu2NxC1NlpBq3jkDSd+3RQZlLvp6IJgwo8l13lxWv8kVF3tVkzxTW1sQJjz0RYShH8vXLl94gf6mFkJbeOPP6uA0mGDG81yINwKUpE0RM6ZM9yKEeVdK3u67TkEBcC6Td5KBl8Yof3q7qxiOWhAkEA4BXEtpnfhgm37s1VjDxdIHTtWL1PihMT+SCOqp+Vv27ABVrxtDW/w2R3ZzR5ezROI2v1DVhj5wvsxPGXx6OpSQJBANetVvazS/5SQNvb+Cmjw9Rt5NilyxfX5IsSswaIojbwhZY2FVZyAlFH9K/YS2FYFyU7iIqN6IIkOxXpOcj/bV0CQQCRYM4MgWuotClmfkSgBJGOew144uj1dUch+2NTgtFOLvXZA5WICs7sXwOwKzUdH2QKSwHitJOr0+q6ItsLpDwxAkBXzvDK+/CCmIZjfMkqWsxN3nf/ZHCtQm5/2Jsem94/M+mPYHGLgltDMGKEfTEjbrPtqrFKh8ATzCBqKUwncybZAkEAmVNW1dftWWoriZZXXMvfFkTDgYvRmytoVEThhnd0J/AOhZiUAs9+kHfGKivlTE209AY6Bw8aRzuTCziSwQhhBQ== ')
-            let decrypted = jse.decrypt(encrypted)
-            console.log("解密");
-            console.log(decrypted);
-        },
-//        引入字体图标
         mounted:function(){
             var domModule = weex.requireModule("dom");
             domModule.addRule('fontFace',{
@@ -193,8 +175,8 @@
         methods:{
 //            将选择好的时间 重置
             noEndTime:function () {
-              this.chooseDate = '无截止时间';
-              this.chooseTime = '';
+                this.chooseDate = '无截止时间';
+                this.chooseTime = '';
             },
 //            选择投票类型
             pickOptions(){
@@ -237,16 +219,14 @@
                     }
                 })
             },
-//            设置每个多行文本选项的提示字
             setPlaceholder:function (index) {
                 return '选项' + parseInt(index+1);
             },
-//            删除选项
             deleteOptions:function (index) {
                 console.log(index);
+                modal.toast({message:index,duration:0.3});
                 this.pageBox.splice(index,1);
             },
-//            添加选项
             addOptions:function () {
                 this.pageBox.push({
                     textAreaMessage:'',
@@ -267,7 +247,7 @@
 //                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
                     if(this.pageBox[optionIndex].editSign == -1){
                         this.pageBox[optionIndex].rowsNum = 2;
-                         this.pageBox[optionIndex].textHeight = 96;
+                        this.pageBox[optionIndex].textHeight = 96;
                         this.pageBox[optionIndex].editSign = 0;
                     }
                 }else{//否则将高度与行数改回来
