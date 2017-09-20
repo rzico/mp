@@ -1,7 +1,7 @@
 <template>
     <scroller class="wrapper">
         <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
-            <navbar :title="title" > </navbar>
+        <navbar :title="title" @goback="goback"> </navbar>
             <div class="voteBigBox" v-for="voteBox in voteList">
                 <!--整个的上方箱子-->
                 <div class="voteBox mt20 border-radius">

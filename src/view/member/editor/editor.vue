@@ -1,77 +1,26 @@
 <template>
-    <list class="wrapperBox" >
-        <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>
-        <cell>
-            <div>
-                <image class="coverImage" :src="coverImage"></image>
-                <div class="coverMaskImage"></div>
-                <text class="setTitle">{{setTitle}}</text>
-                <text class="bottomBtn addMusic">{{addMusic}}</text>
-                <text class="bottomBtn editCover" @click="addCover()">编辑封面</text>
-            </div>
-        </cell>
-        <cell >
-            <!--加号跟功能盒子-->
-            <div class="addBox" @click="clearIconBox()">
-                <!--加号-->
-                <div  v-if="firstPlusShow" @click="firstShow()">
-                    <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+    <div>
+        <navbar :title="title" @goback="goback"> </navbar>
+        <list class="wrapperBox" >
+            <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>
+            <cell>
+                <div>
+                    <image class="coverImage" :src="coverImage"></image>
+                    <div class="coverMaskImage"></div>
+                    <text class="setTitle">{{setTitle}}</text>
+                    <text class="bottomBtn addMusic">{{addMusic}}</text>
+                    <text class="bottomBtn editCover" @click="addCover()">编辑封面</text>
                 </div>
-                <!--图标-->
-                <div class="iconBox" v-else>
-                    <!--添加文本-->
-                    <div class="addIconBox ">
-                        <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
-                    </div>
-                    <!--添加图片-->
-                    <div class="addIconBox ">
-                        <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
-                    </div>
-                    <!--添加视频-->
-                    <div class="addIconBox ">
-                        <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
-                    </div>
-                </div>
-            </div>
-        </cell>
-        <cell>
-            <!--绑定动画-->
-            <transition-group name="paraTransition" tag="div">
-            <div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">
-            <!--<div  v-for="(item,index) in paraList" >-->
-                <!--段落-->
-                <div class="paraBox paraBoxHeight">
-                    <!--左上角关闭按钮"x"-->
-                    <div class="paraClose" @click="showConfirm(index)">
-                        <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
-                    </div>
-                    <!--上箭头-->
-                    <div class="rightArrow upArrow" v-if="index != 0" @click="moveUp(index)">
-                        <text class="arrowSize" :style="{fontFamily:'iconfont'}" >&#xe608;</text>
-                    </div>
-                    <!--下箭头-->
-                    <div class="rightArrow downArrow" v-if="lastPara(index)" @click="moveBottom(index)">
-                        <text class="arrowSize" :style="{fontFamily:'iconfont'}" >&#xe601;</text>
-                    </div>
-                    <!--图片-->
-                    <div>
-                        <image class="paraImage" @click="editParaImage(item.paraImage,index)" :src="item.paraImage"></image>
-                    </div>
-                    <!--文章内容-->
-                    <div class="paraText">
-                        <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                        <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText}}</text>
-                        <text class="paraTextSize greyColor" v-else  >点击添加文字</text>
-                    </div>
-                </div>
+            </cell>
+            <cell >
                 <!--加号跟功能盒子-->
                 <div class="addBox" @click="clearIconBox()">
                     <!--加号-->
-                    <div v-if="item.show"  @click="showIconBox(index)" >
+                    <div  v-if="firstPlusShow" @click="firstShow()">
                         <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
                     </div>
                     <!--图标-->
-                    <div class="iconBox"  v-else >
+                    <div class="iconBox" v-else>
                         <!--添加文本-->
                         <div class="addIconBox ">
                             <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
@@ -86,19 +35,73 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            </transition-group>
-        </cell>
-        <cell>
+            </cell>
+            <cell>
+                <!--绑定动画-->
+                <transition-group name="paraTransition" tag="div">
+                    <div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">
+                        <!--<div  v-for="(item,index) in paraList" >-->
+                        <!--段落-->
+                        <div class="paraBox paraBoxHeight">
+                            <!--左上角关闭按钮"x"-->
+                            <div class="paraClose" @click="showConfirm(index)">
+                                <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
+                            </div>
+                            <!--上箭头-->
+                            <div class="rightArrow upArrow" v-if="index != 0" @click="moveUp(index)">
+                                <text class="arrowSize" :style="{fontFamily:'iconfont'}" >&#xe608;</text>
+                            </div>
+                            <!--下箭头-->
+                            <div class="rightArrow downArrow" v-if="lastPara(index)" @click="moveBottom(index)">
+                                <text class="arrowSize" :style="{fontFamily:'iconfont'}" >&#xe601;</text>
+                            </div>
+                            <!--图片-->
+                            <div>
+                                <image class="paraImage" @click="editParaImage(item.paraImage,index)" :src="item.paraImage"></image>
+                            </div>
+                            <!--文章内容-->
+                            <div class="paraText">
+                                <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
+                                <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText}}</text>
+                                <text class="paraTextSize greyColor" v-else  >点击添加文字</text>
+                            </div>
+                        </div>
+                        <!--加号跟功能盒子-->
+                        <div class="addBox" @click="clearIconBox()">
+                            <!--加号-->
+                            <div v-if="item.show"  @click="showIconBox(index)" >
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                            </div>
+                            <!--图标-->
+                            <div class="iconBox"  v-else >
+                                <!--添加文本-->
+                                <div class="addIconBox ">
+                                    <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
+                                </div>
+                                <!--添加图片-->
+                                <div class="addIconBox ">
+                                    <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
+                                </div>
+                                <!--添加视频-->
+                                <div class="addIconBox ">
+                                    <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </transition-group>
+            </cell>
+            <cell>
                 <!--添加投票-->
                 <div class="paraBox flexRow">
                     <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
                     <text class="addVote">添加投票</text>
                 </div>
-        </cell>
-        <!--用来撑起底部空白区域-->
-        <cell><div class="emptyBox"></div></cell>
-    </list>
+            </cell>
+            <!--用来撑起底部空白区域-->
+            <cell><div class="emptyBox"></div></cell>
+        </list>
+    </div>
 </template>
 <style>
 
@@ -281,6 +284,7 @@
 </style>
 
 <script>
+    import navbar from '../../../include/navbar.vue'
     const album = weex.requireModule('albumModule');
     var modal = weex.requireModule('modal');
     var lastIndex = -1;
@@ -293,22 +297,28 @@
                 setTitle:'点击设置标题',
                 addMusic:'添加音乐',
                 paraList:[{
-                        paraImage:'https://gd2.alicdn.com/bao/uploaded/i2/T14H1LFwBcXXXXXXXX_!!0-item_pic.jpg',
-                            paraText:'',
-                            show:true
-                    },{paraImage:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                    paraImage:'https://gd2.alicdn.com/bao/uploaded/i2/T14H1LFwBcXXXXXXXX_!!0-item_pic.jpg',
+                    paraText:'',
+                    show:true
+                },{paraImage:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     paraText:'2',
                     show:true}
                     ,]
             }
         },
 
+        components: {
+            navbar
+        },
+        props: {
+            title: { default: "编辑"},
+        },
 //       多选图片
         created:function(){
 //      调用安卓的相册
             var _this = this;
             album.openAlbumMuti(
-            //选完图片后触发回调函数
+                //选完图片后触发回调函数
                 function (data) {
 //                    data.data里存放的是用户选取的图片路径
                     for(let i = 0;i < data.data.length;i++){

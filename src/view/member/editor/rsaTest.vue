@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <text @click="getPublicKey()">click Me</text>
+    <div style="margin-left: 80px;margin-top: 80px">
+        <text @click="getPublicKey()" style="margin-top: 40px;margin-left: 40px;">click Me</text>
+        <text @click="getStorage()" style="margin-top: 140px;margin-left: 40px;">getStorage</text>
+        <text @click="removeStorage()" style="margin-top: 140px;margin-left: 40px;">removeStorage</text>
     </div>
 </template>
 
@@ -10,9 +12,11 @@
 
 <script>
 
+    const storage = weex.requireModule('storage')
+    const modal = weex.requireModule('modal')
     const stream = weex.requireModule('stream')
-    import JsEncrypt from 'jsencrypt/bin/jsencrypt'
-    Vue.prototype.$jsEncrypt = JsEncrypt
+//    import JsEncrypt from 'jsencrypt/bin/jsencrypt'
+//    Vue.prototype.$jsEncrypt = JsEncrypt
     export default {
         data:function () {
             return{
@@ -49,6 +53,35 @@
                     console.log(encrypted);
                 })
             },
+            getStorage(){
+                    storage.getItem('name',event=>{
+                        let a = JSON.parse(event.data);
+                        console.log(event);
+                        console.log(a[0]);
+                        if(event.result == 'success'){
+                            modal.toast({message:a[0].paraImage,duration:1});
+                        }else{
+                            modal.toast({message:'失败',duration:1});
+                        }
+
+                    });
+            },
+
+            removeStorage () {
+                storage.removeItem('name', event => {
+                    modal.toast({message:'删除成功',duration:1});
+                })
+            },
+            getAll () {
+                storage.getAllKeys(event => {
+                    // modal.toast({ message: event.result })
+                    if (event.result === 'success') {
+                        modal.toast({
+                            message: 'props: ' + event.data.join(', ')
+                        })
+                    }
+                })
+            }
         }
     }
 </script>
