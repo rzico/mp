@@ -106,9 +106,13 @@
     .paraTransition-enter-active, .paraTransition-leave-active {
         transition: all 0.2s;
     }
-    .paraTransition-leave-to,.paraTransition-enter{
+    .paraTransition-leave-to{
         transform: translateX(300px);
         opacity: 0;
+    }
+    .paraTransition-enter{
+        transform: translateX(0px);
+        opacity: 1;
     }
     .addVoteIcon{
         font-size: 39px;
@@ -302,20 +306,22 @@
 //       多选图片
         created:function(){
 //      调用安卓的相册
-//            var _this = this;
-//            album.openAlbumMuti(
-//            //选完图片后触发回调函数
-//                function (data) {
-//                    for(let i = 0;i < data.length;i++){
-//                        _this.paraList.push({
-//                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                            paraText:'',
-//                            show:true
-//                        }) ;
-//                        _this.paraList[i].paraImage = data[i].originalPath;
-//                    }
-//                }
-//            )
+            var _this = this;
+            album.openAlbumMuti(
+            //选完图片后触发回调函数
+                function (data) {
+//                    data.data里存放的是用户选取的图片路径
+                    for(let i = 0;i < data.data.length;i++){
+                        _this.paraList.push({
+                            paraImage:data.data[i].thumbnailSmallPath,
+                            paraText:'',
+                            show:true
+                        }) ;
+//                        获取小缩略图
+//                        _this.paraList[i].paraImage = data.data[i].thumbnailSmallPath;
+                    }
+                }
+            )
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
