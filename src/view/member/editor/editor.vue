@@ -1,15 +1,15 @@
 <template>
     <div>
-        <navbar :title="title" @goback="goback"> </navbar>
+        <navbar :title="title" > </navbar>
         <list class="wrapperBox" >
-            <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>
+            <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <cell>
                 <div>
                     <image class="coverImage" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
                     <text class="setTitle">{{setTitle}}</text>
-                    <text class="bottomBtn addMusic">{{addMusic}}</text>
-                    <text class="bottomBtn editCover" @click="addCover()">编辑封面</text>
+                    <text class="bottomBtn addMusic" @click="goMusic()">{{addMusic}}</text>
+                    <text class="bottomBtn editCover" @click="goCover()">编辑封面</text>
                 </div>
             </cell>
             <cell >
@@ -93,7 +93,7 @@
             </cell>
             <cell>
                 <!--添加投票-->
-                <div class="paraBox flexRow">
+                <div class="paraBox flexRow" @click="goVote()">
                     <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
                     <text class="addVote">添加投票</text>
                 </div>
@@ -284,7 +284,9 @@
 </style>
 
 <script>
+
     import navbar from '../../../include/navbar.vue'
+    const event = weex.requireModule('event');
     const album = weex.requireModule('albumModule');
     var modal = weex.requireModule('modal');
     var lastIndex = -1;
@@ -306,7 +308,6 @@
                     ,]
             }
         },
-
         components: {
             navbar
         },
@@ -320,16 +321,20 @@
             album.openAlbumMuti(
                 //选完图片后触发回调函数
                 function (data) {
+                        if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
-                    for(let i = 0;i < data.data.length;i++){
-                        _this.paraList.push({
-                            paraImage:data.data[i].thumbnailSmallPath,
-                            paraText:'',
-                            show:true
-                        }) ;
+                            for(let i = 0;i < data.data.length;i++){
+                                _this.paraList.push({
+                                    paraImage:'file:/' + data.data[i].originalPath,
+                                    paraText:'i:' + i,
+                                    show:true
+                                }) ;
 //                        获取小缩略图
-//                        _this.paraList[i].paraImage = data.data[i].thumbnailSmallPath;
-                    }
+//                                _this.paraList[i].paraImage ='file:/' + data.data[i].originalPath;
+                            }
+                        }else{
+                            modal.toast({message:data.content,duration:10});
+                        }
                 }
             )
         },
@@ -486,7 +491,7 @@
             editParaImage(imgSrc,index){
                 var _this = this;
                 album.openCrop(imgSrc,function (data) {
-                    _this.paraList[index].paraImage = data;
+                    _this.paraList[index].paraImage = data.data;
                 })
             },
 //            下拉刷新
@@ -500,6 +505,20 @@
 //            正在下拉
             onpullingdown (event) {
                 console.log('is onpulling down')
+            },
+//            跳转封面页面
+            goCover:function () {
+                event.openURL('file://assets/member/editor/cover.js');
+            },
+//            跳转音乐页面
+            goMusic:function () {
+                event.openURL('file://assets/member/editor/music.js');
+            },
+//            跳转投票页面
+            goVote:function () {
+                event.openURL('http://192.168.1.107:8081/vote.weex.js','goVote',function (data) {
+                    modal.toast({message: data,duration:1});
+                });
             }
         }
     }

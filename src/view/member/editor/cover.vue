@@ -1,5 +1,6 @@
 <template>
     <div class="wrapperBox">
+        <navbar :title="title" > </navbar>
         <div class="coverImageBox">
               <!-- 1张封面图 -->
             <div class="oneImage" v-if="imageNumber == 1">
@@ -293,12 +294,12 @@
     .coverImage{
         flex:1;
         border-style: solid;
-        border-width: 2px;
-
+        border-width: 1px;
     }
 </style>
 
 <script>
+    import navbar from '../../../include/navbar.vue'
     const album = weex.requireModule('albumModule');
     export default {
         data:function () {
@@ -313,6 +314,12 @@
                 allCoverImage:[{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{
                     imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''}]
             }
+        },
+        components: {
+            navbar
+        },
+        props: {
+            title: { default: "编辑封面"},
         },
         methods:{
             changeBorderColor:function (value) {

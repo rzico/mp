@@ -1,7 +1,7 @@
 <template>
     <scroller class="wrapper">
         <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
-        <navbar :title="title" @goback="goback"> </navbar>
+        <navbar :title="title" > </navbar>
             <div class="voteBigBox" v-for="voteBox in voteList">
                 <!--整个的上方箱子-->
                 <div class="voteBox mt20 border-radius">
@@ -66,6 +66,9 @@
                     <text class="addSize ml10">添加投票</text>
                 </div>
             </div>
+        <div @click="closeThis()" style="margin-top: 80px;margin-left: 40px;margin-bottom: 40px">
+            <text>关闭</text>
+        </div>
     </scroller>
 </template>
 
@@ -159,6 +162,7 @@
 <script>
 
     import navbar from '../../../include/navbar.vue'
+    const event = weex.requireModule('event')
     const modal = weex.requireModule('modal')
     const picker = weex.requireModule('picker')
     var isSign = -1;
@@ -345,6 +349,9 @@
 //            正在下拉
             onpullingdown (event) {
                 console.log('is onpulling down')
+            },
+            closeThis:function () {
+                event.closeURL('goVote',"回调ok");
             }
         }
     }

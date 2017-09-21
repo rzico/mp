@@ -1,25 +1,29 @@
 <template>
-    <list class="wrapperBox">
-            <cell>
-                <!--无背景音乐-->
-                <div class="musicTitleBox noMusic" @click="hiddenMusic()">
-                    <text class="musicName">无背景音乐</text>
-                </div>
-            </cell>
-            <cell  v-for="(music,index) in musicList"  >
-                <!--音乐选集-->
-                <div class="musicLine">
-                    <div class="musicTitleBox" @click="showMusic(index)" >
-                        <text class="musicGather">{{music.musicGather}}</text>
-                        <text class="musicTotal">{{music.musicTotal}}首</text>
+    <div>
+        <navbar :title="title" > </navbar>
+        <list class="wrapperBox">
+                <cell>
+                    <!--无背景音乐-->
+                    <div class="musicTitleBox noMusic" @click="hiddenMusic()">
+                        <text class="musicName">无背景音乐</text>
                     </div>
-                <!--音乐名称-->
-                    <div class="musicNameBox" v-if="music.show">
-                        <text class="musicName addBorder"  v-for="item in music.musicNameList">{{item.musicName}}</text>
+                </cell>
+                <cell  v-for="(music,index) in musicList"  >
+                    <!--音乐选集-->
+                    <div class="musicLine">
+                        <div class="musicTitleBox" @click="showMusic(index)" >
+                            <text class="musicGather">{{music.musicGather}}</text>
+                            <text class="musicTotal">{{music.musicTotal}}首</text>
+                        </div>
+                    <!--音乐名称-->
+                        <div class="musicNameBox" v-if="music.show">
+                            <text class="musicName addBorder"  v-for="item in music.musicNameList">{{item.musicName}}</text>
+                        </div>
                     </div>
-                </div>
-            </cell>
-    </list>
+                </cell>
+        </list>
+
+    </div>
 </template>
 
 <style>
@@ -73,6 +77,7 @@
 </style>
 
 <script>
+    import navbar from '../../../include/navbar.vue'
     var lastIndex = -1;
     export default {
         data:function () {
@@ -157,6 +162,13 @@
                     }]
                 }]
             }
+        },
+
+        components: {
+            navbar
+        },
+        props: {
+            title: { default: "音乐设置222"},
         },
         methods:{
 //            点击显示音乐文集列表
