@@ -5,6 +5,7 @@
         </div>
         <div class="nav">
             <text class="title">{{title}}</text>
+            <text class="title" @click="goComplete('/')">{{complete}}</text>
          </div>
     </div>
  </template>
@@ -25,8 +26,11 @@
         color: #fff;
     }
     .nav {
+        width:654px;
+        justify-content: space-between;
         flex-direction: row;
         align-items: center;
+        padding-right: 30px;
     }
     .title {
         font-family: Verdana, Geneva, sans-serif;
@@ -41,6 +45,7 @@
     export default {
         props: {
             title: { default: "navbar" },
+            complete:{default:''}
         },
         created(){
             var domModule=weex.requireModule("dom");
@@ -52,6 +57,9 @@
         methods: {
             goback: function (e) {
                 this.$emit('goback');
+            },
+            goComplete:function (e) {
+                this.$emit('goComplete');
             }
         }
      }

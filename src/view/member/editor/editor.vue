@@ -1,6 +1,6 @@
 <template>
     <div>
-        <navbar :title="title" > </navbar>
+        <navbar :title="title" :complete="complete"> </navbar>
         <list class="wrapperBox" >
             <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <cell>
@@ -8,7 +8,10 @@
                     <image class="coverImage" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
                     <text class="setTitle">{{setTitle}}</text>
-                    <text class="bottomBtn addMusic" @click="goMusic()">{{addMusic}}</text>
+                    <div class="bottomBtn addMusic">
+                        <text class="musicSize"  @click="goMusic()" v-if="this.musicName == ''">{{addMusic}}</text>
+                        <text class="musicSize"  @click="goMusic()" v-else :style="{fontFamily:'iconfont'}">&#xe65a; {{musicName}}</text>
+                    </div>
                     <text class="bottomBtn editCover" @click="goCover()">编辑封面</text>
                 </div>
             </cell>
@@ -93,9 +96,26 @@
             </cell>
             <cell>
                 <!--添加投票-->
-                <div class="paraBox flexRow" @click="goVote()">
+                <div class="paraBox flexRow" @click="goVote()" v-if="hadVote">
                     <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
                     <text class="addVote">添加投票</text>
+                </div>
+                <div v-else v-for="item in voteList"  class="paraTransitionDiv">
+                    <div class="paraBox paraBoxHeight">
+                        <!--左上角关闭按钮"x"-->
+                        <div class="paraClose">
+                            <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
+                        </div>
+                        <!--图片-->
+                        <div>
+                            <image class="paraImage" :src="item.paraImage"></image>
+                        </div>
+                        <!--文章内容-->
+                        <div class="paraText">
+                            <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
+                            <text class="paraTextSize">{{item.paraText}}</text>
+                        </div>
+                    </div>
                 </div>
             </cell>
             <!--用来撑起底部空白区域-->
@@ -250,16 +270,20 @@
         font-size: 40px;
         left: 25px;
     }
+    .musicSize{
+        color: #666;
+        font-size: 27px;
+    }
     .bottomBtn{
         position: absolute;
         bottom: 20px;
-        color: #666;
         border-radius: 10px;
+        color: #666;
         font-size: 27px;
-        padding-bottom: 5px;
-        padding-right: 10px;
-        padding-left: 10px;
-        padding-top: 5px;
+        padding-bottom: 8px;
+        padding-right: 12px;
+        padding-left: 12px;
+        padding-top: 8px;
         background-color: #fff;
     }
     .addMusic{
@@ -290,6 +314,7 @@
     const album = weex.requireModule('albumModule');
     var modal = weex.requireModule('modal');
     var lastIndex = -1;
+    var musicId = -1 ;
     export default {
         data:function(){
             return{
@@ -298,6 +323,7 @@
                 coverImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 setTitle:'点击设置标题',
                 addMusic:'添加音乐',
+                musicName:'',
                 paraList:[{
                     paraImage:'https://gd2.alicdn.com/bao/uploaded/i2/T14H1LFwBcXXXXXXXX_!!0-item_pic.jpg',
                     paraText:'',
@@ -305,7 +331,12 @@
                 },{paraImage:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     paraText:'2',
                     show:true}
-                    ,]
+                    ,],
+                voteList:[{
+                    paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    paraText:'',
+                }],
+                hadVote:true,
             }
         },
         components: {
@@ -313,6 +344,7 @@
         },
         props: {
             title: { default: "编辑"},
+            complete:{default:"完成"}
         },
 //       多选图片
         created:function(){
@@ -491,7 +523,11 @@
             editParaImage(imgSrc,index){
                 var _this = this;
                 album.openCrop(imgSrc,function (data) {
-                    _this.paraList[index].paraImage = data.data;
+                    if(data.type == 'success'){
+                        _this.paraList[index].paraImage ='file:/' + data.data;
+                    }else{
+                        modal.toast({message:data.content,duration:10});
+                    }
                 })
             },
 //            下拉刷新
@@ -512,12 +548,20 @@
             },
 //            跳转音乐页面
             goMusic:function () {
-                event.openURL('file://assets/member/editor/music.js');
+//                event.openURL('file://assets/member/editor/music.js');
+                let _this = this;
+                event.openURL('http://192.168.1.107:8081/music.weex.js?musicId=' + musicId,'goMusic',function (data) {
+                    modal.toast({message:data,duration:1});
+                    _this.musicName = JSON.parse(data).chooseMusicName;
+                    musicId = JSON.parse(data).chooseMusicId;
+                });
             },
 //            跳转投票页面
             goVote:function () {
+                let _this = this;
                 event.openURL('http://192.168.1.107:8081/vote.weex.js','goVote',function (data) {
-                    modal.toast({message: data,duration:1});
+                    _this.voteList[0].paraText = data;
+                    _this.hadVote = false;
                 });
             }
         }

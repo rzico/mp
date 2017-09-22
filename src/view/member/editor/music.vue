@@ -1,36 +1,39 @@
 <template>
-    <list class="wrapperBox">
-        <cell>
-            <!--无背景音乐-->
-            <div class="musicTitleBox noMusic" @click="hiddenMusic()">
-                <div class="noMusicBorder">
-                    <text class="musicName">无背景音乐</text>
-                    <!--"选中"字体图标-->
-                    <text class="musicName" v-if="noMusicShow" :style="{fontFamily:'iconfont'}">&#xe606;</text>
-                </div>
-            </div>
-        </cell>
-        <cell  v-for="(music,index) in musicList" ref="musicref" >
-            <!--音乐选集-->
-            <div class="musicLine">
-                <div class="musicTitleBox" @click="showMusic(index)" >
-                    <!--歌集-->
-                    <text class="musicGather">{{music.musicGather}}</text>
-                    <!--歌的数量-->
-                    <text class="musicTotal">{{music.musicTotal}}首</text>
-                </div>
-                <!--音乐名称-->
-                <div class="musicNameBox" v-if="music.show">
-                    <div class="addBorder" v-for="(item,tickIndex) in music.musicNameList" @click="ctrlTick(item,item.musicId)">
-                        <!--歌名-->
-                        <text class="musicName">{{item.musicName}}</text>
+    <div>
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
+        <list class="wrapperBox">
+            <cell>
+                <!--无背景音乐-->
+                <div class="musicTitleBox noMusic" @click="hiddenMusic()">
+                    <div class="noMusicBorder">
+                        <text class="musicName">无背景音乐</text>
                         <!--"选中"字体图标-->
-                        <text class="musicName":style="{fontFamily:'iconfont'}" v-if="item.tickShow">&#xe606;</text>
+                        <text class="musicName" v-if="noMusicShow" :style="{fontFamily:'iconfont'}">&#xe606;</text>
                     </div>
                 </div>
-            </div>
-        </cell>
-    </list>
+            </cell>
+            <cell  v-for="(music,index) in musicList" ref="musicref" >
+                <!--音乐选集-->
+                <div class="musicLine">
+                    <div class="musicTitleBox" @click="showMusic(index)" >
+                        <!--歌集-->
+                        <text class="musicGather">{{music.musicGather}}</text>
+                        <!--歌的数量-->
+                        <text class="musicTotal">{{music.musicTotal}}首</text>
+                    </div>
+                    <!--音乐名称-->
+                    <div class="musicNameBox" v-if="music.show">
+                        <div class="addBorder" v-for="(item,tickIndex) in music.musicNameList" @click="ctrlTick(item,item.musicId,item.musicName)">
+                            <!--歌名-->
+                            <text class="musicName">{{item.musicName}}</text>
+                            <!--"选中"字体图标-->
+                            <text class="musicName":style="{fontFamily:'iconfont'}" v-if="item.tickShow">&#xe606;</text>
+                        </div>
+                    </div>
+                </div>
+            </cell>
+        </list>
+    </div>
 </template>
 
 <style scoped>
@@ -92,9 +95,14 @@
 </style>
 
 <script>
+    import navbar from '../../../include/navbar.vue'
+    const event = weex.requireModule('event');
+    const dom = weex.requireModule('dom');
+    const modal = weex.requireModule('modal');
     var lastIndex = -1;
     var lastTickItem = -1;
-    const dom = weex.requireModule('dom');
+    var chooseMusicId = -1;
+    var chooseMusicName = '';
     export default {
         data:function () {
             return{
@@ -124,15 +132,15 @@
                     musicNameList:[{
                         musicName:'每当我走过老师窗前',
                         tickShow:false,
-                        musicId:1
+                        musicId:1222
                     },{
                         musicName:'长大后我就成了你',
                         tickShow:false,
-                        musicId:2
+                        musicId:2111
                     },{
                         musicName:'感恩的心',
                         tickShow:false,
-                        musicId:3
+                        musicId:3112
                     }]
                 },{
                     musicGather:'教师节音乐选集',
@@ -141,15 +149,15 @@
                     musicNameList:[{
                         musicName:'每当我走过老师窗前',
                         tickShow:false,
-                        musicId:3
+                        musicId:315
                     },{
                         musicName:'长大后我就成了你',
                         tickShow:false,
-                        musicId:3
+                        musicId:314
                     },{
                         musicName:'感恩的心',
                         tickShow:false,
-                        musicId:3
+                        musicId:313
                     }]
                 },{
                     musicGather:'教师节音乐选集',
@@ -158,15 +166,15 @@
                     musicNameList:[{
                         musicName:'每当我走过老师窗前',
                         tickShow:false,
-                        musicId:3
+                        musicId:312
                     },{
                         musicName:'长大后我就成了你',
                         tickShow:false,
-                        musicId:3
+                        musicId:311
                     },{
                         musicName:'感恩的心',
                         tickShow:false,
-                        musicId:3
+                        musicId:30
                     }]
                 },{
                     musicGather:'教师节音乐选集',
@@ -175,15 +183,15 @@
                     musicNameList:[{
                         musicName:'每当我走过老师窗前',
                         tickShow:false,
-                        musicId:3
+                        musicId:39
                     },{
                         musicName:'长大后我就成了你',
                         tickShow:false,
-                        musicId:3
+                        musicId:38
                     },{
                         musicName:'感恩的心',
                         tickShow:false,
-                        musicId:3
+                        musicId:37
                     }]
                 },{
                     musicGather:'教师节音乐选集',
@@ -192,15 +200,15 @@
                     musicNameList:[{
                         musicName:'每当我走过老师窗前',
                         tickShow:false,
-                        musicId:3
+                        musicId:36
                     },{
                         musicName:'长大后我就成了你',
                         tickShow:false,
-                        musicId:3
+                        musicId:35
                     },{
                         musicName:'感恩的心',
                         tickShow:false,
-                        musicId:3
+                        musicId:34
                     }]
                 },{
                     musicGather:'教师节音乐选集',
@@ -209,18 +217,25 @@
                     musicNameList:[{
                         musicName:'每当我走过老师窗前',
                         tickShow:false,
-                        musicId:3
+                        musicId:33
                     },{
                         musicName:'长大后我就成了你',
                         tickShow:false,
-                        musicId:3
+                        musicId:32
                     },{
                         musicName:'感恩的心',
                         tickShow:false,
-                        musicId:3
+                        musicId:31
                     }]
                 }]
             }
+        },
+        components: {
+            navbar
+        },
+        props: {
+            title: { default: "音乐设置"},
+            complete:{default: "完成"}
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -228,6 +243,31 @@
                 'fontFamily':'iconfont',
                 'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
             })
+        },
+        created:function () {
+            var _this = this;
+//            取当前页面rul，将musicId取出来
+            var bundleUrl = this.$getConfig().bundleUrl;
+//            bundleUrl = new String(bundleUrl);
+            modal.toast({message:bundleUrl,duration:1})
+            var getVal = bundleUrl.split('?')[1];
+            var op = getVal.split('=');
+            if(op[0] == 'musicId'){
+                chooseMusicId = op[1];
+//                如果已添加音乐 则遍历数组
+                if(chooseMusicId != -1){
+                    _this.musicList.forEach(function(item){
+                        item.musicNameList.forEach(function(itemChild){
+                            if( itemChild.musicId == chooseMusicId) {
+                                itemChild.tickShow = true;
+                                _this.noMusicShow = false;
+                                item.show = true;
+                                lastTickItem = itemChild;
+                            }
+                        })
+                    })
+                }
+            }
         },
         methods:{
 //            点击显示音乐文集列表
@@ -258,18 +298,21 @@
                 }
                 lastIndex = index;
             },
-//            点击隐藏音乐文集列表
+//            点击隐藏音乐文集列表(无背景音乐)
             hiddenMusic:function () {
                 if(lastIndex != -1){
                     this.musicList[lastIndex].show = false;
                 }
                 this.noMusicShow = !this.noMusicShow;
                 lastTickItem.tickShow = false;
+                chooseMusicId = -1;
+                chooseMusicName = '';
             },
 //            点击歌名添加 "选中" 的字体图标
-            ctrlTick:function (item,musicId) {
-                console.log("===");
+            ctrlTick:function (item,musicId,musicName) {
                 console.log(musicId);
+                chooseMusicId = musicId;
+                chooseMusicName = musicName;
                 if(lastTickItem == -1 || lastTickItem == item){
                     item.tickShow = true;
                 }else {
@@ -277,7 +320,20 @@
                     item.tickShow = !item.tickShow;
                 }
                 lastTickItem = item;
+                modal.toast({message:item,duration:1});
                 this.noMusicShow = false;
+            },
+//            返回
+            goback:function () {
+                event.closeURL();
+            },
+//            完成
+            goComplete:function () {
+                var musicData = {
+                    chooseMusicId:chooseMusicId,
+                    chooseMusicName:chooseMusicName
+                }
+                event.closeURL('goMusic',musicData);
             }
         }
     }

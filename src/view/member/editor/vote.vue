@@ -1,7 +1,7 @@
 <template>
     <scroller class="wrapper">
         <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
-        <navbar :title="title" > </navbar>
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
             <div class="voteBigBox" v-for="voteBox in voteList">
                 <!--整个的上方箱子-->
                 <div class="voteBox mt20 border-radius">
@@ -66,9 +66,6 @@
                     <text class="addSize ml10">添加投票</text>
                 </div>
             </div>
-        <div @click="closeThis()" style="margin-top: 80px;margin-left: 40px;margin-bottom: 40px">
-            <text>关闭</text>
-        </div>
     </scroller>
 </template>
 
@@ -198,6 +195,7 @@
         },
         props: {
             title: { default: "投票设置"},
+            complete:{ default:"完成"}
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -350,8 +348,13 @@
             onpullingdown (event) {
                 console.log('is onpulling down')
             },
-            closeThis:function () {
-                event.closeURL('goVote',"回调ok");
+//            返回
+            goback:function () {
+                event.closeURL();
+            },
+//            完成
+            goComplete:function () {
+                event.closeURL('goVote',this.textAreaTitle);
             }
         }
     }
