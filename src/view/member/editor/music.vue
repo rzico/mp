@@ -249,7 +249,7 @@
 //            取当前页面rul，将musicId取出来
             var bundleUrl = this.$getConfig().bundleUrl;
 //            bundleUrl = new String(bundleUrl);
-            modal.toast({message:bundleUrl,duration:1})
+//            modal.toast({message:bundleUrl,duration:1})
             var getVal = bundleUrl.split('?')[1];
             var op = getVal.split('=');
             if(op[0] == 'musicId'){

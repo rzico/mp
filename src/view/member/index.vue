@@ -313,9 +313,10 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    const native = weex.requireModule('wxNativeModule');
+    const native = weex.requireModule('nativeModule');
     const navigator = weex.requireModule('navigator');
     var stream = weex.requireModule('stream')
+
     export default {
         data:function() {
             return{
@@ -385,9 +386,43 @@
             }
         },
         created:function () {
+            var _this = this;
             if(JSON.stringify(this.articleList) == "[]"){//从对象解析出字符串
                 isNoArticle = true;
             };
+//            获取文章缓存。
+            native.findList(1,'articleListNew1','desc',function (data) {
+                let articleData = JSON.parse(data.data[0].value);
+//                modal.toast({message:articleData[0].title});
+                if(data.type == 'success'){
+//                    var newPara = {
+//                        articleSign: '草稿',
+//                        articleTitle:  articleData[0].title,
+//                        articleCoverUrl: articleData[0].thumbnial,
+//                        articleDate: '2017-09-23',
+//                        browse: 0,
+//                        praise: 0,
+//                        comments: 0,
+//                    }
+                    _this.articleList.splice(0,0,{
+                        articleSign: '草稿',
+                        articleTitle:  articleData[0].title,
+                        articleCoverUrl: articleData[0].thumbnial,
+                        articleDate: '2017-09-23',
+                        browse: 0,
+                        praise: 0,
+                        comments: 0,
+                    })
+//                    _this.articleList.push({
+//                        newPara
+//                    })
+                }else{
+                    modal.alert({
+                        message: data.content,
+                        duration: 0.3
+                    })
+                }
+            })
         },
         mounted:function(){
             var domModule=weex.requireModule("dom");

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <navbar :title="title" :complete="complete"> </navbar>
+        <navbar :title="title" :complete="complete" @goback="goBack" @goComplete="goComplete"> </navbar>
         <list class="wrapperBox" >
             <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <cell>
@@ -29,7 +29,7 @@
                             <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
                         </div>
                         <!--添加图片-->
-                        <div class="addIconBox ">
+                        <div class="addIconBox " @click="addImgPara(0)">
                             <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
                         </div>
                         <!--添加视频-->
@@ -82,7 +82,7 @@
                                     <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
                                 </div>
                                 <!--添加图片-->
-                                <div class="addIconBox ">
+                                <div class="addIconBox " @click="addImgPara(index + 1)">
                                     <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
                                 </div>
                                 <!--添加视频-->
@@ -100,10 +100,10 @@
                     <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
                     <text class="addVote">添加投票</text>
                 </div>
-                <div v-else v-for="item in voteList"  class="paraTransitionDiv">
+                <div v-else v-for="(item,index) in voteList"  class="paraTransitionDiv">
                     <div class="paraBox paraBoxHeight">
                         <!--左上角关闭按钮"x"-->
-                        <div class="paraClose">
+                        <div class="paraClose" @click="closeVote(index)">
                             <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
                         </div>
                         <!--图片-->
@@ -308,13 +308,14 @@
 </style>
 
 <script>
-
     import navbar from '../../../include/navbar.vue'
     const event = weex.requireModule('event');
     const album = weex.requireModule('albumModule');
+    const native = weex.requireModule('nativeModule')
     var modal = weex.requireModule('modal');
     var lastIndex = -1;
     var musicId = -1 ;
+    var articleId = 1;
     export default {
         data:function(){
             return{
@@ -324,16 +325,10 @@
                 setTitle:'点击设置标题',
                 addMusic:'添加音乐',
                 musicName:'',
-                paraList:[{
-                    paraImage:'https://gd2.alicdn.com/bao/uploaded/i2/T14H1LFwBcXXXXXXXX_!!0-item_pic.jpg',
-                    paraText:'',
-                    show:true
-                },{paraImage:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                    paraText:'2',
-                    show:true}
-                    ,],
+                paraList:[],
                 voteList:[{
                     paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    thumbnailImage:'',
                     paraText:'',
                 }],
                 hadVote:true,
@@ -346,8 +341,8 @@
             title: { default: "编辑"},
             complete:{default:"完成"}
         },
-//       多选图片
         created:function(){
+//       多选图片
 //      调用安卓的相册
             var _this = this;
             album.openAlbumMuti(
@@ -357,7 +352,10 @@
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
                                 _this.paraList.push({
+                                    //原图
                                     paraImage:'file:/' + data.data[i].originalPath,
+//                                    小缩略图
+                                    thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
                                     paraText:'i:' + i,
                                     show:true
                                 }) ;
@@ -378,6 +376,30 @@
             })
         },
         methods:{
+//            点击"+"号里的图片时
+            addImgPara:function (index) {
+                var _this = this;
+                album.openAlbumMuti(
+                    //选完图片后触发回调函数
+                    function (data) {
+                        if(data.type == 'success'){
+//                    data.data里存放的是用户选取的图片路径
+                            for(let i = 0;i < data.data.length;i++){
+                                let a = {
+                                    //原图
+                                    paraImage:'file:/' + data.data[i].originalPath,
+//                                    小缩略图
+                                    thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
+                                    paraText:'i:' + i + '我是后来插入的',
+                                    show:true
+                                }
+                                _this.paraList.splice(index,0,a)
+                                _this.clearIconBox();
+                            }
+                        }
+                    }
+                )
+            },
 //            点击第一个"+"号时触发
             firstShow:function(){
                 this.firstPlusShow = !this.firstPlusShow;
@@ -519,6 +541,22 @@
                     })
                 }
             },
+//            删除投票
+            closeVote:function (index) {
+                var _this = this;
+                    modal.confirm({
+                        message: '确定删除投票?',
+                        okTitle:'删除',
+                        cancelTitle:'取消',
+                        duration: 0.3
+                    }, function (value) {
+                        if(value == '删除'){
+                            //                将内容删掉
+                            _this.voteList.splice(index,1);
+                            _this.hadVote = true;
+                        }
+                    })
+            },
 //            编辑段落图片
             editParaImage(imgSrc,index){
                 var _this = this;
@@ -550,7 +588,7 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/music.weex.js?musicId=' + musicId,'goMusic',function (data) {
+                event.openURL('http://192.168.1.103:8081/music.weex.js?musicId=' + musicId,'goMusic',function (data) {
                     modal.toast({message:data,duration:1});
                     _this.musicName = JSON.parse(data).chooseMusicName;
                     musicId = JSON.parse(data).chooseMusicId;
@@ -559,10 +597,58 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/vote.weex.js','goVote',function (data) {
+                event.openURL('http://192.168.1.103:8081/vote.weex.js','goVote',function (data) {
                     _this.voteList[0].paraText = data;
                     _this.hadVote = false;
                 });
+            },
+//            返回
+            goBack:function () {
+                event.closeURL();
+            },
+//            完成
+            goComplete:function () {
+                var atticleTemplates = [];
+                this.paraList.forEach(function(item){
+                    atticleTemplates.push({
+                        thumbnial:item.thumbnailImage,
+                        original:item.paraImage,
+                        mediaType: "image",
+                        content:item.paraText
+                    })
+                })
+                let articleData = [{
+                    thumbnial:this.coverImage,
+                    music:musicId,
+                    templates:atticleTemplates,
+                    id:null,
+//                  null需要加引号
+                    articleTitleModel:{
+                        image5: "null",
+                        titleType: "null",
+                        image6: "null",
+                        image3: "null",
+                        image4: "null",
+                        image1: 'null',
+                        image2: "null"
+                    },
+                    title:this.setTitle,
+                }]
+//                articleData = JSON.stringify(articleData)
+                native.save(1,'article21',articleData,1,'articleListNew1',function (data) {
+                    if(data.type == 'success'){
+                        event.closeURL();
+                    }else{
+                        modal.alert({
+                            message: '系统繁忙,请稍后重试',
+                            duration: 0.3
+                        })
+                    }
+                })
+
+//                native.findList(1,'article','desc',function (data) {
+//                    modal.toast({message:data });
+//                })
             }
         }
     }

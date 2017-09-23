@@ -187,6 +187,11 @@
                     textHeight:48,
                     rowsNum:1,
                     editSign:-1,
+                },{
+                    textAreaMessage:'',
+                    textHeight:48,
+                    rowsNum:1,
+                    editSign:-1,
                 }]
             }
         },
@@ -332,7 +337,6 @@
 //            添加投票箱
             addVoteBox:function () {
                 this.voteList.push({
-
                 })
             },
 
