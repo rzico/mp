@@ -4,7 +4,7 @@
         <captcha :title="cptitle" @onclick="onclick"> </captcha>
     </div>
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 
 <style scoped>
 
@@ -12,15 +12,15 @@
 <script>
     const modal = weex.requireModule('modal')
     var navigator = weex.requireModule('navigator')
-    import navbar from '../../include/navbar.vue'
-    import captcha from '../../include/captcha.vue'
+    import navbar from '../../../include/navbar.vue'
+    import captcha from '../../../include/captcha.vue'
     var stream = weex.requireModule('stream')
     export default {
         components: {
             navbar,captcha
         },
         props: {
-            title: { default: "登录"},
+            title: { default: "设置密码"},
             cptitle: { default: "输入验证码" }
         }
     }

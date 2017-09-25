@@ -6,17 +6,19 @@
 
         <div class="mobile-row space-between">
             <text class="title">手机号归属地</text>
-            <text class="sub-title">(中国)</text>
+            <text class="sub_title">(中国)</text>
         </div>
 
         <div class="mobile-row">
             <text class="flex1 title">+86</text>
-            <input class="flex5 sub-title" type="text" placeholder="请输入手机号"/>
+            <input class="flex5" type="tel" style="height:45px;" v-model="vm" autofocus="true" placeholder="请输入手机号"/>
         </div>
 
         <div class="mobile-row clear">
-            <text class="button flex1" value="登录" type="primary" >登录</text>
+            <text class="button flex1" value="获取验证码" type="primary" v-on:click="onSend">{{caption}}</text>
         </div>
+
+        <child :value="value"></child>
     </div>
 </template>
 <style lang="less" src="../style/wx.less"/>
@@ -54,8 +56,28 @@
 </style>
 <script>
     export default {
+        data() {
+            return {
+                vm:this.value
+            }
+        },
         props: {
-            title: { default: "短信验证码" }
+            value: { default: "" },
+            title: { default: "短信验证码" },
+            caption: { default: " 获取验证码" }
+        },
+        watch: {
+            value(val) {
+                this.vm = val;
+            },
+            vm(val){
+                this.$emit("onChange",val);
+            }
+        },
+        methods: {
+            onSend: function (e) {
+                this.$emit('onSend');
+            }
         }
     }
 </script>

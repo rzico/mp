@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="space-between" style="margin-top: 40px;">
-                <text class="title gray" @click="account()">其他方式登录</text>
+                <text class="title gray" @click="login()">其他方式登录</text>
                 <text class="title gray" @click="goback()">关闭随便看看</text>
             </div>
         </div>
@@ -81,9 +81,9 @@
 
 </style>
 <script>
-    const navigator = weex.requireModule('navigator');
-    const native = weex.requireModule('nativeModule');
+    const event = weex.requireModule('event');
     const stream = weex.requireModule('stream');
+    const native = weex.requireModule('app');
     export default {
         data () {
             return {
@@ -99,30 +99,31 @@
             var domModule=weex.requireModule("dom");
             domModule.addRule('fontFace',{
                 'fontFamily':'iconfont',
-                'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
+                'src':"url('file://resources/fonts/iconfont.ttf')"
             });
 
-            native.changeWindowsBar();
+            native.changeWindowsBar(true);
         },
         methods: {
             weixin: function (e) {
+                native.showToast("努力加载中...");
                 native.wxAuth(
                     function (message) {
                         if (message.type=="success") {
                             return stream.fetch({
-                                method: 'GET',
+                                method: 'POST',
                                 type: 'json',
                                 url: '/weex/login/weixin.jhtml?code=' + message.data
                             }, function (weex) {
-                                native.showToast(weex);
-//                                 if (message.type == "success") {
-//                                    navigator.pop({
-//                                        url: 'http://cdn.rzico.com/weex/app/view/index.js',
-//                                        animated: "true"
-//                                    })
-//                                } else {
-//                                    native.showToast(message.content);
-//                                }
+                                if (weex.ok) {
+                                    if (weex.data.type == "success") {
+                                        native.closeUrl();
+                                    } else {
+                                        native.showToast(weex.data.content);
+                                    }
+                                } else {
+                                    native.showToast("网络不稳定请重试");
+                                }
                             })
                         } else {
                             native.showToast(message.content);
@@ -131,21 +132,15 @@
                     }
                 );
             },
-            account: function (e) {
-                navigator.push({
-                    url: 'http://cdn.rzico.com/weex/app/view/login.js',
+            login: function (e) {
+                event.openUrl({
+                    url: 'file://view/login/index.js',
                     animated: "true"
-                },function (msg) {
-                    msg = "pop ";
-                } )
+                })
             },
             goback: function (e) {
-                navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/view/index.js',
-                    animated: "true"
-                },function (msg) {
-                    msg = "pop ";
-                } )
+                native.showToast("gobakc");
+                event.closeUrl();
             }
         }
     }
