@@ -1,0 +1,35 @@
+PODS:
+  - ATSDK-Weex (0.0.1)
+  - SDWebImage (3.7.5):
+    - SDWebImage/Core (= 3.7.5)
+  - SDWebImage/Core (3.7.5)
+  - SocketRocket (0.4.2)
+  - TZImagePickerController (1.9.3)
+  - WeexSDK (0.15.0):
+    - SocketRocket
+  - WXDevtool (0.15.1):
+    - WeexSDK
+
+DEPENDENCIES:
+  - ATSDK-Weex (= 0.0.1)
+  - SDWebImage (= 3.7.5)
+  - SocketRocket (= 0.4.2)
+  - TZImagePickerController
+  - WeexSDK (from `./sdk/`)
+  - WXDevtool (= 0.15.1)
+
+EXTERNAL SOURCES:
+  WeexSDK:
+    :path: ./sdk/
+
+SPEC CHECKSUMS:
+  ATSDK-Weex: 1b27558f4336d77fb97704d34fc6ad1fd468592c
+  SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
+  SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
+  TZImagePickerController: 079ab986018c22793462e531045a75e366b18252
+  WeexSDK: d30bf863bf8eb14b604817a4061e51c4fe4caeed
+  WXDevtool: 5b26fd79451f215d7acdee89e5e2f3be491a1393
+
+PODFILE CHECKSUM: 05cecec6497b811e13740ae31d2f0c1ec0d73f49
+
+COCOAPODS: 1.1.1
