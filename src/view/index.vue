@@ -106,7 +106,6 @@
         },
         methods: {
             weixin: function (e) {
-                native.showToast("努力加载中...");
                 native.wxAuth(
                     function (message) {
                         if (message.type=="success") {
