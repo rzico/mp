@@ -123,7 +123,7 @@
         </list>
     </div>
 </template>
-<style>
+<style scoped>
 
 
     .paraTransition-enter-active, .paraTransition-leave-active {
@@ -310,8 +310,8 @@
 <script>
     import navbar from '../../../include/navbar.vue'
     const event = weex.requireModule('event');
-    const album = weex.requireModule('albumModule');
-    const native = weex.requireModule('nativeModule')
+    const album = weex.requireModule('album');
+    const native = weex.requireModule('app')
     var modal = weex.requireModule('modal');
     var lastIndex = -1;
     var musicId = -1 ;
@@ -342,19 +342,29 @@
             complete:{default:"完成"}
         },
         created:function(){
-//       多选图片
-//      调用安卓的相册
             var _this = this;
-            album.openAlbumMuti(
-                //选完图片后触发回调函数
-                function (data) {
+
+//            bundleUrl = new String(bundleUrl);
+//            modal.toast({message:bundleUrl,duration:1})
+
+//            取当前页面rul，将musicId取出来
+            var bundleUrl = this.$getConfig().bundleUrl;
+            var getVal = bundleUrl.split('?')[1];
+//          创建文章编辑（首次）
+            if(getVal == '' || getVal == null || getVal == 'undefined'){
+                //       多选图片
+                //      调用安卓的相册
+                var _this = this;
+                album.openAlbumMuti(
+                    //选完图片后触发回调函数
+                    function (data) {
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
                                 _this.paraList.push({
                                     //原图
                                     paraImage:'file:/' + data.data[i].originalPath,
-//                                    小缩略图
+                                    //小缩略图
                                     thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
                                     paraText:'i:' + i,
                                     show:true
@@ -365,8 +375,34 @@
                         }else{
                             modal.toast({message:data.content,duration:10});
                         }
+                    }
+                )
+            }else{//再次文章编辑
+                var op = getVal.split('=');
+                if(op[0] == 'articleId') {
+                    native.find(1,op[1],function (data) {
+//                         modal.toast({message:data.data})
+                        let articleData = JSON.parse(data.data.value);
+                        modal.toast({message:articleData[0].templates[0].original,duration:1});
+                        _this.setTitle = articleData[0].title;
+                        _this.coverImage = articleData[0].thumbnail;
+                        _this.musicName = articleData[0].music.name;
+                        musicId = articleData[0].music.id;
+                        let templatesData = articleData[0].templates;
+                        for(let i = 0;i < templatesData.length;i++){
+                            _this.paraList.push({
+                                //原图
+                                paraImage:templatesData[i].original,
+                                //小缩略图
+                                thumbnailImage:templatesData[i].thumbnail,
+                                paraText:templatesData[i].content,
+                                show:true
+                            })
+                        }
+                    })
                 }
-            )
+            }
+
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -376,6 +412,60 @@
             })
         },
         methods:{
+//            返回
+            goBack:function () {
+                event.closeURL();
+            },
+//            完成
+            goComplete:function () {
+                var _this = this;
+//            获取当前时间戳 作为唯一标识符key
+                var timestamp = Math.round(new Date().getTime()/1000);
+                var atticleTemplates = [];
+                this.paraList.forEach(function(item){
+                    atticleTemplates.push({
+                        thumbnail:item.thumbnailImage,
+                        original:item.paraImage,
+                        mediaType: "image",
+                        content:item.paraText
+                    })
+                })
+                let musicData = {
+                    name:_this.musicName,
+                    id:musicId
+                }
+                let articleData = [{
+                    thumbnail:this.coverImage,
+                    music:musicData,
+                    templates:atticleTemplates,
+                    id:timestamp,
+//                  null需要加引号
+                    articleTitleModel:{
+                        image5: "null",
+                        titleType: "null",
+                        image6: "null",
+                        image3: "null",
+                        image4: "null",
+                        image1: 'null',
+                        image2: "null"
+                    },
+                    title:this.setTitle,
+                }]
+//                articleData = JSON.stringify(articleData)
+                native.save(1,timestamp,articleData,1,'articleListTest',function (data) {
+                    if(data.type == 'success'){
+                        event.closeURL();
+                    }else{
+                        modal.alert({
+                            message: '系统繁忙,请稍后重试',
+                            duration: 0.3
+                        })
+                    }
+                })
+//                native.findList(1,'article','desc',function (data) {
+//                    modal.toast({message:data });
+//                })
+            },
 //            点击"+"号里的图片时
             addImgPara:function (index) {
                 var _this = this;
@@ -535,7 +625,7 @@
                         duration: 0.3
                     }, function (value) {
                         if(value == '确定'){
-                            //                将内容删掉
+                            //    将内容删掉
                             _this.paraList.splice(index,1);
                         }
                     })
@@ -588,68 +678,21 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.103:8081/music.weex.js?musicId=' + musicId,'goMusic',function (data) {
+                event.openURL('http://192.168.1.110:8081/music.weex.js?musicId=' + musicId,function (data) {
                     modal.toast({message:data,duration:1});
-                    _this.musicName = JSON.parse(data).chooseMusicName;
-                    musicId = JSON.parse(data).chooseMusicId;
+                    let jsonData = JSON.parse(data);
+                    _this.musicName = jsonData.chooseMusicName;
+                    musicId = jsonData.chooseMusicId;
                 });
             },
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.103:8081/vote.weex.js','goVote',function (data) {
+                event.openURL('http://192.168.1.110:8081/vote.weex.js',function (data) {
                     _this.voteList[0].paraText = data;
                     _this.hadVote = false;
                 });
             },
-//            返回
-            goBack:function () {
-                event.closeURL();
-            },
-//            完成
-            goComplete:function () {
-                var atticleTemplates = [];
-                this.paraList.forEach(function(item){
-                    atticleTemplates.push({
-                        thumbnial:item.thumbnailImage,
-                        original:item.paraImage,
-                        mediaType: "image",
-                        content:item.paraText
-                    })
-                })
-                let articleData = [{
-                    thumbnial:this.coverImage,
-                    music:musicId,
-                    templates:atticleTemplates,
-                    id:null,
-//                  null需要加引号
-                    articleTitleModel:{
-                        image5: "null",
-                        titleType: "null",
-                        image6: "null",
-                        image3: "null",
-                        image4: "null",
-                        image1: 'null',
-                        image2: "null"
-                    },
-                    title:this.setTitle,
-                }]
-//                articleData = JSON.stringify(articleData)
-                native.save(1,'article21',articleData,1,'articleListNew1',function (data) {
-                    if(data.type == 'success'){
-                        event.closeURL();
-                    }else{
-                        modal.alert({
-                            message: '系统繁忙,请稍后重试',
-                            duration: 0.3
-                        })
-                    }
-                })
-
-//                native.findList(1,'article','desc',function (data) {
-//                    modal.toast({message:data });
-//                })
-            }
         }
     }
 </script>

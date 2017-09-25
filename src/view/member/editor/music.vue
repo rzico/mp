@@ -245,11 +245,11 @@
             })
         },
         created:function () {
+//            bundleUrl = new String(bundleUrl);
+//            modal.toast({message:bundleUrl,duration:1})
             var _this = this;
 //            取当前页面rul，将musicId取出来
             var bundleUrl = this.$getConfig().bundleUrl;
-//            bundleUrl = new String(bundleUrl);
-//            modal.toast({message:bundleUrl,duration:1})
             var getVal = bundleUrl.split('?')[1];
             var op = getVal.split('=');
             if(op[0] == 'musicId'){
@@ -329,11 +329,11 @@
             },
 //            完成
             goComplete:function () {
-                var musicData = {
+                var E = {
                     chooseMusicId:chooseMusicId,
                     chooseMusicName:chooseMusicName
                 }
-                event.closeURL('goMusic',musicData);
+                event.closeURL(E);
             }
         }
     }

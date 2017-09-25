@@ -155,7 +155,6 @@
     }
 </style>
 
-
 <script>
 
     import navbar from '../../../include/navbar.vue'
@@ -358,7 +357,7 @@
             },
 //            完成
             goComplete:function () {
-                event.closeURL('goVote',this.textAreaTitle);
+                event.closeURL(this.textAreaTitle);
             }
         }
     }

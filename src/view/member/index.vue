@@ -43,7 +43,7 @@
                 </transition>
                 <!--文章模块-->
                 <div>
-                    <div class="articleBox" v-for="item in articleList" @click="jump()" @swipe="swipeHappen($event)">
+                    <div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)">
                         <div class="atricleHead">
                             <text class="articleSign">{{item.articleSign}}</text>
                             <text class="articleTitle">{{item.articleTitle}}</text>
@@ -57,7 +57,7 @@
                             <div>
                                 <text class="articleDate">{{item.articleDate}}</text>
                             </div>
-                            <div class="relevantInfo">
+                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                 <text class="relevantText">{{item.browse}}</text>
                                 <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
@@ -313,9 +313,10 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    const native = weex.requireModule('nativeModule');
+    const native = weex.requireModule('app');
     const navigator = weex.requireModule('navigator');
-    var stream = weex.requireModule('stream')
+    const stream = weex.requireModule('stream')
+    const event = weex.requireModule('event');
 
     export default {
         data:function() {
@@ -333,31 +334,27 @@
                 id:'334',
                 showLoading: 'hide',
                 imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                全部文章
                 articleList: [{
-                    articleSign: '公开',
-                    articleTitle: '金钻厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-8-31',
-                    browse: 55,
-                    praise: 48,
-                    comments: 32,
+                    articleSign: '样例',
+                    articleTitle: '我在微信有了自己的专栏!',
+                    articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate: '2017-04-28',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'',
                 }, {
-                    articleSign: '私密',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleSign: '样例',
+                    articleTitle: '魔篇使用帮助',
+                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate: '2017-09-01',
                     browse: 626,
                     praise: 47,
                     comments: 39,
-                }, {
-                    articleSign: '私密',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
+                    id:'',
                 }],
+//                回收站
                 articleListDelete: [{
                     articleSign: '已删除',
                     articleTitle: '金钻厦门',
@@ -366,6 +363,7 @@
                     browse: 55,
                     praise: 48,
                     comments: 32,
+                    id:'',
                 }, {
                     articleSign: '已删除',
                     articleTitle: '美丽厦门',
@@ -374,6 +372,7 @@
                     browse: 626,
                     praise: 47,
                     comments: 39,
+                    id:'',
                 }, {
                     articleSign: '已删除',
                     articleTitle: '美丽厦门',
@@ -382,6 +381,7 @@
                     browse: 626,
                     praise: 47,
                     comments: 39,
+                    id:'',
                 }]
             }
         },
@@ -390,39 +390,8 @@
             if(JSON.stringify(this.articleList) == "[]"){//从对象解析出字符串
                 isNoArticle = true;
             };
-//            获取文章缓存。
-            native.findList(1,'articleListNew1','desc',function (data) {
-                let articleData = JSON.parse(data.data[0].value);
-//                modal.toast({message:articleData[0].title});
-                if(data.type == 'success'){
-//                    var newPara = {
-//                        articleSign: '草稿',
-//                        articleTitle:  articleData[0].title,
-//                        articleCoverUrl: articleData[0].thumbnial,
-//                        articleDate: '2017-09-23',
-//                        browse: 0,
-//                        praise: 0,
-//                        comments: 0,
-//                    }
-                    _this.articleList.splice(0,0,{
-                        articleSign: '草稿',
-                        articleTitle:  articleData[0].title,
-                        articleCoverUrl: articleData[0].thumbnial,
-                        articleDate: '2017-09-23',
-                        browse: 0,
-                        praise: 0,
-                        comments: 0,
-                    })
-//                    _this.articleList.push({
-//                        newPara
-//                    })
-                }else{
-                    modal.alert({
-                        message: data.content,
-                        duration: 0.3
-                    })
-                }
-            })
+            _this.updateArticle();
+
         },
         mounted:function(){
             var domModule=weex.requireModule("dom");
@@ -432,6 +401,40 @@
             })
         },
         methods: {
+//            前往文章
+            goArticle(id){
+                var _this = this;
+                event.openURL('http://192.168.1.110:8081/editor.weex.js?articleId=' + id,function () {
+                    _this.updateArticle();
+                })
+            },
+            updateArticle(){
+                var _this = this;
+//            获取文章缓存。
+                native.findList(1,'articleListTest','desc',function (data) {
+                    let articleData = JSON.parse(data.data[0].value);
+                    modal.toast({message:articleData[0].id});
+                    if(data.type == 'success'){
+                        for(let i = 0;i < articleData.length;i++){
+                            _this.articleList.splice(0,0,{
+                                articleSign: '草稿',
+                                articleTitle:   articleData[0].title,
+                                articleCoverUrl:  articleData[0].thumbnail,
+                                articleDate: '2017-09-23',
+                                browse: 0,
+                                praise: 0,
+                                comments: 0,
+                                id:articleData[i].id,
+                            })
+                        }
+                    }else{
+                        modal.alert({
+                            message: data.content,
+                            duration: 0.3
+                        })
+                    }
+                })
+            },
             toPage: function(url){
 //                native.pageTo(url, false);
                 native.wxConfig(function (data) {
@@ -439,11 +442,12 @@
                 });
             },
             jump:function (vueName) {
-                console.log('will jump')
-                navigator.push({
-                    url: 'http://cdn.rzico.com/weex/app/view/member/manage.js',
-                    animated: "true"
-                })
+                console.log('will jump');
+//                navigator.push({
+//                    url: 'http://cdn.rzico.com/weex/app/view/member/manage.js',
+//                    animated: "true"
+//                })
+
 //                this.$router.push(vueName);
 
 //                    var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
