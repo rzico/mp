@@ -3,8 +3,13 @@
     <!--<text class="button" @click="jumpPage">{{text}}User {{ $route.params.id }}</text>-->
     <!--</div>-->
     <div>
+        <navbar :title="title":complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
+        <div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >
+            <text style="color: #fff;font-size: 35px">朋友</text>
+        </div>
         <list class="listBody">
             <cell v-for="item in topLineList" ref="linkref" >
+                 <!--顶部功能栏-->
                 <div class="addBorder">
                     <div class="topLine " @click="jump('/member')">
                         <image :src="item.lineImage" class="lineImage"></image>
@@ -13,10 +18,12 @@
                 </div>
             </cell>
             <cell v-for="friend in friendsList" ref="listref">
+                <!--姓氏首字母-->
                 <div class="letterBox">
                     <text class="nameLetter">{{friend.letter}}</text>
                 </div>
-                <div v-for="item in friend.name" >
+                <!--姓氏里每个人的名子-->
+                <div v-for="item in friend.name"  >
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump('/member')">
                             <image :src="item.friendImage" class="friendsImage"></image>
@@ -29,11 +36,13 @@
                 </div>
             </cell>
             <cell>
+                <!--总共多少个好友-->
                 <div class="friendTotalBox">
                     <text class="friendTotalText">{{friendTotal}}个朋友</text>
                 </div>
             </cell>
         </list>
+        <!--右侧字母列表-->
         <div class="letterNavBox" :class = "[isPress ? 'letterOnPress' : '']">
             <div class="letterNav" v-for="(item,index) in allLetter"   @longpress="onlongpress(index)" @touchstart="ontouchstart(index)" @touchend="ontouchend()"  @touchmove="ontouchmove(index,$event)">
                 <!--<text class="letterList" v-if="index == 0">up</text>-->
@@ -44,17 +53,6 @@
 </template>
 
 <style>
-    /*.wrapper{*/
-    /*flex-direction: column;*/
-    /*justify-content: center;*/
-    /*}*/
-    /*.button{*/
-    /*width:450px;*/
-    /*margin-top: 50px;*/
-    /*background-color: #f5f5f5;*/
-    /*border-style: solid ;*/
-    /*padding:200px;*/
-    /*}*/
     .letterList{
         color: #494949;
         font-size: 29px;
@@ -76,15 +74,17 @@
     .letterNavBox{
         position: absolute;
         right: 0px;
-        width:50px;
-        top:0px;
+        width:60px;
+        top:110px;
         bottom: 0px;
         padding-bottom: 15px;
-        padding-top: 30px;
+        padding-top: 20px;
         align-items: center;
     }
     .letterNav{
         flex:1;
+        width:60px;
+        align-items: center;
     }
     .friendsName{
         height:90px;
@@ -99,7 +99,6 @@
         background-color: #e8e8e8;
     }
     .addBorder{
-
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.5);
@@ -114,7 +113,7 @@
         margin-left: 20px;
     }
     .friendsImage{
-        margin-top: 20px !important;
+        margin-top: 20px ;
         height: 80px;
         width:80px;
     }
@@ -126,7 +125,7 @@
     .friendsLine{
         padding-left: 30px;
         height:120px;
-        width:680px;
+        width:660px;
         background-color: #fff;
         flex-direction: row;
     }
@@ -135,7 +134,7 @@
     }
     .topLine{
         flex-direction: row;
-        width:680px;
+        width:660px;
         padding-top: 20px;
         padding-bottom: 20px;
         padding-left: 30px;
@@ -155,6 +154,7 @@
 <script>
     const modal = weex.requireModule('modal');
     const navigator = weex.requireModule('navigator');
+    import navbar from '../../include/navbar.vue'
     const dom = weex.requireModule('dom');
     var pressPoint = -1;//手指按压
     var movePoint;//手机按压后移动
@@ -537,9 +537,19 @@
                 allLetter:['||','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#']
             }
         },
+        props: {
+            title: { default: "朋友"},
+            complete:{ default:"完成"}
+        },
         methods: {
+            goComplete:function () {
+            },
+            goback:function () {
+              event.closeURL();
+            },
             jump:function (vueName) {
 //                this.$router.push(vueName);
+                modal.toast({message:'点击了信息栏'});
             },
             jumpPage:function(event){
 //                var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
@@ -560,14 +570,14 @@
                 if(count == 0){//判断是否点击回到顶部
                     const el = this.$refs.linkref[count]//跳转到相应的cell
                     dom.scrollToElement(el, {
-                        animated:false
+//                        animated:false
                     })
                 }else{
                     for(var i = 0;i<this.friendsList.length ;i++){//循环判断是否有相应首字母的朋友
                         if(this.friendsList[i].letter == this.allLetter[count]){
                             const el = this.$refs.listref[i]//跳转到相应的cell
                             dom.scrollToElement(el, {
-                                animated:false
+//                                animated:false
                             })
                         }
                     }
@@ -598,13 +608,13 @@
                                 if(this.friendsList[i].letter == this.allLetter[moveLetter]){
                                     const el = this.$refs.listref[i]//跳转到相应的cell
                                     dom.scrollToElement(el, {
-                                        animated:false
+//                                        animated:false
 
                                     })
                                 }else if(moveLetter == 0){//判断是否滑到 顶部按钮
                                     const el = this.$refs.linkref[moveLetter]//跳转到相应的cell
                                     dom.scrollToElement(el, {
-                                        animated:false
+//                                        animated:false
                                     })
                                 }
                             }

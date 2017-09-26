@@ -20,8 +20,7 @@
                 </div>
                 <div class="topBtnSmallBox topBtnTwo" @click="jump()">
                     <text class="topBtn topBtnBigFont">¥ {{moneyNum}}</text>
-                    <text class="topBtn  " >钱包</text>
-                </div>
+                    <text class="topBtn  " >钱包</text>                </div>
                 <div class="topBtnSmallBox">
                     <text class="topBtn topBtnBigFont">{{focusNum}}</text>
                     <text class="topBtn">关注</text>
@@ -36,11 +35,9 @@
                 <text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>
             </div>
             <div v-if="isAllArticle" v-cloak   transition="slide-edit-box">
-                <transition name="fade">
-                    <div>
-                        <text v-if="isNoArticle" class="tipsText">您还没有文章</text>
-                    </div>
-                </transition>
+                    <!--<div>-->
+                        <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
+                    <!--</div>-->
                 <!--文章模块-->
                 <div>
                     <div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)">
@@ -67,6 +64,24 @@
                             </div>
                         </div>
                     </div>
+                    <!--帮助使用文章-->
+                    <div class="articleBox" v-for="item in helpList"  @swipe="swipeHappen($event)">
+                        <div class="atricleHead">
+                            <text class="articleSign">{{item.articleSign}}</text>
+                            <text class="articleTitle">{{item.articleTitle}}</text>
+                        </div>
+                        <!--文章封面-->
+                        <div>
+                            <image :src="item.articleCoverUrl" class="articleCover"></image>
+                        </div>
+                        <!--文章底部-->
+                        <div class="articleFoot">
+                            <div>
+                                <text class="articleDate">{{item.articleDate}}</text>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <!--回收站栏目-->
@@ -334,26 +349,22 @@
                 id:'334',
                 showLoading: 'hide',
                 imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                全部文章
-                articleList: [{
+//                帮助文章
+                helpList:[{
                     articleSign: '样例',
                     articleTitle: '我在微信有了自己的专栏!',
                     articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate: '2017-04-28',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
                     id:'',
-                }, {
+                },{
                     articleSign: '样例',
                     articleTitle: '魔篇使用帮助',
                     articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
                     id:'',
                 }],
+//                全部文章
+                articleList: [],
 //                回收站
                 articleListDelete: [{
                     articleSign: '已删除',
@@ -387,8 +398,8 @@
         },
         created:function () {
             var _this = this;
-            if(JSON.stringify(this.articleList) == "[]"){//从对象解析出字符串
-                isNoArticle = true;
+            if(JSON.stringify(this.articleListDelete) == "[]"){//从对象解析出字符串
+                _this.isNoArticle = true;
             };
             _this.updateArticle();
 
@@ -405,13 +416,14 @@
             goArticle(id){
                 var _this = this;
                 event.openURL('http://192.168.1.108:8081/editor.weex.js?articleId=' + id,function () {
-                    _this.updateArticle();
+//                    _this.updateArticle();
+                    modal.toast({message:1,duration})
                 })
             },
             updateArticle(){
                 var _this = this;
 //            获取文章缓存。
-                native.findList(1,'articleListTest','desc',function (data) {
+                native.findList(1,'articleListTest1','desc',function (data) {
                     modal.toast({message:data.data});
                     if(data.type == 'success'){
                         for(let i = 0;i < data.data.length;i++){
