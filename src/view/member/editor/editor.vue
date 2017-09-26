@@ -60,7 +60,7 @@
                             </div>
                             <!--图片-->
                             <div>
-                                <image class="paraImage" @click="editParaImage(item.paraImage,index)" :src="item.paraImage"></image>
+                                <image class="paraImage" @click="editParaImage(item.paraImage,index)" :src="item.thumbnailImage"></image>
                             </div>
                             <!--文章内容-->
                             <div class="paraText">
@@ -343,10 +343,7 @@
         },
         created:function(){
             var _this = this;
-
 //            bundleUrl = new String(bundleUrl);
-//            modal.toast({message:bundleUrl,duration:1})
-
 //            取当前页面rul，将musicId取出来
             var bundleUrl = this.$getConfig().bundleUrl;
             var getVal = bundleUrl.split('?')[1];
@@ -369,8 +366,6 @@
                                     paraText:'i:' + i,
                                     show:true
                                 }) ;
-//                        获取小缩略图
-//                                _this.paraList[i].paraImage ='file:/' + data.data[i].originalPath;
                             }
                         }else{
                             modal.toast({message:data.content,duration:10});
@@ -462,9 +457,6 @@
                         })
                     }
                 })
-//                native.findList(1,'article','desc',function (data) {
-//                    modal.toast({message:data });
-//                })
             },
 //            点击"+"号里的图片时
             addImgPara:function (index) {
@@ -523,11 +515,6 @@
                 setTimeout(()=>{
                     lastIndex = index;
                 },60)
-//                this.paraList.forEach(function(item){
-//                    if(item.show == false){
-//                        item.show = !item.show;
-//                    }
-//                });
 
             },
 //            点击空白区域时，将功能盒子隐藏，显示出"+"号
@@ -557,12 +544,6 @@
                     this.paraList[lastIndex].show = true;
                     lastIndex = -1;
                 }
-//         方法1       定义一个中转值保存当前元素内容
-//                let transit = this.paraList[index];
-//                Vue.set(this.paraList,index,this.paraList[index - 1]);
-//                Vue.set(this.paraList,index - 1,transit);
-
-
 //         方法2
                 let a = this.paraList[index].paraImage;
                 let b = this.paraList[index].paraText;
@@ -570,16 +551,6 @@
                 this.paraList[index].paraText = this.paraList[index - 1].paraText;
                 this.paraList[index - 1].paraImage = a;
                 this.paraList[index - 1].paraText = b;
-//         方法3
-////                将内容保存
-//                let upContent = this.paraList[index];
-////                将内容删掉
-//                this.paraList.splice(index,1);
-////                再将删掉的内容插入
-////                setTimeout(()=>{
-//                    this.paraList.splice(index - 1,0,upContent);
-////                },300)
-
             },
 //            下箭头
             moveBottom:function (index) {
@@ -588,12 +559,6 @@
                     this.paraList[lastIndex].show = true;
                     lastIndex = -1;
                 }
-
-//             方法1  定义一个中转值保存当前元素内容
-//                let transit = this.paraList[index];
-//                Vue.set(this.paraList,index,this.paraList[index + 1]);
-//                Vue.set(this.paraList,index + 1,transit);
-
 //         方法2
                 let a = this.paraList[index].paraImage;
                 let b = this.paraList[index].paraText;
@@ -601,16 +566,6 @@
                 this.paraList[index].paraText = this.paraList[index + 1].paraText;
                 this.paraList[index + 1].paraImage = a;
                 this.paraList[index + 1].paraText = b;
-
-
-////           方法3     将内容保存
-//                let upContent = this.paraList[index];
-////                将内容删掉
-//                this.paraList.splice(index,1);
-////                再将删掉的内容插入
-////                setTimeout(()=>{
-//                    this.paraList.splice(index + 1,0,upContent);
-////                },300)
             },
 //            用户执行删除时触发询问。
             showConfirm :function(index) {
@@ -652,7 +607,8 @@
                 var _this = this;
                 album.openCrop(imgSrc,function (data) {
                     if(data.type == 'success'){
-                        _this.paraList[index].paraImage ='file:/' + data.data;
+                        _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
+                        _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
                     }else{
                         modal.toast({message:data.content,duration:10});
                     }

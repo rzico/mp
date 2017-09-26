@@ -3,7 +3,7 @@
         <navbar :title="title" > </navbar>
         <div class="coverImageBox">
               <!-- 1张封面图 -->
-            <div class="oneImage" v-if="imageNumber == 1">
+            <div class="oneImage" v-if="imageNumber == 1" >
                 <image :src="allCoverImage[0].imgUrl" @click="clickImage(0)" class="coverImage"  :style="{borderColor:coverBorder}"></image>
             </div>
              <!-- 2张封面图 -->
@@ -55,31 +55,31 @@
                     <image :src="allCoverImage[20].imgUrl" @click="clickImage(20)" class="coverImage leftBorderSub topBorderSub" :style="{borderColor:coverBorder}"></image>
                 </div>
             </div>
-            <!--选择图片布局-->
-            <div class="chooseNumber">
-                <text class="imgNumber" @click="changeImageNumber(1)">1</text>
-                <text class="imgNumber" @click="changeImageNumber(2)">2</text>
-                <text class="imgNumber" @click="changeImageNumber(3)">3</text>
-                <text class="imgNumber" @click="changeImageNumber(4)">4</text>
-                <text class="imgNumber" @click="changeImageNumber(5)">5</text>
-                <text class="imgNumber" @click="changeImageNumber(6)">6</text>
-            </div>
-            <div class="colorChoose">
-                <div class="colorTextBox">
-                    <text class="borderColorSize">边框颜色:</text>
-                </div>
-                <div class="colorTextBox colorCoral" @click="changeBorderColor('coral')">
-                    <text class="colorText">褐色</text>
-                </div>
-                <div class="colorTextBox colorBlue" @click="changeBorderColor('white')">
-                    <text class="colorText colorBlack">白色</text>
-                </div>
-                <div class="colorTextBox colorPink" @click="changeBorderColor('pink')">
-                    <text class="colorText">粉色</text>
-                </div>
-            </div>
-
         </div>
+        <!--选择图片布局-->
+        <div class="chooseNumber">
+            <text class="imgNumber" :style="{fontFamily:'iconfont'}"  @click="changeImageNumber(3)" :class = "[imageNumber == 3 ? 'active' : '']">&#xe60e;</text>
+            <text class="imgNumber" :style="{fontFamily:'iconfont'}"  @click="changeImageNumber(4)" :class = "[imageNumber == 4 ? 'active' : '']">&#xe602;</text>
+            <text class="imgNumber" :style="{fontFamily:'iconfont'}"  @click="changeImageNumber(2)" :class = "[imageNumber == 2 ? 'active' : '']">&#xe60b;</text>
+            <text class="imgNumber" :style="{fontFamily:'iconfont'}"  @click="changeImageNumber(1)" :class = "[imageNumber == 1 ? 'active' : '']">&#xe60d;</text>
+            <text class="imgNumber" :style="{fontFamily:'iconfont'}"  @click="changeImageNumber(5)" :class = "[imageNumber == 5 ? 'active' : '']">&#xe60f;</text>
+            <text class="imgNumber" :style="{fontFamily:'iconfont'}"  @click="changeImageNumber(6)" :class = "[imageNumber == 6 ? 'active' : '']">&#xe610;</text>
+        </div>
+        <div class="colorChoose">
+            <div class="colorTextBox">
+                <text class="borderColorSize">边框颜色:</text>
+            </div>
+            <div class="colorTextBox colorCoral" @click="changeBorderColor('coral')">
+                <text class="colorText">褐色</text>
+            </div>
+            <div class="colorTextBox colorBlue" @click="changeBorderColor('white')">
+                <text class="colorText colorBlack">白色</text>
+            </div>
+            <div class="colorTextBox colorPink" @click="changeBorderColor('pink')">
+                <text class="colorText">粉色</text>
+            </div>
+        </div>
+
         <list>
             <cell>
                 <!--分享到社交平台效果-->
@@ -258,19 +258,25 @@
         align-items: center;
         margin-top: 20px;
     }
+    .active{
+        background-color: #88bde6;
+        color: #fff;
+    }
     .imgNumber{
         border-width: 1px;
         border-style: solid;
-        background-color: gainsboro;
+        border-color: gainsboro;
+        /*background-color:  #F0AD3C;*/
+        color: #F0AD3C;
         padding-top: 20px;
         padding-bottom: 20px;
+        font-size: 38px;
         flex:1;
         text-align: center;
     }
     .coverImageBox{
-
         width:750px;
-        height:450px;
+        height:310px;
     }
     .fiveImage{
         flex:1;
@@ -300,8 +306,11 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
-    const album = weex.requireModule('albumModule');
+    import {jsMixins} from '../../../include/wx'
+    const modal = weex.requireModule('modal');
+    const album = weex.requireModule('album');
     export default {
+        mixins:[jsMixins],
         data:function () {
             return{
                 coverBorder:'white',
@@ -311,7 +320,7 @@
                 coverImageThree:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                 shareText:'   《惊喜魔篇》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里',
                 shareTitle:'  《惊喜魔篇》',
-                allCoverImage:[{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{
+                allCoverImage:[{imgUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg'},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{
                     imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''},{imgUrl:''}]
             }
         },
@@ -320,6 +329,16 @@
         },
         props: {
             title: { default: "编辑封面"},
+        },
+        mounted:function(){
+            var domModule = weex.requireModule("dom");
+            domModule.addRule('fontFace',{
+                'fontFamily':'iconfont',
+                'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
+            })
+        },
+        created(){
+            modal.toast({message:this.testURL})
         },
         methods:{
             changeBorderColor:function (value) {
@@ -350,15 +369,22 @@
             },
 //            点击图片时
             clickImage:function (num) {
+                var _this = this;
 //                如果没有图片就调用单选接口
-                if(this.allCoverImage[num].imgUrl == ''){
-                    album.openAlbumSingle(function (imageUrl) {
-                        this.allCoverImage[num].imgUrl ==  imageUrl;
+                if(_this.allCoverImage[num].imgUrl == ''){
+                    album.openAlbumSingle(false,function (data) {
+                        if(data.type == 'success'){
+                            modal.toast({message:data});
+//                        _this.allCoverImage[num].imgUrl =  data.data;
+                        }else{
+                            modal.toast({message:data.content , duration:3});
+                        }
                     })
                 }else{
+                    var _this = this;
 //                    如果已经有图片了就调用裁剪图片
-                    album.openCrop(this.allCoverImage[num].imgUrl,function (imageUrl) {
-                        this.allCoverImage[num].imgUrl ==  imageUrl;
+                    album.openCrop(_this.allCoverImage[num].imgUrl,function (data) {
+                        _this.allCoverImage[num].imgUrl =  data.data;
                     })
                 }
 
