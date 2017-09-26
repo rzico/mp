@@ -13,16 +13,16 @@
 
 <style scoped>
     .back {
-        position: relative;
+        flex-direction: row;
         width: 96px;
         height: 96px;
         align-items: center;
+        justify-content: center;
     }
     .image {
-        font-size: 44px;
-        width: 44px;
-        height: 44px;
-        top:25px;
+        font-size: 38px;
+        width: 38px;
+        height: 38px;
         color: #fff;
     }
     .nav {

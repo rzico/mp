@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
-        <mobile :title="mbtitle" :mobile="mobile" :value="value" @onSend="onSend" @onChange="onChange"> </mobile>
+        <mobile :title="mbtitle" :value="value" @onSend="onSend" @onChange="onChange"> </mobile>
         <div class="memo">
-            <text class="title">自动注册,点击即同意</text>
-            <text class="title">《用户注册协议》</text>
+            <text class="title">登录即注册,表示同意</text>
+            <text class="title" style="color:#0088fb">《用户注册协议》</text>
         </div>
     </div>
 </template>
@@ -22,14 +22,15 @@
 <script>
     const modal = weex.requireModule('modal');
     const storage = weex.requireModule('storage');
-    var stream = weex.requireModule('stream');
-    var event = weex.requireModule('event');
-    var app = weex.requireModule('app');
+    const stream = weex.requireModule('stream');
+    const event = weex.requireModule('event');
 
+    import {jsMixins} from '../../mixins/wx.js'
     import navbar from '../../include/navbar.vue';
     import mobile from '../../include/mobile.vue';
 
     export default {
+        mixins:[jsMixins],
         components: {
             navbar,mobile
         },
@@ -47,32 +48,33 @@
         },
         methods: {
             onSend: function (e) {
+                var _this = this;
                 return stream.fetch({
                     method: 'POST',
                     type: 'json',
-                    url: '/weex/login/send_mobile.jhtml?mobile=' + this.value
+                    url: '/weex/login/send_mobile.jhtml?mobile=' + _this.value
                 }, function (weex) {
                     if (weex.ok) {
                         if (weex.data.type == "success") {
-                           event.openUrl({
-                               url:"file://login/captcha.js?mobile=" + this.value,
+                           event.openURL({
+                               url:_this.locateURL+"/view/login/captcha.js?mobile=" + _this.value,
                                function (e) {
-                                   event.closeUrl();
+                                   event.closeURL();
                                }
                            });
                         } else {
-                            native.showToast(weex.data.content);
+                            modal.toast({message:weex.data.content});
                         }
                     } else {
                         modal.toast({message:"网络不稳定请重试"});
                     }
                 })
             },
-            goBack:function(e) {
-                event.closeUrl();
+            goback:function(e) {
+                event.closeURL();
             },
             onChange: function (e) {
-                modal.toast({message:this.value});
+                this.value = e;
             }
         }
     }

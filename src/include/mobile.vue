@@ -11,14 +11,12 @@
 
         <div class="mobile-row">
             <text class="flex1 title">+86</text>
-            <input class="flex5" type="tel" style="height:45px;" v-model="vm" autofocus="true" placeholder="请输入手机号"/>
+            <input class="flex5" type="tel" style="height:45px;" v-model="vm" @input="onInput" autofocus="true" placeholder="请输入手机号"/>
         </div>
 
         <div class="mobile-row clear">
             <text class="button flex1" value="获取验证码" type="primary" v-on:click="onSend">{{caption}}</text>
         </div>
-
-        <child :value="value"></child>
     </div>
 </template>
 <style lang="less" src="../style/wx.less"/>
@@ -66,17 +64,12 @@
             title: { default: "短信验证码" },
             caption: { default: " 获取验证码" }
         },
-        watch: {
-            value(val) {
-                this.vm = val;
-            },
-            vm(val){
-                this.$emit("onChange",val);
-            }
-        },
         methods: {
             onSend: function (e) {
                 this.$emit('onSend');
+            },
+            onInput: function (e)  {
+                this.$emit("onChange",e.value);
             }
         }
     }

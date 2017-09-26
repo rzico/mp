@@ -306,7 +306,7 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
-    import {jsMixins} from '../../../include/wx'
+    import {jsMixins} from '../../../mixins/wx'
     const modal = weex.requireModule('modal');
     const album = weex.requireModule('album');
     export default {

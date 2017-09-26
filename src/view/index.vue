@@ -81,10 +81,12 @@
 
 </style>
 <script>
+    import {jsMixins} from '../mixins/wx.js'
     const event = weex.requireModule('event');
     const stream = weex.requireModule('stream');
     const native = weex.requireModule('app');
     export default {
+        mixins:[jsMixins],
         data () {
             return {
                 imageList: [
@@ -99,7 +101,7 @@
             var domModule=weex.requireModule("dom");
             domModule.addRule('fontFace',{
                 'fontFamily':'iconfont',
-                'src':"url('file://resources/fonts/iconfont.ttf')"
+                'src':"url('"+this.locateURL+"/resources/fonts/iconfont.ttf')"
             });
 
             native.changeWindowsBar(true);
@@ -116,7 +118,7 @@
                             }, function (weex) {
                                 if (weex.ok) {
                                     if (weex.data.type == "success") {
-                                        native.closeUrl();
+                                        event.closeURL();
                                     } else {
                                         native.showToast(weex.data.content);
                                     }
@@ -132,14 +134,13 @@
                 );
             },
             login: function (e) {
-                event.openUrl({
-                    url: 'file://view/login/index.js',
+                event.openURL({
+                    url: this.locateURL+'/view/login/index.js',
                     animated: "true"
                 })
             },
             goback: function (e) {
-                native.showToast("gobakc");
-                event.closeUrl();
+                event.closeURL();
             }
         }
     }

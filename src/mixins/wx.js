@@ -1,6 +1,7 @@
 export const jsMixins = {
     data:{
-      testURL:'http://10.168.0.157:8081/editor.weex.js'
+        remoteURL:'http://cdn.rzico.com/weex/app',
+        locateURL:'http://cdn.rzico.com/weex/app'
     },
     methods:{
         showURL(){

@@ -12,12 +12,14 @@
 </style>
 <script>
     const modal = weex.requireModule('modal')
-    var event = weex.requireModule('event');
-    var app = weex.requireModule('app');``
+    const event = weex.requireModule('event');
+    const native = weex.requireModule('app');
+    import {jsMixins} from '../../mixins/wx.js'
     import navbar from '../../include/navbar.vue'
     import captcha from '../../include/captcha.vue'
     var stream = weex.requireModule('stream')
     export default {
+        mixins:[jsMixins],
         components: {
             navbar,captcha
         },
@@ -25,10 +27,11 @@
             title: { default: "登录"},
             caption: { default: "输入验证码" },
             captcha: { default: "输入验证码"},
-            mobile:{default: ""}
+            mobile:{default: ""},
+            status:{default:"点击重新发送"}
         },
         created() {
-            var bundleUrl = this.$getConfig().bundleUrl();
+            var bundleUrl = this.$getConfig().bundleUrl;
             var getVal = bundleUrl.split('?')[1];
             var operates = getVal.split('&');
 
@@ -43,29 +46,30 @@
             goBack:function(e) {
                 event.closeUrl();
             },
-            onEnd: function (e) {
-                app.encrypt(this.captcha)
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    url: '/weex/login/captcha.jhtml?captcha=' + this.value
-                }, function (weex) {
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
-                            event.openUrl({
-                                url:"file://login/captcha.js",
-                                function (e) {
-                                    event.closeUrl();
-                                }
-                            });
+            onEnd: function (val) {
+                this.captcha = val;
+                native.encrypt(val,function (data) {
+                    return stream.fetch({
+                        method: 'POST',
+                        type: 'json',
+                        url: '/weex/login/captcha.jhtml?captcha=' + data
+                    }, function (weex) {
+                        if (weex.ok) {
+                            if (weex.data.type == "success") {
+                                event.openUrl({
+                                    url: this.locateURL + "/login/captcha.js",
+                                    function (e) {
+                                        event.closeUrl();
+                                    }
+                                });
+                            } else {
+                                native.showToast(weex.data.content);
+                            }
                         } else {
-                            native.showToast(weex.data.content);
+                            modal.toast({message: "网络不稳定请重试"});
                         }
-                    } else {
-                        modal.toast({message:"网络不稳定请重试"});
-                    }
+                    })
                 })
-                event.closeUrl();
             }
         }
     }

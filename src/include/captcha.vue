@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="flex-center">
-            <text class="status primary">点击重新发送</text>
+            <text class="status primary" v-on:click="onSend">{{status}}</text>
         </div>
         <!--隐藏的输入框-->
         <div>
@@ -103,11 +103,14 @@
         props: {
             captcha: {default:""},
             title: { default: "验证码" },
-            mobile:{default:""}
+            mobile:{default:""},
+            status:{default:"点击重新发送"}
         },
         methods:{
 //            当用户输入数字时触发
             captchaInput:function (event) {
+
+                modal.toast({message:event.value});
 //                判断删除还是输入  '大于' --> 删除
                 if(lastCaptchaLength > event.value.length){
                     optionIndex --;
@@ -122,8 +125,8 @@
                 lastCaptchaLength = event.value.length;
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
-                    this.captcha = event;
-                    this.$emit("onEnd",event);
+                    this.captcha = event.value;
+                    this.$emit("onEnd",this.captcha);
                 }
             },
 //            点击验证框时使隐藏的input获取焦点；
