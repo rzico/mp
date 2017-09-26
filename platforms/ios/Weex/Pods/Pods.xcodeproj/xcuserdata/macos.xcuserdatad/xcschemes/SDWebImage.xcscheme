@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FD8CE68C42F8AB60E9E7F4D643251E85"
+               BlueprintIdentifier = "B16AA56EA9FF539DB9A1E28295E16AB0"
                BuildableName = "libSDWebImage.a"
                BlueprintName = "SDWebImage"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FD8CE68C42F8AB60E9E7F4D643251E85"
+            BlueprintIdentifier = "B16AA56EA9FF539DB9A1E28295E16AB0"
             BuildableName = "libSDWebImage.a"
             BlueprintName = "SDWebImage"
             ReferencedContainer = "container:Pods.xcodeproj">
