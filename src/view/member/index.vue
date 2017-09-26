@@ -404,7 +404,7 @@
 //            前往文章
             goArticle(id){
                 var _this = this;
-                event.openURL('http://192.168.1.110:8081/editor.weex.js?articleId=' + id,function () {
+                event.openURL('http://192.168.1.108:8081/editor.weex.js?articleId=' + id,function () {
                     _this.updateArticle();
                 })
             },
@@ -412,10 +412,10 @@
                 var _this = this;
 //            获取文章缓存。
                 native.findList(1,'articleListTest','desc',function (data) {
-                    let articleData = JSON.parse(data.data[0].value);
-                    modal.toast({message:articleData[0].id});
+                    modal.toast({message:data.data});
                     if(data.type == 'success'){
-                        for(let i = 0;i < articleData.length;i++){
+                        for(let i = 0;i < data.data.length;i++){
+                            let articleData = JSON.parse(data.data[i].value);
                             _this.articleList.splice(0,0,{
                                 articleSign: '草稿',
                                 articleTitle:   articleData[0].title,
@@ -424,7 +424,7 @@
                                 browse: 0,
                                 praise: 0,
                                 comments: 0,
-                                id:articleData[i].id,
+                                id:articleData[0].id,
                             })
                         }
                     }else{

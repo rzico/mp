@@ -309,6 +309,7 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
+    import {jsMixins} from '../../../mixins/wx.js'
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     const native = weex.requireModule('app')
@@ -317,6 +318,7 @@
     var musicId = -1 ;
     var articleId = 1;
     export default {
+        mixins:[jsMixins],
         data:function(){
             return{
                 refreshing: false,
@@ -378,19 +380,19 @@
                     native.find(1,op[1],function (data) {
 //                         modal.toast({message:data.data})
                         let articleData = JSON.parse(data.data.value);
-                        modal.toast({message:articleData[0].templates[0].original,duration:1});
                         _this.setTitle = articleData[0].title;
                         _this.coverImage = articleData[0].thumbnail;
                         _this.musicName = articleData[0].music.name;
                         musicId = articleData[0].music.id;
                         let templatesData = articleData[0].templates;
+                        modal.toast({message:templatesData,duration:1});
                         for(let i = 0;i < templatesData.length;i++){
                             _this.paraList.push({
                                 //原图
                                 paraImage:templatesData[i].original,
                                 //小缩略图
-                                thumbnailImage:templatesData[i].thumbnail,
-                                paraText:templatesData[i].content,
+                                thumbnailImage: templatesData[i].thumbnail,
+                                paraText:templatesData[i].original,
                                 show:true
                             })
                         }
@@ -634,7 +636,7 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.110:8081/music.weex.js?musicId=' + musicId,function (data) {
+                event.openURL('http://192.168.1.108:8081/music.weex.js?musicId=' + musicId,function (data) {
                     modal.toast({message:data,duration:1});
                     let jsonData = JSON.parse(data);
                     _this.musicName = jsonData.chooseMusicName;
@@ -644,7 +646,7 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.110:8081/vote.weex.js',function (data) {
+                event.openURL('http://192.168.1.108:8081/vote.weex.js',function (data) {
                     _this.voteList[0].paraText = data;
                     _this.hadVote = false;
                 });

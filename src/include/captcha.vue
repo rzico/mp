@@ -11,16 +11,14 @@
         </div>
         <!--6个验证码框-->
         <div class="flex-row inputTextBox mtb50" @click="getFocus()">
+            <!--隐藏的输入框-->
+            <input type="tel" ref="captchRef" v-model="captchaValue" maxlength="6" @input="captchaInput" autofocus="true" class="input" />
             <div  v-for="item in textList" class="inputDiv" >
                 <text class="inputText">{{item}}</text>
             </div>
         </div>
         <div class="flex-center">
-            <text class="status primary" v-on:click="onSend">{{status}}</text>
-        </div>
-        <!--隐藏的输入框-->
-        <div>
-            <input type="tel" ref="captchRef" v-model="captchaValue" maxlength="6" @input="captchaInput" autofocus="true" class="input" />
+            <text class="status primary">{{status}}</text>
         </div>
     </div>
 </template>
@@ -32,6 +30,7 @@
     }
     .inputTextBox{
         width:630px;
+        position: relative;
     }
     .inputText{
         border-width: 1px;
@@ -48,13 +47,12 @@
         align-items: center;
     }
     .input{
-        opacity: 0;
-        margin-top: 20px;
-        background-color: red;
+        opacity:0;
+        width:630px;
+        position: absolute;
         height: 80px;
-        width: 300px;
+        font-size: 85px;
     }
-
     .captcha {
         padding-left: 40px;
         padding-right: 40px;
@@ -97,41 +95,44 @@
             return{
                 captchaValue:'',
                 textList:['','','','','',''],
-                inputList:['','','','','','']
             }
         },
         props: {
-            captcha: {default:""},
             title: { default: "验证码" },
+            captcha: {default:""},
             mobile:{default:""},
             status:{default:"点击重新发送"}
+        },
+        created(){
         },
         methods:{
 //            当用户输入数字时触发
             captchaInput:function (event) {
-
-                modal.toast({message:event.value});
+                var _this = this;
 //                判断删除还是输入  '大于' --> 删除
                 if(lastCaptchaLength > event.value.length){
                     optionIndex --;
-                    this.textList[optionIndex] = '';
+                    _this.textList[optionIndex] = '';
                 }else{
                     let a = event.value;
                     let b = a.substr(a.length-1,1)
                     console.log(event);
-                    this.textList[optionIndex] = b;
+                    _this.textList[optionIndex] = b;
+
                     optionIndex ++;
                 }
                 lastCaptchaLength = event.value.length;
+                modal.toast({message: _this.test});
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
-                    this.captcha = event.value;
-                    this.$emit("onEnd",this.captcha);
+                    _this.captcha = event.value;
+                    _this.$emit("onEnd",this.captcha);
                 }
             },
 //            点击验证框时使隐藏的input获取焦点；
             getFocus:function () {
-                this.$refs["captchRef"].focus();
+                modal.toast({message:1});
+                this.$refs['captchRef'].focus();
             },
 
         }

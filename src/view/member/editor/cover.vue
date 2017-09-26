@@ -1,6 +1,6 @@
 <template>
     <div class="wrapperBox">
-        <navbar :title="title" > </navbar>
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
         <div class="coverImageBox">
               <!-- 1张封面图 -->
             <div class="oneImage" v-if="imageNumber == 1" >
@@ -306,11 +306,10 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
-    import {jsMixins} from '../../../mixins/wx'
     const modal = weex.requireModule('modal');
     const album = weex.requireModule('album');
+    const event = weex.requireModule('event');
     export default {
-        mixins:[jsMixins],
         data:function () {
             return{
                 coverBorder:'white',
@@ -329,6 +328,7 @@
         },
         props: {
             title: { default: "编辑封面"},
+            complete: {default : "完成"}
         },
         mounted:function(){
             var domModule = weex.requireModule("dom");
@@ -336,9 +336,6 @@
                 'fontFamily':'iconfont',
                 'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
             })
-        },
-        created(){
-            modal.toast({message:this.testURL})
         },
         methods:{
             changeBorderColor:function (value) {
@@ -387,7 +384,9 @@
                         _this.allCoverImage[num].imgUrl =  data.data;
                     })
                 }
-
+            },
+            goback(){
+                event.closeURL();
             }
         }
     }
