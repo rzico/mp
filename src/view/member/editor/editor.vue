@@ -370,7 +370,12 @@
                                 }) ;
                             }
                         }else{
-                            modal.toast({message:data.content,duration:10});
+                            modal.alert({
+                                message:data.contend,
+                                duration: 0.3
+                            },function () {
+                                event.closeURL();
+                            })
                         }
                     }
                 )
@@ -378,22 +383,31 @@
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
                     native.find(1,op[1],function (data) {
+                        if(data.type == 'success'){
 //                         modal.toast({message:data.data})
-                        let articleData = JSON.parse(data.data.value);
-                        _this.setTitle = articleData[0].title;
-                        _this.coverImage = articleData[0].thumbnail;
-                        _this.musicName = articleData[0].music.name;
-                        musicId = articleData[0].music.id;
-                        let templatesData = articleData[0].templates;
-                        modal.toast({message:templatesData,duration:1});
-                        for(let i = 0;i < templatesData.length;i++){
-                            _this.paraList.push({
-                                //原图
-                                paraImage:templatesData[i].original,
-                                //小缩略图
-                                thumbnailImage: templatesData[i].thumbnail,
-                                paraText:templatesData[i].original,
-                                show:true
+                            let articleData = JSON.parse(data.data.value);
+                            _this.setTitle = articleData[0].title;
+                            _this.coverImage = articleData[0].thumbnail;
+                            _this.musicName = articleData[0].music.name;
+                            musicId = articleData[0].music.id;
+                            let templatesData = articleData[0].templates;
+                            modal.toast({message:data});
+                            for(let i = 0;i < templatesData.length;i++){
+                                _this.paraList.push({
+                                    //原图
+                                    paraImage:templatesData[i].original,
+                                    //小缩略图
+                                    thumbnailImage: templatesData[i].thumbnail,
+                                    paraText:templatesData[i].original,
+                                    show:true
+                                })
+                            }
+                        }else{
+                            modal.alert({
+                                message:data.contend,
+                                duration: 0.3
+                            },function () {
+                                event.closeURL();
                             })
                         }
                     })
@@ -449,7 +463,7 @@
                     title:this.setTitle,
                 }]
 //                articleData = JSON.stringify(articleData)
-                native.save(1,timestamp,articleData,1,'articleListTest',function (data) {
+                native.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
                     if(data.type == 'success'){
                         event.closeURL();
                     }else{
@@ -591,18 +605,18 @@
 //            删除投票
             closeVote:function (index) {
                 var _this = this;
-                    modal.confirm({
-                        message: '确定删除投票?',
-                        okTitle:'删除',
-                        cancelTitle:'取消',
-                        duration: 0.3
-                    }, function (value) {
-                        if(value == '删除'){
-                            //                将内容删掉
-                            _this.voteList.splice(index,1);
-                            _this.hadVote = true;
-                        }
-                    })
+                modal.confirm({
+                    message: '确定删除投票?',
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                    duration: 0.3
+                }, function (value) {
+                    if(value == '删除'){
+                        //                将内容删掉
+                        _this.voteList.splice(index,1);
+                        _this.hadVote = true;
+                    }
+                })
             },
 //            编辑段落图片
             editParaImage(imgSrc,index){
