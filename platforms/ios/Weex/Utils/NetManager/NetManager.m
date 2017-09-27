@@ -32,7 +32,7 @@ static AFHTTPSessionManager *afManager;
             afManager = [AFHTTPSessionManager manager];
             afManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
             [afManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-            afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html",@"text/plain", nil];
+            afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html",@"text/plain",@"application/x-font-ttf", nil];
             afManager.requestSerializer.timeoutInterval = 45.0f;
             for (NSString *key in headDic.allKeys){
                 NSString *value = headDic[key];
@@ -76,7 +76,7 @@ static AFHTTPSessionManager *afManager;
         dispatch_once(&onceToken, ^{
             manager = [AFHTTPSessionManager manager];
             manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
-            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain",@"application/x-font-ttf", nil];
             manager.requestSerializer.timeoutInterval = 30.f;
             for (NSString *key in headDic.allKeys) {
                 NSString *value = headDic[key];
@@ -118,6 +118,7 @@ static AFHTTPSessionManager *afManager;
         }
         SuccessBlock(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error=%@",error);
         FalseBlock(error);
         ALERT(@"获取数据失败，请检查网络是否连接！");
     }];
