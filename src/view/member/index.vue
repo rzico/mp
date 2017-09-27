@@ -1,5 +1,5 @@
 <template>
-    <scroller class="wrapper" show-scrollbar="false">
+    <scroller class="wrapper" show-scrollbar="false" offset-accuracy="10" @scroll="scrollHandler()">
         <!--顶部个人信息栏-->
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
@@ -40,7 +40,10 @@
                     <!--</div>-->
                 <!--文章模块-->
                 <div>
-                    <div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)">
+
+                    <div class="articleBox" v-for="(item,index) in articleList" @click="goArticle(item.id)" @panmove="onpanmove($event,index)" ref="animationRef" @touchend="ontouchend($event)" @touchstart="ontouchstart($event,index)">
+                    <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)">-->
+
                         <div class="atricleHead">
                             <text class="articleSign">{{item.articleSign}}</text>
                             <text class="articleTitle">{{item.articleTitle}}</text>
@@ -61,6 +64,29 @@
                                 <text class="relevantText">{{item.praise}}</text>
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                                 <text class="relevantText">{{item.comments}}</text>
+                            </div>
+                        </div>
+                        <!--右侧隐藏栏-->
+                        <div class="rightHidden">
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
+                                    <text class="rightHiddenText">编辑</text>
+                                </div>
+                                <div class="rightHiddenIconBox">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}" style="color: #D9141E;">&#xe6a7;</text>
+                                    <text class="rightHiddenText" style="color:#D9141E;">删除</text>
+                                </div>
+                            </div>
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                    <text class="rightHiddenText">置顶</text>
+                                </div>
+                                <div class="rightHiddenIconBox">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                                    <text class="rightHiddenText">文集</text>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -125,7 +151,41 @@
     </scroller>
 </template>
 <style scoped>
-
+    .rightHiddenIconBox{
+        justify-content: center;
+        align-items: center;
+    }
+    .rightHiddenSmallBox{
+        flex-direction: row;
+        flex: 1;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .rightHiddenText{
+        font-size: 24px;
+        color: #999;
+    }
+    .rightHiddenIcon{
+        text-align: center;
+        line-height: 90px;
+        font-size: 40px;
+        width:90px;
+        height:90px;
+        border-radius: 45px;
+        color: black;
+        background-color: #fff;
+        margin-bottom: 15px;
+    }
+    .rightHidden{
+        position: absolute;
+        right: 0px;
+        top: 0;
+        background-color: #f4f4f4;
+        width: 330px;
+        height:457px ;
+        /*align-items: center;*/
+        /*justify-content:space-around;*/
+    }
     .relevantImage {
         flex-direction: row;
         font-size: 32px;
@@ -172,6 +232,8 @@
         padding-right: 20px;
         padding-bottom: 20px;
         margin-bottom: 10px;
+        /*========= 9.27*/
+        width:1080px;
     }
 
     .atricleHead {
@@ -232,7 +294,8 @@
         border-bottom-width: 1px;
         border-style: solid;
         border-color: #888;
-        height:80px;
+        /*height:80px;*/
+        height:120px;
         position: sticky;
         background-color: #fff;
     }
@@ -332,10 +395,13 @@
     const navigator = weex.requireModule('navigator');
     const stream = weex.requireModule('stream')
     const event = weex.requireModule('event');
-
+    const animation = weex.requireModule('animation')
+    var initialPoint;//初始点
+    var animationPara;//执行动画的文章
     export default {
         data:function() {
             return{
+                testScroll:'1',
                 userName:'柯志杰',
                 userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
                 isAllArticle:true,
@@ -362,6 +428,12 @@
                     articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate: '2017-09-01',
                     id:'',
+                },{
+                    articleSign: '样例',
+                    articleTitle: '魔篇使用帮助',
+                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate: '2017-09-01',
+                    id:'',
                 }],
 //                全部文章
                 articleList: [],
@@ -374,6 +446,42 @@
                     browse: 55,
                     praise: 48,
                     comments: 32,
+                    id:'',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
                     id:'',
                 }, {
                     articleSign: '已删除',
@@ -424,7 +532,7 @@
                 var _this = this;
 //            获取文章缓存。
                 native.findList(1,'articleListTest1','desc',function (data) {
-                    modal.toast({message:data.data});
+//                    modal.toast({message:data.data});
                     if(data.type == 'success'){
                         for(let i = 0;i < data.data.length;i++){
                             let articleData = JSON.parse(data.data[i].value);
@@ -455,19 +563,6 @@
             },
             jump:function (vueName) {
                 console.log('will jump');
-//                navigator.push({
-//                    url: 'http://cdn.rzico.com/weex/app/view/member/manage.js',
-//                    animated: "true"
-//                })
-
-//                this.$router.push(vueName);
-
-//                    var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
-//                    url = url.split('/').slice(0,-2).join('/') + 'member/manager.js';  //獲取sss.vue編譯後的b.js的相對路徑
-//                    navigator.push({
-//                        url: url,
-//                        animated: true
-//                    })
             },
             allArticle:function(){
                 this.isAllArticle = true;
@@ -477,12 +572,47 @@
             },
             swipeHappen:function(event){
                 console.log(event);
-                console.log(event.direction);
-                if(event.direction == 'left'){
-                    this.isAllArticle = false;
-                }else if(event.direction == 'right'){
-                    this.isAllArticle = true;
-                }
+//                console.log(event.direction);
+//                if(event.direction == 'left'){
+//                    this.isAllArticle = false;
+//                }else if(event.direction == 'right'){
+//                    this.isAllArticle = true;
+//                }
+            },
+            ontouchstart:function (event,index) {
+                initialPoint = event.changedTouches[0].screenX;
+                animationPara =  this.$refs.animationRef[index];
+            },
+            onpanmove:function (event,index) {
+                let distance = event.changedTouches[0].screenX - initialPoint;
+              if( distance > 0){
+//                  modal.toast({message:"right"});
+                  animation.transition(animationPara, {
+                      styles: {
+                          transform: 'translateX(0)',
+                      },
+                      duration: 350, //ms
+                      timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                      needLayout:false,
+                      delay: 0 //ms
+                  })
+              }else{
+//                  modal.toast({message:distance});
+                  animation.transition(animationPara, {
+                      styles: {
+                          transform: 'translateX(-330)',
+                      },
+                      duration:350, //ms
+                      timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                      needLayout:false,
+                      delay: 0 //ms
+                  })
+              }
+                initialPoint = event.changedTouches[0].screenX;
+            },
+            ontouchend:function (event) {
             },
             onloading(event) {
                 modal.toast({message: '加载中...', duration: 1})
@@ -502,6 +632,12 @@
                     }
                     this.showLoading = 'hide'
                 }, 1500)
+            },
+            scrollHandler: function(e) {
+                modal.toast({message:e});
+                this.testScroll  = e;
+//                this.offsetX = e.contentOffset.x;
+//                this.offsetY = e.contentOffset.y;
             },
         }
     }

@@ -404,7 +404,7 @@
                             }
                         }else{
                             modal.alert({
-                                message:data.contend,
+                                message:'系统繁忙，请稍后重试',
                                 duration: 0.3
                             },function () {
                                 event.closeURL();
