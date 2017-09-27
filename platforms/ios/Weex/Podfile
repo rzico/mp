@@ -10,6 +10,11 @@ def common
     pod 'ATSDK-Weex', '0.0.1'
 #    pod 'WeexGcanvas'
     pod 'TZImagePickerController'
+    pod 'SSKeychain'
+    pod 'AFNetworking', '~> 3.0.4'
+    pod 'AFNetworking-Synchronous/3.x'
+    pod 'JSONModel'
+    pod 'Reachability'
 end
 
 target 'Weex' do

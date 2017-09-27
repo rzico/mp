@@ -1,9 +1,29 @@
 PODS:
+  - AFNetworking (3.0.4):
+    - AFNetworking/NSURLSession (= 3.0.4)
+    - AFNetworking/Reachability (= 3.0.4)
+    - AFNetworking/Security (= 3.0.4)
+    - AFNetworking/Serialization (= 3.0.4)
+    - AFNetworking/UIKit (= 3.0.4)
+  - AFNetworking-Synchronous/3.x (1.1.0):
+    - AFNetworking (~> 3.0)
+  - AFNetworking/NSURLSession (3.0.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.0.4)
+  - AFNetworking/Security (3.0.4)
+  - AFNetworking/Serialization (3.0.4)
+  - AFNetworking/UIKit (3.0.4):
+    - AFNetworking/NSURLSession
   - ATSDK-Weex (0.0.1)
+  - JSONModel (1.7.0)
+  - Reachability (3.2)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
   - SocketRocket (0.4.2)
+  - SSKeychain (1.4.1)
   - TZImagePickerController (1.9.3)
   - WeexSDK (0.15.0):
     - SocketRocket
@@ -11,9 +31,14 @@ PODS:
     - WeexSDK
 
 DEPENDENCIES:
+  - AFNetworking (~> 3.0.4)
+  - AFNetworking-Synchronous/3.x
   - ATSDK-Weex (= 0.0.1)
+  - JSONModel
+  - Reachability
   - SDWebImage (= 3.7.5)
   - SocketRocket (= 0.4.2)
+  - SSKeychain
   - TZImagePickerController
   - WeexSDK (from `./sdk/`)
   - WXDevtool (= 0.15.1)
@@ -23,13 +48,18 @@ EXTERNAL SOURCES:
     :path: ./sdk/
 
 SPEC CHECKSUMS:
+  AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
+  AFNetworking-Synchronous: 61b98fb931b114b0da2b243957ea533e2954c2a2
   ATSDK-Weex: 1b27558f4336d77fb97704d34fc6ad1fd468592c
+  JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
+  SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
   TZImagePickerController: 079ab986018c22793462e531045a75e366b18252
   WeexSDK: d30bf863bf8eb14b604817a4061e51c4fe4caeed
   WXDevtool: 5b26fd79451f215d7acdee89e5e2f3be491a1393
 
-PODFILE CHECKSUM: 05cecec6497b811e13740ae31d2f0c1ec0d73f49
+PODFILE CHECKSUM: cde7d623347f60a53abc21e77b41c843b4bb880f
 
 COCOAPODS: 1.1.1

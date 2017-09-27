@@ -18,6 +18,7 @@
     import navbar from '../../include/navbar.vue'
     import captcha from '../../include/captcha.vue'
     var stream = weex.requireModule('stream')
+    var time = 0;
     export default {
         mixins:[jsMixins],
         components: {
@@ -41,34 +42,60 @@
                   this.mobile = op[1];
                }
             }
+
         },
         methods: {
+            onTimeOut:function () {
+                setTimeout(1000,function () {
+                    time = time +1;
+                    this.status = "已发送"+time+"秒";
+                })
+            },
+            onSend: function (e) {
+                var _this = this;
+                return stream.fetch({
+                    method: 'POST',
+                    type: 'json',
+                    url: '/weex/login/send_mobile.jhtml?mobile=' + _this.value
+                }, function (weex) {
+                    if (weex.ok) {
+                        if (weex.data.type == "success") {
+
+                        } else {
+                            modal.toast({message:weex.data.content});
+                        }
+                    } else {
+                        modal.toast({message:"网络不稳定请重试"});
+                    }
+                })
+            },
             goBack:function(e) {
                 event.closeUrl();
             },
             onEnd: function (val) {
+                modal.toast({message: val});
                 this.captcha = val;
                 native.encrypt(val,function (data) {
-                    return stream.fetch({
-                        method: 'POST',
-                        type: 'json',
-                        url: '/weex/login/captcha.jhtml?captcha=' + data
-                    }, function (weex) {
-                        if (weex.ok) {
-                            if (weex.data.type == "success") {
-                                event.openUrl({
-                                    url: this.locateURL + "/login/captcha.js",
-                                    function (e) {
-                                        event.closeUrl();
-                                    }
-                                });
+                    if (data.type=="success") {
+                        return stream.fetch({
+                            method: 'POST',
+                            type: 'json',
+                            url: '/weex/login/captcha.jhtml?captcha=' + data.data
+                        }, function (weex) {
+                            modal.toast({message: weex});
+                            if (weex.ok) {
+                                if (weex.data.type == "success") {
+                                    event.closeURL();
+                                } else {
+                                    native.showToast(weex.data.content);
+                                }
                             } else {
-                                native.showToast(weex.data.content);
+                                modal.toast({message: "网络不稳定请重试"});
                             }
-                        } else {
-                            modal.toast({message: "网络不稳定请重试"});
-                        }
-                    })
+                        })
+                    } else {
+                        modal.toast({message: data.content});
+                    }
                 })
             }
         }

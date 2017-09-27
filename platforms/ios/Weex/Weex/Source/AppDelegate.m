@@ -38,6 +38,8 @@
 
 #import "HomeViewController.h"
 
+#import "HttpHead+Utils.h"
+
 @interface AppDelegate ()
 @end
 
@@ -62,6 +64,8 @@
     /*
     
     self.window.rootViewController = vc;*/
+    self.appKeyChainDic = [HttpHead_Utils getHttpHead];
+    
     
     XMTabBarController *tabbar = [XMTabBarController new];
     tabbar.tabBarHeight = 49;
@@ -120,6 +124,7 @@
     [WXSDKEngine registerHandler:[WXImgLoaderDefaultImpl new] withProtocol:@protocol(WXImgLoaderProtocol)];
     [WXSDKEngine registerHandler:[WXEventModule new] withProtocol:@protocol(WXEventModuleProtocol)];
     [WXSDKEngine registerHandler:[WXConfigCenterDefaultImpl new] withProtocol:@protocol(WXConfigCenterProtocol)];
+    [WXSDKEngine registerHandler:[[NSClassFromString(@"WXNetworkDefaultImpl") class] new] withProtocol:@protocol(WXResourceRequestHandler)];
     
     [WXSDKEngine registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];

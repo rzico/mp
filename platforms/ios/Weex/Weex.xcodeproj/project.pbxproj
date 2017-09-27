@@ -43,6 +43,14 @@
 		2291F13D1F6AB86E00B94F1B /* MemberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F13C1F6AB86E00B94F1B /* MemberViewController.m */; };
 		2291F1421F6ABA8B00B94F1B /* UIColor+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1411F6ABA8B00B94F1B /* UIColor+Util.m */; };
 		2291F1441F6ABB2A00B94F1B /* member.js in Resources */ = {isa = PBXBuildFile; fileRef = 2291F1431F6ABB2A00B94F1B /* member.js */; };
+		22BDEB221F7A88B9000295FD /* WXNetworkDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB201F7A88B8000295FD /* WXNetworkDefaultImpl.m */; };
+		22BDEB241F7A89A5000295FD /* deposit.js in Resources */ = {isa = PBXBuildFile; fileRef = 22BDEB231F7A89A4000295FD /* deposit.js */; };
+		22BDEB2D1F7A8A6D000295FD /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB281F7A8A69000295FD /* Utils.m */; };
+		22BDEB2E1F7A8A6D000295FD /* MD5+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB2B1F7A8A6B000295FD /* MD5+Util.m */; };
+		22BDEB2F1F7A8A6D000295FD /* HttpHead+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB2C1F7A8A6D000295FD /* HttpHead+Utils.m */; };
+		22BDEB371F7A8E0D000295FD /* NetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB331F7A8A8F000295FD /* NetManager.m */; };
+		22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB381F7A8E60000295FD /* UIImage+Util.m */; };
+		22BDEB3B1F7A8EE4000295FD /* TXUtilsString.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB311F7A8A86000295FD /* TXUtilsString.m */; };
 		22DB01801F7119F70018BD1E /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB017F1F7119F70018BD1E /* UIView+Layout.m */; };
 		ED6C26792AB173CC0A625939 /* libPods-Weex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7301C98C27CC96A1B57A2E /* libPods-Weex.a */; };
 /* End PBXBuildFile section */
@@ -108,6 +116,22 @@
 		2291F1401F6ABA8B00B94F1B /* UIColor+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Util.h"; sourceTree = "<group>"; };
 		2291F1411F6ABA8B00B94F1B /* UIColor+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Util.m"; sourceTree = "<group>"; };
 		2291F1431F6ABB2A00B94F1B /* member.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = member.js; sourceTree = "<group>"; };
+		22BDEB201F7A88B8000295FD /* WXNetworkDefaultImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetworkDefaultImpl.m; sourceTree = "<group>"; };
+		22BDEB211F7A88B9000295FD /* WXNetworkDefaultImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetworkDefaultImpl.h; sourceTree = "<group>"; };
+		22BDEB231F7A89A4000295FD /* deposit.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = deposit.js; sourceTree = "<group>"; };
+		22BDEB271F7A8A68000295FD /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		22BDEB281F7A8A69000295FD /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		22BDEB291F7A8A6A000295FD /* HttpHead+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HttpHead+Utils.h"; sourceTree = "<group>"; };
+		22BDEB2A1F7A8A6B000295FD /* MD5+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MD5+Util.h"; sourceTree = "<group>"; };
+		22BDEB2B1F7A8A6B000295FD /* MD5+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MD5+Util.m"; sourceTree = "<group>"; };
+		22BDEB2C1F7A8A6D000295FD /* HttpHead+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "HttpHead+Utils.m"; sourceTree = "<group>"; };
+		22BDEB301F7A8A85000295FD /* TXUtilsString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TXUtilsString.h; sourceTree = "<group>"; };
+		22BDEB311F7A8A86000295FD /* TXUtilsString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXUtilsString.m; sourceTree = "<group>"; };
+		22BDEB321F7A8A8F000295FD /* NetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetManager.h; sourceTree = "<group>"; };
+		22BDEB331F7A8A8F000295FD /* NetManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetManager.m; sourceTree = "<group>"; };
+		22BDEB341F7A8AC2000295FD /* APPKEY.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APPKEY.h; sourceTree = "<group>"; };
+		22BDEB381F7A8E60000295FD /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
+		22BDEB391F7A8E60000295FD /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		22DB017E1F7119F70018BD1E /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
 		22DB017F1F7119F70018BD1E /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		4E7301C98C27CC96A1B57A2E /* libPods-Weex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Weex.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,6 +202,7 @@
 				2291F0D31F6A796800B94F1B /* Assets.xcassets */,
 				2291F0D81F6A796800B94F1B /* Info.plist */,
 				2291F0C71F6A796800B94F1B /* Supporting Files */,
+				22BDEB341F7A8AC2000295FD /* APPKEY.h */,
 				2291F13E1F6AB93400B94F1B /* PrefixHeader.pch */,
 			);
 			path = Weex;
@@ -194,6 +219,7 @@
 		2291F0E41F6A7DB000B94F1B /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				22BDEB231F7A89A4000295FD /* deposit.js */,
 				226749711F72B0B30035A6E1 /* manage.js */,
 				2267496F1F72784B0035A6E1 /* editor.js */,
 				22220DFE1F6FC23400864689 /* friends.js */,
@@ -246,6 +272,8 @@
 		2291F1001F6A898D00B94F1B /* handler */ = {
 			isa = PBXGroup;
 			children = (
+				22BDEB211F7A88B9000295FD /* WXNetworkDefaultImpl.h */,
+				22BDEB201F7A88B8000295FD /* WXNetworkDefaultImpl.m */,
 				2291F1051F6A89EC00B94F1B /* WXConfigCenterDefaultImpl.h */,
 				2291F1061F6A89EC00B94F1B /* WXConfigCenterDefaultImpl.m */,
 				2291F1071F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.h */,
@@ -331,18 +359,46 @@
 		2291F13F1F6ABA5000B94F1B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				22BDEB261F7A8A49000295FD /* TXUtilsStirng */,
+				22BDEB251F7A8A40000295FD /* NetManager */,
 				22DB017C1F7119C40018BD1E /* Category */,
 				2291F1401F6ABA8B00B94F1B /* UIColor+Util.h */,
 				2291F1411F6ABA8B00B94F1B /* UIColor+Util.m */,
 				2267496C1F72572B0035A6E1 /* DictionaryUtil.h */,
 				2267496D1F72572B0035A6E1 /* DictionaryUtil.m */,
+				22BDEB291F7A8A6A000295FD /* HttpHead+Utils.h */,
+				22BDEB2C1F7A8A6D000295FD /* HttpHead+Utils.m */,
+				22BDEB2A1F7A8A6B000295FD /* MD5+Util.h */,
+				22BDEB2B1F7A8A6B000295FD /* MD5+Util.m */,
+				22BDEB271F7A8A68000295FD /* Utils.h */,
+				22BDEB281F7A8A69000295FD /* Utils.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		22BDEB251F7A8A40000295FD /* NetManager */ = {
+			isa = PBXGroup;
+			children = (
+				22BDEB321F7A8A8F000295FD /* NetManager.h */,
+				22BDEB331F7A8A8F000295FD /* NetManager.m */,
+			);
+			path = NetManager;
+			sourceTree = "<group>";
+		};
+		22BDEB261F7A8A49000295FD /* TXUtilsStirng */ = {
+			isa = PBXGroup;
+			children = (
+				22BDEB301F7A8A85000295FD /* TXUtilsString.h */,
+				22BDEB311F7A8A86000295FD /* TXUtilsString.m */,
+			);
+			path = TXUtilsStirng;
 			sourceTree = "<group>";
 		};
 		22DB017C1F7119C40018BD1E /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				22BDEB391F7A8E60000295FD /* UIImage+Util.h */,
+				22BDEB381F7A8E60000295FD /* UIImage+Util.m */,
 				22DB017E1F7119F70018BD1E /* UIView+Layout.h */,
 				22DB017F1F7119F70018BD1E /* UIView+Layout.m */,
 			);
@@ -440,6 +496,7 @@
 				2291F0D41F6A796800B94F1B /* Assets.xcassets in Resources */,
 				22220E011F6FC23400864689 /* message.js in Resources */,
 				2291F0FB1F6A7EBB00B94F1B /* weex@2x.png in Resources */,
+				22BDEB241F7A89A5000295FD /* deposit.js in Resources */,
 				2291F0F91F6A7EBB00B94F1B /* weex-icon.png in Resources */,
 				22220E001F6FC23400864689 /* friends.js in Resources */,
 				226749701F72784B0035A6E1 /* editor.js in Resources */,
@@ -501,20 +558,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22BDEB3B1F7A8EE4000295FD /* TXUtilsString.m in Sources */,
+				22BDEB371F7A8E0D000295FD /* NetManager.m in Sources */,
+				22BDEB221F7A88B9000295FD /* WXNetworkDefaultImpl.m in Sources */,
 				2291F11C1F6A8A7C00B94F1B /* WXViewController.m in Sources */,
 				2267496E1F72572B0035A6E1 /* DictionaryUtil.m in Sources */,
+				22BDEB2E1F7A8A6D000295FD /* MD5+Util.m in Sources */,
 				226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */,
+				22BDEB2D1F7A8A6D000295FD /* Utils.m in Sources */,
 				2291F0C91F6A796800B94F1B /* main.m in Sources */,
 				2291F10A1F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m in Sources */,
 				2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */,
 				2291F13D1F6AB86E00B94F1B /* MemberViewController.m in Sources */,
 				22DB01801F7119F70018BD1E /* UIView+Layout.m in Sources */,
 				2291F1101F6A89F300B94F1B /* WXSyncTestModule.m in Sources */,
+				22BDEB2F1F7A8A6D000295FD /* HttpHead+Utils.m in Sources */,
 				2291F12B1F6A8AD000B94F1B /* WXATViewHierarchyPlugin.m in Sources */,
 				22220DFA1F6FC1BB00864689 /* MessageViewController.m in Sources */,
 				2291F10F1F6A89F300B94F1B /* WXEventModule.m in Sources */,
 				2291F1371F6AB77800B94F1B /* HomeViewController.m in Sources */,
 				2291F11D1F6A8A7C00B94F1B /* UIView+UIThreadCheck.m in Sources */,
+				22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */,
 				22220DFD1F6FC1D000864689 /* FriendsViewController.m in Sources */,
 				2291F1041F6A89E400B94F1B /* WXSelectComponent.m in Sources */,
 				2291F1421F6ABA8B00B94F1B /* UIColor+Util.m in Sources */,

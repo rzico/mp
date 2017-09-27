@@ -146,6 +146,13 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
     scrollView.showsHorizontalScrollIndicator = _showScrollBar;
     scrollView.scrollEnabled = _scrollable;
     scrollView.pagingEnabled = _pagingEnabled;
+#ifdef __IPHONE_11_0
+    if (@available(iOS 11.0, *)) {
+        scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        // Fallback on earlier versions
+    }
+#endif
     
     if (self.ancestorScroller) {
         scrollView.scrollsToTop = NO;
@@ -560,9 +567,15 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
     CGRect scrollRect = CGRectMake(vx, vy, vw, vh);;
     
     // notify action for appear
-    for(WXScrollToTarget *target in self.listenerArray){
+    NSArray *listenerArrayCopy = [self.listenerArray copy];
+    for(WXScrollToTarget *target in listenerArrayCopy){
         [self scrollToTarget:target scrollRect:scrollRect];
     }
+}
+
+- (CGPoint)absolutePositionForComponent:(WXComponent *)component
+{
+    return [component->_view.superview convertPoint:component->_view.frame.origin toView:_view];
 }
 
 #pragma mark  Private Methods
@@ -570,20 +583,20 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
 - (void)scrollToTarget:(WXScrollToTarget *)target scrollRect:(CGRect)rect
 {
     WXComponent *component = target.target;
-    if (![component isViewLoaded]) {
+    if (![component isViewLoaded]) { 
         return;
     }
     
     CGFloat ctop;
     if (component && component->_view && component->_view.superview) {
-        ctop = [component->_view.superview convertPoint:component->_view.frame.origin toView:_view].y;
+        ctop = [self absolutePositionForComponent:component].y;
     } else {
         ctop = 0.0;
     }
     CGFloat cbottom = ctop + CGRectGetHeight(component.calculatedFrame);
     CGFloat cleft;
     if (component && component->_view && component->_view.superview) {
-        cleft = [component->_view.superview convertPoint:component->_view.frame.origin toView:_view].x;
+        cleft = [self absolutePositionForComponent:component].x;
     } else {
         cleft = 0.0;
     }
@@ -594,6 +607,7 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
         if(!target.hasAppear && component){
             target.hasAppear = YES;
             if (component->_appearEvent) {
+//                NSLog(@"appear:%@, %.2f", component, ctop);
                 [component fireEvent:@"appear" params:_direction ? @{@"direction":_direction} : nil];
             }
         }
@@ -601,6 +615,7 @@ WX_EXPORT_METHOD(@selector(resetLoadmore))
         if(target.hasAppear && component){
             target.hasAppear = NO;
             if(component->_disappearEvent){
+//                NSLog(@"disappear:%@", component);
                 [component fireEvent:@"disappear" params:_direction ? @{@"direction":_direction} : nil];
             }
         }
