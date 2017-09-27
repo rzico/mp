@@ -19,9 +19,7 @@
 
 @end
 
-@implementation XMTabBarController{
-    UIViewController *addVc;
-}
+@implementation XMTabBarController
 
 - (void) viewDidLoad{
     [super viewDidLoad];
@@ -42,10 +40,8 @@
     [homeVc render:nil];
     
     FriendsViewController *friendsVc = [FriendsViewController new];
-    friendsVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/friends.js",[NSBundle mainBundle].bundlePath]];
+    friendsVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/deposit.js",[NSBundle mainBundle].bundlePath]];
     [friendsVc render:nil];
-    
-    addVc = [UIViewController new];
     
     MessageViewController *messageVc = [MessageViewController new];
     messageVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/message.js",[NSBundle mainBundle].bundlePath]];
@@ -57,7 +53,7 @@
     
     self.viewControllers = @[[[WXRootViewController alloc] initWithRootViewController:homeVc],
                              [[WXRootViewController alloc] initWithRootViewController:friendsVc],
-                             [[WXRootViewController alloc] initWithRootViewController:addVc],
+                             [[WXRootViewController alloc] initWithRootViewController:[UIViewController new]],
                              [[WXRootViewController alloc] initWithRootViewController:messageVc],
                              [[WXRootViewController alloc] initWithRootViewController:memberVc]
                              ];
