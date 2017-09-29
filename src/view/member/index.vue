@@ -1,5 +1,6 @@
+效果更好了点
 <template>
-    <scroller class="wrapper" show-scrollbar="false" offset-accuracy="10" @scroll="scrollHandler()">
+    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
         <!--顶部个人信息栏-->
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
@@ -29,21 +30,40 @@
         </div>
 
         <div>
+
+            <!--<div v-if="isAllArticle" v-cloak >-->
+            <!--<div>-->
+            <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
+            <!--</div>-->
+
             <!--全部文章、回收站栏-->
-            <div class="articleClass">
-                <text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>
-                <text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>
+            <!--<div class="articleClass">-->
+                <!--<text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>-->
+                <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
+            <!--</div>-->
+            <div  class="corpusBox">
+                <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px">
+                        <div class="articleClass" >
+                            <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
+                            <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
+                            <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
+                            <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
+                            <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
+                            <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
+                        </div>
+                </scroller>
+                <div style="width: 100px;justify-content: center;align-items: center">
+                    <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
+                </div>
+                <div class="blur leftBlur"></div>
+                <div class="blur rightBlur"></div>
             </div>
-            <div v-if="isAllArticle" v-cloak   transition="slide-edit-box">
-                    <!--<div>-->
-                        <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
-                    <!--</div>-->
-                <!--文章模块-->
-                <div>
-
-                    <div class="articleBox" v-for="(item,index) in articleList" @click="goArticle(item.id)" @panmove="onpanmove($event,index)" ref="animationRef" @touchend="ontouchend($event)" @touchstart="ontouchstart($event,index)">
-                    <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)">-->
-
+            <!--文章模块-->
+            <div >
+                <!--绑定动画-->
+                <transition-group name="paraTransition" tag="div">
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)"  @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)" ref="animationRef">
+                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                         <div class="atricleHead">
                             <text class="articleSign">{{item.articleSign}}</text>
                             <text class="articleTitle">{{item.articleTitle}}</text>
@@ -74,8 +94,8 @@
                                     <text class="rightHiddenText">编辑</text>
                                 </div>
                                 <div class="rightHiddenIconBox">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}" style="color: #D9141E;">&#xe6a7;</text>
-                                    <text class="rightHiddenText" style="color:#D9141E;">删除</text>
+                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
+                                    <text class="rightHiddenText redColor" >删除</text>
                                 </div>
                             </div>
                             <div class="rightHiddenSmallBox">
@@ -89,61 +109,30 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--帮助使用文章-->
-                    <div class="articleBox" v-for="item in helpList"  @swipe="swipeHappen($event)">
-                        <div class="atricleHead">
-                            <text class="articleSign">{{item.articleSign}}</text>
-                            <text class="articleTitle">{{item.articleTitle}}</text>
-                        </div>
-                        <!--文章封面-->
-                        <div>
-                            <image :src="item.articleCoverUrl" class="articleCover"></image>
-                        </div>
-                        <!--文章底部-->
-                        <div class="articleFoot">
-                            <div>
-                                <text class="articleDate">{{item.articleDate}}</text>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
-            <!--回收站栏目-->
-            <div v-if="!isAllArticle" v-cloak class="recycleSiteContent"  transition="slide-edit-box">
-                <div>
-                    <text v-if="isNoArticle" class="tipsText">您没有文章在回收站中</text>
-                </div>
-                <!--文章模块-->
-                <div>
-                    <div class="articleBox" v-for="item in articleListDelete" @swipe="swipeHappen($event)">
-                        <div class="atricleHead">
-                            <text class="articleSign">{{item.articleSign}}</text>
-                            <text class="articleTitle">{{item.articleTitle}}</text>
-                        </div>
-                        <!--文章封面-->
-                        <div>
-                            <image :src="item.articleCoverUrl" class="articleCover"></image>
-                        </div>
-                        <!--文章底部-->
-                        <div class="articleFoot">
-                            <div>
-                                <text class="articleDate">{{item.articleDate}}</text>
-                            </div>
-                            <div class="relevantInfo">
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.browse}}</text>
-                                <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.praise}}</text>
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.comments}}</text>
-                            </div>
-                        </div>
                     </div>
-                </div>
+              </transition-group>
+                <!--帮助使用文章-->
+                <!--<div class="articleBox" v-for="item in helpList"  @swipe="swipeHappen($event)">-->
+                    <!--<div class="atricleHead">-->
+                        <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                        <!--<text class="articleTitle">{{item.articleTitle}}</text>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+                    <!--<div>-->
+                        <!--<image :src="item.articleCoverUrl" class="articleCover"></image>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;文章底部&ndash;&gt;-->
+                    <!--<div class="articleFoot">-->
+                        <!--<div>-->
+                            <!--<text class="articleDate">{{item.articleDate}}</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
+
+        <!--</div>-->
 
         <loading class="loading" @loading="onloading" :display="showLoading">
             <text class="indicator">Loading ...</text>
@@ -151,6 +140,54 @@
     </scroller>
 </template>
 <style scoped>
+    .paraTransition-enter-active{
+        transition: all 0.2s;
+    }
+    .paraTransition-leave-active {
+        transition: all 0.2s;
+    }
+    .paraTransition-leave-to{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    .paraTransition-enter-to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+    .paraTransition-enter{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    .rightBlur{
+        right: 100px;
+        width:20px;
+        background-image: linear-gradient(to left, #F8F9FC,#fff);
+    }
+    .leftBlur{
+        left:0;
+        background-image: linear-gradient(to right, #F8F9FC,#fff);
+    }
+    .blur{
+        position: absolute;
+        height: 79px;
+        width:20px;
+        /*background-color: #F8F9FC;*/
+        top:0;
+        opacity: 0.9;
+    }
+    .corpusBox{
+       flex-direction: row;
+        background-color: #F8F9FC;
+        height:80px;
+        position: sticky;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: gainsboro;
+
+    }
+    .redColor{
+        color: #D9141E;
+    }
     .rightHiddenIconBox{
         justify-content: center;
         align-items: center;
@@ -234,6 +271,7 @@
         margin-bottom: 10px;
         /*========= 9.27*/
         width:1080px;
+        display: inline-block
     }
 
     .atricleHead {
@@ -268,10 +306,6 @@
     [v-cloak] {
         display: none;
     }
-    .recycleSiteContent{
-        align-items: center;
-        width:750px;
-    }
     .tipsText{
         color: grey;
         font-size: 26px;
@@ -293,15 +327,14 @@
         padding-left: 10px;
         border-bottom-width: 1px;
         border-style: solid;
-        border-color: #888;
-        /*height:80px;*/
-        height:120px;
+        border-color: gainsboro;
+        height:80px;
+        /*height:120px;*/
         position: sticky;
-        background-color: #fff;
+        background-color: #F8F9FC;
     }
     .allArticle{
         font-size: 29px;
-        margin-right: 20px;
         line-height: 80px;
         padding-left: 20px;
         padding-right: 20px;
@@ -392,19 +425,21 @@
 <script>
     const modal = weex.requireModule('modal');
     const native = weex.requireModule('app');
-    const navigator = weex.requireModule('navigator');
     const stream = weex.requireModule('stream')
     const event = weex.requireModule('event');
     const animation = weex.requireModule('animation')
-    var initialPoint;//初始点
+    const dom = weex.requireModule('dom');
     var animationPara;//执行动画的文章
+    var scrollTop = 0;
+    var recycleScroll = 0;
+    var allArticleScroll = 0;
     export default {
         data:function() {
             return{
-                testScroll:'1',
+                canScroll:true,
                 userName:'柯志杰',
                 userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
-                isAllArticle:true,
+                whichCorpus:'全部文章',
                 isNoArticle:false,
                 refreshing:'hide',
                 fontName: '&#xe685;',
@@ -415,6 +450,119 @@
                 id:'334',
                 showLoading: 'hide',
                 imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+
+                memberArticleList:[{
+                    corpus:'全部文章',
+                    articleList:[{
+                        articleSign: '样例',
+                        articleTitle: '我在微信有了自己的专栏!',
+                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-04-28',
+                        id:'1',
+                    },{
+                        articleSign: '样例',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-09-01',
+                        id:'2',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        articleDate: '2017-09-01',
+                        id:'3',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        articleDate: '2017-09-01',
+                        id:'4',
+                    }]
+                },{
+                    corpus:'回收站',
+                    articleList:[{
+                        articleSign: '样例',
+                        articleTitle: '我在微信有了自己的专栏!',
+                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-04-28',
+                        id:'11',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    },{
+                        articleSign: '样例',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    }]
+                },{
+                    corpus:'我的第一个文集',
+                    articleList:[{
+                        articleSign: '样例',
+                        articleTitle: '我在微信有了自己的专栏!',
+                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-04-28',
+                        id:'',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    },{
+                        articleSign: '样例',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    }]
+                },{
+                    corpus:'诚毅学院点滴',
+                    articleList:[{
+                        articleSign: '公开',
+                        articleTitle: '我在微信有了自己的专栏!',
+                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-04-28',
+                        id:'',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    },{
+                        articleSign: '私密',
+                        articleTitle: '魔篇使用帮助',
+                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                        articleDate: '2017-09-01',
+                        id:'',
+                    }]
+                }],
+
+
+
 //                帮助文章
                 helpList:[{
                     articleSign: '样例',
@@ -436,7 +584,69 @@
                     id:'',
                 }],
 //                全部文章
-                articleList: [],
+                articleList: [{
+                    articleSign: '公开',
+                    articleTitle: '金钻厦门',
+                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate: '2017-8-31',
+                    browse: 55,
+                    praise: 48,
+                    comments: 32,
+                    id:'1',
+                    corpus:'全部文章',
+                }, {
+                    articleSign: '公开',
+                    articleTitle: '美丽厦门111',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'2',
+                    corpus:'回收站',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'3',
+                    corpus:'诚毅学院点滴',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'4',
+                    corpus:'诚毅学院点滴',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'5',
+                    corpus:'诚毅学院点滴',
+                }, {
+                    articleSign: '已删除',
+                    articleTitle: '美丽厦门',
+                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    articleDate: '2017-09-01',
+                    browse: 626,
+                    praise: 47,
+                    comments: 39,
+                    id:'6',
+                    corpus:'诚毅学院点滴',
+                }
+
+                ],
 //                回收站
                 articleListDelete: [{
                     articleSign: '已删除',
@@ -505,12 +715,14 @@
             }
         },
         created:function () {
-            var _this = this;
-            if(JSON.stringify(this.articleListDelete) == "[]"){//从对象解析出字符串
-                _this.isNoArticle = true;
-            };
-            _this.updateArticle();
-
+//            var _this = this;
+//            if(JSON.stringify(this.articleListDelete) == "[]"){//从对象解析出字符串
+//                _this.isNoArticle = true;
+//            };
+//            _this.updateArticle();
+            this.open(res=>{
+                modal.toast({message:res})
+            })
         },
         mounted:function(){
             var domModule=weex.requireModule("dom");
@@ -520,6 +732,29 @@
             })
         },
         methods: {
+            open (callback) {
+                return stream.fetch({
+                    method: 'GET',
+                    type: 'json',
+                    url: 'http://www.rzico.com/weex/member/article/list.jhtml'
+                }, callback)
+            },
+            switchArticle:function (item) {
+                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
+                    return true;
+                }else{
+                    return false;
+                }
+//                if(this.isAllArticle == false){
+//                    if(item.articleSign == '已删除'){
+//                        return true;
+//                    }else{
+//                        return false;
+//                    }
+//                }else{
+//                    return true;
+//                }
+            },
 //            前往文章
             goArticle(id){
                 var _this = this;
@@ -564,11 +799,55 @@
             jump:function (vueName) {
                 console.log('will jump');
             },
-            allArticle:function(){
-                this.isAllArticle = true;
+            allArticle:function(corpusName){
+                var _this = this;
+                _this.whichCorpus = corpusName;
+//                if(this.isAllArticle == true){
+//
+//                }else{
+//                    this.isAllArticle = true;
+//                    recycleScroll = scrollTop;
+//                    setTimeout(function () {
+//
+//                        if(allArticleScroll > 424){
+//                            let listHeight = allArticleScroll - 424;
+//                            let positionIndex =parseInt( listHeight / 457);
+//                            let offsetLength = - listHeight % 457;
+//                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
+//                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
+//                            dom.scrollToElement(el, {
+//                                animated:false,
+//                                offset:  -80 - offsetLength
+//
+//                            })
+//                        }
+//                    },50)
+//                }
+
             },
             recycleSite:function(){
-                this.isAllArticle = false;
+                var _this = this;
+                if(this.isAllArticle == false){
+                    modal.toast({message:"相等"})
+                }else{
+                    this.isAllArticle = false;
+                    allArticleScroll = scrollTop;
+                    setTimeout(function () {
+
+                        if(recycleScroll > 424){
+                            let listHeight = recycleScroll - 424;
+                            let positionIndex =parseInt( listHeight / 457);
+                            let offsetLength = - listHeight % 457;
+                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
+                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
+                            dom.scrollToElement(el, {
+                                animated:false,
+                                offset:  -80 - offsetLength
+                            })
+                        }
+                    },50)
+                }
+
             },
             swipeHappen:function(event){
                 console.log(event);
@@ -579,40 +858,57 @@
 //                    this.isAllArticle = true;
 //                }
             },
+//            点击屏幕时
             ontouchstart:function (event,index) {
-                initialPoint = event.changedTouches[0].screenX;
+                var _this = this;
+                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                }else{
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
                 animationPara =  this.$refs.animationRef[index];
+                this.canScroll = true;
             },
+//            移动时
             onpanmove:function (event,index) {
-                let distance = event.changedTouches[0].screenX - initialPoint;
-              if( distance > 0){
-//                  modal.toast({message:"right"});
-                  animation.transition(animationPara, {
-                      styles: {
-                          transform: 'translateX(0)',
-                      },
-                      duration: 350, //ms
-                      timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                modal.toast({message:index})
+                var _this = this;
+                if(event.direction == 'right'){
+                    _this.canScroll = false;
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                      needLayout:false,
-                      delay: 0 //ms
-                  })
-              }else{
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }else if(event.direction == 'left'){
+                    _this.canScroll = false;
 //                  modal.toast({message:distance});
-                  animation.transition(animationPara, {
-                      styles: {
-                          transform: 'translateX(-330)',
-                      },
-                      duration:350, //ms
-                      timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(-330)',
+                        },
+                        duration:350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                      needLayout:false,
-                      delay: 0 //ms
-                  })
-              }
-                initialPoint = event.changedTouches[0].screenX;
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
             },
-            ontouchend:function (event) {
+            onpanend:function (event) {
             },
             onloading(event) {
                 modal.toast({message: '加载中...', duration: 1})
@@ -634,11 +930,17 @@
                 }, 1500)
             },
             scrollHandler: function(e) {
-                modal.toast({message:e});
-                this.testScroll  = e;
 //                this.offsetX = e.contentOffset.x;
 //                this.offsetY = e.contentOffset.y;
+                scrollTop =Math.abs(e.contentOffset.y);
+//                modal.toast({message:scrollTop});
+                if(scrollTop < 424){
+                    recycleScroll = 0;
+                    allArticleScroll = 0;
+                }
             },
         }
     }
 </script>
+
+
