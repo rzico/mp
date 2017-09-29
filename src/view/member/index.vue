@@ -583,7 +583,7 @@
                     articleDate: '2017-09-01',
                     id:'',
                 }],
-//                全部文章
+//                全部文章==================
                 articleList: [{
                     articleSign: '公开',
                     articleTitle: '金钻厦门',
@@ -595,7 +595,7 @@
                     id:'1',
                     corpus:'全部文章',
                 }, {
-                    articleSign: '公开',
+                    articleSign: '已删除',
                     articleTitle: '美丽厦门111',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
@@ -605,7 +605,7 @@
                     id:'2',
                     corpus:'回收站',
                 }, {
-                    articleSign: '已删除',
+                    articleSign: '私密',
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate: '2017-09-01',
@@ -615,7 +615,7 @@
                     id:'3',
                     corpus:'诚毅学院点滴',
                 }, {
-                    articleSign: '已删除',
+                    articleSign: '私密',
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
@@ -625,7 +625,7 @@
                     id:'4',
                     corpus:'诚毅学院点滴',
                 }, {
-                    articleSign: '已删除',
+                    articleSign: '私密',
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
@@ -635,7 +635,7 @@
                     id:'5',
                     corpus:'诚毅学院点滴',
                 }, {
-                    articleSign: '已删除',
+                    articleSign: '公开',
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
@@ -720,9 +720,9 @@
 //                _this.isNoArticle = true;
 //            };
 //            _this.updateArticle();
-            this.open(res=>{
-                modal.toast({message:res})
-            })
+//            this.open(res=>{
+//                modal.toast({message:res})
+//            })
         },
         mounted:function(){
             var domModule=weex.requireModule("dom");
