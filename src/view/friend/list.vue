@@ -1,7 +1,4 @@
 <template>
-    <!--<div class="wrapper">-->
-    <!--<text class="button" @click="jumpPage">{{text}}User {{ $route.params.id }}</text>-->
-    <!--</div>-->
     <div>
         <navbar :title="title":complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
         <div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >
@@ -548,19 +545,7 @@
               event.closeURL();
             },
             jump:function (vueName) {
-//                this.$router.push(vueName);
                 modal.toast({message:'点击了信息栏'});
-            },
-            jumpPage:function(event){
-//                var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
-//                url = url.split('/').slice(0,-1).join('/') + '/app.weex.js';  //獲取b.we編譯後的b.js的相對路徑
-//                navigator.push({
-//                    url: url,
-//                    animated: true
-//                }, event => {
-//                    modal.toast({ message: 'callback:' + event });
-//                })
-                this.$router.back();
             },
             onlongpress :function(count) {
                 modal.toast({ message:this.allLetter[count] ,duration: 0.3});
@@ -609,7 +594,6 @@
                                     const el = this.$refs.listref[i]//跳转到相应的cell
                                     dom.scrollToElement(el, {
 //                                        animated:false
-
                                     })
                                 }else if(moveLetter == 0){//判断是否滑到 顶部按钮
                                     const el = this.$refs.linkref[moveLetter]//跳转到相应的cell

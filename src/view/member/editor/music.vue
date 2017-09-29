@@ -1,7 +1,7 @@
 <template>
     <div>
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
-        <list class="wrapperBox">
+        <list class="wrapperBox" >
             <cell>
                 <!--无背景音乐-->
                 <div class="musicTitleBox noMusic" @click="hiddenMusic()">
