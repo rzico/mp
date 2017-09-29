@@ -98,10 +98,11 @@
             }
         },
         created(){
+            var _this = this;
             var domModule=weex.requireModule("dom");
             domModule.addRule('fontFace',{
                 'fontFamily':'iconfont',
-                'src':"url('"+this.locateURL+"/resources/fonts/iconfont.ttf')"
+                'src':"url('"+_this.locateURL+"/resources/fonts/iconfont.ttf')"
             });
 
             native.changeWindowsBar(true);

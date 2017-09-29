@@ -103,8 +103,6 @@
             mobile:{default:""},
             status:{default:"点击重新发送"}
         },
-        created(){
-        },
         methods:{
 //            当用户输入数字时触发
             captchaInput:function (event) {

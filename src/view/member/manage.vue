@@ -30,7 +30,7 @@
                     <div class="cell-panel space-between cell-clear">
                         <div class="flex-row">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
-                            <text class="title ml10">专栏认证</text>
+                            <text class="title ml10">我的专栏</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="sub_title">已认证</text>
@@ -40,25 +40,6 @@
                 </div>
 
                 <div class="cell-row cell-line">
-                    <div class="cell-panel space-between">
-                        <div class="flex-row flex-start">
-                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
-                            <text class="title ml10">商品管理</text>
-                        </div>
-                        <div class="flex-row flex-end">
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
-                    <div class="cell-panel space-between">
-                        <div class="flex-row flex-start">
-                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                            <text class="title ml10">订单管理</text>
-                        </div>
-                        <div class="flex-row flex-end">
-                            <text class="sub_title">0个待处理</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
                     <div class="cell-panel space-between">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
@@ -73,6 +54,16 @@
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
                             <text class="title ml10">投票管理</text>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="sub_title"></text>
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                    <div class="cell-panel space-between cell-clear">
+                        <div class="flex-row flex-start">
+                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
+                            <text class="title ml10">我的赏金</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="sub_title"></text>

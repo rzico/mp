@@ -1,3 +1,4 @@
+<script src="../mixins/wx.js"></script>
 <template>
     <div class="header">
         <div class="back" @click="goback('/')">
@@ -41,18 +42,12 @@
 
 </style>
 <script>
-    const native = weex.requireModule('wxNativeModule');
+    import {jsMixins} from '../mixins/wx.js'
     export default {
+        mixins:[jsMixins],
         props: {
             title: { default: "navbar" },
             complete:{default:''}
-        },
-        created(){
-            var domModule=weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
-            })
         },
         methods: {
             goback: function (e) {
