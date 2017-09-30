@@ -6,7 +6,7 @@
         </div>
         <div class="nav">
             <text class="title">{{title}}</text>
-            <text class="title" @click="goComplete('/')">{{complete}}</text>
+            <text class="complete" @click="goComplete('/')">{{complete}}</text>
          </div>
     </div>
  </template>
@@ -14,6 +14,7 @@
 
 <style scoped>
     .back {
+        margin-top: 40px;
         flex-direction: row;
         width: 96px;
         height: 96px;
@@ -22,8 +23,6 @@
     }
     .image {
         font-size: 38px;
-        width: 38px;
-        height: 38px;
         color: #fff;
     }
     .nav {
@@ -32,6 +31,7 @@
         flex-direction: row;
         align-items: center;
         padding-right: 30px;
+        margin-top: 40px;
     }
     .title {
         font-family: Verdana, Geneva, sans-serif;
@@ -39,6 +39,12 @@
         line-height: 38px;
         color: #FFFFFF;
      }
+    .complete {
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 34px;
+        line-height: 34px;
+        color: #FFFFFF;
+    }
 
 </style>
 <script>

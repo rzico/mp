@@ -35,7 +35,7 @@
                  </div>
                  <div class="cell-panel h space-between cell-clear">
                     <div class="flex-row">
-                        <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67e;</text>
+                        <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe637;</text>
                         <div class="ml10">
                             <text class="title">手机联系人</text>
                             <text class="sub_title mt10">添加通讯录中的朋友</text>

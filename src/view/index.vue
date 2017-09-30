@@ -135,10 +135,7 @@
                 );
             },
             login: function (e) {
-                event.openURL({
-                    url: this.locateURL+'/view/login/index.js',
-                    animated: "true"
-                })
+                event.openURL(this.locateURL+'/view/login/index.js')
             },
             goback: function (e) {
                 event.closeURL();

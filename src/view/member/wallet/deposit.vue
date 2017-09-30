@@ -216,7 +216,7 @@
                 let     m = date.getMonth() + 1;
                 return m;
             }
-    },
+        },
         created:function () {
 //              页面创建时请求数据
             this.open( pageNumber,res => {

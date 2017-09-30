@@ -535,8 +535,8 @@
             }
         },
         props: {
-            title: { default: "朋友"},
-            complete:{ default:"完成"}
+            title: { default: "新的朋友"},
+            complete:{ default:"添加朋友"}
         },
         methods: {
             goComplete:function () {

@@ -56,12 +56,10 @@
                 }, function (weex) {
                     if (weex.ok) {
                         if (weex.data.type == "success") {
-                           event.openURL({
-                               url:_this.locateURL+"/view/login/captcha.js?mobile=" + _this.value,
+                           event.openURL(_this.locateURL+"/view/login/captcha.js?mobile=" + _this.value,
                                function (e) {
                                    event.closeURL();
-                               }
-                           });
+                               });
                         } else {
                             modal.toast({message:weex.data.content});
                         }
