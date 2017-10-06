@@ -14,7 +14,7 @@
     const modal = weex.requireModule('modal')
     const event = weex.requireModule('event');
     const native = weex.requireModule('app');
-    import {jsMixins} from '../../mixins/wx.js'
+    import {jsMixins} from '../../mixins/mixins.js'
     import navbar from '../../include/navbar.vue'
     import captcha from '../../include/captcha.vue'
     var stream = weex.requireModule('stream')

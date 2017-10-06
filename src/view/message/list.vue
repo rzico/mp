@@ -1,41 +1,65 @@
 <template>
-    <list class="wrapper">
-        <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-            <text class="indicator">下拉刷新 ...</text>
-        </refresh>
-        <!--朋友信息-->
-        <cell v-for="item in messageList" >
-            <div class="friendsLine" @click="jump('/member')">
-                <!--头像-->
-                <div class="friendsImageBox">
-                    <image :src="item.friendImage" class="friendsImage"></image>
-                </div>
-                <!--有新消息-->
-                <div class="newMessage" v-if="item.messageTotal != ''">
-                    <text class="messageTotal">{{item.messageTotal}}</text>
-                </div>
-                <!--名字与内容-->
-                <div class="messageText">
+    <div class="wrapper">
+        <div class="header">
+            <div class="flex-center flex1"></div>
+            <div class="nav flex4">
+                <text class="nav_title">消息</text>
+            </div>
+            <div class="flex-center flex1" @click="menu()">
+                <text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+            </div>
+        </div>
+        <list class="list">
+            <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">下拉刷新 ...</text>
+            </refresh>
+            <!--朋友信息-->
+            <cell v-for="item in messageList" >
+                <div class="friendsLine" @click="jump('/member')">
+                    <!--头像-->
+                    <div class="friendsImageBox">
+                        <image :src="item.friendImage" class="friendsImage"></image>
+                    </div>
+                    <!--有新消息-->
+                    <div class="newMessage" v-if="item.messageTotal != ''">
+                        <text class="messageTotal">{{item.messageTotal}}</text>
+                    </div>
+                    <!--名字与内容-->
+                    <div class="messageText">
                         <text class="friendName">{{item.friendName}}</text>
                         <text class="friendMessage">{{item.friendMessage}}</text>
+                    </div>
+                    <!--消息时间-->
+                    <div class="messageTimeBox">
+                        <text class="messageTime">{{item.messageTime}}</text>
+                    </div>
                 </div>
-                <!--消息时间-->
-                <div class="messageTimeBox">
-                    <text class="messageTime">{{item.messageTime}}</text>
-                </div>
-            </div>
-        </cell>
-    </list>
+            </cell>
+        </list>
+
+    </div>
 </template>
 
+<style lang="less" src="../../style/wx.less"/>
 <style>
 
-    .indicator{
-        width:750px;
-        text-align: center;
-        margin-top: 20px;
-        margin-bottom: 20px;
+    .nav {
+        flex:1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 40px;
     }
+
+    .menu {
+        margin-top: 40px;
+        font-size: 50px;
+        line-height: 60px;
+        height:60px;
+        width:60px;
+        color:white;
+    }
+
     .messageTotal{
         background-color: red;
         line-height: 38px;
@@ -65,9 +89,6 @@
         color: #999;
         font-size: 24px;
         lines:1;
-    }
-    .wrapper{
-        background-color: #fff;
     }
     .friendName{
         lines:1;
@@ -111,6 +132,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
+    const dom=weex.requireModule("dom");
     export default {
         data:function(){
             return{
@@ -209,6 +231,13 @@
                 }]
             }
         },
+        created() {
+            var _this = this;
+            dom.addRule('fontFace',{
+                'fontFamily':'iconfont',
+                'src':"url('"+_this.locateURL+"/resources/fonts/iconfont.ttf')"
+            });
+        },
         methods:{
             //            下拉刷新
             onrefresh (event) {
@@ -219,6 +248,9 @@
                 }, 2000)
             },
             jump:function(page){
+
+            },
+            menu:function(page){
 
             }
         }

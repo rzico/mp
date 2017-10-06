@@ -25,7 +25,7 @@
     const stream = weex.requireModule('stream');
     const event = weex.requireModule('event');
 
-    import {jsMixins} from '../../mixins/wx.js'
+    import {jsMixins} from '../../mixins/mixins.js'
     import navbar from '../../include/navbar.vue';
     import mobile from '../../include/mobile.vue';
 

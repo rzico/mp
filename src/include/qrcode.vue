@@ -134,7 +134,7 @@
 <script>
     const stream = weex.requireModule('stream');
     const native = weex.requireModule('app');
-    import {jsMixins} from '../mixins/wx.js'
+    import {jsMixins} from '../mixins/mixins.js'
     export default {
         mixins:[jsMixins],
         data() {

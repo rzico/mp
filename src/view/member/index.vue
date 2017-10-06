@@ -1,4 +1,3 @@
-效果更好了点
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
         <!--顶部个人信息栏-->

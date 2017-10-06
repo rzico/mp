@@ -66,7 +66,7 @@
     }
 </style>
 <script>
-    var navigator = weex.requireModule('navigator')
+    var event = weex.requireModule('event')
     import navbar from '../../include/navbar.vue'
     export default {
         components: {
@@ -77,14 +77,13 @@
         },
         methods: {
             goback: function (e) {
-                navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-                    animated: "true"
-                })
+                event.closeURL()
             },
             setup: function (e) {
+                event.openURL('http://cdn.rzico.com/weex/app/member/setup.js',function (data) {
 
-            }
+                })
+           }
         }
 
     }

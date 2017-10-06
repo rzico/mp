@@ -1,19 +1,19 @@
-<script src="../mixins/wx.js"></script>
+<script src="../mixins/mixins.js"></script>
 <template>
     <div class="header">
-        <div class="back" @click="goback('/')">
-            <text class="image" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+        <div class="nav_back" @click="goback('/')">
+            <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
         <div class="nav">
-            <text class="title">{{title}}</text>
-            <text class="complete" @click="goComplete('/')">{{complete}}</text>
+            <text class="nav_title">{{title}}</text>
+            <text class="nav_Complete" @click="goComplete('/')">{{complete}}</text>
          </div>
     </div>
  </template>
 <style lang="less" src="../style/wx.less"/>
 
 <style scoped>
-    .back {
+    .nav_back {
         margin-top: 40px;
         flex-direction: row;
         width: 96px;
@@ -21,7 +21,7 @@
         align-items: center;
         justify-content: center;
     }
-    .image {
+    .nav_ico {
         font-size: 38px;
         color: #fff;
     }
@@ -33,13 +33,7 @@
         padding-right: 30px;
         margin-top: 40px;
     }
-    .title {
-        font-family: Verdana, Geneva, sans-serif;
-        font-size: 38px;
-        line-height: 38px;
-        color: #FFFFFF;
-     }
-    .complete {
+    .nav_Complete {
         font-family: Verdana, Geneva, sans-serif;
         font-size: 34px;
         line-height: 34px;
@@ -48,7 +42,7 @@
 
 </style>
 <script>
-    import {jsMixins} from '../mixins/wx.js'
+    import {jsMixins} from '../mixins/mixins.js'
     export default {
         mixins:[jsMixins],
         props: {

@@ -1,5 +1,4 @@
 
-
 <template>
     <div class="captcha">
         <div class="mobile-header">
@@ -29,7 +28,7 @@
         margin-bottom: 60px;
     }
     .inputTextBox{
-        width:630px;
+        width:530px;
         position: relative;
     }
     .inputText{
@@ -48,7 +47,7 @@
     }
     .input{
         opacity:0;
-        width:630px;
+        width:530px;
         position: absolute;
         height: 80px;
         font-size: 85px;
@@ -120,7 +119,6 @@
                     optionIndex ++;
                 }
                 lastCaptchaLength = event.value.length;
-                modal.toast({message: _this.test});
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
                     _this.captcha = event.value;

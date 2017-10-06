@@ -1,11 +1,13 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
+        <search @gosearch="gosearch" > </search>
         <div class="addFriend" @click="gomail">
             <text class="ico_big gray" :style="{fontFamily:'iconfont'}">&#xe637;</text>
             <text class="title mt20 gray">添加手机联系人</text>
         </div>
-        <list class="list">
+        <noData :noDataHint="noDataHint" v-if="isEmpty()" > </noData>
+        <list class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image class="gif" resize="cover"
                        src="file://resource/image/loading.gif"></image>
@@ -14,7 +16,7 @@
             <cell v-for="(friend,index) in friendsList">
                 <!--姓氏首字母-->
                 <div class="letterBox" v-if="isRepeat(index)">
-                    <text class="nameLetter">{{friend.createDate | filterTime}}</text>
+                    <text class="nameLetter">{{friend.createDate | dayfmt}}</text>
                 </div>
                 <!--姓氏里每个人的名子-->
                 <div class="addFriendsBorder">
@@ -48,7 +50,6 @@
         background-color: white;
     }
     .addFriend {
-        margin-top: 20px;
         flex-direction: column;
         align-items: center;
         padding-top: 30px;
@@ -136,15 +137,18 @@
 
 <script>
     const dom = weex.requireModule('dom');
-    const app = weex.requireModule('app');
     const event = weex.requireModule('event');
     const stream = weex.requireModule('stream');
-    import {jsMixins} from '../../mixins/wx.js';
+    import {mixins} from '../../mixins/mixins.js';
+    import {filters} from '../../filters/filters.js';
     import navbar from '../../include/navbar.vue';
+    import search from '../../include/search.vue';
+    import noData from '../../include/noData.vue';
     export default {
-        mixins:[jsMixins],
+        mixins:[mixins],
+        filters:[filters],
         components: {
-            navbar
+            navbar,search,noData
         },
         data() {
             return   {
@@ -158,21 +162,8 @@
         },
         props: {
             title: { default: "新的朋友"},
+            noDataHint: { default: "没有新朋友"},
             complete:{ default:"添加"}
-        },
-        filters: {
-            filterTime: function (value) {
-                let date = new Date(value);
-                let td = new Date();
-                let m = td.getDay() - date.getDay();
-                if (m<3) {
-                    return "近三天"
-                }
-                if (m<7) {
-                    return "近七天"
-                }
-                return "七天前"
-            }
         },
         created() {
             var _this = this;
@@ -188,6 +179,15 @@
                 event.openURL(this.locateURL+"/view/friends/add.js",function () {
                     event.closeURL();
                 })
+            },
+            gosearch:function () {
+
+            },
+            isNoEmpty:function() {
+                return this.friendsList.length!=0;
+            },
+            isEmpty:function() {
+                return this.friendsList.length==0;
             },
             goback:function () {
               event.closeURL();
@@ -208,12 +208,8 @@
             },
             onrefresh:function () {
                 var _this = this;
-                if (_this.refreshing == true) {
-                    return true;
-                }
                 _this.refreshing = true;
                 _this.refreshState = "正在刷新数据";
-
                 return stream.fetch({
                         method: 'GET',
                         type: 'json',
@@ -244,10 +240,7 @@
             },
             onloading:function () {
                 var _this = this;
-                if (_this.showLoading == true) {
-                    return true;
-                }
-                _this.showLoading = true;
+               _this.showLoading = true;
                 _this.loadingState = "正在加载数据";
                 return stream.fetch({
                     method: 'GET',
@@ -271,12 +264,12 @@
                             } else {
                                 _this.showLoading = false;
                                 _this.loadingState = "松开加载更多";
-                                app.showToast(weex.data.content);
+                                event.showToast(weex.data.content);
                             }
                         } else {
                             _this.showLoading = false;
                             _this.loadingState = "松开加载更多";
-                            app.showToast("网络不稳定请重试");
+                            event.showToast("网络不稳定请重试");
                         }
                 })
             },
@@ -297,12 +290,12 @@
                 }, function (weex) {
                     if (weex.ok) {
                         if (weex.data.type == "success") {
-                            app.showToast(weex.data.content);
+                            event.showToast(weex.data.content);
                         } else {
-                            app.showToast(weex.data.content);
+                            event.showToast(weex.data.content);
                         }
                     } else {
-                        app.showToast("网络不稳定请重试");
+                        event.showToast("网络不稳定请重试");
                     }
                 })
             },

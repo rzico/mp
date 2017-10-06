@@ -81,7 +81,7 @@
 
 </style>
 <script>
-    import {jsMixins} from '../mixins/wx.js'
+    import {jsMixins} from '../mixins/mixins.js'
     const event = weex.requireModule('event');
     const stream = weex.requireModule('stream');
     const native = weex.requireModule('app');

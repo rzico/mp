@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="cell-row cell-clear" >
-                    <div class="cell-panel newHeight"  :style="addBorder(index)">
+                    <div class="cell-panel newHeight" :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
                                    src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
@@ -97,41 +97,6 @@
         components: {
             navbar
         },
-//        过滤器
-        filters: {
-            detailMonth: function (value) {
-                let date = new Date(value);
-                let    m = date.getMonth() + 1;
-                return m;
-            },
-            detailTime: function (value) {
-                let    date = new Date(value);
-                let    m = date.getMonth() + 1;
-                let    d = date.getDate();
-                let    H = date.getHours();
-                let    i = date.getMinutes();
-                if (m < 10) {
-                    m = '0' + m;
-                }
-                if (d < 10) {
-                    d = '0' + d;
-                }
-                if (H < 10) {
-                    H = '0' + H;
-                }
-                if (i < 10) {
-                    i = '0' + i;
-                }
-                let t = m + '-' + d + '  ' + H + ':' + i ;
-                return t;
-
-            },
-            formatting:function(value){
-                let dealValue = value.toFixed(2);
-                return dealValue;
-            }
-        },
-
         props: {
             title: { default: "账单" }
         },

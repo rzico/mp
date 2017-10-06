@@ -309,7 +309,7 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
-    import {jsMixins} from '../../../mixins/wx.js'
+    import {jsMixins} from '../../../mixins/mixins.js'
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     const native = weex.requireModule('app')
