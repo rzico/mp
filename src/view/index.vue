@@ -97,7 +97,7 @@
         },
         created(){
             utils.initIconFont();
-            //event.changeWindowsBar(true);
+            event.changeWindowsBar(true);
         },
         methods: {
             weixin: function (e) {

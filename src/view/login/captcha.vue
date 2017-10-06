@@ -11,16 +11,13 @@
 
 </style>
 <script>
-    const modal = weex.requireModule('modal')
+    import { POST, GET } from '../assets/fetch'
+    import utils from '../assets/utils'
     const event = weex.requireModule('event');
-    const native = weex.requireModule('app');
-    import {jsMixins} from '../../mixins/mixins.js'
     import navbar from '../../include/navbar.vue'
     import captcha from '../../include/captcha.vue'
-    var stream = weex.requireModule('stream')
     var time = 0;
     export default {
-        mixins:[jsMixins],
         components: {
             navbar,captcha
         },
@@ -32,18 +29,8 @@
             status:{default:"点击重新发送"}
         },
         created() {
-            var bundleUrl = this.$getConfig().bundleUrl;
-            var getVal = bundleUrl.split('?')[1];
-            var operates = getVal.split('&');
-
-            for (var i=0;i<operates.length;i++){
-               var op = operates[i].split('=');
-               if (op[0] == "mobile"){
-                  this.mobile = op[1];
-               }
-            }
-
-        },
+            this.mobile = utils.getUrlParamter();
+         },
         methods: {
             onTimeOut:function () {
                 setTimeout(1000,function () {
