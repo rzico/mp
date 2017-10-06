@@ -20,17 +20,14 @@
     }
 </style>
 <script>
-    const modal = weex.requireModule('modal');
-    const storage = weex.requireModule('storage');
-    const stream = weex.requireModule('stream');
     const event = weex.requireModule('event');
-
-    import {jsMixins} from '../../mixins/mixins.js'
+    const storage = weex.requireModule('storage');
+    import { POST, GET } from '../assets/fetch'
+    import utils from '../assets/utils'
     import navbar from '../../include/navbar.vue';
     import mobile from '../../include/mobile.vue';
 
     export default {
-        mixins:[jsMixins],
         components: {
             navbar,mobile
         },
@@ -49,24 +46,20 @@
         methods: {
             onSend: function (e) {
                 var _this = this;
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    url: 'weex/login/send_mobile.jhtml?mobile=' + _this.value
-                }, function (weex) {
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
-                           event.openURL(_this.locateURL+"view/login/captcha.js?mobile=" + _this.value,
+                POST('weex/login/send_mobile.jhtml?mobile=' + _this.value).then(
+                    function (data) {
+                        if (data.type == "success") {
+                           event.openURL(utils.locate("view/login/captcha.js?mobile=" + _this.value),
                                function (e) {
                                    event.closeURL();
                                });
                         } else {
-                            modal.toast({message:weex.data.content});
+                            event.toast(data.content);
                         }
-                    } else {
-                        modal.toast({message:"网络不稳定请重试"});
+                    },function (err) {
+                        event.toast("网络不稳定");
                     }
-                })
+                )
             },
             goback:function(e) {
                 event.closeURL();
