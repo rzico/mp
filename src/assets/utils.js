@@ -35,6 +35,21 @@ let utilsFunc = {
             }
         }
         return null;
+    },
+    dayfmt (value) {
+        let date = new Date(value);
+        let tody = new Date();
+        let m = tody.getDay() - date.getDay();
+        if (m<1) {
+            return "今天"
+        }
+        if (m<3) {
+            return "近三天"
+        }
+        if (m<7) {
+            return "近七天"
+        }
+        return "七天前"
     }
 };
 

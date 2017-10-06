@@ -15,6 +15,7 @@ def common
     pod 'AFNetworking-Synchronous/3.x'
     pod 'JSONModel'
     pod 'Reachability'
+    pod 'WechatOpenSDK'
 end
 
 target 'Weex' do

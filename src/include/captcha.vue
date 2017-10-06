@@ -88,7 +88,6 @@
 
 </style>
 <script>
-    const modal = weex.requireModule('modal');
     var optionIndex = 0;
     var lastCaptchaLength = 0;
     export default {

@@ -32,23 +32,29 @@
         // Fallback on earlier versions
         frame = CGRectMake(0, 0, width, weexHeight);
     }
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
     HomeViewController *homeVc = [HomeViewController new];
-    homeVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/bundlejs/index.js",[NSBundle mainBundle].bundlePath]];
-    
+    homeVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/index.js",[NSBundle mainBundle].bundlePath]];
+    homeVc.frame = frame;
+    homeVc.weexHeight = weexHeight;
     [homeVc render:nil];
     
     FriendsViewController *friendsVc = [FriendsViewController new];
     friendsVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/deposit.js",[NSBundle mainBundle].bundlePath]];
+//    friendsVc.frame = frame;
+    friendsVc.weexHeight = weexHeight;
     [friendsVc render:nil];
     
     MessageViewController *messageVc = [MessageViewController new];
     messageVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/message.js",[NSBundle mainBundle].bundlePath]];
+//    messageVc.frame = frame;
+    messageVc.weexHeight = weexHeight;
     [messageVc render:nil];
     
     MemberViewController *memberVc = [MemberViewController new];
     memberVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/member.js",[NSBundle mainBundle].bundlePath]];
+//    memberVc.frame = frame;
+    memberVc.weexHeight = weexHeight;
     [memberVc render:nil];
     
     self.viewControllers = @[[[WXRootViewController alloc] initWithRootViewController:homeVc],
@@ -158,6 +164,10 @@
 }
 
 - (void)didReceiveMemoryWarning{
+    
+}
+
+- (void)presentScanVC{
     
 }
 @end

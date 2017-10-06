@@ -136,17 +136,15 @@
 </style>
 
 <script>
-    const dom = weex.requireModule('dom');
+    import { POST, GET } from '../../assets/fetch'
+    import utils from '../../assets/utils'
+    import filters from '../../filters/filters'
     const event = weex.requireModule('event');
-    const stream = weex.requireModule('stream');
-    import {mixins} from '../../mixins/mixins.js';
-    import {filters} from '../../filters/filters.js';
+
     import navbar from '../../include/navbar.vue';
     import search from '../../include/search.vue';
     import noData from '../../include/noData.vue';
     export default {
-        mixins:[mixins],
-        filters:[filters],
         components: {
             navbar,search,noData
         },
@@ -166,17 +164,14 @@
             complete:{ default:"添加"}
         },
         created() {
+            utils.initIconFont();
             var _this = this;
-            dom.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('"+_this.locateURL+"/resources/fonts/iconfont.ttf')"
-            });
             setTimeout(() => {_this.onrefresh();
             }, 500);
          },
         methods: {
             goComplete:function () {
-                event.openURL(this.locateURL+"/view/friends/add.js",function () {
+                event.openURL(utils.locate("view/friends/add.js"),function () {
                     event.closeURL();
                 })
             },
@@ -210,14 +205,10 @@
                 var _this = this;
                 _this.refreshing = true;
                 _this.refreshState = "正在刷新数据";
-                return stream.fetch({
-                        method: 'GET',
-                        type: 'json',
-                        url: '/weex/member/friends/list.jhtml?pageSize=20&pageStart=0'
-                    }, function (weex) {
-                        if (weex.ok) {
-                            if (weex.data.type == "success") {
-                                let page = weex.data.data;
+                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0').then(
+                    function(data) {
+                            if (data.type == "success") {
+                                let page = data.data;
                                 _this.friendsList = page.data;
                                 _this.start = page.start+page.data.length;
                                 _this.refreshState = "数据刷新完成";
@@ -228,28 +219,24 @@
                             } else {
                                 _this.refreshing = false;
                                 _this.refreshState = "松开刷新数据";
-                                app.showToast(weex.data.content);
+                                event.toast(data.content);
                             }
-                        } else {
+                        },function (err) {
                             _this.refreshing = false;
                             _this.refreshState = "松开刷新数据";
-                            app.showToast("网络不稳定请重试");
+                            event.toast("网络不稳定");
                         }
 
-                })
+                )
             },
             onloading:function () {
                 var _this = this;
                _this.showLoading = true;
                 _this.loadingState = "正在加载数据";
-                return stream.fetch({
-                    method: 'GET',
-                    type: 'json',
-                    url: '/weex/member/friends/list.jhtml?pageSize=20&pageStart='+_this.start
-                }, function (weex) {
-                        if (weex.ok) {
-                            if (weex.data.type == "success") {
-                                let page = weex.data.data;
+                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart='+_this.start).then (
+                    function (data) {
+                            if (data.type == "success") {
+                                let page = data.data;
                                 if (page.data.length>0) {
                                     _this.friendsList.push(page.data);
                                     _this.start = page.start+page.data.length;
@@ -264,59 +251,43 @@
                             } else {
                                 _this.showLoading = false;
                                 _this.loadingState = "松开加载更多";
-                                event.showToast(weex.data.content);
+                                event.toast(weex.data.content);
                             }
-                        } else {
+                        },function (err) {
                             _this.showLoading = false;
                             _this.loadingState = "松开加载更多";
-                            event.showToast("网络不稳定请重试");
+                            event.toast("网络不稳定");
                         }
-                })
+                )
             },
             jump:function (vueName) {
-                app.showToast("网络不稳定请重试");
+                event.toast("网络不稳定");
             },
             gomail:function() {
-                event.openURL(this.locateURL+"/view/friends/mail.js",function () {
+                event.openURL(utils.locate("view/friends/mail.js"),function () {
                     event.closeURL();
                 })
             },
             //同意添加好友
             adopt:function (id) {
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    url: '/weex/member/friends/adopt.jhtml?friendId='+id
-                }, function (weex) {
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
-                            event.showToast(weex.data.content);
+                POST('weex/member/friends/adopt.jhtml?friendId='+id).then(
+                    function (data) {
+
+                        if (data.type == "success") {
+                            event.toast(data.content);
                         } else {
-                            event.showToast(weex.data.content);
+                            event.toast(data.content);
                         }
-                    } else {
-                        event.showToast("网络不稳定请重试");
+                    },function(err) {
+                        event.showToast("网络不稳定请");
                     }
-                })
-            },
-            getTime: function(value) {
-                let date = new Date(value);
-                let td = new Date();
-                let m = td.getDay() - date.getDay();
-                if (m<3) {
-                    return "近三天"
-                } else
-                if (m<7) {
-                    return "近七天"
-                } else {
-                    return "七天前"
-                }
+                )
             },
             //判断时间是否重复
             isRepeat:function(index){
                 var _this = this;
                 if(index != 0){
-                    if (_this.getTime(_this.friendsList[index].createDate) == _this.getTime(_this.friendsList[index - 1].createDate)) {
+                    if (utils.dayfmt(_this.friendsList[index].createDate) == utils.dayfmt(_this.friendsList[index - 1].createDate)) {
                         return false;
                     } else {
                         return true;

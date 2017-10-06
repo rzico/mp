@@ -25,6 +25,7 @@ PODS:
   - SocketRocket (0.4.2)
   - SSKeychain (1.4.1)
   - TZImagePickerController (1.9.3)
+  - WechatOpenSDK (1.8.0)
   - WeexSDK (0.15.0):
     - SocketRocket
   - WXDevtool (0.15.1):
@@ -40,6 +41,7 @@ DEPENDENCIES:
   - SocketRocket (= 0.4.2)
   - SSKeychain
   - TZImagePickerController
+  - WechatOpenSDK
   - WeexSDK (from `./sdk/`)
   - WXDevtool (= 0.15.1)
 
@@ -57,9 +59,10 @@ SPEC CHECKSUMS:
   SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
   SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
   TZImagePickerController: 079ab986018c22793462e531045a75e366b18252
+  WechatOpenSDK: 0ee07a8d492299d3e47372a33da5af26524a7576
   WeexSDK: d30bf863bf8eb14b604817a4061e51c4fe4caeed
   WXDevtool: 5b26fd79451f215d7acdee89e5e2f3be491a1393
 
-PODFILE CHECKSUM: cde7d623347f60a53abc21e77b41c843b4bb880f
+PODFILE CHECKSUM: 1e3f8af9ef3ded5c6a0547919d8c0abd51d6cf50
 
 COCOAPODS: 1.1.1

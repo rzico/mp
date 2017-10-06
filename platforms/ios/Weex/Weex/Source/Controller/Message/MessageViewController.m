@@ -16,15 +16,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.weexHeight = self.view.frame.size.height - 49;
-    
-    if (@available(iOS 11.0, *)) {
-        self.additionalSafeAreaInsets = UIEdgeInsetsZero;
-        self.frame = CGRectMake(0, -20, self.view.frame.size.width, self.weexHeight + 20);
-    } else {
-        // Fallback on earlier versions
-        self.frame = CGRectMake(0, 0, self.view.frame.size.width, self.weexHeight);
-    }
     // Do any additional setup after loading the view.
 }
 

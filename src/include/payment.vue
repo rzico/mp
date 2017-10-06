@@ -172,7 +172,6 @@
 
 </style>
 <script>
-    const modal = weex.requireModule('modal');
     var optionIndex = 0;
     var lastCaptchaLength = 0;
     export default {
@@ -206,7 +205,6 @@
                     optionIndex ++;
                 }
                 lastCaptchaLength = event.value.length;
-                modal.toast({message: _this.test});
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
                     _this.captcha = event.value;

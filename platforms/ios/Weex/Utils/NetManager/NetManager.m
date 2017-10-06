@@ -7,12 +7,12 @@
 //
 
 #import "NetManager.h"
-#import "AppDelegate.h"
+#import "HttpHead+Utils.h"
 #import "TXUtilsString.h"
 
 static Reachability * localWiFiReach = nil;
 static Reachability * internetConnectionReach = nil;
-static AFHTTPSessionManager *afManager;
+
 
 @interface NetManager ()
 -(void)reachabilityChanged:(NSNotification*)note;
@@ -20,87 +20,49 @@ static AFHTTPSessionManager *afManager;
 
 @implementation NetManager
 
-+ (NetManager *) getManager{
-    static NetManager *netmanager = nil;
-    if (!netmanager){
-        AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        NSDictionary *headDic = appdelegate.appKeyChainDic;
-        NSAssert(headDic.count, @"数据请求头为空，请检查！");
++ (AFHTTPSessionManager *) getManager{
+    static AFHTTPSessionManager *afManager;
+    if (!afManager){
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            netmanager = [NetManager new];
             afManager = [AFHTTPSessionManager manager];
             afManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
             [afManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
             afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html",@"text/plain",@"application/x-font-ttf", nil];
             afManager.requestSerializer.timeoutInterval = 45.0f;
-            for (NSString *key in headDic.allKeys){
-                NSString *value = headDic[key];
-                [afManager.requestSerializer setValue:value forHTTPHeaderField:key];
-            }
         });
     }
-    return netmanager;
+    NSDictionary *headDic = [HttpHead_Utils getHttpHead];
+    if (headDic){
+        NSAssert(headDic.count, @"数据请求头为空，请检查！");
+        for (NSString *key in headDic.allKeys){
+            NSString *value = headDic[key];
+            [afManager.requestSerializer setValue:value forHTTPHeaderField:key];
+        }
+        return afManager;
+    }else{
+        return nil;
+    }
 }
-
-+ (AFHTTPSessionManager *)getSessionManager{
-    [NetManager getManager];
-    return afManager;
-}
-
 
 /**
  AFPost
  */
 + (void)PostHttp:(NSString *)url  Parameters:(NSDictionary *)parameters Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock{
-    [afManager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if ([NetManager getManager].netDelegate && [[NetManager getManager].netDelegate respondsToSelector:@selector(getSession:)]){
-            [[[NetManager getManager] netDelegate] getSession:responseObject];
-        }
-        
-        SuccessBlock(responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        FalseBlock(error);
-        ALERT(@"获取数据失败，请检查网络是否连接");
-    }];
-}
-
-+ (AFHTTPSessionManager *) jsonManager{
-    static AFHTTPSessionManager *manager = nil;
+    AFHTTPSessionManager *manager = [NetManager getManager];
     if (!manager){
-        AppDelegate *appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        NSDictionary *headDic = appdelegate.appKeyChainDic;
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            manager = [AFHTTPSessionManager manager];
-            manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
-            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain",@"application/x-font-ttf", nil];
-            manager.requestSerializer.timeoutInterval = 30.f;
-            for (NSString *key in headDic.allKeys) {
-                NSString *value = headDic[key];
-                [manager.requestSerializer setValue:value forHTTPHeaderField:key];
-            }
-        });
-    }
-    return manager;
-}
-
-
-/**
- AFGet
- */
-+ (void)GetJSONHttp:(NSString *)url Parameters:(NSDictionary *)parameters  Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock{
-    [NetManager jsonManager];
-    [afManager GET:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        SuccessBlock(responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSError * error = [[NSError alloc] initWithDomain:@"Weex" code:-1111 userInfo:nil];
         FalseBlock(error);
-        ALERT(@"获取数据失败，请检查网络是否连接！");
-    }];
+    }else{
+        [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            SuccessBlock(responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            FalseBlock(error);
+            ALERT(@"获取数据失败，请检查网络是否连接");
+        }];
+    }
 }
 
 
@@ -108,34 +70,34 @@ static AFHTTPSessionManager *afManager;
  AFGet
  */
 + (void)GetHttp:(NSString *)url Parameters:(nullable NSDictionary *)parameters  Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock{
-    [NetManager getManager];
-    [afManager GET:url parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if([NetManager getManager].netDelegate && [[NetManager getManager].netDelegate respondsToSelector:@selector(getSession:)])
-        {
-            [[[NetManager getManager] netDelegate] getSession:responseObject];
-        }
-        SuccessBlock(responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"error=%@",error);
+    AFHTTPSessionManager *manager = [NetManager getManager];
+    if (!manager){
+        NSError * error = [[NSError alloc] initWithDomain:@"Weex" code:-1111 userInfo:nil];
         FalseBlock(error);
-        ALERT(@"获取数据失败，请检查网络是否连接！");
-    }];
+    }else{
+        [manager GET:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            SuccessBlock(responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            FalseBlock(error);
+            ALERT(@"获取数据失败，请检查网络是否连接");
+        }];
+    }
 }
 
 + (void) DownLoad:(NSString *)url{
-    [NetManager getManager];
-    NSURL *URL = [NSURL URLWithString:url];
-    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-    NSURLSessionDownloadTask *downloadTask = [afManager downloadTaskWithRequest:request progress:nil destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
-        NSURL *documentDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
-        return [documentDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
-    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
-        
-    }];
-    
-    [downloadTask resume];
+    AFHTTPSessionManager *manager = [NetManager getManager];
+    if (manager!=nil){
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+        NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+            NSURL *documentDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+            return [documentDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+        } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+            
+        }];
+        [downloadTask resume];
+    }
 }
 
 
@@ -161,36 +123,48 @@ static AFHTTPSessionManager *afManager;
 }
 
 +(void) PostImageWithData:(NSString *)url imageData:(NSData *)imageData  otherParamters:(NSDictionary *)paramters success:(void (^)(NSURLSessionDataTask *task, id responseObject))success failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure{
-    [afManager POST:url parameters:paramters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        formatter.dateFormat = @"yyyyMMddHHmmss";
-        NSString *str = [formatter stringFromDate:[NSDate date]];
-        NSString *fileName = [NSString stringWithFormat:@"%@.png",str];
-        [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:@"image/png"];
-        
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        success(task, responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        failure(task,error);
-    }];
+    AFHTTPSessionManager *manager = [NetManager getManager];
+    if (!manager){
+        NSError * error = [[NSError alloc] initWithDomain:@"Weex" code:-1111 userInfo:nil];
+        failure(nil,error);
+    }else{
+        [manager POST:url parameters:paramters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *str = [formatter stringFromDate:[NSDate date]];
+            NSString *fileName = [NSString stringWithFormat:@"%@.png",str];
+            [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:@"image/png"];
+            
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            success(task, responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            failure(task,error);
+        }];
+    }
 }
 
 +(void) PostVoiceWithData:(NSString *)url voiceData:(NSData *)voiceData  otherParamters:(NSDictionary *)paramters success:(void (^)(NSURLSessionDataTask *task, id responseObject))success failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure{
-    [afManager POST:url parameters:paramters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        formatter.dateFormat = @"yyyyMMddHHmmss";
-        NSString *str = [formatter stringFromDate:[NSDate date]];
-        NSString *fileName = [NSString stringWithFormat:@"%@.amr",str];
-        [formData appendPartWithFileData:voiceData name:@"file" fileName:fileName mimeType:@":audio/amr"];
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        success(task, responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        failure(task, error);
-    }];
+    AFHTTPSessionManager *manager = [NetManager getManager];
+    if (!manager){
+        NSError * error = [[NSError alloc] initWithDomain:@"Weex" code:-1111 userInfo:nil];
+        failure(nil,error);
+    }else{
+        [manager POST:url parameters:paramters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+            NSDateFormatter *formatter = [NSDateFormatter new];
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *str = [formatter stringFromDate:[NSDate date]];
+            NSString *fileName = [NSString stringWithFormat:@"%@.amr",str];
+            [formData appendPartWithFileData:voiceData name:@"file" fileName:fileName mimeType:@":audio/amr"];
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            success(task, responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            failure(task, error);
+        }];
+    }
 }
 
 /*

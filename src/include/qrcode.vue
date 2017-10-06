@@ -132,11 +132,7 @@
 
 </style>
 <script>
-    const stream = weex.requireModule('stream');
-    const native = weex.requireModule('app');
-    import {jsMixins} from '../mixins/mixins.js'
-    export default {
-        mixins:[jsMixins],
+     export default {
         data() {
             return {
                 isShow:false,
@@ -156,14 +152,10 @@
             },
             show:function (e) {
                 var _this = this;
-                return stream.fetch({
-                    method: 'GET',
-                    type: 'json',
-                    url: '/weex/member/view.jhtml'
-                }, function (weex) {
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
-                            var member = weex.data.data;
+                GET('weex/member/view.jhtml').then(
+                function (data) {
+                         if (data.type == "success") {
+                            var member = data.data;
                             _this.nickName = member.nickName;
                             _this.logo = member.logo;
                             _this.autograph = member.autograph;
@@ -171,12 +163,12 @@
                             _this.qrcode = "http://pan.baidu.com/share/qrcode?w=450&h=450&url=" +encodeURI(_this.dataURL+"/q/8653800"+(member.id+10200)+'.jhtml');
                             _this.isShow = true;
                         } else {
-                            native.showToast(weex.data.content);
+                            event.toast(data.content);
                         }
-                    } else {
-                        native.showToast("网络不稳定请重试");
+                    },function(err) {
+                        event.toast("网络不稳定");
                     }
-                })
+                )
             }
         }
      }

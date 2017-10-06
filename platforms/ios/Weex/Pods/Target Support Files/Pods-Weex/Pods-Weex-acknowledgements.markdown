@@ -187,6 +187,11 @@ SOFTWARE.
 Alibaba-INC copyright
 
 
+## WechatOpenSDK
+
+Copyright 2017 tencent.com. All rights reserved.
+
+
 ## WeexSDK
 
 Alibaba-INC copyright

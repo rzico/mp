@@ -1,4 +1,3 @@
-<script src="../mixins/mixins.js"></script>
 <template>
     <div class="header">
         <div class="nav_back" @click="goback('/')">
@@ -42,9 +41,7 @@
 
 </style>
 <script>
-    import {jsMixins} from '../mixins/mixins.js'
     export default {
-        mixins:[jsMixins],
         props: {
             title: { default: "navbar" },
             complete:{default:''}
