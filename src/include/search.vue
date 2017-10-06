@@ -39,9 +39,7 @@
 
 </style>
 <script>
-    import {jsMixins} from '../mixins/mixins.js'
     export default {
-        mixins:[jsMixins],
         props: {
             keyword:{default:'搜索'}
         },

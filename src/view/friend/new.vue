@@ -136,9 +136,11 @@
 </style>
 
 <script>
-    import { POST, GET } from '../assets/fetch'
-    import utils from '../assets/utils'
+    import { POST, GET } from '../../assets/fetch'
+    import utils from '../../assets/utils'
+    import filters from '../../filters/filters'
     const event = weex.requireModule('event');
+
     import navbar from '../../include/navbar.vue';
     import search from '../../include/search.vue';
     import noData from '../../include/noData.vue';
@@ -163,6 +165,7 @@
         },
         created() {
             utils.initIconFont();
+            var _this = this;
             setTimeout(() => {_this.onrefresh();
             }, 500);
          },
@@ -280,24 +283,11 @@
                     }
                 )
             },
-            getTime: function(value) {
-                let date = new Date(value);
-                let td = new Date();
-                let m = td.getDay() - date.getDay();
-                if (m<3) {
-                    return "近三天"
-                } else
-                if (m<7) {
-                    return "近七天"
-                } else {
-                    return "七天前"
-                }
-            },
             //判断时间是否重复
             isRepeat:function(index){
                 var _this = this;
                 if(index != 0){
-                    if (_this.getTime(_this.friendsList[index].createDate) == _this.getTime(_this.friendsList[index - 1].createDate)) {
+                    if (utils.dayfmt(_this.friendsList[index].createDate) == utils.dayfmt(_this.friendsList[index - 1].createDate)) {
                         return false;
                     } else {
                         return true;
