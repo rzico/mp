@@ -1,28 +1,28 @@
+<script src="../mixins/mixins.js"></script>
 <template>
     <div class="header">
-        <div class="back" @click="goback('/')">
-            <text class="image" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+        <div class="nav_back" @click="goback('/')">
+            <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
         <div class="nav">
-            <text class="title">{{title}}</text>
-            <text class="title" @click="goComplete('/')">{{complete}}</text>
+            <text class="nav_title">{{title}}</text>
+            <text class="nav_Complete" @click="goComplete('/')">{{complete}}</text>
          </div>
     </div>
  </template>
 <style lang="less" src="../style/wx.less"/>
 
 <style scoped>
-    .back {
+    .nav_back {
+        margin-top: 40px;
         flex-direction: row;
         width: 96px;
         height: 96px;
         align-items: center;
         justify-content: center;
     }
-    .image {
+    .nav_ico {
         font-size: 38px;
-        width: 38px;
-        height: 38px;
         color: #fff;
     }
     .nav {
@@ -31,28 +31,23 @@
         flex-direction: row;
         align-items: center;
         padding-right: 30px;
+        margin-top: 40px;
     }
-    .title {
+    .nav_Complete {
         font-family: Verdana, Geneva, sans-serif;
-        font-size: 38px;
-        line-height: 38px;
+        font-size: 34px;
+        line-height: 34px;
         color: #FFFFFF;
-     }
+    }
 
 </style>
 <script>
-    const native = weex.requireModule('wxNativeModule');
+    import {jsMixins} from '../mixins/mixins.js'
     export default {
+        mixins:[jsMixins],
         props: {
             title: { default: "navbar" },
             complete:{default:''}
-        },
-        created(){
-            var domModule=weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
-            })
         },
         methods: {
             goback: function (e) {

@@ -81,62 +81,55 @@
 
 </style>
 <script>
-    import {jsMixins} from '../mixins/wx.js'
+    import { POST, GET } from '../assets/fetch'
+    import utils from '../assets/utils'
     const event = weex.requireModule('event');
-    const stream = weex.requireModule('stream');
-    const native = weex.requireModule('app');
     export default {
-        mixins:[jsMixins],
         data () {
             return {
                 imageList: [
-                    { src: 'http://cdn.rzico.com/weex/resources/images/flash1.jpg'},
-                    { src: 'http://cdn.rzico.com/weex/resources/images/flash2.jpg'},
-                    { src: 'http://cdn.rzico.com/weex/resources/images/flash3.jpg'},
-                    { src: 'http://cdn.rzico.com/weex/resources/images/flash4.jpg'}
+                    { src: utils.remote('resources/images/flash1.jpg')},
+                    { src: utils.remote('resources/images/flash2.jpg')},
+                    { src: utils.remote('resources/images/flash3.jpg')},
+                    { src: utils.remote('resources/images/flash4.jpg')}
                 ]
             }
         },
         created(){
-            var domModule=weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('"+this.locateURL+"/resources/fonts/iconfont.ttf')"
-            });
-
-            native.changeWindowsBar(true);
+            utils.initIconFont();
+            event.changeWindowsBar(true);
         },
         methods: {
             weixin: function (e) {
-                native.wxAuth(
+                event.wxAuth(
                     function (message) {
                         if (message.type=="success") {
-                            return stream.fetch({
-                                method: 'POST',
-                                type: 'json',
-                                url: '/weex/login/weixin.jhtml?code=' + message.data
-                            }, function (weex) {
-                                if (weex.ok) {
-                                    if (weex.data.type == "success") {
-                                        event.closeURL();
-                                    } else {
-                                        native.showToast(weex.data.content);
+                            POST('weex/login/weixin.jhtml?code=' + message.data)
+                                .then(
+                                    function(data) {
+                                        if (data.type == "success") {
+                                            event.closeURL();
+                                        } else {
+                                            event.toast(data.content);
+                                        }
+                                    },
+                                    function(err) {
+                                        event.toast("网络不稳定");
                                     }
-                                } else {
-                                    native.showToast("网络不稳定请重试");
-                                }
-                            })
+                                )
                         } else {
-                            native.showToast(message.content);
+                            event.toast(message.content);
                         }
 
                     }
                 );
             },
             login: function (e) {
-                event.openURL({
-                    url: this.locateURL+'/view/login/index.js',
-                    animated: "true"
+                event.openURL(utils.locate('view/login/index.js'),
+                    function (data) {
+                        if (data!=null && data.type=='success') {
+                            event.closeURL();
+                        }
                 })
             },
             goback: function (e) {

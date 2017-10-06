@@ -309,11 +309,12 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
-    import {jsMixins} from '../../../mixins/wx.js'
+    import {jsMixins} from '../../../mixins/mixins.js'
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     const native = weex.requireModule('app')
     var modal = weex.requireModule('modal');
+    const stream = weex.requireModule('stream')
     var lastIndex = -1;
     var musicId = -1 ;
     var articleId = 1;
@@ -404,7 +405,7 @@
                             }
                         }else{
                             modal.alert({
-                                message:data.contend,
+                                message:'系统繁忙，请稍后重试',
                                 duration: 0.3
                             },function () {
                                 event.closeURL();
@@ -423,6 +424,14 @@
             })
         },
         methods:{
+            saveArticle(callback) {
+                return stream.fetch({
+                    method: 'POST',
+                    type: 'json',
+                    body:"title=你好",
+                    url: '/weex/member/article/submit.jhtml'
+                }, callback)
+            },
 //            返回
             goBack:function () {
                 event.closeURL();
@@ -462,17 +471,30 @@
                     },
                     title:this.setTitle,
                 }]
-//                articleData = JSON.stringify(articleData)
-                native.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
-                    if(data.type == 'success'){
-                        event.closeURL();
-                    }else{
-                        modal.alert({
-                            message: '系统繁忙,请稍后重试',
-                            duration: 0.3
-                        })
-                    }
+                let jsonBodyData = {
+                    title:this.setTitle,
+                    thumbnial:this.coverImage,
+                    music:musicData,
+                    content:atticleTemplates,
+                }
+//                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage  + ' &music='+ musicData +'&content='+ atticleTemplates +''
+                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage +''
+                modal.toast({message:bodyData});
+                _this.saveArticle(res=>{
+                    modal.toast({message:res.data});
                 })
+
+//                articleData = JSON.stringify(articleData)
+//                native.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
+//                    if(data.type == 'success'){
+//                        event.closeURL();
+//                    }else{
+//                        modal.alert({
+//                            message: '系统繁忙,请稍后重试',
+//                            duration: 0.3
+//                        })
+//                    }
+//                })
             },
 //            点击"+"号里的图片时
             addImgPara:function (index) {
@@ -650,7 +672,7 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.108:8081/music.weex.js?musicId=' + musicId,function (data) {
+                event.openURL('http://192.168.1.107:8081/music.weex.js?musicId=' + musicId,function (data) {
                     modal.toast({message:data,duration:1});
                     let jsonData = JSON.parse(data);
                     _this.musicName = jsonData.chooseMusicName;
@@ -660,7 +682,7 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.108:8081/vote.weex.js',function (data) {
+                event.openURL('http://192.168.1.107:8081/vote.weex.js',function (data) {
                     _this.voteList[0].paraText = data;
                     _this.hadVote = false;
                 });

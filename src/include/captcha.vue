@@ -1,5 +1,4 @@
 
-
 <template>
     <div class="captcha">
         <div class="mobile-header">
@@ -18,7 +17,7 @@
             </div>
         </div>
         <div class="flex-center">
-            <text class="status primary">{{status}}</text>
+            <text class="status primary" @click="onSend()" :style="statusStyle()">{{status}}</text>
         </div>
     </div>
 </template>
@@ -29,7 +28,7 @@
         margin-bottom: 60px;
     }
     .inputTextBox{
-        width:630px;
+        width:530px;
         position: relative;
     }
     .inputText{
@@ -48,7 +47,7 @@
     }
     .input{
         opacity:0;
-        width:630px;
+        width:530px;
         position: absolute;
         height: 80px;
         font-size: 85px;
@@ -82,6 +81,8 @@
         align-items: center;
     }
     .status {
+        font-size: 32px;
+        line-height: 60px;
         border-bottom-width:0px;
     }
 
@@ -101,11 +102,17 @@
             title: { default: "验证码" },
             captcha: {default:""},
             mobile:{default:""},
-            status:{default:"点击重新发送"}
-        },
-        created(){
+            status:{default:"点击重新发送"},
+            retry:true
         },
         methods:{
+            statusStyle:function() {
+              if (this.retry) {
+                  return "";
+              } else {
+                  return "color:#ccc";
+              }
+            },
 //            当用户输入数字时触发
             captchaInput:function (event) {
                 var _this = this;
@@ -122,7 +129,6 @@
                     optionIndex ++;
                 }
                 lastCaptchaLength = event.value.length;
-                modal.toast({message: _this.test});
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
                     _this.captcha = event.value;
@@ -131,9 +137,11 @@
             },
 //            点击验证框时使隐藏的input获取焦点；
             getFocus:function () {
-                modal.toast({message:1});
                 this.$refs['captchRef'].focus();
             },
+            send:function () {
+                this.$emit("onSend",this.captcha);
+            }
 
         }
     }

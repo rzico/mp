@@ -1,7 +1,4 @@
 <template>
-    <!--<div class="wrapper">-->
-    <!--<text class="button" @click="jumpPage">{{text}}User {{ $route.params.id }}</text>-->
-    <!--</div>-->
     <div>
         <navbar :title="title":complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
         <div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >
@@ -154,8 +151,10 @@
 <script>
     const modal = weex.requireModule('modal');
     const navigator = weex.requireModule('navigator');
+    const native = weex.requireModule('app');
     import navbar from '../../include/navbar.vue'
     const dom = weex.requireModule('dom');
+    const stream = weex.requireModule('stream')
     var pressPoint = -1;//手指按压
     var movePoint;//手机按压后移动
     var pointPoor;//手机按压时与移动后的字母数量
@@ -538,29 +537,31 @@
             }
         },
         props: {
-            title: { default: "朋友"},
-            complete:{ default:"完成"}
+            title: { default: "新的朋友"},
+            complete:{ default:"添加朋友"}
+        },
+        created(){
+            modal.toast({message:'111',duration:1})
+          this.getFriendList(res=>{
+              modal.toast({message:res.data,duration:1})
+          })
         },
         methods: {
+
+            getFriendList (callback) {
+                return stream.fetch({
+                    method: 'GET',
+                    type: 'json',
+                    url: '/weex/member/friends/list.jhtml'
+                }, callback)
+            },
             goComplete:function () {
             },
             goback:function () {
               event.closeURL();
             },
             jump:function (vueName) {
-//                this.$router.push(vueName);
                 modal.toast({message:'点击了信息栏'});
-            },
-            jumpPage:function(event){
-//                var url = this.$getConfig().bundleUrl;  //獲取當前a.we頁面的路徑(xxx/a.js)
-//                url = url.split('/').slice(0,-1).join('/') + '/app.weex.js';  //獲取b.we編譯後的b.js的相對路徑
-//                navigator.push({
-//                    url: url,
-//                    animated: true
-//                }, event => {
-//                    modal.toast({ message: 'callback:' + event });
-//                })
-                this.$router.back();
             },
             onlongpress :function(count) {
                 modal.toast({ message:this.allLetter[count] ,duration: 0.3});
@@ -609,7 +610,6 @@
                                     const el = this.$refs.listref[i]//跳转到相应的cell
                                     dom.scrollToElement(el, {
 //                                        animated:false
-
                                     })
                                 }else if(moveLetter == 0){//判断是否滑到 顶部按钮
                                     const el = this.$refs.linkref[moveLetter]//跳转到相应的cell

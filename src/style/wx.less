@@ -13,6 +13,13 @@
 }
 
 /**默认标题字体**/
+
+.nav_title {
+    font-size: @nav-size;
+    color: #fff;
+    line-height: @nav-size;
+}
+
 .title {
     font-size: @title-size;
     color: #000;
@@ -46,14 +53,13 @@
 }
 
 .header {
-    height: 117px;
+    height: 136px;
     flex-direction: row;
     position:sticky;
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: @border-gray;
     background-color: @baseColor;
-    padding-top: 20px;
 }
 
 .footer {
@@ -104,6 +110,10 @@
     border-bottom-width: 1px;
     border-bottom-color: @border-gray;
     border-bottom-style: solid;
+}
+
+.cell-panel :last-child {
+    border-bottom-width: 0px;
 }
 
 .cell-clear {
@@ -199,6 +209,16 @@
     color: @baseColor;
 }
 
+.ico_big {
+    font-size: @ico-big-size;
+    color: @baseColor;
+}
+
+.ico_small {
+    font-size: @ico-small-size;
+    color: @baseColor;
+}
+
 /**右箭头 字体大小与颜色**/
 .arrow {
     font-size: 32px;
@@ -227,6 +247,22 @@
 
 /**上拉刷新，下拉加载样式**/
 
+.refresh {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+.loading {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.gif {
+    width:50px;
+    height:50px;
+}
+
 .indicator{
     font-size: 36px;
     color:@baseColor;
@@ -235,6 +271,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
 /**超长用省略号**/
 .lines-ellipsis {
    lines:1;
