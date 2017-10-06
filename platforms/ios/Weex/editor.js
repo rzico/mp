@@ -672,7 +672,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var album = weex.requireModule('albumModule'); //
+	var album = weex.requireModule('album'); //
 	//
 	//
 	//

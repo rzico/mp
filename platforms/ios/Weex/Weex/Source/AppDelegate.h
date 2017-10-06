@@ -18,12 +18,15 @@
  */
 
 #import <UIKit/UIKit.h>
+#import <WXApi.h>
 
+typedef void(^WXAuthComplete)(SendAuthResp *resp);
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,UIAlertViewDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,UIAlertViewDelegate,WXApiDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *latestVer;
-@property (strong,nonatomic)  NSDictionary *appKeyChainDic;
+
+@property (strong, nonatomic) WXAuthComplete wxAuthComplete;
 
 @end

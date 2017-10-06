@@ -69,14 +69,10 @@ NS_ASSUME_NONNULL_BEGIN
 +(void) PostVoiceWithData:(NSString *)url voiceData:(NSData *)voiceData  otherParamters:(NSDictionary *)paramters success:(void (^)(NSURLSessionDataTask *task, id responseObject))success failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 
-+ (void)GetJSONHttp:(NSString *)url Parameters:(nullable NSDictionary *)parameters  Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock;
-
 +(void) DownLoad:(NSString *)url;
 
 +(void)startNetworkMonitoring:(id) target;
-+(NetManager *) getManager;
 
-+(AFHTTPSessionManager *)getSessionManager;
 NS_ASSUME_NONNULL_END
 
 @end

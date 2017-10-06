@@ -11,5 +11,6 @@
 @interface DictionaryUtil : NSObject
 
 + (NSDictionary *)objectToDictionary:(id)obj;
-
++ (NSString *)convertToJsonData:(NSDictionary *)dict;
++ (NSDictionary *)dictionaryWithJsonData:(NSData *)jsonData;
 @end

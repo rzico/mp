@@ -607,6 +607,7 @@
 	//
 	//
        var event = weex.requireModule('event');
+       var app = weex.requireModule('app');
 	var modal = weex.requireModule('modal');
 	var native = weex.requireModule('wxNativeModule');
 	var navigator = weex.requireModule('navigator');
@@ -701,6 +702,7 @@
 	        },
 	        jump: function jump(vueName) {
 	            console.log('will jump');
+       console.log('aaa=' + app.wxConfig().color);
                 var bundleUrl = this.$getConfig().bundleUrl;
                 bundleUrl = new String(bundleUrl);
                 var nativeBaseUrl = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);

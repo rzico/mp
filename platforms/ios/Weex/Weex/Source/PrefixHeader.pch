@@ -15,7 +15,7 @@
 #import "Utils.h"
 #import "UIColor+Util.h"
 #import "APPKEY.h"
-
+#import "Settings.h"
 
 #define GLOBAL_BACKGROUND_COLOR [UIColor colorWithRed:0.27 green:0.71 blue:0.94 alpha:1]
 
