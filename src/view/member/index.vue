@@ -54,62 +54,62 @@
                 <div style="width: 100px;justify-content: center;align-items: center">
                     <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
                 </div>
-                <div class="blur leftBlur"></div>
-                <div class="blur rightBlur"></div>
+                <!--文集前后白色遮罩层-->
+                <!--<div class="blur leftBlur"></div>-->
+                <!--<div class="blur rightBlur"></div>-->
             </div>
             <!--文章模块-->
             <div >
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)"  @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)" ref="animationRef">
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                        <div class="atricleHead">
-                            <text class="articleSign">{{item.articleSign}}</text>
-                            <text class="articleTitle">{{item.articleTitle}}</text>
-                        </div>
-                        <!--文章封面-->
-                        <div>
-                            <image :src="item.articleCoverUrl" class="articleCover"></image>
-                        </div>
-                        <!--文章底部-->
-                        <div class="articleFoot">
+                            <div class="atricleHead">
+                                <text class="articleSign">{{item.articleSign}}</text>
+                                <text class="articleTitle">{{item.articleTitle}}</text>
+                            </div>
+                            <!--文章封面-->
                             <div>
-                                <text class="articleDate">{{item.articleDate}}</text>
+                                <image :src="item.articleCoverUrl" class="articleCover"></image>
                             </div>
-                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.browse}}</text>
-                                <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.praise}}</text>
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.comments}}</text>
+                            <!--文章底部-->
+                            <div class="articleFoot">
+                                <div>
+                                    <text class="articleDate">{{item.articleDate}}</text>
+                                </div>
+                                <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                    <text class="relevantText">{{item.browse}}</text>
+                                    <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                    <text class="relevantText">{{item.praise}}</text>
+                                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                    <text class="relevantText">{{item.comments}}</text>
+                                </div>
+                            </div>
+                            <!--右侧隐藏栏-->
+                            <div class="rightHidden">
+                                <div class="rightHiddenSmallBox">
+                                    <div class="rightHiddenIconBox">
+                                        <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
+                                        <text class="rightHiddenText">编辑</text>
+                                    </div>
+                                    <div class="rightHiddenIconBox">
+                                        <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
+                                        <text class="rightHiddenText redColor" >删除</text>
+                                    </div>
+                                </div>
+                                <div class="rightHiddenSmallBox">
+                                    <div class="rightHiddenIconBox">
+                                        <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                        <text class="rightHiddenText">置顶</text>
+                                    </div>
+                                    <div class="rightHiddenIconBox">
+                                        <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                                        <text class="rightHiddenText">文集</text>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!--右侧隐藏栏-->
-                        <div class="rightHidden">
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
-                                    <text class="rightHiddenText">编辑</text>
-                                </div>
-                                <div class="rightHiddenIconBox">
-                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
-                                    <text class="rightHiddenText redColor" >删除</text>
-                                </div>
-                            </div>
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                                    <text class="rightHiddenText">置顶</text>
-                                </div>
-                                <div class="rightHiddenIconBox">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                                    <text class="rightHiddenText">文集</text>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
               </transition-group>
                 <!--帮助使用文章-->
                 <!--<div class="articleBox" v-for="item in helpList"  @swipe="swipeHappen($event)">-->
@@ -442,9 +442,9 @@
                 isNoArticle:false,
                 refreshing:'hide',
                 fontName: '&#xe685;',
-                collectNum:3,
-                moneyNum:44.5,
-                focusNum:68,
+                collectNum:0,
+                moneyNum:0,
+                focusNum:0,
                 imageUrl:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 id:'334',
                 showLoading: 'hide',
@@ -588,9 +588,9 @@
                     articleTitle: '金钻厦门',
                     articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate: '2017-8-31',
-                    browse: 55,
-                    praise: 48,
-                    comments: 32,
+                    browse: 0,
+                    praise: 0,
+                    comments: 0,
                     id:'1',
                     corpus:'全部文章',
                 }, {
@@ -598,9 +598,9 @@
                     articleTitle: '美丽厦门111',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
+                    browse: 0,
+                    praise: 0,
+                    comments: 0,
                     id:'2',
                     corpus:'回收站',
                 }, {
@@ -608,9 +608,9 @@
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
+                    browse: 0,
+                    praise: 0,
+                    comments: 0,
                     id:'3',
                     corpus:'诚毅学院点滴',
                 }, {
@@ -618,9 +618,9 @@
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
+                    browse: 0,
+                    praise: 0,
+                    comments: 0,
                     id:'4',
                     corpus:'诚毅学院点滴',
                 }, {
@@ -628,9 +628,9 @@
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
+                    browse: 0,
+                    praise: 0,
+                    comments: 0,
                     id:'5',
                     corpus:'诚毅学院点滴',
                 }, {
@@ -638,9 +638,9 @@
                     articleTitle: '美丽厦门',
                     articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
+                    browse: 0,
+                    praise: 0,
+                    comments: 0,
                     id:'6',
                     corpus:'诚毅学院点滴',
                 }
@@ -719,9 +719,9 @@
 //                _this.isNoArticle = true;
 //            };
 //            _this.updateArticle();
-//            this.open(res=>{
-//                modal.toast({message:res})
-//            })
+            this.open(res=>{
+                modal.toast({message:res.data})
+            })
         },
         mounted:function(){
             var domModule=weex.requireModule("dom");
@@ -735,7 +735,7 @@
                 return stream.fetch({
                     method: 'GET',
                     type: 'json',
-                    url: 'http://www.rzico.com/weex/member/article/list.jhtml'
+                    url: '/weex/member/article/list.jhtml'
                 }, callback)
             },
             switchArticle:function (item) {
@@ -873,12 +873,13 @@
                         delay: 0 //ms
                     })
                 }
-                animationPara =  this.$refs.animationRef[index];
+//                获取当前点击的元素。
+                animationPara =  event.currentTarget;
+//                canScroll 控制页面是否可以上下滑动
                 this.canScroll = true;
             },
 //            移动时
             onpanmove:function (event,index) {
-//                modal.toast({message:index})
                 var _this = this;
                 if(event.direction == 'right'){
                     _this.canScroll = false;

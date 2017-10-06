@@ -1,15 +1,15 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
+        <!--<navbar :title="title" @goback="goback"> </navbar>-->
         <list class="list">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-            <text class="indicator">下拉刷新 ...</text>
+                <text class="indicator">下拉刷新 ...</text>
             </refresh>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
                     <div class="flex-row flex-start">
-                        <text class="title" >{{deposit.create_date | detailMonth}}月份</text>
+                        <text class="title" >{{deposit.create_date | monthfmt}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"   >查看账单</text>
@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="cell-row cell-clear" >
-                    <div class="cell-panel newHeight" :style="addBorder(index)">
+                    <div class="cell-panel newHeight"  :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
                                    src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
@@ -26,8 +26,8 @@
                         <div class="content flex5">
                             <text class="title lines-ellipsis">{{deposit.memo}}</text>
                             <div class="flex-row space-between align-bottom">
-                                <text class="datetime">{{deposit.create_date | detailTime}}</text>
-                                <text class="money">{{deposit.amount | formatting}}</text>
+                                <text class="datetime">{{deposit.create_date | datetimefmt}}</text>
+                                <text class="money">{{deposit.amount | currencyfmt}}</text>
                             </div>
                         </div>
                     </div>
@@ -85,14 +85,16 @@
     var navigator = weex.requireModule('navigator')
     import navbar from '../../../include/navbar.vue'
     var stream = weex.requireModule('stream')
+    import filters from '../../../filters/filters.js'
+
     var pageNumber = 1;
     export default {
         data:function(){
-          return{
-              depositList:[],
-              refreshing: false,
-              showLoading: 'hide',
-          }
+            return{
+                depositList:[],
+                refreshing: false,
+                showLoading: 'hide',
+            }
         },
         components: {
             navbar
@@ -120,7 +122,6 @@
                         borderBottomWidth:'0px'
                     }
                 }
-
             },
             //判断月份是否重复
             isRepeat(index){
@@ -152,28 +153,28 @@
                 pageNumber ++ ;
                 modal.toast({ message: '加载中...', duration: 0.5 })
                 this.showLoading = 'show'
-                    this.open(pageNumber, res => {
-                        if(res.data.message.type == 'success'){
-                            this.depositList = this.depositList.concat(res.data.data);
-                        }else{
-                            modal.toast({ message: '系统繁忙', duration: 1 })
-                        }
-                        this.showLoading = 'hide'
-                    })
+                this.open(pageNumber, res => {
+                    if(res.data.message.type == 'success'){
+                        this.depositList = this.depositList.concat(res.data.data);
+                    }else{
+                        modal.toast({ message: '系统繁忙', duration: 1 })
+                    }
+                    this.showLoading = 'hide'
+                })
             },
 //            下拉刷新
             onrefresh (event) {
                 pageNumber = 1;
                 modal.toast({ message: '加载中...', duration: 1 })
                 this.refreshing = true
-                    this.open(pageNumber, res => {
-                        if(res.data.message.type == 'success'){
-                            this.depositList = res.data.data;
-                        }else{
-                            modal.toast({ message: '系统繁忙', duration: 1 })
-                        }
-                        this.refreshing = false
-                    })
+                this.open(pageNumber, res => {
+                    if(res.data.message.type == 'success'){
+                        this.depositList = res.data.data;
+                    }else{
+                        modal.toast({ message: '系统繁忙', duration: 1 })
+                    }
+                    this.refreshing = false
+                })
             },
 //            获取月份
             getDate: function(value) {
