@@ -23,9 +23,27 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>weex-icon</string>
+			<key>CFBundleURLName</key>
+			<string>com.rsico.Weex</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wxpage</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>weex-icon</string>
+			<key>CFBundleURLName</key>
+			<string>com.rsico.Weex</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wx90bb95d1d77f0cca</string>
 			</array>
 		</dict>
 	</array>
@@ -92,5 +110,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>wechat</string>
+		<string>mqqapi</string>
+		<string>mqq</string>
+		<string>weixin</string>
+	</array>
 </dict>
 </plist>

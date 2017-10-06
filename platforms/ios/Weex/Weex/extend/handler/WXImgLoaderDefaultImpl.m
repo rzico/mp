@@ -52,7 +52,7 @@
         url = [@"http:" stringByAppendingString:url];
     }
     return (id<WXImageOperationProtocol>)[[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:url] options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        
+        NSLog(@"process = %zd/%zd",receivedSize,expectedSize);
     } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
         if (completedBlock) {
             completedBlock(image, error, finished);

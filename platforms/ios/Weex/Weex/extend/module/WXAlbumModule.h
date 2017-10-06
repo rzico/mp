@@ -6,11 +6,9 @@
 //  Copyright © 2017年 rsico. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <WeexSDK/WXModuleProtocol.h>
+#import "WXModuleDemo.h"
 
-
-@interface WXAlbumModule : NSObject <WXModuleProtocol>
+@interface WXAlbumModule : WXModuleDemo
 
 
 @end

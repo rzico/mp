@@ -151,8 +151,10 @@
 <script>
     const modal = weex.requireModule('modal');
     const navigator = weex.requireModule('navigator');
+    const native = weex.requireModule('app');
     import navbar from '../../include/navbar.vue'
     const dom = weex.requireModule('dom');
+    const stream = weex.requireModule('stream')
     var pressPoint = -1;//手指按压
     var movePoint;//手机按压后移动
     var pointPoor;//手机按压时与移动后的字母数量
@@ -538,7 +540,21 @@
             title: { default: "新的朋友"},
             complete:{ default:"添加朋友"}
         },
+        created(){
+            modal.toast({message:'111',duration:1})
+          this.getFriendList(res=>{
+              modal.toast({message:res.data,duration:1})
+          })
+        },
         methods: {
+
+            getFriendList (callback) {
+                return stream.fetch({
+                    method: 'GET',
+                    type: 'json',
+                    url: '/weex/member/friends/list.jhtml'
+                }, callback)
+            },
             goComplete:function () {
             },
             goback:function () {

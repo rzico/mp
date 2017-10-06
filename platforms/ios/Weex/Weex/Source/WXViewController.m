@@ -69,13 +69,6 @@
 {
     [super viewDidAppear:YES];
     [self updateInstanceState:WeexInstanceAppear];
-//    if (@available(iOS 11.0, *)) {
-//        CGRect frame = self.view.frame;
-//        frame.origin.y = -20;
-//        self.view.frame = frame;
-//    }
-    
-//    self.additionalSafeAreaInsets = UIEdgeInsetsMake(-20, 0, 0, 0);
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -88,12 +81,6 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-}
-
-//TODO get height
-- (void)viewDidLayoutSubviews
-{
-    _weexHeight = self.view.frame.size.height;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,7 +101,6 @@
 
 - (void)render:(completion)complete
 {
-    NSLog(@"render begin");
     [_instance destroyInstance];
     _instance = [[WXSDKInstance alloc] init];
     if([WXPrerenderManager isTaskExist:[self.url absoluteString]]){
@@ -123,7 +109,12 @@
     
     _instance.viewController = self;
     
-    _instance.frame = self.view.bounds;
+    if (self.frame.size.height > 0){
+        _instance.frame = self.frame;
+    }else{
+        _instance.frame = self.view.bounds;
+    }
+//    _instance.frame = self.view.bounds;
     
     
     __weak typeof(self) weakSelf = self;

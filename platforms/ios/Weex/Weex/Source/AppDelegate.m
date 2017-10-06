@@ -48,24 +48,14 @@
 #pragma mark
 #pragma mark application
 
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.backgroundColor = [UIColor whiteColor];
     
+    
+    [WXApi registerApp:WECHAT_APPID enableMTA:YES];
     [self initWeexSDK];
-    
-//    HomeViewController *vc = [HomeViewController new];
-//    vc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/member.js",[NSBundle mainBundle].bundlePath]];
-    
-//    self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:vc];
-//    [self.window.rootViewController.navigationController setNavigationBarHidden:YES];
-    
-    /*
-    
-    self.window.rootViewController = vc;*/
-    self.appKeyChainDic = [HttpHead_Utils getHttpHead];
-    
     
     XMTabBarController *tabbar = [XMTabBarController new];
     tabbar.tabBarHeight = 49;
@@ -81,7 +71,6 @@
     // check if there are any UI changes on main thread.
     [UIView wx_checkUIThread];
 #endif
-    
     return YES;
 }
 
@@ -102,14 +91,35 @@
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    NSString *newUrlStr = url.absoluteString;
-    if([url.scheme isEqualToString:@"wxpage"]) {
-        newUrlStr = [newUrlStr stringByReplacingOccurrencesOfString:@"wxpage://" withString:@"http://"];
+//    NSString *newUrlStr = url.absoluteString;
+//    if([url.scheme isEqualToString:@"wxpage"]) {
+//        newUrlStr = [newUrlStr stringByReplacingOccurrencesOfString:@"wxpage://" withString:@"http://"];
+//    }
+//    UIViewController * viewController = [self demoController];
+//    ((WXViewController*)viewController).url = [NSURL URLWithString:newUrlStr];
+//    [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
+//    return YES;
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
+    return [WXApi handleOpenURL:url delegate:self];
+}
+
+- (void) onReq:(BaseReq *)req{
+    [WXApi sendReq:req];
+}
+
+- (void) onResp:(BaseResp *)resp{
+    if ([resp isKindOfClass:[SendAuthResp class]]){
+        SendAuthResp *aresp = (SendAuthResp *)resp;
+        NSString *strTitle = [NSString stringWithFormat:@"Auth结果"];
+        NSString *strMsg = [NSString stringWithFormat:@"code:%@,state:%@,errcode:%d", aresp.code, aresp.state, aresp.errCode];
+        if (self.wxAuthComplete){
+            self.wxAuthComplete(aresp);
+        }
     }
-    UIViewController * viewController = [self demoController];
-    ((WXViewController*)viewController).url = [NSURL URLWithString:newUrlStr];
-    [(WXRootViewController*)self.window.rootViewController pushViewController:viewController animated:YES];
-    return YES;
+//    [WXApi sendResp:resp];
 }
 
 #pragma mark weex
@@ -129,24 +139,25 @@
     [WXSDKEngine registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];
     [WXSDKEngine registerModule:@"syncTest" withClass:[WXSyncTestModule class]];
-    [WXSDKEngine registerModule:@"albumModule" withClass:[WXAlbumModule class]];
-    
-#if !(TARGET_IPHONE_SIMULATOR)
-    [self checkUpdate];
-#endif
-    
-#ifdef DEBUG
-    [self atAddPlugin];
+    [WXSDKEngine registerModule:@"album" withClass:[WXAlbumModule class]];
+    [WXSDKEngine registerModule:@"app" withClass:NSClassFromString(@"WXNativeModule")];
+//#if !(TARGET_IPHONE_SIMULATOR)
+//    [self checkUpdate];
+//#endif
+//
+//#ifdef DEBUG
+//    [WXDebugTool setDebug:YES];
+//    [WXLog setLogLevel:WXLogLevelLog];
+//
+//    #ifndef UITEST
+//        [[ATManager shareInstance] show];
+//    #endif
+//#else
+//
+//#endif
+//
     [WXDebugTool setDebug:YES];
-    [WXLog setLogLevel:WXLogLevelLog];
-    
-    #ifndef UITEST
-        [[ATManager shareInstance] show];
-    #endif
-#else
-    [WXDebugTool setDebug:NO];
-    [WXLog setLogLevel:WXLogLevelError];
-#endif
+    [WXLog setLogLevel:WXLogLevelDebug];
 }
 
 - (UIViewController *)demoController
@@ -224,15 +235,6 @@
 }
 
 #pragma mark
-
-- (void)atAddPlugin {
-    
-    [[ATManager shareInstance] addPluginWithId:@"weex" andName:@"weex" andIconName:@"../weex" andEntry:@"" andArgs:@[@""]];
-    [[ATManager shareInstance] addSubPluginWithParentId:@"weex" andSubId:@"logger" andName:@"logger" andIconName:@"log" andEntry:@"WXATLoggerPlugin" andArgs:@[@""]];
-//    [[ATManager shareInstance] addSubPluginWithParentId:@"weex" andSubId:@"viewHierarchy" andName:@"hierarchy" andIconName:@"log" andEntry:@"WXATViewHierarchyPlugin" andArgs:@[@""]];
-    [[ATManager shareInstance] addSubPluginWithParentId:@"weex" andSubId:@"test2" andName:@"test" andIconName:@"at_arr_refresh" andEntry:@"" andArgs:@[]];
-    [[ATManager shareInstance] addSubPluginWithParentId:@"weex" andSubId:@"test3" andName:@"test" andIconName:@"at_arr_refresh" andEntry:@"" andArgs:@[]];
-}
 
 - (void)checkUpdate {
     __weak typeof(self) weakSelf = self;

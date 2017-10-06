@@ -52,8 +52,10 @@ WX_EXPORT_METHOD(@selector(fireNativeGlobalEvent:callback:))
     controller.url = [NSURL URLWithString:newURL];
     [controller render:^(BOOL finished){
         NSLog(@"render result = %d",finished);
-        controller.hidesBottomBarWhenPushed = YES;
-        [[weexInstance.viewController navigationController] pushViewController:controller animated:YES];
+        if (finished){
+            controller.hidesBottomBarWhenPushed = YES;
+            [[weexInstance.viewController navigationController] pushViewController:controller animated:YES];
+        }
     }];
 }
 
