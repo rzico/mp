@@ -97,7 +97,7 @@
         },
         created(){
             utils.initIconFont();
-            //event.changeWindowsBar(true);
+            event.changeWindowsBar(true);
         },
         methods: {
             weixin: function (e) {
@@ -125,10 +125,11 @@
                 );
             },
             login: function (e) {
-                event.openURL(utils.locate('view/login/index.js'),function (data) {
-                    if (data!=null && data.type=='success') {
-                        event.closeURL();
-                    }
+                event.openURL(utils.locate('view/login/index.js'),
+                    function (data) {
+                        if (data!=null && data.type=='success') {
+                            event.closeURL();
+                        }
                 })
             },
             goback: function (e) {

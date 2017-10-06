@@ -23,7 +23,7 @@ let utilsFunc = {
         return newUrl;
     },
     //获取URL参数
-    getUrlParamter(name) {
+    getUrlParameter(name) {
         let url = weex.config.bundleUrl;
         let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         let r = url.slice(url.indexOf('?')+1).match(reg);

@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
-        <captcha :title="caption" :mobile="mobile" @onclick="onclick"  @onEnd="onEnd"> </captcha>
+        <captcha :title="caption" :mobile="mobile" @onclick="onclick" @onSend="onSend" @onEnd="onEnd"> </captcha>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -11,16 +11,14 @@
 
 </style>
 <script>
-    const modal = weex.requireModule('modal')
     const event = weex.requireModule('event');
-    const native = weex.requireModule('app');
-    import {jsMixins} from '../../mixins/mixins.js'
+    import { POST, GET } from '../assets/fetch'
+    import utils from '../assets/utils'
     import navbar from '../../include/navbar.vue'
     import captcha from '../../include/captcha.vue'
-    var stream = weex.requireModule('stream')
+    var timer = null;
     var time = 0;
     export default {
-        mixins:[jsMixins],
         components: {
             navbar,captcha
         },
@@ -29,72 +27,73 @@
             caption: { default: "输入验证码" },
             captcha: { default: "输入验证码"},
             mobile:{default: ""},
-            status:{default:"点击重新发送"}
+            status:{default:"点击重新发送"},
+            retry:true
         },
         created() {
-            var bundleUrl = this.$getConfig().bundleUrl;
-            var getVal = bundleUrl.split('?')[1];
-            var operates = getVal.split('&');
-
-            for (var i=0;i<operates.length;i++){
-               var op = operates[i].split('=');
-               if (op[0] == "mobile"){
-                  this.mobile = op[1];
-               }
-            }
-
+            this.mobile = utils.getUrlParameter("mobile");
+        },
+        beforeDestory() {
+            clearInterval(timer);
         },
         methods: {
-            onTimeOut:function () {
-                setTimeout(1000,function () {
+            onTimer:function () {
+                var _this = this;
+                if (timeOut!=null) {
+                    clearInterval(timer);
+                }
+                timeOut = setInterval(1000,function () {
+                    _this.retry = false;
                     time = time +1;
                     this.status = "已发送"+time+"秒";
+                    if (time>59) {
+                        clearInterval(timer);
+                        _this.retry = true;
+                    }
                 })
             },
             onSend: function (e) {
                 var _this = this;
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    url: '/weex/login/send_mobile.jhtml?mobile=' + _this.value
-                }, function (weex) {
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
+                POST('weex/login/send_mobile.jhtml?mobile=' + _this.value)
+                    .then(
+                        function (data) {
+                            if (data.type == "success") {
+                               _this.onTimer();
+                            } else {
+                                _this.retry = true;
+                                clearInterval(timer);
+                                event.toast(data.content);
+                            }
+                        },
+                        function (err) {
+                            _this.retry = true;
+                            clearInterval(timer);
+                            event.toast("网络不稳定")
 
-                        } else {
-                            modal.toast({message:weex.data.content});
                         }
-                    } else {
-                        modal.toast({message:"网络不稳定请重试"});
-                    }
-                })
+
+                    )
             },
             goBack:function(e) {
                 event.closeUrl();
             },
             onEnd: function (val) {
-                modal.toast({message: val});
                 this.captcha = val;
-                native.encrypt(val,function (data) {
+                event.encrypt(val,function (data) {
                     if (data.type=="success") {
-                        return stream.fetch({
-                            method: 'POST',
-                            type: 'json',
-                            url: '/weex/login/captcha.jhtml?captcha=' + data.data
-                        }, function (weex) {
-                            modal.toast({message: weex});
-                            if (weex.ok) {
-                                if (weex.data.type == "success") {
-                                    event.closeURL();
+                        POST('weex/login/captcha.jhtml?captcha=' + data.data).
+                        then(function (data) {
+                                if (data.type == "success") {
+                                    event.closeURL(data);
                                 } else {
-                                    native.showToast(weex.data.content);
+                                    event.toast(data.content);
                                 }
-                            } else {
-                                modal.toast({message: "网络不稳定请重试"});
+                            },function () {
+                                event.toast("网络不稳定请重试");
                             }
-                        })
+                        )
                     } else {
-                        modal.toast({message: data.content});
+                        event.toast(data.content);
                     }
                 })
             }
