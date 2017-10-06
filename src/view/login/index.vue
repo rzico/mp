@@ -52,11 +52,11 @@
                 return stream.fetch({
                     method: 'POST',
                     type: 'json',
-                    url: '/weex/login/send_mobile.jhtml?mobile=' + _this.value
+                    url: 'weex/login/send_mobile.jhtml?mobile=' + _this.value
                 }, function (weex) {
                     if (weex.ok) {
                         if (weex.data.type == "success") {
-                           event.openURL(_this.locateURL+"/view/login/captcha.js?mobile=" + _this.value,
+                           event.openURL(_this.locateURL+"view/login/captcha.js?mobile=" + _this.value,
                                function (e) {
                                    event.closeURL();
                                });
