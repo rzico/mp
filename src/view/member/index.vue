@@ -20,7 +20,8 @@
                 </div>
                 <div class="topBtnSmallBox topBtnTwo" @click="jump()">
                     <text class="topBtn topBtnBigFont">¥ {{moneyNum}}</text>
-                    <text class="topBtn  " >钱包</text>                </div>
+                    <text class="topBtn  " >钱包</text>
+                </div>
                 <div class="topBtnSmallBox">
                     <text class="topBtn topBtnBigFont">{{focusNum}}</text>
                     <text class="topBtn">关注</text>
@@ -51,7 +52,7 @@
                             <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
                         </div>
                 </scroller>
-                <div style="width: 100px;justify-content: center;align-items: center">
+                <div style="width: 100px;justify-content: center;align-items: center" @click="goCorpus()">
                     <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
                 </div>
                 <!--文集前后白色遮罩层-->
@@ -422,7 +423,7 @@
 </style>
 
 <script>
-    import {dom,event,stream} from '../../weex'
+    import {dom,event,stream} from '../../weex.js'
     const modal = weex.requireModule('modal');
     const animation = weex.requireModule('animation')
     var animationPara;//执行动画的文章
@@ -936,6 +937,9 @@
                     allArticleScroll = 0;
                 }
             },
+            goCorpus(){
+                event.openURL('http://192.168.1.107:8081/corpus.weex.js');
+            }
         }
     }
 </script>

@@ -47,7 +47,7 @@
                         <!--段落-->
                         <div class="paraBox paraBoxHeight">
                             <!--左上角关闭按钮"x"-->
-                            <div class="paraClose" @click="showConfirm(index)">
+                            <div class="paraClose" @click="showConfirm(index)" >
                                 <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
                             </div>
                             <!--上箭头-->
@@ -162,23 +162,35 @@
         font-weight: 700;
     }
     .upArrow{
-        top:5px;
+        top:0px;
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-bottom: 10px;
     }
     .downArrow{
-        bottom:5px;
+        bottom:0px;
+        padding-top: 10px;
+        padding-bottom: 5px;
+        padding-left: 10px;
     }
     .rightArrow{
         position: absolute;
-        right: 10px;
+        right: 0px;
+        padding-right: 10px;
     }
     .paraClose{
         position: absolute;
-        top:5px;
-        left:5px;
+        top:0px;
+        left:0px;
+        padding-left: 5px;
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
     }
     .paraCloseSize{
         color: #999;
         font-size: 34px;
+
     }
     .paraTextSize{
         font-size: 32px;
@@ -309,7 +321,6 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
-    import {jsMixins} from '../../../mixins/mixins.js'
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     var modal = weex.requireModule('modal');
@@ -318,7 +329,6 @@
     var musicId = -1 ;
     var articleId = 1;
     export default {
-        mixins:[jsMixins],
         data:function(){
             return{
                 refreshing: false,
@@ -423,11 +433,11 @@
             })
         },
         methods:{
-            saveArticle(callback) {
+            saveArticle(articleData,callback) {
                 return stream.fetch({
                     method: 'POST',
                     type: 'json',
-                    body:"title=你好",
+                    body:articleData,
                     url: '/weex/member/article/submit.jhtml'
                 }, callback)
             },
@@ -470,16 +480,19 @@
                     },
                     title:this.setTitle,
                 }]
-                let jsonBodyData = {
-                    title:this.setTitle,
-                    thumbnial:this.coverImage,
-                    music:musicData,
-                    content:atticleTemplates,
-                }
+//                let jsonBodyData = {
+//                    title:this.setTitle,
+//                    thumbnial:this.coverImage,
+//                    music:musicData,
+//                    content:atticleTemplates,
+//                }
 //                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage  + ' &music='+ musicData +'&content='+ atticleTemplates +''
-                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage +''
-                modal.toast({message:bodyData});
-                _this.saveArticle(res=>{
+//                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage +''
+//                modal.toast({message:bodyData});
+
+                articleData = JSON.stringify(articleData);
+//                网络请求，保存文章
+                _this.saveArticle(articleData,res=>{
                     modal.toast({message:res.data});
                 })
 
@@ -582,11 +595,11 @@
                     lastIndex = -1;
                 }
 //         方法2
-                let a = this.paraList[index].paraImage;
+                let a = this.paraList[index].thumbnailImage;
                 let b = this.paraList[index].paraText;
-                this.paraList[index].paraImage = this.paraList[index - 1].paraImage;
+                this.paraList[index].thumbnailImage = this.paraList[index - 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index - 1].paraText;
-                this.paraList[index - 1].paraImage = a;
+                this.paraList[index - 1].thumbnailImage = a;
                 this.paraList[index - 1].paraText = b;
             },
 //            下箭头
@@ -597,11 +610,11 @@
                     lastIndex = -1;
                 }
 //         方法2
-                let a = this.paraList[index].paraImage;
+                let a = this.paraList[index].thumbnailImage;
                 let b = this.paraList[index].paraText;
-                this.paraList[index].paraImage = this.paraList[index + 1].paraImage;
+                this.paraList[index].thumbnailImage = this.paraList[index + 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index + 1].paraText;
-                this.paraList[index + 1].paraImage = a;
+                this.paraList[index + 1].thumbnailImage = a;
                 this.paraList[index + 1].paraText = b;
             },
 //            用户执行删除时触发询问。
