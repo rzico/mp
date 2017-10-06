@@ -312,7 +312,6 @@
     import {jsMixins} from '../../../mixins/mixins.js'
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
-    const native = weex.requireModule('app')
     var modal = weex.requireModule('modal');
     const stream = weex.requireModule('stream')
     var lastIndex = -1;
@@ -383,7 +382,7 @@
             }else{//再次文章编辑
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
-                    native.find(1,op[1],function (data) {
+                    event.find(1,op[1],function (data) {
                         if(data.type == 'success'){
 //                         modal.toast({message:data.data})
                             let articleData = JSON.parse(data.data.value);
@@ -485,7 +484,7 @@
                 })
 
 //                articleData = JSON.stringify(articleData)
-//                native.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
+//                event.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
 //                    if(data.type == 'success'){
 //                        event.closeURL();
 //                    }else{

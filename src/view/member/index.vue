@@ -422,12 +422,9 @@
 </style>
 
 <script>
+    import {dom,event,stream} from '../../weex'
     const modal = weex.requireModule('modal');
-    const native = weex.requireModule('app');
-    const stream = weex.requireModule('stream')
-    const event = weex.requireModule('event');
     const animation = weex.requireModule('animation')
-    const dom = weex.requireModule('dom');
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -757,7 +754,7 @@
 //            前往文章
             goArticle(id){
                 var _this = this;
-                event.openURL('http://192.168.1.108:8081/editor.weex.js?articleId=' + id,function () {
+                event.openURL('http://192.168.1.107:8081/editor.weex.js?articleId=' + id,function () {
 //                    _this.updateArticle();
                     modal.toast({message:1,duration})
                 })
@@ -765,7 +762,7 @@
             updateArticle(){
                 var _this = this;
 //            获取文章缓存。
-                native.findList(1,'articleListTest1','desc',function (data) {
+                event.findList(1,'articleListTest1','desc',function (data) {
 //                    modal.toast({message:data.data});
                     if(data.type == 'success'){
                         for(let i = 0;i < data.data.length;i++){
@@ -790,9 +787,9 @@
                 })
             },
             toPage: function(url){
-//                native.pageTo(url, false);
-                native.wxConfig(function (data) {
-                    native.showToast(data.color);
+//                event.pageTo(url, false);
+                event.wxConfig(function (data) {
+                    event.showToast(data.color);
                 });
             },
             jump:function (vueName) {
