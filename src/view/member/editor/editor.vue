@@ -63,9 +63,9 @@
                                 <image class="paraImage" @click="editParaImage(item.paraImage,index)" :src="item.thumbnailImage"></image>
                             </div>
                             <!--文章内容-->
-                            <div class="paraText">
+                            <div class="paraText" @click="editorText(index)">
                                 <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                                <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText}}</text>
+                                <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText | htmlDeal}}</text>
                                 <text class="paraTextSize greyColor" v-else  >点击添加文字</text>
                             </div>
                         </div>
@@ -346,6 +346,18 @@
                 hadVote:true,
             }
         },
+        filters:{
+//            过滤html标签
+            htmlDeal:function(value){
+//                将h1-h5换成\n
+                var takeEnter=value.replace(/<\/h[0-9]>/g,"\n");
+//                将html标签替换，可能遗留空格
+                var spaceText=takeEnter.replace(/<\/?.+?>/g,"");
+                return spaceText;
+//                将空格去除
+//                var onlyText=spaceText.replace(/ /g,"");
+            }
+        },
         components: {
             navbar
         },
@@ -375,7 +387,7 @@
                                     paraImage:'file:/' + data.data[i].originalPath,
                                     //小缩略图
                                     thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
-                                    paraText:'i:' + i,
+                                    paraText:'i:\n' + i,
                                     show:true
                                 }) ;
                             }
@@ -433,6 +445,15 @@
             })
         },
         methods:{
+//            段落里的文本编辑
+            editorText(index){
+                var _this = this;
+                event.openEditor(function (data) {
+//                    将返回回来的html数据赋值进去
+                    _this.paraList[index].paraText = data;
+                    modal.toast({message:_this.paraList[index].paraText,duration:3});
+                })
+            },
             saveArticle(articleData,callback) {
                 return stream.fetch({
                     method: 'POST',
@@ -684,17 +705,17 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/music.weex.js?musicId=' + musicId,function (data) {
-                    modal.toast({message:data,duration:1});
-                    let jsonData = JSON.parse(data);
-                    _this.musicName = jsonData.chooseMusicName;
-                    musicId = jsonData.chooseMusicId;
+                event.openURL('http://192.168.1.104:8081/music.weex.js?musicId=' + musicId,function (data) {
+//                    let jsonData = JSON.parse(data);
+//                    modal.toast({message:jsonData,duration:1});
+                    _this.musicName = data.chooseMusicName;
+                    musicId = data.chooseMusicId;
                 });
             },
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/vote.weex.js',function (data) {
+                event.openURL('http://192.168.1.104:8081/vote.weex.js',function (data) {
                     _this.voteList[0].paraText = data;
                     _this.hadVote = false;
                 });

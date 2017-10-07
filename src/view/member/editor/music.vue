@@ -263,6 +263,7 @@
                                 _this.noMusicShow = false;
                                 item.show = true;
                                 lastTickItem = itemChild;
+                                chooseMusicName =  itemChild.musicName;
                             }
                         })
                     })
