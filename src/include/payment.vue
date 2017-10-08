@@ -247,10 +247,10 @@
                     return;
                 }
                 if (this.id == 1) {
-                    payment("alipayH5Plugin");
+                    this.payment("alipayH5Plugin");
                 }
                 if (this.id == 0) {
-                    payment("weixinH5Plugin");
+                    this.payment("weixinH5Plugin");
                 }
             },
             balance(pwd) {
