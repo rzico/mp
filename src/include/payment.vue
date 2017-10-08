@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="cell">
-               <dropdown ></dropdown>
+               <dropdown :title="title" :id="id" :items="items" @onchange="onchange" ></dropdown>
             </div>
             <!--<div class="cell">-->
                 <!--<div class="cell-row">-->
@@ -39,16 +39,16 @@
             <!--</div>-->
             <text class="button btn" value="确定付款" @click="submit()">确定付款</text>
         </div>
-        <div class="box" v-if="isPwd()">
+        <div class="box" v-if="isPwd">
             <div class="nav">
                 <div class="flex1 flex-center">
-                    <text class="close" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                    <text class="close" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
                 </div>
                 <div class="flex4 flex-center">
                     <text class="caption" >支付密码</text>
                 </div>
                 <div class="flex1 flex-center">
-                    <text class="help" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                    <text class="help" :style="{fontFamily:'iconfont'}" >&#xe613;</text>
                 </div>
             </div>
             <text class="hint sub_title">请输入支付密码</text>
@@ -98,7 +98,7 @@
         justify-content: space-between;
         align-items: center;
         width: 730px;
-        /*height:80px;*/
+        height:98px;
         border-bottom-width: 1px;
         border-bottom-color: #ccc;
         border-bottom-style: solid;
@@ -187,22 +187,22 @@
             return{
                 sn:"",
                 isShow:true,
+                isPwd:false,
                 captchaValue:'',
                 textList:['','','','','',''],
             }
         },
         props: {
-            title: { default: "验证码" },
-            captcha: {default:""},
-            mobile:{default:""},
-            status:{default:"点击重新发送"}
+            title: { default: "付款方式" },
+            items:{default:[{id:0,name:"微信支付"},{id:1,name:"支付宝"},{id:2,name:"钱包余额"}]},
+            id: {default:0}
         },
         created() {
             utils.initIconFont();
         },
         methods:{
-            isPwd:function () {
-                return false;
+            onchange:function (id) {
+                this.id = id;
             },
 //            当用户输入数字时触发
             captchaInput:function (event) {
@@ -222,7 +222,7 @@
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
                     _this.captcha = event.value;
-                    _this.$emit("onEnd",this.captcha);
+                    balance(_this.captcha);
                 }
             },
 
@@ -241,9 +241,44 @@
 
             },
 
-            submit (e) {
+            comfrm () {
+                if (this.id==2) {
+                    this.isPwd = true;
+                    return;
+                }
+                if (this.id == 1) {
+                    submit("alipayH5Plugin");
+                }
+                if (this.id == 0) {
+                    submit("weixinH5Plugin");
+                }
+            },
+            balance(pwd) {
                 var _this = this;
-                POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId=weixinH5Plugin").then(
+                event.encrypt(pwd,function (message) {
+                       if (message.type=="success") {
+                           POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId=balancePlugin&enPassword="+message.content).then(
+                               function (data) {
+                                 if (data.type=="succcess") {
+                                     _this.close("success");
+                                 } else {
+                                     _this.captchaValue = "";
+                                     event.toast(data.content);
+                                 }
+                               },
+                               function (err) {
+                                  event.toast("网络不稳定");
+                               }
+                           )
+                       } else {
+                           event.toast(message.content);
+                       }
+                    }
+                )
+            },
+            submit (plugId) {
+                var _this = this;
+                POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
                     function (data) {
                         if (data.type=="success") {
                             event.wxPay(data.data.mweb_url,function (e) {
@@ -273,7 +308,7 @@
                                 });
                             })
                         } else {
-                            event.toast(data.data.content);
+                            event.toast(data.content);
                             _this.close("error");
                         }
                     },

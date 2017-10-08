@@ -14,7 +14,7 @@
         <!--添加动画-->
         <transition-group name="paraTransition" tag="div">
         <div class="options" id="options" key="optionsBox" ref="options" v-if="showOptions">
-            <div v-for="item in items" class="cell"  @click="onItemClick(item.id)">
+            <div v-for="item in items" class="option-cell"  @click="onItemClick(item.id)">
                 <text class="name" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
                 <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
             </div>
@@ -22,20 +22,10 @@
         </transition-group>
     </div>
 </template>
+<style lang="less" src="../style/wx.less"/>
 <style>
 
-    .paraTransition-enter-active, .paraTransition-leave-active {
-        transition: all 0.05s;
-    }
-    .paraTransition-leave-to{
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    .paraTransition-enter{
-        transform: translateY(-50px);
-        opacity: 1;
-    }
-    .dropdown{
+     .dropdown{
         flex-direction: column;
         position: relative;
         z-index: 1000;
@@ -70,9 +60,9 @@
 
     .current-text {
         color: #bbb;
-        font-size: 33px;
+        font-size: 28px;
         flex: 1;
-        margin-right: 20px;
+        margin-right: 10px;
     }
 
     .icon-arrow {
@@ -89,12 +79,12 @@
         transform-origin: center center;
     }
 
-    .cell {
+    .option-cell {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         width: 750px;
-        /*height: 90px;*/
+        height: 98px;
         padding-left:0px;
         padding-right:30px;
         border-bottom-width: 1px;
@@ -125,16 +115,13 @@
                 },
                 showOptions:false,
                 droped:false,
-                id: '0',
-                title: '付款方式',
-                name:"all",
-                ico:'&#xe69f;',
-                items: [
-                    {id: '0', name: 'All'},
-                    {id: '1', name: 'Doing'},
-                    {id: '2', name: 'Done'}
-                ]
+                ico:'&#xe69f;'
             }
+        },
+        props: {
+            title: { default: "dropdown" },
+            id: {default:0},
+            items:{default:[]}
         },
         computed: {
             name: {
@@ -144,9 +131,7 @@
                         return s.id == id
                     })[0].name;
                 }
-            }
-        },
-        computed: {
+            },
             getIco: function() {
                 return he.decode(this.ico)
             }
@@ -164,14 +149,11 @@
             onItemClick: function(id) {
                 this.updateStatus(id);
                 this.switchView();
-                this.$emit('onchange', {
-                    id: this.id,
-                    name: this.name
-                })
             },
 
             updateStatus: function(id) {
-                this.statusId = id;
+                this.id = id;
+                this.$emit('onchange',this.id);
             },
 
 //            collapse: function(ref, callback) {
