@@ -247,10 +247,10 @@
                     return;
                 }
                 if (this.id == 1) {
-                    submit("alipayH5Plugin");
+                    payment("alipayH5Plugin");
                 }
                 if (this.id == 0) {
-                    submit("weixinH5Plugin");
+                    payment("weixinH5Plugin");
                 }
             },
             balance(pwd) {
@@ -276,7 +276,7 @@
                     }
                 )
             },
-            submit (plugId) {
+            payment (plugId) {
                 var _this = this;
                 POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
                     function (data) {
