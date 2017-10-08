@@ -705,7 +705,7 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.104:8081/music.weex.js?musicId=' + musicId,function (data) {
+                event.openURL('http://192.168.1.100:8081/music.weex.js?musicId=' + musicId,function (data) {
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:jsonData,duration:1});
                     _this.musicName = data.chooseMusicName;
@@ -715,7 +715,7 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.104:8081/vote.weex.js',function (data) {
+                event.openURL('http://192.168.1.100:8081/vote.weex.js',function (data) {
                     _this.voteList[0].paraText = data;
                     _this.hadVote = false;
                 });

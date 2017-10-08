@@ -17,8 +17,11 @@
                     <text class="lineText">({{allTotal}})</text>
                 </div>
             </div>
-        </div> <!--文集行背景-->
-        <div class="bgWhite " v-for="(item,index) in corpusList"  :class = "[item.bgChange ? 'active' : 'noActive']" @touchstart="ontouchstart(index)" @touchmove="ontouchmove($event,index)" @touchend="ontouchend(index)" >
+        </div>
+        <!--绑定动画-->
+        <transition-group name="paraTransition" tag="div">
+        <!--文集行背景-->
+        <div class="bgWhite " v-for="(item,index) in corpusList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']" @touchstart="ontouchstart(index)" @touchmove="ontouchmove($event,index)" @touchend="ontouchend(index)" >
             <!--文集行内容-->
             <div class="lineStyle bottomBorder">
                 <!--左侧文集名称-->
@@ -39,6 +42,7 @@
                 </div>
             </div>
         </div>
+        </transition-group>
         <!--文集行背景-->
         <div class="bgWhite ">
             <!--文集行内容-->
@@ -54,6 +58,19 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+
+    .paraTransition-enter-active, .paraTransition-leave-active {
+        transition: all 0.2s;
+    }
+    /*.paraTransition-leave-to{*/
+        /*transform: translateX(300px);*/
+        /*opacity: 0;*/
+    /*}*/
+    .paraTransition-enter{
+        transform: translateY(-300px);
+        opacity: 1;
+    }
+
     .active{
         background-color: #D8D8D8;
         color: #fff;
@@ -118,6 +135,7 @@
     import {dom,event,stream} from '../../../weex.js'
     import utils from '../../../assets/utils.js'
     import navbar from '../../../include/navbar.vue'
+    const animation = weex.requireModule('animation')
     const modal = weex.requireModule('modal');
     var timer = null;//定时器
     var pressPoint = -1;//手指按压

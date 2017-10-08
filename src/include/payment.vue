@@ -98,7 +98,7 @@
         justify-content: space-between;
         align-items: center;
         width: 730px;
-        height:80px;
+        /*height:80px;*/
         border-bottom-width: 1px;
         border-bottom-color: #ccc;
         border-bottom-style: solid;

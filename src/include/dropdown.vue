@@ -10,15 +10,31 @@
                 <text class="icon-arrow" :style="{fontFamily:'iconfont' }" ref="arrow">&#xe630;</text>
             </div>
         </div>
-        <div class="options" id="options" ref="options" >
+
+        <!--添加动画-->
+        <transition-group name="paraTransition" tag="div">
+        <div class="options" id="options" key="optionsBox" ref="options" v-if="showOptions">
             <div v-for="item in items" class="cell"  @click="onItemClick(item.id)">
                 <text class="name" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
                 <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
             </div>
         </div>
+        </transition-group>
     </div>
 </template>
 <style>
+
+    .paraTransition-enter-active, .paraTransition-leave-active {
+        transition: all 0.05s;
+    }
+    .paraTransition-leave-to{
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    .paraTransition-enter{
+        transform: translateY(-50px);
+        opacity: 1;
+    }
     .dropdown{
         flex-direction: column;
         position: relative;
@@ -78,10 +94,9 @@
         justify-content: space-between;
         align-items: center;
         width: 750px;
-        height: 90px;
+        /*height: 90px;*/
         padding-left:0px;
         padding-right:30px;
-
         border-bottom-width: 1px;
         border-style: solid;
         border-color: #ddd;
@@ -108,6 +123,7 @@
                 styleObject:{
                     visibility: "hidden"
                 },
+                showOptions:false,
                 droped:false,
                 id: '0',
                 title: '付款方式',
@@ -140,9 +156,9 @@
                 return this.droped;
             },
             switchView: function() {
-                this.collapse(this.$refs['options']);
+//                this.collapse(this.$refs['options']);
+                this.showOptions = !this.showOptions;
                 this.rotate(this.$refs['arrow']);
-
             },
 
             onItemClick: function(id) {
