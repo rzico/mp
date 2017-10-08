@@ -72,9 +72,7 @@
     const stream = weex.requireModule('stream');
     import navbar from '../../include/navbar.vue'
     import qrcode from '../../include/qrcode.vue'
-    import {jsMixins} from '../../mixins/mixins.js'
     export default {
-        mixins:[jsMixins],
         components: {
             navbar,qrcode
         },

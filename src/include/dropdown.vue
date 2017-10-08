@@ -1,91 +1,85 @@
 <template>
-    <div class="select-container" >
-        <div class="content">
-
-        </div>
-        <div class="mask" id="mask" ref="mask" :style="styleObject" @click="switchView"></div>
-        <div class="options" id="options" ref="options">
-            <div v-for="item in status" class="cell"  @click="onItemClick(item.id)">
-                <text class="name" :class = "[item.id==statusId ? 'current' : '']">{{item.name}}</text>
-                <image class="icon-curr-flag" :src="flagSrc" v-if="item.id == statusId"></image>
+    <div class="dropdown" >
+        <div class="select" @click="switchView">
+            <div class="left">
+                <text class="ico" :style="{fontFamily:'iconfont'}">{{getIco}}</text>
+                <text class="title ml10">{{title}}</text>
+            </div>
+            <div class="right">
+                <text class="current-text">{{name}}</text>
+                <text class="icon-arrow" :style="{fontFamily:'iconfont' }" ref="arrow">&#xe630;</text>
             </div>
         </div>
-        <div class="select" @click="switchView">
-            <text class="current-text">{{statusName}}</text>
-            <image class="icon-arrow" id="arrow" ref="arrow" :src="arrowSrc"></image>
+        <div class="options" id="options" ref="options" >
+            <div v-for="item in items" class="cell"  @click="onItemClick(item.id)">
+                <text class="name" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
+                <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
+            </div>
         </div>
     </div>
 </template>
 <style>
-    .select-container{
+    .dropdown{
         flex-direction: column;
         position: relative;
         z-index: 1000;
     }
 
-    .content{
-        width: 750px;
-        margin-top: 90px;
-    }
-
-    .mask{
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        flex: 1;
-        width: 750px;
-        background-color: rgba(0,0,0, .5);
-    }
-
-    .select {
-        width: 750px;
-        height: 90px;
+     .select {
+        width:730px;
+        height: 98px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-
-        padding-left:30px;
-        padding-right:30px;
-
+        padding-left:0px;
+        padding-right:0px;
         border-bottom-width: 1px;
         border-style: solid;
         border-color: #ddd;
-        background-color: #eee;
+        background-color: #fff;
         z-index: 1001;
-        position: absolute;
-        top: 0;
+    }
+
+    .left {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .right {
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
     }
 
     .current-text {
-        color: #333;
+        color: #bbb;
         font-size: 33px;
         flex: 1;
+        margin-right: 20px;
     }
 
     .icon-arrow {
-        width: 27px;
-        height: 23px;
+        font-size: 32px;
+        line-height: 40px;
+        width: 40px;
+        height: 40px;
+        color:#ccc;
     }
-
-
 
     .options {
-        position: absolute;
-        top: -181px;
-        width: 750px;
+        width:750px;
         background-color: #fff;
         transform-origin: center center;
-
     }
+
     .cell {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         width: 750px;
         height: 90px;
-        padding-left:30px;
+        padding-left:0px;
         padding-right:30px;
 
         border-bottom-width: 1px;
@@ -104,44 +98,48 @@
         height: 32px;
     }
 
-    .current {
-        color: #0088FB;
-    }
 </style>
 <script>
     const animation = weex.requireModule('animation')
-
+    var he = require('he');
     export default{
         data:function(){
             return{
                 styleObject:{
                     visibility: "hidden"
                 },
-                statusId: '0',
-                status: [
+                droped:false,
+                id: '0',
+                title: '付款方式',
+                name:"all",
+                ico:'&#xe69f;',
+                items: [
                     {id: '0', name: 'All'},
                     {id: '1', name: 'Doing'},
                     {id: '2', name: 'Done'}
-                ],
-                flagSrc: 'https://gw.alicdn.com/tps/TB11a2lKFXXXXbVXpXXXXXXXXXX-32-32.png',
-                arrowSrc: 'https://gw.alicdn.com/tps/TB1O3_aKFXXXXXdXVXXXXXXXXXX-27-23.png'
+                ]
             }
         },
         computed: {
-            statusName: {
+            name: {
                 get: function(){
-                    var id = this.statusId;
-                    return this.status.filter(function(s){
+                    var id = this.id;
+                    return this.items.filter(function(s){
                         return s.id == id
                     })[0].name;
                 }
             }
         },
+        computed: {
+            getIco: function() {
+                return he.decode(this.ico)
+            }
+        },
         methods: {
+            isDroped : function () {
+                return this.droped;
+            },
             switchView: function() {
-                this.toggleMaskVisible();
-
-                this.opacity(this.$refs['mask']);
                 this.collapse(this.$refs['options']);
                 this.rotate(this.$refs['arrow']);
 
@@ -150,21 +148,14 @@
             onItemClick: function(id) {
                 this.updateStatus(id);
                 this.switchView();
-//                this.$dispatch('statuschange', {
-                this.$emit('statuschange', {
-                    id: this.statusId,
-                    name: this.statusName
+                this.$emit('onchange', {
+                    id: this.id,
+                    name: this.name
                 })
             },
 
             updateStatus: function(id) {
                 this.statusId = id;
-            },
-
-            toggleMaskVisible: function(){
-                this.current_showMask = !this.current_showMask;
-                var visibility = this.current_showMask? 'visible': 'hidden';
-                this.styleObject.visibility = visibility;
             },
 
             collapse: function(ref, callback) {
@@ -180,20 +171,16 @@
                 }, 'ease', 100, callback);
             },
 
-            opacity: function(ref, callback) {
-                var self = this;
-                self.current_opacity = self.current_opacity === 1 ? 0.1 : 1;
-                self.anim(ref, {
-                    opacity: self.current_opacity
-                }, 'ease', 100, callback);
-            },
-
-            rotate: function(ref, callback) {
+             rotate: function(ref, callback) {
                 var self = this;
                 if(!self.current_rotate) {
                     self.current_rotate = 0;
                 }
-                self.current_rotate = self.current_rotate + 180;
+                if (self.current_rotate==0) {
+                    self.current_rotate = self.current_rotate + 90;
+                } else {
+                    self.current_rotate = self.current_rotate - 90;
+                }
                 self.anim(ref, {
                     transform: 'rotate(' + self.current_rotate + 'deg)'
                 }, 'linear', 100, callback);

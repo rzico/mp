@@ -47,9 +47,7 @@
 <script>
     const event = weex.requireModule('event');
     const dom=weex.requireModule("dom");
-    import {jsMixins} from '../../mixins/mixins.js'
     export default {
-        mixins:[jsMixins],
         created() {
             var _this = this;
             dom.addRule('fontFace',{

@@ -12,8 +12,8 @@
 </style>
 <script>
     const event = weex.requireModule('event');
-    import { POST, GET } from '../assets/fetch'
-    import utils from '../assets/utils'
+    import { POST, GET } from '../../assets/fetch'
+    import utils from '../../assets/utils'
     import navbar from '../../include/navbar.vue'
     import captcha from '../../include/captcha.vue'
     var timer = null;

@@ -1,15 +1,15 @@
 <template>
-    <div class="wrapper bg" v-if="isShow">
+    <div class="wrapper bg" v-if="isShow" @onclick="close('error')">
         <div class="box">
             <div class="nav">
-                <div class="flex1 flex-center">
-                    <text class="close" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                <div class="flex1 flex-center" @click="close('error')">
+                    <text class="close" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
                 </div>
                 <div class="flex4 flex-center">
                     <text class="caption" >确认付款</text>
                 </div>
                 <div class="flex1 flex-center">
-                    <text class="help" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                    <text class="help"  :style="{fontFamily:'iconfont'}" >&#xe613;</text>
                 </div>
             </div>
             <div>
@@ -17,7 +17,7 @@
             </div>
             <div class="cell">
                 <div class="flex-row flex-start">
-                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
+                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
                     <text class="title ml10">付款详情</text>
                 </div>
                 <div class="flex-row flex-end">
@@ -25,18 +25,21 @@
                 </div>
             </div>
             <div class="cell">
-                <div class="cell-row">
-                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
-                    <text class="title ml10">付款方式</text>
-                </div>
-                <div class="cell-row">
-                    <text class="sub_title">微信支付</text>
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                </div>
+               <dropdown ></dropdown>
             </div>
+            <!--<div class="cell">-->
+                <!--<div class="cell-row">-->
+                    <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe69f;</text>-->
+                    <!--<text class="title ml10">付款方式</text>-->
+                <!--</div>-->
+                <!--<div class="cell-row">-->
+                    <!--<text class="sub_title">微信支付</text>-->
+                    <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
+            <!--</div>-->
             <text class="button btn" value="确定付款" @click="submit()">确定付款</text>
         </div>
-        <div class="box">
+        <div class="box" v-if="isPwd()">
             <div class="nav">
                 <div class="flex1 flex-center">
                     <text class="close" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
@@ -99,10 +102,6 @@
         border-bottom-width: 1px;
         border-bottom-color: #ccc;
         border-bottom-style: solid;
-    }
-    .cell-row {
-        flex-direction: row;
-        align-items: center;
     }
     .caption {
         font-size: 38px;
@@ -172,11 +171,21 @@
 
 </style>
 <script>
+    import { POST, GET } from '../assets/fetch';
+    import utils from '../assets/utils';
+    import dropdown from './dropdown.vue'
+    const event = weex.requireModule('event');
+    var globalEvent = weex.requireModule('globalEvent');
+    var timer = null;
     var optionIndex = 0;
     var lastCaptchaLength = 0;
     export default {
+        components: {
+            dropdown
+        },
         data:function(){
             return{
+                sn:"",
                 isShow:true,
                 captchaValue:'',
                 textList:['','','','','',''],
@@ -188,7 +197,13 @@
             mobile:{default:""},
             status:{default:"点击重新发送"}
         },
+        created() {
+            utils.initIconFont();
+        },
         methods:{
+            isPwd:function () {
+                return false;
+            },
 //            当用户输入数字时触发
             captchaInput:function (event) {
                 var _this = this;
@@ -201,7 +216,6 @@
                     let b = a.substr(a.length-1,1)
                     console.log(event);
                     _this.textList[optionIndex] = b;
-
                     optionIndex ++;
                 }
                 lastCaptchaLength = event.value.length;
@@ -211,11 +225,63 @@
                     _this.$emit("onEnd",this.captcha);
                 }
             },
+
 //            点击验证框时使隐藏的input获取焦点；
             getFocus:function () {
-                modal.toast({message:1});
                 this.$refs['captchRef'].focus();
             },
+
+            close (e) {
+                var _this = this;
+                if (timer!=null) {
+                    clearInterval(timer);
+                }
+                globalEvent.removeEventListener("onResume");
+                _this.$emit("notify",e);
+
+            },
+
+            submit (e) {
+                var _this = this;
+                POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId=weixinH5Plugin").then(
+                    function (data) {
+                        if (data.type=="success") {
+                            event.wxPay(data.data.mweb_url,function (e) {
+                                globalEvent.addEventListener("onResume", function (e) {
+                                    if (timer!=null) {
+                                        clearInterval(timer);
+                                    }
+                                    timer = setInterval(1000,function () {
+                                        GET("payment/query.jhtml?sn="+this.sn).then(
+                                            function (data) {
+
+                                                if (data.type=="success") {
+                                                    if (data.data=="0000") {
+                                                        _this.close("success");
+                                                    } else {
+                                                        if (data.data=="0001") {
+                                                            _this.close("error");
+                                                        }
+                                                    }
+                                                }
+
+                                            },
+                                            function (err) {
+                                            }
+                                        )
+                                    });
+                                });
+                            })
+                        } else {
+                            event.toast(data.data.content);
+                            _this.close("error");
+                        }
+                    },
+                    function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
+            }
 
         }
     }

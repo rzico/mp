@@ -253,11 +253,11 @@
                                 _this.loadingState = "松开加载更多";
                                 event.toast(weex.data.content);
                             }
-                        },function (err) {
+                    },function (err) {
                             _this.showLoading = false;
                             _this.loadingState = "松开加载更多";
                             event.toast("网络不稳定");
-                        }
+                    }
                 )
             },
             jump:function (vueName) {
@@ -279,7 +279,7 @@
                             event.toast(data.content);
                         }
                     },function(err) {
-                        event.showToast("网络不稳定请");
+                        event.showToast("网络不稳定");
                     }
                 )
             },

@@ -22,8 +22,8 @@
 <script>
     const event = weex.requireModule('event');
     const storage = weex.requireModule('storage');
-    import { POST, GET } from '../assets/fetch'
-    import utils from '../assets/utils'
+    import { POST, GET } from '../../assets/fetch'
+    import utils from '../../assets/utils'
     import navbar from '../../include/navbar.vue';
     import mobile from '../../include/mobile.vue';
 
@@ -46,20 +46,26 @@
         methods: {
             onSend: function (e) {
                 var _this = this;
-                POST('weex/login/send_mobile.jhtml?mobile=' + _this.value).then(
-                    function (data) {
-                        if (data.type == "success") {
-                           event.openURL(utils.locate("view/login/captcha.js?mobile=" + _this.value),
-                               function (e) {
-                                   event.closeURL();
-                               });
-                        } else {
-                            event.toast(data.content);
+                event.encrypt(_this.value,function (message) {
+                    if (message.type=="success") {
+                    POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
+                        function (data) {
+                            if (data.type == "success") {
+                                event.openURL(utils.locate("view/login/captcha.js?mobile=" +_this.value),
+                                    function (e) {
+                                        event.closeURL();
+                                    });
+                            } else {
+                                event.toast(data.content);
+                            }
+                        }, function (err) {
+                            event.toast("网络不稳定");
                         }
-                    },function (err) {
-                        event.toast("网络不稳定");
+                    )
+                    } else {
+                        event.toast(message.content);
                     }
-                )
+                });
             },
             goback:function(e) {
                 event.closeURL();
