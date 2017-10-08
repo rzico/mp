@@ -37,7 +37,7 @@
                     <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                 <!--</div>-->
             <!--</div>-->
-            <text class="button btn" value="确定付款" @click="submit()">确定付款</text>
+            <text class="button btn" value="确定付款" @click="comfrm()">确定付款</text>
         </div>
         <div class="box" v-if="isPwd">
             <div class="nav">
