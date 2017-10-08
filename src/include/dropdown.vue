@@ -18,6 +18,9 @@
                 <text class="name" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
                 <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
             </div>
+            <div class="option-cell" style=" border-bottom-width: 0px;">
+
+            </div>
         </div>
         </transition-group>
     </div>
@@ -114,7 +117,6 @@
                     visibility: "hidden"
                 },
                 showOptions:false,
-                droped:false,
                 ico:'&#xe69f;'
             }
         },
@@ -137,11 +139,7 @@
             }
         },
         methods: {
-            isDroped : function () {
-                return this.droped;
-            },
             switchView: function() {
-//                this.collapse(this.$refs['options']);
                 this.showOptions = !this.showOptions;
                 this.rotate(this.$refs['arrow']);
             },
@@ -156,20 +154,7 @@
                 this.$emit('onchange',this.id);
             },
 
-//            collapse: function(ref, callback) {
-//                var platform = this.$getConfig().env.platform;
-//                var translate = 'translate(0%, 100%)'; // Web need % ;
-//                if(platform == 'iOS') {
-//                    translate = 'translate(0, 270)'; // ios bug && fixing
-//                }
-//
-//                this.current_translate = this.current_translate ? '' : translate;
-//                this.anim(ref, {
-//                    transform: this.current_translate
-//                }, 'ease', 100, callback);
-//            },
-
-             rotate: function(ref, callback) {
+            rotate: function(ref, callback) {
                 var self = this;
                 if(!self.current_rotate) {
                     self.current_rotate = 0;

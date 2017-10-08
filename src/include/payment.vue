@@ -15,6 +15,7 @@
             <div>
                 <text class="currency">¥0.02</text>
             </div>
+            <text class="button btn" value="确定付款" @click="comfrm()">确定付款</text>
             <div class="cell">
                 <div class="flex-row flex-start">
                     <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
@@ -24,20 +25,9 @@
                     <text class="sub_title" style="margin-right: 20px;">钱包充值</text>
                 </div>
             </div>
-            <div class="cell">
-               <dropdown :title="title" :id="id" :items="items" @onchange="onchange" ></dropdown>
+            <div class="cell" style="border-bottom-width: 0px;">
+                <dropdown :title="title" :id="id" :items="items" @onchange="onchange" ></dropdown>
             </div>
-            <!--<div class="cell">-->
-                <!--<div class="cell-row">-->
-                    <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe69f;</text>-->
-                    <!--<text class="title ml10">付款方式</text>-->
-                <!--</div>-->
-                <!--<div class="cell-row">-->
-                    <!--<text class="sub_title">微信支付</text>-->
-                    <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                <!--</div>-->
-            <!--</div>-->
-            <text class="button btn" value="确定付款" @click="comfrm()">确定付款</text>
         </div>
         <div class="box" v-if="isPwd">
             <div class="nav">
@@ -98,7 +88,7 @@
         justify-content: space-between;
         align-items: center;
         width: 730px;
-        height:98px;
+        min-height:98px;
         border-bottom-width: 1px;
         border-bottom-color: #ccc;
         border-bottom-style: solid;
@@ -164,7 +154,7 @@
     .btn {
         margin-left:50px;
         margin-right:50px;
-        position: fixed;
+        position: absolute;
         width:650px;
         bottom:50px;
     }
