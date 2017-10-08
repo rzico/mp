@@ -174,18 +174,18 @@
                 this.statusId = id;
             },
 
-            collapse: function(ref, callback) {
-                var platform = this.$getConfig().env.platform;
-                var translate = 'translate(0%, 100%)'; // Web need % ;
-                if(platform == 'iOS') {
-                    translate = 'translate(0, 270)'; // ios bug && fixing
-                }
-
-                this.current_translate = this.current_translate ? '' : translate;
-                this.anim(ref, {
-                    transform: this.current_translate
-                }, 'ease', 100, callback);
-            },
+//            collapse: function(ref, callback) {
+//                var platform = this.$getConfig().env.platform;
+//                var translate = 'translate(0%, 100%)'; // Web need % ;
+//                if(platform == 'iOS') {
+//                    translate = 'translate(0, 270)'; // ios bug && fixing
+//                }
+//
+//                this.current_translate = this.current_translate ? '' : translate;
+//                this.anim(ref, {
+//                    transform: this.current_translate
+//                }, 'ease', 100, callback);
+//            },
 
              rotate: function(ref, callback) {
                 var self = this;
