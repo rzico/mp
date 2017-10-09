@@ -12,7 +12,7 @@
 
 @property (nonatomic, copy) NSString *title;
 
-@property (nonatomic, copy) NSString *priginalPath;
+@property (nonatomic, copy) NSString *originalPath;
 
 @property (nonatomic, assign) NSTimeInterval createDate;
 

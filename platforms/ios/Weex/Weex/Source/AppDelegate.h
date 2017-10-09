@@ -29,4 +29,6 @@ typedef void(^WXAuthComplete)(SendAuthResp *resp);
 
 @property (strong, nonatomic) WXAuthComplete wxAuthComplete;
 
+- (void)presentLoginViewController;
+
 @end

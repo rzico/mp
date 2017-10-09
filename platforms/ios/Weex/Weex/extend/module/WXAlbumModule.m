@@ -12,15 +12,85 @@
 #import "DictionaryUtil.h"
 
 #import <TZImagePickerController.h>
+#import <TZImageManager.h>
+#import <Photos/Photos.h>
+#import <CLImageEditor.h>
 
-@implementation WXAlbumModule
+@interface WXAlbumModule()<CLImageEditorDelegate>
+@end
+
+@implementation WXAlbumModule{
+    WXModuleCallback back;
+}
 
 @synthesize weexInstance;
 
 WX_EXPORT_METHOD(@selector(openAlbumMuti:))
+WX_EXPORT_METHOD(@selector(openAlbumSingle:callback:))
+WX_EXPORT_METHOD(@selector(openCrop:callback:))
+
+- (void)openAlbumSingle:(BOOL)isCrop callback:(WXModuleCallback)callback{
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:1 delegate:nil];
+    
+    imagePickerVc.allowPickingImage = YES;
+    imagePickerVc.allowCrop = NO;
+    imagePickerVc.allowPickingVideo = NO;
+    imagePickerVc.allowPickingMultipleVideo = NO;
+    imagePickerVc.allowPickingGif = NO;
+    //是否允许拍照
+    imagePickerVc.allowTakePicture = YES;
+    //照片排序
+    imagePickerVc.sortAscendingByModificationDate = NO;
+    
+    imagePickerVc.isStatusBarDefault = YES;
+    
+    imagePickerVc.allowPickingOriginalPhoto = NO;
+    
+    imagePickerVc.isSelectOriginalPhoto = NO;
+    
+    back = callback;
+    
+    [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+        CLImageEditor *editor = [[CLImageEditor alloc] initWithImage:[photos firstObject]];
+        editor.delegate = self;
+        [weexInstance.viewController presentViewController:editor animated:YES completion:nil];
+    }];
+    [weexInstance.viewController presentViewController:imagePickerVc animated:YES completion:nil];
+}
+
+- (void)openCrop:(NSString *)imagePath callback:(WXModuleCallback)callback{
+    back = callback;
+    NSString *path = imagePath;
+    NSArray *replace = [NSArray arrayWithObjects:@"file:///",@"file://",@"file:/", nil];
+    for (NSString *str in replace){
+        path = [path stringByReplacingOccurrencesOfString:str withString:@""];
+    }
+    CLImageEditor *editor = [[CLImageEditor alloc] initWithImage:[UIImage imageWithContentsOfFile:path]];
+    editor.delegate = self;
+    [weexInstance.viewController presentViewController:editor animated:YES completion:nil];
+}
+
+- (void)imageEditorDidCancel:(CLImageEditor *)editor{
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imageEditor:(CLImageEditor *)editor didFinishEditingWithImage:(UIImage *)image{
+    WXAlbumModel *album = [WXAlbumModel new];
+    NSString *path = [self getImagePath:image uuid:[self getUuid]];
+    album.originalPath = path;
+    album.thumbnailSmallPath = path;
+    WXCallBackMessage *message = [WXCallBackMessage new];
+    message.type = YES;
+    message.content = @"选择成功";
+    message.data = album;
+    [editor dismissViewControllerAnimated:YES completion:^{
+        if (back){
+            back(message.getMessage);
+        }
+    }];
+}
 
 - (void)openAlbumMuti:(WXModuleCallback)callback{
-    NSMutableArray *dataArray = [NSMutableArray new];
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:100 delegate:nil];
     
     //图片模式
@@ -28,8 +98,6 @@ WX_EXPORT_METHOD(@selector(openAlbumMuti:))
     imagePickerVc.allowPickingVideo = NO;
     imagePickerVc.allowPickingMultipleVideo = NO;
     imagePickerVc.allowPickingGif = YES;
-    //是否允许选择原图
-    imagePickerVc.isSelectOriginalPhoto = NO;
     
     //是否允许拍照
     imagePickerVc.allowTakePicture = YES;
@@ -39,31 +107,63 @@ WX_EXPORT_METHOD(@selector(openAlbumMuti:))
     
     imagePickerVc.isStatusBarDefault = YES;
     
-    [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+    imagePickerVc.allowPickingOriginalPhoto = YES;
+    
+    imagePickerVc.isSelectOriginalPhoto = YES;
+    
+    [imagePickerVc setDidFinishPickingPhotosWithInfosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto, NSArray<NSDictionary *> *infos) {
+        PHImageRequestOptions *options = [PHImageRequestOptions new];
+        options.synchronous = YES;
+
+        __block NSMutableArray *dataArray = [NSMutableArray new];
+        __block int n = 0;
         for (int i=0; i<photos.count; i++){
-            WXAlbumModel *album = [WXAlbumModel new];
-            album.thumbnailSmallPath = [self getImagePath:[photos objectAtIndex:i]];
-            [dataArray addObject:album];
+            [dataArray addObject:[WXAlbumModel new]];
         }
-        
-        if (callback){
-            WXCallBackMessage *message = [WXCallBackMessage new];
-            message.type = YES;
-            message.content = @"选择成功";
-            message.data = dataArray;
-            callback(message.getMessage);
+        for (int i=0; i<photos.count; i++){
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                PHAsset *asset = [assets objectAtIndex:i];
+                WXAlbumModel *album = [WXAlbumModel new];
+                NSString *path = [self getImagePath:[photos objectAtIndex:i] uuid:[asset valueForKey:@"uuid"]];
+                album.originalPath = path;
+                album.thumbnailSmallPath = path;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    dataArray[i] = album;
+                    n++;
+                });
+            });
         }
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            while(n<photos.count){
+
+            }
+            if (callback){
+                WXCallBackMessage *message = [WXCallBackMessage new];
+                message.type = YES;
+                message.content = @"选择成功";
+                message.data = dataArray;
+                callback(message.getMessage);
+            }
+        });
     }];
     [weexInstance.viewController presentViewController:imagePickerVc animated:YES completion:nil];
 }
 
-- (NSString *)getImagePath:(UIImage *)image{
+
+
+- (NSString *)getImagePath:(UIImage *)image uuid:(NSString *)uuid{
     static NSString *docDir;
+    static NSString *basePath;
     if (!docDir){
         docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        basePath = [NSString stringWithFormat:@"%@/DCIM/100APPLE",docDir];
     }
-    NSString *path = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.jpg",[self getUuid]]];
-    BOOL success = [UIImageJPEGRepresentation(image, 0.5) writeToFile:path  atomically:YES];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![fm fileExistsAtPath:basePath]){
+        [fm createDirectoryAtPath:basePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString *path = [NSString stringWithFormat:@"%@/%@.png",basePath,uuid];
+    BOOL success = [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
     if (success){
         return path;
     }else{

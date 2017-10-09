@@ -34,25 +34,25 @@
     }
     self.automaticallyAdjustsScrollViewInsets = NO;
     HomeViewController *homeVc = [HomeViewController new];
-    homeVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/index.js",[NSBundle mainBundle].bundlePath]];
+    homeVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/resource/view/home/index.js",DOCUMENT_PATH]];
     homeVc.frame = frame;
     homeVc.weexHeight = weexHeight;
     [homeVc render:nil];
     
     FriendsViewController *friendsVc = [FriendsViewController new];
-    friendsVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/deposit.js",[NSBundle mainBundle].bundlePath]];
+    friendsVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/resource/view/friend/list.js",DOCUMENT_PATH]];
 //    friendsVc.frame = frame;
     friendsVc.weexHeight = weexHeight;
     [friendsVc render:nil];
     
     MessageViewController *messageVc = [MessageViewController new];
-    messageVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/message.js",[NSBundle mainBundle].bundlePath]];
+    messageVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/resource/view/message/list.js",DOCUMENT_PATH]];
 //    messageVc.frame = frame;
     messageVc.weexHeight = weexHeight;
     [messageVc render:nil];
     
     MemberViewController *memberVc = [MemberViewController new];
-    memberVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/member.js",[NSBundle mainBundle].bundlePath]];
+    memberVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/resource/view/member/index.js",DOCUMENT_PATH]];
 //    memberVc.frame = frame;
     memberVc.weexHeight = weexHeight;
     [memberVc render:nil];

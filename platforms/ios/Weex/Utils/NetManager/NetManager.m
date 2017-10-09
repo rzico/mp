@@ -26,9 +26,10 @@ static Reachability * internetConnectionReach = nil;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             afManager = [AFHTTPSessionManager manager];
+            afManager.responseSerializer = [AFJSONResponseSerializer serializer];
             afManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
             [afManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-            afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json",@"text/javascript",@"text/html",@"text/plain",@"application/x-font-ttf", nil];
+            afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json", nil];
             afManager.requestSerializer.timeoutInterval = 45.0f;
         });
     }

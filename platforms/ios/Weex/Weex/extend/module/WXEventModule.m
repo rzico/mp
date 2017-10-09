@@ -21,16 +21,31 @@
 #import "WXViewController.h"
 #import <WeexSDK/WXBaseViewController.h>
 #import "WXViewController.h"
+#import "WXConfigModel.h"
+#import "DictionaryUtil.h"
+#import "AppDelegate.h"
+#import "IWXToast.h"
 
+static WXModuleCallback back;
 
 @implementation WXEventModule
 
 @synthesize weexInstance;
 
-WX_EXPORT_METHOD(@selector(openURL:))
-WX_EXPORT_METHOD(@selector(closeURL))
+static int WX_ERR_OK = 0;//用户同意
+static int WX_ERR_AUTH_DENIED = -4;//用户拒绝授权
+static int WX_ERR_USER_CANCEL = -2;//用户取消
 
+WX_EXPORT_METHOD(@selector(openURL:))
+WX_EXPORT_METHOD(@selector(openURL:callback:))
+WX_EXPORT_METHOD(@selector(closeURL))
+WX_EXPORT_METHOD(@selector(closeURL:))
 WX_EXPORT_METHOD(@selector(fireNativeGlobalEvent:callback:))
+WX_EXPORT_METHOD_SYNC(@selector(wxConfig))
+WX_EXPORT_METHOD_SYNC(@selector(changeWindowsBar))
+WX_EXPORT_METHOD(@selector(wxAuth:))
+WX_EXPORT_METHOD(@selector(toast:))
+
 
 - (void)openURL:(NSString *)url
 {
@@ -59,6 +74,11 @@ WX_EXPORT_METHOD(@selector(fireNativeGlobalEvent:callback:))
     }];
 }
 
+- (void)openURL:(NSString *)url callback:(WXModuleCallback)callback{
+    back = callback;
+    [self openURL:url];
+}
+
 
 - (void)closeURL{
     UINavigationController *nav = [weexInstance.viewController navigationController];
@@ -69,6 +89,13 @@ WX_EXPORT_METHOD(@selector(fireNativeGlobalEvent:callback:))
     }
 }
 
+- (void)closeURL:(NSDictionary *)dic{
+    [self closeURL];
+    if (back){
+        back(dic);
+        back = nil;
+    }
+}
 /**
  a test method for macaca case, you can fire globalEvent when download finish、device shaked and so on.
  @param event event name
@@ -81,6 +108,52 @@ WX_EXPORT_METHOD(@selector(fireNativeGlobalEvent:callback:))
         callback(result);
     }
 }
+
+
+- (NSDictionary *)wxConfig{
+    static WXConfigModel *config = nil;
+    if (!config){
+        config = [WXConfigModel new];
+        config.color = WXCONFIG_COLOR;
+        config.resourcePath = WXCONFIG_RESOURCE_PATH;
+        config.interfacePath = WXCONFIG_INTERFACE_PATH;
+    }
+    return [DictionaryUtil objectToDictionary:config];
+}
+
+- (void)wxAuth:(WXModuleCallback)callback{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate.wxAuthComplete = ^(SendAuthResp *resp) {
+        NSMutableDictionary *message = [NSMutableDictionary new];
+        if (resp.errCode == WX_ERR_OK){
+            [message setValue:@"success" forKey:@"type"];
+            [message setValue:resp.code forKey:@"data"];
+        }else{
+            [message setValue:@"error" forKey:@"type"];
+            [message setValue:[NSString stringWithFormat:@"%d",resp.errCode] forKey:@"data"];
+        }
+        if (callback){
+            callback(message);
+        }
+    };
+
+    SendAuthReq* req = [SendAuthReq new];
+    req.scope = @"snsapi_userinfo" ;
+    req.state = @"123" ;
+    [WXApi sendReq:req];
+}
+
+- (void)changeWindowsBar{
+    
+}
+
+
+
+- (void)toast:(NSString *)message{
+    IWXToast *toast = [IWXToast new];
+    [toast showToast:message withInstance:weexInstance];
+}
+
 
 @end
 

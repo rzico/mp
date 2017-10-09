@@ -9,13 +9,19 @@
 #ifndef Settings_h
 #define Settings_h
 
+
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
-static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/weex/app/";
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/weex/";
+static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com";
+//static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.1.106:8088";
 static NSString *WECHAT_APPID = @"wx90bb95d1d77f0cca";
 
 
 static NSString *kAuthScope = @"snsapi_message,snsapi_userinfo,snsapi_friend,snsapi_contact";
 static NSString *kAuthOpenID = @"0c806938e2413ce73eef92cc3";
 static NSString *kAuthState = @"xxx";
+
+
+static NSString *AliOSSConfig_Endpoint = @"http://cdn.rzico.com";
+
 #endif /* Settings_h */

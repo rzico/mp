@@ -24,22 +24,23 @@
 #import "WXNavigationDefaultImpl.h"
 #import "WXImgLoaderDefaultImpl.h"
 #import "Define.h"
-#import "WXSyncTestModule.h"
 #import "UIView+UIThreadCheck.h"
 #import <WeexSDK/WeexSDK.h>
 #import <AVFoundation/AVFoundation.h>
 #import <ATSDK/ATManager.h>
 #import "WXConfigCenterProtocol.h"
 #import "WXConfigCenterDefaultImpl.h"
+#import "WXURLRewriteImpl.h"
 
 #import "WXAlbumModule.h"
 
 #import "XMTabBarController.h"
 
-#import "HomeViewController.h"
+#import "ResourceManager.h"
 
-#import "HttpHead+Utils.h"
+#import "LoginViewController.h"
 
+#import "UIViewController+Util.h"
 @interface AppDelegate ()
 @end
 
@@ -51,8 +52,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    NSLog(@"bundle=%@",DOCUMENT_PATH);
+    [ResourceManager defaultManager];
     
+//    [NSThread sleepForTimeInterval:3];
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
     [WXApi registerApp:WECHAT_APPID enableMTA:YES];
     [self initWeexSDK];
@@ -61,17 +66,20 @@
     tabbar.tabBarHeight = 49;
     
     self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabbar];
-    
-    
     [self.window makeKeyAndVisible];
     
     [self startSplashScreen];
-    
 #if DEBUG
     // check if there are any UI changes on main thread.
     [UIView wx_checkUIThread];
 #endif
     return YES;
+}
+
+- (void)presentLoginViewController{
+    LoginViewController *loginViewController = [LoginViewController initWithUrl:[NSString stringWithFormat:@"file://%@/resource/view/index.js",DOCUMENT_PATH]];
+    UINavigationController *loginNav = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    [self.window.rootViewController presentViewController:loginNav animated:YES completion:nil];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -135,47 +143,14 @@
     [WXSDKEngine registerHandler:[WXEventModule new] withProtocol:@protocol(WXEventModuleProtocol)];
     [WXSDKEngine registerHandler:[WXConfigCenterDefaultImpl new] withProtocol:@protocol(WXConfigCenterProtocol)];
     [WXSDKEngine registerHandler:[[NSClassFromString(@"WXNetworkDefaultImpl") class] new] withProtocol:@protocol(WXResourceRequestHandler)];
+    [WXSDKEngine registerHandler:[WXURLRewriteImpl new] withProtocol:@protocol(WXURLRewriteProtocol)];
     
     [WXSDKEngine registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];
-    [WXSDKEngine registerModule:@"syncTest" withClass:[WXSyncTestModule class]];
     [WXSDKEngine registerModule:@"album" withClass:[WXAlbumModule class]];
-    [WXSDKEngine registerModule:@"app" withClass:NSClassFromString(@"WXNativeModule")];
-//#if !(TARGET_IPHONE_SIMULATOR)
-//    [self checkUpdate];
-//#endif
-//
-//#ifdef DEBUG
-//    [WXDebugTool setDebug:YES];
-//    [WXLog setLogLevel:WXLogLevelLog];
-//
-//    #ifndef UITEST
-//        [[ATManager shareInstance] show];
-//    #endif
-//#else
-//
-//#endif
-//
-    [WXDebugTool setDebug:YES];
-    [WXLog setLogLevel:WXLogLevelDebug];
-}
 
-- (UIViewController *)demoController
-{
-    UIViewController *demo = [[WXViewController alloc] init];
-    
-#if DEBUG
-    //If you are debugging in device , please change the host to current IP of your computer.
-    ((WXViewController *)demo).url = [NSURL URLWithString:BUNDLE_URL];
-#else
-    ((WXViewController *)demo).url = [NSURL URLWithString:BUNDLE_URL];
-#endif
-    
-#ifdef UITEST
-    ((WXViewController *)demo).url = [NSURL URLWithString:UITEST_HOME_URL];
-#endif
-    
-    return demo;
+    [WXDebugTool setDebug:YES];
+    [WXLog setLogLevel:WXLogLevelError];
 }
 
 #pragma mark 

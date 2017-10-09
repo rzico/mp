@@ -16,7 +16,11 @@ PODS:
   - AFNetworking/Serialization (3.0.4)
   - AFNetworking/UIKit (3.0.4):
     - AFNetworking/NSURLSession
+  - AliyunOSSiOS (2.6.3)
   - ATSDK-Weex (0.0.1)
+  - CLImageEditor (0.2.1):
+    - CLImageEditor/Core (= 0.2.1)
+  - CLImageEditor/Core (0.2.1)
   - JSONModel (1.7.0)
   - Reachability (3.2)
   - SDWebImage (3.7.5):
@@ -30,11 +34,14 @@ PODS:
     - SocketRocket
   - WXDevtool (0.15.1):
     - WeexSDK
+  - ZipArchive (1.4.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0.4)
   - AFNetworking-Synchronous/3.x
+  - AliyunOSSiOS
   - ATSDK-Weex (= 0.0.1)
+  - CLImageEditor
   - JSONModel
   - Reachability
   - SDWebImage (= 3.7.5)
@@ -44,6 +51,7 @@ DEPENDENCIES:
   - WechatOpenSDK
   - WeexSDK (from `./sdk/`)
   - WXDevtool (= 0.15.1)
+  - ZipArchive
 
 EXTERNAL SOURCES:
   WeexSDK:
@@ -52,7 +60,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
   AFNetworking-Synchronous: 61b98fb931b114b0da2b243957ea533e2954c2a2
+  AliyunOSSiOS: 98d79abaceed7485ec0e28dd09c5464acf4a67a0
   ATSDK-Weex: 1b27558f4336d77fb97704d34fc6ad1fd468592c
+  CLImageEditor: 7f1910df791276815140a377d6836fb77cf76cf3
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
@@ -62,7 +72,8 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 0ee07a8d492299d3e47372a33da5af26524a7576
   WeexSDK: d30bf863bf8eb14b604817a4061e51c4fe4caeed
   WXDevtool: 5b26fd79451f215d7acdee89e5e2f3be491a1393
+  ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 
-PODFILE CHECKSUM: 1e3f8af9ef3ded5c6a0547919d8c0abd51d6cf50
+PODFILE CHECKSUM: 5d28ffc4a35ee642ceec32364847c367a0e35a44
 
 COCOAPODS: 1.1.1

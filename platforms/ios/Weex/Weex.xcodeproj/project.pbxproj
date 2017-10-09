@@ -13,19 +13,22 @@
 		22220E011F6FC23400864689 /* message.js in Resources */ = {isa = PBXBuildFile; fileRef = 22220DFF1F6FC23400864689 /* message.js */; };
 		222A4CE91F7BB3CF00A58A7B /* ResourcesModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 222A4CE81F7BB3CF00A58A7B /* ResourcesModel.m */; };
 		222A4CEE1F7BD4ED00A58A7B /* WXConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 222A4CED1F7BD4ED00A58A7B /* WXConfigModel.m */; };
+		2234BDD21F8A402C001F6099 /* ResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2234BDD11F8A402C001F6099 /* ResourceManager.m */; };
+		2234BDD51F8A51E0001F6099 /* res-0.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = 2234BDD41F8A51CF001F6099 /* res-0.0.1.zip */; };
+		2234BDD81F8A560E001F6099 /* WXURLRewriteImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2234BDD71F8A560E001F6099 /* WXURLRewriteImpl.m */; };
 		223B1EA71F7D2767005DC7A7 /* UIViewController+WXDemoNaviBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 223B1EA61F7D2767005DC7A7 /* UIViewController+WXDemoNaviBar.m */; };
 		223B1EA81F7D27E1005DC7A7 /* WXScannerHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 223B1EA21F7D2745005DC7A7 /* WXScannerHistoryVC.m */; };
 		223B1EA91F7D27E1005DC7A7 /* WXScannerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 223B1EA41F7D2745005DC7A7 /* WXScannerVC.m */; };
 		223B1EAC1F7D307B005DC7A7 /* WXModuleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 223B1EAB1F7D307B005DC7A7 /* WXModuleDemo.m */; };
-		223B1EAF1F7D30DD005DC7A7 /* WXNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 223B1EAE1F7D30DD005DC7A7 /* WXNativeModule.m */; };
 		223F37F11F7650E300EFCEF4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 223F37F01F7650E300EFCEF4 /* AssetsLibrary.framework */; };
 		223F37F31F7650EB00EFCEF4 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 223F37F21F7650EB00EFCEF4 /* Photos.framework */; };
 		2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2267495E1F7215F20035A6E1 /* WXAlbumModule.m */; };
 		226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 226749621F722A4E0035A6E1 /* EditorViewController.m */; };
 		226749691F722DA80035A6E1 /* WXAlbumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 226749681F722DA80035A6E1 /* WXAlbumModel.m */; };
 		2267496E1F72572B0035A6E1 /* DictionaryUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 2267496D1F72572B0035A6E1 /* DictionaryUtil.m */; };
-		226749701F72784B0035A6E1 /* editor.js in Resources */ = {isa = PBXBuildFile; fileRef = 2267496F1F72784B0035A6E1 /* editor.js */; };
 		226749721F72B0B30035A6E1 /* manage.js in Resources */ = {isa = PBXBuildFile; fileRef = 226749711F72B0B30035A6E1 /* manage.js */; };
+		2275EEFE1F890A15002A2202 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2275EEFD1F890A15002A2202 /* LoginViewController.m */; };
+		2275EF011F8913E0002A2202 /* NSURL+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2275EF001F8913E0002A2202 /* NSURL+Util.m */; };
 		2279B8771F7E708800A8A144 /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = 2279B8761F7E708800A8A144 /* index.js */; };
 		2279B8911F7E8A9500A8A144 /* IWXToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 2279B8901F7E8A9500A8A144 /* IWXToast.m */; };
 		2279B8941F7E8AAF00A8A144 /* IWXToastInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2279B8931F7E8AAF00A8A144 /* IWXToastInfo.m */; };
@@ -43,7 +46,6 @@
 		2291F1091F6A89EC00B94F1B /* WXConfigCenterDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1061F6A89EC00B94F1B /* WXConfigCenterDefaultImpl.m */; };
 		2291F10A1F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1081F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m */; };
 		2291F10F1F6A89F300B94F1B /* WXEventModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F10C1F6A89F300B94F1B /* WXEventModule.m */; };
-		2291F1101F6A89F300B94F1B /* WXSyncTestModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F10E1F6A89F300B94F1B /* WXSyncTestModule.m */; };
 		2291F1131F6A8A6C00B94F1B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1121F6A8A6C00B94F1B /* AppDelegate.m */; };
 		2291F11C1F6A8A7C00B94F1B /* WXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1171F6A8A7C00B94F1B /* WXViewController.m */; };
 		2291F11D1F6A8A7C00B94F1B /* UIView+UIThreadCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1191F6A8A7C00B94F1B /* UIView+UIThreadCheck.m */; };
@@ -55,6 +57,11 @@
 		2291F1421F6ABA8B00B94F1B /* UIColor+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1411F6ABA8B00B94F1B /* UIColor+Util.m */; };
 		2291F1441F6ABB2A00B94F1B /* member.js in Resources */ = {isa = PBXBuildFile; fileRef = 2291F1431F6ABB2A00B94F1B /* member.js */; };
 		229357811F7F8A2E00050115 /* WXCallBackMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 229357801F7F8A2E00050115 /* WXCallBackMessage.m */; };
+		2293849D1F87867900AD9746 /* AliOSSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293849C1F87867900AD9746 /* AliOSSUtils.m */; };
+		229384A31F87928600AD9746 /* editor.js in Resources */ = {isa = PBXBuildFile; fileRef = 229384A21F87928500AD9746 /* editor.js */; };
+		229384A51F87929800AD9746 /* music.js in Resources */ = {isa = PBXBuildFile; fileRef = 229384A41F87929800AD9746 /* music.js */; };
+		2293FA821F8A241E00508A17 /* WXNetworkQueueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293FA811F8A241E00508A17 /* WXNetworkQueueModel.m */; };
+		2293FA851F8A27FA00508A17 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293FA841F8A27FA00508A17 /* UIViewController+Util.m */; };
 		22BDEB221F7A88B9000295FD /* WXNetworkDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB201F7A88B8000295FD /* WXNetworkDefaultImpl.m */; };
 		22BDEB241F7A89A5000295FD /* deposit.js in Resources */ = {isa = PBXBuildFile; fileRef = 22BDEB231F7A89A4000295FD /* deposit.js */; };
 		22BDEB2D1F7A8A6D000295FD /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB281F7A8A69000295FD /* Utils.m */; };
@@ -78,6 +85,11 @@
 		222A4CE81F7BB3CF00A58A7B /* ResourcesModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResourcesModel.m; sourceTree = "<group>"; };
 		222A4CEC1F7BD4ED00A58A7B /* WXConfigModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXConfigModel.h; sourceTree = "<group>"; };
 		222A4CED1F7BD4ED00A58A7B /* WXConfigModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXConfigModel.m; sourceTree = "<group>"; };
+		2234BDD01F8A402C001F6099 /* ResourceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
+		2234BDD11F8A402C001F6099 /* ResourceManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResourceManager.m; sourceTree = "<group>"; };
+		2234BDD41F8A51CF001F6099 /* res-0.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "res-0.0.1.zip"; sourceTree = "<group>"; };
+		2234BDD61F8A560E001F6099 /* WXURLRewriteImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXURLRewriteImpl.h; sourceTree = "<group>"; };
+		2234BDD71F8A560E001F6099 /* WXURLRewriteImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXURLRewriteImpl.m; sourceTree = "<group>"; };
 		223B1EA11F7D2745005DC7A7 /* WXScannerHistoryVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXScannerHistoryVC.h; sourceTree = "<group>"; };
 		223B1EA21F7D2745005DC7A7 /* WXScannerHistoryVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXScannerHistoryVC.m; sourceTree = "<group>"; };
 		223B1EA31F7D2745005DC7A7 /* WXScannerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXScannerVC.h; sourceTree = "<group>"; };
@@ -86,8 +98,6 @@
 		223B1EA61F7D2767005DC7A7 /* UIViewController+WXDemoNaviBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+WXDemoNaviBar.m"; sourceTree = "<group>"; };
 		223B1EAA1F7D307B005DC7A7 /* WXModuleDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXModuleDemo.h; sourceTree = "<group>"; };
 		223B1EAB1F7D307B005DC7A7 /* WXModuleDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXModuleDemo.m; sourceTree = "<group>"; };
-		223B1EAD1F7D30DD005DC7A7 /* WXNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNativeModule.h; sourceTree = "<group>"; };
-		223B1EAE1F7D30DD005DC7A7 /* WXNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNativeModule.m; sourceTree = "<group>"; };
 		223B1EB21F7D31C8005DC7A7 /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		223F37F01F7650E300EFCEF4 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		223F37F21F7650EB00EFCEF4 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -99,8 +109,11 @@
 		226749681F722DA80035A6E1 /* WXAlbumModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXAlbumModel.m; sourceTree = "<group>"; };
 		2267496C1F72572B0035A6E1 /* DictionaryUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DictionaryUtil.h; sourceTree = "<group>"; };
 		2267496D1F72572B0035A6E1 /* DictionaryUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryUtil.m; sourceTree = "<group>"; };
-		2267496F1F72784B0035A6E1 /* editor.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = editor.js; sourceTree = "<group>"; };
 		226749711F72B0B30035A6E1 /* manage.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = manage.js; sourceTree = "<group>"; };
+		2275EEFC1F890A15002A2202 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		2275EEFD1F890A15002A2202 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		2275EEFF1F8913E0002A2202 /* NSURL+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURL+Util.h"; sourceTree = "<group>"; };
+		2275EF001F8913E0002A2202 /* NSURL+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Util.m"; sourceTree = "<group>"; };
 		2279B8761F7E708800A8A144 /* index.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
 		2279B88F1F7E8A9500A8A144 /* IWXToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWXToast.h; sourceTree = "<group>"; };
 		2279B8901F7E8A9500A8A144 /* IWXToast.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IWXToast.m; sourceTree = "<group>"; };
@@ -127,8 +140,6 @@
 		2291F1081F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXImgLoaderDefaultImpl.m; sourceTree = "<group>"; };
 		2291F10B1F6A89F300B94F1B /* WXEventModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXEventModule.h; sourceTree = "<group>"; };
 		2291F10C1F6A89F300B94F1B /* WXEventModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXEventModule.m; sourceTree = "<group>"; };
-		2291F10D1F6A89F300B94F1B /* WXSyncTestModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXSyncTestModule.h; sourceTree = "<group>"; };
-		2291F10E1F6A89F300B94F1B /* WXSyncTestModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXSyncTestModule.m; sourceTree = "<group>"; };
 		2291F1111F6A8A6C00B94F1B /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2291F1121F6A8A6C00B94F1B /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2291F1161F6A8A7C00B94F1B /* WXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXViewController.h; sourceTree = "<group>"; };
@@ -152,6 +163,14 @@
 		2291F1431F6ABB2A00B94F1B /* member.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = member.js; sourceTree = "<group>"; };
 		2293577F1F7F8A2E00050115 /* WXCallBackMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXCallBackMessage.h; sourceTree = "<group>"; };
 		229357801F7F8A2E00050115 /* WXCallBackMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXCallBackMessage.m; sourceTree = "<group>"; };
+		2293849B1F87867900AD9746 /* AliOSSUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AliOSSUtils.h; sourceTree = "<group>"; };
+		2293849C1F87867900AD9746 /* AliOSSUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AliOSSUtils.m; sourceTree = "<group>"; };
+		229384A21F87928500AD9746 /* editor.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = editor.js; sourceTree = "<group>"; };
+		229384A41F87929800AD9746 /* music.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = music.js; sourceTree = "<group>"; };
+		2293FA801F8A241E00508A17 /* WXNetworkQueueModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetworkQueueModel.h; sourceTree = "<group>"; };
+		2293FA811F8A241E00508A17 /* WXNetworkQueueModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetworkQueueModel.m; sourceTree = "<group>"; };
+		2293FA831F8A27FA00508A17 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
+		2293FA841F8A27FA00508A17 /* UIViewController+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
 		22BDEB201F7A88B8000295FD /* WXNetworkDefaultImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetworkDefaultImpl.m; sourceTree = "<group>"; };
 		22BDEB211F7A88B9000295FD /* WXNetworkDefaultImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetworkDefaultImpl.h; sourceTree = "<group>"; };
 		22BDEB231F7A89A4000295FD /* deposit.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = deposit.js; sourceTree = "<group>"; };
@@ -192,23 +211,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		222A4CE51F7BB27700A58A7B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				222A4CE61F7BB38300A58A7B /* Resources */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		222A4CE61F7BB38300A58A7B /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				222A4CE71F7BB3CF00A58A7B /* ResourcesModel.h */,
-				222A4CE81F7BB3CF00A58A7B /* ResourcesModel.m */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		222A4CEA1F7BD48900A58A7B /* WXAlbum */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +227,17 @@
 				222A4CED1F7BD4ED00A58A7B /* WXConfigModel.m */,
 			);
 			path = WXConfig;
+			sourceTree = "<group>";
+		};
+		2234BDD31F8A4038001F6099 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				222A4CE71F7BB3CF00A58A7B /* ResourcesModel.h */,
+				222A4CE81F7BB3CF00A58A7B /* ResourcesModel.m */,
+				2234BDD01F8A402C001F6099 /* ResourceManager.h */,
+				2234BDD11F8A402C001F6099 /* ResourceManager.m */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		223B1EA01F7D2745005DC7A7 /* Scanner */ = {
@@ -250,11 +263,30 @@
 		226749661F722D600035A6E1 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				2275EF021F892008002A2202 /* WXNetworkQueue */,
 				2293577E1F7F8A0800050115 /* WXCallBackMessage */,
 				222A4CEB1F7BD4A300A58A7B /* WXConfig */,
 				222A4CEA1F7BD48900A58A7B /* WXAlbum */,
 			);
 			path = model;
+			sourceTree = "<group>";
+		};
+		2275EEF81F8909BF002A2202 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				2275EEFC1F890A15002A2202 /* LoginViewController.h */,
+				2275EEFD1F890A15002A2202 /* LoginViewController.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		2275EF021F892008002A2202 /* WXNetworkQueue */ = {
+			isa = PBXGroup;
+			children = (
+				2293FA801F8A241E00508A17 /* WXNetworkQueueModel.h */,
+				2293FA811F8A241E00508A17 /* WXNetworkQueueModel.m */,
+			);
+			path = WXNetworkQueue;
 			sourceTree = "<group>";
 		};
 		2279B8781F7E826700A8A144 /* extend */ = {
@@ -324,10 +356,12 @@
 		2291F0E41F6A7DB000B94F1B /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				2234BDD41F8A51CF001F6099 /* res-0.0.1.zip */,
+				229384A41F87929800AD9746 /* music.js */,
+				229384A21F87928500AD9746 /* editor.js */,
 				2279B8761F7E708800A8A144 /* index.js */,
 				22BDEB231F7A89A4000295FD /* deposit.js */,
 				226749711F72B0B30035A6E1 /* manage.js */,
-				2267496F1F72784B0035A6E1 /* editor.js */,
 				22220DFE1F6FC23400864689 /* friends.js */,
 				22220DFF1F6FC23400864689 /* message.js */,
 				2291F1431F6ABB2A00B94F1B /* member.js */,
@@ -343,7 +377,6 @@
 			isa = PBXGroup;
 			children = (
 				223B1EA01F7D2745005DC7A7 /* Scanner */,
-				222A4CE51F7BB27700A58A7B /* Model */,
 				2291F12C1F6A8E9C00B94F1B /* Controller */,
 				2291F11F1F6A8A9400B94F1B /* debug */,
 				2291F1161F6A8A7C00B94F1B /* WXViewController.h */,
@@ -389,6 +422,8 @@
 				2291F1061F6A89EC00B94F1B /* WXConfigCenterDefaultImpl.m */,
 				2291F1071F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.h */,
 				2291F1081F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m */,
+				2234BDD61F8A560E001F6099 /* WXURLRewriteImpl.h */,
+				2234BDD71F8A560E001F6099 /* WXURLRewriteImpl.m */,
 			);
 			path = handler;
 			sourceTree = "<group>";
@@ -398,14 +433,10 @@
 			children = (
 				2291F10B1F6A89F300B94F1B /* WXEventModule.h */,
 				2291F10C1F6A89F300B94F1B /* WXEventModule.m */,
-				2291F10D1F6A89F300B94F1B /* WXSyncTestModule.h */,
-				2291F10E1F6A89F300B94F1B /* WXSyncTestModule.m */,
 				2267495D1F7215F20035A6E1 /* WXAlbumModule.h */,
 				2267495E1F7215F20035A6E1 /* WXAlbumModule.m */,
 				223B1EAA1F7D307B005DC7A7 /* WXModuleDemo.h */,
 				223B1EAB1F7D307B005DC7A7 /* WXModuleDemo.m */,
-				223B1EAD1F7D30DD005DC7A7 /* WXNativeModule.h */,
-				223B1EAE1F7D30DD005DC7A7 /* WXNativeModule.m */,
 			);
 			path = module;
 			sourceTree = "<group>";
@@ -426,6 +457,7 @@
 			children = (
 				2291F1321F6AB6D700B94F1B /* XMTabBarController.h */,
 				2291F1331F6AB6D700B94F1B /* XMTabBarController.m */,
+				2275EEF81F8909BF002A2202 /* Login */,
 				226749601F7229C10035A6E1 /* Editor */,
 				2291F1301F6A8F3D00B94F1B /* Member */,
 				2291F12F1F6A8F3200B94F1B /* Message */,
@@ -474,11 +506,11 @@
 		2291F13F1F6ABA5000B94F1B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2234BDD31F8A4038001F6099 /* Resource */,
+				2293849A1F87862A00AD9746 /* AliOSS */,
 				22BDEB261F7A8A49000295FD /* TXUtilsStirng */,
 				22BDEB251F7A8A40000295FD /* NetManager */,
 				22DB017C1F7119C40018BD1E /* Category */,
-				2291F1401F6ABA8B00B94F1B /* UIColor+Util.h */,
-				2291F1411F6ABA8B00B94F1B /* UIColor+Util.m */,
 				2267496C1F72572B0035A6E1 /* DictionaryUtil.h */,
 				2267496D1F72572B0035A6E1 /* DictionaryUtil.m */,
 				22BDEB291F7A8A6A000295FD /* HttpHead+Utils.h */,
@@ -498,6 +530,15 @@
 				229357801F7F8A2E00050115 /* WXCallBackMessage.m */,
 			);
 			path = WXCallBackMessage;
+			sourceTree = "<group>";
+		};
+		2293849A1F87862A00AD9746 /* AliOSS */ = {
+			isa = PBXGroup;
+			children = (
+				2293849B1F87867900AD9746 /* AliOSSUtils.h */,
+				2293849C1F87867900AD9746 /* AliOSSUtils.m */,
+			);
+			path = AliOSS;
 			sourceTree = "<group>";
 		};
 		22BDEB251F7A8A40000295FD /* NetManager */ = {
@@ -521,10 +562,16 @@
 		22DB017C1F7119C40018BD1E /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				2291F1401F6ABA8B00B94F1B /* UIColor+Util.h */,
+				2291F1411F6ABA8B00B94F1B /* UIColor+Util.m */,
 				22BDEB391F7A8E60000295FD /* UIImage+Util.h */,
 				22BDEB381F7A8E60000295FD /* UIImage+Util.m */,
 				22DB017E1F7119F70018BD1E /* UIView+Layout.h */,
 				22DB017F1F7119F70018BD1E /* UIView+Layout.m */,
+				2275EEFF1F8913E0002A2202 /* NSURL+Util.h */,
+				2275EF001F8913E0002A2202 /* NSURL+Util.m */,
+				2293FA831F8A27FA00508A17 /* UIViewController+Util.h */,
+				2293FA841F8A27FA00508A17 /* UIViewController+Util.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -613,6 +660,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2234BDD51F8A51E0001F6099 /* res-0.0.1.zip in Resources */,
+				229384A51F87929800AD9746 /* music.js in Resources */,
 				2291F1441F6ABB2A00B94F1B /* member.js in Resources */,
 				2291F0FA1F6A7EBB00B94F1B /* weex.png in Resources */,
 				2291F0FC1F6A7EBB00B94F1B /* bundlejs in Resources */,
@@ -624,7 +673,7 @@
 				22BDEB241F7A89A5000295FD /* deposit.js in Resources */,
 				2291F0F91F6A7EBB00B94F1B /* weex-icon.png in Resources */,
 				22220E001F6FC23400864689 /* friends.js in Resources */,
-				226749701F72784B0035A6E1 /* editor.js in Resources */,
+				229384A31F87928600AD9746 /* editor.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,25 +735,28 @@
 				223B1EA81F7D27E1005DC7A7 /* WXScannerHistoryVC.m in Sources */,
 				223B1EA91F7D27E1005DC7A7 /* WXScannerVC.m in Sources */,
 				2279B8971F7E8B7900A8A144 /* IWXToastManager.m in Sources */,
+				2275EF011F8913E0002A2202 /* NSURL+Util.m in Sources */,
 				22BDEB3B1F7A8EE4000295FD /* TXUtilsString.m in Sources */,
 				22BDEB371F7A8E0D000295FD /* NetManager.m in Sources */,
 				2279B8911F7E8A9500A8A144 /* IWXToast.m in Sources */,
 				22BDEB221F7A88B9000295FD /* WXNetworkDefaultImpl.m in Sources */,
 				229357811F7F8A2E00050115 /* WXCallBackMessage.m in Sources */,
 				2291F11C1F6A8A7C00B94F1B /* WXViewController.m in Sources */,
+				2234BDD81F8A560E001F6099 /* WXURLRewriteImpl.m in Sources */,
 				2267496E1F72572B0035A6E1 /* DictionaryUtil.m in Sources */,
+				2234BDD21F8A402C001F6099 /* ResourceManager.m in Sources */,
 				22BDEB2E1F7A8A6D000295FD /* MD5+Util.m in Sources */,
 				226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */,
 				22BDEB2D1F7A8A6D000295FD /* Utils.m in Sources */,
 				223B1EAC1F7D307B005DC7A7 /* WXModuleDemo.m in Sources */,
 				2291F0C91F6A796800B94F1B /* main.m in Sources */,
 				2291F10A1F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m in Sources */,
+				2293849D1F87867900AD9746 /* AliOSSUtils.m in Sources */,
 				2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */,
+				2293FA821F8A241E00508A17 /* WXNetworkQueueModel.m in Sources */,
 				2291F13D1F6AB86E00B94F1B /* MemberViewController.m in Sources */,
-				223B1EAF1F7D30DD005DC7A7 /* WXNativeModule.m in Sources */,
 				22DB01801F7119F70018BD1E /* UIView+Layout.m in Sources */,
 				222A4CE91F7BB3CF00A58A7B /* ResourcesModel.m in Sources */,
-				2291F1101F6A89F300B94F1B /* WXSyncTestModule.m in Sources */,
 				22BDEB2F1F7A8A6D000295FD /* HttpHead+Utils.m in Sources */,
 				2291F12B1F6A8AD000B94F1B /* WXATViewHierarchyPlugin.m in Sources */,
 				22220DFA1F6FC1BB00864689 /* MessageViewController.m in Sources */,
@@ -714,6 +766,8 @@
 				223B1EA71F7D2767005DC7A7 /* UIViewController+WXDemoNaviBar.m in Sources */,
 				2291F1371F6AB77800B94F1B /* HomeViewController.m in Sources */,
 				2291F11D1F6A8A7C00B94F1B /* UIView+UIThreadCheck.m in Sources */,
+				2293FA851F8A27FA00508A17 /* UIViewController+Util.m in Sources */,
+				2275EEFE1F890A15002A2202 /* LoginViewController.m in Sources */,
 				22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */,
 				22220DFD1F6FC1D000864689 /* FriendsViewController.m in Sources */,
 				2291F1041F6A89E400B94F1B /* WXSelectComponent.m in Sources */,
