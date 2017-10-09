@@ -10,18 +10,17 @@
 #import <SSKeychain.h>
 #import <SSKeychainQuery.h>
 #import "MD5+Util.h"
-#import "ResourcesModel.h"
+#import "ResourceManager.h"
 #import "DictionaryUtil.h"
 
 @implementation HttpHead_Utils
 
 + (NSDictionary*) getHttpHead
 {
-    __block NSString *uid = [NSString string];
-    __block NSString *Md5key = [NSString string];
+    static NSString *uid;
+    NSString *Md5key;
     static NSString *appKey = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    if (!uid){
         NSError *error=nil;
         uid = [[SSKeychain passwordForService:SERVICE account:ACCOUNT error:&error] stringByReplacingOccurrencesOfString:@"-" withString:@ ""];
         if([error code] == SSKeychainErrorNotFound )
@@ -35,13 +34,11 @@
                 [SSKeychain setPassword:[NSString stringWithFormat:@"%@", uid] forService:SERVICE account:ACCOUNT];
             }
         }
-    });
+    }
     if (!appKey){
-        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:HTTPAPI(@"common/resources")]];
-        NSDictionary *dic = [DictionaryUtil dictionaryWithJsonData:data];
-        if (dic && [[dic objectForKey:@"type"] isEqualToString:@"success"]){
-            ResourcesModel *resource = [[ResourcesModel alloc] initWithDictionary:[dic objectForKey:@"data"] error:nil];
-            appKey = resource.key;
+        ResourceManager *manager = [ResourceManager defaultManager];
+        if(manager.resource.key.length > 0){
+            appKey = manager.resource.key;
         }else{
             return nil;
         }

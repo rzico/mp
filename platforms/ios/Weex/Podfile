@@ -16,6 +16,9 @@ def common
     pod 'JSONModel'
     pod 'Reachability'
     pod 'WechatOpenSDK'
+    pod 'AliyunOSSiOS'
+    pod 'CLImageEditor'
+    pod 'ZipArchive'
 end
 
 target 'Weex' do
