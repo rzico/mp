@@ -215,12 +215,10 @@
                     balance(_this.captcha);
                 }
             },
-
 //            点击验证框时使隐藏的input获取焦点；
             getFocus:function () {
                 this.$refs['captchRef'].focus();
             },
-
             close (e) {
                 var _this = this;
                 if (timer!=null) {
@@ -230,7 +228,6 @@
                 _this.$emit("notify",e);
 
             },
-
             comfrm () {
                 if (this.id==2) {
                     this.isPwd = true;

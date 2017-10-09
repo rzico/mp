@@ -5,18 +5,18 @@
         </div>
 
         <div class="content">
-            <text class="title">请为您的账号</text><text  class="number">13860431130</text><text class="title">设置一个新密码</text>
+            <text class="title">请为您的账号设置一个新密码</text>
         </div>
 
         <div class="input-panel">
-            <input class="flex5 password" type="text" placeholder="请输入新密码"  @change="onchange" @input="oninput"/>
+            <input class="flex5 password" type="text" placeholder="请输入新密码" v-model="value"  @change="onchange" @input="oninput"/>
             <div class="flex1 flex-column">
                 <text class="see" :style="{fontFamily:'iconfont'}">&#xe632;</text>
             </div>
         </div>
 
         <div class="password_panel">
-            <text class="button flex1" value="保存新密码" type="primary" >保存新密码</text>
+            <text class="button flex1" value="保存新密码" type="primary" @click="save()" >保存新密码</text>
         </div>
 
     </div>
@@ -25,12 +25,6 @@
 
 
 <style scoped>
-
-    .number {
-        font-size: 48px;
-        color: #000;
-        font-weight: 600;
-    }
     .content {
         margin-left: 40px;
         margin-right: 40px;
@@ -70,16 +64,48 @@
 
 </style>
 <script>
+    import { POST, GET } from '../../../assets/fetch';
+    import utils from '../../../assets/utils';
+    const event = weex.requireModule('event');
     export default {
+        data() {
+            return {
+                value:this.value,
+                captcha:""
+            }
+        },
         props: {
+            value: { default: "" },
             title: { default: "设置密码" }
         },
         created(){
-            var domModule=weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
-            })
+            utils.initIconFont();
+        },
+        methods: {
+            save:function () {
+                var _this = this;
+                event.wxAuth(_this.value,function (msg) {
+                    if (msg.type="success") {
+                        POST('weex/member/password/update.jhtml?enPassword=' + msg.data).then(
+                            function (data) {
+                                if (data.type == "success") {
+                                    _this.$refs.captcha.beginTimer();
+                                } else {
+                                    _this.$refs.captcha.endTimer();
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                _this.$refs.captcha.endTimer();
+                                event.toast("网络不稳定")
+
+                            }
+                        )
+                    } else {
+                        event.toast(msg.content);
+                    }
+                })
+            }
         }
     }
 </script>

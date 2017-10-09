@@ -90,6 +90,8 @@
 <script>
     var optionIndex = 0;
     var lastCaptchaLength = 0;
+    var timer = null;
+    var time = 0;
     export default {
         data:function(){
             return{
@@ -104,7 +106,28 @@
             status:{default:"点击重新发送"},
             retry:true
         },
+        beforeDestory() {
+            clearInterval(timer);
+        },
         methods:{
+            beginTimer:function () {
+                var _this = this;
+                if (timeOut!=null) {
+                    clearInterval(timer);
+                }
+                timeOut = setInterval(1000,function () {
+                    _this.retry = false;
+                    time = time +1;
+                    this.status = "已发送"+time+"秒";
+                    if (time>59) {
+                        _this.endTimer();
+                    }
+                })
+            },
+            endTimer:function () {
+                clearInterval(timer);
+                this.retry = true;
+            },
             statusStyle:function() {
               if (this.retry) {
                   return "";

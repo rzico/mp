@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
-        <captcha :title="caption" :mobile="mobile" @onclick="onclick" @onSend="onSend" @onEnd="onEnd"> </captcha>
+        <captcha ref="captcha" :title="caption" :mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -16,8 +16,6 @@
     import utils from '../../assets/utils'
     import navbar from '../../include/navbar.vue'
     import captcha from '../../include/captcha.vue'
-    var timer = null;
-    var time = 0;
     export default {
         components: {
             navbar,captcha
@@ -33,41 +31,21 @@
         created() {
             this.mobile = utils.getUrlParameter("mobile");
         },
-        beforeDestory() {
-            clearInterval(timer);
-        },
         methods: {
-            onTimer:function () {
-                var _this = this;
-                if (timeOut!=null) {
-                    clearInterval(timer);
-                }
-                timeOut = setInterval(1000,function () {
-                    _this.retry = false;
-                    time = time +1;
-                    this.status = "已发送"+time+"秒";
-                    if (time>59) {
-                        clearInterval(timer);
-                        _this.retry = true;
-                    }
-                })
-            },
             onSend: function (e) {
                 var _this = this;
-                POST('weex/login/send_mobile.jhtml?mobile=' + _this.value)
+                POST('weex/login/send_mobile.jhtml?mobile=' + _this.mobile)
                     .then(
                         function (data) {
                             if (data.type == "success") {
-                               _this.onTimer();
+                                _this.$refs.captcha.beginTimer();
                             } else {
-                                _this.retry = true;
-                                clearInterval(timer);
+                                _this.$refs.captcha.endTimer();
                                 event.toast(data.content);
                             }
                         },
                         function (err) {
-                            _this.retry = true;
-                            clearInterval(timer);
+                            _this.$refs.captcha.endTimer();
                             event.toast("网络不稳定")
 
                         }
