@@ -53,9 +53,7 @@
     const stream = weex.requireModule('stream');
     import searchNav from '../../include/searchNav.vue'
     import noData from '../../include/noData.vue'
-    import {jsMixins} from '../../mixins/mixins.js'
     export default {
-        mixins:[jsMixins],
         components: {
             searchNav,noData
         },

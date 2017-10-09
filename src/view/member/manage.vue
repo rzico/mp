@@ -124,9 +124,7 @@
     const dom = weex.requireModule('dom');
     const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue'
-    import {jsMixins} from '../../mixins/mixins.js'
     export default {
-        mixins:[jsMixins],
         components: {
             navbar
         },

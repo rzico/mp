@@ -20,7 +20,8 @@
                 </div>
                 <div class="topBtnSmallBox topBtnTwo" @click="jump()">
                     <text class="topBtn topBtnBigFont">¥ {{moneyNum}}</text>
-                    <text class="topBtn  " >钱包</text>                </div>
+                    <text class="topBtn  " >钱包</text>
+                </div>
                 <div class="topBtnSmallBox">
                     <text class="topBtn topBtnBigFont">{{focusNum}}</text>
                     <text class="topBtn">关注</text>
@@ -51,7 +52,7 @@
                             <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
                         </div>
                 </scroller>
-                <div style="width: 100px;justify-content: center;align-items: center">
+                <div style="width: 100px;justify-content: center;align-items: center" @click="goCorpus()">
                     <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
                 </div>
                 <!--文集前后白色遮罩层-->
@@ -422,12 +423,9 @@
 </style>
 
 <script>
+    import {dom,event,stream} from '../../weex.js'
     const modal = weex.requireModule('modal');
-    const native = weex.requireModule('app');
-    const stream = weex.requireModule('stream')
-    const event = weex.requireModule('event');
     const animation = weex.requireModule('animation')
-    const dom = weex.requireModule('dom');
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -757,7 +755,7 @@
 //            前往文章
             goArticle(id){
                 var _this = this;
-                event.openURL('http://192.168.1.108:8081/editor.weex.js?articleId=' + id,function () {
+                event.openURL('http://192.168.1.107:8081/editor.weex.js?articleId=' + id,function () {
 //                    _this.updateArticle();
                     modal.toast({message:1,duration})
                 })
@@ -765,7 +763,7 @@
             updateArticle(){
                 var _this = this;
 //            获取文章缓存。
-                native.findList(1,'articleListTest1','desc',function (data) {
+                event.findList(1,'articleListTest1','desc',function (data) {
 //                    modal.toast({message:data.data});
                     if(data.type == 'success'){
                         for(let i = 0;i < data.data.length;i++){
@@ -790,9 +788,9 @@
                 })
             },
             toPage: function(url){
-//                native.pageTo(url, false);
-                native.wxConfig(function (data) {
-                    native.showToast(data.color);
+//                event.pageTo(url, false);
+                event.wxConfig(function (data) {
+                    event.showToast(data.color);
                 });
             },
             jump:function (vueName) {
@@ -939,6 +937,9 @@
                     allArticleScroll = 0;
                 }
             },
+            goCorpus(){
+                event.openURL('http://192.168.1.107:8081/corpus.weex.js');
+            }
         }
     }
 </script>

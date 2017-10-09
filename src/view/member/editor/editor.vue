@@ -47,7 +47,7 @@
                         <!--段落-->
                         <div class="paraBox paraBoxHeight">
                             <!--左上角关闭按钮"x"-->
-                            <div class="paraClose" @click="showConfirm(index)">
+                            <div class="paraClose" @click="showConfirm(index)" >
                                 <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
                             </div>
                             <!--上箭头-->
@@ -63,9 +63,9 @@
                                 <image class="paraImage" @click="editParaImage(item.paraImage,index)" :src="item.thumbnailImage"></image>
                             </div>
                             <!--文章内容-->
-                            <div class="paraText">
+                            <div class="paraText" @click="editorText(index)">
                                 <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                                <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText}}</text>
+                                <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText | htmlDeal}}</text>
                                 <text class="paraTextSize greyColor" v-else  >点击添加文字</text>
                             </div>
                         </div>
@@ -162,23 +162,35 @@
         font-weight: 700;
     }
     .upArrow{
-        top:5px;
+        top:0px;
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-bottom: 10px;
     }
     .downArrow{
-        bottom:5px;
+        bottom:0px;
+        padding-top: 10px;
+        padding-bottom: 5px;
+        padding-left: 10px;
     }
     .rightArrow{
         position: absolute;
-        right: 10px;
+        right: 0px;
+        padding-right: 10px;
     }
     .paraClose{
         position: absolute;
-        top:5px;
-        left:5px;
+        top:0px;
+        left:0px;
+        padding-left: 5px;
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
     }
     .paraCloseSize{
         color: #999;
         font-size: 34px;
+
     }
     .paraTextSize{
         font-size: 32px;
@@ -309,17 +321,14 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
-    import {jsMixins} from '../../../mixins/mixins.js'
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
-    const native = weex.requireModule('app')
     var modal = weex.requireModule('modal');
     const stream = weex.requireModule('stream')
     var lastIndex = -1;
     var musicId = -1 ;
     var articleId = 1;
     export default {
-        mixins:[jsMixins],
         data:function(){
             return{
                 refreshing: false,
@@ -335,6 +344,18 @@
                     paraText:'',
                 }],
                 hadVote:true,
+            }
+        },
+        filters:{
+//            过滤html标签
+            htmlDeal:function(value){
+//                将h1-h5换成\n
+                var takeEnter=value.replace(/<\/h[0-9]>/g,"\n");
+//                将html标签替换，可能遗留空格
+                var spaceText=takeEnter.replace(/<\/?.+?>/g,"");
+                return spaceText;
+//                将空格去除
+//                var onlyText=spaceText.replace(/ /g,"");
             }
         },
         components: {
@@ -366,7 +387,7 @@
                                     paraImage:'file:/' + data.data[i].originalPath,
                                     //小缩略图
                                     thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
-                                    paraText:'i:' + i,
+                                    paraText:'i:\n' + i,
                                     show:true
                                 }) ;
                             }
@@ -383,7 +404,7 @@
             }else{//再次文章编辑
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
-                    native.find(1,op[1],function (data) {
+                    event.find(1,op[1],function (data) {
                         if(data.type == 'success'){
 //                         modal.toast({message:data.data})
                             let articleData = JSON.parse(data.data.value);
@@ -424,11 +445,20 @@
             })
         },
         methods:{
-            saveArticle(callback) {
+//            段落里的文本编辑
+            editorText(index){
+                var _this = this;
+                event.openEditor(function (data) {
+//                    将返回回来的html数据赋值进去
+                    _this.paraList[index].paraText = data;
+                    modal.toast({message:_this.paraList[index].paraText,duration:3});
+                })
+            },
+            saveArticle(articleData,callback) {
                 return stream.fetch({
                     method: 'POST',
                     type: 'json',
-                    body:"title=你好",
+                    body:articleData,
                     url: '/weex/member/article/submit.jhtml'
                 }, callback)
             },
@@ -471,21 +501,24 @@
                     },
                     title:this.setTitle,
                 }]
-                let jsonBodyData = {
-                    title:this.setTitle,
-                    thumbnial:this.coverImage,
-                    music:musicData,
-                    content:atticleTemplates,
-                }
+//                let jsonBodyData = {
+//                    title:this.setTitle,
+//                    thumbnial:this.coverImage,
+//                    music:musicData,
+//                    content:atticleTemplates,
+//                }
 //                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage  + ' &music='+ musicData +'&content='+ atticleTemplates +''
-                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage +''
-                modal.toast({message:bodyData});
-                _this.saveArticle(res=>{
+//                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage +''
+//                modal.toast({message:bodyData});
+
+                articleData = JSON.stringify(articleData);
+//                网络请求，保存文章
+                _this.saveArticle(articleData,res=>{
                     modal.toast({message:res.data});
                 })
 
 //                articleData = JSON.stringify(articleData)
-//                native.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
+//                event.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
 //                    if(data.type == 'success'){
 //                        event.closeURL();
 //                    }else{
@@ -583,11 +616,11 @@
                     lastIndex = -1;
                 }
 //         方法2
-                let a = this.paraList[index].paraImage;
+                let a = this.paraList[index].thumbnailImage;
                 let b = this.paraList[index].paraText;
-                this.paraList[index].paraImage = this.paraList[index - 1].paraImage;
+                this.paraList[index].thumbnailImage = this.paraList[index - 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index - 1].paraText;
-                this.paraList[index - 1].paraImage = a;
+                this.paraList[index - 1].thumbnailImage = a;
                 this.paraList[index - 1].paraText = b;
             },
 //            下箭头
@@ -598,11 +631,11 @@
                     lastIndex = -1;
                 }
 //         方法2
-                let a = this.paraList[index].paraImage;
+                let a = this.paraList[index].thumbnailImage;
                 let b = this.paraList[index].paraText;
-                this.paraList[index].paraImage = this.paraList[index + 1].paraImage;
+                this.paraList[index].thumbnailImage = this.paraList[index + 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index + 1].paraText;
-                this.paraList[index + 1].paraImage = a;
+                this.paraList[index + 1].thumbnailImage = a;
                 this.paraList[index + 1].paraText = b;
             },
 //            用户执行删除时触发询问。
@@ -672,17 +705,17 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/music.weex.js?musicId=' + musicId,function (data) {
-                    modal.toast({message:data,duration:1});
-                    let jsonData = JSON.parse(data);
-                    _this.musicName = jsonData.chooseMusicName;
-                    musicId = jsonData.chooseMusicId;
+                event.openURL('http://192.168.1.100:8081/music.weex.js?musicId=' + musicId,function (data) {
+//                    let jsonData = JSON.parse(data);
+//                    modal.toast({message:jsonData,duration:1});
+                    _this.musicName = data.chooseMusicName;
+                    musicId = data.chooseMusicId;
                 });
             },
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/vote.weex.js',function (data) {
+                event.openURL('http://192.168.1.100:8081/vote.weex.js',function (data) {
                     _this.voteList[0].paraText = data;
                     _this.hadVote = false;
                 });

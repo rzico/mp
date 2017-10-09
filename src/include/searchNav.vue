@@ -60,9 +60,7 @@
 </style>
 <script>
     const event = weex.requireModule('event');
-    import {jsMixins} from '../mixins/mixins.js'
     export default {
-        mixins:[jsMixins],
         data() {
             return {
                 keyword:""

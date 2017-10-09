@@ -21,15 +21,18 @@
                         <!--歌的数量-->
                         <text class="musicTotal">{{music.musicTotal}}首</text>
                     </div>
+                    <!--添加动画-->
+                    <transition-group name="paraTransition" tag="div">
                     <!--音乐名称-->
-                    <div class="musicNameBox" v-if="music.show">
+                    <div class="musicNameBox" key="musicBox" v-if="music.show">
                         <div class="addBorder" v-for="(item,tickIndex) in music.musicNameList" @click="ctrlTick(item,item.musicId,item.musicName)">
                             <!--歌名-->
-                            <text class="musicName">{{item.musicName}}</text>
+                            <text class="musicName gray">{{item.musicName}}</text>
                             <!--"选中"字体图标-->
                             <text class="musicName":style="{fontFamily:'iconfont'}" v-if="item.tickShow">&#xe606;</text>
                         </div>
                     </div>
+                    </transition-group>
                 </div>
             </cell>
         </list>
@@ -37,6 +40,20 @@
 </template>
 
 <style scoped>
+    .gray{
+        color: #888;
+    }
+    .paraTransition-enter-active, .paraTransition-leave-active {
+        transition: all 0.05s;
+    }
+    .paraTransition-leave-to{
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    .paraTransition-enter{
+        transform: translateY(-50px);
+        opacity: 1;
+    }
     .musicTotal{
         color: #999;
         font-size: 24px;
@@ -263,6 +280,7 @@
                                 _this.noMusicShow = false;
                                 item.show = true;
                                 lastTickItem = itemChild;
+                                chooseMusicName =  itemChild.musicName;
                             }
                         })
                     })

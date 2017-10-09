@@ -68,6 +68,9 @@
         align-items: center;
         border-radius:12px;
     }
+    .btn:active {
+        background-color:#ccc;
+    }
 
     .ico {
         font-size: 58px;
