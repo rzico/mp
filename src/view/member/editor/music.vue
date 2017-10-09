@@ -88,6 +88,7 @@
         font-size: 38px;
         color: #4E4F51;
     }
+
     .musicTitleBox{
         padding-top:25px;
         padding-bottom: 25px;
@@ -113,6 +114,7 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
+    import utils from '../../../assets/utils'
     const event = weex.requireModule('event');
     const dom = weex.requireModule('dom');
     const modal = weex.requireModule('modal');
@@ -254,14 +256,9 @@
             title: { default: "音乐设置"},
             complete:{default: "完成"}
         },
-        mounted:function(){
-            var domModule = weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
-            })
-        },
         created:function () {
+            utils.initIconFont();
+
 //            bundleUrl = new String(bundleUrl);
 //            modal.toast({message:bundleUrl,duration:1})
             var _this = this;
@@ -351,7 +348,9 @@
                     chooseMusicId:chooseMusicId,
                     chooseMusicName:chooseMusicName
                 }
-                event.closeURL(E);
+
+                let backData = utils.message('success','成功',E);
+                event.closeURL(backData);
             }
         }
     }

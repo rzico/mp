@@ -1,5 +1,46 @@
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
+        <!--顶部白色区域-->
+        <div class="header" :style="{opacity: opacityNum}">
+            <!--顶部导航-->
+            <div class="nav">
+                <div style="width: 50px;">
+                </div>
+                <!--导航栏名字头像-->
+                <div class="userBox" v-if="settingColor == 'black'">
+                    <image class="headImg" :src="imageUrl"></image>
+                    <text class="navText">{{userName}}</text>
+                </div>
+                <div style="width: 50px;">
+                </div>
+            </div>
+        </div>
+        <!--导航栏设置-->
+        <div style="position: fixed;top: 63px;right: 30px;">
+            <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
+        </div>
+        <!--绑定动画-->
+        <!--<transition-group name="navTransition" tag="div">-->
+        <!--只能多写一个顶部栏。否则无法适应-->
+        <div  class="corpusBox"  key="navAnimation" style="position: fixed;top: 136px;" :class="[twoTop ? 'istwoTop' : 'notwoTop']">
+            <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
+                <div class="articleClass">
+                    <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
+                    <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
+                    <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
+                    <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
+                    <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
+                    <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
+                </div>
+            </scroller>
+            <div style="width: 100px;justify-content: center;align-items: center;" @click="goCorpus()"  >
+                <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
+            </div>
+            <!--文集前后白色遮罩层-->
+            <!--<div class="blur leftBlur"></div>-->
+            <!--<div class="blur rightBlur"></div>-->
+        </div>
+        <!--</transition-group>-->
         <!--顶部个人信息栏-->
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
@@ -28,8 +69,8 @@
                 </div>
             </div>
         </div>
+        <div >
 
-        <div>
 
             <!--<div v-if="isAllArticle" v-cloak >-->
             <!--<div>-->
@@ -38,21 +79,22 @@
 
             <!--全部文章、回收站栏-->
             <!--<div class="articleClass">-->
-                <!--<text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>-->
-                <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
+            <!--<text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>-->
+            <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
             <!--</div>-->
-            <div  class="corpusBox">
-                <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px">
-                        <div class="articleClass" >
-                            <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
-                            <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
-                            <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
-                            <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
-                            <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
-                            <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
-                        </div>
+            <!--<div  class="corpusBox"  :class = "[isTop  ? 'posFixed' : 'posRelative']">-->
+            <div  class="corpusBox"  :style = "positionObject" >
+                <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
+                    <div class="articleClass">
+                        <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
+                        <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
+                        <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
+                        <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
+                        <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
+                        <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
+                    </div>
                 </scroller>
-                <div style="width: 100px;justify-content: center;align-items: center" @click="goCorpus()">
+                <div style="width: 100px;justify-content: center;align-items: center;" @click="goCorpus()"  >
                     <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
                 </div>
                 <!--文集前后白色遮罩层-->
@@ -65,81 +107,159 @@
                 <transition-group name="paraTransition" tag="div">
                     <div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                            <div class="atricleHead">
-                                <text class="articleSign">{{item.articleSign}}</text>
-                                <text class="articleTitle">{{item.articleTitle}}</text>
-                            </div>
-                            <!--文章封面-->
+                        <div class="atricleHead">
+                            <text class="articleSign">{{item.articleSign}}</text>
+                            <text class="articleTitle">{{item.articleTitle}}</text>
+                        </div>
+                        <!--文章封面-->
+                        <div>
+                            <image :src="item.articleCoverUrl" class="articleCover"></image>
+                        </div>
+                        <!--文章底部-->
+                        <div class="articleFoot">
                             <div>
-                                <image :src="item.articleCoverUrl" class="articleCover"></image>
+                                <text class="articleDate">{{item.articleDate}}</text>
                             </div>
-                            <!--文章底部-->
-                            <div class="articleFoot">
-                                <div>
-                                    <text class="articleDate">{{item.articleDate}}</text>
+                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.browse}}</text>
+                                <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.praise}}</text>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.comments}}</text>
+                            </div>
+                        </div>
+                        <!--右侧隐藏栏-->
+                        <div class="rightHidden">
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox" @click="jumpEditor()">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
+                                    <text class="rightHiddenText">编辑</text>
                                 </div>
-                                <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                    <text class="relevantText">{{item.browse}}</text>
-                                    <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                    <text class="relevantText">{{item.praise}}</text>
-                                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                    <text class="relevantText">{{item.comments}}</text>
+                                <div class="rightHiddenIconBox" @click="jumpDelete()">
+                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
+                                    <text class="rightHiddenText redColor" >删除</text>
                                 </div>
                             </div>
-                            <!--右侧隐藏栏-->
-                            <div class="rightHidden">
-                                <div class="rightHiddenSmallBox">
-                                    <div class="rightHiddenIconBox">
-                                        <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
-                                        <text class="rightHiddenText">编辑</text>
-                                    </div>
-                                    <div class="rightHiddenIconBox">
-                                        <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
-                                        <text class="rightHiddenText redColor" >删除</text>
-                                    </div>
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox" @click="jumpTop()">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                    <text class="rightHiddenText">置顶</text>
                                 </div>
-                                <div class="rightHiddenSmallBox">
-                                    <div class="rightHiddenIconBox">
-                                        <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                                        <text class="rightHiddenText">置顶</text>
-                                    </div>
-                                    <div class="rightHiddenIconBox">
-                                        <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                                        <text class="rightHiddenText">文集</text>
-                                    </div>
+                                <div class="rightHiddenIconBox" @click="jumpCorpus()">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                                    <text class="rightHiddenText">文集</text>
                                 </div>
                             </div>
                         </div>
-              </transition-group>
+                    </div>
+                </transition-group>
                 <!--帮助使用文章-->
                 <!--<div class="articleBox" v-for="item in helpList"  @swipe="swipeHappen($event)">-->
-                    <!--<div class="atricleHead">-->
-                        <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                        <!--<text class="articleTitle">{{item.articleTitle}}</text>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;文章封面&ndash;&gt;-->
-                    <!--<div>-->
-                        <!--<image :src="item.articleCoverUrl" class="articleCover"></image>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;文章底部&ndash;&gt;-->
-                    <!--<div class="articleFoot">-->
-                        <!--<div>-->
-                            <!--<text class="articleDate">{{item.articleDate}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="atricleHead">-->
+                <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                <!--<text class="articleTitle">{{item.articleTitle}}</text>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+                <!--<div>-->
+                <!--<image :src="item.articleCoverUrl" class="articleCover"></image>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;文章底部&ndash;&gt;-->
+                <!--<div class="articleFoot">-->
+                <!--<div>-->
+                <!--<text class="articleDate">{{item.articleDate}}</text>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
         </div>
 
         <!--</div>-->
-
         <loading class="loading" @loading="onloading" :display="showLoading">
             <text class="indicator">Loading ...</text>
         </loading>
     </scroller>
 </template>
 <style scoped>
+    .istwoTop{
+        opacity: 1;
+    }
+    .notwoTop{
+        opacity: 0;
+    }
+    .userBox{
+        flex-direction: row;
+        align-items: center;
+    }
+    .nav{
+        margin-top: 40px;
+        flex-direction: row;
+        height: 96px;
+        width: 750px;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+    .headImg{
+        height:50px;
+        width: 50px;
+        border-radius: 25px;
+    }
+    .navText{
+        padding-left: 10px;
+        font-size: 33px;
+
+    }
+    .setTop{
+        top:136px;
+    }
+    .clearTop{
+        /*top: 0px;*/
+    }
+    .posFixed{
+        position: fixed;
+        background-color: red;
+        top: 136px;
+    }
+    .posRelative{
+    }
+    /*顶部导航栏*/
+    .header {
+        flex-direction: row;
+        position:fixed;
+        /*background-color: #D9141E;*/
+        background-color: #fff;
+        left: 0;
+        right: 0;
+        top:0;
+        height: 136px;
+
+    }
+    /*文集导航栏动画*/
+
+
+
+    .navTransition-enter-active{
+        transition: all 0.00001s;
+    }
+    .navTransition-leave-active {
+        transition: all 0.00001s;
+    }
+    .navTransition-leave-to{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    .navTransition-enter-to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+    .navTransition-enter{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+
+    /*文章段落动画*/
     .paraTransition-enter-active{
         transition: all 0.2s;
     }
@@ -176,13 +296,15 @@
         opacity: 0.9;
     }
     .corpusBox{
-       flex-direction: row;
-        background-color: #F8F9FC;
+        flex-direction: row;
+        /*background-color:#F8F9FC;*/
         height:80px;
-        position: sticky;
         border-bottom-width: 1px;
         border-style: solid;
         border-color: gainsboro;
+        background-color: #fff;
+        /*position: relative;*/
+        /*top: 420px;*/
 
     }
     .redColor{
@@ -331,7 +453,8 @@
         height:80px;
         /*height:120px;*/
         position: sticky;
-        background-color: #F8F9FC;
+        /*background-color: #F8F9FC;*/
+        background-color: #fff;
     }
     .allArticle{
         font-size: 29px;
@@ -433,6 +556,12 @@
     export default {
         data:function() {
             return{
+                settingColor:'white',
+                opacityNum:0,
+                twoTop:false,
+                isDisappear:false,
+                corpusPosition:'relative',
+                corpusScrollTop:0,
                 canScroll:true,
                 userName:'柯志杰',
                 userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
@@ -711,6 +840,15 @@
                 }]
             }
         },
+        computed:{
+            positionObject:function(){
+                return{
+//                    top:this.corpusScrollTop + 'px',
+                    position:this.corpusPosition
+                }
+
+            },
+        },
         created:function () {
 //            var _this = this;
 //            if(JSON.stringify(this.articleListDelete) == "[]"){//从对象解析出字符串
@@ -729,6 +867,18 @@
             })
         },
         methods: {
+            jumpEditor:function () {
+                modal.toast({message:'跳转编辑',duration:3});
+            },
+            jumpDelete:function () {
+                modal.toast({message:'文章删除',duration:3});
+            },
+            jumpTop:function () {
+                modal.toast({message:'文章置顶',duration:3});
+            },
+            jumpCorpus:function () {
+                modal.toast({message:'跳转文集',duration:3});
+            },
             open (callback) {
                 return stream.fetch({
                     method: 'GET',
@@ -928,20 +1078,59 @@
                 }, 1500)
             },
             scrollHandler: function(e) {
+                var _this = this;
 //                this.offsetX = e.contentOffset.x;
 //                this.offsetY = e.contentOffset.y;
                 scrollTop =Math.abs(e.contentOffset.y);
 //                modal.toast({message:scrollTop});
+
+                let opacityDegree = Math.floor(scrollTop/14)/10;
+                modal.toast({message:opacityDegree,duration:1});
+                if(opacityDegree > 1){
+                    opacityDegree = 1;
+                }else if(opacityDegree > 0.4){
+                    event.changeWindowsBar("true");
+                    this.settingColor = 'black';
+                }else{
+                    this.settingColor = 'white';
+                    event.changeWindowsBar("false");
+                }
+                this.opacityNum = opacityDegree;
+
+//                if(scrollTop >=284){
+                if(scrollTop >=284){
+                    this.twoTop = true;
+//                    this.corpusScrollTop = 136;
+//                    this.corpusPosition = 'fixed';
+//                    modal.toast({message:this.corpusPosition,duration:1})
+                }else{
+                    this.twoTop = false;
+//                     _this.corpusScrollTop = 420 -  scrollTop
+//                    this.corpusPosition = 'relative';
+//                    modal.toast({message:this.corpusScrollTop,duration:1})
+                }
                 if(scrollTop < 424){
                     recycleScroll = 0;
                     allArticleScroll = 0;
                 }
             },
+//            ondisappear(){
+//              modal.toast({message:'消失',duration:1});
+////                    this.corpusScrollTop = 0;
+//                    this.corpusPosition = 'fixed';
+//                    this.isDisappear = true;
+//            },
+//            onappear(){
+//                modal.toast({message:'显示',duration:1});
+//                this.isDisappear = false;
+//                this.corpusPosition = 'relative';
+//            },
             goCorpus(){
                 event.openURL('http://192.168.1.107:8081/corpus.weex.js');
             }
         }
     }
 </script>
+
 
 

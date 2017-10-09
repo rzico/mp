@@ -1,13 +1,13 @@
 <template>
-    <div>
+    <div >
         <navbar :title="title" :complete="complete" @goback="goBack" @goComplete="goComplete"> </navbar>
         <list class="wrapperBox" >
             <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <cell>
-                <div>
+                <div >
                     <image class="coverImage" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
-                    <text class="setTitle">{{setTitle}}</text>
+                    <text class="setTitle" @click="articleTitle()">{{setTitle}}</text>
                     <div class="bottomBtn addMusic">
                         <text class="musicSize"  @click="goMusic()" v-if="this.musicName == ''">{{addMusic}}</text>
                         <text class="musicSize"  @click="goMusic()" v-else :style="{fontFamily:'iconfont'}">&#xe65a; {{musicName}}</text>
@@ -25,7 +25,7 @@
                     <!--图标-->
                     <div class="iconBox" v-else>
                         <!--添加文本-->
-                        <div class="addIconBox ">
+                        <div class="addIconBox " @click="addTextPara(0)">
                             <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
                         </div>
                         <!--添加图片-->
@@ -78,7 +78,7 @@
                             <!--图标-->
                             <div class="iconBox"  v-else >
                                 <!--添加文本-->
-                                <div class="addIconBox ">
+                                <div class="addIconBox "  @click="addTextPara(index + 1)">
                                     <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
                                 </div>
                                 <!--添加图片-->
@@ -281,6 +281,7 @@
         color: #fff;
         font-size: 40px;
         left: 25px;
+        right:25px;
     }
     .musicSize{
         color: #666;
@@ -379,6 +380,7 @@
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
+                        modal.toast({message:data,duration:1});
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
@@ -445,6 +447,25 @@
             })
         },
         methods:{
+            articleTitle:function(){
+                let _this = this;
+                modal.prompt({
+                    message: '请输入标题',
+                    duration: 0.3,
+                    okTitle:'确定',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if(value.result == '确定'){
+                        if(value.data == '' || value.data == null ){
+                            modal.toast({message:'请输入标题',duration:1})
+                        }else{
+                            _this.setTitle = value.data;
+                            modal.toast({message:'设置成功',duration:1});
+
+                        }
+                    }
+                })
+            },
 //            段落里的文本编辑
             editorText(index){
                 var _this = this;
@@ -454,20 +475,20 @@
                     modal.toast({message:_this.paraList[index].paraText,duration:3});
                 })
             },
-            saveArticle(articleData,callback) {
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    body:articleData,
-                    url: '/weex/member/article/submit.jhtml'
-                }, callback)
-            },
 //            返回
             goBack:function () {
                 event.closeURL();
             },
 //            完成
             goComplete:function () {
+                if(this.setTitle == '点击设置标题'){
+                    modal.alert({
+                        message: '请设置标题',
+                        duration: 0.3
+                    })
+                    return;
+                }
+
                 var _this = this;
 //            获取当前时间戳 作为唯一标识符key
                 var timestamp = Math.round(new Date().getTime()/1000);
@@ -484,50 +505,95 @@
                     name:_this.musicName,
                     id:musicId
                 }
-                let articleData = [{
+                let articleData = {
                     thumbnail:this.coverImage,
                     music:musicData,
                     templates:atticleTemplates,
                     id:timestamp,
 //                  null需要加引号
                     articleTitleModel:{
-                        image5: "null",
-                        titleType: "null",
-                        image6: "null",
-                        image3: "null",
-                        image4: "null",
-                        image1: 'null',
-                        image2: "null"
+                        image5: null,
+                        titleType: 0,
+                        image6: null,
+                        image3: null,
+                        image4: null,
+                        image1: null,
+                        image2: null
                     },
-                    title:this.setTitle,
-                }]
-//                let jsonBodyData = {
-//                    title:this.setTitle,
-//                    thumbnial:this.coverImage,
-//                    music:musicData,
-//                    content:atticleTemplates,
+                    title:_this.setTitle,
+                }
+//                for(let i = 0; i < 12 ;i ++){
+//                    event.save("arcticle",'test' + i,articleData,"0,20170523","N",function (data) {
+//                        if (data.type == 'success') {
+////                        event.closeURL();
+//                        } else {
+//                            modal.alert({
+//                                message: '系统繁忙,请稍后重试',
+//                                duration: 0.3
+//                            })
+//                        }
+//                    });
 //                }
-//                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage  + ' &music='+ musicData +'&content='+ atticleTemplates +''
-//                let bodyData = 'title='+ this.setTitle +'&thumbnial='+ this.coverImage +''
-//                modal.toast({message:bodyData});
+//                let testDataStorage = {
+//                    type : "arcticle",
+//                    keyword : "N",
+//                    orderBy:"desc",
+//                    current:10,
+//                    pageSize:10
+//                }
+//                event.findList(testDataStorage,function (data) {
+//                    modal.toast({message:data,duration:1});
+//                })
 
+
+//                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
                 _this.saveArticle(articleData,res=>{
-                    modal.toast({message:res.data});
+                    modal.toast({message:res});
+                    if(res.data != '' && res.data.type == 'success'){
+//                1是置顶（默认倒序）
+                        event.save("arcticle",res.data.data.id,res.data.data,"0,20170523","N",function (data) {
+                            if(data.type == 'success'){
+                                event.closeURL();
+                            }else{
+                                modal.alert({
+                                    message: '系统繁忙,请稍后重试',
+                                    duration: 0.3
+                                })
+                            }
+                        })
+                    }
+
                 })
 
-//                articleData = JSON.stringify(articleData)
-//                event.save(1,timestamp,articleData,1,'articleListTest1',function (data) {
-//                    if(data.type == 'success'){
-//                        event.closeURL();
-//                    }else{
-//                        modal.alert({
-//                            message: '系统繁忙,请稍后重试',
-//                            duration: 0.3
-//                        })
-//                    }
-//                })
+            },
+//        向服务器发送保存文章
+            saveArticle(articleData,callback) {
+                modal.toast({message:articleData,duration:3});
+                return stream.fetch({
+                    method: 'POST',
+                    type: 'json',
+                    body:articleData,
+                    url: '/weex/member/article/submit.jhtml'
+                }, callback)
+            },
+//            点击"+"号里的文本时
+            addTextPara:function(index){
+                var _this = this;
+                event.openEditor(function (data) {
+//                    将返回回来的html数据赋值进去
+                    let newPara = {
+                        //原图
+                        paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                                    小缩略图
+                        thumbnailImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        paraText:data,
+                        show:true
+                    }
+                    _this.paraList.splice(index,0,newPara)
+                    modal.toast({message:_this.paraList[index].paraText,duration:3});
+                })
             },
 //            点击"+"号里的图片时
             addImgPara:function (index) {
@@ -538,7 +604,7 @@
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
-                                let a = {
+                                let newPara = {
                                     //原图
                                     paraImage:'file:/' + data.data[i].originalPath,
 //                                    小缩略图
@@ -546,7 +612,7 @@
                                     paraText:'i:' + i + '我是后来插入的',
                                     show:true
                                 }
-                                _this.paraList.splice(index,0,a)
+                                _this.paraList.splice(index + i,0,newPara)
                                 _this.clearIconBox();
                             }
                         }
@@ -705,18 +771,22 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.100:8081/music.weex.js?musicId=' + musicId,function (data) {
+                event.openURL('http://192.168.1.102:8081/music.weex.js?musicId=' + musicId,function (message) {
 //                    let jsonData = JSON.parse(data);
-//                    modal.toast({message:jsonData,duration:1});
-                    _this.musicName = data.chooseMusicName;
-                    musicId = data.chooseMusicId;
+                    modal.toast({message:message,duration:1});
+                    if(message.data != ''){
+                        _this.musicName = message.data.chooseMusicName;
+                        musicId = message.data.chooseMusicId;
+                    }
                 });
             },
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.100:8081/vote.weex.js',function (data) {
-                    _this.voteList[0].paraText = data;
+                event.openURL('http://192.168.1.102:8081/vote.weex.js',function (message) {
+                    if(message.data != '') {
+                        _this.voteList[0].paraText = message.data;
+                    }
                     _this.hadVote = false;
                 });
             },
