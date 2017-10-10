@@ -19,6 +19,11 @@
         components: {
             navbar,captcha
         },
+        data () {
+           return {
+               mobile:""
+           }
+        },
         created() {
             utils.initIconFont();
             this.mobile = utils.getUrlParameter("mobile");
@@ -32,45 +37,52 @@
         methods: {
             onSend: function (e) {
                 var _this = this;
-                POST('weex/member/password/send_mobile.jhtml?mobile=' + _this.mobile).then(
-                        function (data) {
-                            if (data.type == "success") {
-                                _this.$refs.captcha.beginTimer();
-                            } else {
-                                _this.$refs.captcha.endTimer();
-                                event.toast(data.content);
-                            }
-                        },
-                        function (err) {
-                            _this.$refs.captcha.endTimer();
-                            event.toast("网络不稳定")
-
-                        }
-                    )
-            },
-            onEnd: function (val) {
-                this.captcha = val;
-                event.encrypt(val,function (msg) {
+                event.encrypt( _this.mobile,function (msg) {
                     if (msg.type=="success") {
-                        POST('weex/member/password/captcha.jhtml?captcha=' + msg.data).
-                        then(function (data) {
+                        POST('weex/member/password/send_mobile.jhtml?mobile=' + msg.data).then(
+                            function (data) {
                                 if (data.type == "success") {
-                                    event(utils.locate("view/member/password/update.js?captcha="+msg.data),
-                                        function (resp) {
-                                           event.closeURL(resp);
-                                        }
-                                    )
+                                    _this.$refs.captcha.beginTimer();
                                 } else {
+                                    _this.$refs.captcha.endTimer();
                                     event.toast(data.content);
                                 }
-                            },function () {
-                                event.toast("网络不稳定请重试");
+                            },
+                            function (err) {
+                                _this.$refs.captcha.endTimer();
+                                event.toast("网络不稳定")
+
                             }
                         )
                     } else {
-                        event.toast(data.content);
+                        event.toast(msg.content);
                     }
+
                 })
+            },
+            onEnd: function (val) {
+//                this.captcha = val;
+//                event.encrypt(val,function (msg) {
+//                    if (msg.type=="success") {
+//                        POST('weex/member/password/captcha.jhtml?captcha=' + msg.data).
+//                        then(function (data) {
+//                                if (data.type == "success") {
+//                                    event(utils.locate("view/member/password/update.js?captcha="+msg.data),
+//                                        function (resp) {
+//                                           event.closeURL(resp);
+//                                        }
+//                                    )
+//                                } else {
+//                                    event.toast(data.content);
+//                                }
+//                            },function () {
+//                                event.toast("网络不稳定请重试");
+//                            }
+//                        )
+//                    } else {
+//                        event.toast(data.content);
+//                    }
+//                })
             }
         }
     }
