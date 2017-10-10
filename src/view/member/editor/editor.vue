@@ -394,12 +394,7 @@
                                 }) ;
                             }
                         }else{
-                            modal.alert({
-                                message:data.contend,
-                                duration: 0.3
-                            },function () {
                                 event.closeURL();
-                            })
                         }
                     }
                 )

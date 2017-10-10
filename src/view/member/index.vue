@@ -1,5 +1,8 @@
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
+
+        <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
+        <div style="position: absolute;top: 0;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <!--顶部白色区域-->
         <div class="header" :style="{opacity: opacityNum}">
             <!--顶部导航-->
@@ -22,7 +25,7 @@
         <!--绑定动画-->
         <!--<transition-group name="navTransition" tag="div">-->
         <!--只能多写一个顶部栏。否则无法适应-->
-        <div  class="corpusBox"  key="navAnimation" style="position: fixed;top: 136px;" :class="[twoTop ? 'istwoTop' : 'notwoTop']">
+        <div  class="corpusBox "   style=";top: 136px;position: fixed"  :class="[twoTop ? 'istwoTop' : 'notwoTop']">
             <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                 <div class="articleClass">
                     <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
@@ -33,7 +36,7 @@
                     <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
                 </div>
             </scroller>
-            <div style="width: 100px;justify-content: center;align-items: center;" @click="goCorpus()"  >
+            <div style="width: 100px;justify-content: center;align-items: center;background-color: white"  @click="goCorpus()"  >
                 <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
             </div>
             <!--文集前后白色遮罩层-->
@@ -76,7 +79,6 @@
         </div>
         <div >
 
-
             <!--<div v-if="isAllArticle" v-cloak >-->
             <!--<div>-->
             <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
@@ -99,7 +101,7 @@
                         <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
                     </div>
                 </scroller>
-                <div style="width: 100px;justify-content: center;align-items: center;" @click="goCorpus()"  >
+                <div style="width: 100px;justify-content: center;align-items: center;background-color: white" @click="goCorpus()"  >
                     <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
                 </div>
                 <!--文集前后白色遮罩层-->
@@ -182,7 +184,6 @@
                 <!--</div>-->
             </div>
         </div>
-
         <!--</div>-->
         <loading class="loading" @loading="onloading" :display="showLoading">
             <text class="indicator">Loading ...</text>
@@ -311,7 +312,7 @@
         border-bottom-width: 1px;
         border-style: solid;
         border-color: gainsboro;
-        background-color: #fff;
+        background-color: red;
         /*position: relative;*/
         /*top: 420px;*/
 
@@ -461,7 +462,7 @@
         border-color: gainsboro;
         height:80px;
         /*height:120px;*/
-        position: sticky;
+        /*position: sticky;*/
         /*background-color: #F8F9FC;*/
         background-color: #fff;
     }
@@ -875,7 +876,12 @@
                 modal.toast({message:res.data})
             })
         },
+        beforeCreate(){
+            modal.toast({message:'1',duration:1});
+            this.twoTop = false;
+        },
         mounted:function(){
+
             var domModule=weex.requireModule("dom");
             domModule.addRule('fontFace',{
                 'fontFamily':'iconfont',
@@ -1097,14 +1103,18 @@
                 var _this = this;
 //                this.offsetX = e.contentOffset.x;
 //                this.offsetY = e.contentOffset.y;
+                if(e.contentOffset.y >=0){
+                    return;
+                }
                 scrollTop =Math.abs(e.contentOffset.y);
-//                modal.toast({message:scrollTop});
+//                modal.toast({message:scrollTop});8
 
                 let opacityDegree = Math.floor(scrollTop/14)/10;
-                modal.toast({message:opacityDegree,duration:1});
+//                modal.toast({message:opacityDegree,duration:0.1});
                 if(opacityDegree > 1){
                     opacityDegree = 1;
-                }else if(opacityDegree > 0.4){
+                }
+                if(opacityDegree > 0.4){
                     event.changeWindowsBar("true");
                     this.settingColor = 'black';
                 }else{
@@ -1141,12 +1151,14 @@
 //                this.isDisappear = false;
 //                this.corpusPosition = 'relative';
 //            },
+//            文集
             goCorpus(){
                 event.openURL(utils.locate('view/member/editor/corpus.js'),
                     function (data) {
                         return ;
                     });
             },
+//            个人信息
             goAttribute(){
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
@@ -1154,13 +1166,21 @@
                     }
                 );
             },
+//            设置中心
             goManage(){
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
                         return ;
                     }
                 );
-            }
+            },
+//            快速滑动滚动条时， 控制顶部导航栏消失
+            toponappear(){
+                modal.toast({message:'到顶部',duration:1});
+                this.opacityNum = 0 ;
+                this.settingColor = 'white';
+                event.changeWindowsBar("false");
+            },
         }
     }
 </script>
