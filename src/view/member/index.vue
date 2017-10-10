@@ -1142,7 +1142,10 @@
 //                this.corpusPosition = 'relative';
 //            },
             goCorpus(){
-                event.openURL('http://192.168.1.107:8081/corpus.weex.js');
+                event.openURL(utils.locate('view/member/editor/corpus.js'),
+                    function (data) {
+                        return ;
+                    });
             },
             goAttribute(){
                 event.openURL(utils.locate('view/member/attribute.js'),
