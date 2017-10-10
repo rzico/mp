@@ -16,7 +16,7 @@
             </div>
         </div>
         <!--导航栏设置-->
-        <div style="position: fixed;top: 63px;right: 30px;">
+        <div style="position: fixed;top: 63px;right: 30px;" @click="goManage()">
             <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
         </div>
         <!--绑定动画-->
@@ -47,7 +47,7 @@
             <image   class="backgroundImage" :src="imageUrl"></image>
             <div @click="toPage('member/manager.js')" class="topHead">
                 <!--用户头像-->
-                <image class="testImage" :src="imageUrl"></image>
+                <image class="testImage" :src="imageUrl" @click="goAttribute()"></image>
                 <!--用户昵称-->
                 <text class="userName" >{{userName}}</text>
                 <!--用户签名-->
@@ -560,9 +560,10 @@
 </style>
 
 <script>
-    import {dom,event,stream} from '../../weex.js'
+    import {dom,event,stream} from '../../weex.js';
     const modal = weex.requireModule('modal');
-    const animation = weex.requireModule('animation')
+    const animation = weex.requireModule('animation');
+    import utils from '../../assets/utils';
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -1142,6 +1143,20 @@
 //            },
             goCorpus(){
                 event.openURL('http://192.168.1.107:8081/corpus.weex.js');
+            },
+            goAttribute(){
+                event.openURL(utils.locate('view/member/attribute.js'),
+                    function (data) {
+                        return ;
+                    }
+                );
+            },
+            goManage(){
+                event.openURL(utils.locate('view/member/manage.js'),
+                    function (data) {
+                        return ;
+                    }
+                );
             }
         }
     }
