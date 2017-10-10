@@ -53,7 +53,7 @@
                     )
             },
             goBack:function(e) {
-                event.closeUrl();
+                event.closeURL();
             },
             onEnd: function (val) {
                 this.captcha = val;

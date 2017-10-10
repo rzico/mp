@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="flex-center">
-            <text class="status primary" @click="onSend()" :style="statusStyle()">{{status}}</text>
+            <text class="status primary" @click="send()" :style="statusStyle()">{{status}}</text>
         </div>
     </div>
 </template>
@@ -107,15 +107,21 @@
             retry:true
         },
         beforeDestory() {
-            clearInterval(timer);
+            if (utils.isNull(timer)!=false)  {
+                clearInterval(timer);
+                time = 0;
+                timer = null;
+            }
         },
         methods:{
             beginTimer:function () {
                 var _this = this;
-                if (timeOut!=null) {
+                if (utils.isNull(timer)!=false)  {
                     clearInterval(timer);
+                    time = 0;
+                    timer = null;
                 }
-                timeOut = setInterval(1000,function () {
+                timer = setInterval(1000,function () {
                     _this.retry = false;
                     time = time +1;
                     this.status = "已发送"+time+"秒";
@@ -125,7 +131,11 @@
                 })
             },
             endTimer:function () {
-                clearInterval(timer);
+                if (utils.isNull(timer)!=false)  {
+                    clearInterval(timer);
+                    time = 0;
+                    timer = null;
+                }
                 this.retry = true;
             },
             statusStyle:function() {
