@@ -55,12 +55,17 @@
             </div>
             <!--功能按钮-->
             <div class="topBtnBox">
-                <div class="topBtnSmallBox topBtnOne" @click="jump()">
+                <div class="topBtnSmallBox "  @click="jump()">
+                    <div  class="topBtnBorder" ></div>
                     <text class="topBtn topBtnBigFont">{{collectNum}}</text>
                     <text class=" topBtn " >收藏</text>
                 </div>
-                <div class="topBtnSmallBox topBtnTwo" @click="jump()">
-                    <text class="topBtn topBtnBigFont">¥ {{moneyNum}}</text>
+                <div class="topBtnSmallBox " @click="jump()">
+                    <div  class="topBtnBorder" ></div>
+                    <div style="flex-direction: row;justify-content: center">
+                        <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥ </text>
+                        <text class="topBtn topBtnBigFont">{{moneyNum}}</text>
+                    </div>
                     <text class="topBtn  " >钱包</text>
                 </div>
                 <div class="topBtnSmallBox">
@@ -98,8 +103,12 @@
                     <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
                 </div>
                 <!--文集前后白色遮罩层-->
-                <!--<div class="blur leftBlur"></div>-->
-                <!--<div class="blur rightBlur"></div>-->
+                <!--<div class="blur leftBlur" >-->
+                    <!--<image src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" style="width: 20px;height:79px;"></image>-->
+                <!--</div>-->
+                <!--<div class="blur rightBlur"  >-->
+                    <!--<image :src="testaaa" style="width: 20px;height:79px;"></image>-->
+                <!--</div>-->
             </div>
             <!--文章模块-->
             <div >
@@ -281,11 +290,11 @@
     .rightBlur{
         right: 100px;
         width:20px;
-        background-image: linear-gradient(to left, #F8F9FC,#fff);
+        /*background-image: linear-gradient(to left, #F8F9FC,#fff);*/
     }
     .leftBlur{
         left:0;
-        background-image: linear-gradient(to right, #F8F9FC,#fff);
+        /*background-image: linear-gradient(to right, #F8F9FC,#fff);*/
     }
     .blur{
         position: absolute;
@@ -293,7 +302,7 @@
         width:20px;
         /*background-color: #F8F9FC;*/
         top:0;
-        opacity: 0.9;
+        opacity: 0.7;
     }
     .corpusBox{
         flex-direction: row;
@@ -367,7 +376,7 @@
     .articleFoot {
         flex-direction: row;
         justify-content: space-between;
-        width: 710px;
+        width: 690px;
         align-items: center;
     }
 
@@ -378,18 +387,18 @@
 
     .articleCover {
         height: 300px;
-        width: 710px;
+        width:690px;
         border-radius: 5px;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 
     .articleBox {
         background-color: #ffffff;
-        padding-left: 20px;
-        padding-top: 20px;
-        padding-right: 20px;
-        padding-bottom: 20px;
+        padding-left: 30px;
+        padding-top: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
         margin-bottom: 10px;
         /*========= 9.27*/
         width:1080px;
@@ -468,15 +477,15 @@
         padding-left: 20px;
         padding-right: 20px;
     }
-    .topBtnOne{
-        border-color:white;
-        border-right-width: 1px;
-        border-style: solid;
-    }
-    .topBtnTwo{
-        border-color:white;
-        border-right-width: 1px;
-        border-style: solid;
+    .topBtnBorder{
+        position:absolute;
+        height: 40px;
+        top: 20px;
+        right: 0;
+        background-color: black;
+        border-style:solid;
+        border-color: #fff;
+        border-right-width: 1px
     }
     .backgroundImage{
         position: absolute;
@@ -495,6 +504,7 @@
         position: relative;
         padding-top:40px;
         height: 420px;
+        background-color: #D9141E;
     }
     .topBtnBox{
         flex-direction: row;
@@ -514,9 +524,13 @@
         height:40px;
         line-height: 40px;
     }
-    .topBtnBigFont{
-        font-weight: 600;
+    .topMoneySize{
+        font-weight: 400;
         font-size: 32px;
+    }
+    .topBtnBigFont{
+        font-weight: 400;
+        font-size: 38px;
     }
     .topHead{
         flex-direction: column;
@@ -527,7 +541,7 @@
     .testImage{
         width: 120px;
         height:120px;
-        border-radius: 50%;
+        border-radius: 60px;
     }
     .userSign{
         lines:1;
@@ -556,6 +570,7 @@
     export default {
         data:function() {
             return{
+                testaaa:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 settingColor:'white',
                 opacityNum:0,
                 twoTop:false,
@@ -563,7 +578,7 @@
                 corpusPosition:'relative',
                 corpusScrollTop:0,
                 canScroll:true,
-                userName:'柯志杰',
+                userName:'刮风下雨打雷台风天',
                 userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
                 whichCorpus:'全部文章',
                 isNoArticle:false,
@@ -572,10 +587,10 @@
                 collectNum:0,
                 moneyNum:0,
                 focusNum:0,
-                imageUrl:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                imageUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
                 id:'334',
                 showLoading: 'hide',
-                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
 
                 memberArticleList:[{
                     corpus:'全部文章',
