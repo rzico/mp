@@ -31,11 +31,11 @@
                 </div>
                 <!--右侧功能-->
                 <div class="flex-row">
-                    <div class="flex-row" @click="changeName(index)">
+                    <div class="flex-row btnHtight" @click="changeName(index,item.name)" >
                         <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe607;</text>
                         <text class="gray fontSize30 ml5mr10 " >改名</text>
                     </div>
-                    <div class="flex-row " @click="deleteCorpus(index)">
+                    <div class="flex-row btnHtight" @click="deleteCorpus(index)" >
                         <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe615;</text>
                         <text class="gray fontSize30 ml5mr10" >删除</text>
                     </div>
@@ -58,7 +58,9 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-
+    .btnHtight{
+        height: 100px;
+    }
     .paraTransition-enter-active, .paraTransition-leave-active {
         transition: all 0.2s;
     }
@@ -188,10 +190,11 @@
             addCorpus(){
                 let _this = this;
                 modal.prompt({
-                    message: '请输入文集名',
+                    message: '新建文集',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
+                    placeholder:'输入文集名'
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){
@@ -220,14 +223,18 @@
                 }, callback)
             },
 //            修改文集名称
-            changeName(index){
+            changeName(index,corpusName){
                 let _this = this;
                 modal.prompt({
-                    message: '请输入文集名(修改)',
+                    message: '修改文集名',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
-                    value:'111'
+                    data:corpusName,
+                    value:corpusName,
+                    default:corpusName,
+                    placeholder:corpusName,
+
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){

@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="flex-center">
-            <text class="status primary" @click="onSend()" :style="statusStyle()">{{status}}</text>
+            <text class="status primary" @click="send()" :style="statusStyle()">{{status}}</text>
         </div>
     </div>
 </template>
@@ -90,6 +90,8 @@
 <script>
     var optionIndex = 0;
     var lastCaptchaLength = 0;
+    var timer = null;
+    var time = 0;
     export default {
         data:function(){
             return{
@@ -104,7 +106,38 @@
             status:{default:"点击重新发送"},
             retry:true
         },
+        beforeDestory() {
+            if (utils.isNull(timer)!=false)  {
+                clearInterval(timer);
+                time = 0;
+                timer = null;
+            }
+        },
         methods:{
+            beginTimer:function () {
+                var _this = this;
+                if (utils.isNull(timer)!=false)  {
+                    clearInterval(timer);
+                    time = 0;
+                    timer = null;
+                }
+                timer = setInterval(1000,function () {
+                    _this.retry = false;
+                    time = time +1;
+                    this.status = "已发送"+time+"秒";
+                    if (time>59) {
+                        _this.endTimer();
+                    }
+                })
+            },
+            endTimer:function () {
+                if (utils.isNull(timer)!=false)  {
+                    clearInterval(timer);
+                    time = 0;
+                    timer = null;
+                }
+                this.retry = true;
+            },
             statusStyle:function() {
               if (this.retry) {
                   return "";

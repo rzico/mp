@@ -158,6 +158,7 @@
 <script>
 
     import navbar from '../../../include/navbar.vue'
+    import utils from '../../../assets/utils'
     const event = weex.requireModule('event')
     const modal = weex.requireModule('modal')
     const picker = weex.requireModule('picker')
@@ -201,12 +202,8 @@
             title: { default: "投票设置"},
             complete:{ default:"完成"}
         },
-        mounted:function(){
-            var domModule = weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf')"
-            })
+        created(){
+            utils.initIconFont();
         },
         methods:{
 //            将选择好的时间 重置
@@ -357,7 +354,8 @@
             },
 //            完成
             goComplete:function () {
-                event.closeURL(this.textAreaTitle);
+                let backData = utils.message('success','成功',this.textAreaTitle);
+                event.closeURL(backData);
             }
         }
     }

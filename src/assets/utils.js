@@ -1,7 +1,7 @@
 /**
  * Created by zwwill on 2017/8/27.
  */
-const resLocateURL = 'http://cdn.rzico.com/weex/';
+const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 
 let utilsFunc = {
@@ -50,6 +50,20 @@ let utilsFunc = {
             return "近七天"
         }
         return "七天前"
+    },
+    message (_type,_content,_data) {
+        return {
+            type:_type,
+            content:_content,
+            data:_data
+        }
+    },
+    isNull (value) {
+        if (value !== null || value !== undefined || value !== '') {
+            return true
+        } else {
+            return false
+        }
     }
 };
 
