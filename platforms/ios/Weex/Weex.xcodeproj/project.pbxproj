@@ -22,6 +22,7 @@
 		223B1EAC1F7D307B005DC7A7 /* WXModuleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 223B1EAB1F7D307B005DC7A7 /* WXModuleDemo.m */; };
 		223F37F11F7650E300EFCEF4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 223F37F01F7650E300EFCEF4 /* AssetsLibrary.framework */; };
 		223F37F31F7650EB00EFCEF4 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 223F37F21F7650EB00EFCEF4 /* Photos.framework */; };
+		224263341F8CB665003FFE86 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 224263331F8CB665003FFE86 /* NSString+Util.m */; };
 		2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2267495E1F7215F20035A6E1 /* WXAlbumModule.m */; };
 		226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 226749621F722A4E0035A6E1 /* EditorViewController.m */; };
 		226749691F722DA80035A6E1 /* WXAlbumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 226749681F722DA80035A6E1 /* WXAlbumModel.m */; };
@@ -62,6 +63,10 @@
 		229384A51F87929800AD9746 /* music.js in Resources */ = {isa = PBXBuildFile; fileRef = 229384A41F87929800AD9746 /* music.js */; };
 		2293FA821F8A241E00508A17 /* WXNetworkQueueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293FA811F8A241E00508A17 /* WXNetworkQueueModel.m */; };
 		2293FA851F8A27FA00508A17 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293FA841F8A27FA00508A17 /* UIViewController+Util.m */; };
+		22AF2D071F8D103F0036D274 /* WXModalModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 22AF2D061F8D103F0036D274 /* WXModalModule.m */; };
+		22B70DDF1F8BA26B00BCBD83 /* PublicKeyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B70DDE1F8BA26A00BCBD83 /* PublicKeyModel.m */; };
+		22B70DE21F8BA38100BCBD83 /* PublicKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B70DE11F8BA38100BCBD83 /* PublicKeyManager.m */; };
+		22B70E2F1F8BD55300BCBD83 /* DDRSAWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B70E2D1F8BC61300BCBD83 /* DDRSAWrapper.m */; };
 		22BDEB221F7A88B9000295FD /* WXNetworkDefaultImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB201F7A88B8000295FD /* WXNetworkDefaultImpl.m */; };
 		22BDEB241F7A89A5000295FD /* deposit.js in Resources */ = {isa = PBXBuildFile; fileRef = 22BDEB231F7A89A4000295FD /* deposit.js */; };
 		22BDEB2D1F7A8A6D000295FD /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB281F7A8A69000295FD /* Utils.m */; };
@@ -101,6 +106,8 @@
 		223B1EB21F7D31C8005DC7A7 /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		223F37F01F7650E300EFCEF4 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		223F37F21F7650EB00EFCEF4 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		224263321F8CB665003FFE86 /* NSString+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
+		224263331F8CB665003FFE86 /* NSString+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
 		2267495D1F7215F20035A6E1 /* WXAlbumModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXAlbumModule.h; sourceTree = "<group>"; };
 		2267495E1F7215F20035A6E1 /* WXAlbumModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXAlbumModule.m; sourceTree = "<group>"; };
 		226749611F722A4E0035A6E1 /* EditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EditorViewController.h; path = Editor/EditorViewController.h; sourceTree = "<group>"; };
@@ -171,6 +178,14 @@
 		2293FA811F8A241E00508A17 /* WXNetworkQueueModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetworkQueueModel.m; sourceTree = "<group>"; };
 		2293FA831F8A27FA00508A17 /* UIViewController+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
 		2293FA841F8A27FA00508A17 /* UIViewController+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
+		22AF2D051F8D103F0036D274 /* WXModalModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXModalModule.h; sourceTree = "<group>"; };
+		22AF2D061F8D103F0036D274 /* WXModalModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXModalModule.m; sourceTree = "<group>"; };
+		22B70DDD1F8BA26A00BCBD83 /* PublicKeyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicKeyModel.h; sourceTree = "<group>"; };
+		22B70DDE1F8BA26A00BCBD83 /* PublicKeyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicKeyModel.m; sourceTree = "<group>"; };
+		22B70DE01F8BA38100BCBD83 /* PublicKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublicKeyManager.h; sourceTree = "<group>"; };
+		22B70DE11F8BA38100BCBD83 /* PublicKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublicKeyManager.m; sourceTree = "<group>"; };
+		22B70E2C1F8BC61200BCBD83 /* DDRSAWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DDRSAWrapper.h; sourceTree = "<group>"; };
+		22B70E2D1F8BC61300BCBD83 /* DDRSAWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDRSAWrapper.m; sourceTree = "<group>"; };
 		22BDEB201F7A88B8000295FD /* WXNetworkDefaultImpl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetworkDefaultImpl.m; sourceTree = "<group>"; };
 		22BDEB211F7A88B9000295FD /* WXNetworkDefaultImpl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetworkDefaultImpl.h; sourceTree = "<group>"; };
 		22BDEB231F7A89A4000295FD /* deposit.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = deposit.js; sourceTree = "<group>"; };
@@ -184,7 +199,6 @@
 		22BDEB311F7A8A86000295FD /* TXUtilsString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TXUtilsString.m; sourceTree = "<group>"; };
 		22BDEB321F7A8A8F000295FD /* NetManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetManager.h; sourceTree = "<group>"; };
 		22BDEB331F7A8A8F000295FD /* NetManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetManager.m; sourceTree = "<group>"; };
-		22BDEB341F7A8AC2000295FD /* APPKEY.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APPKEY.h; sourceTree = "<group>"; };
 		22BDEB381F7A8E60000295FD /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		22BDEB391F7A8E60000295FD /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		22DB017E1F7119F70018BD1E /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
@@ -211,6 +225,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2219E6271F8DFE8500D4E9B0 /* SqlLite */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SqlLite;
+			sourceTree = "<group>";
+		};
 		222A4CEA1F7BD48900A58A7B /* WXAlbum */ = {
 			isa = PBXGroup;
 			children = (
@@ -339,7 +360,6 @@
 				2291F0D31F6A796800B94F1B /* Assets.xcassets */,
 				2291F0D81F6A796800B94F1B /* Info.plist */,
 				2291F0C71F6A796800B94F1B /* Supporting Files */,
-				22BDEB341F7A8AC2000295FD /* APPKEY.h */,
 				2291F13E1F6AB93400B94F1B /* PrefixHeader.pch */,
 			);
 			path = Weex;
@@ -437,6 +457,8 @@
 				2267495E1F7215F20035A6E1 /* WXAlbumModule.m */,
 				223B1EAA1F7D307B005DC7A7 /* WXModuleDemo.h */,
 				223B1EAB1F7D307B005DC7A7 /* WXModuleDemo.m */,
+				22AF2D051F8D103F0036D274 /* WXModalModule.h */,
+				22AF2D061F8D103F0036D274 /* WXModalModule.m */,
 			);
 			path = module;
 			sourceTree = "<group>";
@@ -506,7 +528,9 @@
 		2291F13F1F6ABA5000B94F1B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				2234BDD31F8A4038001F6099 /* Resource */,
+				2219E6271F8DFE8500D4E9B0 /* SqlLite */,
+				22B70E2B1F8BC60500BCBD83 /* DDRSAWrapper */,
+				22B70DDA1F8BA1AB00BCBD83 /* Interface */,
 				2293849A1F87862A00AD9746 /* AliOSS */,
 				22BDEB261F7A8A49000295FD /* TXUtilsStirng */,
 				22BDEB251F7A8A40000295FD /* NetManager */,
@@ -541,6 +565,35 @@
 			path = AliOSS;
 			sourceTree = "<group>";
 		};
+		22B70DDA1F8BA1AB00BCBD83 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				22B70DDC1F8BA25200BCBD83 /* PublicKey */,
+				2234BDD31F8A4038001F6099 /* Resource */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		22B70DDC1F8BA25200BCBD83 /* PublicKey */ = {
+			isa = PBXGroup;
+			children = (
+				22B70DDD1F8BA26A00BCBD83 /* PublicKeyModel.h */,
+				22B70DDE1F8BA26A00BCBD83 /* PublicKeyModel.m */,
+				22B70DE01F8BA38100BCBD83 /* PublicKeyManager.h */,
+				22B70DE11F8BA38100BCBD83 /* PublicKeyManager.m */,
+			);
+			path = PublicKey;
+			sourceTree = "<group>";
+		};
+		22B70E2B1F8BC60500BCBD83 /* DDRSAWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				22B70E2C1F8BC61200BCBD83 /* DDRSAWrapper.h */,
+				22B70E2D1F8BC61300BCBD83 /* DDRSAWrapper.m */,
+			);
+			path = DDRSAWrapper;
+			sourceTree = "<group>";
+		};
 		22BDEB251F7A8A40000295FD /* NetManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -572,6 +625,8 @@
 				2275EF001F8913E0002A2202 /* NSURL+Util.m */,
 				2293FA831F8A27FA00508A17 /* UIViewController+Util.h */,
 				2293FA841F8A27FA00508A17 /* UIViewController+Util.m */,
+				224263321F8CB665003FFE86 /* NSString+Util.h */,
+				224263331F8CB665003FFE86 /* NSString+Util.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -732,6 +787,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22B70E2F1F8BD55300BCBD83 /* DDRSAWrapper.m in Sources */,
 				223B1EA81F7D27E1005DC7A7 /* WXScannerHistoryVC.m in Sources */,
 				223B1EA91F7D27E1005DC7A7 /* WXScannerVC.m in Sources */,
 				2279B8971F7E8B7900A8A144 /* IWXToastManager.m in Sources */,
@@ -748,9 +804,11 @@
 				22BDEB2E1F7A8A6D000295FD /* MD5+Util.m in Sources */,
 				226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */,
 				22BDEB2D1F7A8A6D000295FD /* Utils.m in Sources */,
+				224263341F8CB665003FFE86 /* NSString+Util.m in Sources */,
 				223B1EAC1F7D307B005DC7A7 /* WXModuleDemo.m in Sources */,
 				2291F0C91F6A796800B94F1B /* main.m in Sources */,
 				2291F10A1F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m in Sources */,
+				22B70DE21F8BA38100BCBD83 /* PublicKeyManager.m in Sources */,
 				2293849D1F87867900AD9746 /* AliOSSUtils.m in Sources */,
 				2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */,
 				2293FA821F8A241E00508A17 /* WXNetworkQueueModel.m in Sources */,
@@ -766,10 +824,12 @@
 				223B1EA71F7D2767005DC7A7 /* UIViewController+WXDemoNaviBar.m in Sources */,
 				2291F1371F6AB77800B94F1B /* HomeViewController.m in Sources */,
 				2291F11D1F6A8A7C00B94F1B /* UIView+UIThreadCheck.m in Sources */,
+				22B70DDF1F8BA26B00BCBD83 /* PublicKeyModel.m in Sources */,
 				2293FA851F8A27FA00508A17 /* UIViewController+Util.m in Sources */,
 				2275EEFE1F890A15002A2202 /* LoginViewController.m in Sources */,
 				22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */,
 				22220DFD1F6FC1D000864689 /* FriendsViewController.m in Sources */,
+				22AF2D071F8D103F0036D274 /* WXModalModule.m in Sources */,
 				2291F1041F6A89E400B94F1B /* WXSelectComponent.m in Sources */,
 				2291F1421F6ABA8B00B94F1B /* UIColor+Util.m in Sources */,
 				2291F1341F6AB6D700B94F1B /* XMTabBarController.m in Sources */,
@@ -892,16 +952,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 7Y94MRGPV7;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
+					"${SOURCE_ROOT}/sdk/WeexSDK",
 					"\"${PODS_ROOT}/ATSDK-Weex\"",
 					"\"${PODS_ROOT}/WXDevtool\"",
 				);
 				GCC_PREFIX_HEADER = "${SOURCE_ROOT}/Weex/Source/PrefixHeader.pch";
 				INFOPLIST_FILE = Weex/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rsico.Weex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Wunused-const-variable",
+					"-Wunused-variable",
+				);
 			};
 			name = Debug;
 		};
@@ -912,16 +978,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				DEVELOPMENT_TEAM = 7Y94MRGPV7;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
+					"${SOURCE_ROOT}/sdk/WeexSDK",
 					"\"${PODS_ROOT}/ATSDK-Weex\"",
 					"\"${PODS_ROOT}/WXDevtool\"",
 				);
 				GCC_PREFIX_HEADER = "${SOURCE_ROOT}/Weex/Source/PrefixHeader.pch";
 				INFOPLIST_FILE = Weex/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rsico.Weex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = (
+					"-Wunused-const-variable",
+					"-Wunused-variable",
+				);
 			};
 			name = Release;
 		};

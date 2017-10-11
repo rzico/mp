@@ -10,7 +10,7 @@
 
 @implementation IWXToast
 
-static const double WXToastDefaultDuration = 3.0;
+static const double WXToastDefaultDuration = 0.1;
 static const CGFloat WXToastDefaultFontSize = 16.0;
 static const CGFloat WXToastDefaultWidth = 230.0;
 static const CGFloat WXToastDefaultHeight = 30.0;
@@ -23,7 +23,7 @@ static const CGFloat WXToastDefaultPadding = 30.0;
 {
     self.instance = instance;
     WXPerformBlockOnMainThread(^{
-        [self toast:message duration:0.1];
+        [self toast:message duration:WXToastDefaultDuration];
     });
 }
 

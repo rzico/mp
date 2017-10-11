@@ -3,14 +3,14 @@ platform :ios, '7.0'
 inhibit_all_warnings!
 
 def common
-    pod 'WeexSDK', :path=>’./sdk/‘
+    pod 'WeexSDK', :path=>'./sdk/'
     pod 'WXDevtool', '0.15.1'
     pod 'SDWebImage', '3.7.5'
     pod 'SocketRocket', '0.4.2'
     pod 'ATSDK-Weex', '0.0.1'
 #    pod 'WeexGcanvas'
     pod 'TZImagePickerController'
-    pod 'SSKeychain'
+    pod 'SAMKeychain'
     pod 'AFNetworking', '~> 3.0.4'
     pod 'AFNetworking-Synchronous/3.x'
     pod 'JSONModel'
@@ -19,6 +19,7 @@ def common
     pod 'AliyunOSSiOS'
     pod 'CLImageEditor'
     pod 'ZipArchive'
+    pod 'OpenSSL'
 end
 
 target 'Weex' do

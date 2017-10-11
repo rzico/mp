@@ -15,7 +15,7 @@
 #import "AppDelegate.h"
 #import "UIViewController+Util.h"
 
-static NSMutableArray *queue;
+static NSMutableArray<WXNetworkQueueModel *> *queueList;
 
 @implementation WXNetworkDefaultImpl
 
@@ -66,15 +66,24 @@ static NSMutableArray *queue;
         WXNetworkQueueModel *model = [WXNetworkQueueModel new];
         model.request = request;
         model.delegate = delegate;
-        if (!queue){
-            queue = [NSMutableArray new];
+        if (!queueList){
+            queueList = [NSMutableArray<WXNetworkQueueModel *> new];
         }
-        [queue addObject:model];
+        [queueList addObject:model];
         if (![[UIViewController topViewController] isKindOfClass:NSClassFromString(@"LoginViewController")]){
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
             [appDelegate presentLoginViewController];
         }
         return NO;
+    }else if ([[data objectForKey:@"type"] isEqualToString:@"success"] && [[data objectForKey:@"content"] isEqualToString:@"login.success"]){
+        for (WXNetworkQueueModel *queue in queueList){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                WXNetworkDefaultImpl *network = [WXNetworkDefaultImpl new];
+                [network sendRequest:queue.request withDelegate:queue.delegate];
+                [queueList removeObject:queue];
+            });
+        }
+        return YES;
     }else{
         return YES;
     }
