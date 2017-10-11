@@ -7,12 +7,13 @@
                 <div >
                     <image class="coverImage" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
-                    <text class="setTitle" @click="articleTitle()">{{setTitle}}</text>
-                    <div class="bottomBtn addMusic">
+                    <text class="setTitle" @click="articleTitle(setTitle)">{{setTitle}}</text>
+
+                    <div class="bottomBtn addMusic" >
                         <text class="musicSize"  @click="goMusic()" v-if="this.musicName == ''">{{addMusic}}</text>
                         <text class="musicSize"  @click="goMusic()" v-else :style="{fontFamily:'iconfont'}">&#xe65a; {{musicName}}</text>
                     </div>
-                    <text class="bottomBtn editCover" @click="goCover()">编辑封面</text>
+                    <text class="bottomBtn editCover musicSize" @click="goCover()">编辑封面</text>
                 </div>
             </cell>
             <cell >
@@ -42,7 +43,7 @@
             <cell>
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
-                    <div  v-for="(item,index) in paraList" :key="item"  class="paraTransitionDiv">
+                    <div  v-for="(item,index) in paraList" :key="item" >
                         <!--<div  v-for="(item,index) in paraList" >-->
                         <!--段落-->
                         <div class="paraBox paraBoxHeight">
@@ -95,12 +96,7 @@
                 </transition-group>
             </cell>
             <cell>
-                <!--添加投票-->
-                <div class="paraBox flexRow" @click="goVote()" v-if="hadVote">
-                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                    <text class="addVote">添加投票</text>
-                </div>
-                <div v-else v-for="(item,index) in voteList"  class="paraTransitionDiv">
+                <div  v-for="(item,index) in voteList"  class="voteMargin" @click="editVote(index)">
                     <div class="paraBox paraBoxHeight">
                         <!--左上角关闭按钮"x"-->
                         <div class="paraClose" @click="closeVote(index)">
@@ -108,14 +104,19 @@
                         </div>
                         <!--图片-->
                         <div>
-                            <image class="paraImage" :src="item.paraImage"></image>
+                            <image class="paraImage" :src="coverImage"></image>
                         </div>
                         <!--文章内容-->
                         <div class="paraText">
                             <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                            <text class="paraTextSize">{{item.paraText}}</text>
+                            <text class="paraTextSize">{{item.title}}</text>
                         </div>
                     </div>
+                </div>
+                <!--添加投票-->
+                <div class="paraBox flexRow " @click="goVote()">
+                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
+                    <text class="addVote">添加投票</text>
                 </div>
             </cell>
             <!--用来撑起底部空白区域-->
@@ -124,7 +125,9 @@
     </div>
 </template>
 <style scoped>
-
+.voteMargin{
+    margin-bottom: 15px;
+}
 
     .paraTransition-enter-active, .paraTransition-leave-active {
         transition: all 0.2s;
@@ -133,6 +136,7 @@
         transform: translateX(300px);
         opacity: 0;
     }
+
     .paraTransition-enter{
         transform: translateX(0px);
         opacity: 1;
@@ -292,15 +296,17 @@
         bottom: 20px;
         border-radius: 10px;
         color: #666;
-        font-size: 27px;
-        padding-bottom: 8px;
+        padding-bottom: 5px;
+        justify-content: center;
         padding-right: 12px;
         padding-left: 12px;
-        padding-top: 8px;
+        padding-top: 5px;
         background-color: #fff;
+
     }
     .addMusic{
         left: 25px;
+        max-width: 500px
     }
     .editCover{
         right: 25px;
@@ -322,6 +328,7 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
+    const storage = weex.requireModule('storage')
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     var modal = weex.requireModule('modal');
@@ -339,23 +346,20 @@
                 addMusic:'添加音乐',
                 musicName:'',
                 paraList:[],
-                voteList:[{
-                    paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    thumbnailImage:'',
-                    paraText:'',
-                }],
-                hadVote:true,
+                voteList:[],
             }
         },
         filters:{
 //            过滤html标签
             htmlDeal:function(value){
 //                将h1-h5换成\n
-                var takeEnter=value.replace(/<\/h[0-9]>/g,"\n");
+                let takeEnter=value.replace(/<\/h[0-9]>/g,"\n");
 //                将html标签替换，可能遗留空格
-                var spaceText=takeEnter.replace(/<\/?.+?>/g,"");
+                let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
+//                将空格 &nbsp; 替换成 。
+                let spaceText=nbspText.replace(/&nbsp;/g," ");
                 return spaceText;
-//                将空格去除
+                //                将空格去除
 //                var onlyText=spaceText.replace(/ /g,"");
             }
         },
@@ -389,7 +393,7 @@
                                     paraImage:'file:/' + data.data[i].originalPath,
                                     //小缩略图
                                     thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
-                                    paraText:'i:\n' + i,
+                                    paraText:'',
                                     show:true
                                 }) ;
                             }
@@ -442,13 +446,17 @@
             })
         },
         methods:{
-            articleTitle:function(){
+            articleTitle:function(title){
                 let _this = this;
+                if(title == '点击设置标题'){
+                    title = '';
+                }
                 modal.prompt({
                     message: '请输入标题',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
+                    default:title,
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){
@@ -456,7 +464,6 @@
                         }else{
                             _this.setTitle = value.data;
                             modal.toast({message:'设置成功',duration:1});
-
                         }
                     }
                 })
@@ -464,7 +471,7 @@
 //            段落里的文本编辑
             editorText(index){
                 var _this = this;
-                event.openEditor(function (data) {
+                event.openEditor(_this.paraList[index].paraText,function (data) {
 //                    将返回回来的html数据赋值进去
                     _this.paraList[index].paraText = data;
                     modal.toast({message:_this.paraList[index].paraText,duration:3});
@@ -576,13 +583,13 @@
 //            点击"+"号里的文本时
             addTextPara:function(index){
                 var _this = this;
-                event.openEditor(function (data) {
+                event.openEditor('',function (data) {
 //                    将返回回来的html数据赋值进去
                     let newPara = {
                         //原图
-                        paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        paraImage:'',
 //                                    小缩略图
-                        thumbnailImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                        thumbnailImage:'',
                         paraText:data,
                         show:true
                     }
@@ -727,24 +734,54 @@
                     cancelTitle:'取消',
                     duration: 0.3
                 }, function (value) {
+                    console.log(value);
                     if(value == '删除'){
                         //                将内容删掉
                         _this.voteList.splice(index,1);
-                        _this.hadVote = true;
                     }
                 })
             },
 //            编辑段落图片
             editParaImage(imgSrc,index){
                 var _this = this;
-                album.openCrop(imgSrc,function (data) {
-                    if(data.type == 'success'){
+//                判断是否没有图片
+                if(imgSrc == ''){
+                    modal.toast({message:'imgSrc为空',duration:1});
+                    album.openAlbumSingle(false, function(data){
                         _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
                         _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
-                    }else{
-                        modal.toast({message:data.content,duration:10});
-                    }
-                })
+                    })
+                    return;
+                }else{
+                    modal.confirm({
+                        message: '请选择裁剪或者更换图片',
+                        duration: 0.3,
+                        okTitle:'裁剪',
+                        cancelTitle:'更换',
+                    }, function (value) {
+                            if(value == '更换'){
+//                                调用单选图片接口
+                                album.openAlbumSingle(false, function(data){
+                                    _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
+                                    _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
+                                })
+                            }else if(value == '裁剪'){
+//                                调用裁剪图片
+                                album.openCrop(imgSrc,function (data) {
+                                    if(data.type == 'success'){
+                                        _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
+                                        _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
+                                    }else{
+                                        modal.toast({message:data.content,duration:10});
+                                    }
+                                })
+                            }
+
+                    })
+
+                }
+
+
             },
 //            下拉刷新
             onrefresh (event) {
@@ -760,13 +797,18 @@
             },
 //            跳转封面页面
             goCover:function () {
-                event.openURL('file://assets/member/editor/cover.js');
+//                event.openURL('file://assets/member/editor/cover.js');
+                let _this = this;
+                event.openURL('http://192.168.1.107:8081/cover.weex.js',function (message) {
+//                    let jsonData = JSON.parse(data);
+                    modal.toast({message:message,duration:1});
+                });
             },
 //            跳转音乐页面
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.102:8081/music.weex.js?musicId=' + musicId,function (message) {
+                event.openURL('http://192.168.1.107:8081/music.weex.js?musicId=' + musicId,function (message) {
 //                    let jsonData = JSON.parse(data);
                     modal.toast({message:message,duration:1});
                     if(message.data != ''){
@@ -778,13 +820,33 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.102:8081/vote.weex.js',function (message) {
+                event.openURL('http://192.168.1.107:8081/vote.weex.js',function (message) {
                     if(message.data != '') {
-                        _this.voteList[0].paraText = message.data;
+                        modal.toast({message:message.data,duration:1});
+                        _this.voteList.push(message.data);
+//                        _this.voteList[0].paraText = message.data;
+//                        _this.voteList.push({
+//
+//                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                            thumbnailImage:'',
+//                            paraText:'',
+//
+//                        })
                     }
-                    _this.hadVote = false;
                 });
             },
+//            编辑投票
+            editVote:function (index) {
+                let _this = this;
+                let voteData = _this.voteList[index];
+                modal.toast({message:voteData,duration:1});
+                storage.setItem('voteData', voteData);
+                event.openURL('http://192.168.1.107:8081/vote.weex.js?voteData=' + 'voteData',function (message) {
+                    if(message.data != '') {
+                        _this.voteList[index] = message.data;
+                    }
+                });
+            }
         }
     }
 </script>

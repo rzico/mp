@@ -2,70 +2,63 @@
     <scroller class="wrapper">
         <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
-            <div class="voteBigBox" v-for="voteBox in voteList">
-                <!--整个的上方箱子-->
-                <div class="voteBox mt20 border-radius">
-                    <!--第一行 投票描述-->
-                    <div class="voteTell addBottomBorder">
-                        <text class="gray tellSize">投票描述</text>
-                        <!--多行文本-->
-                        <div class="textareaBox">
-                            <textarea class="textareaClass ml10 " data-id="0" v-model="textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
-                        </div>
-                    </div>
-                    <!--第二行开始 选项-->
-                    <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in pageBox">
-                        <!--勾选圆形-->
-                        <text class="circle pl10"></text>
-                        <!--多行文本-->
-                        <div class="textareaBox">
-                            <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                            <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
-                        </div>
-                        <!--删除按钮-->
-                        <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
-                        <!--当隐藏删除按钮时需要有空白区域顶起布局-->
-                        <text class="closeIcon" style="width: 40px;"  v-else></text>
-                    </div>
-                    <!--添加选项-->
-                    <div class="voteTell addOptions " @click="addOptions()">
-                        <text class="addSize">+</text>
-                        <text class="addSize ml10">添加选项</text>
+        <div class="voteBigBox" >
+            <!--整个的上方箱子-->
+            <div class="voteBox mt20 border-radius">
+                <!--第一行 投票描述-->
+                <div class="voteTell addBottomBorder">
+                    <text class="gray tellSize">投票描述</text>
+                    <!--多行文本-->
+                    <div class="textareaBox">
+                        <textarea class="textareaClass ml10 " data-id="0" v-model="textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
                     </div>
                 </div>
-                <div class="voteBox mt20 border-radius">
-                    <!-- 截止时间-->
-                    <div class="voteTell addBottomBorder optionsBox ">
-                        <div class="flexRow">
-                            <text class="gray bottomSize">截止时间</text>
-                            <!--时间-->
-                            <div class="textareaBox ml10 flexRow"  >
-                                <!--选择日期-->
-                                <text class="bottomSize" @click="pickDate()">{{chooseDate}}</text>
-                                <!--选择时间-->
-                                <text class="bottomSize ml10" @click="pickTime()">{{chooseTime}}</text>
-                            </div>
-                        </div>
-                        <!--重置时间按钮-->
-                        <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
+                <!--第二行开始 选项-->
+                <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in pageBox">
+                    <!--勾选圆形-->
+                    <text class="circle pl10"></text>
+                    <!--多行文本-->
+                    <div class="textareaBox">
+                        <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
+                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
                     </div>
-                    <!-- 投票类型-->
-                    <div class="voteTell ">
-                        <text class="gray bottomSize">投票类型</text>
-                        <!--单选-->
-                        <div class="textareaBox ml10" @click="pickOptions()">
-                            <text class="bottomSize">{{chooseOptions}}</text>
+                    <!--删除按钮-->
+                    <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
+                    <!--当隐藏删除按钮时需要有空白区域顶起布局-->
+                    <text class="closeIcon" style="width: 40px;"  v-else></text>
+                </div>
+                <!--添加选项-->
+                <div class="voteTell addOptions " @click="addOptions()">
+                    <text class="addSize">+</text>
+                    <text class="addSize ml10">添加选项</text>
+                </div>
+            </div>
+            <div class="voteBox mt20 border-radius">
+                <!-- 截止时间-->
+                <div class="voteTell addBottomBorder optionsBox ">
+                    <div class="flexRow">
+                        <text class="gray bottomSize">截止时间</text>
+                        <!--时间-->
+                        <div class="textareaBox ml10 flexRow"  >
+                            <!--选择日期-->
+                            <text class="bottomSize" @click="pickDate()">{{chooseDate}}</text>
+                            <!--选择时间-->
+                            <text class="bottomSize ml10" @click="pickTime()">{{chooseTime}}</text>
                         </div>
+                    </div>
+                    <!--重置时间按钮-->
+                    <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
+                </div>
+                <!-- 投票类型-->
+                <div class="voteTell ">
+                    <text class="gray bottomSize">投票类型</text>
+                    <!--单选-->
+                    <div class="textareaBox ml10" @click="pickOptions()">
+                        <text class="bottomSize">{{chooseOptions}}</text>
                     </div>
                 </div>
             </div>
-            <!--添加投票-->
-            <div class="voteTell addOptions " @click="addVoteBox()">
-                <div class="flexRow addVote">
-                    <text class="addSize" :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                    <text class="addSize ml10">添加投票</text>
-                </div>
-            </div>
+        </div>
     </scroller>
 </template>
 
@@ -73,9 +66,6 @@
 <style scoped>
     .voteBigBox{
         padding-bottom: 20px;
-        border-bottom-width: 30px;
-        border-style: solid;
-        border-color: #999;
     }
     .flexRow{
         flex-direction: row;
@@ -159,6 +149,7 @@
 
     import navbar from '../../../include/navbar.vue'
     import utils from '../../../assets/utils'
+    const storage = weex.requireModule('storage')
     const event = weex.requireModule('event')
     const modal = weex.requireModule('modal')
     const picker = weex.requireModule('picker')
@@ -168,7 +159,6 @@
         data:function () {
             return{
                 refreshing: false,
-                voteList:[{}],
                 chooseOptions:'单选(默认)',
                 optionsIndex:0,
                 chooseDate:'无截止时间',
@@ -203,7 +193,18 @@
             complete:{ default:"完成"}
         },
         created(){
+            var _this = this;
             utils.initIconFont();
+            let voteData = utils.getUrlParameter('voteData');
+            storage.getItem(voteData, event => {
+                _this.textAreaTitle = event.data.title;
+                _this.pageBox = event.data.options;
+                _this.optionsIndex = event.data.voteClass;
+                _this.chooseDate = event.data.endDate;
+                _this.chooseTime = event.data.endTime;
+            })
+
+
         },
         methods:{
 //            将选择好的时间 重置
@@ -330,11 +331,6 @@
                 }
                 return len;
             },
-//            添加投票箱
-            addVoteBox:function () {
-                this.voteList.push({
-                })
-            },
 
 //            下拉刷新
             onrefresh (event) {
@@ -354,7 +350,15 @@
             },
 //            完成
             goComplete:function () {
-                let backData = utils.message('success','成功',this.textAreaTitle);
+                var _this = this;
+                let voteData = {
+                    title : _this.textAreaTitle,
+                    options:_this.pageBox,
+                    voteClass : _this.optionsIndex,
+                    endDate: _this.chooseDate,
+                    endTime: _this.chooseTime
+                }
+                let backData = utils.message('success','成功',voteData);
                 event.closeURL(backData);
             }
         }

@@ -27,7 +27,7 @@
                     <div class="musicNameBox" key="musicBox" v-if="music.show">
                         <div class="addBorder" v-for="(item,tickIndex) in music.musicNameList" @click="ctrlTick(item,item.musicId,item.musicName)">
                             <!--歌名-->
-                            <text class="musicName gray">{{item.musicName}}</text>
+                            <text class="musicName nameStyle" >{{item.musicName}}</text>
                             <!--"选中"字体图标-->
                             <text class="musicName":style="{fontFamily:'iconfont'}" v-if="item.tickShow">&#xe606;</text>
                         </div>
@@ -40,7 +40,8 @@
 </template>
 
 <style scoped>
-    .gray{
+    .nameStyle{
+        width: 600px;
         color: #888;
     }
     .paraTransition-enter-active, .paraTransition-leave-active {
@@ -52,6 +53,10 @@
     }
     .paraTransition-enter{
         transform: translateY(-50px);
+        opacity: 0;
+    }
+    .paraTransition-enter-to{
+        transform: translateY(0px);
         opacity: 1;
     }
     .musicTotal{
@@ -115,6 +120,7 @@
 <script>
     import navbar from '../../../include/navbar.vue'
     import utils from '../../../assets/utils'
+    import music from '../../../assets/music'
     const event = weex.requireModule('event');
     const dom = weex.requireModule('dom');
     const modal = weex.requireModule('modal');
@@ -127,126 +133,7 @@
             return{
                 show:false,
                 noMusicShow:true,
-                musicList:[{
-                    musicGather:'教师节音乐选集',
-                    musicTotal:3,
-                    show:false,
-                    musicNameList:[{
-                        musicName:'每当我走过老师窗前',
-                        tickShow:false,
-                        musicId:43
-                    },{
-                        musicName:'长大后我就成了你',
-                        tickShow:false,
-                        musicId:53
-                    },{
-                        musicName:'感恩的心',
-                        tickShow:false,
-                        musicId:63
-                    }]
-                },{
-                    musicGather:'教师节音乐选集',
-                    musicTotal:3,
-                    show:false,
-                    musicNameList:[{
-                        musicName:'每当我走过老师窗前',
-                        tickShow:false,
-                        musicId:1222
-                    },{
-                        musicName:'长大后我就成了你',
-                        tickShow:false,
-                        musicId:2111
-                    },{
-                        musicName:'感恩的心',
-                        tickShow:false,
-                        musicId:3112
-                    }]
-                },{
-                    musicGather:'教师节音乐选集',
-                    musicTotal:3,
-                    show:false,
-                    musicNameList:[{
-                        musicName:'每当我走过老师窗前',
-                        tickShow:false,
-                        musicId:315
-                    },{
-                        musicName:'长大后我就成了你',
-                        tickShow:false,
-                        musicId:314
-                    },{
-                        musicName:'感恩的心',
-                        tickShow:false,
-                        musicId:313
-                    }]
-                },{
-                    musicGather:'教师节音乐选集',
-                    musicTotal:3,
-                    show:false,
-                    musicNameList:[{
-                        musicName:'每当我走过老师窗前',
-                        tickShow:false,
-                        musicId:312
-                    },{
-                        musicName:'长大后我就成了你',
-                        tickShow:false,
-                        musicId:311
-                    },{
-                        musicName:'感恩的心',
-                        tickShow:false,
-                        musicId:30
-                    }]
-                },{
-                    musicGather:'教师节音乐选集',
-                    musicTotal:3,
-                    show:false,
-                    musicNameList:[{
-                        musicName:'每当我走过老师窗前',
-                        tickShow:false,
-                        musicId:39
-                    },{
-                        musicName:'长大后我就成了你',
-                        tickShow:false,
-                        musicId:38
-                    },{
-                        musicName:'感恩的心',
-                        tickShow:false,
-                        musicId:37
-                    }]
-                },{
-                    musicGather:'教师节音乐选集',
-                    musicTotal:3,
-                    show:false,
-                    musicNameList:[{
-                        musicName:'每当我走过老师窗前',
-                        tickShow:false,
-                        musicId:36
-                    },{
-                        musicName:'长大后我就成了你',
-                        tickShow:false,
-                        musicId:35
-                    },{
-                        musicName:'感恩的心',
-                        tickShow:false,
-                        musicId:34
-                    }]
-                },{
-                    musicGather:'教师节音乐选集',
-                    musicTotal:3,
-                    show:false,
-                    musicNameList:[{
-                        musicName:'每当我走过老师窗前',
-                        tickShow:false,
-                        musicId:33
-                    },{
-                        musicName:'长大后我就成了你',
-                        tickShow:false,
-                        musicId:32
-                    },{
-                        musicName:'感恩的心',
-                        tickShow:false,
-                        musicId:31
-                    }]
-                }]
+                musicList:''
             }
         },
         components: {
@@ -258,7 +145,7 @@
         },
         created:function () {
             utils.initIconFont();
-
+            this.musicList = music;
 //            bundleUrl = new String(bundleUrl);
 //            modal.toast({message:bundleUrl,duration:1})
             var _this = this;

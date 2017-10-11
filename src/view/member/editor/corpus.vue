@@ -68,8 +68,13 @@
         /*transform: translateX(300px);*/
         /*opacity: 0;*/
     /*}*/
+
     .paraTransition-enter{
         transform: translateY(-300px);
+        opacity: 1;
+    }
+    .paraTransition-enter-to{
+        transform: translateY(0px);
         opacity: 1;
     }
 
@@ -176,7 +181,7 @@
             title: { default: "文集管理"},
             complete:{default:"完成"}
         },
-        beforeCreated(){
+        created(){
             utils.initIconFont();
         },
         methods:{
@@ -230,8 +235,6 @@
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
-                    data:corpusName,
-                    value:corpusName,
                     default:corpusName,
                     placeholder:corpusName,
 

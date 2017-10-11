@@ -1,16 +1,17 @@
+
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
 
         <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
         <div style="position: absolute;top: 0;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <!--顶部白色区域-->
-        <div class="header" :style="{opacity: opacityNum}">
+        <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']">
             <!--顶部导航-->
             <div class="nav">
                 <div style="width: 50px;">
                 </div>
                 <!--导航栏名字头像-->
-                <div class="userBox" v-if="settingColor == 'black'">
+                <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'black'" >
                     <image class="headImg" :src="imageUrl"></image>
                     <text class="navText">{{userName}}</text>
                 </div>
@@ -25,7 +26,7 @@
         <!--绑定动画-->
         <!--<transition-group name="navTransition" tag="div">-->
         <!--只能多写一个顶部栏。否则无法适应-->
-        <div  class="corpusBox "   style=";top: 136px;position: fixed"  :class="[twoTop ? 'istwoTop' : 'notwoTop']">
+        <div  class="corpusBox "   style=";top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
             <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                 <div class="articleClass">
                     <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
@@ -48,13 +49,16 @@
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
             <image   class="backgroundImage" :src="imageUrl"></image>
-            <div @click="toPage('member/manager.js')" class="topHead">
+            <div  class="topHead">
                 <!--用户头像-->
-                <image class="testImage" :src="imageUrl" @click="goAttribute()"></image>
-                <!--用户昵称-->
-                <text class="userName" >{{userName}}</text>
-                <!--用户签名-->
-                <text class="userSign" >{{userSign}}</text>
+                <image class="testImage" :src="imageUrl" ></image>
+                <!--个性签名 用户昵称-->
+                <div style="align-items: center" @click="goAttribute()">
+                    <!--用户昵称-->
+                    <text class="userName"  >{{userName}}</text>
+                    <!--用户签名-->
+                    <text class="userSign" >{{userSign}}</text>
+                </div>
             </div>
             <!--功能按钮-->
             <div class="topBtnBox">
@@ -69,7 +73,7 @@
                         <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥ </text>
                         <text class="topBtn topBtnBigFont">{{moneyNum}}</text>
                     </div>
-                    <text class="topBtn  " >钱包</text>
+                    <text class="topBtn" >钱包</text>
                 </div>
                 <div class="topBtnSmallBox">
                     <text class="topBtn topBtnBigFont">{{focusNum}}</text>
@@ -106,10 +110,10 @@
                 </div>
                 <!--文集前后白色遮罩层-->
                 <!--<div class="blur leftBlur" >-->
-                    <!--<image src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" style="width: 20px;height:79px;"></image>-->
+                <!--<image src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" style="width: 20px;height:79px;"></image>-->
                 <!--</div>-->
                 <!--<div class="blur rightBlur"  >-->
-                    <!--<image :src="testaaa" style="width: 20px;height:79px;"></image>-->
+                <!--<image :src="testaaa" style="width: 20px;height:79px;"></image>-->
                 <!--</div>-->
             </div>
             <!--文章模块-->
@@ -191,11 +195,13 @@
     </scroller>
 </template>
 <style scoped>
-    .istwoTop{
-        opacity: 1;
+    .isvisible{
+        /*opacity: 1;*/
+        visibility: visible;
     }
-    .notwoTop{
-        opacity: 0;
+    .novisible{
+        /*opacity: 0;*/
+        visibility: hidden;
     }
     .userBox{
         flex-direction: row;
@@ -876,10 +882,6 @@
                 modal.toast({message:res.data})
             })
         },
-        beforeCreate(){
-            modal.toast({message:'1',duration:1});
-            this.twoTop = false;
-        },
         mounted:function(){
 
             var domModule=weex.requireModule("dom");
@@ -959,12 +961,12 @@
                     }
                 })
             },
-            toPage: function(url){
-//                event.pageTo(url, false);
-                event.wxConfig(function (data) {
-                    event.showToast(data.color);
-                });
-            },
+//            toPage: function(url){
+////                event.pageTo(url, false);
+//                event.wxConfig(function (data) {
+//                    event.showToast(data.color);
+//                });
+//            },
             jump:function (vueName) {
                 console.log('will jump');
             },
@@ -1180,10 +1182,12 @@
                 this.opacityNum = 0 ;
                 this.settingColor = 'white';
                 event.changeWindowsBar("false");
+
             },
         }
     }
 </script>
+
 
 
 
