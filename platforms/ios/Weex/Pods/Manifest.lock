@@ -22,12 +22,13 @@ PODS:
     - CLImageEditor/Core (= 0.2.1)
   - CLImageEditor/Core (0.2.1)
   - JSONModel (1.7.0)
+  - OpenSSL (1.0.208)
   - Reachability (3.2)
+  - SAMKeychain (1.5.3)
   - SDWebImage (3.7.5):
     - SDWebImage/Core (= 3.7.5)
   - SDWebImage/Core (3.7.5)
   - SocketRocket (0.4.2)
-  - SSKeychain (1.4.1)
   - TZImagePickerController (1.9.3)
   - WechatOpenSDK (1.8.0)
   - WeexSDK (0.15.0):
@@ -43,10 +44,11 @@ DEPENDENCIES:
   - ATSDK-Weex (= 0.0.1)
   - CLImageEditor
   - JSONModel
+  - OpenSSL
   - Reachability
+  - SAMKeychain
   - SDWebImage (= 3.7.5)
   - SocketRocket (= 0.4.2)
-  - SSKeychain
   - TZImagePickerController
   - WechatOpenSDK
   - WeexSDK (from `./sdk/`)
@@ -64,16 +66,17 @@ SPEC CHECKSUMS:
   ATSDK-Weex: 1b27558f4336d77fb97704d34fc6ad1fd468592c
   CLImageEditor: 7f1910df791276815140a377d6836fb77cf76cf3
   JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
+  OpenSSL: b187269d386b07452f56af273764ea0636dd5da8
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   SocketRocket: ffe08119b00ef982f6c37052a4705a057c8494ad
-  SSKeychain: 55cc80f66f5c73da827e3077f02e43528897db41
   TZImagePickerController: 079ab986018c22793462e531045a75e366b18252
   WechatOpenSDK: 0ee07a8d492299d3e47372a33da5af26524a7576
   WeexSDK: d30bf863bf8eb14b604817a4061e51c4fe4caeed
   WXDevtool: 5b26fd79451f215d7acdee89e5e2f3be491a1393
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 
-PODFILE CHECKSUM: 5d28ffc4a35ee642ceec32364847c367a0e35a44
+PODFILE CHECKSUM: 7a42602706005737e4227590b41af18f4e28fb00
 
 COCOAPODS: 1.1.1

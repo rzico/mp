@@ -29,7 +29,7 @@ static Reachability * internetConnectionReach = nil;
             afManager.responseSerializer = [AFJSONResponseSerializer serializer];
             afManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
             [afManager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-            afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json",@"text/json", nil];
+            afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", nil];
             afManager.requestSerializer.timeoutInterval = 45.0f;
         });
     }
@@ -264,6 +264,10 @@ static Reachability * internetConnectionReach = nil;
     };
     
     [internetConnectionReach startNotifier];
+}
+
+- (void)reachabilityChanged:(NSNotification *)note{
+    
 }
 @end
 

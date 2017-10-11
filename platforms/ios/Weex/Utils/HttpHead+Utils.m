@@ -7,8 +7,8 @@
 //
 
 #import "HttpHead+Utils.h"
-#import <SSKeychain.h>
-#import <SSKeychainQuery.h>
+#import <SAMKeychain.h>
+#import <SAMKeychainQuery.h>
 #import "MD5+Util.h"
 #import "ResourceManager.h"
 #import "DictionaryUtil.h"
@@ -22,8 +22,8 @@
     static NSString *appKey = nil;
     if (!uid){
         NSError *error=nil;
-        uid = [[SSKeychain passwordForService:SERVICE account:ACCOUNT error:&error] stringByReplacingOccurrencesOfString:@"-" withString:@ ""];
-        if([error code] == SSKeychainErrorNotFound )
+        uid = [[SAMKeychain passwordForService:SERVICE account:ACCOUNT error:&error] stringByReplacingOccurrencesOfString:@"-" withString:@ ""];
+        if(!uid)
         {
             CFUUIDRef uuid = CFUUIDCreate(NULL);
             if(uuid!=NULL)
@@ -31,7 +31,7 @@
                 CFStringRef uuidStr = CFUUIDCreateString(NULL, uuid);
                 uid = [[[NSString stringWithFormat:@"%@",uuidStr] stringByReplacingOccurrencesOfString:@"-" withString:@""] lowercaseString];
                 //存储UID
-                [SSKeychain setPassword:[NSString stringWithFormat:@"%@", uid] forService:SERVICE account:ACCOUNT];
+                [SAMKeychain setPassword:[NSString stringWithFormat:@"%@", uid] forService:SERVICE account:ACCOUNT];
             }
         }
     }

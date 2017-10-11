@@ -25,6 +25,8 @@
 #import "DictionaryUtil.h"
 #import "AppDelegate.h"
 #import "IWXToast.h"
+#import "PublicKeyManager.h"
+#import "NSString+Util.h"
 
 static WXModuleCallback back;
 
@@ -32,9 +34,9 @@ static WXModuleCallback back;
 
 @synthesize weexInstance;
 
-static int WX_ERR_OK = 0;//用户同意
-static int WX_ERR_AUTH_DENIED = -4;//用户拒绝授权
-static int WX_ERR_USER_CANCEL = -2;//用户取消
+static const int WX_ERR_OK = 0;//用户同意
+static const int WX_ERR_AUTH_DENIED = -4;//用户拒绝授权
+static const int WX_ERR_USER_CANCEL = -2;//用户取消
 
 WX_EXPORT_METHOD(@selector(openURL:))
 WX_EXPORT_METHOD(@selector(openURL:callback:))
@@ -45,11 +47,13 @@ WX_EXPORT_METHOD_SYNC(@selector(wxConfig))
 WX_EXPORT_METHOD_SYNC(@selector(changeWindowsBar))
 WX_EXPORT_METHOD(@selector(wxAuth:))
 WX_EXPORT_METHOD(@selector(toast:))
-
+WX_EXPORT_METHOD(@selector(encrypt:callBack:))
 
 - (void)openURL:(NSString *)url
 {
     NSString *newURL = url;
+    
+    
     if ([url hasPrefix:@"//"]) {
         newURL = [NSString stringWithFormat:@"http:%@", url];
     } else if (![url hasPrefix:@"http"]) {
@@ -61,7 +65,9 @@ WX_EXPORT_METHOD(@selector(toast:))
     newURL = [newURL stringByReplacingOccurrencesOfString:@"http://var/examples/build/" withString:[NSString stringWithFormat:@"file://%@/bundlejs/",[NSBundle mainBundle].bundlePath]];
 #endif
     
-    NSLog(@"%@",newURL);
+    if ([newURL isContains:@"file://"] && ![newURL isContains:@"Documents"]){
+        newURL = [newURL stringByReplacingOccurrencesOfString:@"file://" withString:[NSString stringWithFormat:@"file://%@/resource/",DOCUMENT_PATH]];
+    }
     
     WXViewController *controller = [WXViewController new];
     controller.url = [NSURL URLWithString:newURL];
@@ -125,12 +131,27 @@ WX_EXPORT_METHOD(@selector(toast:))
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appDelegate.wxAuthComplete = ^(SendAuthResp *resp) {
         NSMutableDictionary *message = [NSMutableDictionary new];
-        if (resp.errCode == WX_ERR_OK){
-            [message setValue:@"success" forKey:@"type"];
-            [message setValue:resp.code forKey:@"data"];
-        }else{
-            [message setValue:@"error" forKey:@"type"];
-            [message setValue:[NSString stringWithFormat:@"%d",resp.errCode] forKey:@"data"];
+        switch (resp.errCode) {
+            case WX_ERR_OK:
+                [message setValue:@"success" forKey:@"type"];
+                [message setValue:@"登录成功" forKey:@"content"];
+                [message setValue:resp.code forKey:@"data"];
+                break;
+            case WX_ERR_AUTH_DENIED:
+                [message setValue:@"error" forKey:@"type"];
+                [message setValue:@"用户拒绝授权" forKey:@"content"];
+                [message setValue:@"-4" forKey:@"data"];
+                break;
+            case WX_ERR_USER_CANCEL:
+                [message setValue:@"error" forKey:@"type"];
+                [message setValue:@"用户取消授权" forKey:@"content"];
+                [message setValue:@"-2" forKey:@"data"];
+                break;
+            default:
+                [message setValue:@"error" forKey:@"type"];
+                [message setValue:@"未知错误" forKey:@"content"];
+                [message setValue:@"unknown" forKey:@"data"];
+                break;
         }
         if (callback){
             callback(message);
@@ -154,6 +175,23 @@ WX_EXPORT_METHOD(@selector(toast:))
     [toast showToast:message withInstance:weexInstance];
 }
 
-
+- (void)encrypt:(NSString *)data callBack:(WXModuleCallback)callBack{
+    [PublicKeyManager encrypt:data withCallBack:^(NSString *result) {
+        if (callBack){
+            NSLog(@"encrypt=%@",result);
+            NSMutableDictionary *message = [NSMutableDictionary new];
+            if (result){
+                [message setValue:@"success" forKey:@"type"];
+                [message setValue:@"加密成功" forKey:@"content"];
+                [message setValue:result forKey:@"data"];
+            }else{
+                [message setValue:@"error" forKey:@"type"];
+                [message setValue:@"加密失败" forKey:@"content"];
+                [message setValue:@"" forKey:@"data"];
+            }
+            callBack(message);
+        }
+    }];
+}
 @end
 

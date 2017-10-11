@@ -111,10 +111,15 @@
         return;
     }
     [self jsReplace:url];
+    
+    
     WXViewController * controller = [[WXViewController alloc] init];
     controller.url = url;
     [controller render:nil];
     controller.source = @"scan";
+    
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:controller];
+    
     
     NSMutableDictionary *queryDict = [NSMutableDictionary new];
     if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
@@ -132,7 +137,8 @@
     controller.hotReloadSocket.delegate = controller;
     [controller.hotReloadSocket open];
     
-    [[self navigationController] pushViewController:controller animated:YES];
+    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    [rootVC presentViewController:navi animated:YES completion:nil];
 }
 
 - (NSMutableDictionary*)queryWithURL:(NSURL *)url {

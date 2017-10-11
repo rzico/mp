@@ -23,6 +23,9 @@
 #import "WXDefine.h"
 #import <objc/runtime.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
 @implementation UIViewController (WXDemoNaviBar)
 
 - (void)setupNaviBar
@@ -141,4 +144,5 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:WX_SCANNER_HISTORY];
 }
 
+#pragma clang diagnostic pop
 @end

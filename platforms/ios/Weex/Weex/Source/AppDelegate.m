@@ -41,6 +41,9 @@
 #import "LoginViewController.h"
 
 #import "UIViewController+Util.h"
+
+#import "PublicKeyManager.h"
+
 @interface AppDelegate ()
 @end
 
@@ -55,7 +58,10 @@
     NSLog(@"bundle=%@",DOCUMENT_PATH);
     [ResourceManager defaultManager];
     
-//    [NSThread sleepForTimeInterval:3];
+    
+    
+    
+    [NSThread sleepForTimeInterval:3];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
@@ -121,8 +127,6 @@
 - (void) onResp:(BaseResp *)resp{
     if ([resp isKindOfClass:[SendAuthResp class]]){
         SendAuthResp *aresp = (SendAuthResp *)resp;
-        NSString *strTitle = [NSString stringWithFormat:@"Auth结果"];
-        NSString *strMsg = [NSString stringWithFormat:@"code:%@,state:%@,errcode:%d", aresp.code, aresp.state, aresp.errCode];
         if (self.wxAuthComplete){
             self.wxAuthComplete(aresp);
         }
@@ -148,6 +152,7 @@
     [WXSDKEngine registerComponent:@"select" withClass:NSClassFromString(@"WXSelectComponent")];
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];
     [WXSDKEngine registerModule:@"album" withClass:[WXAlbumModule class]];
+    [WXSDKEngine registerModule:@"modal" withClass:NSClassFromString(@"WXModalModule")];
 
     [WXDebugTool setDebug:YES];
     [WXLog setLogLevel:WXLogLevelError];

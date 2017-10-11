@@ -46,14 +46,6 @@
 
 @implementation WXViewController
 
-- (instancetype)init
-{
-    if (self = [super init]) {
-    }
-    
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -77,10 +69,32 @@
     [self updateInstanceState:WeexInstanceDisappear];
 }
 
+- (void)viewWillDisappear:(BOOL)animated{
+    if (@available(iOS 11.0, *)) {
+        // 设置允许摇一摇功能
+        [UIApplication sharedApplication].applicationSupportsShakeToEdit = NO;
+    }
+    [super viewWillDisappear:animated];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    if (@available(iOS 11.0, *)) {
+        // 设置允许摇一摇功能
+        [UIApplication sharedApplication].applicationSupportsShakeToEdit = YES;
+        [self becomeFirstResponder];
+    }
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    if (event.subtype == UIEventSubtypeMotionShake) { // 判断是否是摇动结束
+        if (@available(iOS 11.0, *)) {
+            [self render:nil];
+        }
+    }
+    return;
 }
 
 - (void)didReceiveMemoryWarning {

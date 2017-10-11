@@ -28,7 +28,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = NO;
 //    if (self.view.frame.origin.y == 44){
 //        CGRect frame = self.view.frame;
 //        frame.origin.y = 64;

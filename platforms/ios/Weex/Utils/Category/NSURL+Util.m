@@ -22,4 +22,10 @@
     NSRange range2 = [url rangeOfString:str2];
     return (!(range1.length == 0 && range1.location > url.length) && !(range2.length == 0 && range2.location > url.length));
 }
+
+- (NSURL *)replaceOfString:(NSString *)target withString:(NSString *)replacement{
+    NSString *source = [self absoluteString];
+    source = [source stringByReplacingOccurrencesOfString:target withString:replacement];
+    return [NSURL URLWithString:source];
+}
 @end
