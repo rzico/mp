@@ -2,7 +2,7 @@
     <scroller class="wrapper">
         <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
-        <div class="voteBigBox" >
+        <div class="voteBigBox" v-for="vote in voteList">
             <!--整个的上方箱子-->
             <div class="voteBox mt20 border-radius">
                 <!--第一行 投票描述-->
@@ -10,11 +10,11 @@
                     <text class="gray tellSize">投票描述</text>
                     <!--多行文本-->
                     <div class="textareaBox">
-                        <textarea class="textareaClass ml10 " data-id="0" v-model="textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
+                        <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreaTitle" @input="titleOninput"  :style="{height:vote.titleHeight + 'px'}"  :rows="vote.titleRows" autofocus="true"></textarea>
                     </div>
                 </div>
                 <!--第二行开始 选项-->
-                <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in pageBox">
+                <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in vote.pageBox">
                     <!--勾选圆形-->
                     <text class="circle pl10"></text>
                     <!--多行文本-->
@@ -41,9 +41,9 @@
                         <!--时间-->
                         <div class="textareaBox ml10 flexRow"  >
                             <!--选择日期-->
-                            <text class="bottomSize" @click="pickDate()">{{chooseDate}}</text>
+                            <text class="bottomSize" @click="pickDate()">{{vote.chooseDate}}</text>
                             <!--选择时间-->
-                            <text class="bottomSize ml10" @click="pickTime()">{{chooseTime}}</text>
+                            <text class="bottomSize ml10" @click="pickTime()">{{vote.chooseTime}}</text>
                         </div>
                     </div>
                     <!--重置时间按钮-->
@@ -54,7 +54,7 @@
                     <text class="gray bottomSize">投票类型</text>
                     <!--单选-->
                     <div class="textareaBox ml10" @click="pickOptions()">
-                        <text class="bottomSize">{{chooseOptions}}</text>
+                        <text class="bottomSize">{{vote.chooseOptions}}</text>
                     </div>
                 </div>
             </div>
@@ -147,42 +147,19 @@
 
 <script>
 
-    import navbar from '../../../include/navbar.vue'
-    import utils from '../../../assets/utils'
-    const storage = weex.requireModule('storage')
-    const event = weex.requireModule('event')
-    const modal = weex.requireModule('modal')
-    const picker = weex.requireModule('picker')
+    import navbar from '../../../include/navbar.vue';
+    import utils from '../../../assets/utils';
+    const storage = weex.requireModule('storage');
+    const event = weex.requireModule('event');
+    const modal = weex.requireModule('modal');
+    const picker = weex.requireModule('picker');
     var isSign = -1;
     var optionIndex = 0;
     export default {
         data:function () {
             return{
                 refreshing: false,
-                chooseOptions:'单选(默认)',
-                optionsIndex:0,
-                chooseDate:'无截止时间',
-                chooseTime:'',
-                optionArray:['单选(默认)','多选,无限制','多选，最多2项'],
-                textAreaTitle:'',
-                titleHeight:48,
-                titleRows:1,
-                pageBox:[{
-                    textAreaMessage:'',
-                    textHeight:'48',
-                    rowsNum:'1',
-                    editSign:-1,
-                },{
-                    textAreaMessage:'',
-                    textHeight:48,
-                    rowsNum:1,
-                    editSign:-1,
-                },{
-                    textAreaMessage:'',
-                    textHeight:48,
-                    rowsNum:1,
-                    editSign:-1,
-                }]
+                voteList:[]
             }
         },
         components: {
@@ -195,50 +172,88 @@
         created(){
             var _this = this;
             utils.initIconFont();
-            let voteData = utils.getUrlParameter('voteData');
-            storage.getItem(voteData, event => {
-                _this.textAreaTitle = event.data.title;
-                _this.pageBox = event.data.options;
-                _this.optionsIndex = event.data.voteClass;
-                _this.chooseDate = event.data.endDate;
-                _this.chooseTime = event.data.endTime;
-            })
-
-
+            var vote = utils.getUrlParameter('name');
+            if(utils.isNull(vote)){
+//               添加新的投票
+                this.voteList.push({
+                    chooseOptions:'单选(默认)',
+                    optionsIndex:0,
+                    chooseDate:'无截止时间',
+                    chooseTime:'',
+                    optionArray:['单选(默认)','多选，最多2项','多选,无限制'],
+                    textAreaTitle:'',
+                    titleHeight:48,
+                    titleRows:1,
+                    pageBox:[{
+                        textAreaMessage:'',
+                        textHeight:'48',
+                        rowsNum:'1',
+                        editSign:-1,
+                    },{
+                        textAreaMessage:'',
+                        textHeight:48,
+                        rowsNum:1,
+                        editSign:-1,
+                    },{
+                        textAreaMessage:'',
+                        textHeight:48,
+                        rowsNum:1,
+                        editSign:-1,
+                    }]
+                });
+               return;
+            }else{
+                //                编辑投票。
+                storage.getItem(vote, e => {
+                    let voteData =  JSON.parse(e.data);
+//                    添加上服务器过滤掉的属性
+                    if(utils.isNull(voteData.pageBox[0].textHeight)){
+                        for(let i = 0; i < voteData.pageBox.length ; i++){
+                            voteData.pageBox[i].push({
+                                textHeight:'48',
+                                rowsNum:'1',
+                                editSign:-1,
+                            })
+                        }
+                    }
+                    _this.voteList.push(voteData);
+                    storage.removeItem('voteData');
+                })
+            }
         },
         methods:{
 //            将选择好的时间 重置
             noEndTime:function () {
-                this.chooseDate = '无截止时间';
-                this.chooseTime = '';
+                this.voteList[0].chooseDate = '无截止时间';
+                this.voteList[0].chooseTime = '';
             },
 //            选择投票类型
             pickOptions(){
                 picker.pick({
 //                    默认选中
-                    index: this.optionsIndex,
+                    index: this.voteList[0].optionsIndex,
 //                    数据选项
-                    items: this.optionArray
+                    items: this.voteList[0].optionArray
                 }, event => {
                     if (event.result === 'success') {
 //                        更改默认选中的下标
-                        this.optionsIndex = event.data;
+                        this.voteList[0].optionsIndex = event.data;
 //                        将选择的数据写入chooseOptions
-                        this.chooseOptions = this.optionArray[event.data];
+                        this.voteList[0].chooseOptions = this.voteList[0].optionArray[event.data];
                     }
                 })
             },
 //            选择日期
             pickDate () {
                 picker.pickDate({
-                    value: this.chooseDate
+                    value: this.voteList[0].chooseDate
                 }, event => {
                     if (event.result === 'success') {
-                        this.chooseDate = event.data;
+                        this.voteList[0].chooseDate = event.data;
                         //日期选择完后 马上选择时间。
                         this.pickTime();
-                        if(this.chooseTime == ''){
-                            this.chooseTime = '请设置时间'
+                        if(this.voteList[0].chooseTime == ''){
+                            this.voteList[0].chooseTime = '请设置时间'
                         }
                     }
                 })
@@ -246,10 +261,10 @@
 //            选择时间
             pickTime () {
                 picker.pickTime({
-                    value: this.chooseTime
+                    value: this.voteList[0].chooseTime
                 }, event => {
                     if (event.result === 'success') {
-                        this.chooseTime = event.data;
+                        this.voteList[0].chooseTime = event.data;
                     }
                 })
             },
@@ -261,11 +276,11 @@
             deleteOptions:function (index) {
                 console.log(index);
 //                modal.toast({message:index,duration:0.3});
-                this.pageBox.splice(index,1);
+                this.voteList[0].pageBox.splice(index,1);
             },
 //            添加选项
             addOptions:function () {
-                this.pageBox.push({
+                this.voteList[0].pageBox.push({
                     textAreaMessage:'',
                     textHeight:48,
                     rowsNum:1,
@@ -280,19 +295,19 @@
             optionsOninput:function (event) {
                 var len = this.getLen(event);
 //                当字符数超过25时，将多行输入改成2行并且高度设为96
-                modal.toast({message:len,duration:0.3})
+//                modal.toast({message:len,duration:0.3})
                 if(len > 25){
 //                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
-                    if(this.pageBox[optionIndex].editSign == -1){
-                        this.pageBox[optionIndex].rowsNum = 2;
-                        this.pageBox[optionIndex].textHeight = 96;
-                        this.pageBox[optionIndex].editSign = 0;
+                    if(this.voteList[0].pageBox[optionIndex].editSign == -1){
+                        this.voteList[0].pageBox[optionIndex].rowsNum = 2;
+                        this.voteList[0].pageBox[optionIndex].textHeight = 96;
+                        this.voteList[0].pageBox[optionIndex].editSign = 0;
                     }
                 }else{//否则将高度与行数改回来
-                    if(this.pageBox[optionIndex].editSign == 0){
-                        this.pageBox[optionIndex].rowsNum = 1;
-                        this.pageBox[optionIndex].textHeight = 48;
-                        this.pageBox[optionIndex].editSign = -1;
+                    if(this.voteList[0].pageBox[optionIndex].editSign == 0){
+                        this.voteList[0].pageBox[optionIndex].rowsNum = 1;
+                        this.voteList[0].pageBox[optionIndex].textHeight = 48;
+                        this.voteList[0].pageBox[optionIndex].editSign = -1;
                     }
                 }
             },
@@ -304,14 +319,14 @@
                 if(len > 25){
 //                    控制是否切换高度.不用每次输入都执行一次
                     if(isSign == -1){
-                        this.titleRows = 2;
-                        this.titleHeight = 96;
+                        this.voteList[0].titleRows = 2;
+                        this.voteList[0].titleHeight = 96;
                         isSign = 0;
                     }
                 }else{//否则将高度与行数改回来
                     if(isSign == 0){
-                        this.titleRows = 1;
-                        this.titleHeight = 48;
+                        this.voteList[0].titleRows = 1;
+                        this.voteList[0].titleHeight = 48;
                         isSign = -1;
                     }
                 }
@@ -351,13 +366,7 @@
 //            完成
             goComplete:function () {
                 var _this = this;
-                let voteData = {
-                    title : _this.textAreaTitle,
-                    options:_this.pageBox,
-                    voteClass : _this.optionsIndex,
-                    endDate: _this.chooseDate,
-                    endTime: _this.chooseTime
-                }
+                let voteData = _this.voteList[0];
                 let backData = utils.message('success','成功',voteData);
                 event.closeURL(backData);
             }

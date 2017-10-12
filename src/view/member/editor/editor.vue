@@ -109,7 +109,7 @@
                         <!--文章内容-->
                         <div class="paraText">
                             <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                            <text class="paraTextSize">{{item.title}}</text>
+                            <text class="paraTextSize">{{item.textAreaTitle}}</text>
                         </div>
                     </div>
                 </div>
@@ -125,9 +125,9 @@
     </div>
 </template>
 <style scoped>
-.voteMargin{
-    margin-bottom: 15px;
-}
+    .voteMargin{
+        margin-bottom: 15px;
+    }
 
     .paraTransition-enter-active, .paraTransition-leave-active {
         transition: all 0.2s;
@@ -328,6 +328,7 @@
 
 <script>
     import navbar from '../../../include/navbar.vue'
+    import utils from '../../../assets/utils'
     const storage = weex.requireModule('storage')
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
@@ -384,7 +385,7 @@
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
-                        modal.toast({message:data,duration:1});
+//                        event.toast('123');
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
@@ -398,7 +399,7 @@
                                 }) ;
                             }
                         }else{
-                                event.closeURL();
+                            event.closeURL();
                         }
                     }
                 )
@@ -472,9 +473,10 @@
             editorText(index){
                 var _this = this;
                 event.openEditor(_this.paraList[index].paraText,function (data) {
+                    if(data.data != '') {
 //                    将返回回来的html数据赋值进去
-                    _this.paraList[index].paraText = data;
-                    modal.toast({message:_this.paraList[index].paraText,duration:3});
+                        _this.paraList[index].paraText = data.data;
+                    }
                 })
             },
 //            返回
@@ -507,6 +509,36 @@
                     name:_this.musicName,
                     id:musicId
                 }
+
+
+                let voteData = [];
+//                投票组
+                this.voteList.forEach(function (item) {
+//                    投票选项
+                    let voteOptions = [];
+                    item.pageBox.forEach(function (value) {
+                        voteOptions.push(value.textAreaMessage);
+                    })
+
+
+
+                    let expireTime = '';
+                    if(item.chooseDate == '无截止时间'){
+
+                    }else{
+                       let merge = item.chooseDate + '' +item.chooseTime + ':00';
+                       let mergeMore = new Date(Date.parse(merge.replace(/-/g, "/")));
+                        expireTime = mergeMore.getTime()/1000;
+                    }
+                    voteData.push({
+                        title:item.textAreaTitle,
+                        expire:expireTime,
+                        voteType:item.optionsIndex,
+                        options:voteOptions,
+                    })
+
+                })
+
                 let articleData = {
                     thumbnail:this.coverImage,
                     music:musicData,
@@ -523,29 +555,8 @@
                         image2: null
                     },
                     title:_this.setTitle,
+                    votes:voteData,
                 }
-//                for(let i = 0; i < 12 ;i ++){
-//                    event.save("arcticle",'test' + i,articleData,"0,20170523","N",function (data) {
-//                        if (data.type == 'success') {
-////                        event.closeURL();
-//                        } else {
-//                            modal.alert({
-//                                message: '系统繁忙,请稍后重试',
-//                                duration: 0.3
-//                            })
-//                        }
-//                    });
-//                }
-//                let testDataStorage = {
-//                    type : "arcticle",
-//                    keyword : "N",
-//                    orderBy:"desc",
-//                    current:10,
-//                    pageSize:10
-//                }
-//                event.findList(testDataStorage,function (data) {
-//                    modal.toast({message:data,duration:1});
-//                })
 
 
 //                转成json字符串后上传服务器
@@ -554,8 +565,8 @@
                 _this.saveArticle(articleData,res=>{
                     modal.toast({message:res});
                     if(res.data != '' && res.data.type == 'success'){
-//                1是置顶（默认倒序）
-                        event.save("arcticle",res.data.data.id,res.data.data,"0,20170523","N",function (data) {
+//                1是置顶（默认倒序）  keyword "[1],文章title"
+                        event.save("arcticle",res.data.data.id,res.data.data,'0,'+ timestamp +'',"",function (data) {
                             if(data.type == 'success'){
                                 event.closeURL();
                             }else{
@@ -566,7 +577,6 @@
                             }
                         })
                     }
-
                 })
 
             },
@@ -611,7 +621,7 @@
                                     paraImage:'file:/' + data.data[i].originalPath,
 //                                    小缩略图
                                     thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
-                                    paraText:'i:' + i + '我是后来插入的',
+                                    paraText:'',
                                     show:true
                                 }
                                 _this.paraList.splice(index + i,0,newPara)
@@ -759,23 +769,23 @@
                         okTitle:'裁剪',
                         cancelTitle:'更换',
                     }, function (value) {
-                            if(value == '更换'){
+                        if(value == '更换'){
 //                                调用单选图片接口
-                                album.openAlbumSingle(false, function(data){
+                            album.openAlbumSingle(false, function(data){
+                                _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
+                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
+                            })
+                        }else if(value == '裁剪'){
+//                                调用裁剪图片
+                            album.openCrop(imgSrc,function (data) {
+                                if(data.type == 'success'){
                                     _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
                                     _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
-                                })
-                            }else if(value == '裁剪'){
-//                                调用裁剪图片
-                                album.openCrop(imgSrc,function (data) {
-                                    if(data.type == 'success'){
-                                        _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
-                                        _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
-                                    }else{
-                                        modal.toast({message:data.content,duration:10});
-                                    }
-                                })
-                            }
+                                }else{
+                                    modal.toast({message:data.content,duration:10});
+                                }
+                            })
+                        }
 
                     })
 
@@ -808,7 +818,7 @@
             goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/music.weex.js?musicId=' + musicId,function (message) {
+                event.openURL('http://192.168.1.104:8081/music.weex.js?musicId=' + musicId,function (message) {
 //                    let jsonData = JSON.parse(data);
                     modal.toast({message:message,duration:1});
                     if(message.data != ''){
@@ -820,28 +830,18 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-                event.openURL('http://192.168.1.107:8081/vote.weex.js',function (message) {
+//                event.openURL('http://192.168.1.104:8081/vote.weex.js',function (message) {
+                event.openURL('http://192.168.1.104:8081/vote.weex.js',function (message) {
                     if(message.data != '') {
-                        modal.toast({message:message.data,duration:1});
                         _this.voteList.push(message.data);
-//                        _this.voteList[0].paraText = message.data;
-//                        _this.voteList.push({
-//
-//                            paraImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                            thumbnailImage:'',
-//                            paraText:'',
-//
-//                        })
                     }
                 });
             },
 //            编辑投票
             editVote:function (index) {
                 let _this = this;
-                let voteData = _this.voteList[index];
-                modal.toast({message:voteData,duration:1});
-                storage.setItem('voteData', voteData);
-                event.openURL('http://192.168.1.107:8081/vote.weex.js?voteData=' + 'voteData',function (message) {
+                storage.setItem('voteData', _this.voteList[index]);
+                event.openURL('http://192.168.1.104:8081/vote.weex.js?name=voteData',function (message) {
                     if(message.data != '') {
                         _this.voteList[index] = message.data;
                     }
@@ -850,5 +850,8 @@
         }
     }
 </script>
+
+
+
 
 

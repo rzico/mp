@@ -878,8 +878,21 @@
 //                _this.isNoArticle = true;
 //            };
 //            _this.updateArticle();
-            this.open(res=>{
-                modal.toast({message:res.data})
+//            this.open(res=>{
+//                modal.toast({message:res.data})
+//            })
+            let option = {
+                type:'arcticle',//类型
+                keyword:'N',//关键址
+                orderBy:'desc',//"desc"降序 ,"asc"升序
+                current:'0', //当前有几页
+                pageSize:'10' //一页显示几行
+            }
+            event.findList(option,function (message) {
+                event.toast(message);
+                if(message.type == 'success' && message.data != ''){
+
+                }
             })
         },
         mounted:function(){
