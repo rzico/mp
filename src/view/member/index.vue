@@ -29,7 +29,7 @@
         <div  class="corpusBox "   style=";top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
             <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                 <div class="articleClass">
-                    <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
+                    <text @click="corpusChange(item)" class="allArticle" v-for="item in corpusList" :class = "[whichCorpus == item ? 'active' : 'noActive']">{{item}}</text>
                     <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                     <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                     <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -97,7 +97,7 @@
             <div  class="corpusBox"  :style = "positionObject" >
                 <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                     <div class="articleClass">
-                        <text @click="allArticle(item.corpus)" class="allArticle" v-for="item in memberArticleList" :class = "[whichCorpus == item.corpus ? 'active' : 'noActive']">{{item.corpus}}</text>
+                        <text @click="corpusChange(item)" class="allArticle" v-for="item in corpusList" :class = "[whichCorpus == item ? 'active' : 'noActive']">{{item}}</text>
                         <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                         <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                         <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -120,28 +120,31 @@
             <div >
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
+                    <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                         <div class="atricleHead">
-                            <text class="articleSign">{{item.articleSign}}</text>
-                            <text class="articleTitle">{{item.articleTitle}}</text>
+                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                            <text class="articleSign">公开</text>
+                            <text class="articleTitle">{{item.value.title}}</text>
                         </div>
                         <!--文章封面-->
                         <div>
-                            <image :src="item.articleCoverUrl" class="articleCover"></image>
+                            <image :src="item.value.thumbnail" class="articleCover"></image>
                         </div>
                         <!--文章底部-->
                         <div class="articleFoot">
                             <div>
-                                <text class="articleDate">{{item.articleDate}}</text>
+                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
+                                <text class="articleDate">2017-09-01</text>
                             </div>
                             <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.browse}}</text>
+                                <text class="relevantText">{{item.value.hits}}</text>
                                 <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.praise}}</text>
+                                <text class="relevantText">{{item.value.laud}}</text>
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.comments}}</text>
+                                <text class="relevantText">{{item.value.review}}</text>
                             </div>
                         </div>
                         <!--右侧隐藏栏-->
@@ -318,7 +321,7 @@
         border-bottom-width: 1px;
         border-style: solid;
         border-color: gainsboro;
-        background-color: red;
+        background-color: #fff;
         /*position: relative;*/
         /*top: 420px;*/
 
@@ -478,12 +481,6 @@
         padding-left: 20px;
         padding-right: 20px;
     }
-    .recycleSite{
-        font-size:29px;
-        line-height: 80px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
     .topBtnBorder{
         position:absolute;
         height: 40px;
@@ -567,10 +564,11 @@
 </style>
 
 <script>
-    import {dom,event,stream} from '../../weex.js';
+    import {dom,event} from '../../weex.js';
     const modal = weex.requireModule('modal');
     const animation = weex.requireModule('animation');
     import utils from '../../assets/utils';
+    import { POST, GET } from '../../assets/fetch'
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -600,267 +598,11 @@
                 showLoading: 'hide',
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
 
-                memberArticleList:[{
-                    corpus:'全部文章',
-                    articleList:[{
-                        articleSign: '样例',
-                        articleTitle: '我在微信有了自己的专栏!',
-                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-04-28',
-                        id:'1',
-                    },{
-                        articleSign: '样例',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-09-01',
-                        id:'2',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        articleDate: '2017-09-01',
-                        id:'3',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        articleDate: '2017-09-01',
-                        id:'4',
-                    }]
-                },{
-                    corpus:'回收站',
-                    articleList:[{
-                        articleSign: '样例',
-                        articleTitle: '我在微信有了自己的专栏!',
-                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-04-28',
-                        id:'11',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    },{
-                        articleSign: '样例',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    }]
-                },{
-                    corpus:'我的第一个文集',
-                    articleList:[{
-                        articleSign: '样例',
-                        articleTitle: '我在微信有了自己的专栏!',
-                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-04-28',
-                        id:'',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    },{
-                        articleSign: '样例',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    }]
-                },{
-                    corpus:'诚毅学院点滴',
-                    articleList:[{
-                        articleSign: '公开',
-                        articleTitle: '我在微信有了自己的专栏!',
-                        articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-04-28',
-                        id:'',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    },{
-                        articleSign: '私密',
-                        articleTitle: '魔篇使用帮助',
-                        articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                        articleDate: '2017-09-01',
-                        id:'',
-                    }]
-                }],
+                corpusList:['全部文章','回收站'],
 
 
-
-//                帮助文章
-                helpList:[{
-                    articleSign: '样例',
-                    articleTitle: '我在微信有了自己的专栏!',
-                    articleCoverUrl: 'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
-                    articleDate: '2017-04-28',
-                    id:'',
-                },{
-                    articleSign: '样例',
-                    articleTitle: '魔篇使用帮助',
-                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                    articleDate: '2017-09-01',
-                    id:'',
-                },{
-                    articleSign: '样例',
-                    articleTitle: '魔篇使用帮助',
-                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                    articleDate: '2017-09-01',
-                    id:'',
-                }],
 //                全部文章==================
-                articleList: [{
-                    articleSign: '公开',
-                    articleTitle: '金钻厦门',
-                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                    articleDate: '2017-8-31',
-                    browse: 0,
-                    praise: 0,
-                    comments: 0,
-                    id:'1',
-                    corpus:'全部文章',
-                }, {
-                    articleSign: '已删除',
-                    articleTitle: '美丽厦门111',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 0,
-                    praise: 0,
-                    comments: 0,
-                    id:'2',
-                    corpus:'回收站',
-                }, {
-                    articleSign: '私密',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 0,
-                    praise: 0,
-                    comments: 0,
-                    id:'3',
-                    corpus:'诚毅学院点滴',
-                }, {
-                    articleSign: '私密',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 0,
-                    praise: 0,
-                    comments: 0,
-                    id:'4',
-                    corpus:'诚毅学院点滴',
-                }, {
-                    articleSign: '私密',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 0,
-                    praise: 0,
-                    comments: 0,
-                    id:'5',
-                    corpus:'诚毅学院点滴',
-                }, {
-                    articleSign: '公开',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 0,
-                    praise: 0,
-                    comments: 0,
-                    id:'6',
-                    corpus:'诚毅学院点滴',
-                }
-
-                ],
-//                回收站
-                articleListDelete: [{
-                    articleSign: '已删除',
-                    articleTitle: '金钻厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-8-31',
-                    browse: 55,
-                    praise: 48,
-                    comments: 32,
-                    id:'',
-                }, {
-                    articleSign: '已删除',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
-                    id:'',
-                }, {
-                    articleSign: '已删除',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
-                    id:'',
-                }, {
-                    articleSign: '已删除',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
-                    id:'',
-                }, {
-                    articleSign: '已删除',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
-                    id:'',
-                }, {
-                    articleSign: '已删除',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
-                    id:'',
-                }, {
-                    articleSign: '已删除',
-                    articleTitle: '美丽厦门',
-                    articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    articleDate: '2017-09-01',
-                    browse: 626,
-                    praise: 47,
-                    comments: 39,
-                    id:'',
-                }]
+                articleList: [],
             }
         },
         computed:{
@@ -869,39 +611,67 @@
 //                    top:this.corpusScrollTop + 'px',
                     position:this.corpusPosition
                 }
-
             },
         },
         created:function () {
-//            var _this = this;
-//            if(JSON.stringify(this.articleListDelete) == "[]"){//从对象解析出字符串
-//                _this.isNoArticle = true;
-//            };
-//            _this.updateArticle();
-//            this.open(res=>{
-//                modal.toast({message:res.data})
-//            })
-            let option = {
-                type:'arcticle',//类型
-                keyword:'N',//关键址
-                orderBy:'desc',//"desc"降序 ,"asc"升序
-                current:'0', //当前有几页
-                pageSize:'10' //一页显示几行
-            }
-            event.findList(option,function (message) {
-                event.toast(message);
-                if(message.type == 'success' && message.data != ''){
+            utils.initIconFont();
 
+            var _this = this;
+//            获取文集列表
+            GET('/weex/member/article_catalog/list.jhtml')
+                .then(
+                    function (data) {
+                        if (data.type == "success") {
+                            if(data.data.data == ''){
+
+                            }else{
+//                                将文集名循环插入数组中
+                                for(let i = 0; i<data.data.data.length;i++){
+                                    _this.corpusList.splice(1 + i,0,data.data.data[i]);
+                                }
+                            }
+                        } else {
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast("网络不稳定")
+
+                    }
+                )
+
+            utils.findList('',0,10,function (data) {
+                if( data.type == "success" && data.data != '' ) {
+                    data.data.forEach(function (item) {
+                        event.toast(item);
+//                    将value json化
+                        item.value = JSON.parse(item.value);
+//                        把读取到的文章push进去文章列表
+                        _this.articleList.push(item);
+                    })
+//                    data.data[0].value = JSON.parse(data.data[0].value);
+//                    event.toast(data.data[1].value);
+//                    _this.articleList.push(data.data[0]);
+                }else{
+                    event.toast('缓存' + data.content);
                 }
             })
-        },
-        mounted:function(){
 
-            var domModule=weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url(\'http://cdn.rzico.com/weex/resources/fonts/iconfont.ttf\')"
-            })
+
+
+//            let option = {
+//                type:'arcticle',//类型
+//                keyword:'N',//关键址
+//                orderBy:'desc',//"desc"降序 ,"asc"升序
+//                current:'0', //当前有几页
+//                pageSize:'10' //一页显示几行
+//            }
+//            event.findList(option,function (message) {
+//                event.toast(message);
+//                if(message.type == 'success' && message.data != ''){
+//
+//                }
+//            })
         },
         methods: {
             jumpEditor:function () {
@@ -916,13 +686,13 @@
             jumpCorpus:function () {
                 modal.toast({message:'跳转文集',duration:3});
             },
-            open (callback) {
-                return stream.fetch({
-                    method: 'GET',
-                    type: 'json',
-                    url: '/weex/member/article/list.jhtml'
-                }, callback)
-            },
+//            open (callback) {
+//                return stream.fetch({
+//                    method: 'GET',
+//                    type: 'json',
+//                    url: '/weex/member/article/list.jhtml'
+//                }, callback)
+//            },
             switchArticle:function (item) {
                 if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
                     return true;
@@ -942,9 +712,8 @@
 //            前往文章
             goArticle(id){
                 var _this = this;
-                event.openURL('http://192.168.1.107:8081/editor.weex.js?articleId=' + id,function () {
+                event.openURL('http://192.168.1.104:8081/editor.weex.js?articleId=' + id,function () {
 //                    _this.updateArticle();
-                    modal.toast({message:1,duration})
                 })
             },
             updateArticle(){
@@ -981,9 +750,9 @@
 //                });
 //            },
             jump:function (vueName) {
-                console.log('will jump');
+                event.toast('will jump');
             },
-            allArticle:function(corpusName){
+            corpusChange:function(corpusName){
                 var _this = this;
                 _this.whichCorpus = corpusName;
 //                if(this.isAllArticle == true){
@@ -1009,30 +778,31 @@
 //                }
 
             },
-            recycleSite:function(){
-                var _this = this;
-                if(this.isAllArticle == false){
-                    modal.toast({message:"相等"})
-                }else{
-                    this.isAllArticle = false;
-                    allArticleScroll = scrollTop;
-                    setTimeout(function () {
-
-                        if(recycleScroll > 424){
-                            let listHeight = recycleScroll - 424;
-                            let positionIndex =parseInt( listHeight / 457);
-                            let offsetLength = - listHeight % 457;
-                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
-                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
-                            dom.scrollToElement(el, {
-                                animated:false,
-                                offset:  -80 - offsetLength
-                            })
-                        }
-                    },50)
-                }
-
-            },
+            //废弃
+//            recycleSite:function(){
+//                var _this = this;
+//                if(this.isAllArticle == false){
+//                    modal.toast({message:"相等"})
+//                }else{
+//                    this.isAllArticle = false;
+//                    allArticleScroll = scrollTop;
+//                    setTimeout(function () {
+//
+//                        if(recycleScroll > 424){
+//                            let listHeight = recycleScroll - 424;
+//                            let positionIndex =parseInt( listHeight / 457);
+//                            let offsetLength = - listHeight % 457;
+//                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
+//                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
+//                            dom.scrollToElement(el, {
+//                                animated:false,
+//                                offset:  -80 - offsetLength
+//                            })
+//                        }
+//                    },50)
+//                }
+//
+//            },
             swipeHappen:function(event){
                 console.log(event);
 //                console.log(event.direction);
@@ -1099,18 +869,18 @@
                 modal.toast({message: '加载中...', duration: 1})
                 this.showLoading = 'show'
                 setTimeout(() => {
-                    const length = this.articleList.length
-                    for (let i = length; i < length + 2; ++i) {
-                        this.articleList.push({
-                            articleSign: '公开',
-                            articleTitle: '美丽厦门' + i,
-                            articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                            articleDate: '2017-09-01',
-                            browse: 626 + i,
-                            praise: 47 + i,
-                            comments: 39 + i
-                        })
-                    }
+//                    const length = this.articleList.length
+//                    for (let i = length; i < length + 2; ++i) {
+//                        this.articleList.push({
+//                            articleSign: '公开',
+//                            articleTitle: '美丽厦门' + i,
+//                            articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                            articleDate: '2017-09-01',
+//                            browse: 626 + i,
+//                            praise: 47 + i,
+//                            comments: 39 + i
+//                        })
+//                    }
                     this.showLoading = 'hide'
                 }, 1500)
             },

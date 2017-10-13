@@ -404,11 +404,17 @@
                     }
                 )
             }else{//再次文章编辑
+
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
-                    event.find(1,op[1],function (data) {
+                    let options = {
+                        type:'article',
+                        key:op[1]
+                    };
+                    event.toast(op[1]);
+                    event.find(options,function (data) {
                         if(data.type == 'success'){
-//                         modal.toast({message:data.data})
+                         event.toast(data.data);
                             let articleData = JSON.parse(data.data.value);
                             _this.setTitle = articleData[0].title;
                             _this.coverImage = articleData[0].thumbnail;
@@ -564,19 +570,24 @@
 //                网络请求，保存文章
                 _this.saveArticle(articleData,res=>{
                     modal.toast({message:res});
-                    if(res.data != '' && res.data.type == 'success'){
+                    if(utils.isNull(res)){
+                        event.toast('系统繁忙,请稍后重试');
+                    }else{
+                        if(res.data != '' && res.data.type == 'success'){
 //                1是置顶（默认倒序）  keyword "[1],文章title"
-                        event.save("arcticle",res.data.data.id,res.data.data,'0,'+ timestamp +'',"",function (data) {
-                            if(data.type == 'success'){
-                                event.closeURL();
-                            }else{
-                                modal.alert({
-                                    message: '系统繁忙,请稍后重试',
-                                    duration: 0.3
-                                })
-                            }
-                        })
+                            utils.save("article",res.data.data.id,res.data.data,'0,'+ timestamp +'',"",function (data) {
+                                if(data.type == 'success'){
+                                    event.closeURL();
+                                }else{
+                                    modal.alert({
+                                        message: '系统繁忙,请稍后重试',
+                                        duration: 0.3
+                                    })
+                                }
+                            })
+                        }
                     }
+
                 })
 
             },
