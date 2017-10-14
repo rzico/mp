@@ -145,6 +145,7 @@
         },
         created:function () {
             utils.initIconFont();
+//            js里导入音乐列表
             this.musicList = music;
 //            bundleUrl = new String(bundleUrl);
 //            modal.toast({message:bundleUrl,duration:1})

@@ -26,7 +26,7 @@
         <!--绑定动画-->
         <!--<transition-group name="navTransition" tag="div">-->
         <!--只能多写一个顶部栏。否则无法适应-->
-        <div  class="corpusBox "   style=";top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
+        <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
             <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                 <div class="articleClass">
                     <text @click="corpusChange(item)" class="allArticle" v-for="item in corpusList" :class = "[whichCorpus == item ? 'active' : 'noActive']">{{item}}</text>
@@ -141,7 +141,7 @@
                             <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                 <text class="relevantText">{{item.value.hits}}</text>
-                                <text class="relevantImage testC" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                                 <text class="relevantText">{{item.value.laud}}</text>
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                                 <text class="relevantText">{{item.value.review}}</text>
@@ -712,7 +712,7 @@
 //            前往文章
             goArticle(id){
                 var _this = this;
-                event.openURL('http://192.168.1.104:8081/editor.weex.js?articleId=' + id,function () {
+                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
 //                    _this.updateArticle();
                 })
             },

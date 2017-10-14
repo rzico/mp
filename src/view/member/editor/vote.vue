@@ -10,7 +10,7 @@
                     <text class="gray tellSize">投票描述</text>
                     <!--多行文本-->
                     <div class="textareaBox">
-                        <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreaTitle" @input="titleOninput"  :style="{height:vote.titleHeight + 'px'}"  :rows="vote.titleRows" autofocus="true"></textarea>
+                        <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
                     </div>
                 </div>
                 <!--第二行开始 选项-->
@@ -25,7 +25,7 @@
                     <!--删除按钮-->
                     <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
                     <!--当隐藏删除按钮时需要有空白区域顶起布局-->
-                    <text class="closeIcon" style="width: 40px;"  v-else></text>
+                    <text class="closeIcon" style="width:60px;"  v-else></text>
                 </div>
                 <!--添加选项-->
                 <div class="voteTell addOptions " @click="addOptions()">
@@ -47,14 +47,14 @@
                         </div>
                     </div>
                     <!--重置时间按钮-->
-                    <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
+                    <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="vote.chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
                 </div>
                 <!-- 投票类型-->
                 <div class="voteTell ">
                     <text class="gray bottomSize">投票类型</text>
                     <!--单选-->
                     <div class="textareaBox ml10" @click="pickOptions()">
-                        <text class="bottomSize">{{vote.chooseOptions}}</text>
+                        <text class="bottomSize">{{chooseOptions}}</text>
                     </div>
                 </div>
             </div>
@@ -154,12 +154,16 @@
     const modal = weex.requireModule('modal');
     const picker = weex.requireModule('picker');
     var isSign = -1;
-    var optionIndex = 0;
+    var optionIndex = -1;
     export default {
         data:function () {
             return{
                 refreshing: false,
-                voteList:[]
+                voteList:[],
+                chooseOptions:'单选(默认)',
+                optionArray:['单选(默认)','多选，最多2项','多选,无限制'],
+                titleHeight:48,
+                titleRows:1,
             }
         },
         components: {
@@ -176,14 +180,10 @@
             if(utils.isNull(vote)){
 //               添加新的投票
                 this.voteList.push({
-                    chooseOptions:'单选(默认)',
-                    optionsIndex:0,
                     chooseDate:'无截止时间',
                     chooseTime:'',
-                    optionArray:['单选(默认)','多选，最多2项','多选,无限制'],
+                    optionsIndex:0,
                     textAreaTitle:'',
-                    titleHeight:48,
-                    titleRows:1,
                     pageBox:[{
                         textAreaMessage:'',
                         textHeight:'48',
@@ -201,13 +201,16 @@
                         editSign:-1,
                     }]
                 });
-               return;
+                return;
             }else{
                 //                编辑投票。
                 storage.getItem(vote, e => {
                     let voteData =  JSON.parse(e.data);
+                    _this.chooseOptions = _this.optionArray[voteData.optionsIndex];
+                    event.toast(voteData);
 //                    添加上服务器过滤掉的属性
                     if(utils.isNull(voteData.pageBox[0].textHeight)){
+                        event.toast('执行下');
                         for(let i = 0; i < voteData.pageBox.length ; i++){
                             voteData.pageBox[i].push({
                                 textHeight:'48',
@@ -215,6 +218,8 @@
                                 editSign:-1,
                             })
                         }
+                    }else{
+                        event.toast('执行上');
                     }
                     _this.voteList.push(voteData);
                     storage.removeItem('voteData');
@@ -233,13 +238,13 @@
 //                    默认选中
                     index: this.voteList[0].optionsIndex,
 //                    数据选项
-                    items: this.voteList[0].optionArray
+                    items: this.optionArray
                 }, event => {
                     if (event.result === 'success') {
 //                        更改默认选中的下标
                         this.voteList[0].optionsIndex = event.data;
 //                        将选择的数据写入chooseOptions
-                        this.voteList[0].chooseOptions = this.voteList[0].optionArray[event.data];
+                        this.chooseOptions = this.optionArray[event.data];
                     }
                 })
             },
@@ -291,12 +296,25 @@
             onfocus:function (index) {
                 optionIndex = index;
             },
-//            选项输入
+//            选项输入（当一进页面选项里有数据时，会触发该函数）
             optionsOninput:function (event) {
+                var _this = this;
                 var len = this.getLen(event);
 //                当字符数超过25时，将多行输入改成2行并且高度设为96
 //                modal.toast({message:len,duration:0.3})
                 if(len > 25){
+                    if(optionIndex == -1){
+
+//            选项输入（当一进页面选项里有数据时，会触发该函数）此时不会更新optionIndex，所以需要手动刷新。
+                        this.voteList[0].pageBox.forEach(function(item){
+                             if(_this.getLen(item.textAreaMessage) > 25){
+                                 item.rowsNum = 2;
+                                 item.textHeight = 96;
+                                 item.editSign = 0;
+                             }
+                        })
+                        return
+                    }
 //                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
                     if(this.voteList[0].pageBox[optionIndex].editSign == -1){
                         this.voteList[0].pageBox[optionIndex].rowsNum = 2;
@@ -304,6 +322,9 @@
                         this.voteList[0].pageBox[optionIndex].editSign = 0;
                     }
                 }else{//否则将高度与行数改回来
+                    if(optionIndex == -1){
+                        return
+                    }
                     if(this.voteList[0].pageBox[optionIndex].editSign == 0){
                         this.voteList[0].pageBox[optionIndex].rowsNum = 1;
                         this.voteList[0].pageBox[optionIndex].textHeight = 48;
@@ -319,14 +340,14 @@
                 if(len > 25){
 //                    控制是否切换高度.不用每次输入都执行一次
                     if(isSign == -1){
-                        this.voteList[0].titleRows = 2;
-                        this.voteList[0].titleHeight = 96;
+                        this.titleRows = 2;
+                        this.titleHeight = 96;
                         isSign = 0;
                     }
                 }else{//否则将高度与行数改回来
                     if(isSign == 0){
-                        this.voteList[0].titleRows = 1;
-                        this.voteList[0].titleHeight = 48;
+                        this.titleRows = 1;
+                        this.titleHeight = 48;
                         isSign = -1;
                     }
                 }
