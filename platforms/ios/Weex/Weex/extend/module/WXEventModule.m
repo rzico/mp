@@ -27,6 +27,7 @@
 #import "IWXToast.h"
 #import "PublicKeyManager.h"
 #import "NSString+Util.h"
+#import "SqlLiteManager.h"
 
 static WXModuleCallback back;
 
@@ -193,5 +194,49 @@ WX_EXPORT_METHOD(@selector(encrypt:callBack:))
         }
     }];
 }
+
+- (void)save:(NSDictionary *)data callBack:(WXModuleCallback)callBack{
+    SqlLiteManager *manager = [SqlLiteManager defaultManager];
+    NSError *error;
+    SqlLiteModel *model = [[SqlLiteModel alloc] initWithDictionary:data error:&error];
+    NSMutableDictionary *message = [NSMutableDictionary new];
+    if (!error){
+        NSUInteger Id = [manager save:model];
+        if (Id > 0){
+            [message setValue:@"success" forKey:@"type"];
+            [message setValue:@"保存成功" forKey:@"content"];
+            [message setValue:[NSString stringWithFormat:@"%tu",Id] forKey:@"data"];
+        }else{
+            [message setValue:@"error" forKey:@"type"];
+            [message setValue:@"保存失败" forKey:@"content"];
+            [message setValue:@"-1" forKey:@"data"];
+        }
+    }else{
+        [message setValue:@"error" forKey:@"type"];
+        [message setValue:@"解析失败" forKey:@"content"];
+        [message setValue:@"-1" forKey:@"data"];
+    }
+    if (callBack){
+        callBack(message);
+    }
+}
+- (void)find:(NSUInteger)type withKey:(NSString *)key andCallBack:(WXModuleCallback)callBack{
+    SqlLiteManager *manager = [SqlLiteManager defaultManager];
+    NSMutableDictionary *message = [NSMutableDictionary new];
+    SqlLiteModel *model = [manager findWithUserId:1 AndType:type AndKey:key AndNeedOpen:YES];
+    if (model){
+        [message setValue:@"success" forKey:@"type"];
+        [message setValue:@"查找成功" forKey:@"content"];
+        [message setValue:[DictionaryUtil objectToDictionary:model] forKey:@"data"];
+    }else{
+        [message setValue:@"error" forKey:@"type"];
+        [message setValue:@"未找到" forKey:@"content"];
+        [message setValue:@"" forKey:@"data"];
+    }
+    if (callBack){
+        callBack(message);
+    }
+}
+
 @end
 

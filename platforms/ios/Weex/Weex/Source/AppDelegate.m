@@ -44,6 +44,8 @@
 
 #import "PublicKeyManager.h"
 
+#import "SqlLiteManager.h"
+
 @interface AppDelegate ()
 @end
 
@@ -58,8 +60,17 @@
     NSLog(@"bundle=%@",DOCUMENT_PATH);
     [ResourceManager defaultManager];
     
+//    SqlLiteManager *manager = [SqlLiteManager defaultManager];
+//    SqlLiteModel *model = [SqlLiteModel new];
+//    model.userId = 1;
+//    model.type = 1;
+//    model.key = @"key";
+//    model.value = @"value";
+//    model.sort = 1;
+//    model.keyword = @"keyword";
+//    [manager add:model];
     
-    
+//    exit(0);
     
     [NSThread sleepForTimeInterval:3];
     

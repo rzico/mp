@@ -48,6 +48,9 @@ WX_EXPORT_METHOD(@selector(openCrop:callback:))
     
     imagePickerVc.isSelectOriginalPhoto = NO;
     
+    imagePickerVc.photoWidth = 155;
+    
+    
     back = callback;
     
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {

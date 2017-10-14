@@ -26,7 +26,7 @@
 
 static NSString *WXCONFIG_COLOR = @"#F0AD3C";
 static NSString *WXCONFIG_RESOURCE_PATH = @"http://cdn.rzico.com/";
-static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com/";
+static NSString *WXCONFIG_INTERFACE_PATH = @"http://weex.rzico.com:8088/";
 //static NSString *WXCONFIG_INTERFACE_PATH = @"http://192.168.1.106:8088";
 static NSString *WECHAT_APPID = @"wx90bb95d1d77f0cca";
 

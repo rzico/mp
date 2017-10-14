@@ -20,6 +20,7 @@ def common
     pod 'CLImageEditor'
     pod 'ZipArchive'
     pod 'OpenSSL'
+    pod 'FMDB', '~> 2.7.2'
 end
 
 target 'Weex' do

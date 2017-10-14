@@ -25,9 +25,9 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    [self render:^(BOOL finished) {
-        [super viewWillAppear:animated];
-    }];
+//    [self render:^(BOOL finished) {
+//        [super viewWillAppear:animated];
+//    }];
 }
 /*
 #pragma mark - Navigation

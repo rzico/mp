@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2219E62A1F8E041300D4E9B0 /* SqlLiteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2219E6291F8E041300D4E9B0 /* SqlLiteManager.m */; };
+		2219E62D1F8E043B00D4E9B0 /* SqlLiteModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2219E62C1F8E043B00D4E9B0 /* SqlLiteModel.m */; };
+		2219E62F1F8E17C800D4E9B0 /* data.db in Resources */ = {isa = PBXBuildFile; fileRef = 2219E62E1F8E13D300D4E9B0 /* data.db */; };
 		22220DFA1F6FC1BB00864689 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22220DF91F6FC1BB00864689 /* MessageViewController.m */; };
 		22220DFD1F6FC1D000864689 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22220DFC1F6FC1D000864689 /* FriendsViewController.m */; };
 		22220E001F6FC23400864689 /* friends.js in Resources */ = {isa = PBXBuildFile; fileRef = 22220DFE1F6FC23400864689 /* friends.js */; };
@@ -22,6 +25,7 @@
 		223B1EAC1F7D307B005DC7A7 /* WXModuleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 223B1EAB1F7D307B005DC7A7 /* WXModuleDemo.m */; };
 		223F37F11F7650E300EFCEF4 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 223F37F01F7650E300EFCEF4 /* AssetsLibrary.framework */; };
 		223F37F31F7650EB00EFCEF4 /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 223F37F21F7650EB00EFCEF4 /* Photos.framework */; };
+		224121C31F8F6A5F00FD8E8E /* OptionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 224121C21F8F6A5F00FD8E8E /* OptionModel.m */; };
 		224263341F8CB665003FFE86 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 224263331F8CB665003FFE86 /* NSString+Util.m */; };
 		2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 2267495E1F7215F20035A6E1 /* WXAlbumModule.m */; };
 		226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 226749621F722A4E0035A6E1 /* EditorViewController.m */; };
@@ -80,6 +84,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2219E6281F8E041300D4E9B0 /* SqlLiteManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SqlLiteManager.h; sourceTree = "<group>"; };
+		2219E6291F8E041300D4E9B0 /* SqlLiteManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SqlLiteManager.m; sourceTree = "<group>"; };
+		2219E62B1F8E043B00D4E9B0 /* SqlLiteModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SqlLiteModel.h; sourceTree = "<group>"; };
+		2219E62C1F8E043B00D4E9B0 /* SqlLiteModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SqlLiteModel.m; sourceTree = "<group>"; };
+		2219E62E1F8E13D300D4E9B0 /* data.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.db; sourceTree = "<group>"; };
 		22220DF81F6FC1BB00864689 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		22220DF91F6FC1BB00864689 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		22220DFB1F6FC1D000864689 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
@@ -106,6 +115,8 @@
 		223B1EB21F7D31C8005DC7A7 /* Settings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		223F37F01F7650E300EFCEF4 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		223F37F21F7650EB00EFCEF4 /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		224121C11F8F6A5F00FD8E8E /* OptionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OptionModel.h; sourceTree = "<group>"; };
+		224121C21F8F6A5F00FD8E8E /* OptionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OptionModel.m; sourceTree = "<group>"; };
 		224263321F8CB665003FFE86 /* NSString+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		224263331F8CB665003FFE86 /* NSString+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
 		2267495D1F7215F20035A6E1 /* WXAlbumModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXAlbumModule.h; sourceTree = "<group>"; };
@@ -228,6 +239,12 @@
 		2219E6271F8DFE8500D4E9B0 /* SqlLite */ = {
 			isa = PBXGroup;
 			children = (
+				2219E62B1F8E043B00D4E9B0 /* SqlLiteModel.h */,
+				2219E62C1F8E043B00D4E9B0 /* SqlLiteModel.m */,
+				2219E6281F8E041300D4E9B0 /* SqlLiteManager.h */,
+				2219E6291F8E041300D4E9B0 /* SqlLiteManager.m */,
+				224121C11F8F6A5F00FD8E8E /* OptionModel.h */,
+				224121C21F8F6A5F00FD8E8E /* OptionModel.m */,
 			);
 			path = SqlLite;
 			sourceTree = "<group>";
@@ -376,6 +393,7 @@
 		2291F0E41F6A7DB000B94F1B /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				2219E62E1F8E13D300D4E9B0 /* data.db */,
 				2234BDD41F8A51CF001F6099 /* res-0.0.1.zip */,
 				229384A41F87929800AD9746 /* music.js */,
 				229384A21F87928500AD9746 /* editor.js */,
@@ -715,6 +733,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2219E62F1F8E17C800D4E9B0 /* data.db in Resources */,
 				2234BDD51F8A51E0001F6099 /* res-0.0.1.zip in Resources */,
 				229384A51F87929800AD9746 /* music.js in Resources */,
 				2291F1441F6ABB2A00B94F1B /* member.js in Resources */,
@@ -791,6 +810,7 @@
 				223B1EA81F7D27E1005DC7A7 /* WXScannerHistoryVC.m in Sources */,
 				223B1EA91F7D27E1005DC7A7 /* WXScannerVC.m in Sources */,
 				2279B8971F7E8B7900A8A144 /* IWXToastManager.m in Sources */,
+				2219E62D1F8E043B00D4E9B0 /* SqlLiteModel.m in Sources */,
 				2275EF011F8913E0002A2202 /* NSURL+Util.m in Sources */,
 				22BDEB3B1F7A8EE4000295FD /* TXUtilsString.m in Sources */,
 				22BDEB371F7A8E0D000295FD /* NetManager.m in Sources */,
@@ -799,7 +819,9 @@
 				229357811F7F8A2E00050115 /* WXCallBackMessage.m in Sources */,
 				2291F11C1F6A8A7C00B94F1B /* WXViewController.m in Sources */,
 				2234BDD81F8A560E001F6099 /* WXURLRewriteImpl.m in Sources */,
+				2219E62A1F8E041300D4E9B0 /* SqlLiteManager.m in Sources */,
 				2267496E1F72572B0035A6E1 /* DictionaryUtil.m in Sources */,
+				224121C31F8F6A5F00FD8E8E /* OptionModel.m in Sources */,
 				2234BDD21F8A402C001F6099 /* ResourceManager.m in Sources */,
 				22BDEB2E1F7A8A6D000295FD /* MD5+Util.m in Sources */,
 				226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */,

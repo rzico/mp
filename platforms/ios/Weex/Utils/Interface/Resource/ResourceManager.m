@@ -57,7 +57,6 @@
     NSString *localZipPath = [[NSBundle mainBundle].bundlePath stringByAppendingString:@"/res-0.0.1.zip"];
     if ([zip UnzipOpenFile:localZipPath]){
         NSString *resourcePath = [DOCUMENT_PATH stringByAppendingString:@"/resource"];
-        NSLog(@"resource=%@",resourcePath);
         BOOL ret = [zip UnzipFileTo:resourcePath overWrite:YES];
         if (ret){
             config = [NSMutableDictionary new];
@@ -108,7 +107,6 @@
     zip = [ZipArchive new];
     if ([zip UnzipOpenFile:zipPath]){
         NSString *resourcePath = [DOCUMENT_PATH stringByAppendingString:@"/resource"];
-        NSLog(@"resource=%@",resourcePath);
         BOOL ret = [zip UnzipFileTo:resourcePath overWrite:YES];
         if (ret){
             config = [NSMutableDictionary new];
