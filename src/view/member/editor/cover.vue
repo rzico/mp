@@ -23,7 +23,7 @@
                     <div class="shareImageBox">
                         <!-- 1张封面图 -->
                         <div class="oneImage" v-if="imageNumber == 1">
-                            <image :src="coverImage"  class="coverImage" :style="{borderColor:coverBorder}"></image>
+                            <image :src="shareCoverImage"  class="coverImage" :style="{borderColor:coverBorder}"></image>
                         </div>
                     </div>
                     <!--分享封面的内容-->
@@ -227,6 +227,7 @@
             return{
                 coverBorder:'white',
                 imageNumber:1,
+                shareCoverImage:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
                 coverImage:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
                 shareText:'   《惊喜魔篇》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里',
                 shareTitle:'  《惊喜魔篇》',
@@ -248,6 +249,8 @@
                 let coverData =  JSON.parse(e.data);
                 _this.coverImage = coverData.cover;
                 _this.imageList = coverData.image;
+//                分享图片
+                _this.shareCoverImage = coverData.image[0].path;
 //                event.toast(coverData.image);
                 storage.removeItem('cover');
             })

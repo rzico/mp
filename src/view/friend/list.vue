@@ -1,12 +1,13 @@
+自制模拟弹窗，由于ios实现了强制停止toast动画，可考虑先不用
 <template>
     <div>
-        <navbar :title="title":complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
-        <div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >
-            <text style="color: #fff;font-size: 35px">朋友</text>
-        </div>
+        <navbar :title="title" @goback="goback"  > </navbar>
+        <!--<div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >-->
+        <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
+        <!--</div>-->
         <list class="listBody">
             <cell v-for="item in topLineList" ref="linkref" >
-                 <!--顶部功能栏-->
+                <!--顶部功能栏-->
                 <div class="addBorder">
                     <div class="topLine " @click="jump('/member')">
                         <image :src="item.lineImage" class="lineImage"></image>
@@ -43,13 +44,48 @@
         <div class="letterNavBox" :class = "[isPress ? 'letterOnPress' : '']">
             <div class="letterNav" v-for="(item,index) in allLetter"   @longpress="onlongpress(index)" @touchstart="ontouchstart(index)" @touchend="ontouchend()"  @touchmove="ontouchmove(index,$event)">
                 <!--<text class="letterList" v-if="index == 0">up</text>-->
-                <text class="letterList" >{{item}}</text>
+                <!--控制是否红色字体-->
+                <text class="letterList" :class="[moveLetter == index ? 'addColor' : 'noColor']">{{item}}</text>
             </div>
+        </div>
+        <!--top:613px-->
+        <div class="selfToast" :class="[isShowToast ? 'isvisible' : 'novisible']">
+            <text class="toastText">{{showText}}</text>
         </div>
     </div>
 </template>
 
 <style>
+    .addColor{
+        color: #D9141E;
+    }
+    .noColor{
+        color: #000;
+    }
+    .isvisible{
+        visibility: visible;
+    }
+    .novisible{
+        visibility: hidden;
+    }
+    .toastText{
+        color: #fff;
+        font-size: 30px;
+    }
+    .selfToast{
+        position: absolute;
+        height: 70px;
+        width: 180px;
+        border-radius: 40px;
+        background-color: #333;
+        align-items:center;
+        justify-content: center;
+        opacity: 0.9;
+        /*top: 613px;*/
+        top: 632px;
+        left: 285px;
+    }
+
     .letterList{
         color: #494949;
         font-size: 29px;
@@ -72,7 +108,7 @@
         position: absolute;
         right: 0px;
         width:60px;
-        top:110px;
+        top:136px;
         bottom: 0px;
         padding-bottom: 15px;
         padding-top: 20px;
@@ -149,21 +185,26 @@
 </style>
 
 <script>
+    import {dom,event,stream} from '../../weex.js';
     const modal = weex.requireModule('modal');
-    const navigator = weex.requireModule('navigator');
-    const native = weex.requireModule('app');
     import navbar from '../../include/navbar.vue'
-    const dom = weex.requireModule('dom');
-    const stream = weex.requireModule('stream')
-    var pressPoint = -1;//手指按压
-    var movePoint;//手机按压后移动
-    var pointPoor;//手机按压时与移动后的字母数量
-    var moveLetter;//移动后的字母
-    var beforePointPoor = -1; //前一次手机按压时与移动后的字母数量
+//    var pressPoint = -1;//手指按压
+//    var movePoint;//手机按压后移动
+//    var pointPoor;//手机按压时与移动后的字母数量
+//    var moveLetter;//移动后的字母
+//    var beforePointPoor = -1; //前一次手机按压时与移动后的字母数量
+
     export default {
         data:function () {
             return   {
+                beforePointPoor:-1,//前一次手机按压时与移动后的字母数量
+                pressPoint:-1,//手指按压
+                pointPoor:0,//手机按压时与移动后的字母数量
+                movePoint:0,//手机按压后移动
+                moveLetter:0,//移动后的字母
 //                    text:'Jum333132p',
+                isShowToast:false,
+                showText:'',
                 isPress:false,
                 friendTotal:43,
                 topLineList:[{
@@ -171,13 +212,13 @@
                     lineTitle:'新的朋友'
                 },{
                     lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                    lineTitle:'我关注的'
+                },{
+                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     lineTitle:'我的粉丝'
                 },{
                     lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'功能1'
-                },{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'功能2'
+                    lineTitle:'我收藏的'
                 }],
                 friendsList:[{
                     letter:'A',
@@ -537,14 +578,16 @@
             }
         },
         props: {
-            title: { default: "新的朋友"},
-            complete:{ default:"添加朋友"}
+            title: { default: "朋友"},
+        },
+        components:{
+            navbar
         },
         created(){
-            modal.toast({message:'111',duration:1})
-          this.getFriendList(res=>{
-              modal.toast({message:res.data,duration:1})
-          })
+//            modal.toast({message:'111',duration:1})
+            this.getFriendList(res=>{
+                ({message:res.data,duration:1})
+            })
         },
         methods: {
 
@@ -558,7 +601,7 @@
             goComplete:function () {
             },
             goback:function () {
-              event.closeURL();
+                event.closeURL();
             },
             jump:function (vueName) {
                 modal.toast({message:'点击了信息栏'});
@@ -583,44 +626,56 @@
                         }
                     }
                 }
-                modal.toast({ message:this.allLetter[count] ,duration: 0.3});
+//                红色字母
+                this.moveLetter = count;
+//                modal.toast({ message:this.allLetter[count] ,duration: 0.3});
+                this.showText = this.allLetter[count];
                 this.isPress = true;
+                this.isShowToast = true;
             },
             ontouchend:function(){
+                var _this = this;
                 this.isPress = false;
-                pressPoint = -1;//重置判断是否刚开始滑动的标志符（可以不用，点击并长按时已经帮忙弥补了该数据的漏洞）
-                beforePointPoor == -1;//（可以不用，点击并长按时已经帮忙弥补了该数据的漏洞）
+                this.pressPoint = -1;//重置判断是否刚开始滑动的标志符（可以不用，点击并长按时已经帮忙弥补了该数据的漏洞）
+                this.beforePointPoor = -1;//（可以不用，点击并长按时已经帮忙弥补了该数据的漏洞）
+               setTimeout(function () {
+                    _this.isShowToast = false;
+                },500);
             },
 //        ==============================
-            ontouchmove:function(count,event){//按住字母导航栏并拖动时触发
-                if(pressPoint == - 1){//记录每次第一次滑动按压的点
-                    pressPoint = event.changedTouches[0].pageY;
+            ontouchmove:function(count,e){//按住字母导航栏并拖动时触发
+                if(this.pressPoint == - 1){//记录每次第一次滑动按压的点
+                    this.pressPoint = e.changedTouches[0].pageY;
                 }else{
-                    movePoint = Math.abs(pressPoint - event.changedTouches[0].pageY);//求移动的距离(绝对值)
-                    if(movePoint > 35){
-                        pointPoor = Math.floor(movePoint/35);//通过偏移量获取上移的字母数量
-                        if(!(beforePointPoor == -1 || beforePointPoor == pointPoor)){
-                            if(pressPoint - event.changedTouches[0].pageY >= 0){
-                                moveLetter = count - pointPoor;//获取目前手指停留的字母下标
+                    this.movePoint = Math.abs(this.pressPoint - e.changedTouches[0].pageY);//求移动的距离(绝对值)
+                    if(this.movePoint > 35){
+                        this.pointPoor = Math.floor(this.movePoint/35);//通过偏移量获取上移的字母数量
+                        if(!(this.beforePointPoor == -1 || this.beforePointPoor == this.pointPoor)){
+                            if(this.pressPoint - e.changedTouches[0].pageY >= 0){
+                                this.moveLetter = count - this.pointPoor;//获取目前手指停留的字母下标
                             }else{
-                                moveLetter = count + pointPoor;//获取目前手指停留的字母
+                                this.moveLetter = count + this.pointPoor;//获取目前手指停留的字母
                             }
                             for(var i = 0;i<this.friendsList.length;i++){//循环判断是否有相应首字母的朋友
-                                if(this.friendsList[i].letter == this.allLetter[moveLetter]){
+                                if(this.friendsList[i].letter == this.allLetter[this.moveLetter]){
                                     const el = this.$refs.listref[i]//跳转到相应的cell
                                     dom.scrollToElement(el, {
 //                                        animated:false
                                     })
-                                }else if(moveLetter == 0){//判断是否滑到 顶部按钮
-                                    const el = this.$refs.linkref[moveLetter]//跳转到相应的cell
+                                }else if(this.moveLetter == 0){//判断是否滑到 顶部按钮
+                                    const el = this.$refs.linkref[this.moveLetter]//跳转到相应的cell
                                     dom.scrollToElement(el, {
 //                                        animated:false
                                     })
                                 }
                             }
-                            modal.toast({ message:this.allLetter[moveLetter] ,duration: 0.001});//弹出提示框toast
+//                            控制滑动范围 =》触发效果
+                            if(this.moveLetter >= 0 && this.moveLetter < this.allLetter.length ){
+                                this.showText = this.allLetter[this.moveLetter];
+                            }
+//                            modal.toast({ message:this.allLetter[this.moveLetter] ,duration: 0.001});//弹出提示框toast
                         }
-                        beforePointPoor = pointPoor;//把这次的滑动的字母数量保存起来
+                        this.beforePointPoor = this.pointPoor;//把这次的滑动的字母数量保存起来
                     }
                 }
             },
@@ -628,3 +683,4 @@
         }
     }
 </script>
+

@@ -29,7 +29,7 @@
         <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
             <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                 <div class="articleClass">
-                    <text @click="corpusChange(item)" class="allArticle" v-for="item in corpusList" :class = "[whichCorpus == item ? 'active' : 'noActive']">{{item}}</text>
+                    <text @click="corpusChange(index)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item}}</text>
                     <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                     <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                     <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -97,7 +97,7 @@
             <div  class="corpusBox"  :style = "positionObject" >
                 <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                     <div class="articleClass">
-                        <text @click="corpusChange(item)" class="allArticle" v-for="item in corpusList" :class = "[whichCorpus == item ? 'active' : 'noActive']">{{item}}</text>
+                        <text @click="corpusChange(index)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item}}</text>
                         <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                         <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                         <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -130,7 +130,7 @@
                         </div>
                         <!--文章封面-->
                         <div>
-                            <image :src="item.value.thumbnail" class="articleCover"></image>
+                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
                         </div>
                         <!--文章底部-->
                         <div class="articleFoot">
@@ -150,7 +150,7 @@
                         <!--右侧隐藏栏-->
                         <div class="rightHidden">
                             <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpEditor()">
+                                <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                                     <text class="rightHiddenText">编辑</text>
                                 </div>
@@ -586,7 +586,7 @@
                 canScroll:true,
                 userName:'刮风下雨打雷台风天',
                 userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
-                whichCorpus:'全部文章',
+                whichCorpus:0,
                 isNoArticle:false,
                 refreshing:'hide',
                 fontName: '&#xe685;',
@@ -636,11 +636,17 @@
                     },
                     function (err) {
                         event.toast("网络不稳定")
-
                     }
                 )
 
-            utils.findList('',0,10,function (data) {
+            let options = {
+                type:'article',
+                keyword:'',
+                orderBy:'desc',
+                current:0,
+                pageSize:10
+            }
+            event.findList(options,function (data) {
                 if( data.type == "success" && data.data != '' ) {
                     data.data.forEach(function (item) {
                         event.toast(item);
@@ -649,9 +655,6 @@
 //                        把读取到的文章push进去文章列表
                         _this.articleList.push(item);
                     })
-//                    data.data[0].value = JSON.parse(data.data[0].value);
-//                    event.toast(data.data[1].value);
-//                    _this.articleList.push(data.data[0]);
                 }else{
                     event.toast('缓存' + data.content);
                 }
@@ -674,17 +677,25 @@
 //            })
         },
         methods: {
-            jumpEditor:function () {
-                modal.toast({message:'跳转编辑',duration:3});
+            jumpEditor:function (id) {
+                event.toast('跳转编辑');
+                var _this = this;
+                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
+//                    _this.updateArticle();
+                });
+
+//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
+////                    _this.updateArticle();
+//                })
             },
             jumpDelete:function () {
-                modal.toast({message:'文章删除',duration:3});
+                event.toast('文章删除');
             },
             jumpTop:function () {
-                modal.toast({message:'文章置顶',duration:3});
+                event.toast('文章置顶');
             },
             jumpCorpus:function () {
-                modal.toast({message:'跳转文集',duration:3});
+                event.toast('跳转文集');
             },
 //            open (callback) {
 //                return stream.fetch({
@@ -693,12 +704,12 @@
 //                    url: '/weex/member/article/list.jhtml'
 //                }, callback)
 //            },
-            switchArticle:function (item) {
-                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
-                    return true;
-                }else{
-                    return false;
-                }
+//            switchArticle:function (item) {
+//                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
+//                    return true;
+//                }else{
+//                    return false;
+//                }
 //                if(this.isAllArticle == false){
 //                    if(item.articleSign == '已删除'){
 //                        return true;
@@ -708,41 +719,44 @@
 //                }else{
 //                    return true;
 //                }
-            },
+//            },
 //            前往文章
             goArticle(id){
                 var _this = this;
+//                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
+////                    _this.updateArticle();
+//                });
                 event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
 //                    _this.updateArticle();
                 })
             },
-            updateArticle(){
-                var _this = this;
-//            获取文章缓存。
-                event.findList(1,'articleListTest1','desc',function (data) {
-//                    modal.toast({message:data.data});
-                    if(data.type == 'success'){
-                        for(let i = 0;i < data.data.length;i++){
-                            let articleData = JSON.parse(data.data[i].value);
-                            _this.articleList.splice(0,0,{
-                                articleSign: '草稿',
-                                articleTitle:   articleData[0].title,
-                                articleCoverUrl:  articleData[0].thumbnail,
-                                articleDate: '2017-09-23',
-                                browse: 0,
-                                praise: 0,
-                                comments: 0,
-                                id:articleData[0].id,
-                            })
-                        }
-                    }else{
-                        modal.alert({
-                            message: data.content,
-                            duration: 0.3
-                        })
-                    }
-                })
-            },
+//            updateArticle(){
+//                var _this = this;
+////            获取文章缓存。
+//                event.findList(1,'articleListTest1','desc',function (data) {
+////                    modal.toast({message:data.data});
+//                    if(data.type == 'success'){
+//                        for(let i = 0;i < data.data.length;i++){
+//                            let articleData = JSON.parse(data.data[i].value);
+//                            _this.articleList.splice(0,0,{
+//                                articleSign: '草稿',
+//                                articleTitle:   articleData[0].title,
+//                                articleCoverUrl:  articleData[0].thumbnail,
+//                                articleDate: '2017-09-23',
+//                                browse: 0,
+//                                praise: 0,
+//                                comments: 0,
+//                                id:articleData[0].id,
+//                            })
+//                        }
+//                    }else{
+//                        modal.alert({
+//                            message: data.content,
+//                            duration: 0.3
+//                        })
+//                    }
+//                })
+//            },
 //            toPage: function(url){
 ////                event.pageTo(url, false);
 //                event.wxConfig(function (data) {
@@ -752,9 +766,15 @@
             jump:function (vueName) {
                 event.toast('will jump');
             },
-            corpusChange:function(corpusName){
+            corpusChange:function(index){
+                event.toast(index);
                 var _this = this;
-                _this.whichCorpus = corpusName;
+                _this.whichCorpus = index;
+
+
+
+
+
 //                if(this.isAllArticle == true){
 //
 //                }else{
@@ -961,7 +981,6 @@
             },
 //            快速滑动滚动条时， 控制顶部导航栏消失
             toponappear(){
-                modal.toast({message:'到顶部',duration:1});
                 this.opacityNum = 0 ;
                 this.settingColor = 'white';
                 event.changeWindowsBar("false");
