@@ -28,6 +28,7 @@
 #import "PublicKeyManager.h"
 #import "NSString+Util.h"
 #import "SqlLiteManager.h"
+#import "WXCallBackMessage.h"
 
 static WXModuleCallback back;
 
@@ -220,10 +221,10 @@ WX_EXPORT_METHOD(@selector(encrypt:callBack:))
         callBack(message);
     }
 }
-- (void)find:(NSUInteger)type withKey:(NSString *)key andCallBack:(WXModuleCallback)callBack{
+- (void)find:(NSString *)type withKey:(NSString *)key andCallBack:(WXModuleCallback)callBack{
     SqlLiteManager *manager = [SqlLiteManager defaultManager];
     NSMutableDictionary *message = [NSMutableDictionary new];
-    SqlLiteModel *model = [manager findWithUserId:1 AndType:type AndKey:key AndNeedOpen:YES];
+    SqlLiteModel *model = [manager findWithUserId:@"1" AndType:type AndKey:key AndNeedOpen:YES];
     if (model){
         [message setValue:@"success" forKey:@"type"];
         [message setValue:@"查找成功" forKey:@"content"];
@@ -238,5 +239,48 @@ WX_EXPORT_METHOD(@selector(encrypt:callBack:))
     }
 }
 
+- (void)findList:(NSDictionary *)dic withCallBack:(WXModuleCallback)callBack{
+    SqlLiteManager *manager = [SqlLiteManager defaultManager];
+    WXCallBackMessage *message = [WXCallBackMessage new];
+    NSError *error;
+    OptionModel *option = [[OptionModel alloc] initWithDictionary:dic error:&error];
+    if (!error){
+        NSArray *array = [manager findListWithUserId:@"1" AndOption:option];
+        if (!array || array.count <= 0){
+            message.type = NO;
+            message.content = @"未找到";
+            message.data = @"-1";
+        }else{
+            message.type = YES;
+            message.content = @"查找成功";
+            message.data = array;
+        }
+    }else{
+        message.type = NO;
+        message.content = @"解析失败";
+        message.data = @"-1";
+    }
+    if (callBack){
+        callBack(message.getMessage);
+    }
+}
+
+- (void)delete:(NSString *)type andKey:(NSString *)key andCallback:(WXModuleCallback)callBack{
+    SqlLiteManager *manager = [SqlLiteManager defaultManager];
+    WXCallBackMessage *message = [WXCallBackMessage new];
+    BOOL success = [manager deleteWithUserId:@"1" AndType:type AndKey:key];
+    if (success){
+        message.type = YES;
+        message.content = @"删除成功";
+        message.data = @"1";
+    }else{
+        message.type = NO;
+        message.content = @"删除失败";
+        message.data = @"-1";
+    }
+    if (callBack){
+        callBack(message.getMessage);
+    }
+}
 @end
 

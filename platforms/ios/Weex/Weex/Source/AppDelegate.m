@@ -46,6 +46,8 @@
 
 #import "SqlLiteManager.h"
 
+#import "NetManager.h"
+
 @interface AppDelegate ()
 @end
 
@@ -57,34 +59,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"bundle=%@",DOCUMENT_PATH);
-    [ResourceManager defaultManager];
-    
-//    SqlLiteManager *manager = [SqlLiteManager defaultManager];
-//    SqlLiteModel *model = [SqlLiteModel new];
-//    model.userId = 1;
-//    model.type = 1;
-//    model.key = @"key";
-//    model.value = @"value";
-//    model.sort = 1;
-//    model.keyword = @"keyword";
-//    [manager add:model];
-    
-//    exit(0);
-    
-    [NSThread sleepForTimeInterval:3];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [ResourceManager defaultManager];
+    });
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
+
     [WXApi registerApp:WECHAT_APPID enableMTA:YES];
     [self initWeexSDK];
-    
+
     XMTabBarController *tabbar = [XMTabBarController new];
     tabbar.tabBarHeight = 49;
-    
+
     self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabbar];
     [self.window makeKeyAndVisible];
-    
+
     [self startSplashScreen];
 #if DEBUG
     // check if there are any UI changes on main thread.

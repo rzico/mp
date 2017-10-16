@@ -25,6 +25,7 @@
 #import "WXDebugTool.h"
 #import <TBWXDevTool/WXDevTool.h>
 #import <AudioToolbox/AudioToolbox.h>
+#import "IWXToast.h"
 
 @interface WXScannerVC ()
 
@@ -83,13 +84,14 @@
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
-    [_captureLayer removeFromSuperlayer];
-    [_session stopRunning];
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     if (metadataObjects.count > 0) {
+        [_captureLayer removeFromSuperlayer];
+        [_session stopRunning];
         AVMetadataMachineReadableCodeObject * metadataObject = [metadataObjects objectAtIndex: 0];
         [self recordScannerHistory:metadataObject.stringValue];
         [self openURL:metadataObject.stringValue];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -115,30 +117,37 @@
     
     WXViewController * controller = [[WXViewController alloc] init];
     controller.url = url;
-    [controller render:nil];
-    controller.source = @"scan";
+    [controller render:^(BOOL finished) {
+        if (finished){
+            controller.source = @"scan";
+            
+            WXRootViewController *navi = [[WXRootViewController alloc] initWithRootViewController:controller];
+            
+            
+            NSMutableDictionary *queryDict = [NSMutableDictionary new];
+            if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+                NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
+                NSArray *queryItems = [components queryItems];
+                
+                for (NSURLQueryItem *item in queryItems)
+                    [queryDict setObject:item.value forKey:item.name];
+            }else {
+                queryDict = [self queryWithURL:url];
+            }
+            NSString *wsport = queryDict[@"wsport"] ?: @"8082";
+            NSURL *socketURL = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@:%@", url.host, wsport]];
+            controller.hotReloadSocket = [[SRWebSocket alloc] initWithURL:socketURL protocols:@[@"echo-protocol"]];
+            controller.hotReloadSocket.delegate = controller;
+            [controller.hotReloadSocket open];
+            
+            UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+            [rootVC presentViewController:navi animated:YES completion:nil];
+        }else{
+            IWXToast *toast = [IWXToast new];
+            [toast showToast:@"页面无法渲染" withInstance:nil];
+        }
+    }];
     
-    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:controller];
-    
-    
-    NSMutableDictionary *queryDict = [NSMutableDictionary new];
-    if (WX_SYS_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-        NSURLComponents *components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
-        NSArray *queryItems = [components queryItems];
-    
-        for (NSURLQueryItem *item in queryItems)
-            [queryDict setObject:item.value forKey:item.name];
-    }else {
-        queryDict = [self queryWithURL:url];
-    }
-    NSString *wsport = queryDict[@"wsport"] ?: @"8082";
-    NSURL *socketURL = [NSURL URLWithString:[NSString stringWithFormat:@"ws://%@:%@", url.host, wsport]];
-    controller.hotReloadSocket = [[SRWebSocket alloc] initWithURL:socketURL protocols:@[@"echo-protocol"]];
-    controller.hotReloadSocket.delegate = controller;
-    [controller.hotReloadSocket open];
-    
-    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
-    [rootVC presentViewController:navi animated:YES completion:nil];
 }
 
 - (NSMutableDictionary*)queryWithURL:(NSURL *)url {

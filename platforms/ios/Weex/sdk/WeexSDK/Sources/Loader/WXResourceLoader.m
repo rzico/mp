@@ -170,6 +170,17 @@
     _response = nil;
 }
 
+- (void)requestDidFinishLoading:(WXResourceRequest *)request isKeepAlive:(BOOL)keepAlive{
+    WXLogDebug(@"request:%@ requestDidFinishLoading", request);
+    
+    if (self.onFinishedWithKeepAlive) {
+        self.onFinishedWithKeepAlive(_response, _data, keepAlive);
+    }
+    
+    _data = nil;
+    _response = nil;
+}
+
 - (void)request:(WXResourceRequest *)request didFailWithError:(NSError *)error
 {
     WXLogDebug(@"request:%@ didFailWithError:%@", request, error.localizedDescription);

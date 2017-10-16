@@ -34,7 +34,7 @@ WX_EXPORT_METHOD(@selector(sendHttp:callback:))
 WX_EXPORT_METHOD(@selector(fetch:callback:progressCallback:))
 WX_EXPORT_METHOD(@selector(fetchWithArrayBuffer:options:callback:progressCallback:))
 
-- (void)fetch:(NSDictionary *)options callback:(WXModuleCallback)callback progressCallback:(WXModuleKeepAliveCallback)progressCallback
+- (void)fetch:(NSDictionary *)options callback:(WXModuleKeepAliveCallback)callback progressCallback:(WXModuleKeepAliveCallback)progressCallback
 {
     __block NSInteger received = 0;
     __block NSHTTPURLResponse *httpResponse = nil;
@@ -45,7 +45,7 @@ WX_EXPORT_METHOD(@selector(fetchWithArrayBuffer:options:callback:progressCallbac
     WXResourceRequest * request = [self _buildRequestWithOptions:options callbackRsp:callbackRsp];
     if (!request) {
         if (callback) {
-            callback(callbackRsp);
+            callback(callbackRsp,false);
         }
         // failed with some invaild inputs
         return ;
@@ -88,16 +88,26 @@ WX_EXPORT_METHOD(@selector(fetchWithArrayBuffer:options:callback:progressCallbac
         if (weakSelf) {
             [weakSelf _loadFinishWithResponse:[response copy] data:data callbackRsp:callbackRsp];
             if (callback) {
-                callback(callbackRsp);
+                callback(callbackRsp, false);
             }
         }
     };
+    
+    loader.onFinishedWithKeepAlive = ^(const WXResourceResponse * response, NSData *data, BOOL isKeepAlive) {
+        if (weakSelf) {
+            [weakSelf _loadFinishWithResponse:[response copy] data:data callbackRsp:callbackRsp];
+            if (callback) {
+                callback(callbackRsp, isKeepAlive);
+            }
+        }
+    };
+    
     
     loader.onFailed = ^(NSError *error) {
         if (weakSelf) {
             [weakSelf _loadFailedWithError:error callbackRsp:callbackRsp];
             if (callback) {
-                callback(callbackRsp);
+                callback(callbackRsp, false);
             }
         }
     };
