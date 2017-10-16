@@ -838,7 +838,6 @@
                                 }
                             })
                         }
-
                     })
 
                 }
@@ -873,7 +872,6 @@
                     image : imgList,
                     cover : _this.coverImage
                 }
-
                 storage.setItem('coverImage', coverData);
                 event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
 //                    let jsonData = JSON.parse(data);
@@ -898,7 +896,7 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-//                event.openURL('http://192.168.1.104:8081/vote.weex.js',function (message) {
+//                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
                     if(message.data != '') {
                         _this.voteList.push(message.data);
@@ -909,6 +907,7 @@
             editVote:function (index) {
                 let _this = this;
                 storage.setItem('voteData', _this.voteList[index]);
+//                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
                     if(message.data != '') {
                         _this.voteList[index] = message.data;

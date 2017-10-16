@@ -209,18 +209,18 @@
                     _this.chooseOptions = _this.optionArray[voteData.optionsIndex];
                     event.toast(voteData);
 //                    添加上服务器过滤掉的属性
-                    if(utils.isNull(voteData.pageBox[0].textHeight)){
-                        event.toast('执行下');
-                        for(let i = 0; i < voteData.pageBox.length ; i++){
-                            voteData.pageBox[i].push({
-                                textHeight:'48',
-                                rowsNum:'1',
-                                editSign:-1,
-                            })
-                        }
-                    }else{
-                        event.toast('执行上');
-                    }
+//                    if(utils.isNull(voteData.pageBox[0].textHeight)){
+//                        event.toast('执行下');
+//                        for(let i = 0; i < voteData.pageBox.length ; i++){
+//                            voteData.pageBox[i].push({
+//                                textHeight:'48',
+//                                rowsNum:'1',
+//                                editSign:-1,
+//                            })
+//                        }
+//                    }else{
+//                        event.toast('执行上');
+//                    }
                     _this.voteList.push(voteData);
                     storage.removeItem('voteData');
                 })
@@ -239,12 +239,12 @@
                     index: this.voteList[0].optionsIndex,
 //                    数据选项
                     items: this.optionArray
-                }, event => {
-                    if (event.result === 'success') {
+                }, e => {
+                    if (e.result === 'success') {
 //                        更改默认选中的下标
-                        this.voteList[0].optionsIndex = event.data;
+                        this.voteList[0].optionsIndex = e.data;
 //                        将选择的数据写入chooseOptions
-                        this.chooseOptions = this.optionArray[event.data];
+                        this.chooseOptions = this.optionArray[e.data];
                     }
                 })
             },
@@ -252,9 +252,9 @@
             pickDate () {
                 picker.pickDate({
                     value: this.voteList[0].chooseDate
-                }, event => {
-                    if (event.result === 'success') {
-                        this.voteList[0].chooseDate = event.data;
+                }, e => {
+                    if (e.result === 'success') {
+                        this.voteList[0].chooseDate = e.data;
                         //日期选择完后 马上选择时间。
                         this.pickTime();
                         if(this.voteList[0].chooseTime == ''){
@@ -267,9 +267,9 @@
             pickTime () {
                 picker.pickTime({
                     value: this.voteList[0].chooseTime
-                }, event => {
-                    if (event.result === 'success') {
-                        this.voteList[0].chooseTime = event.data;
+                }, e => {
+                    if (e.result === 'success') {
+                        this.voteList[0].chooseTime = e.data;
                     }
                 })
             },
@@ -297,14 +297,13 @@
                 optionIndex = index;
             },
 //            选项输入（当一进页面选项里有数据时，会触发该函数）
-            optionsOninput:function (event) {
+            optionsOninput:function (e) {
                 var _this = this;
-                var len = this.getLen(event);
+                var len = this.getLen(e.value);
 //                当字符数超过25时，将多行输入改成2行并且高度设为96
 //                modal.toast({message:len,duration:0.3})
                 if(len > 25){
                     if(optionIndex == -1){
-
 //            选项输入（当一进页面选项里有数据时，会触发该函数）此时不会更新optionIndex，所以需要手动刷新。
                         this.voteList[0].pageBox.forEach(function(item){
                              if(_this.getLen(item.textAreaMessage) > 25){
@@ -334,8 +333,8 @@
             },
 
 //            标题描述输入。
-            titleOninput:function (event) {
-                var len = this.getLen(event);
+            titleOninput:function (e) {
+                var len = this.getLen(e);
                 //当字符数超过25时，将多行输入改成2行并且高度设为96
                 if(len > 25){
 //                    控制是否切换高度.不用每次输入都执行一次
@@ -353,8 +352,8 @@
                 }
             },
 //            获取已输入的字符总长度
-            getLen(event){
-                var name = event.value;
+            getLen(e){
+                var name = e;
                 var len = 0;
                 for (let i = 0; i < name.length; i++) {
                     var a = name.charAt(i);
@@ -369,7 +368,7 @@
             },
 
 //            下拉刷新
-            onrefresh (event) {
+            onrefresh (e) {
                 console.log('is refreshing')
                 this.refreshing = true
                 setTimeout(() => {
@@ -377,7 +376,7 @@
                 }, 2000)
             },
 //            正在下拉
-            onpullingdown (event) {
+            onpullingdown (e) {
                 console.log('is onpulling down')
             },
 //            返回
