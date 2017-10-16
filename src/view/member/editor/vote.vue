@@ -25,7 +25,7 @@
                     <!--删除按钮-->
                     <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
                     <!--当隐藏删除按钮时需要有空白区域顶起布局-->
-                    <text class="closeIcon" style="width:60px;"  v-else></text>
+                    <text class="closeIcon" style="width:60px;"v-else></text>
                 </div>
                 <!--添加选项-->
                 <div class="voteTell addOptions " @click="addOptions()">
@@ -35,7 +35,7 @@
             </div>
             <div class="voteBox mt20 border-radius">
                 <!-- 截止时间-->
-                <div class="voteTell addBottomBorder optionsBox ">
+                <div class="voteTell addBottomBorder optionsBox">
                     <div class="flexRow">
                         <text class="gray bottomSize">截止时间</text>
                         <!--时间-->

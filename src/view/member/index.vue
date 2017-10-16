@@ -677,7 +677,7 @@
         },
         methods: {
             jumpEditor:function (id) {
-                evemt.toast('跳转编辑');
+                event.toast('跳转编辑');
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
 //                    _this.updateArticle();
@@ -688,13 +688,13 @@
 //                })
             },
             jumpDelete:function () {
-                evemt.toast('文章删除');
+                event.toast('文章删除');
             },
             jumpTop:function () {
-                evemt.toast('文章置顶');
+                event.toast('文章置顶');
             },
             jumpCorpus:function () {
-                evemt.toast('跳转文集');
+                event.toast('跳转文集');
             },
 //            open (callback) {
 //                return stream.fetch({
