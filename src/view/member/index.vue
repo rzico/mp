@@ -130,7 +130,7 @@
                         </div>
                         <!--文章封面-->
                         <div>
-                            <image :src="item.value.thumbnail" class="articleCover"></image>
+                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
                         </div>
                         <!--文章底部-->
                         <div class="articleFoot">
@@ -722,12 +722,12 @@
 //            前往文章
             goArticle(id){
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
-//                    _this.updateArticle();
-                });
-//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
+//                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
 ////                    _this.updateArticle();
-//                })
+//                });
+                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
+//                    _this.updateArticle();
+                })
             },
 //            updateArticle(){
 //                var _this = this;

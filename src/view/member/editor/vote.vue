@@ -20,7 +20,7 @@
                     <!--多行文本-->
                     <div class="textareaBox">
                         <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @focus="onfocus(index)" @input="optionsOninput"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
+                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @input="optionsOninput($event,index)"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
                     </div>
                     <!--删除按钮-->
                     <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
@@ -292,46 +292,39 @@
                     editSign:-1,
                 })
             },
-//            通过获取焦点来获取当前输入的组件下标
-            onfocus:function (index) {
-                optionIndex = index;
-            },
 //            选项输入（当一进页面选项里有数据时，会触发该函数）
-            optionsOninput:function (e) {
+            optionsOninput:function (e,index) {
+                event.toast(index);
                 var _this = this;
                 var len = this.getLen(e.value);
 //                当字符数超过25时，将多行输入改成2行并且高度设为96
 //                modal.toast({message:len,duration:0.3})
                 if(len > 25){
-                    if(optionIndex == -1){
-//            选项输入（当一进页面选项里有数据时，会触发该函数）此时不会更新optionIndex，所以需要手动刷新。
-                        this.voteList[0].pageBox.forEach(function(item){
-                             if(_this.getLen(item.textAreaMessage) > 25){
-                                 item.rowsNum = 2;
-                                 item.textHeight = 96;
-                                 item.editSign = 0;
-                             }
-                        })
-                        return
-                    }
+//                    if(optionIndex == -1){
+////            选项输入（当一进页面选项里有数据时，会触发该函数）此时不会更新optionIndex，所以需要手动刷新。
+//                        this.voteList[0].pageBox.forEach(function(item){
+//                             if(_this.getLen(item.textAreaMessage) > 25){
+//                                 item.rowsNum = 2;
+//                                 item.textHeight = 96;
+//                                 item.editSign = 0;
+//                             }
+//                        })
+//                        return
+//                    }
 //                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
-                    if(this.voteList[0].pageBox[optionIndex].editSign == -1){
-                        this.voteList[0].pageBox[optionIndex].rowsNum = 2;
-                        this.voteList[0].pageBox[optionIndex].textHeight = 96;
-                        this.voteList[0].pageBox[optionIndex].editSign = 0;
+                    if(this.voteList[0].pageBox[index].editSign == -1){
+                        this.voteList[0].pageBox[index].rowsNum = 2;
+                        this.voteList[0].pageBox[index].textHeight = 96;
+                        this.voteList[0].pageBox[index].editSign = 0;
                     }
                 }else{//否则将高度与行数改回来
-                    if(optionIndex == -1){
-                        return
-                    }
-                    if(this.voteList[0].pageBox[optionIndex].editSign == 0){
-                        this.voteList[0].pageBox[optionIndex].rowsNum = 1;
-                        this.voteList[0].pageBox[optionIndex].textHeight = 48;
-                        this.voteList[0].pageBox[optionIndex].editSign = -1;
+                    if(this.voteList[0].pageBox[index].editSign == 0){
+                        this.voteList[0].pageBox[index].rowsNum = 1;
+                        this.voteList[0].pageBox[index].textHeight = 48;
+                        this.voteList[0].pageBox[index].editSign = -1;
                     }
                 }
             },
-
 //            标题描述输入。
             titleOninput:function (e) {
                 var len = this.getLen(e);
