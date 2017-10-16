@@ -29,7 +29,7 @@
         <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
             <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                 <div class="articleClass">
-                    <text @click="corpusChange(item)" class="allArticle" v-for="item in corpusList" :class = "[whichCorpus == item ? 'active' : 'noActive']">{{item}}</text>
+                    <text @click="corpusChange(index)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item}}</text>
                     <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                     <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                     <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -97,7 +97,7 @@
             <div  class="corpusBox"  :style = "positionObject" >
                 <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                     <div class="articleClass">
-                        <text @click="corpusChange(item)" class="allArticle" v-for="item in corpusList" :class = "[whichCorpus == item ? 'active' : 'noActive']">{{item}}</text>
+                        <text @click="corpusChange(index)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item}}</text>
                         <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                         <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                         <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -150,7 +150,7 @@
                         <!--右侧隐藏栏-->
                         <div class="rightHidden">
                             <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpEditor()">
+                                <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                                     <text class="rightHiddenText">编辑</text>
                                 </div>
@@ -586,7 +586,7 @@
                 canScroll:true,
                 userName:'刮风下雨打雷台风天',
                 userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
-                whichCorpus:'全部文章',
+                whichCorpus:0,
                 isNoArticle:false,
                 refreshing:'hide',
                 fontName: '&#xe685;',
@@ -636,14 +636,13 @@
                     },
                     function (err) {
                         event.toast("网络不稳定")
-
                     }
                 )
 
             utils.findList('',0,10,function (data) {
                 if( data.type == "success" && data.data != '' ) {
                     data.data.forEach(function (item) {
-                        event.toast(item);
+//                        event.toast(item);
 //                    将value json化
                         item.value = JSON.parse(item.value);
 //                        把读取到的文章push进去文章列表
@@ -674,8 +673,16 @@
 //            })
         },
         methods: {
-            jumpEditor:function () {
+            jumpEditor:function (id) {
                 modal.toast({message:'跳转编辑',duration:3});
+                var _this = this;
+                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
+//                    _this.updateArticle();
+                });
+
+//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
+////                    _this.updateArticle();
+//                })
             },
             jumpDelete:function () {
                 modal.toast({message:'文章删除',duration:3});
@@ -693,12 +700,12 @@
 //                    url: '/weex/member/article/list.jhtml'
 //                }, callback)
 //            },
-            switchArticle:function (item) {
-                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
-                    return true;
-                }else{
-                    return false;
-                }
+//            switchArticle:function (item) {
+//                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
+//                    return true;
+//                }else{
+//                    return false;
+//                }
 //                if(this.isAllArticle == false){
 //                    if(item.articleSign == '已删除'){
 //                        return true;
@@ -708,7 +715,7 @@
 //                }else{
 //                    return true;
 //                }
-            },
+//            },
 //            前往文章
             goArticle(id){
                 var _this = this;
@@ -755,9 +762,10 @@
             jump:function (vueName) {
                 event.toast('will jump');
             },
-            corpusChange:function(corpusName){
+            corpusChange:function(index){
+                event.toast(index);
                 var _this = this;
-                _this.whichCorpus = corpusName;
+                _this.whichCorpus = index;
 //                if(this.isAllArticle == true){
 //
 //                }else{
