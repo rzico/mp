@@ -67,7 +67,7 @@ let utilsFunc = {
     },
     //本地缓存查找多条数据。
     findList(value,start,size,callback){
-        const partevent = weex.requireModule('event');
+        const partevent = weex.requireModule('event'); //在ios无法识别出该语句，考虑弃用该方法
         partevent.findList({
             type:'article',
             keyword:value,

@@ -639,18 +639,21 @@
                     }
                 )
 
-            utils.findList('',0,10,function (data) {
+            let options = {
+                type:'article',
+                keyword:'',
+                orderBy:'desc',
+                current:0,
+                pageSize:10
+            }
+            event.findList(options,function (data) {
                 if( data.type == "success" && data.data != '' ) {
                     data.data.forEach(function (item) {
-//                        event.toast(item);
 //                    将value json化
                         item.value = JSON.parse(item.value);
 //                        把读取到的文章push进去文章列表
                         _this.articleList.push(item);
                     })
-//                    data.data[0].value = JSON.parse(data.data[0].value);
-//                    event.toast(data.data[1].value);
-//                    _this.articleList.push(data.data[0]);
                 }else{
                     event.toast('缓存' + data.content);
                 }
@@ -674,7 +677,7 @@
         },
         methods: {
             jumpEditor:function (id) {
-                modal.toast({message:'跳转编辑',duration:3});
+                evemt.toast('跳转编辑');
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
 //                    _this.updateArticle();
@@ -685,13 +688,13 @@
 //                })
             },
             jumpDelete:function () {
-                modal.toast({message:'文章删除',duration:3});
+                evemt.toast('文章删除');
             },
             jumpTop:function () {
-                modal.toast({message:'文章置顶',duration:3});
+                evemt.toast('文章置顶');
             },
             jumpCorpus:function () {
-                modal.toast({message:'跳转文集',duration:3});
+                evemt.toast('跳转文集');
             },
 //            open (callback) {
 //                return stream.fetch({
@@ -726,33 +729,33 @@
 ////                    _this.updateArticle();
 //                })
             },
-            updateArticle(){
-                var _this = this;
-//            获取文章缓存。
-                event.findList(1,'articleListTest1','desc',function (data) {
-//                    modal.toast({message:data.data});
-                    if(data.type == 'success'){
-                        for(let i = 0;i < data.data.length;i++){
-                            let articleData = JSON.parse(data.data[i].value);
-                            _this.articleList.splice(0,0,{
-                                articleSign: '草稿',
-                                articleTitle:   articleData[0].title,
-                                articleCoverUrl:  articleData[0].thumbnail,
-                                articleDate: '2017-09-23',
-                                browse: 0,
-                                praise: 0,
-                                comments: 0,
-                                id:articleData[0].id,
-                            })
-                        }
-                    }else{
-                        modal.alert({
-                            message: data.content,
-                            duration: 0.3
-                        })
-                    }
-                })
-            },
+//            updateArticle(){
+//                var _this = this;
+////            获取文章缓存。
+//                event.findList(1,'articleListTest1','desc',function (data) {
+////                    modal.toast({message:data.data});
+//                    if(data.type == 'success'){
+//                        for(let i = 0;i < data.data.length;i++){
+//                            let articleData = JSON.parse(data.data[i].value);
+//                            _this.articleList.splice(0,0,{
+//                                articleSign: '草稿',
+//                                articleTitle:   articleData[0].title,
+//                                articleCoverUrl:  articleData[0].thumbnail,
+//                                articleDate: '2017-09-23',
+//                                browse: 0,
+//                                praise: 0,
+//                                comments: 0,
+//                                id:articleData[0].id,
+//                            })
+//                        }
+//                    }else{
+//                        modal.alert({
+//                            message: data.content,
+//                            duration: 0.3
+//                        })
+//                    }
+//                })
+//            },
 //            toPage: function(url){
 ////                event.pageTo(url, false);
 //                event.wxConfig(function (data) {
@@ -766,6 +769,11 @@
                 event.toast(index);
                 var _this = this;
                 _this.whichCorpus = index;
+
+
+
+
+
 //                if(this.isAllArticle == true){
 //
 //                }else{
@@ -972,7 +980,6 @@
             },
 //            快速滑动滚动条时， 控制顶部导航栏消失
             toponappear(){
-                modal.toast({message:'到顶部',duration:1});
                 this.opacityNum = 0 ;
                 this.settingColor = 'white';
                 event.changeWindowsBar("false");
