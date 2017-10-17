@@ -13,8 +13,8 @@
 @interface SqlLiteManager : NSObject
 
 + (SqlLiteManager *)defaultManager;
-- (BOOL)save:(SqlLiteModel *)model;
-- (SqlLiteModel *)findWithUserId:(NSUInteger)userId AndType:(NSUInteger)type AndKey:(NSString *)key AndNeedOpen:(BOOL)needOpen;
-- (NSArray *)findListWithUserId:(NSUInteger)userId AndOption:(OptionModel *)option;
-- (BOOL)deleteWithUserId:(NSUInteger)userId AndType:(NSUInteger)type AndKey:(NSString *)key;
+- (NSUInteger)save:(SqlLiteModel *)model;
+- (SqlLiteModel *)findWithUserId:(NSString *)userId AndType:(NSString *)type AndKey:(NSString *)key AndNeedOpen:(BOOL)needOpen;
+- (NSArray *)findListWithUserId:(NSString *)userId AndOption:(OptionModel *)option;
+- (BOOL)deleteWithUserId:(NSString *)userId AndType:(NSString *)type AndKey:(NSString *)key;
 @end

@@ -115,6 +115,13 @@ static const CGFloat WXToastDefaultPadding = 30.0;
         return;
     }
     
+    for (UIView *view in superView.subviews){
+        NSLog(@"view = %@", view);
+        [view.layer removeAllAnimations];
+    }
+    
+//    [superView.layer removeAllAnimations];
+    
     [IWXToastManager sharedManager].toastingView = toastView;
     [superView addSubview:toastView];
     __weak typeof(self) weakSelf = self;

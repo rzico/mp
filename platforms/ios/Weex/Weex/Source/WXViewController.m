@@ -161,12 +161,21 @@
         WXLogDebug(@"%@", @"Render Finish...");
         [weakSelf updateInstanceState:WeexInstanceAppear];
         if (complete!=nil){
-            complete(true);
+            if (view){
+                complete(true);
+            }else{
+                complete(false);
+            }
         }
     };
     
     _instance.updateFinish = ^(UIView *view) {
         WXLogDebug(@"%@", @"Update Finish...");
+        if (complete){
+            if (!view){
+                complete(false);
+            }
+        }
     };
     if (!self.url) {
         WXLogError(@"error: render url is nil");
