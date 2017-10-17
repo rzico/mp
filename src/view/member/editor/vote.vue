@@ -222,7 +222,7 @@
 //                        event.toast('执行上');
 //                    }
                     _this.voteList.push(voteData);
-                    storage.removeItem('voteData');
+                    storage.removeItem(vote);
                 })
             }
         },

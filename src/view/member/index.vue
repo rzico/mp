@@ -29,7 +29,7 @@
         <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
             <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                 <div class="articleClass">
-                    <text @click="corpusChange(index)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item}}</text>
+                    <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
                     <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                     <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                     <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -97,7 +97,7 @@
             <div  class="corpusBox"  :style = "positionObject" >
                 <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
                     <div class="articleClass">
-                        <text @click="corpusChange(index)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item}}</text>
+                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
                         <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
                         <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
                         <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
@@ -564,7 +564,7 @@
 </style>
 
 <script>
-    import {dom,event} from '../../weex.js';
+    import {dom,event,storage,stream} from '../../weex.js';
     const modal = weex.requireModule('modal');
     const animation = weex.requireModule('animation');
     import utils from '../../assets/utils';
@@ -598,7 +598,13 @@
                 showLoading: 'hide',
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
 
-                corpusList:['全部文章','回收站'],
+                corpusList:[{
+                    name:'全部文章',
+                    id:''
+                },{
+                    name:'回收站',
+                    id:'99'
+                }],
 
 
 //                全部文章==================
@@ -615,29 +621,9 @@
         },
         created:function () {
             utils.initIconFont();
-
             var _this = this;
 //            获取文集列表
-            GET('/weex/member/article_catalog/list.jhtml')
-                .then(
-                    function (data) {
-                        if (data.type == "success") {
-                            if(data.data.data == ''){
-
-                            }else{
-//                                将文集名循环插入数组中
-                                for(let i = 0; i<data.data.data.length;i++){
-                                    _this.corpusList.splice(1 + i,0,data.data.data[i]);
-                                }
-                            }
-                        } else {
-                            event.toast(data.content);
-                        }
-                    },
-                    function (err) {
-                        event.toast("网络不稳定")
-                    }
-                )
+            this.getCorpus();
 
             let options = {
                 type:'article',
@@ -649,7 +635,7 @@
             event.findList(options,function (data) {
                 if( data.type == "success" && data.data != '' ) {
                     data.data.forEach(function (item) {
-                        event.toast(item);
+//                        event.toast(item);
 //                    将value json化
                         item.value = JSON.parse(item.value);
 //                        把读取到的文章push进去文章列表
@@ -677,6 +663,70 @@
 //            })
         },
         methods: {
+            getCorpus:function () {
+                var _this = this;
+
+                return stream.fetch({
+                    method: 'GET',
+                    type: 'json',
+                    url: 'weex/member/article_catalog/list.jhtml'
+                }, function (data) {
+                    if (data.data.type == "success") {
+                        if(data.data == ''){
+                        }else{
+                            event.toast(data.data);
+                            _this.corpusList = '';
+                            _this.corpusList =[{
+                                name:'全部文章',
+                                id:''
+                            },{
+                                name:'回收站',
+                                id:'99'
+                            }];
+//                                将文集名循环插入数组中
+                            for(let i = 0; i<data.data.data.length;i++){
+                                _this.corpusList.splice(1 + i,0,data.data.data[i]);
+                            }
+                            storage.setItem('corpusList',data.data.data);
+                        }
+                    } else {
+                        event.toast(data);
+                    }
+//                    event.toast(data);
+                },)
+
+
+
+
+//                GET('weex/member/article_catalog/list.jhtml','',
+//                    function (data) {
+//                        if (data.type == "success") {
+//                            if(data.data == ''){
+//                            }else{
+//                                _this.corpusList = '';
+//                                _this.corpusList =[{
+//                                    name:'全部文章',
+//                                    id:''
+//                                },{
+//                                    name:'回收站',
+//                                    id:'99'
+//                                }];
+////                                将文集名循环插入数组中
+//                                for(let i = 0; i<data.data.length;i++){
+//                                    _this.corpusList.splice(1 + i,0,data.data[i]);
+//                                }
+//                                storage.setItem('corpusList',data.data);
+//                            }
+//                        } else {
+//                            event.toast(data);
+//                        }
+//                    },function(err) {
+//                        event.toast("网络不稳定")
+//                    })
+
+
+
+            },
             jumpEditor:function (id) {
                 event.toast('跳转编辑');
                 var _this = this;
@@ -701,7 +751,7 @@
 //                return stream.fetch({
 //                    method: 'GET',
 //                    type: 'json',
-//                    url: '/weex/member/article/list.jhtml'
+//                    url: 'weex/member/article/list.jhtml'
 //                }, callback)
 //            },
 //            switchArticle:function (item) {
@@ -766,7 +816,7 @@
             jump:function (vueName) {
                 event.toast('will jump');
             },
-            corpusChange:function(index){
+            corpusChange:function(index,id){
                 event.toast(index);
                 var _this = this;
                 _this.whichCorpus = index;
@@ -958,10 +1008,11 @@
 //            },
 //            文集
             goCorpus(){
-                event.openURL(utils.locate('view/member/editor/corpus.js'),
-                    function (data) {
-                        return ;
-                    });
+                var _this = this;
+                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
+//                event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
+                    _this.getCorpus();
+                });
             },
 //            个人信息
             goAttribute(){
@@ -989,6 +1040,7 @@
         }
     }
 </script>
+
 
 
 
