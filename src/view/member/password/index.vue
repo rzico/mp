@@ -61,7 +61,7 @@
                 });
             },
             goBack:function(e) {
-                event.closeUrl();
+                event.closeURL();
             },
             onChange: function (val) {
                 this.value = val;

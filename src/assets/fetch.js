@@ -5,7 +5,7 @@ export function fetch (type,path,body) {
   return new Promise((resolve, reject) => {
     stream.fetch({
       method:`${type}`,
-      url: `${baseURL}/${path}`,
+      url: `${baseURL}${path}`,
       type: 'json',
       body:`${body}`
     }, (response) => {
