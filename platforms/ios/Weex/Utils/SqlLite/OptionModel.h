@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <JSONAPI.h>
 
-@interface OptionModel : NSObject
+@interface OptionModel : JSONModel
 
-@property (nonatomic, assign) NSUInteger userId;
-@property (nonatomic, assign) NSUInteger type;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *keyword;
 @property (nonatomic, copy) NSString *orderBy;
 @property (nonatomic, assign) NSUInteger current;

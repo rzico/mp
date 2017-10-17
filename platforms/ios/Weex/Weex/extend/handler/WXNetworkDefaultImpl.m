@@ -14,6 +14,7 @@
 #import "WXNetworkQueueModel.h"
 #import "AppDelegate.h"
 #import "UIViewController+Util.h"
+#import "SqlLiteManager.h"
 
 static NSMutableArray<WXNetworkQueueModel *> *queueList;
 
@@ -24,8 +25,7 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
         [NetManager PostHttp:[request.URL absoluteString] Parameters:[DictionaryUtil dictionaryWithJsonData:request.HTTPBody] Success:^(id  _Nonnull responseObject) {
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
                 if ([self checkLoginSession:responseObject withRequest:request andDelegate:delegate]){
-                    WXResourceResponse *response = [[WXResourceResponse alloc] initWithURL:request.URL statusCode:200 HTTPVersion:nil headerFields:nil];
-                    [delegate request:request didReceiveResponse:response];
+                    
                     [delegate request:request didReceiveData:[[DictionaryUtil convertToJsonData:responseObject] dataUsingEncoding:NSUTF8StringEncoding]];
                     [delegate requestDidFinishLoading:request];
                 }
@@ -38,12 +38,31 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
             [delegate requestDidFinishLoading:request];
         }];
     }else if([request.HTTPMethod isEqualToString:@"GET"]){
-        if (!([request.URL isContains:@".ttf"] || [request.URL isContains:@".js"])){
-            [NetManager GetHttp:[request.URL absoluteString] Parameters:nil Success:^(id  _Nonnull responseObject) {
+        if (!([request.URL isContains:@".ttf"] || [request.URL isContains:@".js"] || [request.URL isContains:@".wx"])){
+            SqlLiteManager *manager = [SqlLiteManager defaultManager];
+            SqlLiteModel *data = [manager findWithUserId:@"1" AndType:@"DataCache" AndKey:[request.URL absoluteString] AndNeedOpen:YES];
+            NSMutableDictionary *parameters = nil;
+            if (data){
+                [delegate request:request didReceiveData:[data.value dataUsingEncoding:NSUTF8StringEncoding]];
+                [delegate requestDidFinishLoading:request isKeepAlive:YES];
+                parameters = [NSMutableDictionary new];
+                [parameters setObject:data.keyword forKey:@"md5"];
+            }
+            [NetManager GetHttp:[request.URL absoluteString] Parameters:parameters Success:^(id  _Nonnull responseObject) {
                 if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
                     if ([self checkLoginSession:responseObject withRequest:request andDelegate:delegate]){
-                        [delegate request:request didReceiveData:[[DictionaryUtil convertToJsonData:responseObject] dataUsingEncoding:NSUTF8StringEncoding]];
-                        [delegate requestDidFinishLoading:request];
+                        NSString *receiveData = [DictionaryUtil convertToJsonData:responseObject];
+                        if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
+                            SqlLiteModel *newData = [SqlLiteModel new];
+                            newData.userId = @"1";
+                            newData.type = @"DataCache";
+                            newData.key = [request.URL absoluteString];
+                            newData.value = receiveData;
+                            newData.keyword = [responseObject objectForKey:@"md5"];
+                            [manager save:newData];
+                        }
+                        [delegate request:request didReceiveData:[receiveData dataUsingEncoding:NSUTF8StringEncoding]];
+                        [delegate requestDidFinishLoading:request isKeepAlive:NO];
                     }
                 }else{
                     [delegate request:request didReceiveData:responseObject];

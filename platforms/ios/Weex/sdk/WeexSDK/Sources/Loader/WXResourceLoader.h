@@ -30,6 +30,7 @@
 @property (nonatomic, copy) void (^onResponseReceived)(const WXResourceResponse *);
 @property (nonatomic, copy) void (^onDataReceived)(NSData *);
 @property (nonatomic, copy) void (^onFinished)(const WXResourceResponse *, NSData *);
+@property (nonatomic, copy) void (^onFinishedWithKeepAlive)(const WXResourceResponse *, NSData *, BOOL isKeepAlive);
 @property (nonatomic, copy) void (^onFailed)(NSError *);
 
 - (instancetype)initWithRequest:(WXResourceRequest *)request;

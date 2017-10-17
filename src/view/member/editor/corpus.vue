@@ -210,8 +210,9 @@
                                 total:0,
                                 bgChange:false
                             });
+                            let orders = _this.corpusList.length + 1;
 //                            向服务器存入文集名称
-                            _this.addStream(value.data,res=>{
+                            _this.addStream(value.data,orders,res=>{
                                 modal.toast({message:res,duration:3});
                             });
                             modal.toast({message:'添加成功',duration:1});
@@ -220,11 +221,11 @@
                     }
                 })
             },
-            addStream (corpusName,callback) {
+            addStream (corpusName,orders,callback) {
                 return stream.fetch({
                     method: 'POST',
                     type: 'json',
-                    url: 'weex/member/article_catalog/add.jhtml?corpusName=' + corpusName
+                    url: 'weex/member/article_catalog/add.jhtml?name=' + corpusName + '&orders=' + orders
                 }, callback)
             },
 //            修改文集名称
@@ -274,6 +275,7 @@
             },
 //            长按结束后，手指离开屏幕，背景色还原
             ontouchend:function (index) {
+                event.toast('排序成功');
                 pressPoint = -1;
                 this.canScroll = true;
                 this.corpusList.forEach(function (item) {

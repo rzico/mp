@@ -873,8 +873,8 @@
                     cover : _this.coverImage
                 }
                 storage.setItem('coverImage', coverData);
-                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
-//                        event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
+//                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
+                        event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
                     _this.coverImage = message.data;
@@ -885,8 +885,9 @@
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
 //                event.toast(musicId);
-                event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
-//                        event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
+//                event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
+                        event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
+                            event.toast(message);
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
                     if(message.data != ''){
@@ -898,8 +899,8 @@
 //            跳转投票页面
             goVote:function () {
                 let _this = this;
-//                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
-                event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
+                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
+//                event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
                     if(message.data != '') {
                         _this.voteList.push(message.data);
                     }
@@ -909,8 +910,8 @@
             editVote:function (index) {
                 let _this = this;
                 storage.setItem('voteData', _this.voteList[index]);
-//                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
-                event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
+                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
+//                event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
                     if(message.data != '') {
                         _this.voteList[index] = message.data;
                     }

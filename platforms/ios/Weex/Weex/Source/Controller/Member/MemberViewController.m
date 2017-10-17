@@ -28,6 +28,7 @@
 //    [self render:^(BOOL finished) {
 //        [super viewWillAppear:animated];
 //    }];
+    [super viewWillAppear:animated];
 }
 /*
 #pragma mark - Navigation
