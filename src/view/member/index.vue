@@ -994,6 +994,7 @@
                 if(scrollTop >=284){
                     this.twoTop = true;
 //                    this.corpusScrollTop = 136;
+
 //                    this.corpusPosition = 'fixed';
 //                    modal.toast({message:this.corpusPosition,duration:1})
                 }else{

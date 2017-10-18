@@ -206,15 +206,17 @@
                 return;
             }else{
                 storage.getItem(corpus, e => {
-                    let corpusData =  JSON.parse(e.data);
-                    corpusData.forEach(function (item) {
-                        _this.corpusList.push({
+                    if(e.data != 'undefined'){
+                        let corpusData =  JSON.parse(e.data);
+                        corpusData.forEach(function (item) {
+                            _this.corpusList.push({
                                 name:item.name,
                                 total:item.count,
                                 id:item.id,
                                 bgChange:false
+                            })
                         })
-                    })
+                    }
 //                    storage.removeItem(corpus);
                 })
             }
