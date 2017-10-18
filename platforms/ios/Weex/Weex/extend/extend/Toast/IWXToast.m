@@ -7,6 +7,7 @@
 //
 
 #import "IWXToast.h"
+#import "DictionaryUtil.h"
 
 @implementation IWXToast
 
@@ -47,13 +48,17 @@ static const CGFloat WXToastDefaultPadding = 30.0;
     }
 }
 
-- (UIView *)toastViewForMessage:(NSString *)message superView:(UIView *)superView
+- (UIView *)toastViewForMessage:(id)message superView:(UIView *)superView
 {
     CGFloat padding = WXToastDefaultPadding;
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(padding/2, padding/2, WXToastDefaultWidth, WXToastDefaultHeight)];
     messageLabel.numberOfLines =  0;
     messageLabel.textAlignment = NSTextAlignmentCenter;
-    messageLabel.text = message;
+    if ([message isKindOfClass:[NSString class]]){
+        messageLabel.text = message;
+    }else{
+        messageLabel.text = [DictionaryUtil convertToJsonData:message];
+    }
     messageLabel.font = [UIFont boldSystemFontOfSize:WXToastDefaultFontSize];
     messageLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     messageLabel.textColor = [UIColor whiteColor];
