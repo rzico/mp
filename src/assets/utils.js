@@ -116,6 +116,13 @@ let utilsFunc = {
         var t = Y+'-'+m+'-'+d+' '+H+':'+i+':'+s;
         // var t = Y + '-' + m + '-' + d;
         return t;
+    },
+    thumbnail(url,w,h) {
+        if (url.startsWith("http://")) {
+            return url+"@"+w+"w_"+h+"h_1e_1c_100Q";
+        } else {
+            return url;
+        }
     }
 };
 
