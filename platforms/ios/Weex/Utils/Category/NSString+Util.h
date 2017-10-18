@@ -12,5 +12,5 @@
 
 - (BOOL)isContains:(NSString *)str;
 - (BOOL)isContains:(NSString *)str1 and:(NSString *)str2;
-
++ (NSString *)getUUID;
 @end

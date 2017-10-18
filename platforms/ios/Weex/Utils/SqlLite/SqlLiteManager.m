@@ -143,6 +143,8 @@ static FMDatabase *_db;
 - (NSUInteger)add:(SqlLiteModel *)model{
     NSString *sql = [NSString stringWithFormat:@"INSERT INTO redis(USERID,TYPE,KEY,VALUE,SORT,KEYWORD) VALUES(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",model.userId,model.type,model.key,model.value,model.sort,model.keyword];
     BOOL success = [_db executeUpdate:sql];
+    
+    
     NSUInteger Id = -1;
     if (success){
         Id = [_db lastInsertRowId];

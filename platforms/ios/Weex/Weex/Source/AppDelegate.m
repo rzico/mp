@@ -48,6 +48,9 @@
 
 #import "NetManager.h"
 
+#import "AliOSSManager.h"
+
+#import "NSDate+Util.h"
 @interface AppDelegate ()
 @end
 
@@ -59,9 +62,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [ResourceManager defaultManager];
-    });
+    NSLog(@"documentpaht=%@",DOCUMENT_PATH);
+    
+    [ResourceManager defaultManager];
+    
+    [NSThread sleepForTimeInterval:3];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 
@@ -75,6 +80,13 @@
     [self.window makeKeyAndVisible];
 
     [self startSplashScreen];
+    
+    [[AliOSSManager defautManager] uploadObjectAsyncWithPath:[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"photo.jpg"] AndBlock:^(BOOL success) {
+        NSLog(@"upload=%d",success);
+    }];
+    
+    
+    
 #if DEBUG
     // check if there are any UI changes on main thread.
     [UIView wx_checkUIThread];

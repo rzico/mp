@@ -62,7 +62,7 @@
 		2291F1421F6ABA8B00B94F1B /* UIColor+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 2291F1411F6ABA8B00B94F1B /* UIColor+Util.m */; };
 		2291F1441F6ABB2A00B94F1B /* member.js in Resources */ = {isa = PBXBuildFile; fileRef = 2291F1431F6ABB2A00B94F1B /* member.js */; };
 		229357811F7F8A2E00050115 /* WXCallBackMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 229357801F7F8A2E00050115 /* WXCallBackMessage.m */; };
-		2293849D1F87867900AD9746 /* AliOSSUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293849C1F87867900AD9746 /* AliOSSUtils.m */; };
+		2293849D1F87867900AD9746 /* AliOSSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293849C1F87867900AD9746 /* AliOSSManager.m */; };
 		229384A31F87928600AD9746 /* editor.js in Resources */ = {isa = PBXBuildFile; fileRef = 229384A21F87928500AD9746 /* editor.js */; };
 		229384A51F87929800AD9746 /* music.js in Resources */ = {isa = PBXBuildFile; fileRef = 229384A41F87929800AD9746 /* music.js */; };
 		2293FA821F8A241E00508A17 /* WXNetworkQueueModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2293FA811F8A241E00508A17 /* WXNetworkQueueModel.m */; };
@@ -80,6 +80,9 @@
 		22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB381F7A8E60000295FD /* UIImage+Util.m */; };
 		22BDEB3B1F7A8EE4000295FD /* TXUtilsString.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB311F7A8A86000295FD /* TXUtilsString.m */; };
 		22DB01801F7119F70018BD1E /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB017F1F7119F70018BD1E /* UIView+Layout.m */; };
+		880986601F95B72C00491855 /* AliOSSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809865F1F95B72C00491855 /* AliOSSModel.m */; };
+		880986631F95FA5E00491855 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 880986621F95FA5E00491855 /* NSDate+Util.m */; };
+		880986651F960A9C00491855 /* photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 880986641F960A5C00491855 /* photo.jpg */; };
 		ED6C26792AB173CC0A625939 /* libPods-Weex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E7301C98C27CC96A1B57A2E /* libPods-Weex.a */; };
 /* End PBXBuildFile section */
 
@@ -181,8 +184,8 @@
 		2291F1431F6ABB2A00B94F1B /* member.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = member.js; sourceTree = "<group>"; };
 		2293577F1F7F8A2E00050115 /* WXCallBackMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXCallBackMessage.h; sourceTree = "<group>"; };
 		229357801F7F8A2E00050115 /* WXCallBackMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXCallBackMessage.m; sourceTree = "<group>"; };
-		2293849B1F87867900AD9746 /* AliOSSUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AliOSSUtils.h; sourceTree = "<group>"; };
-		2293849C1F87867900AD9746 /* AliOSSUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AliOSSUtils.m; sourceTree = "<group>"; };
+		2293849B1F87867900AD9746 /* AliOSSManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AliOSSManager.h; sourceTree = "<group>"; };
+		2293849C1F87867900AD9746 /* AliOSSManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AliOSSManager.m; sourceTree = "<group>"; };
 		229384A21F87928500AD9746 /* editor.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = editor.js; sourceTree = "<group>"; };
 		229384A41F87929800AD9746 /* music.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = music.js; sourceTree = "<group>"; };
 		2293FA801F8A241E00508A17 /* WXNetworkQueueModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetworkQueueModel.h; sourceTree = "<group>"; };
@@ -215,6 +218,11 @@
 		22DB017E1F7119F70018BD1E /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
 		22DB017F1F7119F70018BD1E /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		4E7301C98C27CC96A1B57A2E /* libPods-Weex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Weex.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8809865E1F95B72C00491855 /* AliOSSModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AliOSSModel.h; sourceTree = "<group>"; };
+		8809865F1F95B72C00491855 /* AliOSSModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AliOSSModel.m; sourceTree = "<group>"; };
+		880986611F95FA5E00491855 /* NSDate+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Util.h"; sourceTree = "<group>"; };
+		880986621F95FA5E00491855 /* NSDate+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Util.m"; sourceTree = "<group>"; };
+		880986641F960A5C00491855 /* photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = photo.jpg; sourceTree = "<group>"; };
 		B5CC5E75B3A3DDBEB00BEBE2 /* Pods-Weex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.debug.xcconfig"; sourceTree = "<group>"; };
 		C997E99170AC764E0846A31F /* Pods-Weex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Weex.release.xcconfig"; path = "Pods/Target Support Files/Pods-Weex/Pods-Weex.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -393,6 +401,7 @@
 		2291F0E41F6A7DB000B94F1B /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				880986641F960A5C00491855 /* photo.jpg */,
 				2219E62E1F8E13D300D4E9B0 /* data.db */,
 				2234BDD41F8A51CF001F6099 /* res-0.0.1.zip */,
 				229384A41F87929800AD9746 /* music.js */,
@@ -577,8 +586,10 @@
 		2293849A1F87862A00AD9746 /* AliOSS */ = {
 			isa = PBXGroup;
 			children = (
-				2293849B1F87867900AD9746 /* AliOSSUtils.h */,
-				2293849C1F87867900AD9746 /* AliOSSUtils.m */,
+				2293849B1F87867900AD9746 /* AliOSSManager.h */,
+				2293849C1F87867900AD9746 /* AliOSSManager.m */,
+				8809865E1F95B72C00491855 /* AliOSSModel.h */,
+				8809865F1F95B72C00491855 /* AliOSSModel.m */,
 			);
 			path = AliOSS;
 			sourceTree = "<group>";
@@ -645,6 +656,8 @@
 				2293FA841F8A27FA00508A17 /* UIViewController+Util.m */,
 				224263321F8CB665003FFE86 /* NSString+Util.h */,
 				224263331F8CB665003FFE86 /* NSString+Util.m */,
+				880986611F95FA5E00491855 /* NSDate+Util.h */,
+				880986621F95FA5E00491855 /* NSDate+Util.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -733,6 +746,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				880986651F960A9C00491855 /* photo.jpg in Resources */,
 				2219E62F1F8E17C800D4E9B0 /* data.db in Resources */,
 				2234BDD51F8A51E0001F6099 /* res-0.0.1.zip in Resources */,
 				229384A51F87929800AD9746 /* music.js in Resources */,
@@ -831,7 +845,7 @@
 				2291F0C91F6A796800B94F1B /* main.m in Sources */,
 				2291F10A1F6A89EC00B94F1B /* WXImgLoaderDefaultImpl.m in Sources */,
 				22B70DE21F8BA38100BCBD83 /* PublicKeyManager.m in Sources */,
-				2293849D1F87867900AD9746 /* AliOSSUtils.m in Sources */,
+				2293849D1F87867900AD9746 /* AliOSSManager.m in Sources */,
 				2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */,
 				2293FA821F8A241E00508A17 /* WXNetworkQueueModel.m in Sources */,
 				2291F13D1F6AB86E00B94F1B /* MemberViewController.m in Sources */,
@@ -846,7 +860,9 @@
 				223B1EA71F7D2767005DC7A7 /* UIViewController+WXDemoNaviBar.m in Sources */,
 				2291F1371F6AB77800B94F1B /* HomeViewController.m in Sources */,
 				2291F11D1F6A8A7C00B94F1B /* UIView+UIThreadCheck.m in Sources */,
+				880986601F95B72C00491855 /* AliOSSModel.m in Sources */,
 				22B70DDF1F8BA26B00BCBD83 /* PublicKeyModel.m in Sources */,
+				880986631F95FA5E00491855 /* NSDate+Util.m in Sources */,
 				2293FA851F8A27FA00508A17 /* UIViewController+Util.m in Sources */,
 				2275EEFE1F890A15002A2202 /* LoginViewController.m in Sources */,
 				22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */,

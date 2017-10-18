@@ -21,4 +21,12 @@
     return (!(range1.length == 0 && range1.location > self.length) && !(range2.length == 0 && range2.location > self.length));
 }
 
++ (NSString *)getUUID{
+    CFUUIDRef uuid_ref = CFUUIDCreate(NULL);
+    CFStringRef uuid_string_ref = CFUUIDCreateString(NULL, uuid_ref);
+    NSString *uuid = [NSString stringWithString:(__bridge NSString *)uuid_string_ref];
+    CFRelease(uuid_ref);
+    CFRelease(uuid_string_ref);
+    return [uuid lowercaseString];
+}
 @end
