@@ -38,7 +38,8 @@ typedef void(^GetOSSDataBlock)(BOOL success);
     if (sqlData){
         AliOSSModel *ossData = [[AliOSSModel alloc] initWithString:sqlData.value error:nil];
         NSTimeInterval interval = [NSDate GetTimeIntervalFromUTCString:ossData.Expiration];
-        if (interval <= 2 * 60){
+        NSLog(@"interval=%lf",3600 - interval);
+        if (3600 - interval >= 2 * 60){
             NSLog(@"flushToken=YES");
             [self flushToken:block];
         }else{
@@ -124,19 +125,19 @@ typedef void(^GetOSSDataBlock)(BOOL success);
                 if (!task.error) {
                     NSLog(@"upload object success!");
                     if (block){
-                        block(YES);
+                        block([NSString stringWithFormat:@"http://cdn.rzico.com/%@",put.objectKey]);
                     }
                 } else {
                     NSLog(@"upload object failed, error: %@" , task.error);
                     if (block){
-                        block(NO);
+                        block(nil);
                     }
                 }
                 return nil;
             }];
         }else{
             if (block){
-                block(NO);
+                block(nil);
             }
         }
     }];

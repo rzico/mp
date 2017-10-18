@@ -12,11 +12,10 @@
 @interface SqlLiteModel : JSONModel
 
 @property (nonatomic, assign) NSUInteger Id;
-@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy, setter=setUserId:) NSString *userId;
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSString *value;
-@property (nonatomic, copy) NSString *sort;
+@property (nonatomic, copy, setter=setSort:) NSString *sort;
 @property (nonatomic, copy) NSString *keyword;
-
 @end

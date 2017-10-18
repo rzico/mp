@@ -83,8 +83,7 @@ static FMDatabase *_db;
 }
 
 - (BOOL)updateWithId:(NSUInteger)Id AndModel:(SqlLiteModel *)model{
-    NSString *sql = [NSString stringWithFormat:@"UPDATE redis SET USERID=\"%@\",TYPE=\"%@\",KEY=\"%@\",VALUE=\"%@\",SORT=\"%@\",KEYWORD=\"%@\" WHERE ID=%tu",model.userId,model.type,model.key,model.value,model.sort,model.keyword,Id];
-    BOOL success = [_db executeUpdate:sql];
+    BOOL success = [_db executeUpdate:@"UPDATE redis SET USERID=?,TYPE=?,KEY=?,VALUE=?,SORT=?,KEYWORD=? WHERE ID=?",model.userId,model.type,model.key,model.value,model.sort,model.keyword,[NSNumber numberWithUnsignedInteger:Id]];
     return success;
 }
 
@@ -92,8 +91,7 @@ static FMDatabase *_db;
     if (needOpen){
         [_db open];
     }
-    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM redis WHERE(USERID=\"%@\" AND TYPE=\"%@\" AND KEY=\"%@\") LIMIT 1",userId,type,key];
-    FMResultSet *result = [_db executeQuery:sql];
+    FMResultSet *result = [_db executeQuery:@"SELECT * FROM redis WHERE(USERID=? AND TYPE=? AND KEY=?) LIMIT 1",userId,type,key];
     if ([result next]){
         SqlLiteModel *model = [SqlLiteModel new];
         model.Id = [[result stringForColumn:@"Id"] integerValue];
@@ -122,8 +120,7 @@ static FMDatabase *_db;
     
     NSMutableArray<SqlLiteModel *> *dataArray = [NSMutableArray<SqlLiteModel *> new];
     
-    NSString *sql = [NSString stringWithFormat:@"SELECT * FROM redis WHERE(USERID=\"%@\" AND TYPE=\"%@\" AND KEYWORD=\"%@\") LIMIT %tu OFFSET %tu",option.userId,option.type,option.keyword,option.current,option.pageSize];
-    FMResultSet *result = [_db executeQuery:sql];
+    FMResultSet *result = [_db executeQuery:@"SELECT * FROM redis WHERE(USERID=? AND TYPE=? AND KEYWORD=?) LIMIT ? OFFSET ?",option.userId,option.type,option.keyword,[NSNumber numberWithUnsignedInteger:option.current],[NSNumber numberWithUnsignedInteger:option.pageSize]];
     
     while ([result next]) {
         SqlLiteModel *model = [SqlLiteModel new];
@@ -141,8 +138,7 @@ static FMDatabase *_db;
 }
 
 - (NSUInteger)add:(SqlLiteModel *)model{
-    NSString *sql = [NSString stringWithFormat:@"INSERT INTO redis(USERID,TYPE,KEY,VALUE,SORT,KEYWORD) VALUES(\"%@\",\"%@\",\"%@\",\"%@\",\"%@\",\"%@\")",model.userId,model.type,model.key,model.value,model.sort,model.keyword];
-    BOOL success = [_db executeUpdate:sql];
+    BOOL success = [_db executeUpdate:@"INSERT INTO redis(USERID,TYPE,KEY,VALUE,SORT,KEYWORD) VALUES(?,?,?,?,?,?)",model.userId,model.type,model.key,model.value,model.sort,model.keyword];
     
     
     NSUInteger Id = -1;
@@ -154,8 +150,7 @@ static FMDatabase *_db;
 
 - (BOOL)deleteWithUserId:(NSString *)userId AndType:(NSString *)type AndKey:(NSString *)key{
     [_db open];
-    NSString *sql = [NSString stringWithFormat:@"DELETE FROM redis WHERE USERID=\"%@\" AND TYPE=\"%@\" AND KEY=\"%@\"",userId,type,key];
-    BOOL success = [_db executeUpdate:sql];
+    BOOL success = [_db executeUpdate:@"DELETE FROM redis WHERE USERID=? AND TYPE=? AND KEY=?",userId,type,key];
     [_db close];
     return success;
 }

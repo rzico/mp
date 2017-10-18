@@ -26,6 +26,7 @@
     }
     if (!isLocalReleased){
         if ([manager checkUpdate:nil]){
+            NSLog(@"releaseLocalZip");
             isLocalReleased = [manager releaseLocalZip];
         }
     }
@@ -35,6 +36,7 @@
             NSDictionary *dic = [DictionaryUtil dictionaryWithJsonData:data];
             if (dic && [[dic objectForKey:@"type"] isEqualToString:@"success"]){
                 ResourcesModel *resource = [[ResourcesModel alloc] initWithDictionary:[dic objectForKey:@"data"] error:nil];
+                NSLog(@"resource=%@",resource.resUrl);
                 if (resource.resUrl.length > 0){
                     if ([manager checkUpdate:resource.resVersion]){
                         [manager updateResource];
@@ -72,16 +74,17 @@
 }
 
 - (BOOL)checkUpdate:(nullable NSString *)version{
-#if DEBUG
-    return YES;
-#else
     config = [[NSMutableDictionary alloc] initWithContentsOfFile: [DOCUMENT_PATH stringByAppendingString:@"/config.plist"]];
-    if (!version){
+    if (version){
+#if DEBUG
+        return YES;
+#else
         return (!config || ![[config objectForKey:@"resVersion"] isEqualToString:version]);
+#endif
     }else{
         return (!config || ![config objectForKey:@"resVersion"]);
     }
-#endif
+
 }
 
 - (void)updateResource{
@@ -104,6 +107,7 @@
 }
 
 - (void)releaseZipFiles{
+    NSLog(@"release!");
     zip = [ZipArchive new];
     if ([zip UnzipOpenFile:zipPath]){
         NSString *resourcePath = [DOCUMENT_PATH stringByAppendingString:@"/resource"];

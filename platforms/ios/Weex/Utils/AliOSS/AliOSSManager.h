@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "AliOSSModel.h"
 
-typedef void(^AliOSSUploadBlock)(BOOL success);
+typedef void(^AliOSSUploadBlock)(NSString  * url);
 
 @interface AliOSSManager : NSObject
 

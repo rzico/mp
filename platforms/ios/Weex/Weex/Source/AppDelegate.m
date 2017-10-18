@@ -81,8 +81,9 @@
 
     [self startSplashScreen];
     
-    [[AliOSSManager defautManager] uploadObjectAsyncWithPath:[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"photo.jpg"] AndBlock:^(BOOL success) {
-        NSLog(@"upload=%d",success);
+    
+    [[AliOSSManager defautManager] uploadObjectAsyncWithPath:[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"photo.jpg"] AndBlock:^(NSString *url) {
+        NSLog(@"upload=%@",url);
     }];
     
     

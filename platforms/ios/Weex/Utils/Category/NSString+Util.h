@@ -13,4 +13,6 @@
 - (BOOL)isContains:(NSString *)str;
 - (BOOL)isContains:(NSString *)str1 and:(NSString *)str2;
 + (NSString *)getUUID;
+- (NSString *)base64EncodedString;
+- (NSString *)base64DecodedString;
 @end
