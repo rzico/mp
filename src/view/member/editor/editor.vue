@@ -392,7 +392,7 @@
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
-//                        event.toast('123');
+                        event.toast(data);
                         if(data.type == 'success'){
                             _this.coverImage = 'file:/' + data.data[0].originalPath;
 //                    data.data里存放的是用户选取的图片路径
@@ -424,7 +424,7 @@
                     event.find(options,function (data) {
                         if(data.type == 'success'){
                             let articleData = JSON.parse(data.data.value);
-//                            event.toast(articleData.votes);
+                            event.toast(articleData);
                             _this.setTitle = articleData.title;
                             _this.coverImage = articleData.thumbnail;
                             _this.musicName = articleData.music.name;
@@ -638,7 +638,7 @@
                     method: 'POST',
                     type: 'json',
                     body:articleData,
-                    url: '/weex/member/article/submit.jhtml'
+                    url: 'weex/member/article/submit.jhtml'
                 }, callback)
             },
 //            点击"+"号里的文本时

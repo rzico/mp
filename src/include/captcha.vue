@@ -11,7 +11,7 @@
         <!--6个验证码框-->
         <div class="flex-row inputTextBox mtb50" @click="getFocus()">
             <!--隐藏的输入框-->
-            <input type="tel" ref="captchRef" v-model="captchaValue" maxlength="6" @input="captchaInput" autofocus="true" class="input" />
+            <input type="tel" ref="captchRef" v-model="captcha" maxlength="6" @input="captchaInput" autofocus="true" class="input" />
             <div  v-for="item in textList" class="inputDiv" >
                 <text class="inputText">{{item}}</text>
             </div>
@@ -95,8 +95,7 @@
     export default {
         data:function(){
             return{
-                captchaValue:'',
-                textList:['','','','','',''],
+                textList:['','','','','','']
             }
         },
         props: {
@@ -144,6 +143,10 @@
               } else {
                   return "color:#ccc";
               }
+            },
+            clear:function () {
+                this.captcha = "";
+                this.textList = ['','','','','',''];
             },
 //            当用户输入数字时触发
             captchaInput:function (event) {

@@ -64,6 +64,7 @@
                                 if (data.type == "success") {
                                     event.closeURL(data);
                                 } else {
+                                    this.$refs.captcha.clear();
                                     event.toast(data.content);
                                 }
                             },function () {
