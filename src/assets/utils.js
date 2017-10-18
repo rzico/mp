@@ -118,7 +118,7 @@ let utilsFunc = {
         return t;
     },
     thumbnail(url,w,h) {
-        if (url.startsWith("http://")) {
+        if (url.substring(0,10) == "http://cdn") {
             return url+"@"+w+"w_"+h+"h_1e_1c_100Q";
         } else {
             return url;

@@ -7,7 +7,7 @@
                 <div >
                     <image class="coverImage" resize="cover" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
-                    <text class="setTitle" @click="articleTitle(setTitle)">{{setTitle}}</text>
+                    <text class="setTitle" @trigger="articleTitle(setTitle)" @click="articleTitle(setTitle)">{{setTitle}}</text>
 
                     <div class="bottomBtn addMusic" >
                         <text class="musicSize"  @click="goMusic()" v-if="this.musicName == ''">{{addMusic}}</text>
@@ -328,13 +328,13 @@
 </style>
 
 <script>
-    import navbar from '../../../include/navbar.vue'
-    import utils from '../../../assets/utils'
-    const storage = weex.requireModule('storage')
+    import navbar from '../../../include/navbar.vue';
+    import utils from '../../../assets/utils';
+    const storage = weex.requireModule('storage');
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     var modal = weex.requireModule('modal');
-    const stream = weex.requireModule('stream')
+    const stream = weex.requireModule('stream');
     var lastIndex = -1;
     var musicId = -1 ;
     export default {
@@ -349,6 +349,7 @@
                 musicName:'',
                 paraList:[],
                 voteList:[],
+                proportion:'',
             }
         },
         filters:{
@@ -397,7 +398,6 @@
                             _this.coverImage = 'file:/' + data.data[0].originalPath;
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
-
                                 _this.paraList.push({
                                     //原图
                                     paraImage:'file:/' + data.data[i].originalPath,
@@ -406,6 +406,9 @@
                                     paraText:'',
                                     show:true
                                 }) ;
+//                                event.toast(data.data[i].originalPath);
+//                                event.toast('缩略图路径');
+//                                event.toast(data.data[i].thumbnailSmallPath);
                             }
                         }else{
                             event.closeURL();
@@ -541,33 +544,92 @@
             },
 //            完成
             goComplete:function () {
+
+                var _this = this;
                 if(this.setTitle == '点击设置标题'){
                     modal.alert({
                         message: '请设置标题',
                         duration: 0.3
+                    },function () {
+                        _this.articleTitle(_this.setTitle);
                     })
                     return;
                 }
 
-
-                var _this = this;
-//            获取当前时间戳 作为唯一标识符key
-                var timestamp = Math.round(new Date().getTime()/1000);
-                var atticleTemplates = [];
-                this.paraList.forEach(function(item){
-                    atticleTemplates.push({
-                        thumbnail:item.thumbnailImage,
-                        original:item.paraImage,
-                        mediaType: "image",
-                        content:item.paraText
+//                获取设备宽度
+                let devWidth = weex.config.env.deviceWidth;
+//                获取缩略图的宽高
+                _this.proportion = parseInt(155 * devWidth/750);
+                let frontcoverUrl = this.coverImage.substring(0,5);
+                if(frontcoverUrl == 'http:'){
+                    _this.sendImage(0);
+                }else{
+                    let sendcover = frontcoverUrl == 'file:' ? this.coverImage.substring(7) : this.coverImage;
+                    //                将封面上传服务器
+                    event.upload(sendcover,function (data) {
+                        if(data.type == 'success' && data.data != ''){
+                            _this.coverImage = data.data;
+//                        上传段落图片
+                            _this.sendImage(0);
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (data) {
+//                    _this.setTitle = data.data;
+//                    event.toast(data);
                     })
-                })
+                }
+
+
+            },
+            //上传图片到服务器
+            sendImage (sendIndex) {
+                var _this = this;
+                let sendLength = _this.paraList.length;//获取图片数组总长度
+                let frontUrl = _this.paraList[sendIndex].paraImage.substring(0,5);
+//                判断是否已经是服务器图片
+                if(frontUrl == 'http:'){
+                    sendIndex ++ ;
+//                        判断是否最后一张图
+                    if(sendIndex < sendLength){
+//                            回调自己自己
+                        _this.sendImage(sendIndex)
+                    }else{//进行上传文章
+                        _this.realSave();
+                    }
+                }else{
+                    let sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(7) : _this.paraList[sendIndex].paraImage;//将图片前的file://字符去掉
+                    event.upload(sendparaimg,function (data) {
+                        if(data.type == 'success' && data.data != ''){
+                            _this.paraList[sendIndex].paraImage = data.data;
+                            //                            向后台获取缩略图
+                            _this.paraList[sendIndex].thumbnailImage = utils.thumbnail(data.data,_this.proportion,_this.proportion);
+                            sendIndex ++ ;
+//                        判断是否最后一张图
+                            if(sendIndex < sendLength){
+//                            回调自己自己
+                                _this.sendImage(sendIndex)
+                            }else{//进行上传文章
+                                _this.realSave();
+                            }
+                        }else{//上传识别
+                            event.toast(data.content);
+                        }
+                    },function (data) {
+//                    上传进度
+//                        _this.setTitle =  data.data;
+                        //                    event.toast(data);
+                    })
+                }
+
+            },
+//            图片上传后，正式将文章数据上传服务器
+            realSave(){
+                var _this = this;
                 let musicData = {
                     name:_this.musicName,
                     id:musicId
                 }
-//                event.toast(this.voteList);
-
                 let voteData = [];
 //                投票组
                 this.voteList.forEach(function (item) {
@@ -578,10 +640,9 @@
                     })
                     let expireTime = '';
                     if(item.chooseDate == '无截止时间'){
-
                     }else{
-                       let merge = item.chooseDate + ' ' +item.chooseTime + ':00';
-                       let mergeMore = new Date(Date.parse(merge.replace(/-/g, "/")));
+                        let merge = item.chooseDate + ' ' +item.chooseTime + ':00';
+                        let mergeMore = new Date(Date.parse(merge.replace(/-/g, "/")));
                         expireTime = mergeMore.getTime()/1000;
                     }
                     voteData.push({
@@ -590,9 +651,19 @@
                         voteType:item.optionsIndex,
                         options:voteOptions,
                     })
-
 //                    event.toast(voteData);
                 });
+                //            获取当前时间戳 作为唯一标识符key
+                var timestamp = Math.round(new Date().getTime()/1000);
+                var atticleTemplates = [];
+                this.paraList.forEach(function(item){
+                    atticleTemplates.push({
+                        thumbnail:item.thumbnailImage,
+                        original:item.paraImage,
+                        mediaType: "image",
+                        content:item.paraText
+                    })
+                })
 //                判断是再次编辑还是初次编辑;
                 let sendId =  _this.articleId == '' ? timestamp : _this.articleId;
                 let articleData = {
@@ -603,8 +674,8 @@
                     title:_this.setTitle,
                     votes:voteData,
                 }
-
-
+                event.toast("上传数据:");
+                event.toast(articleData);
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
@@ -629,7 +700,6 @@
                     }
 
                 })
-
             },
 //        向服务器发送保存文章
             saveArticle(articleData,callback) {
@@ -874,7 +944,7 @@
                 }
                 storage.setItem('coverImage', coverData);
 //                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
-                        event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
+                event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
                     _this.coverImage = message.data;
@@ -886,8 +956,8 @@
                 let _this = this;
 //                event.toast(musicId);
 //                event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
-                        event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
-                            event.toast(message);
+                event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
+                    event.toast(message);
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
                     if(message.data != ''){

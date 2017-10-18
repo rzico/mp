@@ -605,8 +605,8 @@
                     name:'回收站',
                     id:'99'
                 }],
-
-
+                listCurrent:0,
+                listPageSize:10,
 //                全部文章==================
                 articleList: [],
             }
@@ -629,8 +629,8 @@
                 type:'article',
                 keyword:'',
                 orderBy:'desc',
-                current:0,
-                pageSize:10
+                current:_this.listCurrent,
+                pageSize:_this.listPageSize,
             }
             event.findList(options,function (data) {
                 if( data.type == "success" && data.data != '' ) {
@@ -817,7 +817,7 @@
                 event.toast('will jump');
             },
             corpusChange:function(index,id){
-                event.toast(index);
+                event.toast(id);
                 var _this = this;
                 _this.whichCorpus = index;
 
@@ -935,22 +935,34 @@
             },
             onpanend:function (event) {
             },
-            onloading(event) {
+            onloading(e) {
+                var _this = this;
                 modal.toast({message: '加载中...', duration: 1})
                 this.showLoading = 'show'
                 setTimeout(() => {
-//                    const length = this.articleList.length
-//                    for (let i = length; i < length + 2; ++i) {
-//                        this.articleList.push({
-//                            articleSign: '公开',
-//                            articleTitle: '美丽厦门' + i,
-//                            articleCoverUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                            articleDate: '2017-09-01',
-//                            browse: 626 + i,
-//                            praise: 47 + i,
-//                            comments: 39 + i
-//                        })
-//                    }
+                    _this.listCurrent = _this.listCurrent + 10;
+                    _this.listPageSize = _this.listPageSize + 10;
+                    let options = {
+                        type:'article',
+                        keyword:'',
+                        orderBy:'desc',
+                        current:_this.listCurrent ,
+                        pageSize:_this.listPageSize,
+                    }
+                    event.findList(options,function (data) {
+                        if( data.type == "success" && data.data != '' ) {
+                            data.data.forEach(function (item) {
+//                        event.toast(item);
+//                    将value json化
+                                item.value = JSON.parse(item.value);
+//                        把读取到的文章push进去文章列表
+                                _this.articleList.push(item);
+                            })
+                        }else{
+                            event.toast('缓存' + data.content);
+                        }
+                    })
+
                     this.showLoading = 'hide'
                 }, 1500)
             },

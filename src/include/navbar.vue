@@ -5,7 +5,7 @@
         </div>
         <div class="nav">
             <text class="nav_title">{{title}}</text>
-            <text class="nav_Complete" @click="goComplete('/')">{{complete}}</text>
+            <text class="nav_Complete" v-if="showComplete" @click="goComplete('/')">{{complete}}</text>
          </div>
     </div>
  </template>
@@ -44,7 +44,8 @@
     export default {
         props: {
             title: { default: "navbar" },
-            complete:{default:''}
+            complete:{default:''},
+            showComplete:{default:true}
         },
         methods: {
             goback: function (e) {
