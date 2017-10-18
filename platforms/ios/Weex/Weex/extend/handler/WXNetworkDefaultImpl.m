@@ -59,6 +59,7 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
                             newData.key = [request.URL absoluteString];
                             newData.value = receiveData;
                             newData.keyword = [responseObject objectForKey:@"md5"];
+                            newData.sort = @"";
                             [manager save:newData];
                         }
                         [delegate request:request didReceiveData:[receiveData dataUsingEncoding:NSUTF8StringEncoding]];
