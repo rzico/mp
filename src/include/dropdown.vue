@@ -74,6 +74,8 @@
         width: 40px;
         height: 40px;
         color:#ccc;
+        margin-bottom: 8px;
+        /*10.19加的(柯)*/
     }
 
     .options {

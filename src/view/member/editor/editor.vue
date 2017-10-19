@@ -123,6 +123,9 @@
             <!--用来撑起底部空白区域-->
             <cell><div class="emptyBox"></div></cell>
         </list>
+        <div>
+
+        </div>
     </div>
 </template>
 <style scoped>
