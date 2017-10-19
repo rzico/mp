@@ -123,12 +123,61 @@
             <!--用来撑起底部空白区域-->
             <cell><div class="emptyBox"></div></cell>
         </list>
-        <div>
-
+        <!--遮罩-->
+        <div class="sendMask" v-if="toSendArticle">
+            <!--进度条-->
+            <div class="processBox">
+                <text class="processText">正在云同步,请稍后...</text>
+                <!--进度条背景-->
+                <div class="processStyle processBg"></div>
+                <!--进度条进度与颜色-->
+                <div :style="{width:processWidth + 'px'}" style="background-color: #D9141E" class="processStyle"></div>
+                <text class="processTotal">{{currentPro}}/{{proTotal}}</text>
+            </div>
         </div>
     </div>
 </template>
 <style scoped>
+    .processTotal{
+        position: absolute;
+        bottom: 40px;
+        right: 50px;
+        font-size: 28px;
+        color: #888;
+    }
+    .processBg{
+        background-color: #ccc;
+        width:500px;
+    }
+    .processStyle{
+        height:10px;
+        position: absolute;
+        left: 50px;
+        bottom:100px;
+    }
+    .processText{
+        position: absolute;
+        top:40px;
+        left: 50px;
+        font-size: 32px;
+    }
+    .processBox{
+        height:250px;
+        border-radius: 5px;
+        width:600px;
+        background-color: #fff;
+        justify-content: space-between;
+    }
+    .sendMask{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left:0;
+        right: 0;
+        background-color: rgba(0,0,0,0.8);
+        align-items: center;
+        justify-content: center;
+    }
     .voteMargin{
         margin-bottom: 15px;
     }
@@ -343,6 +392,10 @@
     export default {
         data:function(){
             return{
+                toSendArticle:false,//控制进度条 遮罩显示
+                currentPro:0,//当前进度
+                proTotal:2,//总的进度
+                processWidth:0,//进度条宽度
                 articleId:'',
                 refreshing: false,
                 firstPlusShow:true,
@@ -352,7 +405,8 @@
                 musicName:'',
                 paraList:[],
                 voteList:[],
-                proportion:'',
+                proportion:'',//缩略图的比例
+                serveCover:'',//用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
             }
         },
         filters:{
@@ -396,7 +450,7 @@
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
-                        event.toast(data);
+//                        event.toast(data);
                         if(data.type == 'success'){
                             _this.coverImage = 'file:/' + data.data[0].originalPath;
 //                    data.data里存放的是用户选取的图片路径
@@ -407,7 +461,8 @@
                                     //小缩略图
                                     thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
                                     paraText:'',
-                                    show:true
+                                    show:true,
+                                    serveThumbnail:''
                                 }) ;
 //                                event.toast(data.data[i].originalPath);
 //                                event.toast('缩略图路径');
@@ -443,7 +498,8 @@
                                     //小缩略图
                                     thumbnailImage: templatesData[i].thumbnail,
                                     paraText:templatesData[i].content,
-                                    show:true
+                                    show:true,
+                                    serveThumbnail:'' //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
                                 })
                             }
 //                            投票
@@ -509,6 +565,15 @@
 
         },
         methods:{
+//            控制进度条
+            ctrlProcess(data){
+                this.processWidth = data.data * 5;
+                if(this.processWidth == 500){
+                    this.currentPro ++ ;
+                }
+            },
+
+//            设置文章标题
             articleTitle:function(title){
                 let _this = this;
                 if(title == '点击设置标题'){
@@ -549,6 +614,7 @@
             goComplete:function () {
 
                 var _this = this;
+
                 if(this.setTitle == '点击设置标题'){
                     modal.alert({
                         message: '请设置标题',
@@ -559,6 +625,8 @@
                     return;
                 }
 
+                this.toSendArticle = true;
+                this.proTotal = _this.paraList.length + 1;
 //                获取设备宽度
                 let devWidth = weex.config.env.deviceWidth;
 //                获取缩略图的宽高
@@ -571,13 +639,15 @@
                     //                将封面上传服务器
                     event.upload(sendcover,function (data) {
                         if(data.type == 'success' && data.data != ''){
-                            _this.coverImage = data.data;
+                            _this.serveCover = data.data;
 //                        上传段落图片
                             _this.sendImage(0);
                         }else{
+                            _this.toSendArticle = false;
                             event.toast(data.content);
                         }
                     },function (data) {
+                        _this.ctrlProcess(data);
 //                    _this.setTitle = data.data;
 //                    event.toast(data);
                     })
@@ -606,7 +676,7 @@
                         if(data.type == 'success' && data.data != ''){
                             _this.paraList[sendIndex].paraImage = data.data;
                             //                            向后台获取缩略图
-                            _this.paraList[sendIndex].thumbnailImage = utils.thumbnail(data.data,_this.proportion,_this.proportion);
+                            _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,_this.proportion,_this.proportion);
                             sendIndex ++ ;
 //                        判断是否最后一张图
                             if(sendIndex < sendLength){
@@ -615,13 +685,14 @@
                             }else{//进行上传文章
                                 _this.realSave();
                             }
-                        }else{//上传识别
+                        }else{//上传失败
+                            _this.toSendArticle = false;
                             event.toast(data.content);
+
                         }
                     },function (data) {
 //                    上传进度
-//                        _this.setTitle =  data.data;
-                        //                    event.toast(data);
+                        _this.ctrlProcess(data);
                     })
                 }
 
@@ -661,7 +732,7 @@
                 var atticleTemplates = [];
                 this.paraList.forEach(function(item){
                     atticleTemplates.push({
-                        thumbnail:item.thumbnailImage,
+                        thumbnail:item.serveThumbnail,
                         original:item.paraImage,
                         mediaType: "image",
                         content:item.paraText
@@ -670,15 +741,15 @@
 //                判断是再次编辑还是初次编辑;
                 let sendId =  _this.articleId == '' ? timestamp : _this.articleId;
                 let articleData = {
-                    thumbnail:this.coverImage,
+                    thumbnail:this.serveCover,
                     music:musicData,
                     templates:atticleTemplates,
                     id:sendId,
                     title:_this.setTitle,
                     votes:voteData,
                 }
-                event.toast("上传数据:");
-                event.toast(articleData);
+//                event.toast("上传数据:");
+//                event.toast(articleData);
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
