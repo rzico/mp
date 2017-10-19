@@ -80,6 +80,7 @@
 		22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB381F7A8E60000295FD /* UIImage+Util.m */; };
 		22BDEB3B1F7A8EE4000295FD /* TXUtilsString.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BDEB311F7A8A86000295FD /* TXUtilsString.m */; };
 		22DB01801F7119F70018BD1E /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DB017F1F7119F70018BD1E /* UIView+Layout.m */; };
+		8800A80B1F986351009A3CC6 /* FetchImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8800A80A1F986351009A3CC6 /* FetchImage.m */; };
 		880986601F95B72C00491855 /* AliOSSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809865F1F95B72C00491855 /* AliOSSModel.m */; };
 		880986631F95FA5E00491855 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 880986621F95FA5E00491855 /* NSDate+Util.m */; };
 		880986651F960A9C00491855 /* photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 880986641F960A5C00491855 /* photo.jpg */; };
@@ -218,6 +219,8 @@
 		22DB017E1F7119F70018BD1E /* UIView+Layout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Layout.h"; sourceTree = "<group>"; };
 		22DB017F1F7119F70018BD1E /* UIView+Layout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Layout.m"; sourceTree = "<group>"; };
 		4E7301C98C27CC96A1B57A2E /* libPods-Weex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Weex.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8800A8091F986351009A3CC6 /* FetchImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FetchImage.h; sourceTree = "<group>"; };
+		8800A80A1F986351009A3CC6 /* FetchImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FetchImage.m; sourceTree = "<group>"; };
 		8809865E1F95B72C00491855 /* AliOSSModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AliOSSModel.h; sourceTree = "<group>"; };
 		8809865F1F95B72C00491855 /* AliOSSModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AliOSSModel.m; sourceTree = "<group>"; };
 		880986611F95FA5E00491855 /* NSDate+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Util.h"; sourceTree = "<group>"; };
@@ -338,6 +341,7 @@
 		2279B8781F7E826700A8A144 /* extend */ = {
 			isa = PBXGroup;
 			children = (
+				8800A8081F986339009A3CC6 /* FetchImage */,
 				2279B88D1F7E8A7400A8A144 /* Toast */,
 			);
 			path = extend;
@@ -662,6 +666,15 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
+		8800A8081F986339009A3CC6 /* FetchImage */ = {
+			isa = PBXGroup;
+			children = (
+				8800A8091F986351009A3CC6 /* FetchImage.h */,
+				8800A80A1F986351009A3CC6 /* FetchImage.m */,
+			);
+			path = FetchImage;
+			sourceTree = "<group>";
+		};
 		AB614AE20C4A70574CD9DE6B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -840,6 +853,7 @@
 				22BDEB2E1F7A8A6D000295FD /* MD5+Util.m in Sources */,
 				226749631F722A4E0035A6E1 /* EditorViewController.m in Sources */,
 				22BDEB2D1F7A8A6D000295FD /* Utils.m in Sources */,
+				8800A80B1F986351009A3CC6 /* FetchImage.m in Sources */,
 				224263341F8CB665003FFE86 /* NSString+Util.m in Sources */,
 				223B1EAC1F7D307B005DC7A7 /* WXModuleDemo.m in Sources */,
 				2291F0C91F6A796800B94F1B /* main.m in Sources */,

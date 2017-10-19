@@ -46,10 +46,16 @@ WX_EXPORT_METHOD(@selector(closeURL))
 WX_EXPORT_METHOD(@selector(closeURL:))
 WX_EXPORT_METHOD(@selector(fireNativeGlobalEvent:callback:))
 WX_EXPORT_METHOD_SYNC(@selector(wxConfig))
-WX_EXPORT_METHOD_SYNC(@selector(changeWindowsBar))
+WX_EXPORT_METHOD_SYNC(@selector(changeWindowsBar:))
 WX_EXPORT_METHOD(@selector(wxAuth:))
 WX_EXPORT_METHOD(@selector(toast:))
 WX_EXPORT_METHOD(@selector(encrypt:callBack:))
+WX_EXPORT_METHOD(@selector(save:))
+WX_EXPORT_METHOD(@selector(find:withKey:andCallBack:))
+WX_EXPORT_METHOD(@selector(findList:withCallBack:))
+WX_EXPORT_METHOD(@selector(delete:))
+
+
 
 - (void)openURL:(NSString *)url
 {
@@ -78,6 +84,9 @@ WX_EXPORT_METHOD(@selector(encrypt:callBack:))
         if (finished){
             controller.hidesBottomBarWhenPushed = YES;
             [[weexInstance.viewController navigationController] pushViewController:controller animated:YES];
+        }else{
+            IWXToast *toast = [IWXToast new];
+            [toast showToast:@"页面无法渲染" withInstance:nil];
         }
     }];
 }
@@ -130,44 +139,52 @@ WX_EXPORT_METHOD(@selector(encrypt:callBack:))
 }
 
 - (void)wxAuth:(WXModuleCallback)callback{
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    appDelegate.wxAuthComplete = ^(SendAuthResp *resp) {
-        NSMutableDictionary *message = [NSMutableDictionary new];
-        switch (resp.errCode) {
-            case WX_ERR_OK:
-                [message setValue:@"success" forKey:@"type"];
-                [message setValue:@"登录成功" forKey:@"content"];
-                [message setValue:resp.code forKey:@"data"];
-                break;
-            case WX_ERR_AUTH_DENIED:
-                [message setValue:@"error" forKey:@"type"];
-                [message setValue:@"用户拒绝授权" forKey:@"content"];
-                [message setValue:@"-4" forKey:@"data"];
-                break;
-            case WX_ERR_USER_CANCEL:
-                [message setValue:@"error" forKey:@"type"];
-                [message setValue:@"用户取消授权" forKey:@"content"];
-                [message setValue:@"-2" forKey:@"data"];
-                break;
-            default:
-                [message setValue:@"error" forKey:@"type"];
-                [message setValue:@"未知错误" forKey:@"content"];
-                [message setValue:@"unknown" forKey:@"data"];
-                break;
-        }
+    NSMutableDictionary *message = [NSMutableDictionary new];
+    if ([WXApi isWXAppInstalled] && [WXApi isWXAppSupportApi]){
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        appDelegate.wxAuthComplete = ^(SendAuthResp *resp) {
+            switch (resp.errCode) {
+                case WX_ERR_OK:
+                    [message setValue:@"success" forKey:@"type"];
+                    [message setValue:@"登录成功" forKey:@"content"];
+                    [message setValue:resp.code forKey:@"data"];
+                    break;
+                case WX_ERR_AUTH_DENIED:
+                    [message setValue:@"error" forKey:@"type"];
+                    [message setValue:@"用户拒绝授权" forKey:@"content"];
+                    [message setValue:@"-4" forKey:@"data"];
+                    break;
+                case WX_ERR_USER_CANCEL:
+                    [message setValue:@"error" forKey:@"type"];
+                    [message setValue:@"用户取消授权" forKey:@"content"];
+                    [message setValue:@"-2" forKey:@"data"];
+                    break;
+                default:
+                    [message setValue:@"error" forKey:@"type"];
+                    [message setValue:@"未知错误" forKey:@"content"];
+                    [message setValue:@"unknown" forKey:@"data"];
+                    break;
+            }
+            if (callback){
+                callback(message);
+            }
+        };
+        SendAuthReq* req = [SendAuthReq new];
+        req.scope = @"snsapi_userinfo" ;
+        req.state = @"123" ;
+        [WXApi sendReq:req];
+    }else{
+        [message setValue:@"error" forKey:@"type"];
+        [message setValue:@"未安装微信或无法打开授权" forKey:@"content"];
+        [message setValue:@"unknown" forKey:@"data"];
         if (callback){
             callback(message);
         }
-    };
-
-    SendAuthReq* req = [SendAuthReq new];
-    req.scope = @"snsapi_userinfo" ;
-    req.state = @"123" ;
-    [WXApi sendReq:req];
+    }
 }
 
-- (void)changeWindowsBar{
-    
+- (void)changeWindowsBar:(BOOL)isBlack{
+    return;
 }
 
 

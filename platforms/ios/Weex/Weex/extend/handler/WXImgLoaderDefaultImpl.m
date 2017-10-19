@@ -19,6 +19,7 @@
 
 #import "WXImgLoaderDefaultImpl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "FetchImage.h"
 
 #define MIN_IMAGE_WIDTH 36
 #define MIN_IMAGE_HEIGHT 36
@@ -58,11 +59,23 @@
         url = [url stringByReplacingOccurrencesOfString:@"file:/" withString:@"file:///"];
     }
     
-    return (id<WXImageOperationProtocol>)[[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:url] options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-
-    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-        completedBlock(image, error, finished);
-    }];
+    if ([url hasPrefix:@"original:"] || [url hasPrefix:@"thumb:"]){
+        return [[FetchImage sharedInstance] fetchAssetWithSchemeUrl:url AndBlock:^(UIImage *image) {
+            if (image){
+                completedBlock(image, nil, YES);
+            }else{
+                completedBlock(image, nil, NO);
+            }
+        }];
+    }else{
+        return (id<WXImageOperationProtocol>)[[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:url] options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            
+        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            completedBlock(image, error, finished);
+        }];
+    }
 }
+
+
 
 @end

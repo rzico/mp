@@ -27,7 +27,7 @@ typedef void(^GetOSSDataBlock)(BOOL success);
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         manager = [AliOSSManager new];
-        [OSSLog enableLog];
+        [OSSLog disableLog];
     });
     return manager;
 }
@@ -111,7 +111,7 @@ typedef void(^GetOSSDataBlock)(BOOL success);
             
             // optional fields
             put.uploadProgress = ^(int64_t bytesSent, int64_t totalByteSent, int64_t totalBytesExpectedToSend) {
-                NSLog(@"%lld, %lld, %lld", bytesSent, totalByteSent, totalBytesExpectedToSend);
+//                NSLog(@"%lld, %lld, %lld", bytesSent, totalByteSent, totalBytesExpectedToSend);
             };
             put.contentType = @"";
             put.contentMd5 = @"";
@@ -121,7 +121,6 @@ typedef void(^GetOSSDataBlock)(BOOL success);
             OSSTask * putTask = [client putObject:put];
             
             [putTask continueWithBlock:^id(OSSTask *task) {
-                NSLog(@"objectKey: %@", put.objectKey);
                 if (!task.error) {
                     NSLog(@"upload object success!");
                     if (block){
