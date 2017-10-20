@@ -10,7 +10,6 @@
     </div>
  </template>
 <style lang="less" src="../style/wx.less"/>
-
 <style scoped>
     .nav_back {
         margin-top: 40px;

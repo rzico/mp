@@ -58,6 +58,7 @@ let utilsFunc = {
             data:_data
         }
     },
+    //判空
     isNull (value) {
         if (value == null || value == undefined || value == '' ) {
             return true
