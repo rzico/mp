@@ -26,11 +26,12 @@ export function GET (path,resolve,reject) {
         type: 'json'
     }, (response) => {
         if (response.status == 200) {
-            if (response.data.type!="warn") {
-                resolve(response.data)
-            }
+            resolve(response.data)
         }
         else {
+            if (value != null && value == undefined) {
+                resolve(response.data)
+            }
             reject(response)
         }
     }, () => {})
