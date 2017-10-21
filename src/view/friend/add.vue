@@ -101,14 +101,16 @@
 //                event.openURL(this.locateURL+"/view/friend/search.js",function () {
 //                    event.closeURL();
 //                });
-                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+                event.openURL(utils.locate("view/friend/search.js"),function (message) {
                     if(message.data != ''){
                         event.closeURL(message);
                     }
                 });
             },
             goMobile:function () {
-                event.openURL(utils.locate("http://192.168.2.157:8081/mobile.weex.js"),function () {
+//                event.openURL(utils.locate("http://192.168.2.157:8081/mobile.weex.js"),function () {
+                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
 //                    event.closeURL();
                 })
             }

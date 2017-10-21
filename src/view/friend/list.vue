@@ -231,6 +231,7 @@
     const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue'
     import { POST, GET } from '../../assets/fetch'
+    import utils from '../../assets/utils'
     //    var pressPoint = -1;//手指按压
     //    var movePoint;//手机按压后移动
     //    var pointPoor;//手机按压时与移动后的字母数量
@@ -628,6 +629,7 @@
             navbar
         },
         created(){
+            utils.initIconFont();
 //            modal.toast({message:'111',duration:1})
             GET('/weex/member/friends/list.jhtml',function (data) {
                 if(data.type == 'success' && data.data.data!=''){
@@ -640,11 +642,9 @@
             })
         },
         methods: {
-
             goAddFriend:function () {
-
-//             event.openURL(utils.locate("view/friends/add.js"),function (message) {
-                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
+             event.openURL(utils.locate("view/friend/add.js"),function (message) {
+//                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
                     if(message.data != ''){
                         event.toast(message.data);
                     }
@@ -733,8 +733,9 @@
             openPage(index){
                 switch(index){
                     case 0:
-//                      event.openURL(utils.locate('view/friend/new.js?name=coverImage'),function (message) {
-                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
+                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
+//                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
+
                             event.toast(message);
                         });
                         break;

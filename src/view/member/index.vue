@@ -616,6 +616,16 @@
                     articleTitle:'魔篇使用帮助！',
                     articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
                     articleDate:'2017-10-19'
+                },{
+                    articleSign:'样例',
+                    articleTitle:'魔篇使用帮助！',
+                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate:'2017-10-19'
+                },{
+                    articleSign:'样例',
+                    articleTitle:'魔篇使用帮助！',
+                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate:'2017-10-19'
                 }],
             }
         },
@@ -630,6 +640,19 @@
         created:function () {
             utils.initIconFont();
             var _this = this;
+//            获取用户信息
+            GET('weex/member/attribute.jhtml',function (weex) {
+                if(weex.type == 'success'){
+                    event.toast(weex);
+                    _this.userName = weex.data.nickName;
+                    _this.imageUrl = weex.data.logo;
+                }else{
+                    event.toast(weex.content);
+                }
+            },function (err) {
+                event.toast('网络不稳定');
+            })
+
 //            获取文集列表
             this.getCorpus();
             let options = {

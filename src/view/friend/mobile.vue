@@ -191,7 +191,6 @@
             }
         },
         created() {
-            event.toast('啊啊啊啊');
             utils.initIconFont();
             this.onrefresh();
         },
