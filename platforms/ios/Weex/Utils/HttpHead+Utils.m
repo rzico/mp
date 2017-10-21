@@ -23,6 +23,7 @@
     if (!uid){
         NSError *error=nil;
         uid = [[SAMKeychain passwordForService:SERVICE account:ACCOUNT error:&error] stringByReplacingOccurrencesOfString:@"-" withString:@ ""];
+        NSLog(@"uid=%@",uid);
         if(!uid)
         {
             CFUUIDRef uuid = CFUUIDCreate(NULL);

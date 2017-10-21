@@ -15,6 +15,9 @@
 #import <TZImageManager.h>
 #import <Photos/Photos.h>
 #import <CLImageEditor.h>
+#import "NSString+Util.h"
+#import "FetchImage.h"
+#import "IWXToast.h"
 
 @interface WXAlbumModule()<CLImageEditorDelegate>
 @end
@@ -68,9 +71,24 @@ WX_EXPORT_METHOD(@selector(openCrop:callback:))
     for (NSString *str in replace){
         path = [path stringByReplacingOccurrencesOfString:str withString:@""];
     }
-    CLImageEditor *editor = [[CLImageEditor alloc] initWithImage:[UIImage imageWithContentsOfFile:path]];
-    editor.delegate = self;
-    [weexInstance.viewController presentViewController:editor animated:YES completion:nil];
+    
+    if ([path isContains:@"thumb"] || [path isContains:@"original"]){
+        path = [path stringByReplacingOccurrencesOfString:@"thumb" withString:@"original"];
+        [[FetchImage sharedInstance] fetchAssetWithSchemeUrl:path AndBlock:^(UIImage *image) {
+            if (image){
+                CLImageEditor *editor = [[CLImageEditor alloc] initWithImage:image];
+                editor.delegate = self;
+                [weexInstance.viewController presentViewController:editor animated:YES completion:nil];
+            }else{
+                IWXToast *toast = [IWXToast new];
+                [toast showToast:@"无法打开图片" withInstance:nil];
+            }
+        }];
+    }else{
+        CLImageEditor *editor = [[CLImageEditor alloc] initWithImage:[UIImage imageWithContentsOfFile:path]];
+        editor.delegate = self;
+        [weexInstance.viewController presentViewController:editor animated:YES completion:nil];
+    }
 }
 
 - (void)imageEditorDidCancel:(CLImageEditor *)editor{
@@ -79,18 +97,18 @@ WX_EXPORT_METHOD(@selector(openCrop:callback:))
 
 - (void)imageEditor:(CLImageEditor *)editor didFinishEditingWithImage:(UIImage *)image{
     WXAlbumModel *album = [WXAlbumModel new];
-    NSString *path = [self getImagePath:image uuid:[self getUuid]];
+    NSString *uuid = [NSString getUUID];
+    NSString *path = [self getImagePath:image uuid:uuid];
     album.originalPath = path;
     album.thumbnailSmallPath = path;
     WXCallBackMessage *message = [WXCallBackMessage new];
     message.type = YES;
     message.content = @"选择成功";
     message.data = album;
-    [editor dismissViewControllerAnimated:YES completion:^{
-        if (back){
-            back(message.getMessage);
-        }
-    }];
+    if (back){
+        back(message.getMessage);
+    }
+    [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)openAlbumMuti:(WXModuleCallback)callback{
@@ -115,44 +133,26 @@ WX_EXPORT_METHOD(@selector(openCrop:callback:))
     imagePickerVc.isSelectOriginalPhoto = YES;
     
     [imagePickerVc setDidFinishPickingPhotosWithInfosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto, NSArray<NSDictionary *> *infos) {
-        PHImageRequestOptions *options = [PHImageRequestOptions new];
-        options.synchronous = YES;
-
-        __block NSMutableArray *dataArray = [NSMutableArray new];
-        __block int n = 0;
-        for (int i=0; i<photos.count; i++){
-            [dataArray addObject:[WXAlbumModel new]];
+        NSMutableArray *dataArray = [NSMutableArray new];
+        for (int i = 0; i < photos.count; i++){
+            NSString *localIdentifier = [[assets objectAtIndex:i] valueForKey:@"localIdentifier"];
+            NSString *thumbnailSmallPath = [NSString stringWithFormat:@"thumb://%@",localIdentifier];
+            NSString *originalPath = [NSString stringWithFormat:@"original://%@",localIdentifier];
+            WXAlbumModel *album = [WXAlbumModel new];
+            album.originalPath = originalPath;
+            album.thumbnailSmallPath = thumbnailSmallPath;
+            [dataArray addObject:album];
         }
-        for (int i=0; i<photos.count; i++){
-            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                PHAsset *asset = [assets objectAtIndex:i];
-                WXAlbumModel *album = [WXAlbumModel new];
-                NSString *path = [self getImagePath:[photos objectAtIndex:i] uuid:[asset valueForKey:@"uuid"]];
-                album.originalPath = path;
-                album.thumbnailSmallPath = path;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    dataArray[i] = album;
-                    n++;
-                });
-            });
+        if (callback){
+            WXCallBackMessage *message = [WXCallBackMessage new];
+            message.type = YES;
+            message.content = @"选择成功";
+            message.data = dataArray;
+            callback(message.getMessage);
         }
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            while(n<photos.count){
-
-            }
-            if (callback){
-                WXCallBackMessage *message = [WXCallBackMessage new];
-                message.type = YES;
-                message.content = @"选择成功";
-                message.data = dataArray;
-                callback(message.getMessage);
-            }
-        });
     }];
     [weexInstance.viewController presentViewController:imagePickerVc animated:YES completion:nil];
 }
-
-
 
 - (NSString *)getImagePath:(UIImage *)image uuid:(NSString *)uuid{
     static NSString *docDir;
@@ -166,20 +166,11 @@ WX_EXPORT_METHOD(@selector(openCrop:callback:))
         [fm createDirectoryAtPath:basePath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     NSString *path = [NSString stringWithFormat:@"%@/%@.png",basePath,uuid];
-    BOOL success = [UIImagePNGRepresentation(image) writeToFile:path atomically:YES];
+    BOOL success = [UIImageJPEGRepresentation(image, 1) writeToFile:path atomically:YES];
     if (success){
         return path;
     }else{
         return @"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3577784738,4111720376&fm=111&gp=0.jpg";
     }
-}
-
-- (NSString *)getUuid{
-    CFUUIDRef uuid_ref = CFUUIDCreate(NULL);
-    CFStringRef uuid_string_ref = CFUUIDCreateString(NULL, uuid_ref);
-    NSString *uuid = [NSString stringWithString:(__bridge NSString *)uuid_string_ref];
-    CFRelease(uuid_ref);
-    CFRelease(uuid_string_ref);
-    return [uuid lowercaseString];
 }
 @end

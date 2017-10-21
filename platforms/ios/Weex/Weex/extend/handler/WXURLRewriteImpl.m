@@ -18,6 +18,10 @@
      withResourceType:(WXResourceType)resourceType
          withInstance:(WXSDKInstance *)instance
 {
+    if ([url isContains:@"thumb:"] || [url isContains:@"original:"]){
+        url = [url stringByReplacingOccurrencesOfString:@"file:/" withString:@""];
+        return [NSURL URLWithString:url];
+    }
     NSURL *completeURL = [NSURL URLWithString:url];
     if ([completeURL isFileURL]) {
         completeURL = [self urlRewrite:completeURL];
@@ -55,7 +59,7 @@
 - (NSString *)strRewrite:(NSString *)source{
     NSString *result = source;
     result = [result stringByReplacingOccurrencesOfString:@"undefined" withString:@""];
-    if ([result hasPrefix:@"file:///"]){
+    if ([result hasPrefix:@"file:///"] || [result hasPrefix:@"thumb://"] || [result hasPrefix:@"original:///"]){
         return result;
     }
     result = [result stringByReplacingOccurrencesOfString:@"http://192.168.1.106:8081/" withString:WXCONFIG_INTERFACE_PATH];

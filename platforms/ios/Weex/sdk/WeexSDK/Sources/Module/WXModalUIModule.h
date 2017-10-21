@@ -22,4 +22,6 @@
 
 @interface WXModalUIModule : NSObject <WXModuleProtocol>
 
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex;
+
 @end

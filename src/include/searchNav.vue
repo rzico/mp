@@ -1,13 +1,13 @@
 <template>
-    <div class="search">
-        <div class="search_box flex5" @click="gosearch()">
+    <div class="search" :style="{paddingTop: ptNum + 'px',height: hNum + 'px'}">
+        <div class="search_box flex5" >
             <div class="flex-start">
                <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-               <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" :placeholder="searchHint"/>
+               <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
             </div>
             <text class="clearBuf ico_small gray" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
         </div>
-        <div class="flex-center flex1" @click="goback()">
+        <div class="flex-center flex1" @click="goback()" v-if="showCancel">
             <text class="primary">取消</text>
         </div>
     </div>
@@ -18,14 +18,12 @@
     .search {
         position:sticky;
         background:#eee;
-        padding-top: 40px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         border-bottom-width: 1px;
         border-bottom-style: solid;
         border-bottom-color: #999;
-        height: 136px;
     }
     .search_box {
         margin-top:20px;
@@ -63,12 +61,15 @@
     export default {
         data() {
             return {
-                keyword:""
+                keyword:"",
             }
         },
         props: {
             keyword:{default:''},
-            searchHint:{default:'搜索'}
+            searchHint:{default:'搜索'},
+            showCancel:{default:true},
+            ptNum:{default:40},
+            hNum:{default:136}
         },
         methods: {
             goback:function (e) {
@@ -79,11 +80,12 @@
                 this.$emit('oninput',this.keyword);
             },
             search:function(w){
+                this.$refs['searchBar'].blur();
                 this.$emit('search',this.keyword);
             },
             clearBuf:function () {
                 this.keyword = "";
-            }
+            },
         }
     }
 </script>

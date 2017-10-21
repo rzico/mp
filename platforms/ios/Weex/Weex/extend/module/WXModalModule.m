@@ -79,33 +79,19 @@ typedef enum : NSUInteger {
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    WXModuleCallback callback = objc_getAssociatedObject(alertView, &WXModalCallbackKey);
-    if (!callback) return;
-    
-    id result = @"";
-    switch (alertView.tag) {
-        case WXModalTypeAlert: {
-            result = @"";
-            break;
-        }
-        case WXModalTypeConfirm: {
-            NSString *clickTitle = [alertView buttonTitleAtIndex:buttonIndex];
-            result = clickTitle;
-            break;
-        }
-        case WXModalTypePrompt: {
-            NSString *clickTitle = [alertView buttonTitleAtIndex:buttonIndex];
-            NSString *text= [[alertView textFieldAtIndex:0] text] ?: @"";
-            result = @{ @"result": clickTitle, @"data": text };
-            break;
-        }
-        default:
-            break;
+    if (alertView.tag == WXModalTypePrompt){
+        NSString *clickTitle = [alertView buttonTitleAtIndex:buttonIndex];
+        NSString *text= [[alertView textFieldAtIndex:0] text] ?: @"";
+        id result = @"";
+        result = @{ @"result": clickTitle, @"data": text };
+        WXModuleCallback callback = objc_getAssociatedObject(alertView, &WXModalCallbackKey);
+        if (!callback) return;
+        callback(result);
+        
+        [_alertViews removeObject:alertView];
+    }else{
+        [super alertView:alertView didDismissWithButtonIndex:buttonIndex];
     }
-    
-    callback(result);
-    
-    [_alertViews removeObject:alertView];
 }
 
 - (NSString*)stringValue:(id)value

@@ -36,7 +36,6 @@
             NSDictionary *dic = [DictionaryUtil dictionaryWithJsonData:data];
             if (dic && [[dic objectForKey:@"type"] isEqualToString:@"success"]){
                 ResourcesModel *resource = [[ResourcesModel alloc] initWithDictionary:[dic objectForKey:@"data"] error:nil];
-                NSLog(@"resource=%@",resource.resUrl);
                 if (resource.resUrl.length > 0){
                     if ([manager checkUpdate:resource.resVersion]){
                         [manager updateResource];
@@ -97,6 +96,7 @@
         unsigned long timeInterval = [[NSDate date] timeIntervalSince1970];
         NSString *urlStr = [NSString stringWithFormat:@"%@?rand=%lu",self.resource.resUrl,timeInterval];
         NSURL *url = [NSURL URLWithString:urlStr];
+        NSLog(@"resource=%@",urlStr);
         NSData *data = [NSData dataWithContentsOfURL:url options:0 error:nil];
         NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
         resourcePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
@@ -107,18 +107,21 @@
 }
 
 - (void)releaseZipFiles{
-    NSLog(@"release!");
-    zip = [ZipArchive new];
-    if ([zip UnzipOpenFile:zipPath]){
-        NSString *resourcePath = [DOCUMENT_PATH stringByAppendingString:@"/resource"];
-        BOOL ret = [zip UnzipFileTo:resourcePath overWrite:YES];
-        if (ret){
-            config = [NSMutableDictionary new];
-            [config setObject:self.resource.appVersion forKey:@"appVersion"];
-            [config setObject:self.resource.resVersion forKey:@"resVersion"];
-            [config writeToFile:[DOCUMENT_PATH stringByAppendingString:@"/config.plist"] atomically:YES];
-        }else{
-            [zip UnzipCloseFile];
+    static NSTimeInterval lastRelease = 0;
+    if (lastRelease == 0 || NSTimeIntervalSince1970 - lastRelease > 5 * 60){
+        zip = [ZipArchive new];
+        if ([zip UnzipOpenFile:zipPath]){
+            NSString *resourcePath = [DOCUMENT_PATH stringByAppendingString:@"/resource"];
+            BOOL ret = [zip UnzipFileTo:resourcePath overWrite:YES];
+            if (ret){
+                config = [NSMutableDictionary new];
+                [config setObject:self.resource.appVersion forKey:@"appVersion"];
+                [config setObject:self.resource.resVersion forKey:@"resVersion"];
+                [config writeToFile:[DOCUMENT_PATH stringByAppendingString:@"/config.plist"] atomically:YES];
+                lastRelease = NSTimeIntervalSince1970;
+            }else{
+                [zip UnzipCloseFile];
+            }
         }
     }
 }

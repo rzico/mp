@@ -158,7 +158,7 @@
 
 - (void)selectImagePicker {
     EditorViewController *editorVc = [EditorViewController new];
-    editorVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/editor.js",[NSBundle mainBundle].bundlePath]];
+    editorVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/resource/view/member/editor/editor.js",DOCUMENT_PATH]];
     [editorVc render:nil];
     [[self navigationController] pushViewController:editorVc animated:YES];
 }
