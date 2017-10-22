@@ -11,7 +11,6 @@
 
 @interface OptionModel : JSONModel
 
-@property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *type;
 @property (nonatomic, copy) NSString *keyword;
 @property (nonatomic, copy) NSString *orderBy;

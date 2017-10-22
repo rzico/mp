@@ -13,6 +13,6 @@
 - (UIImage *)imageMaskedWithColor:(UIColor *)maskColor;
 - (UIImage *)cropToRect:(CGRect)rect;
 - (UIImage *)circleImage;
--(UIImage *)OriginImage:(UIImage *)image scaleToSize:(CGSize)size;
--(UIImage *) imageCompressForWidthScale:(UIImage *)sourceImage targetWidth:(CGFloat)defineWidth;
+- (UIImage *)OriginImage:(UIImage *)image scaleToSize:(CGSize)size;
+- (UIImage *) imageCompressForWidthScale:(UIImage *)sourceImage targetWidth:(CGFloat)defineWidth;
 @end

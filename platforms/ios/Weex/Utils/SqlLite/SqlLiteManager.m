@@ -120,7 +120,7 @@ static FMDatabase *_db;
     
     NSMutableArray<SqlLiteModel *> *dataArray = [NSMutableArray<SqlLiteModel *> new];
     
-    FMResultSet *result = [_db executeQuery:@"SELECT * FROM redis WHERE(USERID=? AND TYPE=? AND KEYWORD=?) LIMIT ? OFFSET ?",option.userId,option.type,option.keyword,[NSNumber numberWithUnsignedInteger:option.current],[NSNumber numberWithUnsignedInteger:option.pageSize]];
+    FMResultSet *result = [_db executeQuery:@"SELECT * FROM redis WHERE(USERID=? AND TYPE=? AND KEYWORD=?) LIMIT ? OFFSET ?",userId,option.type,option.keyword,[NSNumber numberWithUnsignedInteger:option.current],[NSNumber numberWithUnsignedInteger:option.pageSize]];
     
     while ([result next]) {
         SqlLiteModel *model = [SqlLiteModel new];

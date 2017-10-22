@@ -12,7 +12,7 @@
 #import <WXUtility.h>
 
 @interface IWXToast : NSObject
-- (void)showToast:(NSString *)message withInstance:(WXSDKInstance *)instance;
+- (void)showToast:(id)message withInstance:(WXSDKInstance *)instance;
 
 @property (nonatomic, strong) WXSDKInstance *instance;
 

@@ -20,7 +20,7 @@ static const CGFloat WXToastDefaultPadding = 30.0;
 
 
 
-- (void)showToast:(NSString *)message withInstance:(WXSDKInstance *)instance
+- (void)showToast:(id)message withInstance:(WXSDKInstance *)instance
 {
     self.instance = instance;
     WXPerformBlockOnMainThread(^{
@@ -28,7 +28,7 @@ static const CGFloat WXToastDefaultPadding = 30.0;
     });
 }
 
-- (void)toast:(NSString *)message duration:(double)duration
+- (void)toast:(id)message duration:(double)duration
 {
     
     UIView *superView =  [[[UIApplication sharedApplication] windows] objectAtIndex:0];
@@ -56,8 +56,10 @@ static const CGFloat WXToastDefaultPadding = 30.0;
     messageLabel.textAlignment = NSTextAlignmentCenter;
     if ([message isKindOfClass:[NSString class]]){
         messageLabel.text = message;
-    }else{
+    }else if([message isKindOfClass:[NSDictionary class]]){
         messageLabel.text = [DictionaryUtil convertToJsonData:message];
+    }else{
+        messageLabel.text = [message stringValue];
     }
     messageLabel.font = [UIFont boldSystemFontOfSize:WXToastDefaultFontSize];
     messageLabel.lineBreakMode = NSLineBreakByTruncatingTail;
