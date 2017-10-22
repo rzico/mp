@@ -173,22 +173,22 @@
                     </div>
                 </transition-group>
                 <!--帮助使用文章-->
-                <!--<div class="articleBox" v-for="item in helpList"  @swipe="swipeHappen($event)">-->
-                <!--<div class="atricleHead">-->
-                <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                <!--<text class="articleTitle">{{item.articleTitle}}</text>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;文章封面&ndash;&gt;-->
-                <!--<div>-->
-                <!--<image :src="item.articleCoverUrl" class="articleCover"></image>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;文章底部&ndash;&gt;-->
-                <!--<div class="articleFoot">-->
-                <!--<div>-->
-                <!--<text class="articleDate">{{item.articleDate}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
+                <div class="articleBox" v-for="item in helpList"  >
+                    <div class="atricleHead">
+                        <text class="articleSign">{{item.articleSign}}</text>
+                        <text class="articleTitle">{{item.articleTitle}}</text>
+                    </div>
+                    <!--文章封面-->
+                    <div>
+                        <image :src="item.articleCoverUrl" class="articleCover"></image>
+                    </div>
+                    <!--文章底部-->
+                    <div class="articleFoot">
+                        <div>
+                            <text class="articleDate">{{item.articleDate}}</text>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!--</div>-->
@@ -197,13 +197,13 @@
         </loading>
     </scroller>
 </template>
-<style scoped>
+<style scoped >
     .isvisible{
-        /*opacity: 1;*/
+        opacity: 1;
         visibility: visible;
     }
     .novisible{
-        /*opacity: 0;*/
+        opacity: 0;
         visibility: hidden;
     }
     .userBox{
@@ -253,12 +253,8 @@
         right: 0;
         top:0;
         height: 136px;
-
     }
     /*文集导航栏动画*/
-
-
-
     .navTransition-enter-active{
         transition: all 0.00001s;
     }
@@ -609,6 +605,28 @@
                 listPageSize:10,
 //                全部文章==================
                 articleList: [],
+
+                helpList:[{
+                    articleSign:'样例',
+                    articleTitle:'我在魔篇有了自己的专栏！',
+                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate:'2017-10-19'
+                },{
+                    articleSign:'样例',
+                    articleTitle:'魔篇使用帮助！',
+                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate:'2017-10-19'
+                },{
+                    articleSign:'样例',
+                    articleTitle:'魔篇使用帮助！',
+                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate:'2017-10-19'
+                },{
+                    articleSign:'样例',
+                    articleTitle:'魔篇使用帮助！',
+                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleDate:'2017-10-19'
+                }],
             }
         },
         computed:{
@@ -622,9 +640,21 @@
         created:function () {
             utils.initIconFont();
             var _this = this;
+//            获取用户信息
+            GET('weex/member/attribute.jhtml',function (weex) {
+                if(weex.type == 'success'){
+                    event.toast(weex);
+                    _this.userName = weex.data.nickName;
+                    _this.imageUrl = weex.data.logo;
+                }else{
+                    event.toast(weex.content);
+                }
+            },function (err) {
+                event.toast('网络不稳定');
+            })
+
 //            获取文集列表
             this.getCorpus();
-
             let options = {
                 type:'article',
                 keyword:'',
@@ -645,9 +675,6 @@
                     event.toast('缓存' + data.content);
                 }
             })
-
-
-
 //            let option = {
 //                type:'arcticle',//类型
 //                keyword:'N',//关键址
@@ -674,7 +701,7 @@
                     if (data.data.type == "success") {
                         if(data.data == ''){
                         }else{
-                            event.toast(data.data);
+//                            event.toast(data.data);
                             _this.corpusList = '';
                             _this.corpusList =[{
                                 name:'全部文章',
@@ -817,7 +844,7 @@
                 event.toast('will jump');
             },
             corpusChange:function(index,id){
-                event.toast(id);
+//                event.toast(id);
                 var _this = this;
                 _this.whichCorpus = index;
 

@@ -10,7 +10,6 @@
                     </div>
                  </div>
             </div>
-
              <div class="cell-row cell-line">
                  <div class="cell-panel h space-between">
                      <div class="flex-row">
@@ -24,7 +23,7 @@
                          <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                      </div>
                  </div>
-                 <div class="cell-panel h space-between cell-clear">
+                 <div class="cell-panel h space-between cell-clear" @click="goMobile()">
                     <div class="flex-row">
                         <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe637;</text>
                         <div class="ml10">
@@ -54,7 +53,7 @@
             </div>
             <div class="fill"></div>
         </scroller>
-        <qrcode ref="qrcode"> </qrcode>
+        <qrcode ref="qrcode" ></qrcode>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -67,11 +66,11 @@
 
 </style>
 <script>
-    const native = weex.requireModule('app')
     const event = weex.requireModule('event');
     const stream = weex.requireModule('stream');
-    import navbar from '../../include/navbar.vue'
-    import qrcode from '../../include/qrcode.vue'
+    import navbar from '../../include/navbar.vue';
+    import qrcode from '../../include/qrcode.vue';
+    import utils from '../../assets/utils';
     export default {
         components: {
             navbar,qrcode
@@ -89,12 +88,7 @@
             title: { default: "添加好友" }
         },
         created(){
-            var _this = this;
-            var domModule=weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('"+_this.locateURL+"/resources/fonts/iconfont.ttf')"
-            });
+            utils.initIconFont();
         },
         methods: {
             goback: function (e) {
@@ -104,9 +98,21 @@
                 this.$refs.qrcode.show();
             },
             gosearch: function () {
-                event.openURL(this.locateURL+"/view/friend/search.js",function () {
-                    event.closeURL();
+//                event.openURL(this.locateURL+"/view/friend/search.js",function () {
+//                    event.closeURL();
+//                });
+//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+                event.openURL(utils.locate("view/friend/search.js"),function (message) {
+                    if(message.data != ''){
+                        event.closeURL(message);
+                    }
                 });
+            },
+            goMobile:function () {
+//                event.openURL(utils.locate("http://192.168.2.157:8081/mobile.weex.js"),function () {
+                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
+//                    event.closeURL();
+                })
             }
         }
 

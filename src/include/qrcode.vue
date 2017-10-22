@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper card_bg" v-if="isShow">
+    <div class="wrapper card_bg" :class="[isShow ? 'isvisible' : 'novisible'] ">
         <div class="card">
             <div class="card_header">
                     <div class="flex-start">
@@ -31,6 +31,14 @@
 <style lang="less" src="../style/wx.less"/>
 
 <style scoped>
+    .isvisible{
+        visibility: visible;
+        opacity: 1;
+    }
+    .novisible{
+        visibility: hidden;
+        opacity: 0;
+    }
     .card_bg {
         align-items: center;
         justify-content: center;
@@ -128,10 +136,12 @@
         padding-top: 10px;
         padding-bottom: 10px;
         border-radius:10px;
+
     }
 
 </style>
 <script>
+    import { POST, GET } from '../assets/fetch';
      export default {
         data() {
             return {
@@ -152,7 +162,7 @@
             },
             show:function (e) {
                 var _this = this;
-                GET('weex/member/view.jhtml').then(
+                GET('weex/member/view.jhtml',
                 function (data) {
                          if (data.type == "success") {
                             var member = data.data;
@@ -163,6 +173,7 @@
                             _this.qrcode = "http://pan.baidu.com/share/qrcode?w=450&h=450&url=" +encodeURI(_this.dataURL+"/q/8653800"+(member.id+10200)+'.jhtml');
                             _this.isShow = true;
                         } else {
+                             event.toast(1);
                             event.toast(data.content);
                         }
                     },function(err) {

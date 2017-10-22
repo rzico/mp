@@ -1,21 +1,28 @@
 <template>
     <div class="wrapper">
-        <div class="header">
-
-        </div>
-        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search"> </searchNav>
-        <div class="confm" v-if="isInput()">
+        <!--输入栏-->
+        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
+        <!--搜索栏-->
+        <div class="confm" v-if="isInput()" @click="childSearch()">
             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-            <text class="title"> {{keyword}} </text>
+            <text class="title">搜索: {{keyword}} </text>
         </div>
+        <!--无数据提示-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()" > </noData>
+        <!--数据显示-->
         <div class="cell-row cell-line" v-if="isNoEmpty()" >
-            <div class="cell-panel h space-between"  v-for="(friend,index) in friendsList">
+            <div class="cell-panel h space-between"  v-for="(friend,index) in friendsList" @click="addFriend(friend.id)" >
                 <div class="flex-row">
                     <image class="logo" :src="friend.logo"></image>
-                    <div class="ml10">
-                        <text class="title">{{friend.nickName}}</text>
-                        <text class="sub_title mt20">真实姓名:{{friend.name}}</text>
+                    <div >
+                        <text class="title ml20">{{friend.nickName}}</text>
+                        <!--字体不居中-->
+                        <!--<div class="flex-row ml10 mt10 fullChange " :class="[friend.tags == '' ? 'bgbr' : '']">-->
+                        <!--字体居中-->
+                        <div class="flex-row ml10 mt10 fullChange ">
+                            <!--标签名称-->
+                            <text class="sub_title mt10 ml10" :class="[friend.tags != '' ? 'isBg' : '']" v-for="item in friend.tags">{{item}}</text>
+                        </div>
                     </div>
                 </div>
                 <div class="flex-row flex-end">
@@ -27,6 +34,23 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .fullChange{
+        width: 520px;
+        flex-wrap: wrap;
+    }
+    .bgbr{
+        height: 54px;
+    }
+    .isBg{
+        background-color: #D9141E;
+        color: #fff;
+        border-radius: 20px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+    }
 
     .confm {
         background-color: white;
@@ -42,17 +66,19 @@
     .logo {
         width:120px;
         height: 120px;
+        border-radius: 5px;
         margin-top: 10px;
         margin-bottom: 10px;
     }
 
 </style>
 <script>
-    const native = weex.requireModule('app')
     const event = weex.requireModule('event');
     const stream = weex.requireModule('stream');
-    import searchNav from '../../include/searchNav.vue'
-    import noData from '../../include/noData.vue'
+    import searchNav from '../../include/searchNav.vue';
+    import noData from '../../include/noData.vue';
+    import utils from '../../assets/utils';
+    import { POST, GET } from '../../assets/fetch'
     export default {
         components: {
             searchNav,noData
@@ -60,20 +86,16 @@
         data() {
             return {
                 keyword:"",
-                friendsList:[{nickName:"kdjfdk",logo:"dkjfd",name:"dkjfdk"}]
+                friendsList:[],
             }
         },
         props: {
             searchHint: { default: "输入手机号/账户号" },
-            noDataHint: { default: "输入查找好友" }
+            noDataHint: { default: "输入查找用户" }
         },
         created(){
-            var _this = this;
-            var domModule=weex.requireModule("dom");
-            domModule.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('"+_this.locateURL+"/resources/fonts/iconfont.ttf')"
-            });
+            utils.initIconFont();
+            event.changeWindowsBar('true');
         },
         methods: {
             isEmpty:function () {
@@ -87,42 +109,68 @@
             },
             oninput:function (val) {
               this.keyword = val;
+              if(val.length == 0){
+                  this.noDataHint = "输入查找用户";
+              }
             },
             search: function (e) {
                 var _this = this;
                 return stream.fetch({
                     method: 'GET',
                     type: 'json',
-                    url: '/weex/member/friends/search.jhtml?keyword='+_this.value+","
+                    url: 'weex/member/friends/search.jhtml?keyword='+_this.keyword
                 }, function (weex) {
+                    event.toast(weex.data.data);
                     if (weex.ok) {
                         if (weex.data.type == "success") {
-                            this.friendsList = weex.data.data;
+                            _this.friendsList = weex.data.data;
+                            _this.noDataHint = '该用户不存在';
                          } else {
-                            native.showToast(weex.data.content);
+//                            判断是否数据有更新
+                            if(weex.data.content == 'cache.success'){
+                            }else{
+                                event.toast(weex.data.content);
+                            }
                         }
                     } else {
-                        native.showToast("网络不稳定请重试");
+                        event.toast("网络不稳定请重试");
                     }
                 })
             },
-            addFriend: function (e) {
+//            通知自组件将input失去焦点
+            childSearch(){
+              this.$refs.childFind.search();
+            },
+//            添加好友
+            addFriend: function (userId) {
                 var _this = this;
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    url: '/weex/member/friends/add.jhtml?friendId='+_this.id
-                }, function (weex) {
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
-                            event.closeURL(weex.data.data);
+//                return stream.fetch({
+//                    method: 'POST',
+//                    type: 'json',
+//                    url: 'weex/member/friends/add.jhtml?friendId='+ userId
+//                }, function (weex) {
+//                    if (weex.ok) {
+//                        if (weex.data.type == "success") {
+//                            event.closeURL(weex.data.data);
+//                        } else {
+//                            event.toast(weex.data.content);
+//                        }
+//                    } else {
+//                        event.toast("网络不稳定请重试");
+//                    }
+//                })
+                POST('weex/member/friends/add.jhtml?friendId='+ userId).then(
+                    function (weex) {
+                        if (weex.type == "success") {
+                            let backData = utils.message('success','成功','请求已发送,请等待对方验证');
+                            event.closeURL(backData);
                         } else {
-                            native.showToast(weex.data.content);
+                            event.toast(weex.content);
                         }
-                    } else {
-                        native.showToast("网络不稳定请重试");
+                    }, function (err) {
+                        event.toast("网络不稳定请重试");
                     }
-                })
+                )
             }
         }
 

@@ -1,15 +1,28 @@
-自制模拟弹窗，由于ios实现了强制停止toast动画，可考虑先不用
 <template>
     <div>
-        <navbar :title="title" @goback="goback"  > </navbar>
+        <div class="header">
+            <!--顶部导航-->
+            <div class="nav">
+                <div style="width: 50px;" @click="goback()">
+                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+                </div>
+                <!--页面名称-->
+                <div class="userBox" >
+                    <text class=" nav_title">{{pageName}}</text>
+                </div>
+                <div style="width: 50px;" @click="goAddFriend()">
+                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe618;</text>
+                </div>
+            </div>
+        </div>
         <!--<div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >-->
         <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
         <!--</div>-->
         <list class="listBody">
-            <cell v-for="item in topLineList" ref="linkref" >
+            <cell v-for="(item,index) in topLineList" ref="linkref" >
                 <!--顶部功能栏-->
                 <div class="addBorder">
-                    <div class="topLine " @click="jump('/member')">
+                    <div class="topLine " @click="openPage(index)">
                         <image :src="item.lineImage" class="lineImage"></image>
                         <text class="lineTitle">{{item.lineTitle}}</text>
                     </div>
@@ -55,7 +68,36 @@
     </div>
 </template>
 
+<style lang="less" src="../../style/wx.less"/>
 <style>
+    .nav_ico {
+    font-size: 38px;
+    color: #fff;
+}
+    .userBox{
+        flex-direction: row;
+        align-items: center;
+    }
+    .nav{
+        margin-top: 40px;
+        flex-direction: row;
+        height: 96px;
+        width: 750px;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+    /*顶部导航栏*/
+.header {
+    flex-direction: row;
+    background-color: #D9141E;
+    /*background-color: #fff;*/
+    left: 0;
+    right: 0;
+    top:0;
+    height: 136px;
+}
     .addColor{
         color: #D9141E;
     }
@@ -188,15 +230,18 @@
     import {dom,event,stream} from '../../weex.js';
     const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue'
-//    var pressPoint = -1;//手指按压
-//    var movePoint;//手机按压后移动
-//    var pointPoor;//手机按压时与移动后的字母数量
-//    var moveLetter;//移动后的字母
-//    var beforePointPoor = -1; //前一次手机按压时与移动后的字母数量
+    import { POST, GET } from '../../assets/fetch'
+    import utils from '../../assets/utils'
+    //    var pressPoint = -1;//手指按压
+    //    var movePoint;//手机按压后移动
+    //    var pointPoor;//手机按压时与移动后的字母数量
+    //    var moveLetter;//移动后的字母
+    //    var beforePointPoor = -1; //前一次手机按压时与移动后的字母数量
 
     export default {
         data:function () {
             return   {
+                pageName:'朋友',
                 beforePointPoor:-1,//前一次手机按压时与移动后的字母数量
                 pressPoint:-1,//手指按压
                 pointPoor:0,//手机按压时与移动后的字母数量
@@ -584,21 +629,26 @@
             navbar
         },
         created(){
+            utils.initIconFont();
 //            modal.toast({message:'111',duration:1})
-            this.getFriendList(res=>{
-                ({message:res.data,duration:1})
+            GET('/weex/member/friends/list.jhtml',function (data) {
+                if(data.type == 'success' && data.data.data!=''){
+                    event.toast(data);
+                }else{
+                    event.toast('没有数据');
+                }
+            },function (data) {
+                event.toast(data.content);
             })
         },
         methods: {
-
-            getFriendList (callback) {
-                return stream.fetch({
-                    method: 'GET',
-                    type: 'json',
-                    url: '/weex/member/friends/list.jhtml'
-                }, callback)
-            },
-            goComplete:function () {
+            goAddFriend:function () {
+             event.openURL(utils.locate("view/friend/add.js"),function (message) {
+//                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
+                    if(message.data != ''){
+                        event.toast(message.data);
+                    }
+                });
             },
             goback:function () {
                 event.closeURL();
@@ -638,9 +688,9 @@
                 this.isPress = false;
                 this.pressPoint = -1;//重置判断是否刚开始滑动的标志符（可以不用，点击并长按时已经帮忙弥补了该数据的漏洞）
                 this.beforePointPoor = -1;//（可以不用，点击并长按时已经帮忙弥补了该数据的漏洞）
-               setTimeout(function () {
+//                setTimeout(function () {
                     _this.isShowToast = false;
-                },500);
+//                },500);
             },
 //        ==============================
             ontouchmove:function(count,e){//按住字母导航栏并拖动时触发
@@ -679,6 +729,21 @@
                     }
                 }
             },
+            //功能页面点击跳转
+            openPage(index){
+                switch(index){
+                    case 0:
+                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
+//                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
+
+                            event.toast(message);
+                        });
+                        break;
+                    default:
+                        break;
+                }
+
+            }
 
         }
     }

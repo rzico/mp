@@ -17,13 +17,20 @@ Vue.filter('dayfmt', function (value) {
 })
 // 时间格式化 10:30 昨天 前天 2017-09-01
 Vue.filter('timefmt', function (value) {
+
     let    date = new Date(value);
     let    tody = new Date();
     let    w = tody.getDay()-date.getDay();
     if (w<1) {
         let    h = date.getHours();
         let    i = date.getMinutes();
-        return h.toFixed(2)+":"+i.toFixed(2);
+        if (h < 10) {
+            h = '0' + h;
+        }
+        if (i < 10) {
+            i = '0' + i;
+        }
+        return h +":"+i ;
     }
     if (w<2) {
         return "昨天";

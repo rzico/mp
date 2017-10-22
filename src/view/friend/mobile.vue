@@ -1,14 +1,9 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
-        <search @gosearch="gosearch" @scan="scan"> </search>
-        <div class="addFriend" @click="goMobile()">
-            <div class="flex-row">
-                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe637;</text>
-                <text class="title ml20 " >添加手机联系人</text>
-            </div>
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
+        <navbar :title="title"  @goback="goback" > </navbar>
+        <!--输入栏-->
+        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search" :showCancel="showCancel"  :hNum="hNum" :ptNum="ptNum" ref="childFind"> </searchNav>
+        <!--无数据提示-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -16,23 +11,45 @@
                        src="file://resource/image/loading.gif"></image>
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <cell v-for="(friend,index) in friendsList">
+            <cell v-for="(friend,index) in friendsList" v-if="startList">
                 <!--姓氏首字母-->
                 <div class="letterBox" v-if="isRepeat(index)">
-                    <text class="nameLetter">{{friend.createDate | dayfmt}}</text>
+                    <text class="nameLetter">{{friend.nickName | watchLetter}}</text>
                 </div>
                 <!--姓氏里每个人的名子-->
                 <div class="addFriendsBorder">
                     <div class="friendsLine" @click="jump()">
                         <image :src="friend.logo" class="friendsImage"></image>
                         <div class="friendsName">
-                            <text class="lineTitle lines-ellipsis">{{friend.nickName}}</text>
-                            <text class="realName">真实姓名:{{friend.name | watchName}}</text>
+                            <text class="lineTitle lines-ellipsis">手机通讯录名字 {{friend.name}}</text>
+                            <text class="realName">魔篇:{{friend.nickName }}</text>
                         </div>
                     </div>
                     <div class="status_panel">
                         <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
                         <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
+                    </div>
+                </div>
+            </cell>
+            <cell v-for="(friend,index) in friendsList" v-else>
+                <div v-if="findFriend(index)">
+                    <!--姓氏首字母-->
+                    <div class="letterBox" v-if="isRepeat(index)">
+                        <text class="nameLetter">{{friend.nickName | watchLetter}}</text>
+                    </div>
+                    <!--姓氏里每个人的名子-->
+                    <div class="addFriendsBorder">
+                        <div class="friendsLine" @click="jump()">
+                            <image :src="friend.logo" class="friendsImage"></image>
+                            <div class="friendsName">
+                                <text class="lineTitle lines-ellipsis">手机通讯录名字1 {{friend.name}}</text>
+                                <text class="realName">魔篇:{{friend.nickName }}</text>
+                            </div>
+                        </div>
+                        <div class="status_panel">
+                            <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
+                            <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
+                        </div>
                     </div>
                 </div>
             </cell>
@@ -42,9 +59,11 @@
                 <text class="indicator">{{loadingState}}</text>
             </loading>
         </list>
+        <div style="position: absolute;top: 300px;left: 0;right: 0;align-items: center" v-if="noFind">
+            <text style="font-size: 35px;color: gray">无结果</text>
+        </div>
     </div>
 </template>
-
 <style lang="less" src="../../style/wx.less"/>
 <style>
     .list {
@@ -136,82 +155,89 @@
         width: 100px;
         color:white;
     }
-
 </style>
-
 <script>
-    import { POST, GET } from '../../assets/fetch'
-    import utils from '../../assets/utils'
-    import filters from '../../filters/filters'
     const event = weex.requireModule('event');
     import navbar from '../../include/navbar.vue';
-    import search from '../../include/search.vue';
+    import { POST, GET } from '../../assets/fetch';
+    import searchNav from '../../include/searchNav.vue';
     import noData from '../../include/noData.vue';
+    import utils from '../../assets/utils';
+    import {getLetter,dictFirstLetter} from '../../assets/letter';
+
     export default {
         components: {
-            navbar,search,noData
+            searchNav,noData,navbar
         },
         data() {
-            return   {
-                start:0,
-                refreshing:false,
-                refreshState:"松开刷新数据",
-                showLoading:false,
-                loadingState:"松开加载更多",
-                friendsList:[]
+            return {
+                noFind:false,
+                findNum:0,
+                keyword:"",
+                friendsList:[],
+                startList:true,
             }
         },
         props: {
-            title: { default: "新的朋友"},
-            noDataHint: { default: "没有新朋友"},
-            complete:{ default:"添加"}
+            title: { default: "手机联系人"},
+            noDataHint: { default: "无手机联系人" },
+            showCancel:{default:false},
+            ptNum:{default:0},
+            hNum:{default:96}
+        },
+        filters:{
+            watchLetter:function (value) {
+                return getLetter.getFirstLetter(value.substring(0,1));
+            }
         },
         created() {
             utils.initIconFont();
-            var _this = this;
-//            setTimeout(() => {
-            _this.onrefresh();
-//            }, 500);
+            this.onrefresh();
         },
-        filters:{
-            watchName(value){
-                if(value == null || value == ''){
-                    return '暂无';
+        methods:{
+            findFriend:function (index) {
+
+                let valLength = this.keyword.length;
+                if(valLength > this.friendsList[index].nickName.length){
+                    return false;
+                }else if(this.keyword == this.friendsList[index].nickName.substring(0,valLength)){
+                    this.findNum = 1;
+                    this.noFind = false;
+                    return true;
                 }else{
-                    return value;
+                    return false;
                 }
-            }
-        },
-        methods: {
-            goComplete:function () {
-             event.openURL(utils.locate("view/friends/add.js"),function (message) {
-//                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
-                });
             },
-//            触发自组件的跳转方法
-            gosearch:function () {
-                event.openURL(utils.locate('view/friend/search.js'),function (message) {
-//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
-                });
+            goback(){
+                event.closeURL();
             },
-//            触发自组件的二维码方法
-            goscan:function () {
-                event.toast('调用二维码扫描界面');
+            oninput:function (val) {
+                this.findNum = 0;
+                this.keyword = val;
+                event.toast(val);
+                if(val.length == 0){
+                    this.startList = true;
+                    this.noDataHint = "无手机联系人";
+                    this.findNum = 0;
+                    this.noFind = false;
+                }else{
+                    let _this = this;
+                    this.startList = false;
+                    setTimeout(function () {
+                        if(_this.findNum == 0){
+                            _this.noFind = true;
+                        }
+                    },10);
+                }
             },
-            isNoEmpty:function() {
-                return this.friendsList.length!=0;
+            search:function () {
+
             },
-            isEmpty:function() {
+            isEmpty:function () {
                 return this.friendsList.length==0;
             },
-            goback:function () {
-                event.closeURL();
+            isNoEmpty:function () {
+                return this.friendsList.length!=0;
             },
             isAsk:function (value) {
                 if (value=="ask") {
@@ -228,12 +254,10 @@
                 }
             },
             onrefresh:function () {
-                event.toast('执行刷新');
                 var _this = this;
                 _this.refreshing = true;
                 _this.refreshState = "正在刷新数据";
                 GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
-                    event.toast(data);
                         if (data.type == "success") {
                             let page = data.data;
                             _this.friendsList = page.data;
@@ -286,16 +310,6 @@
                     }
                 )
             },
-            jump:function () {
-                event.toast("网络不稳定");
-            },
-            goMobile:function() {
-
-                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
-
-//                    event.closeURL();
-                })
-            },
             //同意添加好友
             adopt:function (id) {
                 POST('weex/member/friends/adopt.jhtml?friendId='+id).then(
@@ -311,11 +325,11 @@
                     }
                 )
             },
-            //判断时间是否重复
+            //判断名字是否重复
             isRepeat:function(index){
                 var _this = this;
                 if(index != 0){
-                    if (utils.dayfmt(_this.friendsList[index].createDate) == utils.dayfmt(_this.friendsList[index - 1].createDate)) {
+                    if (getLetter.getFirstLetter(_this.friendsList[index].nickName.substring(0,1)) == getLetter.getFirstLetter(_this.friendsList[index - 1].nickName.substring(0,1))) {
                         return false;
                     } else {
                         return true;

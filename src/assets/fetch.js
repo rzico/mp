@@ -13,7 +13,10 @@ export function POST (path,body) {
                 resolve(response.data)
             }
             else {
-                reject(response)
+                reject({
+                    type:"error",
+                    content:"网络不稳定"
+                })
             }
         }, () => {})
     })
@@ -25,13 +28,25 @@ export function GET (path,resolve,reject) {
         url: `${baseURL}${path}`,
         type: 'json'
     }, (response) => {
+        //请求 type=success 或 warn 时返回，都能正常获取数据
         if (response.status == 200) {
-            if (response.data.type!="warn") {
-                resolve(response.data)
-            }
-        }
-        else {
-            reject(response)
+            resolve(response.data)
+        } else
+        //请求 type= error 网络正常，但服务器返回错误，有缓存，也需要给数据，并提示出错了  statusText=服务器返回的 content
+        //网络异常，有缓存，需要给出缓存数据，并泉   statusText 固定为 "网络不稳定"
+        if (response.status == 304) {
+            resolve(response.data)
+            reject({
+                type:"error",
+                content:response.statusText
+            })
+        } else
+        //网络异常，没有缓存
+        {
+            reject({
+                type:"error",
+                content:"网络不稳定"
+            })
         }
     }, () => {})
 }

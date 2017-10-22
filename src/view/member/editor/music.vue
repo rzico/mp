@@ -236,7 +236,6 @@
                     chooseMusicId:chooseMusicId,
                     chooseMusicName:chooseMusicName
                 }
-
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
             }
