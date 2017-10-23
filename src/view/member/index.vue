@@ -191,6 +191,7 @@
 <style scoped >
     .corpusScroll{
         flex-direction: row;width: 650px;
+        background-color: #fff;
     }
     .fz35{
         font-size: 35px;
@@ -1034,8 +1035,8 @@
 //            文集
             goCorpus(){
                 var _this = this;
-                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
-//                event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
+//                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
+                event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
                     _this.getCorpus();
                 });
             },

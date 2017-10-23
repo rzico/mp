@@ -241,30 +241,29 @@
                         }else{
 
                             let orders = _this.corpusList.length + 1;
-                            event.toast(orders);
+//                            event.toast(orders);
 //                            向服务器存入文集名称
-                            _this.addStream(value.data,orders,res=>{
-                                if(res.data.type == 'success' && res.data.data != ''){
-                                    _this.corpusList.push({
-                                        name:res.data.data.name,
-                                        total:0,
-                                        bgChange:false,
-                                        id:res.data.data.id,
-                                    });
-                                    event.toast('添加成功');
+                            POST('weex/member/article_catalog/add.jhtml?name=' + value.data + '&orders=' + orders).then(
+                                function (res) {
+                                    event.toast(res);
+                                    if(res.type == 'success' && res.data != ''){
+                                        _this.corpusList.push({
+                                            name:res.data.name,
+                                            total:0,
+                                            bgChange:false,
+                                            id:res.data.id,
+                                        });
+                                        event.toast('添加成功');
+                                    }else{
+                                        event.toast(res.content);
+                                    }
+                                },function (err) {
+                                    event.toast(err);
                                 }
-
-                            });
+                            )
                         }
                     }
                 })
-            },
-            addStream (corpusName,orders,callback) {
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    url: 'weex/member/article_catalog/add.jhtml?name=' + corpusName + '&orders=' + orders
-                }, callback)
             },
 //            修改文集名称
             changeName(index,corpusName,id){
