@@ -4,15 +4,14 @@
         <div class="header">
             <!--顶部导航-->
             <div class="nav">
-                <div style="width: 50px;" @click="goback()">
-                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+                <div style="width: 50px;" >
                 </div>
                 <!--页面名称-->
                 <div class="userBox" >
                     <text class=" nav_title">{{pageName}}</text>
                 </div>
                 <div style="width: 50px;" @click="goAddFriend()">
-                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe618;</text>
+                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
                 </div>
             </div>
         </div>
