@@ -49,7 +49,6 @@
                             event.toast("网络不稳定")
 
                         }
-
                     )
             },
             goBack:function(e) {

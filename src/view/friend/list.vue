@@ -28,19 +28,19 @@
                     </div>
                 </div>
             </cell>
-            <cell v-for="friend in friendsList" ref="listref">
+            <cell v-for="(friend,index) in friendsList" ref="listref">
                 <!--姓氏首字母-->
-                <div class="letterBox">
-                    <text class="nameLetter">{{friend.letter}}</text>
+                <div class="letterBox" v-if="isRepeat(index)">
+                    <text class="nameLetter">{{friend.nickName | watchLetter}}</text>
                 </div>
                 <!--姓氏里每个人的名子-->
-                <div v-for="item in friend.name"  >
+                <div   >
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump('/member')">
-                            <image :src="item.friendImage" class="friendsImage"></image>
+                            <image :src="friend.logo" class="friendsImage"></image>
                             <div class="friendsName">
-                                <text class="lineTitle">{{item.friendName}}</text>
-                                <text class="realName">真实姓名:{{item.realName}}</text>
+                                <text class="lineTitle">{{friend.nickName}}</text>
+                                <text class="realName">真实姓名:{{friend.name | watchName}}</text>
                             </div>
                         </div>
                     </div>
@@ -228,6 +228,7 @@
 
 <script>
     import {dom,event,stream} from '../../weex.js';
+    import {getLetter,dictFirstLetter} from '../../assets/letter';
     const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue'
     import { POST, GET } from '../../assets/fetch'
@@ -265,375 +266,390 @@
                     lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                     lineTitle:'我收藏的'
                 }],
-                friendsList:[{
-                    letter:'A',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'B',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'大咖秀',
-                        realName:'王龙'
-                    }]
-                },{
-                    letter:'C',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'D',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'E',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'F',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'H',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'J',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'K',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'L',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'M',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'N',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'O',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'P',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'Q',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'R',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'S',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'T',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'W',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'X',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'Y',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'Z',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'番茄',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'炒蛋',
-                        realName:'杨彩铃'
-                    }]
-                },{
-                    letter:'#',
-                    name:[{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'19',
-                        realName:'炒茄子'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'2333',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'455',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'639',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'455',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'639',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'455',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'639',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'455',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'639',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'455',
-                        realName:'杨彩铃'
-                    },{
-                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                        friendName:'639',
-                        realName:'杨彩铃'
-                    }]
-                }],
+//                friendsList:[{
+//                    letter:'A',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'B',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'大咖秀',
+//                        realName:'王龙'
+//                    }]
+//                },{
+//                    letter:'C',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'D',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'F',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'H',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'J',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'K',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'L',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'M',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'N',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'O',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'P',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'Q',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'R',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'S',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'T',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'W',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'X',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'Y',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'Z',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'番茄',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'炒蛋',
+//                        realName:'杨彩铃'
+//                    }]
+//                },{
+//                    letter:'#',
+//                    name:[{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'19',
+//                        realName:'炒茄子'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'2333',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'455',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'639',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'455',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'639',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'455',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'639',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'455',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'639',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'455',
+//                        realName:'杨彩铃'
+//                    },{
+//                        friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                        friendName:'639',
+//                        realName:'杨彩铃'
+//                    }]
+//                }],
+                friendsList:[],
                 allLetter:['||','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#']
             }
         },
         props: {
             title: { default: "朋友"},
         },
+        filters:{
+            watchLetter:function (value) {
+                return getLetter.getFirstLetter(value.substring(0,1));
+            },
+            watchName(value){
+                if(value == null || value == ''){
+                    return '暂无';
+                }else{
+                    return value;
+                }
+            }
+        },
         components:{
             navbar
         },
         created(){
+            var _this = this;
             utils.initIconFont();
 //            modal.toast({message:'111',duration:1})
             GET('/weex/member/friends/list.jhtml',function (data) {
                 if(data.type == 'success' && data.data.data!=''){
-                    event.toast(data);
+
+                    _this.friendsList = data.data.data;
                 }else{
                     event.toast('没有数据');
                 }
@@ -642,6 +658,19 @@
             })
         },
         methods: {
+            //判断时间是否重复
+            isRepeat:function(index){
+                var _this = this;
+                if(index != 0){
+                    if (getLetter.getFirstLetter(_this.friendsList[index].nickName.substring(0,1)) == getLetter.getFirstLetter(_this.friendsList[index-1].nickName.substring(0,1))) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            },
             goAddFriend:function () {
              event.openURL(utils.locate("view/friend/add.js"),function (message) {
 //                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
@@ -657,7 +686,7 @@
                 modal.toast({message:'点击了信息栏'});
             },
             onlongpress :function(count) {
-                modal.toast({ message:this.allLetter[count] ,duration: 0.3});
+//                modal.toast({ message:this.allLetter[count] ,duration: 0.3});
                 this.isPress = true;
             },
             ontouchstart:function(count){
@@ -704,7 +733,7 @@
                             if(this.pressPoint - e.changedTouches[0].pageY >= 0){
                                 this.moveLetter = count - this.pointPoor;//获取目前手指停留的字母下标
                             }else{
-                                this.moveLetter = count + this.pointPoor;//获取目前手指停留的字母
+                                this.moveLetter = count + this.pointPoor;//获取目前手指停留的字母下标
                             }
                             for(var i = 0;i<this.friendsList.length;i++){//循环判断是否有相应首字母的朋友
                                 if(this.friendsList[i].letter == this.allLetter[this.moveLetter]){
@@ -712,11 +741,13 @@
                                     dom.scrollToElement(el, {
 //                                        animated:false
                                     })
+                                    break;
                                 }else if(this.moveLetter == 0){//判断是否滑到 顶部按钮
                                     const el = this.$refs.linkref[this.moveLetter]//跳转到相应的cell
                                     dom.scrollToElement(el, {
 //                                        animated:false
                                     })
+                                    break;
                                 }
                             }
 //                            控制滑动范围 =》触发效果
@@ -733,8 +764,8 @@
             openPage(index){
                 switch(index){
                     case 0:
-                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
-//                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
+//                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
+                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 
                             event.toast(message);
                         });
