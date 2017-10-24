@@ -90,8 +90,14 @@
         [_session stopRunning];
         AVMetadataMachineReadableCodeObject * metadataObject = [metadataObjects objectAtIndex: 0];
         [self recordScannerHistory:metadataObject.stringValue];
-        [self openURL:metadataObject.stringValue];
+        if (self.callback){
+            self.callback(metadataObject.stringValue);
+        }
         [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        if (self.callback){
+            self.callback(nil);
+        }
     }
 }
 

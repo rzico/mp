@@ -322,6 +322,17 @@ static CGFloat kDefaultScale = 0.5;
         
     }
     
+    
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finishEdit)];
+    
+    self.navigationItem.rightBarButtonItems = @[rightItem];
+}
+
+- (void)finishEdit{
+    if (self.callBack){
+        self.callBack(self.getHTML);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - View Will Appear Section
@@ -411,18 +422,14 @@ static CGFloat kDefaultScale = 0.5;
     //Parent holding view
     self.toolbarHolder = [[UIView alloc] init];
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.toolbarHolder.frame.size.width, 1)];
-    line.backgroundColor = [UIColor colorWithHex:0xCCCCCC];
-    [self.toolbarHolder addSubview:line];
-    
-    
     if (_alwaysShowToolbar) {
-        self.toolbarHolder.frame = CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 88);
+        self.toolbarHolder.frame = CGRectMake(0, self.view.frame.size.height - 120, self.view.frame.size.width, 88);
     } else {
         self.toolbarHolder.frame = CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 88);
     }
     
     self.toolbarHolder.backgroundColor = [UIColor clearColor];
+    
     
     [self createToolBarButton];
 }
@@ -580,7 +587,7 @@ static CGFloat kDefaultScale = 0.5;
 
 - (void)setView:(UIView *)view backgroundColor:(BOOL)isWhite{
     if (isWhite){
-        view.backgroundColor = [UIColor whiteColor];
+        view.backgroundColor = [UIColor clearColor];
     }else{
         view.backgroundColor = [UIColor colorWithRed:0x9a/255.0 green:0xcc/255.0 blue:0xfd/255.0 alpha:1];
     }
@@ -1148,7 +1155,7 @@ static CGFloat kDefaultScale = 0.5;
 }
 
 - (void)setHTML:(NSString *)html {
-    
+    html = [html stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     self.internalHTML = html;
     
     if (self.editorLoaded) {

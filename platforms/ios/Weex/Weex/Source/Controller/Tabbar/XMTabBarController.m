@@ -34,7 +34,8 @@
     }
     self.automaticallyAdjustsScrollViewInsets = NO;
     HomeViewController *homeVc = [HomeViewController new];
-    homeVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/resource/view/home/index.js",DOCUMENT_PATH]];
+//    homeVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/resource/view/home/index.js",DOCUMENT_PATH]];
+    homeVc.url = [NSURL URLWithString:[NSString stringWithFormat:@"file://%@/scan.js",[NSBundle mainBundle].bundlePath]];
     homeVc.frame = frame;
     homeVc.weexHeight = weexHeight;
     [homeVc render:nil];
@@ -164,10 +165,6 @@
 }
 
 - (void)didReceiveMemoryWarning{
-    
-}
-
-- (void)presentScanVC{
     
 }
 @end
