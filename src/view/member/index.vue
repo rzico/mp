@@ -5,9 +5,9 @@
         <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
         <div style="position: absolute;top: 0;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <!--顶部白色区域-->
-        <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']">
+        <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >
             <!--顶部导航-->
-            <div class="nav">
+            <div class="nav" >
                 <div style="width: 50px;">
                 </div>
                 <!--导航栏名字头像-->
@@ -32,7 +32,7 @@
                     <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
                 </div>
             </scroller>
-            <div class="corpusIconBox"  @click="goCorpus()"  >
+            <div class="corpusIconBox"  @click="goCorpus()">
                 <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
             </div>
             <!--文集前后白色遮罩层-->
@@ -44,6 +44,7 @@
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
             <image   class="backgroundImage" :src="imageUrl"></image>
+            <image class="backgroundMask" :src="maskUrl"></image>
             <div  class="topHead">
                 <!--用户头像-->
                 <image class="testImage" :src="imageUrl" ></image>
@@ -482,13 +483,19 @@
         border-color: #fff;
         border-right-width: 1px
     }
+    .backgroundMask{
+        position: absolute;
+        width:750px;
+        top:0;
+        height:420px;
+    }
     .backgroundImage{
         position: absolute;
         width:750px;
         top:0;
         height:420px;
         filter: blur(4px);
-        opacity: 0.8;
+        opacity: 1;
         /*-moz-filter: blur(4px);*/
         /*-webkit-filter: blur(4px);*/
         /*-o-filter: blur(4px);*/
@@ -499,7 +506,7 @@
         position: relative;
         padding-top:40px;
         height: 420px;
-        background-color: #D9141E;
+        background-color: black;
     }
     .topBtnBox{
         flex-direction: row;
@@ -581,9 +588,11 @@
                 refreshing:'hide',
                 fontName: '&#xe685;',
                 collectNum:0,
-                moneyNum:0,
+                moneyNum:49822.65,
                 focusNum:0,
-                imageUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                imageUrl:utils.locate('resources/images/background.jpg'),
+                bgImgUrl:utils.locate('resources/images/background.jpg'),
+                maskUrl:utils.locate('resources/images/frosted.png'),
                 id:'334',
                 showLoading: 'hide',
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -603,35 +612,37 @@
                 helpList:[{
                     articleSign:'样例',
                     articleTitle:'我在魔篇有了自己的专栏！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
                     articleDate:'2017-10-19'
                 },{
                     articleSign:'样例',
                     articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
                     articleDate:'2017-10-19'
                 },{
                     articleSign:'样例',
                     articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
                     articleDate:'2017-10-19'
                 },{
                     articleSign:'样例',
                     articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
                     articleDate:'2017-10-19'
                 }],
             }
         },
+
         created:function () {
             utils.initIconFont();
             var _this = this;
 //            获取用户信息
             GET('weex/member/attribute.jhtml',function (weex) {
                 if(weex.type == 'success'){
-                    event.toast(weex);
                     _this.userName = weex.data.nickName;
-                    _this.imageUrl = weex.data.logo;
+                    if(!utils.isNull(weex.data.logo)){
+                        _this.imageUrl = weex.data.logo;
+                    }
                 }else{
                     event.toast(weex.content);
                 }
@@ -833,11 +844,6 @@
 //                event.toast(id);
                 var _this = this;
                 _this.whichCorpus = index;
-
-
-
-
-
 //                if(this.isAllArticle == true){
 //
 //                }else{
@@ -913,8 +919,6 @@
                 }
 //                获取当前点击的元素。
                 animationPara =  event.currentTarget;
-//                canScroll 控制页面是否可以上下滑动
-                this.canScroll = true;
             },
 //            移动时
             onpanmove:function (event,index) {
@@ -930,6 +934,8 @@
 //                      timingFunction: 'ease-out',
                         needLayout:false,
                         delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
                     })
                 }else if(event.direction == 'left'){
                     _this.canScroll = false;
@@ -943,6 +949,8 @@
 //                      timingFunction: 'ease-out',
                         needLayout:false,
                         delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
                     })
                 }
             },

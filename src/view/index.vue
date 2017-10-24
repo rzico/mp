@@ -133,7 +133,7 @@
                         if (data!=null && data.type=='success') {
                             event.closeURL();
                         }
-                })
+                    })
             },
             goback: function (e) {
                 event.closeURL();

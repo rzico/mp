@@ -82,7 +82,6 @@
             </cell>
         </list>
     </div>
-
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>

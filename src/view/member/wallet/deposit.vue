@@ -188,6 +188,7 @@
             this.open( pageNumber,res => {
                 if(res.data.message.type == 'success'){
                     this.depositList = res.data.data;
+                    modal.toast({message:res.data.data,duration:3});
                 }else{
                     modal.alert({
                         message: '系统繁忙',
