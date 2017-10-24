@@ -75,6 +75,16 @@
 		880986601F95B72C00491855 /* AliOSSModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809865F1F95B72C00491855 /* AliOSSModel.m */; };
 		880986631F95FA5E00491855 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 880986621F95FA5E00491855 /* NSDate+Util.m */; };
 		880986651F960A9C00491855 /* photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 880986641F960A5C00491855 /* photo.jpg */; };
+		8811E8D41F9DDD890077E5C4 /* scan.js in Resources */ = {isa = PBXBuildFile; fileRef = 8811E8D31F9DDD890077E5C4 /* scan.js */; };
+		88150A1A1F9DE935002CD56F /* UIImage+ImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A181F9DE935002CD56F /* UIImage+ImageSize.m */; };
+		88150A271F9DE941002CD56F /* SGQRCodeScanManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A1B1F9DE940002CD56F /* SGQRCodeScanManager.m */; };
+		88150A281F9DE941002CD56F /* SGQRCodeAlbumManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A1C1F9DE940002CD56F /* SGQRCodeAlbumManager.m */; };
+		88150A291F9DE941002CD56F /* SGQRCodeScanningView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A1E1F9DE940002CD56F /* SGQRCodeScanningView.m */; };
+		88150A2A1F9DE941002CD56F /* SGQRCodeHelperTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A201F9DE940002CD56F /* SGQRCodeHelperTool.m */; };
+		88150A2B1F9DE941002CD56F /* SGQRCode.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 88150A211F9DE940002CD56F /* SGQRCode.bundle */; };
+		88150A2C1F9DE941002CD56F /* SGQRCodeGenerateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A221F9DE940002CD56F /* SGQRCodeGenerateManager.m */; };
+		88150A311F9DE956002CD56F /* WXScanQRModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A2F1F9DE956002CD56F /* WXScanQRModule.m */; };
+		88150A321F9DE956002CD56F /* SGQRCodeScanningVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88150A301F9DE956002CD56F /* SGQRCodeScanningVC.m */; };
 		884A7D1C1F9D039500517A3B /* HRBrightnessCursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A7D0F1F9D039500517A3B /* HRBrightnessCursor.m */; };
 		884A7D1D1F9D039500517A3B /* HRColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A7D131F9D039500517A3B /* HRColorPickerView.m */; };
 		884A7D1E1F9D039500517A3B /* HRColorPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A7D151F9D039500517A3B /* HRColorPickerViewController.m */; };
@@ -313,6 +323,26 @@
 		880986611F95FA5E00491855 /* NSDate+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Util.h"; sourceTree = "<group>"; };
 		880986621F95FA5E00491855 /* NSDate+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Util.m"; sourceTree = "<group>"; };
 		880986641F960A5C00491855 /* photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = photo.jpg; sourceTree = "<group>"; };
+		8811E8D31F9DDD890077E5C4 /* scan.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = scan.js; sourceTree = "<group>"; };
+		88150A0D1F9DE6EB002CD56F /* WeexPluginLoader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WeexPluginLoader.framework; path = Pods/WeexPluginLoader/WeexPluginLoader.framework; sourceTree = "<group>"; };
+		88150A181F9DE935002CD56F /* UIImage+ImageSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageSize.m"; sourceTree = "<group>"; };
+		88150A191F9DE935002CD56F /* UIImage+ImageSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageSize.h"; sourceTree = "<group>"; };
+		88150A1B1F9DE940002CD56F /* SGQRCodeScanManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeScanManager.m; sourceTree = "<group>"; };
+		88150A1C1F9DE940002CD56F /* SGQRCodeAlbumManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeAlbumManager.m; sourceTree = "<group>"; };
+		88150A1D1F9DE940002CD56F /* SGQRCodeScanningView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeScanningView.h; sourceTree = "<group>"; };
+		88150A1E1F9DE940002CD56F /* SGQRCodeScanningView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeScanningView.m; sourceTree = "<group>"; };
+		88150A1F1F9DE940002CD56F /* SGQRCodeGenerateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeGenerateManager.h; sourceTree = "<group>"; };
+		88150A201F9DE940002CD56F /* SGQRCodeHelperTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeHelperTool.m; sourceTree = "<group>"; };
+		88150A211F9DE940002CD56F /* SGQRCode.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SGQRCode.bundle; sourceTree = "<group>"; };
+		88150A221F9DE940002CD56F /* SGQRCodeGenerateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeGenerateManager.m; sourceTree = "<group>"; };
+		88150A231F9DE941002CD56F /* SGQRCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCode.h; sourceTree = "<group>"; };
+		88150A241F9DE941002CD56F /* SGQRCodeAlbumManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeAlbumManager.h; sourceTree = "<group>"; };
+		88150A251F9DE941002CD56F /* SGQRCodeHelperTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeHelperTool.h; sourceTree = "<group>"; };
+		88150A261F9DE941002CD56F /* SGQRCodeScanManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeScanManager.h; sourceTree = "<group>"; };
+		88150A2D1F9DE956002CD56F /* WXScanQRModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXScanQRModule.h; sourceTree = "<group>"; };
+		88150A2E1F9DE956002CD56F /* SGQRCodeScanningVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGQRCodeScanningVC.h; sourceTree = "<group>"; };
+		88150A2F1F9DE956002CD56F /* WXScanQRModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXScanQRModule.m; sourceTree = "<group>"; };
+		88150A301F9DE956002CD56F /* SGQRCodeScanningVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGQRCodeScanningVC.m; sourceTree = "<group>"; };
 		884A7D0F1F9D039500517A3B /* HRBrightnessCursor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HRBrightnessCursor.m; sourceTree = "<group>"; };
 		884A7D101F9D039500517A3B /* HRCgUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRCgUtil.h; sourceTree = "<group>"; };
 		884A7D111F9D039500517A3B /* HRColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HRColorUtil.h; sourceTree = "<group>"; };
@@ -613,6 +643,7 @@
 		2291F0E41F6A7DB000B94F1B /* resource */ = {
 			isa = PBXGroup;
 			children = (
+				8811E8D31F9DDD890077E5C4 /* scan.js */,
 				880986641F960A5C00491855 /* photo.jpg */,
 				2219E62E1F8E13D300D4E9B0 /* data.db */,
 				2234BDD41F8A51CF001F6099 /* res-0.0.1.zip */,
@@ -681,6 +712,7 @@
 		2291F1011F6A899500B94F1B /* module */ = {
 			isa = PBXGroup;
 			children = (
+				88150A151F9DE8D9002CD56F /* WXScanQRModule */,
 				2291F10B1F6A89F300B94F1B /* WXEventModule.h */,
 				2291F10C1F6A89F300B94F1B /* WXEventModule.m */,
 				2267495D1F7215F20035A6E1 /* WXAlbumModule.h */,
@@ -875,6 +907,47 @@
 			path = FetchImage;
 			sourceTree = "<group>";
 		};
+		88150A151F9DE8D9002CD56F /* WXScanQRModule */ = {
+			isa = PBXGroup;
+			children = (
+				88150A2E1F9DE956002CD56F /* SGQRCodeScanningVC.h */,
+				88150A301F9DE956002CD56F /* SGQRCodeScanningVC.m */,
+				88150A2D1F9DE956002CD56F /* WXScanQRModule.h */,
+				88150A2F1F9DE956002CD56F /* WXScanQRModule.m */,
+				88150A161F9DE8F3002CD56F /* SGQRCode */,
+			);
+			path = WXScanQRModule;
+			sourceTree = "<group>";
+		};
+		88150A161F9DE8F3002CD56F /* SGQRCode */ = {
+			isa = PBXGroup;
+			children = (
+				88150A211F9DE940002CD56F /* SGQRCode.bundle */,
+				88150A231F9DE941002CD56F /* SGQRCode.h */,
+				88150A241F9DE941002CD56F /* SGQRCodeAlbumManager.h */,
+				88150A1C1F9DE940002CD56F /* SGQRCodeAlbumManager.m */,
+				88150A1F1F9DE940002CD56F /* SGQRCodeGenerateManager.h */,
+				88150A221F9DE940002CD56F /* SGQRCodeGenerateManager.m */,
+				88150A251F9DE941002CD56F /* SGQRCodeHelperTool.h */,
+				88150A201F9DE940002CD56F /* SGQRCodeHelperTool.m */,
+				88150A261F9DE941002CD56F /* SGQRCodeScanManager.h */,
+				88150A1B1F9DE940002CD56F /* SGQRCodeScanManager.m */,
+				88150A1D1F9DE940002CD56F /* SGQRCodeScanningView.h */,
+				88150A1E1F9DE940002CD56F /* SGQRCodeScanningView.m */,
+				88150A171F9DE8FF002CD56F /* Category */,
+			);
+			path = SGQRCode;
+			sourceTree = "<group>";
+		};
+		88150A171F9DE8FF002CD56F /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				88150A191F9DE935002CD56F /* UIImage+ImageSize.h */,
+				88150A181F9DE935002CD56F /* UIImage+ImageSize.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
 		884A7D0B1F9D030700517A3B /* ZSSRichTextEditor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1060,6 +1133,7 @@
 		B7474E52219B84226CAC796F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				88150A0D1F9DE6EB002CD56F /* WeexPluginLoader.framework */,
 				223F37F21F7650EB00EFCEF4 /* Photos.framework */,
 				223F37F01F7650E300EFCEF4 /* AssetsLibrary.framework */,
 				2291F0E21F6A7B7500B94F1B /* libsqlite3.0.tbd */,
@@ -1122,7 +1196,7 @@
 				TargetAttributes = {
 					2291F0C31F6A796800B94F1B = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 7Y94MRGPV7;
+						DevelopmentTeam = V29MML2E6Q;
 						ProvisioningStyle = Automatic;
 					};
 					884DE0701F98F30100249B17 = {
@@ -1179,9 +1253,11 @@
 				880986651F960A9C00491855 /* photo.jpg in Resources */,
 				884A7DC41F9D042D00517A3B /* ZSSh3.png in Resources */,
 				884A7DAB1F9D042D00517A3B /* ZSSfonts.png in Resources */,
+				88150A2B1F9DE941002CD56F /* SGQRCode.bundle in Resources */,
 				884A7DA01F9D042D00517A3B /* ZSSimageDevice@2x.png in Resources */,
 				884A7DBE1F9D042D00517A3B /* ZSSh1.png in Resources */,
 				884A7D9D1F9D042D00517A3B /* ZSSh4@2x.png in Resources */,
+				8811E8D41F9DDD890077E5C4 /* scan.js in Resources */,
 				884A7DBC1F9D042D00517A3B /* ZSSpicker.png in Resources */,
 				884A7DA71F9D042D00517A3B /* ZSSquicklink@2x.png in Resources */,
 				884A7D9B1F9D042D00517A3B /* ZSSforcejustify@2x.png in Resources */,
@@ -1334,6 +1410,7 @@
 				22BDEB221F7A88B9000295FD /* WXNetworkDefaultImpl.m in Sources */,
 				229357811F7F8A2E00050115 /* WXCallBackMessage.m in Sources */,
 				884A7D1C1F9D039500517A3B /* HRBrightnessCursor.m in Sources */,
+				88150A281F9DE941002CD56F /* SGQRCodeAlbumManager.m in Sources */,
 				884A7D1D1F9D039500517A3B /* HRColorPickerView.m in Sources */,
 				2291F11C1F6A8A7C00B94F1B /* WXViewController.m in Sources */,
 				2234BDD81F8A560E001F6099 /* WXURLRewriteImpl.m in Sources */,
@@ -1360,6 +1437,7 @@
 				884A7DD81F9D045F00517A3B /* ZSSTextView.m in Sources */,
 				2267495F1F7215F20035A6E1 /* WXAlbumModule.m in Sources */,
 				2293FA821F8A241E00508A17 /* WXNetworkQueueModel.m in Sources */,
+				88150A311F9DE956002CD56F /* WXScanQRModule.m in Sources */,
 				884A7D201F9D039500517A3B /* HRCgUtil.m in Sources */,
 				2291F13D1F6AB86E00B94F1B /* MemberViewController.m in Sources */,
 				22DB01801F7119F70018BD1E /* UIView+Layout.m in Sources */,
@@ -1379,13 +1457,19 @@
 				880986631F95FA5E00491855 /* NSDate+Util.m in Sources */,
 				2293FA851F8A27FA00508A17 /* UIViewController+Util.m in Sources */,
 				2275EEFE1F890A15002A2202 /* LoginViewController.m in Sources */,
+				88150A2C1F9DE941002CD56F /* SGQRCodeGenerateManager.m in Sources */,
 				22BDEB3A1F7A8E61000295FD /* UIImage+Util.m in Sources */,
 				22220DFD1F6FC1D000864689 /* FriendsViewController.m in Sources */,
+				88150A1A1F9DE935002CD56F /* UIImage+ImageSize.m in Sources */,
 				884A7DD91F9D045F00517A3B /* ZSSBarButtonItem.m in Sources */,
 				22AF2D071F8D103F0036D274 /* WXModalModule.m in Sources */,
+				88150A321F9DE956002CD56F /* SGQRCodeScanningVC.m in Sources */,
 				2291F1041F6A89E400B94F1B /* WXSelectComponent.m in Sources */,
 				2291F1421F6ABA8B00B94F1B /* UIColor+Util.m in Sources */,
+				88150A271F9DE941002CD56F /* SGQRCodeScanManager.m in Sources */,
 				884A7D1E1F9D039500517A3B /* HRColorPickerViewController.m in Sources */,
+				88150A2A1F9DE941002CD56F /* SGQRCodeHelperTool.m in Sources */,
+				88150A291F9DE941002CD56F /* SGQRCodeScanningView.m in Sources */,
 				2291F1341F6AB6D700B94F1B /* XMTabBarController.m in Sources */,
 				2291F12A1F6A8AD000B94F1B /* WXATLoggerPlugin.m in Sources */,
 				884A7D2C1F9D03A000517A3B /* CYRTextStorage.m in Sources */,
@@ -1522,18 +1606,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = 7Y94MRGPV7;
+				DEVELOPMENT_TEAM = V29MML2E6Q;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"${SOURCE_ROOT}/sdk/WeexSDK",
 					"\"${PODS_ROOT}/ATSDK-Weex\"",
 					"\"${PODS_ROOT}/WXDevtool\"",
+					"$(PROJECT_DIR)/Pods/WeexPluginLoader",
 				);
 				GCC_PREFIX_HEADER = "${SOURCE_ROOT}/Weex/Source/PrefixHeader.pch";
 				INFOPLIST_FILE = Weex/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rsico.x.Weex;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.weex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"-Wunused-const-variable",
@@ -1548,18 +1633,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				DEVELOPMENT_TEAM = 7Y94MRGPV7;
+				DEVELOPMENT_TEAM = V29MML2E6Q;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"${SOURCE_ROOT}/sdk/WeexSDK",
 					"\"${PODS_ROOT}/ATSDK-Weex\"",
 					"\"${PODS_ROOT}/WXDevtool\"",
+					"$(PROJECT_DIR)/Pods/WeexPluginLoader",
 				);
 				GCC_PREFIX_HEADER = "${SOURCE_ROOT}/Weex/Source/PrefixHeader.pch";
 				INFOPLIST_FILE = Weex/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rsico.x.Weex;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rzico.weex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WARNING_CFLAGS = (
 					"-Wunused-const-variable",

@@ -51,6 +51,8 @@
 #import "AliOSSManager.h"
 
 #import "NSDate+Util.h"
+
+#import "WXScanQRModule.h"
 @interface AppDelegate ()
 @end
 
@@ -166,7 +168,9 @@
     [WXSDKEngine registerModule:@"event" withClass:[WXEventModule class]];
     [WXSDKEngine registerModule:@"album" withClass:[WXAlbumModule class]];
     [WXSDKEngine registerModule:@"modal" withClass:NSClassFromString(@"WXModalModule")];
-
+    [WXSDKEngine registerModule:@"weexScanQR" withClass:[WXScanQRModule class]];
+    
+    
     [WXDebugTool setDebug:YES];
     [WXLog setLogLevel:WXLogLevelError];
 }
