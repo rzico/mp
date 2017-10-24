@@ -214,7 +214,6 @@
             oninput:function (val) {
                 this.findNum = 0;
                 this.keyword = val;
-                event.toast(val);
                 if(val.length == 0){
                     this.startList = true;
                     this.noDataHint = "无手机联系人";

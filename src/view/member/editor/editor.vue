@@ -420,6 +420,9 @@
 //                将空格 &nbsp; 替换成 。
                 let spaceText=nbspText.replace(/&nbsp;/g," ");
                 return spaceText;
+
+
+
                 //                将空格去除
 //                var onlyText=spaceText.replace(/ /g,"");
             }

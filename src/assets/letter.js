@@ -5,7 +5,7 @@ dictFirstLetter.polyphone = {"19969":"DZ","19975":"WM","19988":"QJ","20048":"YL"
 let getLetter = {
     /**
      * 获取汉字的拼音首字母
-     * @param str 汉字字符串，如果遇到非汉字则原样返回
+     * @param str 汉字字符串
      * @param polyphone 是否支持多音字，默认false，如果为true，会返回所有可能的组合数组
      */
     getFirstLetter: function(str, polyphone)
@@ -23,8 +23,10 @@ let getLetter = {
                 {
                     ch = dictFirstLetter.all.charAt(unicode-19968);
                     if(polyphone) ch = dictFirstLetter.polyphone[unicode] || ch;
+                }else{//如果遇到非汉字则返回 '#'号
+                    ch = '#';
                 }
-                result.push(ch);
+                result.push(ch); //返回数据
             }
             if(!polyphone) return result.join(''); // 如果不用管多音字，直接将数组拼接成字符串
             else return handlePolyphone(result, '', ''); // 处理多音字，此时的result类似于：['D', 'ZC', 'F']
