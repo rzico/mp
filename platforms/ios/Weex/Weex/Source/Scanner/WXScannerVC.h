@@ -20,6 +20,11 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+
+typedef void(^ScannerCallBack)(NSString *result);
+
 @interface WXScannerVC : UIViewController <AVCaptureMetadataOutputObjectsDelegate>
+
+@property (nonatomic, strong) ScannerCallBack callback;
 
 @end

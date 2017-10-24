@@ -27,18 +27,13 @@
         <!--<transition-group name="navTransition" tag="div">-->
         <!--只能多写一个顶部栏。否则无法适应-->
         <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
-            <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
+            <scroller scroll-direction="horizontal" class="corpusScroll">
                 <div class="articleClass">
                     <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
-                    <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
-                    <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
-                    <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
-                    <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
-                    <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
                 </div>
             </scroller>
-            <div style="width: 100px;justify-content: center;align-items: center;background-color: white"  @click="goCorpus()"  >
-                <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
+            <div class="corpusIconBox"  @click="goCorpus()"  >
+                <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
             </div>
             <!--文集前后白色遮罩层-->
             <!--<div class="blur leftBlur"></div>-->
@@ -94,19 +89,15 @@
             <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
             <!--</div>-->
             <!--<div  class="corpusBox"  :class = "[isTop  ? 'posFixed' : 'posRelative']">-->
-            <div  class="corpusBox"  :style = "positionObject" >
-                <scroller scroll-direction="horizontal" style="flex-direction: row;width: 650px;">
+            <div  class="corpusBox"  >
+                <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
                         <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
-                        <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
-                        <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
-                        <!--<text @click="recycleSite()" class="recycleSite" >回收站</text>-->
-                        <!--<text @click="allArticle()" class="allArticle" >全部文章</text>-->
-                        <!--<text @click="recycleSite()" class="recycleSite">回收站</text>-->
+
                     </div>
                 </scroller>
-                <div style="width: 100px;justify-content: center;align-items: center;background-color: white" @click="goCorpus()"  >
-                    <text  :style="{fontFamily:'iconfont'}" style="font-size: 35px;">&#xe603;</text>
+                <div class="corpusIconBox" @click="goCorpus()"  >
+                    <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
                 </div>
                 <!--文集前后白色遮罩层-->
                 <!--<div class="blur leftBlur" >-->
@@ -198,6 +189,16 @@
     </scroller>
 </template>
 <style scoped >
+    .corpusScroll{
+        flex-direction: row;width: 650px;
+        background-color: #fff;
+    }
+    .fz35{
+        font-size: 35px;
+    }
+    .corpusIconBox{
+        width: 100px;justify-content: center;align-items: center;background-color: white;
+    }
     .isvisible{
         opacity: 1;
         visibility: visible;
@@ -318,9 +319,6 @@
         border-style: solid;
         border-color: gainsboro;
         background-color: #fff;
-        /*position: relative;*/
-        /*top: 420px;*/
-
     }
     .redColor{
         color: #D9141E;
@@ -466,9 +464,6 @@
         border-style: solid;
         border-color: gainsboro;
         height:80px;
-        /*height:120px;*/
-        /*position: sticky;*/
-        /*background-color: #F8F9FC;*/
         background-color: #fff;
     }
     .allArticle{
@@ -577,7 +572,6 @@
                 opacityNum:0,
                 twoTop:false,
                 isDisappear:false,
-                corpusPosition:'relative',
                 corpusScrollTop:0,
                 canScroll:true,
                 userName:'刮风下雨打雷台风天',
@@ -628,14 +622,6 @@
                     articleDate:'2017-10-19'
                 }],
             }
-        },
-        computed:{
-            positionObject:function(){
-                return{
-//                    top:this.corpusScrollTop + 'px',
-                    position:this.corpusPosition
-                }
-            },
         },
         created:function () {
             utils.initIconFont();
@@ -1049,8 +1035,8 @@
 //            文集
             goCorpus(){
                 var _this = this;
-                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
-//                event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
+//                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
+                event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
                     _this.getCorpus();
                 });
             },

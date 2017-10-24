@@ -488,7 +488,7 @@ zss_editor.insertImageBase64String = function(imageBase64String, alt) {
 
 zss_editor.setHTML = function(html) {
     var editor = $('#zss_editor_content');
-    editor.html(html);
+    editor.html(decodeURIComponent(html.replace(/\+/g, '%20')));
 }
 
 zss_editor.insertHTML = function(html) {

@@ -25,6 +25,8 @@
             [dic addObject:[DictionaryUtil objectToDictionary:temp]];
         }
         [message setValue:dic forKey:@"data"];
+    }else if ([self.data isKindOfClass:[NSString class]]){
+        [message setValue:self.data forKey:@"data"];
     }else{
         [message setValue:[DictionaryUtil objectToDictionary:self.data] forKey:@"data"];
     }

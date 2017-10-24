@@ -228,12 +228,10 @@
                 }
             },
             onrefresh:function () {
-                event.toast('执行刷新');
                 var _this = this;
                 _this.refreshing = true;
                 _this.refreshState = "正在刷新数据";
                 GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
-                    event.toast(data);
                         if (data.type == "success") {
                             let page = data.data;
                             _this.friendsList = page.data;
@@ -291,8 +289,9 @@
             },
             goMobile:function() {
 
-                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
+//                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
 
+                event.openURL('http://192.168.2.157:8081/mobile.weex.js',function (message) {
 //                    event.closeURL();
                 })
             },

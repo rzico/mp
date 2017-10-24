@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card_header">
                     <div class="flex-start">
-                        <image class="logo" resize="cover"
+                        <image class="logo" resize="stretch"
                                :src="logo">
                         </image>
                         <div class="name">
@@ -12,7 +12,7 @@
                         </div>
                     </div>
             </div>
-            <div class="qrcode_panel">
+            <div class="qrcode_panel"  >
                 <image class="qrcode" resize="cover"
                        :src="qrcode">
                 </image>
@@ -20,9 +20,9 @@
             <div class="close"  @click="close()">
                 <text class="close_button" :style="{fontFamily:'iconfont' }">&#xe60a;</text>
             </div>
-            <div class="card_footer">
+            <div class="card_footer" >
                 <text class="hit">扫一扫二维码，加我好友</text>
-                <text class="button"> {{copy}}</text>
+                <text class="button" @click="copyCode()"> 复制({{copy}})</text>
             </div>
 
         </div>
@@ -47,14 +47,15 @@
     .card {
         flex-direction: column;
         width: 550px;
-        height: 750px;
+        /*height: 740px;*/
         background-color: white;
         border: 1px;
         border-color: #eee;
         border-radius:10px;
+        padding-bottom: 35px;
+        padding-top: 20px;
     }
     .card_header {
-        margin-top: 20px;
         margin-left: 20px;
     }
     .logo {
@@ -80,14 +81,15 @@
 
     .qrcode_panel {
         width:550px;
-        height:400px;
-        margin-top:30px;
+        height:450px;
+        margin-top:0px;
         align-items: center;
     }
 
     .qrcode {
         width:450px;
         height:450px;
+        background-color: black;
     }
 
     .name {
@@ -106,7 +108,7 @@
     .card_footer {
         flex-direction: column;
         align-items: center;
-        margin-top: 20px;
+        margin-top: 15px;
 
     }
 
@@ -117,18 +119,21 @@
 
     .button {
         margin-top: 20px;
-        border-bottom-width: 1px;
-        border-bottom-color: #cccccc;
-        border-bottom-style: solid;
-        border-top-width: 1px;
-        border-top-color: #cccccc;
-        border-top-style: solid;
-        border-left-width: 1px;
-        border-left-color: #cccccc;
-        border-left-style: solid;
-        border-right-width: 1px;
-        border-right-color: #cccccc;
-        border-right-style: solid;
+        /*border-bottom-width: 1px;*/
+        /*border-bottom-color: #cccccc;*/
+        /*border-bottom-style: solid;*/
+        /*border-top-width: 1px;*/
+        /*border-top-color: #cccccc;*/
+        /*border-top-style: solid;*/
+        /*border-left-width: 1px;*/
+        /*border-left-color: #cccccc;*/
+        /*border-left-style: solid;*/
+        /*border-right-width: 1px;*/
+        /*border-right-color: #cccccc;*/
+        /*border-right-style: solid;*/
+        border-style: solid;
+        border-color: #cccccc;
+        border-width: 1px;
         height: 60px;
         width:400px;
         font-size: 32px;
@@ -136,12 +141,17 @@
         padding-top: 10px;
         padding-bottom: 10px;
         border-radius:10px;
-
+    }
+    .button:active{
+        background-color: #D9141E;
+        color: #fff;
     }
 
 </style>
 <script>
     import { POST, GET } from '../assets/fetch';
+    const clipboard = weex.requireModule('clipboard');
+    const event = weex.requireModule('event');
      export default {
         data() {
             return {
@@ -169,17 +179,21 @@
                             _this.nickName = member.nickName;
                             _this.logo = member.logo;
                             _this.autograph = member.autograph;
-                            _this.copy = "复制(邀请码:"+(member.id+10200)+")";
+                            _this.copy = "邀请码:"+(member.id+10200)+"";
                             _this.qrcode = "http://pan.baidu.com/share/qrcode?w=450&h=450&url=" +encodeURI(_this.dataURL+"/q/8653800"+(member.id+10200)+'.jhtml');
                             _this.isShow = true;
                         } else {
-                             event.toast(1);
                             event.toast(data.content);
                         }
                     },function(err) {
                         event.toast("网络不稳定");
                     }
                 )
+            },
+//            点击复制
+            copyCode(){
+                clipboard.setString(this.copy);
+                event.toast('复制成功');
             }
         }
      }
