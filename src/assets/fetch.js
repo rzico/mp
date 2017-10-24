@@ -28,7 +28,7 @@ export function GET (path,resolve,reject) {
         url: `${baseURL}${path}`,
         type: 'json'
     }, (response) => {
-        //请求 type=success 或 warn 时返回，都能正常获取数据
+        //请求 type=success 或 warn 或 error（没缓存） 时返回，都能正常获取数据
         if (response.status == 200) {
             resolve(response.data)
         } else
