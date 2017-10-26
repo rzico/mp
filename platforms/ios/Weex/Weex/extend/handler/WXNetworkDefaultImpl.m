@@ -22,7 +22,7 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
 
 - (void)sendRequest:(WXResourceRequest *)request withDelegate:(id<WXResourceRequestDelegate>)delegate{
     if ([request.HTTPMethod isEqualToString:@"POST"]){
-        [NetManager PostHttp:[request.URL absoluteString] Parameters:[DictionaryUtil dictionaryWithJsonData:request.HTTPBody] Success:^(id  _Nonnull responseObject) {
+        [NetManager PostHttp:[request.URL absoluteString] Parameters:[DictionaryUtil dictionaryWithJsonData:request.HTTPBody] Success:^(NSURLSessionDataTask *task, id  _Nonnull responseObject) {
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
                 if ([self checkLoginSession:responseObject withRequest:request andDelegate:delegate]){
                     
@@ -33,9 +33,8 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
                 [delegate request:request didReceiveData:responseObject];
                 [delegate requestDidFinishLoading:request];
             }
-        } andFalse:^(NSError * _Nonnull error) {
+        } andFalse:^(NSURLSessionDataTask *task, NSError * _Nonnull error) {
             [delegate request:request didFailWithError:error];
-            [delegate requestDidFinishLoading:request];
         }];
     }else if([request.HTTPMethod isEqualToString:@"GET"]){
         if (!([request.URL isContains:@".ttf"] || [request.URL isContains:@".js"] || [request.URL isContains:@".wx"])){
@@ -43,12 +42,12 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
             SqlLiteModel *data = [manager findWithUserId:@"1" AndType:@"DataCache" AndKey:[request.URL absoluteString] AndNeedOpen:YES];
             NSMutableDictionary *parameters = nil;
             if (data){
-                [delegate request:request didReceiveData:[data.value dataUsingEncoding:NSUTF8StringEncoding]];
-                [delegate requestDidFinishLoading:request isKeepAlive:YES];
+//                [delegate request:request didReceiveData:[data.value dataUsingEncoding:NSUTF8StringEncoding]];
+//                [delegate requestDidFinishLoading:request isKeepAlive:YES];
                 parameters = [NSMutableDictionary new];
                 [parameters setObject:data.keyword forKey:@"md5"];
             }
-            [NetManager GetHttp:[request.URL absoluteString] Parameters:parameters Success:^(id  _Nonnull responseObject) {
+            [NetManager GetHttp:[request.URL absoluteString] Parameters:parameters Success:^(NSURLSessionDataTask *task, id  _Nonnull responseObject) {
                 if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
                     if ([self checkLoginSession:responseObject withRequest:request andDelegate:delegate]){
                         NSString *receiveData = [DictionaryUtil convertToJsonData:responseObject];
@@ -61,17 +60,42 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
                             newData.keyword = [responseObject objectForKey:@"md5"];
                             newData.sort = @"";
                             [manager save:newData];
+                            [delegate request:request didReceiveData:[receiveData dataUsingEncoding:NSUTF8StringEncoding]];
+                            [delegate requestDidFinishLoading:request];
+                        }else if ([[responseObject objectForKey:@"type"] isEqualToString:@"warn"]){
+                            if (data){
+                                [delegate request:request didReceiveData:[data.value dataUsingEncoding:NSUTF8StringEncoding]];
+                                [delegate requestDidFinishLoading:request];
+                            }
+                        }else if ([[responseObject objectForKey:@"type"] isEqualToString:@"error"]){
+                            if (data){
+                                NSMutableDictionary *header = [NSMutableDictionary new];
+                                [header setObject:[responseObject objectForKey:@"content"] forKey:@"statusText"];
+                                WXResourceResponse *response = [[WXResourceResponse alloc] initWithURL:request.URL statusCode:304 HTTPVersion:nil headerFields:header];
+                                [delegate request:request didReceiveResponse:response];
+                                [delegate request:request didReceiveData:[NSJSONSerialization dataWithJSONObject:data.value options:NSJSONWritingPrettyPrinted error:nil]];
+                                [delegate requestDidFinishLoading:request];
+                            }else{
+                                [delegate request:request didReceiveData:[receiveData dataUsingEncoding:NSUTF8StringEncoding]];
+                                [delegate requestDidFinishLoading:request];
+                            }
                         }
-                        [delegate request:request didReceiveData:[receiveData dataUsingEncoding:NSUTF8StringEncoding]];
-                        [delegate requestDidFinishLoading:request isKeepAlive:NO];
                     }
                 }else{
                     [delegate request:request didReceiveData:responseObject];
                     [delegate requestDidFinishLoading:request];
                 }
-            } andFalse:^(NSError * _Nonnull error) {
-                [delegate request:request didFailWithError:error];
-                [delegate requestDidFinishLoading:request];
+            } andFalse:^(NSURLSessionDataTask *task, NSError * _Nonnull error) {
+                if (data){
+                    NSMutableDictionary *header = [NSMutableDictionary new];
+                    [header setObject:@"网络不稳定" forKey:@"statusText"];
+                    WXResourceResponse *response = [[WXResourceResponse alloc] initWithURL:request.URL statusCode:304 HTTPVersion:nil headerFields:header];
+                    [delegate request:request didReceiveResponse:response];
+                    [delegate request:request didReceiveData:[NSJSONSerialization dataWithJSONObject:data.value options:NSJSONWritingPrettyPrinted error:nil]];
+                    [delegate requestDidFinishLoading:request];
+                }else{
+                    [delegate request:request didFailWithError:error];
+                }
             }];
         }else{
             [super sendRequest:request withDelegate:delegate];
