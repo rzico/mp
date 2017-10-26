@@ -9,13 +9,16 @@
                 <text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
             </div>
         </div>
-        <list class="list">
+        <list class="list" :scrollable="canScroll">
             <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新 ...</text>
             </refresh>
             <!--朋友信息-->
             <cell v-for="item in messageList " >
-                <div class="friendsLine" @click="jumpMessage(item,index)">
+                <div class="deleteBox" @click="deleteMessage()">
+                    <text class="deleteText">删除</text>
+                </div>
+                <div class="friendsLine" @click="jumpMessage(item,index)" @swipe="onpanmove($event,index)" @touchstart="ontouchstart($event,index)">
                     <!--头像-->
                     <div class="friendsImageBox">
                         <image :src="item.logo" class="friendsImage"></image>
@@ -41,6 +44,12 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .deleteText{
+        font-size: 32px;color: #fff;
+    }
+    .deleteBox{
+        position: absolute;right: 0px;top: 0px;height: 130px;align-items: center;width: 130px;justify-content: center;background-color: red;
+    }
     .nav {
         flex:1;
         flex-direction: row;
@@ -133,11 +142,15 @@
     import {dom,event,stream} from '../../weex.js';
     import filters from '../../filters/filters.js';
     var globalEvent = weex.requireModule('globalEvent');
+    const animation = weex.requireModule('animation');
+
+    var animationPara;//执行动画的消息
     export default {
         data:function(){
             return{
                 messageList:[],
                 refreshing: false,
+                canScroll:true,
 //                messageList:[]
 //                messageList:[{
 //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -271,13 +284,10 @@
         created() {
             var _this = this;
             utils.initIconFont();
-
-
             let listoption = {
                 type:'message',//类型
                 keyword:'messageList',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
-
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
@@ -290,31 +300,11 @@
                     event.toast(data.content);
                 }
             })
-
             this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
-                if (timer!=null) {
-                    clearInterval(timer);
-                }
-                timer = setInterval(1000,function () {
-                    GET("payment/query.jhtml?sn="+this.sn).then(
-                        function (data) {
-
-                            if (data.type=="success") {
-                                if (data.data=="0000") {
-                                    _this.close("success");
-                                } else {
-                                    if (data.data=="0001") {
-                                        _this.close("error");
-                                    }
-                                }
-                            }
-
-                        },
-                        function (err) {
-                        }
-                    )
-                });
+                event.toast('全局监听onMessage:');
+                event.toast(e);
+                _this.hadMessage();
             });
         },
         methods:{
@@ -322,7 +312,6 @@
             hadMessage(){
                 var _this = this;
                 GET('weex/member/message/dialogue.jhtml',function (weex) {
-//                event.toast(weex.data);
                     if(weex.type == 'success'){
                         //            获取当前时间戳 作为唯一标识符key
                         let timestamp = Math.round(new Date().getTime()/1000);
@@ -333,7 +322,7 @@
                                 type:'message',
                                 key:item.type,
                                 value:item,
-                                keyword:'messageList',
+                                keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
                                 sort:'0' + timestamp
                             }
                             event.save(option,function (message) {
@@ -352,10 +341,9 @@
                                         }
                                     })
                                 }else{
-                                    event.toast('网络不稳定');
+                                    event.toast('hadMessage网络不稳定');
                                 }
                             })
-
                         })
                     }else{
                         event.toast(weex.content);
@@ -384,29 +372,95 @@
             jumpMessage:function(item,index){
 //                event.toast(messageType);
 //                event.toast(isRead);
+
                 var _this = this;
-                GET('weex/member/message/list.jhtml?type=' + item.type ,function (weex) {
-                    event.toast(weex);
-                    if(weex.type == 'success'){
+                event.toast(item);
+                if(item.type != 'immessage'){
+                    GET('weex/member/message/list.jhtml?type=' + item.type ,function (weex) {
+                        event.toast(weex);
+                        if(weex.type == 'success'){
 //                        未读消息取消掉
-                        item.unRead = 0;
-                        let timestamp = Math.round(new Date().getTime()/1000);
-                        let option = {
-                            type:'message',
-                            key:item.type,
-                            value:item,
-                            keyword:'messageList',
-                            sort:'0' + timestamp
+                            item.unRead = 0;
+                            let timestamp = Math.round(new Date().getTime()/1000);
+                            let option = {
+                                type:'message',
+                                key:item.type,
+                                value:item,
+                                keyword:'messageList',
+                                sort:'0' + timestamp
+                            }
+                            event.save(option,function (message) {
+
+                            })
                         }
-                        event.save(option,function (message) {})
-                    }
-                },function (err) {
-                    event.toast('网络不稳定');
-                })
+                    },function (err) {
+                        event.toast('网络不稳定');
+                    })
+                }else{
+                    event.navToChat(item.userId);
+                }
             },
             menu:function(page){
 
             },
+//            点击屏幕时
+            ontouchstart:function (e,index) {
+                var _this = this;
+                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                }else{
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
+//                获取当前点击的元素。
+                animationPara =  e.currentTarget;
+            },
+//            移动时
+            onpanmove:function (e,index) {
+//                获取当前点击的元素。
+                var _this = this;
+                if(e.direction == 'right'){
+                    _this.canScroll = false;
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }else if(e.direction == 'left'){
+                    _this.canScroll = false;
+//                  modal.toast({message:distance});
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(-130)',
+                        },
+                        duration:350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }
+            },
+            deleteMessage(){
+                event.toast('删除成功');
+            }
+
         }
     }
 </script>

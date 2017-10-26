@@ -97,7 +97,11 @@ Vue.filter('datetimefmt', function (value) {
 Vue.filter('currencyfmt', function (value) {
     // 返回处理后的值
     if (value != null) {
-        var price = (Math.round(value * Math.pow(10,2)) / Math.pow(10,2)).toFixed(2);
-        return price;
+        if(value == 0){
+            return value;
+        }else{
+            var price = (Math.round(value * Math.pow(10,2)) / Math.pow(10,2)).toFixed(2);
+            return price;
+        }
     }
 })

@@ -1,76 +1,89 @@
 
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
-
+        <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+            <!--<image class="gif" resize="cover"-->
+                   <!--src="file://resource/image/loading.gif"></image>-->
+            <!--<text class="indicator">{{refreshState}}</text>-->
+            <!--<loading-indicator>...</loading-indicator>-->
+        <!--</refresh>-->
+        <!--<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">-->
+        <!--<text class="indicator">Refreshing ...</text>-->
+        <!--</refresh>-->
         <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-        <div style="position: absolute;top: 0;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
-        <!--顶部白色区域-->
-        <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']">
-            <!--顶部导航-->
-            <div class="nav">
-                <div style="width: 50px;">
-                </div>
-                <!--导航栏名字头像-->
-                <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'black'" >
-                    <image class="headImg" :src="imageUrl"></image>
-                    <text class="navText">{{userName}}</text>
-                </div>
-                <div style="width: 50px;">
+        <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
+        <div>
+            <!--顶部白色区域-->
+            <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >
+                <!--顶部导航-->
+                <div class="nav">
+                    <div style="width: 50px;">
+                    </div>
+                    <!--导航栏名字头像-->
+                    <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'black'" >
+                        <image class="headImg" :src="imageUrl"></image>
+                        <text class="navText" >{{userName}}</text>
+                    </div>
+                    <div style="width: 50px;">
+                    </div>
                 </div>
             </div>
-        </div>
-        <!--导航栏设置-->
-        <div style="position: fixed;top: 63px;right: 30px;" @click="goManage()">
-            <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
-        </div>
-        <!--绑定动画-->
-        <!--<transition-group name="navTransition" tag="div">-->
-        <!--只能多写一个顶部栏。否则无法适应-->
-        <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
-            <scroller scroll-direction="horizontal" class="corpusScroll">
-                <div class="articleClass">
-                    <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
-                </div>
-            </scroller>
-            <div class="corpusIconBox"  @click="goCorpus()"  >
-                <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
+            <!--导航栏设置-->
+            <div style="position: fixed;top: 63px;right: 30px;" @click="goManage()">
+                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
             </div>
-            <!--文集前后白色遮罩层-->
-            <!--<div class="blur leftBlur"></div>-->
-            <!--<div class="blur rightBlur"></div>-->
+            <!--绑定动画-->
+            <!--<transition-group name="navTransition" tag="div">-->
+            <!--只能多写一个顶部栏。否则无法适应-->
+            <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
+                <scroller scroll-direction="horizontal" class="corpusScroll">
+                    <div class="articleClass">
+                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                    </div>
+                </scroller>
+                <div class="corpusIconBox"  @click="goCorpus()">
+                    <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
+                </div>
+                <!--文集前后白色遮罩层-->
+                <!--<div class="blur leftBlur"></div>-->
+                <!--<div class="blur rightBlur"></div>-->
+            </div>
         </div>
         <!--</transition-group>-->
         <!--顶部个人信息栏-->
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
             <image   class="backgroundImage" :src="imageUrl"></image>
+            <!--遮罩层-->
+            <!--<image class="backgroundMask" :src="maskUrl"></image>-->
             <div  class="topHead">
                 <!--用户头像-->
                 <image class="testImage" :src="imageUrl" ></image>
                 <!--个性签名 用户昵称-->
-                <div style="align-items: center" @click="goAttribute()">
+                <div style="align-items: center;" @click="goAttribute()">
                     <!--用户昵称-->
-                    <text class="userName"  >{{userName}}</text>
+                    <text class="userName">{{userName}}</text>
                     <!--用户签名-->
-                    <text class="userSign" >{{userSign}}</text>
+                    <text class="userSign">{{userSign}}</text>
                 </div>
             </div>
             <!--功能按钮-->
             <div class="topBtnBox">
-                <div class="topBtnSmallBox "  @click="jump()">
-                    <div  class="topBtnBorder" ></div>
+                <div class="topBtnSmallBox " style="min-width: 120px" @click="jump()">
                     <text class="topBtn topBtnBigFont">{{collectNum}}</text>
                     <text class=" topBtn " >收藏</text>
                 </div>
-                <div class="topBtnSmallBox " @click="jump()">
-                    <div  class="topBtnBorder" ></div>
-                    <div style="flex-direction: row;justify-content: center">
-                        <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥ </text>
-                        <text class="topBtn topBtnBigFont">{{moneyNum}}</text>
+                <div class="topBtnSmallBox walletLayout"  @click="jump()">
+                    <!--钱包两边的白色边框-->
+                    <div  class="leftBtnBorder topBtnBorder" ></div>
+                    <div  class="rightBtnBorder topBtnBorder" ></div>
+                    <div class="moneyFormat">
+                        <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
+                        <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
                     </div>
                     <text class="topBtn" >钱包</text>
                 </div>
-                <div class="topBtnSmallBox">
+                <div class="topBtnSmallBox"  style=";min-width: 120px">
                     <text class="topBtn topBtnBigFont">{{focusNum}}</text>
                     <text class="topBtn">关注</text>
                 </div>
@@ -188,7 +201,12 @@
         </loading>
     </scroller>
 </template>
+
+<style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .moneyFormat{
+        flex-direction: row;justify-content: center;
+    }
     .corpusScroll{
         flex-direction: row;width: 650px;
         background-color: #fff;
@@ -234,9 +252,6 @@
     .setTop{
         top:136px;
     }
-    .clearTop{
-        /*top: 0px;*/
-    }
     .posFixed{
         position: fixed;
         background-color: red;
@@ -252,7 +267,7 @@
         background-color: #fff;
         left: 0;
         right: 0;
-        top:0;
+        top: 0px;
         height: 136px;
     }
     /*文集导航栏动画*/
@@ -472,23 +487,34 @@
         padding-left: 20px;
         padding-right: 20px;
     }
+    .leftBtnBorder{
+        left: 0;
+    }
+    .rightBtnBorder{
+        right: 0;
+    }
     .topBtnBorder{
         position:absolute;
         height: 40px;
         top: 20px;
-        right: 0;
         background-color: black;
         border-style:solid;
         border-color: #fff;
         border-right-width: 1px
     }
+    /*.backgroundMask{*/
+    /*position: absolute;*/
+    /*width:750px;*/
+    /*top:0;*/
+    /*height:420px;*/
+    /*}*/
     .backgroundImage{
         position: absolute;
         width:750px;
         top:0;
         height:420px;
         filter: blur(4px);
-        opacity: 0.8;
+        opacity: 1;
         /*-moz-filter: blur(4px);*/
         /*-webkit-filter: blur(4px);*/
         /*-o-filter: blur(4px);*/
@@ -499,18 +525,24 @@
         position: relative;
         padding-top:40px;
         height: 420px;
-        background-color: #D9141E;
+        background-color: black;
     }
     .topBtnBox{
         flex-direction: row;
         align-items: center;
-        margin-top: 40px;
+
+        margin-top: 30px;
         width:500px;
         margin-left: 125px;
+        justify-content: space-around;
     }
     .topBtnSmallBox{
         height:80px;
-        flex:1;
+        justify-content: center;
+        align-items: center;
+    }
+    .walletLayout{
+        min-width: 166px;flex-shrink:0;padding-left: 30px;padding-right: 30px;
     }
     .topBtn{
         color:white;
@@ -544,6 +576,7 @@
         width:500px;
         font-size: 26px;
         color: white;
+        text-align: center;
     }
     .userName{
         font-weight: 600;
@@ -560,6 +593,7 @@
     const animation = weex.requireModule('animation');
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
+    import filters from '../../filters/filters.js'
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -578,12 +612,15 @@
                 userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
                 whichCorpus:0,
                 isNoArticle:false,
-                refreshing:'hide',
+//                refreshing:false,
+//                refreshState:'',
                 fontName: '&#xe685;',
                 collectNum:0,
-                moneyNum:0,
+                moneyNum:888888.88,
                 focusNum:0,
-                imageUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                imageUrl:utils.locate('resources/images/background.jpg'),
+                bgImgUrl:utils.locate('resources/images/background.jpg'),
+//                maskUrl:utils.locate('resources/images/frosted.png'),
                 id:'334',
                 showLoading: 'hide',
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -603,44 +640,50 @@
                 helpList:[{
                     articleSign:'样例',
                     articleTitle:'我在魔篇有了自己的专栏！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
                     articleDate:'2017-10-19'
                 },{
                     articleSign:'样例',
                     articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
                     articleDate:'2017-10-19'
                 },{
                     articleSign:'样例',
                     articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
                     articleDate:'2017-10-19'
                 },{
                     articleSign:'样例',
                     articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
+                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
                     articleDate:'2017-10-19'
                 }],
             }
         },
+
         created:function () {
             utils.initIconFont();
             var _this = this;
 //            获取用户信息
             GET('weex/member/attribute.jhtml',function (weex) {
                 if(weex.type == 'success'){
-                    event.toast(weex);
-                    _this.userName = weex.data.nickName;
-                    _this.imageUrl = weex.data.logo;
+                    if(!utils.isNull(weex.data.nickName)){
+                        _this.userName = weex.data.nickName;
+                    }
+                    if(!utils.isNull(weex.data.logo)){
+                        _this.imageUrl = weex.data.logo;
+                    }
                 }else{
                     event.toast(weex.content);
                 }
             },function (err) {
-                event.toast('网络不稳定');
+                event.toast(err.content);
             })
 
 //            获取文集列表
             this.getCorpus();
+
+
             let options = {
                 type:'article',
                 keyword:'',
@@ -658,7 +701,7 @@
                         _this.articleList.push(item);
                     })
                 }else{
-                    event.toast('缓存' + data.content);
+                    return;
                 }
             })
 //            let option = {
@@ -678,13 +721,8 @@
         methods: {
             getCorpus:function () {
                 var _this = this;
-
-                return stream.fetch({
-                    method: 'GET',
-                    type: 'json',
-                    url: 'weex/member/article_catalog/list.jhtml'
-                }, function (data) {
-                    if (data.data.type == "success") {
+                GET('weex/member/article_catalog/list.jhtml',function (data) {
+                    if (data.type == "success") {
                         if(data.data == ''){
                         }else{
 //                            event.toast(data.data);
@@ -697,16 +735,47 @@
                                 id:'99'
                             }];
 //                                将文集名循环插入数组中
-                            for(let i = 0; i<data.data.data.length;i++){
-                                _this.corpusList.splice(1 + i,0,data.data.data[i]);
+                            for(let i = 0; i<data.data.length;i++){
+                                _this.corpusList.splice(1 + i,0,data.data[i]);
                             }
-                            storage.setItem('corpusList',data.data.data);
+                            storage.setItem('corpusList',data.data);
                         }
                     } else {
-                        event.toast(data);
+                        event.toast('文集');
+                        event.toast(data.content);
                     }
-//                    event.toast(data);
-                },)
+                },function (err) {
+                    event.toast(err.content);
+                })
+
+//                return stream.fetch({
+//                    method: 'GET',
+//                    type: 'json',
+//                    url: 'weex/member/article_catalog/list.jhtml'
+//                }, function (data) {
+//                    if (data.data.type == "success") {
+//                        if(data.data == ''){
+//                        }else{
+////                            event.toast(data.data);
+//                            _this.corpusList = '';
+//                            _this.corpusList =[{
+//                                name:'全部文章',
+//                                id:''
+//                            },{
+//                                name:'回收站',
+//                                id:'99'
+//                            }];
+////                                将文集名循环插入数组中
+//                            for(let i = 0; i<data.data.data.length;i++){
+//                                _this.corpusList.splice(1 + i,0,data.data.data[i]);
+//                            }
+//                            storage.setItem('corpusList',data.data.data);
+//                        }
+//                    } else {
+//                        event.toast(data);
+//                    }
+////                    event.toast(data);
+//                },)
 
 
 
@@ -833,11 +902,6 @@
 //                event.toast(id);
                 var _this = this;
                 _this.whichCorpus = index;
-
-
-
-
-
 //                if(this.isAllArticle == true){
 //
 //                }else{
@@ -913,8 +977,6 @@
                 }
 //                获取当前点击的元素。
                 animationPara =  event.currentTarget;
-//                canScroll 控制页面是否可以上下滑动
-                this.canScroll = true;
             },
 //            移动时
             onpanmove:function (event,index) {
@@ -930,6 +992,8 @@
 //                      timingFunction: 'ease-out',
                         needLayout:false,
                         delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
                     })
                 }else if(event.direction == 'left'){
                     _this.canScroll = false;
@@ -943,6 +1007,8 @@
 //                      timingFunction: 'ease-out',
                         needLayout:false,
                         delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
                     })
                 }
             },
@@ -1061,7 +1127,32 @@
                 this.opacityNum = 0 ;
                 this.settingColor = 'white';
                 event.changeWindowsBar("false");
-
+            },
+            onrefresh:function () {
+                var _this = this;
+                _this.refreshing = true;
+                _this.refreshState = "正在刷新数据";
+                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
+                        if (data.type == "success") {
+                            let page = data.data;
+                            _this.friendsList = page.data;
+                            _this.start = page.start+page.data.length;
+                            _this.refreshState = "数据刷新完成";
+                            setTimeout(() => {
+                                _this.refreshing = false;
+                                _this.refreshState = "松开刷新数据";
+                            }, 500);
+                        } else {
+                            _this.refreshing = false;
+                            _this.refreshState = "松开刷新数据";
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        _this.refreshing = false;
+                        _this.refreshState = "松开刷新数据";
+                        event.toast("网络不稳定");
+                    }
+                )
             },
         }
     }

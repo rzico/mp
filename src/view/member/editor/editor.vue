@@ -757,14 +757,14 @@
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
-                _this.saveArticle(articleData,res=>{
+                _this.Article(articleData,res=>{
 //                    modal.toast({message:res});
                     if(utils.isNull(res)){
                         event.toast('系统繁忙,请稍后重试');
                     }else{
                         if(res.data != '' && res.data.type == 'success'){
-//                1是置顶（默认倒序）  keyword "[1],文章title"
-                            utils.save("article",res.data.data.id,res.data.data,'0,'+ timestamp +'',"",function (data) {
+//                1是置顶（默认倒序）  keyword ",[1],文章title,"
+                            utils.save("article",res.data.data.id,res.data.data,'0,'+ timestamp +'',',[],' + _this.setTitle + ',',function (data) {
                                 if(data.type == 'success'){
                                     event.closeURL();
                                 }else{

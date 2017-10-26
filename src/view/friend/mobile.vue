@@ -164,7 +164,6 @@
     import noData from '../../include/noData.vue';
     import utils from '../../assets/utils';
     import {getLetter,dictFirstLetter} from '../../assets/letter';
-
     export default {
         components: {
             searchNav,noData,navbar
@@ -176,6 +175,8 @@
                 keyword:"",
                 friendsList:[],
                 startList:true,
+                loadingState:'',
+                showLoading:'hide'
             }
         },
         props: {
@@ -192,11 +193,17 @@
         },
         created() {
             utils.initIconFont();
-            this.onrefresh();
+//            this.onrefresh();
+           let option = {
+                current:0,
+                pageSize:20
+            }
+            event.getMailList(option,function (data) {
+                event.toast(data);
+            })
         },
         methods:{
             findFriend:function (index) {
-
                 let valLength = this.keyword.length;
                 if(valLength > this.friendsList[index].nickName.length){
                     return false;
@@ -336,6 +343,9 @@
                 } else {
                     return true;
                 }
+            },
+            jump(){
+
             }
         }
     }
