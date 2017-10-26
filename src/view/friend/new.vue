@@ -201,8 +201,10 @@
                 });
             },
 //            触发自组件的二维码方法
-            goscan:function () {
-                event.toast('调用二维码扫描界面');
+            scan:function () {
+                event.scan(function (message) {
+                    event.toast(message);
+                });
             },
             isNoEmpty:function() {
                 return this.friendsList.length!=0;
@@ -288,9 +290,7 @@
                 event.toast("网络不稳定");
             },
             goMobile:function() {
-
 //                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
-
                 event.openURL('http://192.168.2.157:8081/mobile.weex.js',function (message) {
 //                    event.closeURL();
                 })
@@ -322,7 +322,7 @@
                 } else {
                     return true;
                 }
-            }
+            },
         }
     }
 </script>

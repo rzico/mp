@@ -312,8 +312,6 @@
             hadMessage(){
                 var _this = this;
                 GET('weex/member/message/dialogue.jhtml',function (weex) {
-                    event.toast('获取数据');
-                     event.toast(weex);
                     if(weex.type == 'success'){
                         //            获取当前时间戳 作为唯一标识符key
                         let timestamp = Math.round(new Date().getTime()/1000);
@@ -324,7 +322,7 @@
                                 type:'message',
                                 key:item.type,
                                 value:item,
-                                keyword:'messageList',
+                                keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
                                 sort:'0' + timestamp
                             }
                             event.save(option,function (message) {
@@ -377,7 +375,7 @@
 
                 var _this = this;
                 event.toast(item);
-                if(item.type != 'TIMMessage'){
+                if(item.type != 'immessage'){
                     GET('weex/member/message/list.jhtml?type=' + item.type ,function (weex) {
                         event.toast(weex);
                         if(weex.type == 'success'){
@@ -391,7 +389,9 @@
                                 keyword:'messageList',
                                 sort:'0' + timestamp
                             }
-                            event.save(option,function (message) {})
+                            event.save(option,function (message) {
+
+                            })
                         }
                     },function (err) {
                         event.toast('网络不稳定');

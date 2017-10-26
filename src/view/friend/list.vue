@@ -371,7 +371,6 @@
         created(){
             var _this = this;
             utils.initIconFont();
-
             let listoption = {
                 type:'friend',//类型
                 keyword:'friendList',//关键址
@@ -389,7 +388,6 @@
                                 item.name.push(jsonData);
                             }
                         })
-
                     })
                     _this.friendTotal = data.data.length;
                 }else{
@@ -397,7 +395,6 @@
                 }
             })
             _this.hadFriend();
-
             globalEvent.addEventListener("onMessage", function (e) {
                 _this.hadFriend();
             });
@@ -408,42 +405,43 @@
                 var _this = this;
                 let lastTimestamp;
 //                获取本地缓存是否有时间戳数据
-                storage.getItem('lastTimestamp', event => {
-                     lastTimestamp = event.data == undefined ? '' : event.data;
-                })
-                GET('/weex/member/friends/list.jhtml?timeStamp=' + lastTimestamp,function (data) {
-                    //            获取当前时间戳 作为唯一标识符key
-                    var timestamp = Math.round(new Date().getTime()/1000);
-                    if(data.type == 'success' && data.data.data!=''){
-                        data.data.data.forEach(function (friend) {
-                            _this.friendsList.forEach(function (item) {
-                                if(item.letter == getLetter.getFirstLetter(friend.nickName.substring(0,1))){
-                                    let option = {
-                                        type:'friend',
-                                        key:'u' + (10200 + friend.id),//用于之后删除好友方便查找key
-                                        value:friend,
-                                        keyword:'friendList',
-                                        sort:'0' + timestamp
-                                    }
-                                    event.save(option,function (message) {
-                                        if(message.type == 'success' && message.content =='保存成功'){
-                                            item.name.push(friend);
-                                            _this.friendTotal ++;
-//                                            将本次时间戳缓存起来
-                                              storage.setItem('lastTimestamp', timestamp);
-                                        }else{
-                                            event.toast('网络不稳定');
+                storage.getItem('lastTimestamp', e => {
+                     lastTimestamp = e.data == undefined ? '' : e.data;
+                    GET('weex/member/friends/list.jhtml?timeStamp=' + lastTimestamp ,function (data) {
+                        //   获取当前时间戳 作为唯一标识符key
+                        var timestamp = Math.round(new Date().getTime()/1000);
+                        if(data.type == 'success' && data.data.data!=''){
+                            data.data.data.forEach(function (friend) {
+                                _this.friendsList.forEach(function (item) {
+                                    if(item.letter == getLetter.getFirstLetter(friend.nickName.substring(0,1))){
+                                        let option = {
+                                            type:'friend',
+                                            key:'u' + (10200 + friend.id),//用于之后删除好友方便查找key
+                                            value:friend,
+                                            keyword:',' + friend.name + ',' +friend.nickName + ',' + friend.md5 + ',',
+                                            sort:item.letter + ',' + timestamp
                                         }
-                                    })
-                                }
+                                        event.save(option,function (message) {
+                                            if(message.type == 'success' && message.content =='保存成功'){
+                                                item.name.push(friend);
+                                                _this.friendTotal ++;
+//                                            将本次时间戳缓存起来
+                                                storage.setItem('lastTimestamp', timestamp);
+                                            }else{
+                                                event.toast('网络不稳定');
+                                            }
+                                        })
+                                    }
+                                })
                             })
-                        })
-                    }else{
-                        event.toast('没有数据');
-                    }
-                },function (data) {
-                    event.toast(data.content);
+                        }else{
+                            event.toast('没有数据');
+                        }
+                    },function (data) {
+                        event.toast(data.content);
+                    })
                 })
+
             },
             goAddFriend:function () {
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
