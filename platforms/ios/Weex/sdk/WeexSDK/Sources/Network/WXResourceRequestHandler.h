@@ -44,10 +44,6 @@
 - (void)request:(WXResourceRequest *)request didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics API_AVAILABLE(macosx(10.12), ios(10.0), watchos(3.0), tvos(10.0));
 #endif
 
-@optional
-
-- (void)requestDidFinishLoading:(WXResourceRequest *)request isKeepAlive:(BOOL)keepAlive;
-
 @end
 
 @protocol WXResourceRequestHandler <NSObject>

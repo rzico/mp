@@ -108,6 +108,8 @@ static const CGFloat WXToastDefaultPadding = 30.0;
     
     toastView.center = point;
     toastView.frame = CGRectIntegral(toastView.frame);
+    toastView.tag = 911;
+    
     
     [toastView addSubview:messageLabel];
     toastView.layer.cornerRadius = 7;
@@ -122,12 +124,12 @@ static const CGFloat WXToastDefaultPadding = 30.0;
         return;
     }
     
+    [superView.layer removeAllAnimations];
     for (UIView *view in superView.subviews){
-        NSLog(@"view = %@", view);
-        [view.layer removeAllAnimations];
+        if (view.tag == 911){
+            [view removeFromSuperview];
+        }
     }
-    
-//    [superView.layer removeAllAnimations];
     
     [IWXToastManager sharedManager].toastingView = toastView;
     [superView addSubview:toastView];

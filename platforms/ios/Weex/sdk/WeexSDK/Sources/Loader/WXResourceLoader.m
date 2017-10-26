@@ -22,6 +22,8 @@
 #import "WXLog.h"
 #import "WXHandlerFactory.h"
 #import "WXSDKError.h"
+#import "WXConfigCenterProtocol.h"
+#import "WXSDKEngine.h"
 
 //deprecated
 #import "WXNetworkProtocol.h"
@@ -138,6 +140,14 @@
     WXLogDebug(@"request:%@ didReceiveResponse:%@ ", request, response);
     
     _response = response;
+    id<WXConfigCenterProtocol> configCenter = [WXSDKEngine handlerForProtocol:@protocol(WXConfigCenterProtocol)];
+    if ([configCenter respondsToSelector:@selector(configForKey:defaultValue:isDefault:)]) {
+        BOOL isDefault;
+        BOOL clearResponseData = [[configCenter configForKey:@"iOS_weex_ext_config.clearResponseDataWhenDidReceiveResponse" defaultValue:@(NO) isDefault:&isDefault] boolValue];
+        if(clearResponseData) {
+            _data = nil;
+        }
+    }
     
     if (self.onResponseReceived) {
         self.onResponseReceived(response);
@@ -164,17 +174,6 @@
     
     if (self.onFinished) {
         self.onFinished(_response, _data);
-    }
-    
-    _data = nil;
-    _response = nil;
-}
-
-- (void)requestDidFinishLoading:(WXResourceRequest *)request isKeepAlive:(BOOL)keepAlive{
-    WXLogDebug(@"request:%@ requestDidFinishLoading", request);
-    
-    if (self.onFinishedWithKeepAlive) {
-        self.onFinishedWithKeepAlive(_response, _data, keepAlive);
     }
     
     _data = nil;

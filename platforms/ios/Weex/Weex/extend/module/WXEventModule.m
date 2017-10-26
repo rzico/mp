@@ -196,6 +196,7 @@ WX_EXPORT_METHOD(@selector(scan:))
 
 
 - (void)toast:(id)message{
+    NSLog(@"\nmessage=%@\n",message);
     IWXToast *toast = [IWXToast new];
     [toast showToast:message withInstance:weexInstance];
 }
