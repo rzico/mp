@@ -3,6 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
+const dataURL = 'http://weex.rzico.com:8088/';
 
 let utilsFunc = {
     initIconFont () {
@@ -124,6 +125,10 @@ let utilsFunc = {
         } else {
             return url;
         }
+    },
+    //获取文章URL地址
+    articleUrl(template,id) {
+            return dataURL+"article/#/"+template+"?id="+id;
     }
 };
 
