@@ -14,7 +14,7 @@
                 <text class="indicator">下拉刷新 ...</text>
             </refresh>
             <!--朋友信息-->
-            <cell v-for="item in messageList " >
+            <cell v-for="item in messageList" >
                 <div class="deleteBox" @click="deleteMessage()">
                     <text class="deleteText">删除</text>
                 </div>
@@ -248,7 +248,7 @@
         computed:{
 //            计算属性
             sortList:function() {
-                    return this.messageList.sort(this.sortTime);
+                return this.messageList.sort(this.sortTime);
             }
         },
         filters:{
@@ -275,6 +275,9 @@
                     case 'favorite':
                         return '收藏提醒'
                         break;
+                    case 'immessage':
+                        return  value.nickName;
+                        break;
                     default:
                         return value.nickName;
                         break;
@@ -286,9 +289,9 @@
             utils.initIconFont();
             let listoption = {
                 type:'message',//类型
-                keyword:'messageList',//关键址
+                keyword:'',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
-            }
+            };
 //            读取本地缓存
             event.findList(listoption,function (data) {
                 if(data.type == 'success'){
@@ -304,50 +307,62 @@
             globalEvent.addEventListener("onMessage", function (e) {
                 event.toast('全局监听onMessage:');
                 event.toast(e);
-                _this.hadMessage();
+//                判断是系统消息还是用户消息
+                if(!utils.isNull(e.data.id) && e.data.id.substring(0,1) == 'g'){
+                    _this.hadMessage();
+                }else{
+                    _this.addMessage(e);
+                }
             });
         },
         methods:{
+//            向消息列表填入新的消息数据并存入缓存
+            addMessage(_weex){
+                var _this = this;
+                if(_weex.type == 'success'){
+                    //            获取当前时间戳 作为唯一标识符key
+                    let timestamp = Math.round(new Date().getTime()/1000);
+//                    倒过来
+                    _weex.data = _weex.data.reverse();
+                    _weex.data.forEach(function (item,index) {
+                        let option = {
+                            type:'message',
+                            key:item.type,
+                            value:item,
+                            keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
+                            sort:'0' + timestamp
+                        }
+                        event.save(option,function (message) {
+//                            event.toast(message);
+                            if(message.type == 'success' && message.content =='保存成功'){
+                                _this.messageList.splice(0,0,item);
+                            }else if(message.type == 'success' && message.content =='更新成功'){
+//                                event.toast('1');
+                                _this.messageList.forEach(function (nowData,nowIndex) {
+                                    if(nowData.type == item.type){
+//                                        event.toast('2');
+//                                        删除原来的对话
+                                        _this.messageList.splice(nowIndex,1);
+//                                        将新的对话push进
+                                        _this.messageList.splice(0,0,item);
+                                    }
+                                })
+                            }else{
+                                event.toast('网络不稳定');
+                            }
+                        })
+                    })
+                }else{
+                    event.toast(_weex.content);
+                }
+
+            },
 //          获取服务器新数据
             hadMessage(){
                 var _this = this;
-                GET('weex/member/message/dialogue.jhtml',function (weex) {
-                    if(weex.type == 'success'){
-                        //            获取当前时间戳 作为唯一标识符key
-                        let timestamp = Math.round(new Date().getTime()/1000);
-//                    倒过来
-                        weex.data = weex.data.reverse();
-                        weex.data.forEach(function (item,index) {
-                            let option = {
-                                type:'message',
-                                key:item.type,
-                                value:item,
-                                keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
-                                sort:'0' + timestamp
-                            }
-                            event.save(option,function (message) {
-//                            event.toast(message);
-                                if(message.type == 'success' && message.content =='保存成功'){
-                                    _this.messageList.splice(0,0,item);
-                                }else if(message.type == 'success' && message.content =='更新成功'){
-//                                event.toast('1');
-                                    _this.messageList.forEach(function (nowData,nowIndex) {
-                                        if(nowData.type == item.type){
-//                                        event.toast('2');
-//                                        删除原来的对话
-                                            _this.messageList.splice(nowIndex,1);
-//                                        将新的对话push进
-                                            _this.messageList.splice(0,0,item);
-                                        }
-                                    })
-                                }else{
-                                    event.toast('hadMessage网络不稳定');
-                                }
-                            })
-                        })
-                    }else{
-                        event.toast(weex.content);
-                    }
+                GET('weex/member/message/dialogue.jhtml',function (_weex) {
+//            向消息列表填入新的消息数据并存入缓存
+                    _this.addMessage(_weex);
                 },function (err) {
                     event.toast("网络不稳定");
                 })
@@ -372,30 +387,25 @@
             jumpMessage:function(item,index){
 //                event.toast(messageType);
 //                event.toast(isRead);
-
                 var _this = this;
                 event.toast(item);
                 if(item.type != 'immessage'){
-                    GET('weex/member/message/list.jhtml?type=' + item.type ,function (weex) {
-                        event.toast(weex);
-                        if(weex.type == 'success'){
-//                        未读消息取消掉
-                            item.unRead = 0;
-                            let timestamp = Math.round(new Date().getTime()/1000);
-                            let option = {
-                                type:'message',
-                                key:item.type,
-                                value:item,
-                                keyword:'messageList',
-                                sort:'0' + timestamp
-                            }
-                            event.save(option,function (message) {
-
-                            })
-                        }
-                    },function (err) {
-                        event.toast('网络不稳定');
+                    item.unRead = 0;
+                    let timestamp = Math.round(new Date().getTime()/1000);
+                    let option = {
+                        type:'message',
+                        key:item.type,
+                        value:item,
+                        keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
+                        sort:'0' + timestamp
+                    }
+//                    更新缓存数据后，跳转到通知页面
+                    event.save(option,function (message) {
+                        event.openURL('http://192.168.2.157:8081/inform.weex.js?type=' + item.type,function () {
+//                    event.openURL(utils.locate('view/message/inform.js?type=' + item.type), function () {
+                        });
                     })
+
                 }else{
                     event.navToChat(item.userId);
                 }

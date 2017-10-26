@@ -19,12 +19,37 @@
         <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
         <!--</div>-->
         <list class="listBody">
-            <cell v-for="(item,index) in topLineList" ref="linkref" >
-                <!--顶部功能栏-->
+            <cell ref="linkref" >
+                <!--新的朋友-->
                 <div class="addBorder">
-                    <div class="topLine " @click="openPage(index)">
-                        <image :src="item.lineImage" class="lineImage"></image>
-                        <text class="lineTitle">{{item.lineTitle}}</text>
+                    <div class="topLine " @click="openPage(0)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
+                        <text class="lineTitle">新的朋友</text>
+                    </div>
+                </div>
+                <!--我关注的-->
+                <div class="addBorder">
+                    <div class="topLine " @click="openPage(1)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
+                        <text class="lineTitle">我关注的</text>
+                    </div>
+                </div>
+                <!--顶部功能栏-->
+                <div class="我的粉丝">
+                    <div class="topLine " @click="openPage(2)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
+                        <text class="lineTitle">我的粉丝</text>
+                    </div>
+                </div>
+                <!--我收藏的-->
+                <div class="addBorder">
+                    <div class="topLine " @click="openPage(3)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color:#D85C87" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                        <text class="lineTitle">我收藏的</text>
                     </div>
                 </div>
             </cell>
@@ -219,6 +244,7 @@
     .lineImage{
         width:80px;
         height:80px;
+        font-size: 80px;
     }
     .lineTitle{
         font-size: 34px;
@@ -255,19 +281,19 @@
                 showText:'',
                 isPress:false,
                 friendTotal:43,
-                topLineList:[{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'新的朋友'
-                },{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'我关注的'
-                },{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'我的粉丝'
-                },{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'我收藏的'
-                }],
+//                topLineList:[{
+//                    lineImage:'&#xe631;',
+//                    lineTitle:'新的朋友'
+//                },{
+//                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                    lineTitle:'我关注的'
+//                },{
+//                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                    lineTitle:'我的粉丝'
+//                },{
+//                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                    lineTitle:'我收藏的'
+//                }],
                 friendsList:[{
                     letter:'A',
                     name:[]

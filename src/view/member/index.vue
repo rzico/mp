@@ -53,7 +53,7 @@
         <!--顶部个人信息栏-->
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
-            <image   class="backgroundImage" :src="imageUrl"></image>
+            <image   class="backgroundImage" :src="bgImgUrl"></image>
             <!--遮罩层-->
             <!--<image class="backgroundMask" :src="maskUrl"></image>-->
             <div  class="topHead">
