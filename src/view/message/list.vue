@@ -291,6 +291,8 @@
                 type:'message',//类型
                 keyword:'',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
+                current:0,
+                pageSize:20,
             };
 //            读取本地缓存
             event.findList(listoption,function (data) {

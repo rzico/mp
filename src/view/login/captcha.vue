@@ -5,10 +5,7 @@
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
-
-
 <style scoped>
-
 </style>
 <script>
     const event = weex.requireModule('event');
@@ -59,7 +56,6 @@
                 this.captcha = val;
                 var _this = this;
                 event.encrypt(val,function (data) {
-
                     if (data.type=="success") {
                         POST('weex/login/captcha.jhtml?captcha=' + data.data).
                         then(function (data) {

@@ -11,18 +11,18 @@
                        src="file://resource/image/loading.gif"></image>
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <cell v-for="(friend,index) in friendsList" v-if="startList">
+            <cell v-for="(friend,index) in sortList" v-if="startList">
                 <!--姓氏首字母-->
                 <div class="letterBox" v-if="isRepeat(index)">
-                    <text class="nameLetter">{{friend.nickName | watchLetter}}</text>
+                    <text class="nameLetter">{{friend.name | watchLetter}}</text>
                 </div>
                 <!--姓氏里每个人的名子-->
                 <div class="addFriendsBorder">
                     <div class="friendsLine" @click="jump()">
-                        <image :src="friend.logo" class="friendsImage"></image>
+                        <image :src="friend.logo | watchlogo" class="friendsImage"></image>
                         <div class="friendsName">
-                            <text class="lineTitle lines-ellipsis">手机通讯录名字 {{friend.name}}</text>
-                            <text class="realName">魔篇:{{friend.nickName }}</text>
+                            <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
+                            <text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>
                         </div>
                     </div>
                     <div class="status_panel">
@@ -31,28 +31,28 @@
                     </div>
                 </div>
             </cell>
-            <cell v-for="(friend,index) in friendsList" v-else>
-                <div v-if="findFriend(index)">
-                    <!--姓氏首字母-->
-                    <div class="letterBox" v-if="isRepeat(index)">
-                        <text class="nameLetter">{{friend.nickName | watchLetter}}</text>
-                    </div>
-                    <!--姓氏里每个人的名子-->
-                    <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="jump()">
-                            <image :src="friend.logo" class="friendsImage"></image>
-                            <div class="friendsName">
-                                <text class="lineTitle lines-ellipsis">手机通讯录名字1 {{friend.name}}</text>
-                                <text class="realName">魔篇:{{friend.nickName }}</text>
-                            </div>
-                        </div>
-                        <div class="status_panel">
-                            <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
-                            <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
-                        </div>
-                    </div>
-                </div>
-            </cell>
+            <!--<cell v-for="(friend,index) in friendsList" v-else>-->
+                <!--<div v-if="findFriend(index)">-->
+                    <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
+                    <!--<div class="letterBox" v-if="isRepeat(index)">-->
+                        <!--<text class="nameLetter">{{friend.name | watchLetter}}</text>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;姓氏里每个人的名子&ndash;&gt;-->
+                    <!--<div class="addFriendsBorder">-->
+                        <!--<div class="friendsLine" @click="jump()">-->
+                            <!--<image :src="friend.logo" class="friendsImage"></image>-->
+                            <!--<div class="friendsName">-->
+                                <!--<text class="lineTitle lines-ellipsis">手机通讯录名字1 {{friend.name}}</text>-->
+                                <!--<text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="status_panel">-->
+                            <!--<text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>-->
+                            <!--<text class="adopt " v-if="isAdopt(friend.status)">已添加</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</cell>-->
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
                 <image class="gif" resize="cover"
                        src="file://resource/image/loading.gif"></image>
@@ -173,10 +173,11 @@
                 noFind:false,
                 findNum:0,
                 keyword:"",
-                friendsList:[],
                 startList:true,
                 loadingState:'',
-                showLoading:'hide'
+                showLoading:'hide',
+                friendsList:[],
+                allLetter:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#']
             }
         },
         props: {
@@ -186,23 +187,84 @@
             ptNum:{default:0},
             hNum:{default:96}
         },
+        computed:{
+//            计算属性
+            sortList:function() {
+                return this.friendsList.sort(this.sortLetter);
+            }
+        },
         filters:{
             watchLetter:function (value) {
                 return getLetter.getFirstLetter(value.substring(0,1));
+            },
+            watchlogo:function (value) {
+                if(utils.isNull(value)){
+                   return utils.locate('resources/images/background.jpg');
+                }else{
+                    return value;
+                }
+            },
+            watchNickNmae:function (value) {
+                if(utils.isNull(value)){
+                    return '暂无';
+                }else{
+                    return value;
+                }
+
             }
         },
         created() {
             utils.initIconFont();
+            var _this = this;
 //            this.onrefresh();
            let option = {
                 current:0,
                 pageSize:20
             }
             event.getMailList(option,function (data) {
+                data.data.forEach(function (item) {
+                    let option={
+                        type:'friend',
+                        key:item.numberMd5
+                    }
+                    event.find(option,function (_weex) {
+                        event.toast(_weex);
+                        if(_weex.type == 'notfind' && _weex.content == '没有数据'){
+                            GET('weex/member/friends/search.jhtml?keyword=' + item.number),function (message) {
+                                
+                            }
+
+
+                        }else{
+                            item = weex.data;
+                        }
+                    })
+                    _this.friendsList.push(item);
+                })
                 event.toast(data);
             })
         },
         methods:{
+
+//            根据字母排序
+            sortLetter:function (a,b) {
+                var _this = this;
+//                分别获取昵称中的首字母
+                a = getLetter.getFirstLetter(a.name.substring(0,1));
+                b = getLetter.getFirstLetter(b.name.substring(0,1));
+//                    遍历字母表获取下标进行比较大小。
+                _this.allLetter.forEach(function (item,index) {
+                    if(a == item){
+                        a = index;
+                    }
+                    if(b == item){
+                        b = index;
+                    }
+                })
+//            返回排序结果
+                return (a - b)
+            },
+//            查找好友
             findFriend:function (index) {
                 let valLength = this.keyword.length;
                 if(valLength > this.friendsList[index].nickName.length){
@@ -335,7 +397,7 @@
             isRepeat:function(index){
                 var _this = this;
                 if(index != 0){
-                    if (getLetter.getFirstLetter(_this.friendsList[index].nickName.substring(0,1)) == getLetter.getFirstLetter(_this.friendsList[index - 1].nickName.substring(0,1))) {
+                    if (getLetter.getFirstLetter(_this.friendsList[index].name.substring(0,1)) == getLetter.getFirstLetter(_this.friendsList[index - 1].name.substring(0,1))) {
                         return false;
                     } else {
                         return true;
