@@ -581,7 +581,6 @@
                     case 0:
 //                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
                         event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
-
                             event.toast(message);
                         });
                         break;

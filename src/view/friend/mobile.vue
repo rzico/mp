@@ -22,36 +22,58 @@
                         <image :src="friend.logo | watchlogo" class="friendsImage"></image>
                         <div class="friendsName">
                             <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
-                            <text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>
+                            <text class="realName">魔篇:{{friend.number | watchNickNmae}}</text>
                         </div>
                     </div>
                     <div class="status_panel">
                         <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
                         <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
+                        <text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>
+                    </div>
+                </div>
+            </cell>
+            <cell v-for="(friend,index) in sortList" v-else>
+                <!--姓氏首字母-->
+                <div class="letterBox" v-if="isRepeat(index)">
+                    <text class="nameLetter">{{friend.name | watchLetter}}</text>
+                </div>
+                <!--姓氏里每个人的名子-->
+                <div class="addFriendsBorder">
+                    <div class="friendsLine" @click="jump()">
+                        <image :src="friend.logo | watchlogo" class="friendsImage"></image>
+                        <div class="friendsName">
+                            <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
+                            <text class="realName">魔篇:{{friend.number | watchNickNmae}}</text>
+                        </div>
+                    </div>
+                    <div class="status_panel">
+                        <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
+                        <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
+                        <text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>
                     </div>
                 </div>
             </cell>
             <!--<cell v-for="(friend,index) in friendsList" v-else>-->
-                <!--<div v-if="findFriend(index)">-->
-                    <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
-                    <!--<div class="letterBox" v-if="isRepeat(index)">-->
-                        <!--<text class="nameLetter">{{friend.name | watchLetter}}</text>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;姓氏里每个人的名子&ndash;&gt;-->
-                    <!--<div class="addFriendsBorder">-->
-                        <!--<div class="friendsLine" @click="jump()">-->
-                            <!--<image :src="friend.logo" class="friendsImage"></image>-->
-                            <!--<div class="friendsName">-->
-                                <!--<text class="lineTitle lines-ellipsis">手机通讯录名字1 {{friend.name}}</text>-->
-                                <!--<text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="status_panel">-->
-                            <!--<text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>-->
-                            <!--<text class="adopt " v-if="isAdopt(friend.status)">已添加</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<div v-if="findFriend(index)">-->
+            <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
+            <!--<div class="letterBox" v-if="isRepeat(index)">-->
+            <!--<text class="nameLetter">{{friend.name | watchLetter}}</text>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;姓氏里每个人的名子&ndash;&gt;-->
+            <!--<div class="addFriendsBorder">-->
+            <!--<div class="friendsLine" @click="jump()">-->
+            <!--<image :src="friend.logo" class="friendsImage"></image>-->
+            <!--<div class="friendsName">-->
+            <!--<text class="lineTitle lines-ellipsis">手机通讯录名字1 {{friend.name}}</text>-->
+            <!--<text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="status_panel">-->
+            <!--<text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>-->
+            <!--<text class="adopt " v-if="isAdopt(friend.status)">已添加</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</cell>-->
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
                 <image class="gif" resize="cover"
@@ -170,6 +192,8 @@
         },
         data() {
             return {
+                refreshing:false,
+                showLoading:false,
                 noFind:false,
                 findNum:0,
                 keyword:"",
@@ -177,7 +201,9 @@
                 loadingState:'',
                 showLoading:'hide',
                 friendsList:[],
-                allLetter:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#']
+                allLetter:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'],
+                numberList:'',
+                currentNum:0,
             }
         },
         props: {
@@ -199,7 +225,7 @@
             },
             watchlogo:function (value) {
                 if(utils.isNull(value)){
-                   return utils.locate('resources/images/background.jpg');
+                    return utils.locate('resources/images/background.jpg');
                 }else{
                     return value;
                 }
@@ -210,41 +236,72 @@
                 }else{
                     return value;
                 }
-
             }
         },
         created() {
             utils.initIconFont();
             var _this = this;
 //            this.onrefresh();
-           let option = {
+            let option = {
                 current:0,
-                pageSize:20
+                pageSize:1
             }
             event.getMailList(option,function (data) {
-                data.data.forEach(function (item) {
+                for(let k = 0; k<data.data.length - 1;k++){
+                    let option={
+                        type:'friend',
+                        key:data.data[k].numberMd5
+                    };
+                }
+                data.data.forEach(function (item,index) {
                     let option={
                         type:'friend',
                         key:item.numberMd5
-                    }
+                    };
+//                    判断用户是否是好友
                     event.find(option,function (_weex) {
-                        event.toast(_weex);
                         if(_weex.type == 'notfind' && _weex.content == '没有数据'){
-                            GET('weex/member/friends/search.jhtml?keyword=' + item.number),function (message) {
-                                
-                            }
-
-
+                            _this.numberList = _this.numberList + item.number ;
+                            item.unused = 'ask';
                         }else{
                             item = weex.data;
+                            item.unused = 'adopt';
+                        };
+                        _this.currentNum ++;
+                        if(_this.currentNum == data.data.length){
+                            _this.useSoft(data);
                         }
-                    })
-                    _this.friendsList.push(item);
-                })
+                    });
+                });
                 event.toast(data);
-            })
+            });
         },
         methods:{
+//            判断是否用户有用软件
+            useSoft(data){
+                var _this = this;
+                    event.toast(_this.numberList);
+                    GET('weex/member/friends/search.jhtml?keyword=' + _this.numberList,function (message) {
+                        if(message.type == 'success' && message.data != ''){
+                            message.data.forEach(function (item) {
+                                for(let i = 0;i<data.data.length - 1;i++){
+                                    if(item.md5 == data.data[i].numberMd5){
+                                        data.data[i].logo = item.logo;
+                                        data.data[i].id = item.id;
+                                        data.data[i].nickName = item.nickName;
+                                        data.data[i].unused = 'unused';
+                                        continue;
+                                    };
+                                };
+                            });
+                        _this.friendsList = data.data;
+                        }else{
+                            event.toast(message.content);
+                        }
+                    },function (err) {
+                        event.toast(err)
+                    });
+            },
 
 //            根据字母排序
             sortLetter:function (a,b) {
@@ -318,6 +375,13 @@
                 if (value=="adopt") {
                     return true;
                 } else {
+                    return false;
+                }
+            },
+            isInvite:function (value) {
+                if(value == "unused"){
+                    return true;
+                }else {
                     return false;
                 }
             },

@@ -172,7 +172,7 @@
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
                     _this.captcha = event.value;
-                    _this.beginTimer();
+//                    _this.beginTimer();
                     _this.$emit("onEnd",this.captcha);
                 }
             },
