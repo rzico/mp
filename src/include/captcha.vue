@@ -18,7 +18,7 @@
         </div>
         <div class="flex-center">
             <text class="status primary" @click="send()" :style="statusStyle()" v-if="retry">{{status}}</text>
-            <text class="status primary" @click="send()" :style="statusStyle()" v-else> 已发送{{time}}秒 </text>
+            <text class="status gray"  :style="statusStyle()"  v-else> {{time}}秒后重新发送 </text>
         </div>
     </div>
 </template>
@@ -96,7 +96,7 @@
     export default {
         data:function(){
             return{
-                time:0,
+                time:59,
                 textList:['','','','','','']
             }
         },
@@ -105,15 +105,18 @@
             captcha: {default:""},
             mobile:{default:""},
             status:{default:"点击重新发送"},
-            retry:{default:true},
+            retry:{default:false},
         },
         beforeDestory() {
             var _this = this;
             if (utils.isNull(timer) == false)  {
                 clearInterval(timer);
-                _this.time = 0;
+                _this.time = 59;
                 timer = null;
             }
+        },
+        created(){
+            this.beginTimer();
         },
         methods:{
             beginTimer:function () {
@@ -121,12 +124,12 @@
                 _this.retry = false;
                 if (utils.isNull(timer) == false)  {
                     clearInterval(timer);
-                    _this.time = 0;
+                    _this.time = 59;
                     timer = null;
                 }
                 timer = setInterval(function () {
-                    _this.time = _this.time +1;
-                    if (_this.time>59) {
+                    _this.time = _this.time - 1;
+                    if (_this.time < 1) {
                         _this.endTimer();
                     }
                 },1000)
@@ -135,7 +138,7 @@
                 var _this = this;
                 if (utils.isNull(timer) == false)  {
                     clearInterval(timer);
-                    _this.time = 0;
+                    _this.time = 59;
                     timer = null;
                 }
                 this.retry = true;

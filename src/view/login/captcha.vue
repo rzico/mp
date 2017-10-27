@@ -34,7 +34,8 @@
         methods: {
             onSend: function (e) {
                 var _this = this;
-                POST('weex/login/send_mobile.jhtml?mobile=' + _this.mobile)
+                event.encrypt(_this.mobile,function (data) {
+                POST('weex/login/send_mobile.jhtml?mobile=' + data.data)
                     .then(
                         function (data) {
                             if (data.type == "success") {
@@ -47,26 +48,28 @@
                         function (err) {
                             _this.$refs.captcha.endTimer();
                             event.toast("网络不稳定")
-
                         }
                     )
+                })
             },
             goBack:function(e) {
                 event.closeURL();
             },
             onEnd: function (val) {
                 this.captcha = val;
+                var _this = this;
                 event.encrypt(val,function (data) {
+
                     if (data.type=="success") {
                         POST('weex/login/captcha.jhtml?captcha=' + data.data).
                         then(function (data) {
                                 if (data.type == "success") {
                                     event.closeURL(data);
                                 } else {
-                                    this.$refs.captcha.clear();
+                                    _this.$refs.captcha.clear();
                                     event.toast(data.content);
                                 }
-                            },function () {
+                            },function (err) {
                                 event.toast("网络不稳定请重试");
                             }
                         )
