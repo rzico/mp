@@ -242,6 +242,7 @@
 
                             let orders = _this.corpusList.length + 1;
 //                            event.toast(orders);
+                            value.data = encodeURI(value.data);
 //                            向服务器存入文集名称
                             POST('weex/member/article_catalog/add.jhtml?name=' + value.data + '&orders=' + orders).then(
                                 function (res) {

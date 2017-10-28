@@ -46,11 +46,14 @@
         methods: {
             onSend: function (e) {
                 var _this = this;
+                event.toast(this.value);
                 event.encrypt(_this.value,function (message) {
+                    event.toast(message);
                     if (message.type=="success") {
                     POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
                         function (data) {
                             if (data.type == "success") {
+//                                event.openURL('http://192.168.2.157:8081/captcha.weex.js?mobile=' +_this.value,function (e) {
                                 event.openURL(utils.locate("view/login/captcha.js?mobile=" +_this.value),
                                     function (e) {
                                         event.closeURL();

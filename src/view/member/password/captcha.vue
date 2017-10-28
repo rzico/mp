@@ -51,13 +51,11 @@
                             function (err) {
                                 _this.$refs.captcha.endTimer();
                                 event.toast("网络不稳定")
-
                             }
                         )
                     } else {
                         event.toast(msg.content);
                     }
-
                 })
             },
             onEnd: function (val) {

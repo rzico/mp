@@ -8,7 +8,6 @@
                     <image class="coverImage" resize="cover" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
                     <text class="setTitle" @trigger="articleTitle(setTitle)" @click="articleTitle(setTitle)">{{setTitle}}</text>
-
                     <div class="bottomBtn addMusic" >
                         <text class="musicSize"  @click="goMusic()" v-if="this.musicName == ''">{{addMusic}}</text>
                         <text class="musicSize"  @click="goMusic()" v-else :style="{fontFamily:'iconfont'}">&#xe65a; {{musicName}}</text>
