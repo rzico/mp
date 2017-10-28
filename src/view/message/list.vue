@@ -151,6 +151,8 @@
                 messageList:[],
                 refreshing: false,
                 canScroll:true,
+                currentNum:0,
+                pageNum:20,
 //                messageList:[]
 //                messageList:[{
 //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -253,30 +255,27 @@
         },
         filters:{
             watchName:function (value) {
-                switch(value.type){
-                    case 'order':
+                switch(value.id){
+                    case 'gm_10200':
                         return '订单提醒';
                         break;
-                    case 'account':
+                    case 'gm_10201':
                         return '账单提醒'
                         break;
-                    case 'message':
+                    case 'gm_10202':
                         return '系统消息';
                         break;
-                    case 'review':
+                    case 'gm_10203':
                         return '评论回复'
                         break;
-                    case 'laud':
+                    case 'gm_1024':
                         return '点赞提醒';
                         break;
-                    case 'follow':
+                    case 'gm_10205':
                         return '关注提醒'
                         break;
-                    case 'favorite':
+                    case 'gm_10206':
                         return '收藏提醒'
-                        break;
-                    case 'immessage':
-                        return  value.nickName;
                         break;
                     default:
                         return value.nickName;
@@ -307,13 +306,15 @@
             })
             this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
-                event.toast('全局监听onMessage:');
+//                event.toast('全局监听onMessage:');
                 event.toast(e);
+//                event.toast(e.data.data.id);
 //                判断是系统消息还是用户消息
-                if(!utils.isNull(e.data.id) && e.data.id.substring(0,1) == 'g'){
+                if(!utils.isNull(e.data.data.id) && e.data.data.id.substring(0,1) == 'g'){
                     _this.hadMessage();
                 }else{
-                    _this.addMessage(e);
+                    e.data.userId = e.data.id;
+                    _this.addMessage(e.data);
                 }
             });
         },
@@ -321,39 +322,72 @@
 //            向消息列表填入新的消息数据并存入缓存
             addMessage(_weex){
                 var _this = this;
+                event.toast(_weex);
                 if(_weex.type == 'success'){
                     //            获取当前时间戳 作为唯一标识符key
                     let timestamp = Math.round(new Date().getTime()/1000);
 //                    倒过来
-                    _weex.data = _weex.data.reverse();
-                    _weex.data.forEach(function (item,index) {
+                    event.toast(_weex.data.length);
+//                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
+//                    _weex.data = _weex.data.reverse();
+                    for(let i = 0;i<_weex.data.length -1 ;i++){
+                        weex.data[i].name = utils.isNull(weex.data[i].name) ? '' : weex.data[i].name;
                         let option = {
                             type:'message',
-                            key:item.type,
-                            value:item,
-                            keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
+                            key:weex.data[i].userId,
+                            value:weex.data[i],
+                            keyword:',' + weex.data[i].name + ',' + weex.data[i].nickName + ',' + weex.data[i].content +',',
                             sort:'0' + timestamp
                         }
                         event.save(option,function (message) {
-//                            event.toast(message);
+                            event.toast(message);
                             if(message.type == 'success' && message.content =='保存成功'){
-                                _this.messageList.splice(0,0,item);
+                                _this.messageList.splice(0,0,weex.data[i]);
                             }else if(message.type == 'success' && message.content =='更新成功'){
 //                                event.toast('1');
                                 _this.messageList.forEach(function (nowData,nowIndex) {
-                                    if(nowData.type == item.type){
+                                    if(nowData.userId == item.userId){
 //                                        event.toast('2');
 //                                        删除原来的对话
                                         _this.messageList.splice(nowIndex,1);
 //                                        将新的对话push进
-                                        _this.messageList.splice(0,0,item);
+                                        _this.messageList.splice(0,0,weex.data[i]);
                                     }
                                 })
                             }else{
                                 event.toast('网络不稳定');
                             }
                         })
-                    })
+                    }
+//                    _weex.data.forEach(function (item,index) {
+//                        item.name = utils.isNull(item.name) ? '' : item.name;
+//                        let option = {
+//                            type:'message',
+//                            key:item.userId,
+//                            value:item,
+//                            keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
+//                            sort:'0' + timestamp
+//                        }
+//                        event.save(option,function (message) {
+//                            event.toast(message);
+//                            if(message.type == 'success' && message.content =='保存成功'){
+//                                _this.messageList.splice(0,0,item);
+//                            }else if(message.type == 'success' && message.content =='更新成功'){
+////                                event.toast('1');
+//                                _this.messageList.forEach(function (nowData,nowIndex) {
+//                                    if(nowData.userId == item.userId){
+////                                        event.toast('2');
+////                                        删除原来的对话
+//                                        _this.messageList.splice(nowIndex,1);
+////                                        将新的对话push进
+//                                        _this.messageList.splice(0,0,item);
+//                                    }
+//                                })
+//                            }else{
+//                                event.toast('网络不稳定');
+//                            }
+//                        })
+//                    })
                 }else{
                     event.toast(_weex.content);
                 }

@@ -11,7 +11,7 @@
                        src="file://resource/image/loading.gif"></image>
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <cell v-for="(friend,index) in sortList" v-if="startList">
+            <cell v-for="(friend,index) in sortList" >
                 <!--姓氏首字母-->
                 <div class="letterBox" v-if="isRepeat(index)">
                     <text class="nameLetter">{{friend.name | watchLetter}}</text>
@@ -22,37 +22,39 @@
                         <image :src="friend.logo | watchlogo" class="friendsImage"></image>
                         <div class="friendsName">
                             <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
-                            <text class="realName">魔篇:{{friend.number | watchNickNmae}}</text>
+                            <text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>
                         </div>
                     </div>
                     <div class="status_panel">
-                        <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
+                        <text class="ask green"  v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
                         <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
                         <text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>
                     </div>
                 </div>
             </cell>
-            <cell v-for="(friend,index) in sortList" v-else>
-                <!--姓氏首字母-->
-                <div class="letterBox" v-if="isRepeat(index)">
-                    <text class="nameLetter">{{friend.name | watchLetter}}</text>
-                </div>
-                <!--姓氏里每个人的名子-->
-                <div class="addFriendsBorder">
-                    <div class="friendsLine" @click="jump()">
-                        <image :src="friend.logo | watchlogo" class="friendsImage"></image>
-                        <div class="friendsName">
-                            <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
-                            <text class="realName">魔篇:{{friend.number | watchNickNmae}}</text>
-                        </div>
-                    </div>
-                    <div class="status_panel">
-                        <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
-                        <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
-                        <text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>
-                    </div>
-                </div>
-            </cell>
+            <!--<cell v-for="(friend,index) in sortList" v-else>-->
+                <!--<div v-if="findFriend()">-->
+                    <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
+                    <!--<div class="letterBox" v-if="isRepeat(index)">-->
+                        <!--<text class="nameLetter">{{friend.name | watchLetter}}</text>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;姓氏里每个人的名子&ndash;&gt;-->
+                    <!--<div class="addFriendsBorder">-->
+                        <!--<div class="friendsLine" @click="jump()">-->
+                            <!--<image :src="friend.logo | watchlogo" class="friendsImage"></image>-->
+                            <!--<div class="friendsName">-->
+                                <!--<text class="lineTitle lines-ellipsis">{{friend.name}}</text>-->
+                                <!--<text class="realName">魔篇:{{friend.number | watchNickNmae}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="status_panel">-->
+                            <!--<text class="ask bkg-primary" v-if="isAsk(friend.status)"  @click="adopt(friend.id)">添加</text>-->
+                            <!--<text class="adopt " v-if="isAdopt(friend.status)">已添加</text>-->
+                            <!--<text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</cell>-->
             <!--<cell v-for="(friend,index) in friendsList" v-else>-->
             <!--<div v-if="findFriend(index)">-->
             <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
@@ -81,13 +83,13 @@
                 <text class="indicator">{{loadingState}}</text>
             </loading>
         </list>
-        <div style="position: absolute;top: 300px;left: 0;right: 0;align-items: center" v-if="noFind">
-            <text style="font-size: 35px;color: gray">无结果</text>
-        </div>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .green{
+        background-color: #19A317;
+    }
     .list {
         background-color: white;
     }
@@ -159,7 +161,7 @@
         padding-right: 20px;
     }
     .adopt {
-        font-size: 32px;
+        font-size: 27px;
         text-align: center;
         color:#ccc;
         padding-top: 10px;
@@ -169,7 +171,7 @@
     }
 
     .ask {
-        font-size: 32px;
+        font-size: 27px;
         text-align: center;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -194,16 +196,17 @@
             return {
                 refreshing:false,
                 showLoading:false,
-                noFind:false,
-                findNum:0,
-                keyword:"",
-                startList:true,
+//                keyword:"",
+//                startList:true,
                 loadingState:'',
                 showLoading:'hide',
                 friendsList:[],
+                initList:[],
                 allLetter:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'],
                 numberList:'',
+                dataNum:0,
                 currentNum:0,
+                pageNum:20,
             }
         },
         props: {
@@ -220,9 +223,11 @@
             }
         },
         filters:{
+//            获取名字首字母
             watchLetter:function (value) {
                 return getLetter.getFirstLetter(value.substring(0,1));
             },
+//            判断在软件上是否有头像
             watchlogo:function (value) {
                 if(utils.isNull(value)){
                     return utils.locate('resources/images/background.jpg');
@@ -230,6 +235,7 @@
                     return value;
                 }
             },
+//            过滤在用户在软件mp上的昵称
             watchNickNmae:function (value) {
                 if(utils.isNull(value)){
                     return '暂无';
@@ -240,62 +246,92 @@
         },
         created() {
             utils.initIconFont();
-            var _this = this;
-//            this.onrefresh();
-            let option = {
-                current:0,
-                pageSize:1
-            }
-            event.getMailList(option,function (data) {
-                for(let k = 0; k<data.data.length - 1;k++){
-                    let option={
-                        type:'friend',
-                        key:data.data[k].numberMd5
-                    };
-                }
-                data.data.forEach(function (item,index) {
-                    let option={
-                        type:'friend',
-                        key:item.numberMd5
-                    };
-//                    判断用户是否是好友
-                    event.find(option,function (_weex) {
-                        if(_weex.type == 'notfind' && _weex.content == '没有数据'){
-                            _this.numberList = _this.numberList + item.number ;
-                            item.unused = 'ask';
-                        }else{
-                            item = weex.data;
-                            item.unused = 'adopt';
-                        };
-                        _this.currentNum ++;
-                        if(_this.currentNum == data.data.length){
-                            _this.useSoft(data);
-                        }
-                    });
-                });
-                event.toast(data);
-            });
+//            调用通讯录
+            this.mailFriend();
         },
         methods:{
+//             获取通讯录好友
+            mailFriend(){
+                var _this = this;
+                _this.numberList='';
+                _this.dataNum = 0;
+//            this.onrefresh();
+                let option = {
+                    current:_this.currentNum,
+                    pageSize:_this.pageNum
+                }
+                event.getMailList(option,function (data) {
+//                    判断data.data有没有数据
+                    if(utils.isNull(data.data)){
+                        event.toast('没有更多联系人了!');
+                    }
+                    data.data.forEach(function (item,index) {
+                        let option={
+                            type:'friend',
+                            key:item.numberMd5
+                        };
+//                    判断用户是否是好友
+                        event.find(option,function (_weex) {
+                            if(_weex.type == 'notfind' && _weex.content == '没有数据'){
+                                _this.numberList = _this.numberList + item.number + ',';
+                                item.status = 'unused';
+                            }else{
+                                item = weex.data;
+                                item.status = 'adopt';
+                            };
+                            _this.dataNum ++;
+                            if(_this.dataNum == data.data.length){
+                                _this.useSoft(data);
+                            }
+                        });
+                    });
+                });
+            },
+
+
 //            判断是否用户有用软件
             useSoft(data){
                 var _this = this;
-                    event.toast(_this.numberList);
-                    GET('weex/member/friends/search.jhtml?keyword=' + _this.numberList,function (message) {
+                var timestamp = Math.round(new Date().getTime()/1000);
+                GET('weex/member/friends/search.jhtml?keyword=' + _this.numberList,function (message) {
                         if(message.type == 'success' && message.data != ''){
+                            _this.currentNum = _this.currentNum + _this.pageNum;
                             message.data.forEach(function (item) {
                                 for(let i = 0;i<data.data.length - 1;i++){
                                     if(item.md5 == data.data[i].numberMd5){
                                         data.data[i].logo = item.logo;
                                         data.data[i].id = item.id;
                                         data.data[i].nickName = item.nickName;
-                                        data.data[i].unused = 'unused';
+                                        data.data[i].status = 'ask';
                                         continue;
                                     };
                                 };
                             });
-                        _this.friendsList = data.data;
-                        }else{
+                            data.data.forEach(function (contactItem) {
+                                let option = {
+                                    type:'contact',
+                                    key:contactItem.numberMd5,
+                                    value:contactItem,
+                                    keyword:','+ contactItem.name + ',' + contactItem.nickName + ',',
+                                    sort:  getLetter.getFirstLetter(contactItem.name.substring(0,1)) + ',' + timestamp
+                                }
+//                                将数据缓存起来，用于搜索时的模糊查询
+                                event.save(option,function (message) {})
+                            })
+                            data.data.forEach(function (mailPeople) {
+                                _this.friendsList.push(mailPeople);
+//                            把数据存起来
+                                _this.initList.push(mailPeople);
+                            })
+                        }else if(message.type == 'success' && message.data == '' ){//如果通讯录里没有人使用该软件，则直接放入数组
+                            _this.currentNum = _this.currentNum + _this.pageNum;
+                            data.data.forEach(function (mailPeople) {
+                                _this.friendsList.push(mailPeople);
+//                            把数据存起来
+                                _this.initList.push(mailPeople);
+                            })
+                        }
+                        else{
                             event.toast(message.content);
                         }
                     },function (err) {
@@ -321,38 +357,34 @@
 //            返回排序结果
                 return (a - b)
             },
-//            查找好友
-            findFriend:function (index) {
-                let valLength = this.keyword.length;
-                if(valLength > this.friendsList[index].nickName.length){
-                    return false;
-                }else if(this.keyword == this.friendsList[index].nickName.substring(0,valLength)){
-                    this.findNum = 1;
-                    this.noFind = false;
-                    return true;
-                }else{
-                    return false;
-                }
-            },
             goback(){
                 event.closeURL();
             },
             oninput:function (val) {
-                this.findNum = 0;
-                this.keyword = val;
+                var _this = this;
+//                this.keyword = val;
                 if(val.length == 0){
-                    this.startList = true;
-                    this.noDataHint = "无手机联系人";
-                    this.findNum = 0;
-                    this.noFind = false;
+                    _this.friendsList = [];
+                    _this.friendsList = _this.initList;
                 }else{
-                    let _this = this;
-                    this.startList = false;
-                    setTimeout(function () {
-                        if(_this.findNum == 0){
-                            _this.noFind = true;
+                    let option = {
+                        type:'contact',//类型
+                        keyword:val,//关键址
+                        orderBy:'desc',//"desc"降序 ,"asc"升序
+                        current:0, //当前有几页
+                        pageSize:_this.currentNum //一页显示几行
+                    }
+                    event.findList(option,function (message) {
+                        if(message.type == 'success' && message.data != ''){
+                            _this.friendsList = [];
+                            message.data.forEach(function (item) {
+                                 item.value = JSON.parse(item.value);
+                                _this.friendsList.push(item.value);
+                            })
+                        }else{
+                            _this.friendsList = [];
                         }
-                    },10);
+                    })
                 }
             },
             search:function () {
@@ -387,60 +419,68 @@
             },
             onrefresh:function () {
                 var _this = this;
-                _this.refreshing = true;
-                _this.refreshState = "正在刷新数据";
-                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
-                        if (data.type == "success") {
-                            let page = data.data;
-                            _this.friendsList = page.data;
-                            _this.start = page.start+page.data.length;
-                            _this.refreshState = "数据刷新完成";
-                            setTimeout(() => {
-                                _this.refreshing = false;
-                                _this.refreshState = "松开刷新数据";
-                            }, 500);
-                        } else {
-                            _this.refreshing = false;
-                            _this.refreshState = "松开刷新数据";
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        _this.refreshing = false;
-                        _this.refreshState = "松开刷新数据";
-                        event.toast("网络不稳定");
-                    }
-                )
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 50)
+
+//                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
+//                        if (data.type == "success") {
+//                            let page = data.data;
+//                            _this.friendsList = page.data;
+//                            _this.start = page.start+page.data.length;
+//                            _this.refreshState = "数据刷新完成";
+//                            setTimeout(() => {
+//                                _this.refreshing = false;
+//                                _this.refreshState = "松开刷新数据";
+//                            }, 500);
+//                        } else {
+//                            _this.refreshing = false;
+//                            _this.refreshState = "松开刷新数据";
+//                            event.toast(data.content);
+//                        }
+//                    },function (err) {
+//                        _this.refreshing = false;
+//                        _this.refreshState = "松开刷新数据";
+//                        event.toast("网络不稳定");
+//                    }
+//                )
             },
             onloading:function () {
                 var _this = this;
                 _this.showLoading = true;
                 _this.loadingState = "正在加载数据";
-                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart='+_this.start,
-                    function (data) {
-                        if (data.type == "success") {
-                            let page = data.data;
-                            if (page.data.length>0) {
-                                _this.friendsList.push(page.data);
-                                _this.start = page.start+page.data.length;
-                                _this.loadingState = "加载"+page.data.length+"条数据";
-                            } else {
-                                _this.loadingState = "亲，没有数据了";
-                            }
-                            setTimeout(() => {
-                                _this.showLoading = false;
-                                _this.loadingState = "松开加载更多";
-                            }, 500);
-                        } else {
-                            _this.showLoading = false;
-                            _this.loadingState = "松开加载更多";
-                            event.toast(weex.data.content);
-                        }
-                    },function (err) {
-                        _this.showLoading = false;
-                        _this.loadingState = "松开加载更多";
-                        event.toast("网络不稳定");
-                    }
-                )
+                setTimeout(() => {
+                    _this.mailFriend();
+                    _this.showLoading = false;
+                }, 1500)
+
+//                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart='+_this.start,
+//                    function (data) {
+//                        if (data.type == "success") {
+//                            let page = data.data;
+//                            if (page.data.length>0) {
+//                                _this.friendsList.push(page.data);
+//                                _this.start = page.start+page.data.length;
+//                                _this.loadingState = "加载"+page.data.length+"条数据";
+//                            } else {
+//                                _this.loadingState = "亲，没有数据了";
+//                            }
+//                            setTimeout(() => {
+//                                _this.showLoading = false;
+//                                _this.loadingState = "松开加载更多";
+//                            }, 500);
+//                        } else {
+//                            _this.showLoading = false;
+//                            _this.loadingState = "松开加载更多";
+//                            event.toast(weex.data.content);
+//                        }
+//                    },function (err) {
+//                        _this.showLoading = false;
+//                        _this.loadingState = "松开加载更多";
+//                        event.toast("网络不稳定");
+//                    }
+//                )
             },
             //同意添加好友
             adopt:function (id) {
@@ -472,6 +512,9 @@
             },
             jump(){
 
+            },
+            invite(number){
+                event.toast('已向该联系人发送邀请短信' + number);
             }
         }
     }

@@ -402,8 +402,6 @@
                 type:'friend',//类型
                 keyword:'friendList',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
-                current:0,
-                pageSize:20,
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
@@ -423,12 +421,14 @@
                     event.toast(data.content);
                 }
             })
-            this.userId = event.getUserId();
+//            获取用户id
+            this.userId = event.getUid();
+//            event.toast('1');
+            event.toast(this.userId);
             _this.hadFriend();
             globalEvent.addEventListener("onMessage", function (e) {
                 _this.hadFriend();
             });
-
         },
         methods: {
 //            有新朋友时，
@@ -437,7 +437,6 @@
                 let lastTimestamp;
 //                获取本地缓存是否有时间戳数据
                 storage.getItem('lastTimestamp' + _this.userId, e => {
-                    event.toast(e);
 //                     lastTimestamp = e.data == undefined ? '' : e.data;
                     if(e.result == 'success' && !utils.isNull(e.data)){
                         lastTimestamp = e.data;
