@@ -28,7 +28,7 @@
 			<key>CFBundleURLIconFile</key>
 			<string>weex-icon</string>
 			<key>CFBundleURLName</key>
-			<string>com.rsico.Weex</string>
+			<string>com.rzico.Weex</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wxpage</string>
@@ -44,6 +44,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wx90bb95d1d77f0cca</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>prefs</string>
 			</array>
 		</dict>
 	</array>
@@ -71,6 +79,8 @@
 	<string>$(PRODUCT_NAME) will access your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) will access your photo library</string>
+	<key>NSContactsUsageDescription</key>
+	<string>$(PRODUCT_NAME) will access your Contacts</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>

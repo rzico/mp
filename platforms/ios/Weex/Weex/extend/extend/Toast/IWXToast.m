@@ -11,7 +11,7 @@
 
 @implementation IWXToast
 
-static const double WXToastDefaultDuration = 0.1;
+static const double WXToastDefaultDuration = 1;
 static const CGFloat WXToastDefaultFontSize = 16.0;
 static const CGFloat WXToastDefaultWidth = 230.0;
 static const CGFloat WXToastDefaultHeight = 30.0;
@@ -43,9 +43,11 @@ static const CGFloat WXToastDefaultPadding = 30.0;
     info.duration = duration;
     [[IWXToastManager sharedManager].toastQueue addObject:info];
     
-    if (![IWXToastManager sharedManager].toastingView) {
-        [self showToast:toastView superView:superView duration:duration];
-    }
+    [self showToast:toastView superView:superView duration:duration];
+    
+//    if (![IWXToastManager sharedManager].toastingView) {
+//
+//    }
 }
 
 - (UIView *)toastViewForMessage:(id)message superView:(UIView *)superView

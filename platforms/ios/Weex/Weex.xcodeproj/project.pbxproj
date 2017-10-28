@@ -180,6 +180,9 @@
 		884A7DDA1F9D045F00517A3B /* ZSSFontsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A7DD71F9D045F00517A3B /* ZSSFontsViewController.m */; };
 		884A7DDD1F9D04D000517A3B /* ZSSRichTextEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 884A7DDC1F9D04D000517A3B /* ZSSRichTextEditor.m */; };
 		884DE0741F98F30100249B17 /* WeexTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 884DE0731F98F30100249B17 /* WeexTests.m */; };
+		88534C921FA37DB70056CF54 /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88534C911FA37DB70056CF54 /* UserManager.m */; };
+		88534C961FA48D0E0056CF54 /* ContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88534C951FA48D0E0056CF54 /* ContactModel.m */; };
+		88534C991FA490D20056CF54 /* ContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 88534C981FA490D20056CF54 /* ContactManager.m */; };
 		88F74ADB1FA0803600BDACE0 /* editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 88F74AD71FA0803600BDACE0 /* editor.html */; };
 		88F74ADC1FA0803600BDACE0 /* normalize.css in Resources */ = {isa = PBXBuildFile; fileRef = 88F74AD81FA0803600BDACE0 /* normalize.css */; };
 		88F74ADD1FA0803600BDACE0 /* rich_editor.js in Resources */ = {isa = PBXBuildFile; fileRef = 88F74AD91FA0803600BDACE0 /* rich_editor.js */; };
@@ -460,6 +463,12 @@
 		884DE0711F98F30100249B17 /* WeexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WeexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		884DE0731F98F30100249B17 /* WeexTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeexTests.m; sourceTree = "<group>"; };
 		884DE0751F98F30100249B17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		88534C901FA37DB70056CF54 /* UserManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
+		88534C911FA37DB70056CF54 /* UserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
+		88534C941FA48D0E0056CF54 /* ContactModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactModel.h; sourceTree = "<group>"; };
+		88534C951FA48D0E0056CF54 /* ContactModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactModel.m; sourceTree = "<group>"; };
+		88534C971FA490D20056CF54 /* ContactManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContactManager.h; sourceTree = "<group>"; };
+		88534C981FA490D20056CF54 /* ContactManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ContactManager.m; sourceTree = "<group>"; };
 		88F74AD71FA0803600BDACE0 /* editor.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = editor.html; sourceTree = "<group>"; };
 		88F74AD81FA0803600BDACE0 /* normalize.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = normalize.css; sourceTree = "<group>"; };
 		88F74AD91FA0803600BDACE0 /* rich_editor.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = rich_editor.js; sourceTree = "<group>"; };
@@ -801,6 +810,8 @@
 		2291F13F1F6ABA5000B94F1B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				88534C931FA48CF80056CF54 /* ContactManager */,
+				88534C8F1FA37D9A0056CF54 /* UserManager */,
 				88F74AD11FA07FA500BDACE0 /* RichTextEditor */,
 				884A7D0B1F9D030700517A3B /* ZSSRichTextEditor */,
 				2219E6271F8DFE8500D4E9B0 /* SqlLite */,
@@ -1133,6 +1144,26 @@
 			path = WeexTests;
 			sourceTree = "<group>";
 		};
+		88534C8F1FA37D9A0056CF54 /* UserManager */ = {
+			isa = PBXGroup;
+			children = (
+				88534C901FA37DB70056CF54 /* UserManager.h */,
+				88534C911FA37DB70056CF54 /* UserManager.m */,
+			);
+			path = UserManager;
+			sourceTree = "<group>";
+		};
+		88534C931FA48CF80056CF54 /* ContactManager */ = {
+			isa = PBXGroup;
+			children = (
+				88534C941FA48D0E0056CF54 /* ContactModel.h */,
+				88534C951FA48D0E0056CF54 /* ContactModel.m */,
+				88534C971FA490D20056CF54 /* ContactManager.h */,
+				88534C981FA490D20056CF54 /* ContactManager.m */,
+			);
+			path = ContactManager;
+			sourceTree = "<group>";
+		};
 		88F74AD11FA07FA500BDACE0 /* RichTextEditor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1437,6 +1468,7 @@
 			files = (
 				22B70E2F1F8BD55300BCBD83 /* DDRSAWrapper.m in Sources */,
 				223B1EA81F7D27E1005DC7A7 /* WXScannerHistoryVC.m in Sources */,
+				88534C921FA37DB70056CF54 /* UserManager.m in Sources */,
 				223B1EA91F7D27E1005DC7A7 /* WXScannerVC.m in Sources */,
 				2279B8971F7E8B7900A8A144 /* IWXToastManager.m in Sources */,
 				2219E62D1F8E043B00D4E9B0 /* SqlLiteModel.m in Sources */,
@@ -1466,6 +1498,7 @@
 				8800A80B1F986351009A3CC6 /* FetchImage.m in Sources */,
 				884A7D2A1F9D03A000517A3B /* CYRLayoutManager.m in Sources */,
 				884A7D1F1F9D039500517A3B /* HRColorUtil.m in Sources */,
+				88534C991FA490D20056CF54 /* ContactManager.m in Sources */,
 				224263341F8CB665003FFE86 /* NSString+Util.m in Sources */,
 				223B1EAC1F7D307B005DC7A7 /* WXModuleDemo.m in Sources */,
 				2291F0C91F6A796800B94F1B /* main.m in Sources */,
@@ -1500,6 +1533,7 @@
 				22220DFD1F6FC1D000864689 /* FriendsViewController.m in Sources */,
 				88150A1A1F9DE935002CD56F /* UIImage+ImageSize.m in Sources */,
 				884A7DD91F9D045F00517A3B /* ZSSBarButtonItem.m in Sources */,
+				88534C961FA48D0E0056CF54 /* ContactModel.m in Sources */,
 				22AF2D071F8D103F0036D274 /* WXModalModule.m in Sources */,
 				88150A321F9DE956002CD56F /* SGQRCodeScanningVC.m in Sources */,
 				2291F1041F6A89E400B94F1B /* WXSelectComponent.m in Sources */,

@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '567479765E01D0D7052050C1B8182D19'
-               BlueprintName = 'Reachability'
+               BlueprintIdentifier = 'F8286A01E82886A58A1F7BEC35BEC249'
+               BlueprintName = 'LJContactManager'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libReachability.a'>
+               BuildableName = 'libLJContactManager.a'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
