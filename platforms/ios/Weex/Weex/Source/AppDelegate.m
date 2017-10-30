@@ -89,8 +89,21 @@ static AFNetworkReachabilityStatus networkStatus;
     [WXApi registerApp:WECHAT_APPID enableMTA:YES];
     [self initWeexSDK];
     
+    
+    
+    
     [self startSplashScreen:^(bool finish) {
         if ([UserManager getUserId] > 0 || networkStatus == AFNetworkReachabilityStatusReachableViaWiFi || networkStatus == AFNetworkReachabilityStatusReachableViaWWAN){
+
+//            for (UIWindow *window in [UIApplication sharedApplication].windows){
+//                for (UIView *view in window.subviews){
+//                    if (view.tag == 1001){
+//                        [view removeFromSuperview];
+//                        window.hidden = YES;
+//                        NSLog(@"%d",[window isKindOfClass:NSClassFromString(@"WXWindow")]);
+//                    }
+//                }
+//            }
             [self didLoginOrNetworkReached];
         }else{
             ALERT(@"网络不可达, 请检查网络状态");
@@ -119,19 +132,23 @@ static AFNetworkReachabilityStatus networkStatus;
     ResourceManager *manager = [ResourceManager sharedInstance];
     [manager updateResource:^(UpdateResult result) {
         if (result == UpdateResultSuccess || result == UpdateResultNoUpdate){
+            [NetManager GetHttp:HTTPAPI(@"login/isAuthenticated") Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+                if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
+                    if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
+                        [UserManager setUser:[responseObject objectForKey:@"data"]];
+                    }
+                }
+            } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+                
+            }];
             //通知主线程刷新
             dispatch_async(dispatch_get_main_queue(), ^{
                 //回调或者说是通知主线程刷新，
                 XMTabBarController *tabbar = [XMTabBarController new];
                 tabbar.tabBarHeight = 49;
                 
-                self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabbar];
+                self.window.rootViewController = tabbar;
                 [self.window makeKeyAndVisible];
-                
-                ContactManager *cm = [ContactManager sharedInstance];
-                [cm getContactsList:nil AndBlock:^(NSArray<ContactModel *> *contactList) {
-                    
-                }];
             });
         }else{
             switch (result) {
@@ -225,9 +242,14 @@ static AFNetworkReachabilityStatus networkStatus;
     [WXSDKEngine registerModule:@"modal" withClass:NSClassFromString(@"WXModalModule")];
     [WXSDKEngine registerModule:@"weexScanQR" withClass:[WXScanQRModule class]];
     
-    
+#ifdef DEBUG
     [WXDebugTool setDebug:YES];
     [WXLog setLogLevel:WXLogLevelError];
+#else
+    [WXDebugTool setDebug:NO];
+    [WXLog setLogLevel:WXLogLevelOff];
+#endif
+    
 }
 
 #pragma mark 

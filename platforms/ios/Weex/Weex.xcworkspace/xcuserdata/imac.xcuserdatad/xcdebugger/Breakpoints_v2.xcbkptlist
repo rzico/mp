@@ -29,22 +29,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Weex/extend/handler/WXURLRewriteImpl.m"
-            timestampString = "530889368.539823"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "-rewriteURL:withResourceType:withInstance:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "sdk/WeexSDK/Sources/Model/WXSDKInstance.m"
             timestampString = "530770017.727881"
             startingColumnNumber = "9223372036854775807"

@@ -1776,7 +1776,7 @@
 				2291F0DA1F6A796800B94F1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		2291F0DB1F6A796800B94F1B /* Build configuration list for PBXNativeTarget "Weex" */ = {
 			isa = XCConfigurationList;
@@ -1785,7 +1785,7 @@
 				2291F0DD1F6A796800B94F1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 		884DE07A1F98F30100249B17 /* Build configuration list for PBXNativeTarget "WeexTests" */ = {
 			isa = XCConfigurationList;
@@ -1794,7 +1794,7 @@
 				884DE0791F98F30100249B17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -54,6 +54,7 @@
                         }
                     }];
                 }else{
+                    self.resource = resource;
                     callback(UpdateResultNoUpdate);
                 }
             }else{

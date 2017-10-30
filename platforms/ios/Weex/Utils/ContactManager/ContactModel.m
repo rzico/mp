@@ -13,6 +13,7 @@
 - (void)setNumber:(NSString *)number{
     _number = number;
     _numberMd5 = [MD5_Util md5:number];
+    _status = @"";
 }
 
 @end

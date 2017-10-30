@@ -51,7 +51,7 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
                         NSString *receiveData = [DictionaryUtil convertToJsonData:responseObject];
                         if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
                             SqlLiteModel *newData = [SqlLiteModel new];
-                            newData.userId = @"1";
+                            newData.userId = [NSString stringWithFormat:@"%zu",[UserManager getUid]];
                             newData.type = @"DataCache";
                             newData.key = [request.URL absoluteString];
                             newData.value = receiveData;
