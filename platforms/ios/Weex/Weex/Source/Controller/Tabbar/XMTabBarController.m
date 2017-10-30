@@ -13,9 +13,10 @@
 #import "MemberViewController.h"
 #import "EditorViewController.h"
 #import <WeexSDK/WXRootViewController.h>
+#import "UserManager.h"
+#import "AppDelegate.h"
 
-
-@interface XMTabBarController ()
+@interface XMTabBarController ()<UITabBarControllerDelegate>
 
 @end
 
@@ -23,6 +24,7 @@
 
 - (void) viewDidLoad{
     [super viewDidLoad];
+    self.delegate = self;
     CGRect frame;
     CGFloat width = self.view.frame.size.width;
     CGFloat weexHeight = self.view.frame.size.height - 49;
@@ -66,6 +68,31 @@
                              ];
     [self setupTabBar];
 }
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController{
+    if ([UserManager getUserId] > 0){
+        return YES;
+    }else{
+        WXRootViewController *root = (WXRootViewController *)viewController;
+        UIViewController *controller = [root.viewControllers firstObject];
+        if ([controller isKindOfClass:[HomeViewController class]]){
+            return YES;
+        }
+        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        [appDelegate presentLoginViewController];
+        return NO;
+    }
+}
+
+//- (void)viewWillAppear:(BOOL)animated{
+//    if ([UserManager getUserId] > 0){
+//        [super viewWillAppear:animated];
+//    }else{
+//        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//        [appDelegate presentLoginViewController];
+//    }
+//}
+
 
 - (void)viewWillLayoutSubviews{
     self.navigationController.navigationBarHidden = YES;

@@ -31,6 +31,9 @@
 #import "WXCallBackMessage.h"
 #import "ZSSRichTextEditor.h"
 #import "WXScannerVC.h"
+#import "UserManager.h"
+#import "MD5+Util.h"
+
 
 static WXModuleCallback back;
 
@@ -58,6 +61,9 @@ WX_EXPORT_METHOD(@selector(findList:withCallBack:))
 WX_EXPORT_METHOD(@selector(delete:))
 WX_EXPORT_METHOD(@selector(openEditor:withCallBack:))
 WX_EXPORT_METHOD(@selector(scan:))
+WX_EXPORT_METHOD_SYNC(@selector(getUserId))
+WX_EXPORT_METHOD_SYNC(@selector(getUid))
+WX_EXPORT_METHOD_SYNC(@selector(md5:))
 
 - (void)openURL:(NSString *)url
 {
@@ -238,7 +244,7 @@ WX_EXPORT_METHOD(@selector(scan:))
         }
     }else{
         [message setValue:@"error" forKey:@"type"];
-        [message setValue:@"解析失败" forKey:@"content"];
+        [message setValue:@"model解析失败" forKey:@"content"];
         [message setValue:@"-1" forKey:@"data"];
     }
     if (callBack){
@@ -248,7 +254,7 @@ WX_EXPORT_METHOD(@selector(scan:))
 - (void)find:(NSString *)type withKey:(NSString *)key andCallBack:(WXModuleCallback)callBack{
     SqlLiteManager *manager = [SqlLiteManager defaultManager];
     NSMutableDictionary *message = [NSMutableDictionary new];
-    SqlLiteModel *model = [manager findWithUserId:@"1" AndType:type AndKey:key AndNeedOpen:YES];
+    SqlLiteModel *model = [manager findWithUserId:[NSString stringWithFormat:@"%zu",[self getUid]] AndType:type AndKey:key AndNeedOpen:YES];
     if (model){
         [message setValue:@"success" forKey:@"type"];
         [message setValue:@"查找成功" forKey:@"content"];
@@ -266,8 +272,15 @@ WX_EXPORT_METHOD(@selector(scan:))
 - (void)findList:(NSDictionary *)dic withCallBack:(WXModuleCallback)callBack{
     SqlLiteManager *manager = [SqlLiteManager defaultManager];
     WXCallBackMessage *message = [WXCallBackMessage new];
+    
+    NSMutableDictionary *newdic = [[NSMutableDictionary alloc] initWithDictionary:dic];
+    NSInteger current = [[dic objectForKey:@"current"] integerValue];
+    NSInteger pageSize = [[dic objectForKey:@"pageSize"] integerValue];
+    [newdic setObject:[NSNumber numberWithInteger:current] forKey:@"current"];
+    [newdic setObject:[NSNumber numberWithInteger:pageSize] forKey:@"pageSize"];
+    
     NSError *error;
-    OptionModel *option = [[OptionModel alloc] initWithDictionary:dic error:&error];
+    OptionModel *option = [[OptionModel alloc] initWithDictionary:newdic error:&error];
     if (!error){
         NSArray *array = [manager findListWithUserId:@"1" AndOption:option];
         if (!array || array.count <= 0){
@@ -350,6 +363,22 @@ WX_EXPORT_METHOD(@selector(scan:))
     };
     scanner.hidesBottomBarWhenPushed = YES;
     [[weexInstance.viewController navigationController] pushViewController:scanner animated:YES];
+}
+
+- (NSString *)getUserId{
+    return [UserManager getUserId];
+}
+
+- (NSUInteger)getUid{
+    return [UserManager getUid];
+}
+
+- (NSString *)md5:(NSString *)data{
+    if (data && data.length > 0){
+        return [MD5_Util md5:data];
+    }else{
+        return @"";
+    }
 }
 @end
 

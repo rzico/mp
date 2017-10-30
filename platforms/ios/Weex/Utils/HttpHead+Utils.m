@@ -37,14 +37,14 @@
         }
     }
     if (!appKey){
-        ResourceManager *manager = [ResourceManager defaultManager];
+        ResourceManager *manager = [ResourceManager sharedInstance];
         if(manager.resource.key.length > 0){
             appKey = manager.resource.key;
         }else{
             return nil;
         }
     }
-    unsigned long timeInterval = [[NSDate date] timeIntervalSince1970];
+    unsigned long timeInterval = [[NSDate date] timeIntervalSince1970] * 1000;
     Md5key = [MD5_Util md5:[NSString stringWithFormat:@"%@%@%lu%@",uid,ApplicationID,timeInterval,appKey]];
     return   @{@"x-uid":uid,@"x-app":ApplicationID,@"x-tsp":[NSString stringWithFormat:@"%lu",timeInterval],@"x-tkn":Md5key};
 }

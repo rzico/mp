@@ -47,6 +47,9 @@
             }
         }
         url = [self strRewrite:url];
+        
+        NSLog(@"%@",[NSURL URLWithString:url]);
+        
         return [instance completeURL:url];
     }
 }

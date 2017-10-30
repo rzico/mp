@@ -9,9 +9,22 @@
 #import <Foundation/Foundation.h>
 #import "ResourcesModel.h"
 
+
+typedef NS_ENUM(NSInteger, UpdateResult) {
+    UpdateResultGetResERROR = 0,
+    UpdateResultDownloadERROR,
+    UpdateResultReleaseERROR,
+    UpdateResultNoUpdate,
+    UpdateResultSuccess
+};
+
+typedef void(^ResourceUpdateBlock)(UpdateResult result);
+
 @interface ResourceManager : NSObject
+
 
 @property (nonatomic, strong) ResourcesModel *resource;
 
-+ (ResourceManager *)defaultManager;
++ (id)sharedInstance;
+- (void)updateResource:(ResourceUpdateBlock)callback;
 @end

@@ -15,6 +15,7 @@
 #import "AppDelegate.h"
 #import "UIViewController+Util.h"
 #import "SqlLiteManager.h"
+#import "UserManager.h"
 
 static NSMutableArray<WXNetworkQueueModel *> *queueList;
 
@@ -25,7 +26,6 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
         [NetManager PostHttp:[request.URL absoluteString] Parameters:[DictionaryUtil dictionaryWithJsonData:request.HTTPBody] Success:^(NSURLSessionDataTask *task, id  _Nonnull responseObject) {
             if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
                 if ([self checkLoginSession:responseObject withRequest:request andDelegate:delegate]){
-                    
                     [delegate request:request didReceiveData:[[DictionaryUtil convertToJsonData:responseObject] dataUsingEncoding:NSUTF8StringEncoding]];
                     [delegate requestDidFinishLoading:request];
                 }
@@ -42,8 +42,6 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
             SqlLiteModel *data = [manager findWithUserId:@"1" AndType:@"DataCache" AndKey:[request.URL absoluteString] AndNeedOpen:YES];
             NSMutableDictionary *parameters = nil;
             if (data){
-//                [delegate request:request didReceiveData:[data.value dataUsingEncoding:NSUTF8StringEncoding]];
-//                [delegate requestDidFinishLoading:request isKeepAlive:YES];
                 parameters = [NSMutableDictionary new];
                 [parameters setObject:data.keyword forKey:@"md5"];
             }
@@ -73,7 +71,7 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
                                 [header setObject:[responseObject objectForKey:@"content"] forKey:@"statusText"];
                                 WXResourceResponse *response = [[WXResourceResponse alloc] initWithURL:request.URL statusCode:304 HTTPVersion:nil headerFields:header];
                                 [delegate request:request didReceiveResponse:response];
-                                [delegate request:request didReceiveData:[NSJSONSerialization dataWithJSONObject:data.value options:NSJSONWritingPrettyPrinted error:nil]];
+                                [delegate request:request didReceiveData:[data.value dataUsingEncoding:NSUTF8StringEncoding]];
                                 [delegate requestDidFinishLoading:request];
                             }else{
                                 [delegate request:request didReceiveData:[receiveData dataUsingEncoding:NSUTF8StringEncoding]];
@@ -91,7 +89,7 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
                     [header setObject:@"网络不稳定" forKey:@"statusText"];
                     WXResourceResponse *response = [[WXResourceResponse alloc] initWithURL:request.URL statusCode:304 HTTPVersion:nil headerFields:header];
                     [delegate request:request didReceiveResponse:response];
-                    [delegate request:request didReceiveData:[NSJSONSerialization dataWithJSONObject:data.value options:NSJSONWritingPrettyPrinted error:nil]];
+                    [delegate request:request didReceiveData:[data.value dataUsingEncoding:NSUTF8StringEncoding]];
                     [delegate requestDidFinishLoading:request];
                 }else{
                     [delegate request:request didFailWithError:error];
@@ -107,19 +105,29 @@ static NSMutableArray<WXNetworkQueueModel *> *queueList;
 
 - (BOOL)checkLoginSession:(NSDictionary *)data withRequest:(WXResourceRequest *)request andDelegate:(id<WXResourceRequestDelegate>)delegate{
     if ([[data objectForKey:@"type"] isEqualToString:@"error"] && [[data objectForKey:@"content"] isEqualToString:@"session.invaild"]){
+        [UserManager removeUser];
         WXNetworkQueueModel *model = [WXNetworkQueueModel new];
         model.request = request;
         model.delegate = delegate;
         if (!queueList){
             queueList = [NSMutableArray<WXNetworkQueueModel *> new];
         }
-        [queueList addObject:model];
+        [queueList insertObject:model atIndex:0];
         if (![[UIViewController topViewController] isKindOfClass:NSClassFromString(@"LoginViewController")]){
             AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
             [appDelegate presentLoginViewController];
         }
         return NO;
     }else if ([[data objectForKey:@"type"] isEqualToString:@"success"] && [[data objectForKey:@"content"] isEqualToString:@"login.success"]){
+        [NetManager GetHttp:HTTPAPI(@"login/isAuthenticated") Parameters:nil Success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
+            if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
+                if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
+                    [UserManager setUser:[responseObject objectForKey:@"data"]];
+                }
+            }
+        } andFalse:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
+            
+        }];
         for (WXNetworkQueueModel *queue in queueList){
             dispatch_async(dispatch_get_main_queue(), ^{
                 WXNetworkDefaultImpl *network = [WXNetworkDefaultImpl new];

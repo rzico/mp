@@ -53,7 +53,15 @@
 #import "NSDate+Util.h"
 
 #import "WXScanQRModule.h"
-@interface AppDelegate ()
+
+#import "UserManager.h"
+
+#import "ContactManager.h"
+
+static AFNetworkReachabilityStatus networkStatus;
+
+
+@interface AppDelegate ()<UIAlertViewDelegate>
 @end
 
 @implementation AppDelegate
@@ -66,27 +74,37 @@
 {
     NSLog(@"documentpaht=%@",DOCUMENT_PATH);
     
-    [ResourceManager defaultManager];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.rootViewController = [UIViewController new];
+    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LaunchImage"]];
+    background.frame = [UIScreen mainScreen].bounds;
+    [self.window.rootViewController.view addSubview:background];
+    [self.window makeKeyAndVisible];
+    
+    networkStatus = AFNetworkReachabilityStatusNotReachable;
+    [self checkNetwork];
     
     [NSThread sleepForTimeInterval:3];
     
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-
     [WXApi registerApp:WECHAT_APPID enableMTA:YES];
     [self initWeexSDK];
-
-    XMTabBarController *tabbar = [XMTabBarController new];
-    tabbar.tabBarHeight = 49;
-
-    self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabbar];
-    [self.window makeKeyAndVisible];
-
-    [self startSplashScreen];
     
-    
-    [[AliOSSManager defautManager] uploadObjectAsyncWithPath:[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"photo.jpg"] AndBlock:^(NSString *url) {
-        NSLog(@"upload=%@",url);
+    [self startSplashScreen:^(bool finish) {
+        if ([UserManager getUserId] > 0 || networkStatus == AFNetworkReachabilityStatusReachableViaWiFi || networkStatus == AFNetworkReachabilityStatusReachableViaWWAN){
+            [self didLoginOrNetworkReached];
+        }else{
+            ALERT(@"网络不可达, 请检查网络状态");
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                while (!(networkStatus == AFNetworkReachabilityStatusReachableViaWiFi || networkStatus == AFNetworkReachabilityStatusReachableViaWWAN)) {
+                    
+                }
+                [self didLoginOrNetworkReached];
+            });
+        }
     }];
+//    [[AliOSSManager defautManager] uploadObjectAsyncWithPath:[[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@"photo.jpg"] AndBlock:^(NSString *url) {
+//        NSLog(@"upload=%@",url);
+//    }];
     
     
     
@@ -96,6 +114,43 @@
 #endif
     return YES;
 }
+
+- (void)didLoginOrNetworkReached{
+    ResourceManager *manager = [ResourceManager sharedInstance];
+    [manager updateResource:^(UpdateResult result) {
+        if (result == UpdateResultSuccess || result == UpdateResultNoUpdate){
+            //通知主线程刷新
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //回调或者说是通知主线程刷新，
+                XMTabBarController *tabbar = [XMTabBarController new];
+                tabbar.tabBarHeight = 49;
+                
+                self.window.rootViewController = [[WXRootViewController alloc] initWithRootViewController:tabbar];
+                [self.window makeKeyAndVisible];
+                
+                ContactManager *cm = [ContactManager sharedInstance];
+                [cm getContactsList:nil AndBlock:^(NSArray<ContactModel *> *contactList) {
+                    
+                }];
+            });
+        }else{
+            switch (result) {
+                case UpdateResultGetResERROR:
+                    NSLog(@"获取资源信息失败");
+                    break;
+                case UpdateResultDownloadERROR:
+                    NSLog(@"下载资源数据失败");
+                    break;
+                case UpdateResultReleaseERROR:
+                    NSLog(@"解压资源失败");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }];
+}
+
 
 - (void)presentLoginViewController{
     LoginViewController *loginViewController = [LoginViewController initWithUrl:[NSString stringWithFormat:@"file://%@/resource/view/index.js",DOCUMENT_PATH]];
@@ -178,7 +233,8 @@
 #pragma mark 
 #pragma mark animation when startup
 
-- (void)startSplashScreen
+//failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
+- (void)startSplashScreen:(void (^)(bool finish))finish
 {
     UIView* splashView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     splashView.backgroundColor = WEEX_COLOR;
@@ -213,6 +269,9 @@
                 splashView.alpha = 0;
             } completion:^(BOOL finished) {
                 [splashView removeFromSuperview];
+                if (finish){
+                    finish(YES);
+                }
             }];
         }];
     } else {
@@ -280,4 +339,28 @@
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
+
+- (void)checkNetwork{
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    [manager startMonitoring];
+    [manager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        networkStatus = status;
+        switch (status) {
+            case AFNetworkReachabilityStatusUnknown:
+                NSLog(@"网络状态未知");
+                break;
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"网络不可达");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"WiFi网络");
+                break;
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+                NSLog(@"移动网络");
+                break;
+            default:
+                break;
+        }
+    }];
+}
 @end
