@@ -8,7 +8,7 @@
         <list class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image class="gif" resize="cover"
-                       src="file://resource/image/loading.gif"></image>
+                       src="file://resources/images/loading.gif"></image>
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <cell v-for="(friend,index) in sortList" >
@@ -79,7 +79,7 @@
             <!--</cell>-->
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
                 <image class="gif" resize="cover"
-                       src="file://resource/image/loading.gif"></image>
+                       src="file://resources/images/loading.gif"></image>
                 <text class="indicator">{{loadingState}}</text>
             </loading>
         </list>
@@ -260,7 +260,7 @@
                     current:_this.currentNum,
                     pageSize:_this.pageNum
                 }
-                event.getMailList(option,function (data) {
+                event.getContactList(option,function (data) {
 //                    判断data.data有没有数据
                     if(utils.isNull(data.data)){
                         event.toast('没有更多联系人了!');
@@ -272,15 +272,24 @@
                         };
 //                    判断用户是否是好友
                         event.find(option,function (_weex) {
-                            if(_weex.type == 'notfind' && _weex.content == '没有数据'){
+                            if(_weex.type == 'success' && _weex.data != ''){
+                                item = _weex.data;
+                                item.status = 'adopt';
+                            }else{
                                 _this.numberList = _this.numberList + item.number + ',';
                                 item.status = 'unused';
-                            }else{
-                                item = weex.data;
-                                item.status = 'adopt';
-                            };
+                            }
+//                            if(_weex.type == 'notfind' && _weex.content == '没有数据'){
+//                                _this.numberList = _this.numberList + item.number + ',';
+//                                item.status = 'unused';
+//                            }else{
+//                                event.toast(_weex);
+//                                item = _weex.data;
+//                                item.status = 'adopt';
+//                            };
                             _this.dataNum ++;
                             if(_this.dataNum == data.data.length){
+
                                 _this.useSoft(data);
                             }
                         });
@@ -291,6 +300,7 @@
 
 //            判断是否用户有用软件
             useSoft(data){
+
                 var _this = this;
                 var timestamp = Math.round(new Date().getTime()/1000);
                 GET('weex/member/friends/search.jhtml?keyword=' + _this.numberList,function (message) {
