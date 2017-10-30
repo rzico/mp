@@ -426,6 +426,7 @@
 //            event.toast('1');
             event.toast(this.userId);
             _this.hadFriend();
+//            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
                 _this.hadFriend();
             });

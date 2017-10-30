@@ -1,21 +1,25 @@
 <template>
+    <div>
     <div class="header">
-        <div class="flex-center flex1">
-            <image class="logo" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" ></image>
+        <div style="flex-direction: row;margin-top: 40px;height: 96px;align-items: center;flex: 1;">
+            <div class="flex-center flex1" >
+                <image class="logo" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" ></image>
+            </div>
+            <div class="search_box flex4" @click="search()">
+                <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                <text class="sub_title">搜索用户和文章</text>
+            </div>
+            <div class="flex-center flex1" @click="scan()">
+                <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+            </div>
         </div>
-        <div class="search_box flex4" @click="search()">
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-            <text class="sub_title">搜索</text>
-        </div>
-        <div class="flex-center flex1" @click="scan()">
-            <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
-        </div>
+    </div>
     </div>
  </template>
 
+<style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .search_box {
-        margin-top:55px;
         padding-left: 20px;
         height: 60px;
         border-width: 1px;
@@ -28,13 +32,11 @@
         background-color: white;
     }
     .logo {
-        margin-top:35px;
         height:55px;
         width:55px;
         border-radius:6px;
     }
     .scan {
-        margin-top:40px;
         font-size: 40px;
         line-height: 60px;
         height:60px;
@@ -43,15 +45,15 @@
     }
 </style>
 <script>
+
+
     const event = weex.requireModule('event');
     const dom=weex.requireModule("dom");
+    import utils from '../../assets/utils';
     export default {
         created() {
-            var _this = this;
-            dom.addRule('fontFace',{
-                'fontFamily':'iconfont',
-                'src':"url('"+_this.locateURL+"/resources/fonts/iconfont.ttf')"
-            });
+
+            utils.initIconFont();
         },
         methods: {
             scan:function (e) {

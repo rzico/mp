@@ -306,59 +306,85 @@
             })
             this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
-//                event.toast('全局监听onMessage:');
                 event.toast(e);
-//                event.toast(e.data.data.id);
 //                判断是系统消息还是用户消息
                 if(!utils.isNull(e.data.data.id) && e.data.data.id.substring(0,1) == 'g'){
                     _this.hadMessage();
                 }else{
                     e.data.userId = e.data.id;
-                    _this.addMessage(e.data);
+                    _this.addMessage(e.data,1);
                 }
             });
         },
         methods:{
 //            向消息列表填入新的消息数据并存入缓存
-            addMessage(_weex){
+            addMessage(_weex,sign){
                 var _this = this;
-                event.toast(_weex);
                 if(_weex.type == 'success'){
                     //            获取当前时间戳 作为唯一标识符key
                     let timestamp = Math.round(new Date().getTime()/1000);
-//                    倒过来
-                    event.toast(_weex.data.length);
 //                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
-//                    _weex.data = _weex.data.reverse();
-                    for(let i = 0;i<_weex.data.length -1 ;i++){
-                        weex.data[i].name = utils.isNull(weex.data[i].name) ? '' : weex.data[i].name;
+                    if(sign == 0){
+
+                        _weex.data = _weex.data.reverse();
+                        for(let i = 0;i<_weex.data.length -1 ;i++){
+                            _weex.data[i].name = utils.isNull(_weex.data[i].name) ? '' : _weex.data[i].name;
+                            let option = {
+                                type:'message',
+                                key:_weex.data[i].userId,
+                                value:_weex.data[i],
+                                keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
+                                sort:'0' + timestamp
+                            }
+                            event.save(option,function (message) {
+                                event.toast(message);
+                                if(message.type == 'success' && message.content =='保存成功'){
+                                    _this.messageList.splice(0,0,_weex.data[i]);
+                                }else if(message.type == 'success' && message.content =='更新成功'){
+                                    _this.messageList.forEach(function (nowData,nowIndex) {
+                                        if(nowData.userId == item.userId){
+//                                        删除原来的对话
+                                            _this.messageList.splice(nowIndex,1);
+//                                        将新的对话push进
+                                            _this.messageList.splice(0,0,_weex.data[i]);
+                                        }
+                                    })
+                                }else{
+                                    event.toast('网络不稳定');
+                                }
+                            })
+                        }
+
+                    }else{
+                        _weex.data.name = utils.isNull(_weex.data.name) ? '' : _weex.data.name;
                         let option = {
                             type:'message',
-                            key:weex.data[i].userId,
-                            value:weex.data[i],
-                            keyword:',' + weex.data[i].name + ',' + weex.data[i].nickName + ',' + weex.data[i].content +',',
+                            key:_weex.data.userId,
+                            value:_weex.data,
+                            keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
                             sort:'0' + timestamp
                         }
                         event.save(option,function (message) {
                             event.toast(message);
                             if(message.type == 'success' && message.content =='保存成功'){
-                                _this.messageList.splice(0,0,weex.data[i]);
+                                _this.messageList.splice(0,0,_weex.data);
                             }else if(message.type == 'success' && message.content =='更新成功'){
-//                                event.toast('1');
                                 _this.messageList.forEach(function (nowData,nowIndex) {
                                     if(nowData.userId == item.userId){
-//                                        event.toast('2');
 //                                        删除原来的对话
                                         _this.messageList.splice(nowIndex,1);
 //                                        将新的对话push进
-                                        _this.messageList.splice(0,0,weex.data[i]);
+                                        _this.messageList.splice(0,0,_weex.data);
                                     }
                                 })
                             }else{
                                 event.toast('网络不稳定');
                             }
                         })
+
                     }
+
+
 //                    _weex.data.forEach(function (item,index) {
 //                        item.name = utils.isNull(item.name) ? '' : item.name;
 //                        let option = {
@@ -398,7 +424,7 @@
                 var _this = this;
                 GET('weex/member/message/dialogue.jhtml',function (_weex) {
 //            向消息列表填入新的消息数据并存入缓存
-                    _this.addMessage(_weex);
+                    _this.addMessage(_weex,0);
                 },function (err) {
                     event.toast("网络不稳定");
                 })

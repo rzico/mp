@@ -8,7 +8,7 @@
             <text class="title">搜索: {{keyword}} </text>
         </div>
         <!--无数据提示-->
-        <noData :noDataHint="noDataHint" v-if="isEmpty()" > </noData>
+        <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <!--数据显示-->
         <div class="cell-row cell-line" v-if="isNoEmpty()" >
             <div class="cell-panel h space-between"  v-for="(friend,index) in friendsList" @click="addFriend(friend.id)" >
