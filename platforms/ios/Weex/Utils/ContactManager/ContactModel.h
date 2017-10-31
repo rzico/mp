@@ -15,5 +15,6 @@
 @property (nonatomic, copy) NSString *number;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *numberMd5;
+@property (nonatomic, copy) NSString *status;
 
 @end

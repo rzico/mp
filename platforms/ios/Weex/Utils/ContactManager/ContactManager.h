@@ -12,5 +12,5 @@
 @interface ContactManager : NSObject
 
 + (id)sharedInstance;
-- (void)getContactsList:(NSDictionary *)option AndBlock:(void (^)(NSArray<ContactModel *> *contactList))callback;
+- (void)getContactList:(NSDictionary *)option AndBlock:(void (^)(BOOL succeed, NSArray<ContactModel *> *contactList))callback;
 @end

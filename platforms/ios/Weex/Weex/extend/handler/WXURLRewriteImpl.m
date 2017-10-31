@@ -21,20 +21,8 @@
     if ([url isContains:@"thumb:"] || [url isContains:@"original:"]){
         url = [url stringByReplacingOccurrencesOfString:@"file:/" withString:@""];
         return [NSURL URLWithString:url];
-    }
-    NSURL *completeURL = [NSURL URLWithString:url];
-    if ([completeURL isFileURL]) {
-        completeURL = [self urlRewrite:completeURL];
-        return completeURL;
-    } else if ([self isLocalURL:completeURL]) {
-        NSString *resourceName = [[completeURL host]?:@"" stringByAppendingString:[completeURL path]];
-        NSURL *resourceURL = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@""];
-        if (!resourceURL) {
-            WXLogError(@"Invalid local resource URL:%@, no resouce found.", url);
-        }
-        resourceURL = [self urlRewrite:resourceURL];
-        return resourceURL;
-    } else {
+    }else{
+        NSURL *completeURL = [NSURL URLWithString:url];
         if (![completeURL scheme]){
             if ([completeURL isContains:@".ttf"] || [completeURL isContains:@".js"]){
                 if ([url hasPrefix:@"/"]){
@@ -47,9 +35,7 @@
             }
         }
         url = [self strRewrite:url];
-        
-        NSLog(@"%@",[NSURL URLWithString:url]);
-        
+        NSLog(@"url=%@",url);
         return [instance completeURL:url];
     }
 }
