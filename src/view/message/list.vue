@@ -27,14 +27,21 @@
                     <div class="newMessage" v-if="item.unRead != '' || item.unRead != 0 ">
                         <text class="messageTotal">{{item.unRead}}</text>
                     </div>
-                    <!--名字与内容-->
-                    <div class="messageText">
-                        <text class="friendName">{{item | watchName}}</text>
-                        <text class="friendMessage">{{item.content}}</text>
-                    </div>
-                    <!--消息时间-->
-                    <div class="messageTimeBox">
-                        <text class="messageTime">{{item.createDate | timefmt}}</text>
+                    <div style="flex: 5;">
+                        <div style="flex-direction: row;flex: 1;" >
+                            <!--名字与内容-->
+                            <div class="messageText">
+                                <text class="friendName">{{item | watchName}}</text>
+                                <!--<text class="friendMessage">{{item.content}}</text>-->
+                            </div>
+                            <!--消息时间-->
+                            <div class="messageTimeBox">
+                                <text class="messageTime">{{item.createDate | timefmt}}</text>
+                            </div>
+                        </div>
+                        <div style="flex: 2;height: 50px;justify-content: center;">
+                            <text class="friendMessage">{{item.content}}</text>
+                        </div>
                     </div>
                 </div>
             </cell>
@@ -85,8 +92,9 @@
         align-items: center;
     }
     .messageTimeBox{
-        padding-top: 8px;
-        flex: 1;
+        height: 50px;
+        justify-content: center;
+        flex: 2;
         align-items: flex-end;
         padding-right: 10px;
     }
@@ -101,18 +109,20 @@
         font-size: 34px;
     }
     .messageText{
-        padding-top: 8px;
-        padding-bottom: 8px;
-        flex:5;
-        height: 100px;
-        justify-content: space-between;
-        margin-left: 20px;
+        /*padding-top: 8px;*/
+        /*padding-bottom: 8px;*/
+        flex:4;
+        /*height: 100px;*/
+        height: 50px;
+        justify-content: center;
+        /*margin-left: 20px;*/
     }
     .friendMessage{
         lines:1;
         text-overflow:ellipsis;
         color: #999;
         font-size: 28px;
+        padding-right: 20px;
     }
     .friendsImageBox{
         flex: 1;
@@ -311,7 +321,8 @@
                 if(!utils.isNull(e.data.data.id) && e.data.data.id.substring(0,1) == 'g'){
                     _this.hadMessage();
                 }else{
-                    e.data.userId = e.data.id;
+//                    用户消息没有userId。只有id。
+                    e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
                     _this.addMessage(e.data,1);
                 }
             });
@@ -342,7 +353,8 @@
                                     _this.messageList.splice(0,0,_weex.data[i]);
                                 }else if(message.type == 'success' && message.content =='更新成功'){
                                     _this.messageList.forEach(function (nowData,nowIndex) {
-                                        if(nowData.userId == item.userId){
+                                        if(nowData.userId == _weex.data[i].userId){
+
 //                                        删除原来的对话
                                             _this.messageList.splice(nowIndex,1);
 //                                        将新的对话push进
@@ -357,6 +369,7 @@
 
                     }else{
                         _weex.data.name = utils.isNull(_weex.data.name) ? '' : _weex.data.name;
+//                        _weex.data.userId = utils.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
                         let option = {
                             type:'message',
                             key:_weex.data.userId,
@@ -370,7 +383,7 @@
                                 _this.messageList.splice(0,0,_weex.data);
                             }else if(message.type == 'success' && message.content =='更新成功'){
                                 _this.messageList.forEach(function (nowData,nowIndex) {
-                                    if(nowData.userId == item.userId){
+                                    if(nowData.userId == _weex.data.userId){
 //                                        删除原来的对话
                                         _this.messageList.splice(nowIndex,1);
 //                                        将新的对话push进
@@ -451,20 +464,21 @@
 //                event.toast(isRead);
                 var _this = this;
                 event.toast(item);
-                if(item.type != 'immessage'){
+
+                if(!utils.isNull(item.id) && item.id.substring(0,1) == 'g'){
                     item.unRead = 0;
                     let timestamp = Math.round(new Date().getTime()/1000);
                     let option = {
                         type:'message',
-                        key:item.type,
+                        key:item.userId,
                         value:item,
                         keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
                         sort:'0' + timestamp
                     }
 //                    更新缓存数据后，跳转到通知页面
                     event.save(option,function (message) {
-                        event.openURL('http://192.168.2.157:8081/inform.weex.js?type=' + item.type,function () {
-//                    event.openURL(utils.locate('view/message/inform.js?type=' + item.type), function () {
+//                        event.openURL('http://192.168.2.157:8081/inform.weex.js?type=' + item.userId,function () {
+                    event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                         });
                     })
 

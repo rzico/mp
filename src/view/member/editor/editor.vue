@@ -1062,7 +1062,8 @@
 //            编辑投票
             editVote:function (index) {
                 let _this = this;
-                storage.setItem('voteData', _this.voteList[index]);
+                let voteData = JSON.stringify(_this.voteList[index]);
+                storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
                     if(message.data != '') {

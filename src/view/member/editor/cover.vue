@@ -252,7 +252,7 @@
 //                分享图片
                 _this.shareCoverImage = coverData.image[0].path;
 //                event.toast(coverData.image);
-                storage.removeItem('cover');
+                storage.removeItem(cover);
             })
         },
         methods:{
