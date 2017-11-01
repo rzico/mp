@@ -140,13 +140,13 @@
               txtInput:'',
               phone:'',
               idno:'',
-//              cardname:'',
-//              bankname:'',
-//              banknum:'',
-//              cardtype:'',
-//              bankimage:'',
-//              province:'',
-//              city:'',
+              cardname:'',
+              bankname:'',
+              banknum:'',
+              cardtype:'',
+              bankimage:'',
+              province:'',
+              city:'',
                 autofocus: false
           }
         },
@@ -163,40 +163,42 @@
 //                event.toast(e);
                 let twodata =  JSON.parse(e.data);
 //                event.toast(threedata);
-                _this.txtInput = twodata.caedNo;
+                _this.txtInput = twodata.cardNo;
                 _this.accountName = twodata.name;
                 storage.removeItem(two);
-            });
+                _this.binding();
+        });
 //            this.txtInput= utils.getUrlParameter("txtInput");
-            event.toast(this.txtInput);
-            event.encrypt(this.txtInput, function (message) {
-                if (message.type == "success") {
-                    POST('weex/member/bankcard/query.jhtml?banknum=' +message.data).then(function (data) {
-                            event.toast(data);
-                            if (data.type == "success" && data.data != '') {
-                                _this.cardname = data.data.cardname;
-                                _this.bankname = data.data.bankname;
-                                _this.banknum = data.data.banknum;
-                                _this.cardtype = data.data.cardtype;
-                                _this.bankimage = data.data.bankimage;
-                                _this.province = data.data.province;
-                                _this.city =data.data.city;
-                                event.toast(data);
-                            } else {
-                                event.toast(data.content);
-                            }
-                        }, function () {
-                            event.toast("网络不稳定请重试");
-                        }
-                    )
-                }
-                else {
-                    event.toast(data.content);
-                }
-            })
         },
         methods: {
-
+            binding:function(){
+                var _this = this;
+                event.encrypt(this.txtInput, function (message) {
+                    if (message.type == "success") {
+                        POST('weex/member/bankcard/query.jhtml?banknum=' +message.data).then(function (data) {
+//                            event.toast('1234');
+                                if (data.type == "success" && data.data != '') {
+                                    _this.cardname = data.data.cardname;
+                                    _this.bankname = data.data.bankname;
+                                    _this.banknum = data.data.banknum;
+                                    _this.cardtype = data.data.cardtype;
+                                    _this.bankimage = data.data.bankimage;
+                                    _this.province = data.data.province;
+                                    _this.city =data.data.city;
+                                    event.toast(data);
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            }, function () {
+                                event.toast("网络不稳定请重试");
+                            }
+                        )
+                    }
+                    else {
+                        event.toast(data.content);
+                    }
+                })
+            },
             ready: function () {
                 var self = this;
                 setTimeout(function () {
@@ -217,7 +219,7 @@
            goComplete: function (e) {
                 var _this=this;
                 let  threedata = {
-                    caedNo : this.txtInput,
+                    cardNo : this.txtInput,
                     mobile :this.phone,
                     ldentity:this.idno,
                     name:this.accountName,

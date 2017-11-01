@@ -207,7 +207,7 @@
             goComplete: function () {
                 var _this=this;
                 let  twodata = {
-                    caedNo : this.txtInput,
+                    cardNo : this.txtInput,
                     name :this.accountName,
                 };
                 twodata = JSON.stringify(twodata);
