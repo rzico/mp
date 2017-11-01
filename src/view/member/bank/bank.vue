@@ -1,5 +1,6 @@
 <template>
     <div  style="background-color: #eeeeee">
+
         <div class="header">
             <navbar :title="title"  @goback="goback"  > </navbar>
         </div>

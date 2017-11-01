@@ -28,6 +28,7 @@
             <text class="textF">资讯加密处理，仅用于银行验证</text>
         </div>
     </div>
+
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
