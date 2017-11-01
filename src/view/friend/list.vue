@@ -19,12 +19,37 @@
         <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
         <!--</div>-->
         <list class="listBody">
-            <cell v-for="(item,index) in topLineList" ref="linkref" >
-                <!--顶部功能栏-->
+            <cell ref="linkref" >
+                <!--新的朋友-->
                 <div class="addBorder">
-                    <div class="topLine " @click="openPage(index)">
-                        <image :src="item.lineImage" class="lineImage"></image>
-                        <text class="lineTitle">{{item.lineTitle}}</text>
+                    <div class="topLine " @click="openPage(0)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
+                        <text class="lineTitle">新的朋友</text>
+                    </div>
+                </div>
+                <!--我关注的-->
+                <div class="addBorder">
+                    <div class="topLine " @click="openPage(1)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
+                        <text class="lineTitle">我关注的</text>
+                    </div>
+                </div>
+                <!--顶部功能栏-->
+                <div class="我的粉丝">
+                    <div class="topLine " @click="openPage(2)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
+                        <text class="lineTitle">我的粉丝</text>
+                    </div>
+                </div>
+                <!--我收藏的-->
+                <div class="addBorder">
+                    <div class="topLine " @click="openPage(3)">
+                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                        <text class="lineImage" style="color:#D85C87" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                        <text class="lineTitle">我收藏的</text>
                     </div>
                 </div>
             </cell>
@@ -219,6 +244,7 @@
     .lineImage{
         width:80px;
         height:80px;
+        font-size: 80px;
     }
     .lineTitle{
         font-size: 34px;
@@ -254,20 +280,21 @@
                 isShowToast:false,
                 showText:'',
                 isPress:false,
-                friendTotal:43,
-                topLineList:[{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'新的朋友'
-                },{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'我关注的'
-                },{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'我的粉丝'
-                },{
-                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    lineTitle:'我收藏的'
-                }],
+                friendTotal:0,
+                userId:0,
+//                topLineList:[{
+//                    lineImage:'&#xe631;',
+//                    lineTitle:'新的朋友'
+//                },{
+//                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                    lineTitle:'我关注的'
+//                },{
+//                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                    lineTitle:'我的粉丝'
+//                },{
+//                    lineImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+//                    lineTitle:'我收藏的'
+//                }],
                 friendsList:[{
                     letter:'A',
                     name:[]
@@ -394,7 +421,12 @@
                     event.toast(data.content);
                 }
             })
+//            获取用户id
+            this.userId = event.getUid();
+//            event.toast('1');
+            event.toast(this.userId);
             _this.hadFriend();
+//            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
                 _this.hadFriend();
             });
@@ -405,9 +437,14 @@
                 var _this = this;
                 let lastTimestamp;
 //                获取本地缓存是否有时间戳数据
-                storage.getItem('lastTimestamp', e => {
-                     lastTimestamp = e.data == undefined ? '' : e.data;
-                    GET('weex/member/friends/list.jhtml?timeStamp=' + lastTimestamp ,function (data) {
+                storage.getItem('lastTimestamp' + _this.userId, e => {
+//                     lastTimestamp = e.data == undefined ? '' : e.data;
+                    if(e.result == 'success' && !utils.isNull(e.data)){
+                        lastTimestamp = e.data;
+                    }else{
+                        lastTimestamp = '';
+                    }
+                    GET('weex/member/friends/list.jhtml?timestamp=' + lastTimestamp ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -426,7 +463,7 @@
                                                 item.name.push(friend);
                                                 _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
-                                                storage.setItem('lastTimestamp', timestamp);
+                                                storage.setItem('lastTimestamp' + _this.userId, timestamp);
                                             }else{
                                                 event.toast('网络不稳定');
                                             }
@@ -463,7 +500,8 @@
             },
             ontouchstart:function(count){
                 if(count == 0){//判断是否点击回到顶部
-                    const el = this.$refs.linkref[count]//跳转到相应的cell
+                    const el = this.$refs.linkref//跳转到相应的cell
+//                    const el = this.$refs.linkref[count]//跳转到相应的cell
                     dom.scrollToElement(el, {
 //                        animated:false
                     })
@@ -520,7 +558,8 @@
 //                                        animated:false
                                     })
                                 }else if(this.moveLetter == 0){//判断是否滑到 顶部按钮
-                                    const el = this.$refs.linkref[this.moveLetter]//跳转到相应的cell
+                                    const el = this.$refs.linkref//跳转到相应的cell
+//                                    const el = this.$refs.linkref[this.moveLetter]//跳转到相应的cell
                                     dom.scrollToElement(el, {
 //                                        animated:false
                                     })
@@ -542,7 +581,6 @@
                     case 0:
 //                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
                         event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
-
                             event.toast(message);
                         });
                         break;

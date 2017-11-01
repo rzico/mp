@@ -15,7 +15,7 @@
 
 + (void)encrypt:(NSString *)data withCallBack:(encryptCallBack)callBack{
     NSString *url = HTTPAPI(@"common/public_key");
-    [NetManager GetHttp:url Parameters:nil Success:^(id  _Nonnull responseObject) {
+    [NetManager GetHttp:url Parameters:nil Success:^(NSURLSessionDataTask *task, id  _Nonnull responseObject) {
         NSString *cipherString = nil;
         if (responseObject && [responseObject isKindOfClass:[NSDictionary class]]){
             if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
@@ -45,7 +45,7 @@
         if (callBack){
             callBack(cipherString);
         }
-    } andFalse:^(NSError * _Nonnull error) {
+    } andFalse:^(NSURLSessionDataTask *task, NSError * _Nonnull error) {
         if (callBack){
             callBack(nil);
         }

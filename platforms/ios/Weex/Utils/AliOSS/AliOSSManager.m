@@ -56,7 +56,7 @@ typedef void(^GetOSSDataBlock)(BOOL success);
 }
 
 - (void)flushToken:(GetOSSDataBlock)block{
-    [NetManager GetHttp:HTTPAPI(@"member/oss/sts") Parameters:nil Success:^(id  _Nonnull responseObject) {
+    [NetManager GetHttp:HTTPAPI(@"member/oss/sts") Parameters:nil Success:^(NSURLSessionDataTask *task, id  _Nonnull responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]){
             if ([[responseObject objectForKey:@"type"] isEqualToString:@"success"]){
                 AliOSSModel *data = [[AliOSSModel alloc] initWithDictionary:[responseObject objectForKey:@"data"] error:nil];
@@ -76,7 +76,7 @@ typedef void(^GetOSSDataBlock)(BOOL success);
 
             }
         }
-    } andFalse:^(NSError * _Nonnull error) {
+    } andFalse:^(NSURLSessionDataTask *task, NSError * _Nonnull error) {
         NSLog(@"error=%@",error);
         block(NO);
     }];

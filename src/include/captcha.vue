@@ -17,7 +17,8 @@
             </div>
         </div>
         <div class="flex-center">
-            <text class="status primary" @click="send()" :style="statusStyle()">{{status}}</text>
+            <text class="status primary" @click="send()" :style="statusStyle()" v-if="retry">{{status}}</text>
+            <text class="status gray"  :style="statusStyle()"  v-else> {{time}}秒后重新发送 </text>
         </div>
     </div>
 </template>
@@ -91,10 +92,11 @@
     var optionIndex = 0;
     var lastCaptchaLength = 0;
     var timer = null;
-    var time = 0;
+    import utils from '../assets/utils';
     export default {
         data:function(){
             return{
+                time:59,
                 textList:['','','','','','']
             }
         },
@@ -103,36 +105,40 @@
             captcha: {default:""},
             mobile:{default:""},
             status:{default:"点击重新发送"},
-            retry:true
+            retry:{default:false},
         },
         beforeDestory() {
-            if (utils.isNull(timer)!=false)  {
+            var _this = this;
+            if (utils.isNull(timer) == false)  {
                 clearInterval(timer);
-                time = 0;
+                _this.time = 59;
                 timer = null;
             }
+        },
+        created(){
+            this.beginTimer();
         },
         methods:{
             beginTimer:function () {
                 var _this = this;
-                if (utils.isNull(timer)!=false)  {
+                _this.retry = false;
+                if (utils.isNull(timer) == false)  {
                     clearInterval(timer);
-                    time = 0;
+                    _this.time = 59;
                     timer = null;
                 }
-                timer = setInterval(1000,function () {
-                    _this.retry = false;
-                    time = time +1;
-                    this.status = "已发送"+time+"秒";
-                    if (time>59) {
+                timer = setInterval(function () {
+                    _this.time = _this.time - 1;
+                    if (_this.time < 1) {
                         _this.endTimer();
                     }
-                })
+                },1000)
             },
             endTimer:function () {
-                if (utils.isNull(timer)!=false)  {
+                var _this = this;
+                if (utils.isNull(timer) == false)  {
                     clearInterval(timer);
-                    time = 0;
+                    _this.time = 59;
                     timer = null;
                 }
                 this.retry = true;
@@ -160,13 +166,13 @@
                     let b = a.substr(a.length-1,1)
                     console.log(event);
                     _this.textList[optionIndex] = b;
-
                     optionIndex ++;
                 }
                 lastCaptchaLength = event.value.length;
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
                     _this.captcha = event.value;
+//                    _this.beginTimer();
                     _this.$emit("onEnd",this.captcha);
                 }
             },

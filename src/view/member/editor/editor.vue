@@ -8,7 +8,6 @@
                     <image class="coverImage" resize="cover" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
                     <text class="setTitle" @trigger="articleTitle(setTitle)" @click="articleTitle(setTitle)">{{setTitle}}</text>
-
                     <div class="bottomBtn addMusic" >
                         <text class="musicSize"  @click="goMusic()" v-if="this.musicName == ''">{{addMusic}}</text>
                         <text class="musicSize"  @click="goMusic()" v-else :style="{fontFamily:'iconfont'}">&#xe65a; {{musicName}}</text>
@@ -478,7 +477,6 @@
                     }
                 )
             }else{//再次文章编辑
-
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
                     let options = {
@@ -636,13 +634,17 @@
 //                获取缩略图的宽高
                 _this.proportion = parseInt(155 * devWidth/750);
                 let frontcoverUrl = this.coverImage.substring(0,5);
+//                event.toast(frontcoverUrl);
                 if(frontcoverUrl == 'http:'){
+//                    event.toast('1');
                     _this.sendImage(0);
                 }else{
                     let sendcover = frontcoverUrl == 'file:' ? this.coverImage.substring(7) : this.coverImage;
                     //                将封面上传服务器
                     event.upload(sendcover,function (data) {
                         if(data.type == 'success' && data.data != ''){
+                            //这边会由于避免重复渲染而需要再次向服务器上传该图片
+//                            _this.coverImage = data.data;
                             _this.serveCover = data.data;
 //                        上传段落图片
                             _this.sendImage(0);
@@ -692,14 +694,12 @@
                         }else{//上传失败
                             _this.toSendArticle = false;
                             event.toast(data.content);
-
                         }
                     },function (data) {
 //                    上传进度
                         _this.ctrlProcess(data);
                     })
                 }
-
             },
 //            图片上传后，正式将文章数据上传服务器
             realSave(){
@@ -752,21 +752,26 @@
                     title:_this.setTitle,
                     votes:voteData,
                 }
-//                event.toast("上传数据:");
-//                event.toast(articleData);
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
-                _this.Article(articleData,res=>{
+                _this.saveArticle(articleData,res=>{
 //                    modal.toast({message:res});
                     if(utils.isNull(res)){
                         event.toast('系统繁忙,请稍后重试');
                     }else{
                         if(res.data != '' && res.data.type == 'success'){
+                            event.toast(res.data.data.id);
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
                             utils.save("article",res.data.data.id,res.data.data,'0,'+ timestamp +'',',[],' + _this.setTitle + ',',function (data) {
                                 if(data.type == 'success'){
-                                    event.closeURL();
+//                                    event.closeURL();
+                                    _this.toSendArticle = false;
+                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.data.id,function (message) {
+                                            _this.currentPro = 0;//当前进度
+                                            _this.proTotal = 2;//总的进度
+                                            _this.processWidth = 0;//进度条宽度
+                                    })
                                 }else{
                                     modal.alert({
                                         message: '系统繁忙,请稍后重试',
@@ -990,10 +995,7 @@
                             event.toast(value);
                         }
                     })
-
                 }
-
-
             },
 //            下拉刷新
             onrefresh (event) {
@@ -1038,7 +1040,7 @@
 //                event.toast(musicId);
                 event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
 //                event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
-                    event.toast(message);
+//                    event.toast(message);
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
                     if(message.data != ''){
@@ -1060,7 +1062,8 @@
 //            编辑投票
             editVote:function (index) {
                 let _this = this;
-                storage.setItem('voteData', _this.voteList[index]);
+                let voteData = JSON.stringify(_this.voteList[index]);
+                storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
                     if(message.data != '') {
@@ -1071,6 +1074,7 @@
         }
     }
 </script>
+
 
 
 

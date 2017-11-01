@@ -10,8 +10,8 @@
 #import "HttpHead+Utils.h"
 #import "TXUtilsString.h"
 
-static Reachability * localWiFiReach = nil;
-static Reachability * internetConnectionReach = nil;
+//static Reachability * localWiFiReach = nil;
+//static Reachability * internetConnectionReach = nil;
 
 
 @interface NetManager ()
@@ -49,19 +49,19 @@ static Reachability * internetConnectionReach = nil;
 /**
  AFPost
  */
-+ (void)PostHttp:(NSString *)url  Parameters:(NSDictionary *)parameters Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock{
++ (void)PostHttp:(NSString *)url  Parameters:(NSDictionary *)parameters Success:(void(^)(NSURLSessionDataTask *task, id responseObject))SuccessBlock  andFalse:(void(^)(NSURLSessionDataTask *task, NSError *error))FalseBlock{
     AFHTTPSessionManager *manager = [NetManager getManager];
     if (!manager){
         NSError * error = [[NSError alloc] initWithDomain:@"Weex" code:-1111 userInfo:nil];
-        FalseBlock(error);
+        FalseBlock(nil, error);
     }else{
         [manager POST:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            SuccessBlock(responseObject);
+            SuccessBlock(task, responseObject);
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            FalseBlock(error);
-            ALERT(@"获取数据失败，请检查网络是否连接");
+            FalseBlock(task, error);
+//            ALERT(@"获取数据失败，请检查网络是否连接");
         }];
     }
 }
@@ -70,19 +70,19 @@ static Reachability * internetConnectionReach = nil;
 /**
  AFGet
  */
-+ (void)GetHttp:(NSString *)url Parameters:(nullable NSDictionary *)parameters  Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock{
++ (void)GetHttp:(NSString *)url Parameters:(nullable NSDictionary *)parameters  Success:(void(^)(NSURLSessionDataTask *task, id responseObject))SuccessBlock  andFalse:(void(^)(NSURLSessionDataTask *task, NSError *error))FalseBlock{
     AFHTTPSessionManager *manager = [NetManager getManager];
     if (!manager){
         NSError * error = [[NSError alloc] initWithDomain:@"Weex" code:-1111 userInfo:nil];
-        FalseBlock(error);
+        FalseBlock(nil, error);
     }else{
         [manager GET:url parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            SuccessBlock(responseObject);
+            SuccessBlock(task, responseObject);
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            FalseBlock(error);
-            ALERT(@"获取数据失败，请检查网络是否连接");
+            FalseBlock(task, error);
+//            ALERT(@"获取数据失败，请检查网络是否连接");
         }];
     }
 }
@@ -223,8 +223,9 @@ static Reachability * internetConnectionReach = nil;
             NSMutableDictionary *resDict = [NSJSONSerialization JSONObjectWithData:returnData options:NSJSONReadingAllowFragments error:nil];
             block(resDict);
         }else{
-            ALERT(@"获取数据失败，请检查网络是否连接");
+//            ALERT(@"获取数据失败，请检查网络是否连接");
         }
+        
     }
 }
 
@@ -232,42 +233,42 @@ static Reachability * internetConnectionReach = nil;
 /**
  开启网络监控
  */
-+(void) startNetworkMonitoring:(id) target{
-    [[NSNotificationCenter defaultCenter] addObserver:target selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    localWiFiReach = [Reachability reachabilityForLocalWiFi];
-    
-    localWiFiReach.reachableOnWWAN = NO;
-    
-    localWiFiReach.reachableBlock = ^(Reachability *reachability) {
-        [NSString stringWithFormat:@"LocalWIFI Block Says Reachable(%@)", reachability.currentReachabilityString];
-    };
-    
-    localWiFiReach.unreachableBlock = ^(Reachability *reachability) {
-        [NSString stringWithFormat:@"LocalWIFI Block Says Unreachable(%@)", reachability.currentReachabilityString];
-    };
-    
-    [localWiFiReach startNotifier];
-    
-    internetConnectionReach = [Reachability reachabilityForInternetConnection];
-    
-    internetConnectionReach.reachableBlock = ^(Reachability * reachability)
-    {
-        [NSString stringWithFormat:@" InternetConnection Says Reachable(%@)", reachability.currentReachabilityString];
-        
-        
-    };
-    
-    internetConnectionReach.unreachableBlock = ^(Reachability * reachability)
-    {
-        [NSString stringWithFormat:@"InternetConnection Block Says Unreachable(%@)", reachability.currentReachabilityString];
-        
-    };
-    
-    [internetConnectionReach startNotifier];
-}
-
-- (void)reachabilityChanged:(NSNotification *)note{
-    
-}
+//+(void) startNetworkMonitoring:(id) target{
+//    [[NSNotificationCenter defaultCenter] addObserver:target selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+//    localWiFiReach = [Reachability reachabilityForLocalWiFi];
+//
+//    localWiFiReach.reachableOnWWAN = NO;
+//
+//    localWiFiReach.reachableBlock = ^(Reachability *reachability) {
+//        [NSString stringWithFormat:@"LocalWIFI Block Says Reachable(%@)", reachability.currentReachabilityString];
+//    };
+//
+//    localWiFiReach.unreachableBlock = ^(Reachability *reachability) {
+//        [NSString stringWithFormat:@"LocalWIFI Block Says Unreachable(%@)", reachability.currentReachabilityString];
+//    };
+//
+//    [localWiFiReach startNotifier];
+//
+//    internetConnectionReach = [Reachability reachabilityForInternetConnection];
+//
+//    internetConnectionReach.reachableBlock = ^(Reachability * reachability)
+//    {
+//        [NSString stringWithFormat:@" InternetConnection Says Reachable(%@)", reachability.currentReachabilityString];
+//
+//
+//    };
+//
+//    internetConnectionReach.unreachableBlock = ^(Reachability * reachability)
+//    {
+//        [NSString stringWithFormat:@"InternetConnection Block Says Unreachable(%@)", reachability.currentReachabilityString];
+//
+//    };
+//
+//    [internetConnectionReach startNotifier];
+//}
+//
+//- (void)reachabilityChanged:(NSNotification *)note{
+//
+//}
 @end
 

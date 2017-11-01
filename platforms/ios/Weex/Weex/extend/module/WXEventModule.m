@@ -31,6 +31,9 @@
 #import "WXCallBackMessage.h"
 #import "ZSSRichTextEditor.h"
 #import "WXScannerVC.h"
+#import "UserManager.h"
+#import "MD5+Util.h"
+#import "ContactManager.h"
 
 static WXModuleCallback back;
 
@@ -52,12 +55,16 @@ WX_EXPORT_METHOD_SYNC(@selector(changeWindowsBar:))
 WX_EXPORT_METHOD(@selector(wxAuth:))
 WX_EXPORT_METHOD(@selector(toast:))
 WX_EXPORT_METHOD(@selector(encrypt:callBack:))
-WX_EXPORT_METHOD(@selector(save:))
-WX_EXPORT_METHOD(@selector(find:withKey:andCallBack:))
+WX_EXPORT_METHOD(@selector(save:callBack:))
+WX_EXPORT_METHOD(@selector(find:andCallBack:))
 WX_EXPORT_METHOD(@selector(findList:withCallBack:))
 WX_EXPORT_METHOD(@selector(delete:))
 WX_EXPORT_METHOD(@selector(openEditor:withCallBack:))
 WX_EXPORT_METHOD(@selector(scan:))
+WX_EXPORT_METHOD_SYNC(@selector(getUserId))
+WX_EXPORT_METHOD_SYNC(@selector(getUid))
+WX_EXPORT_METHOD_SYNC(@selector(md5:))
+WX_EXPORT_METHOD(@selector(getContactList:withCallBack:))
 
 - (void)openURL:(NSString *)url
 {
@@ -196,6 +203,7 @@ WX_EXPORT_METHOD(@selector(scan:))
 
 
 - (void)toast:(id)message{
+    NSLog(@"\nmessage=%@\n",message);
     IWXToast *toast = [IWXToast new];
     [toast showToast:message withInstance:weexInstance];
 }
@@ -223,6 +231,7 @@ WX_EXPORT_METHOD(@selector(scan:))
     SqlLiteManager *manager = [SqlLiteManager defaultManager];
     NSError *error;
     SqlLiteModel *model = [[SqlLiteModel alloc] initWithDictionary:data error:&error];
+    model.userId = [NSString stringWithFormat:@"%zu",[UserManager getUid]];
     NSMutableDictionary *message = [NSMutableDictionary new];
     if (!error){
         NSUInteger Id = [manager save:model];
@@ -237,24 +246,33 @@ WX_EXPORT_METHOD(@selector(scan:))
         }
     }else{
         [message setValue:@"error" forKey:@"type"];
-        [message setValue:@"解析失败" forKey:@"content"];
+        [message setValue:@"model解析失败" forKey:@"content"];
         [message setValue:@"-1" forKey:@"data"];
     }
     if (callBack){
         callBack(message);
     }
 }
-- (void)find:(NSString *)type withKey:(NSString *)key andCallBack:(WXModuleCallback)callBack{
+
+- (void)find:(NSDictionary *)option andCallBack:(WXModuleCallback)callBack{
     SqlLiteManager *manager = [SqlLiteManager defaultManager];
     NSMutableDictionary *message = [NSMutableDictionary new];
-    SqlLiteModel *model = [manager findWithUserId:@"1" AndType:type AndKey:key AndNeedOpen:YES];
-    if (model){
-        [message setValue:@"success" forKey:@"type"];
-        [message setValue:@"查找成功" forKey:@"content"];
-        [message setValue:[DictionaryUtil objectToDictionary:model] forKey:@"data"];
+    if (option){
+        NSString *type = [option objectForKey:@"type"];
+        NSString *key = [option objectForKey:@"key"];
+        SqlLiteModel *model = [manager findWithUserId:[NSString stringWithFormat:@"%zu",[UserManager getUid]] AndType:type AndKey:key AndNeedOpen:YES];
+        if (model){
+            [message setValue:@"success" forKey:@"type"];
+            [message setValue:@"查找成功" forKey:@"content"];
+            [message setValue:[DictionaryUtil objectToDictionary:model] forKey:@"data"];
+        }else{
+            [message setValue:@"error" forKey:@"type"];
+            [message setValue:@"查找失败" forKey:@"content"];
+            [message setValue:@"" forKey:@"data"];
+        }
     }else{
         [message setValue:@"error" forKey:@"type"];
-        [message setValue:@"未找到" forKey:@"content"];
+        [message setValue:@"参数错误" forKey:@"content"];
         [message setValue:@"" forKey:@"data"];
     }
     if (callBack){
@@ -265,13 +283,20 @@ WX_EXPORT_METHOD(@selector(scan:))
 - (void)findList:(NSDictionary *)dic withCallBack:(WXModuleCallback)callBack{
     SqlLiteManager *manager = [SqlLiteManager defaultManager];
     WXCallBackMessage *message = [WXCallBackMessage new];
+    
+    NSMutableDictionary *newdic = [[NSMutableDictionary alloc] initWithDictionary:dic];
+    NSInteger current = [[dic objectForKey:@"current"] integerValue];
+    NSInteger pageSize = [[dic objectForKey:@"pageSize"] integerValue];
+    [newdic setObject:[NSNumber numberWithInteger:current] forKey:@"current"];
+    [newdic setObject:[NSNumber numberWithInteger:pageSize] forKey:@"pageSize"];
+    
     NSError *error;
-    OptionModel *option = [[OptionModel alloc] initWithDictionary:dic error:&error];
+    OptionModel *option = [[OptionModel alloc] initWithDictionary:newdic error:&error];
     if (!error){
-        NSArray *array = [manager findListWithUserId:@"1" AndOption:option];
+        NSArray *array = [manager findListWithUserId:[NSString stringWithFormat:@"%zu",[UserManager getUid]] AndOption:option];
         if (!array || array.count <= 0){
             message.type = NO;
-            message.content = @"未找到";
+            message.content = [NSString stringWithFormat:@"%@未找到",option.type];
             message.data = @"-1";
         }else{
             message.type = YES;
@@ -288,17 +313,25 @@ WX_EXPORT_METHOD(@selector(scan:))
     }
 }
 
-- (void)delete:(NSString *)type andKey:(NSString *)key andCallback:(WXModuleCallback)callBack{
+- (void)delete:(NSDictionary *)option andCallback:(WXModuleCallback)callBack{
     SqlLiteManager *manager = [SqlLiteManager defaultManager];
     WXCallBackMessage *message = [WXCallBackMessage new];
-    BOOL success = [manager deleteWithUserId:@"1" AndType:type AndKey:key];
-    if (success){
-        message.type = YES;
-        message.content = @"删除成功";
-        message.data = @"1";
+    if (option){
+        NSString *type = [option objectForKey:@"type"];
+        NSString *key = [option objectForKey:@"key"];
+        BOOL success = [manager deleteWithUserId:[NSString stringWithFormat:@"%zu",[UserManager getUid]] AndType:type AndKey:key];
+        if (success){
+            message.type = YES;
+            message.content = @"删除成功";
+            message.data = @"1";
+        }else{
+            message.type = NO;
+            message.content = @"删除失败";
+            message.data = @"-1";
+        }
     }else{
         message.type = NO;
-        message.content = @"删除失败";
+        message.content = @"参数错误";
         message.data = @"-1";
     }
     if (callBack){
@@ -349,6 +382,41 @@ WX_EXPORT_METHOD(@selector(scan:))
     };
     scanner.hidesBottomBarWhenPushed = YES;
     [[weexInstance.viewController navigationController] pushViewController:scanner animated:YES];
+}
+
+- (NSString *)getUserId{
+    return [UserManager getUserId];
+}
+
+- (NSUInteger)getUid{
+    return [UserManager getUid];
+}
+
+- (NSString *)md5:(NSString *)data{
+    if (data && data.length > 0){
+        return [MD5_Util md5:data];
+    }else{
+        return @"";
+    }
+}
+
+- (void)getContactList:(NSDictionary *)option withCallBack:(WXModuleCallback)callback{
+    ContactManager *cm = [ContactManager sharedInstance];
+    [cm getContactList:option AndBlock:^(BOOL succeed, NSArray<ContactModel *> *contactList) {
+        WXCallBackMessage *message = [WXCallBackMessage new];
+        if (succeed){
+            message.type = YES;
+            message.content = @"获取成功";
+            message.data = contactList;
+        }else{
+            message.type = NO;
+            message.content = @"获取失败";
+            message.data = @"";
+        }
+        if (callback){
+            callback(message.getMessage);
+        }
+    }];
 }
 @end
 

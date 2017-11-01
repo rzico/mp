@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Reachability.h>
 #import <AFNetworking.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -39,12 +38,12 @@ NS_ASSUME_NONNULL_BEGIN
 /*
  *AFget
  */
-+ (void)GetHttp:(NSString *)url Parameters:(nullable NSDictionary *)parameters  Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock;
++ (void)GetHttp:(NSString *)url Parameters:(nullable NSDictionary *)parameters  Success:(void(^)(NSURLSessionDataTask *task, id responseObject))SuccessBlock  andFalse:(void(^)(NSURLSessionDataTask *task, NSError *error))FalseBlock;
 
 /*
  *AFpost
  */
-+ (void)PostHttp:(NSString *)url  Parameters:(nullable NSDictionary *)parameters Success:(void(^)(id responseObject))SuccessBlock  andFalse:(void(^)( NSError *error))FalseBlock;
++ (void)PostHttp:(NSString *)url  Parameters:(nullable NSDictionary *)parameters Success:(void(^)(NSURLSessionDataTask *task, id responseObject))SuccessBlock  andFalse:(void(^)(NSURLSessionDataTask *task, NSError *error))FalseBlock;
 
 /**
  上传图片文件

@@ -1,5 +1,5 @@
-const stream = weex.requireModule('stream')
-const baseURL = ''
+const stream = weex.requireModule('stream');
+const baseURL = '';
 
 export function POST (path,body) {
     return new Promise((resolve, reject) => {

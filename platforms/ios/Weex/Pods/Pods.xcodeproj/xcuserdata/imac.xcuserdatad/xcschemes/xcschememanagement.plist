@@ -46,14 +46,14 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
-		<key>Pods-Weex.xcscheme</key>
+		<key>LJContactManager.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
-		<key>Reachability.xcscheme</key>
+		<key>Pods-Weex.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

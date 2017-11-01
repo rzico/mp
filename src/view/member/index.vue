@@ -3,7 +3,7 @@
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
         <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
             <!--<image class="gif" resize="cover"-->
-                   <!--src="file://resource/image/loading.gif"></image>-->
+                   <!--src="file://resources/image/loading.gif"></image>-->
             <!--<text class="indicator">{{refreshState}}</text>-->
             <!--<loading-indicator>...</loading-indicator>-->
         <!--</refresh>-->
@@ -53,7 +53,7 @@
         <!--顶部个人信息栏-->
         <div class="topBox" ref='topBox'>
             <!--背景图片-->
-            <image   class="backgroundImage" :src="imageUrl"></image>
+            <image   class="backgroundImage" :src="bgImgUrl"></image>
             <!--遮罩层-->
             <!--<image class="backgroundMask" :src="maskUrl"></image>-->
             <div  class="topHead">
@@ -810,7 +810,6 @@
 
             },
             jumpEditor:function (id) {
-                event.toast('跳转编辑');
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
 //                    _this.updateArticle();
