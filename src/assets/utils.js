@@ -136,7 +136,7 @@ let utilsFunc = {
     },
     //获取文章URL地址
     articleUrl(template,id) {
-            return dataURL+"article/#/"+template+"?id="+id;
+            return dataURL+"website/"+template+"?id="+id;
     }
 };
 
