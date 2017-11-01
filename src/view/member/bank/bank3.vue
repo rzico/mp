@@ -5,7 +5,7 @@
         </div>
     <div class="big">
         <div class="text">
-            <text class="textA">1本次操作需要短信确认，请输入</text> <text class="textA2" > {{phone}}</text> <text class="textA3">收到的短信验证码</text>
+            <text class="textA">本次操作需要短信确认，请输入</text> <text class="textA2" > {{phone}}</text> <text class="textA3">收到的短信验证码</text>
         </div>
         <div class="inputA">
             <text class="textB">验证码</text>
@@ -106,6 +106,14 @@
                 phone: '',
                 txtInput:'',
                 indo: '',
+                accountName:'',
+                cardname:'',
+                bankname:'',
+                banknum:'',
+                cardtype:'',
+                bankimage:'',
+                province:'',
+                city:'',
                 time:59,
                 textList:['','','','','',''],
                 verification:''
@@ -141,6 +149,14 @@
                 _this.txtInput = threedata.caedNo;
                 _this.phone = threedata.mobile;
                 _this.idno = threedata.ldentity;
+                _this.accountName = threedata.name;
+                _this.cardname = threedata.cardname;
+                _this.bankname = threedata.bankname;
+                _this.banknum = threedata.banknum;
+                _this.cardtype = threedata.cardtype;
+                _this.bankimage = threedata.bankimage;
+                _this.province = threedata.province;
+                _this.city = threedata.city;
                 storage.removeItem(three);
                 this.onSend();
             });
@@ -155,7 +171,15 @@
                 var  threedata = {
                     cardNo : this.txtInput,
                     mobile :this.phone,
-                    ldentity:this.idno
+                    ldentity:this.idno,
+                    name:this.accountName,
+                    cardname:this.cardname,
+                    bankname:this.bankname,
+                    banknum:this.banknum,
+                    cardtype:this.cardtype,
+                    bankimage:this.bankimage,
+                    province:this.province,
+                    city:this.city
                 };
 //                event.toast(threedata);
                 let threedatastr = JSON.stringify(threedata);

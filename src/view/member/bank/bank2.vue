@@ -6,7 +6,7 @@
     <div class="big">
         <div class="inputA">
             <text class="textA">卡类型</text>
-            <text class="textAA">{{txtInput}}</text>
+            <text class="textAA">{{cardname}}</text>
         </div>
         <div class="inputB">
             <text class="textB">手机号</text>
@@ -140,7 +140,14 @@
               txtInput:'',
               phone:'',
               idno:'',
-              autofocus: false
+//              cardname:'',
+//              bankname:'',
+//              banknum:'',
+//              cardtype:'',
+//              bankimage:'',
+//              province:'',
+//              city:'',
+                autofocus: false
           }
         },
         components: {
@@ -151,14 +158,29 @@
         },
         created() {
             var _this=this;
-            this.txtInput= utils.getUrlParameter("txtInput");
-//            event.toast(this.txtInput);
+            var two = utils.getUrlParameter('name');
+            storage.getItem(two, e => {
+//                event.toast(e);
+                let twodata =  JSON.parse(e.data);
+//                event.toast(threedata);
+                _this.txtInput = twodata.caedNo;
+                _this.accountName = twodata.name;
+                storage.removeItem(two);
+            });
+//            this.txtInput= utils.getUrlParameter("txtInput");
+            event.toast(this.txtInput);
             event.encrypt(this.txtInput, function (message) {
                 if (message.type == "success") {
                     POST('weex/member/bankcard/query.jhtml?banknum=' +message.data).then(function (data) {
-                            event.toast(data.data.cardname);
+                            event.toast(data);
                             if (data.type == "success" && data.data != '') {
-                                _this.txtInput = data.data.cardname;
+                                _this.cardname = data.data.cardname;
+                                _this.bankname = data.data.bankname;
+                                _this.banknum = data.data.banknum;
+                                _this.cardtype = data.data.cardtype;
+                                _this.bankimage = data.data.bankimage;
+                                _this.province = data.data.province;
+                                _this.city =data.data.city;
                                 event.toast(data);
                             } else {
                                 event.toast(data.content);
@@ -167,6 +189,9 @@
                             event.toast("网络不稳定请重试");
                         }
                     )
+                }
+                else {
+                    event.toast(data.content);
                 }
             })
         },
@@ -194,7 +219,16 @@
                 let  threedata = {
                     caedNo : this.txtInput,
                     mobile :this.phone,
-                    ldentity:this.idno
+                    ldentity:this.idno,
+                    name:this.accountName,
+                    cardname:this.cardname,
+                    bankname:this.bankname,
+                    banknum:this.banknum,
+                    cardtype:this.cardtype,
+                    bankimage:this.bankimage,
+                    province:this.province,
+                    city:this.city
+
                 };
                 threedata = JSON.stringify(threedata);
                 storage.setItem('threenumber', threedata,e=>{

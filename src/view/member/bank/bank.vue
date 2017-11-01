@@ -14,7 +14,7 @@
                     <text class="title" >开户人</text>
                 </div>
                 <div class="twoA">
-                    <input type="text" placeholder="" class="input" :autofocus="true" value=""/>
+                    <input type="text" placeholder="" class="input" :autofocus="true" value="" @input="oninput"/>
                 </div>
                 <div class="font">
                     <text class="title2" :style="{fontFamily:'iconfont'}" @click="showAlert">&#xe620;</text>
@@ -25,7 +25,7 @@
                     <text class="title">卡号</text>
                 </div>
                 <div class="twoB">
-                    <input type="number" placeholder="无需网银/免手续费" class="input" :autofocus="true" value="" @input="oninput"/>
+                    <input type="number" placeholder="无需网银/免手续费" class="input" :autofocus="true" value="" @input="oninput2"/>
                 </div>
             </div>
             <div class="A3">
@@ -138,6 +138,7 @@
     }
 </style>
 <script>
+    const storage = weex.requireModule('storage');
     var modal = weex.requireModule('modal')
     var event = weex.requireModule('event')
     import utils from '../../../assets/utils';
@@ -148,6 +149,7 @@
         data: function () {
             return {
                 txtInput: '',
+                accountName:'',
                 autofocus: false
             };
         },
@@ -170,8 +172,12 @@
                 }, 1000);
             },
 
-            oninput: function (event) {
+            oninput2: function (event) {
                 this.txtInput = event.value;
+                console.log('oninput2', event.value);
+            },
+            oninput:function (event){
+                this.accountName = event.value;
                 console.log('oninput', event.value);
             },
 
@@ -199,12 +205,19 @@
                 event.closeURL()
             },
             goComplete: function () {
+                var _this=this;
+                let  twodata = {
+                    caedNo : this.txtInput,
+                    name :this.accountName,
+                };
+                twodata = JSON.stringify(twodata);
+                storage.setItem('twonumber', twodata,e=> {
+                    event.openURL('http://192.168.2.241:8081/bank2.weex.js?name=twonumber', function (message) {
 
-                event.openURL('http://192.168.2.241:8081/bank2.weex.js?txtInput='+this.txtInput, function () {
-
-                })
-            }
+                    })
+                });
         }
+    }
     }
 
 
