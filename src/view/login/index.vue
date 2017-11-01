@@ -50,22 +50,22 @@
                 event.encrypt(_this.value,function (message) {
                     event.toast(message);
                     if (message.type=="success") {
-                    POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
-                        function (data) {
-                            if (data.type == "success") {
+                        POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
+                            function (data) {
+                                if (data.type == "success") {
 
-                                event.openURL('http://192.168.2.157:8081/captcha.weex.js?mobile=' +_this.value,function (e) {
+                                    event.openURL('http://192.168.2.157:8081/captcha.weex.js?mobile=' +_this.value,function (e) {
 //                                event.openURL(utils.locate("view/login/captcha.js?mobile=" +_this.value),
 //                                    function (e) {
                                         event.closeURL();
                                     });
-                            } else {
-                                event.toast(data.content);
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
                             }
-                        }, function (err) {
-                            event.toast("网络不稳定");
-                        }
-                    )
+                        )
                     } else {
                         event.toast(message.content);
                     }
