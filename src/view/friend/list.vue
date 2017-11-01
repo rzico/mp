@@ -280,7 +280,8 @@
                 isShowToast:false,
                 showText:'',
                 isPress:false,
-                friendTotal:43,
+                friendTotal:0,
+                userId:0,
 //                topLineList:[{
 //                    lineImage:'&#xe631;',
 //                    lineTitle:'新的朋友'
@@ -420,7 +421,12 @@
                     event.toast(data.content);
                 }
             })
+//            获取用户id
+            this.userId = event.getUid();
+//            event.toast('1');
+            event.toast(this.userId);
             _this.hadFriend();
+//            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
                 _this.hadFriend();
             });
@@ -431,9 +437,14 @@
                 var _this = this;
                 let lastTimestamp;
 //                获取本地缓存是否有时间戳数据
-                storage.getItem('lastTimestamp', e => {
-                     lastTimestamp = e.data == undefined ? '' : e.data;
-                    GET('weex/member/friends/list.jhtml?timeStamp=' + lastTimestamp ,function (data) {
+                storage.getItem('lastTimestamp' + _this.userId, e => {
+//                     lastTimestamp = e.data == undefined ? '' : e.data;
+                    if(e.result == 'success' && !utils.isNull(e.data)){
+                        lastTimestamp = e.data;
+                    }else{
+                        lastTimestamp = '';
+                    }
+                    GET('weex/member/friends/list.jhtml?timestamp=' + lastTimestamp ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -452,7 +463,7 @@
                                                 item.name.push(friend);
                                                 _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
-                                                storage.setItem('lastTimestamp', timestamp);
+                                                storage.setItem('lastTimestamp' + _this.userId, timestamp);
                                             }else{
                                                 event.toast('网络不稳定');
                                             }
@@ -489,7 +500,8 @@
             },
             ontouchstart:function(count){
                 if(count == 0){//判断是否点击回到顶部
-                    const el = this.$refs.linkref[count]//跳转到相应的cell
+                    const el = this.$refs.linkref//跳转到相应的cell
+//                    const el = this.$refs.linkref[count]//跳转到相应的cell
                     dom.scrollToElement(el, {
 //                        animated:false
                     })
@@ -546,7 +558,8 @@
 //                                        animated:false
                                     })
                                 }else if(this.moveLetter == 0){//判断是否滑到 顶部按钮
-                                    const el = this.$refs.linkref[this.moveLetter]//跳转到相应的cell
+                                    const el = this.$refs.linkref//跳转到相应的cell
+//                                    const el = this.$refs.linkref[this.moveLetter]//跳转到相应的cell
                                     dom.scrollToElement(el, {
 //                                        animated:false
                                     })
@@ -568,7 +581,6 @@
                     case 0:
 //                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
                         event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
-
                             event.toast(message);
                         });
                         break;

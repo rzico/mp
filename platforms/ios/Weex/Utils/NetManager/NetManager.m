@@ -10,8 +10,8 @@
 #import "HttpHead+Utils.h"
 #import "TXUtilsString.h"
 
-static Reachability * localWiFiReach = nil;
-static Reachability * internetConnectionReach = nil;
+//static Reachability * localWiFiReach = nil;
+//static Reachability * internetConnectionReach = nil;
 
 
 @interface NetManager ()
@@ -233,42 +233,42 @@ static Reachability * internetConnectionReach = nil;
 /**
  开启网络监控
  */
-+(void) startNetworkMonitoring:(id) target{
-    [[NSNotificationCenter defaultCenter] addObserver:target selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    localWiFiReach = [Reachability reachabilityForLocalWiFi];
-    
-    localWiFiReach.reachableOnWWAN = NO;
-    
-    localWiFiReach.reachableBlock = ^(Reachability *reachability) {
-        [NSString stringWithFormat:@"LocalWIFI Block Says Reachable(%@)", reachability.currentReachabilityString];
-    };
-    
-    localWiFiReach.unreachableBlock = ^(Reachability *reachability) {
-        [NSString stringWithFormat:@"LocalWIFI Block Says Unreachable(%@)", reachability.currentReachabilityString];
-    };
-    
-    [localWiFiReach startNotifier];
-    
-    internetConnectionReach = [Reachability reachabilityForInternetConnection];
-    
-    internetConnectionReach.reachableBlock = ^(Reachability * reachability)
-    {
-        [NSString stringWithFormat:@" InternetConnection Says Reachable(%@)", reachability.currentReachabilityString];
-        
-        
-    };
-    
-    internetConnectionReach.unreachableBlock = ^(Reachability * reachability)
-    {
-        [NSString stringWithFormat:@"InternetConnection Block Says Unreachable(%@)", reachability.currentReachabilityString];
-        
-    };
-    
-    [internetConnectionReach startNotifier];
-}
-
-- (void)reachabilityChanged:(NSNotification *)note{
-    
-}
+//+(void) startNetworkMonitoring:(id) target{
+//    [[NSNotificationCenter defaultCenter] addObserver:target selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+//    localWiFiReach = [Reachability reachabilityForLocalWiFi];
+//
+//    localWiFiReach.reachableOnWWAN = NO;
+//
+//    localWiFiReach.reachableBlock = ^(Reachability *reachability) {
+//        [NSString stringWithFormat:@"LocalWIFI Block Says Reachable(%@)", reachability.currentReachabilityString];
+//    };
+//
+//    localWiFiReach.unreachableBlock = ^(Reachability *reachability) {
+//        [NSString stringWithFormat:@"LocalWIFI Block Says Unreachable(%@)", reachability.currentReachabilityString];
+//    };
+//
+//    [localWiFiReach startNotifier];
+//
+//    internetConnectionReach = [Reachability reachabilityForInternetConnection];
+//
+//    internetConnectionReach.reachableBlock = ^(Reachability * reachability)
+//    {
+//        [NSString stringWithFormat:@" InternetConnection Says Reachable(%@)", reachability.currentReachabilityString];
+//
+//
+//    };
+//
+//    internetConnectionReach.unreachableBlock = ^(Reachability * reachability)
+//    {
+//        [NSString stringWithFormat:@"InternetConnection Block Says Unreachable(%@)", reachability.currentReachabilityString];
+//
+//    };
+//
+//    [internetConnectionReach startNotifier];
+//}
+//
+//- (void)reachabilityChanged:(NSNotification *)note{
+//
+//}
 @end
 

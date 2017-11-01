@@ -1,5 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
-platform :ios, '7.0'
+platform :ios, '8.0'
 inhibit_all_warnings!
 
 def common
@@ -13,13 +13,13 @@ def common
     pod 'AFNetworking', '~> 3.0.4'
     pod 'AFNetworking-Synchronous/3.x'
     pod 'JSONModel'
-    pod 'Reachability'
     pod 'WechatOpenSDK'
     pod 'AliyunOSSiOS'
     pod 'CLImageEditor'
     pod 'ZipArchive'
-    pod 'OpenSSL'
+    pod 'OpenSSL', '~> 1.0.208'
     pod 'FMDB', '~> 2.7.2'
+    pod 'LJContactManager'
 end
 
 target 'Weex' do

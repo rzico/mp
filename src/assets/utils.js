@@ -126,9 +126,17 @@ let utilsFunc = {
             return url;
         }
     },
+    //模糊图片，r , s  为 1-50，超大超模糊
+    blur(url,r,s) {
+        if (url.substring(0,10) == "http://cdn") {
+            return url+"@"+r+"-"+s+"bl";
+        } else {
+            return url;
+        }
+    },
     //获取文章URL地址
     articleUrl(template,id) {
-            return dataURL+"article/#/"+template+"?id="+id;
+            return dataURL+"website/"+template+"?id="+id;
     }
 };
 

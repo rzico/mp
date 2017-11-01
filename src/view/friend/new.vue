@@ -13,7 +13,7 @@
         <list class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image class="gif" resize="cover"
-                       src="file://resource/image/loading.gif"></image>
+                       src="file://resources/images/loading.gif"></image>
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <cell v-for="(friend,index) in friendsList">
@@ -38,7 +38,7 @@
             </cell>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
                 <image class="gif" resize="cover"
-                       src="file://resource/image/loading.gif"></image>
+                       src="file://resources/images/loading.gif"></image>
                 <text class="indicator">{{loadingState}}</text>
             </loading>
         </list>

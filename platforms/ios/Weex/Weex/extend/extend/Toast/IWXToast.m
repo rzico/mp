@@ -11,7 +11,7 @@
 
 @implementation IWXToast
 
-static const double WXToastDefaultDuration = 0.1;
+static const double WXToastDefaultDuration = 3;
 static const CGFloat WXToastDefaultFontSize = 16.0;
 static const CGFloat WXToastDefaultWidth = 230.0;
 static const CGFloat WXToastDefaultHeight = 30.0;
@@ -43,9 +43,11 @@ static const CGFloat WXToastDefaultPadding = 30.0;
     info.duration = duration;
     [[IWXToastManager sharedManager].toastQueue addObject:info];
     
-    if (![IWXToastManager sharedManager].toastingView) {
-        [self showToast:toastView superView:superView duration:duration];
-    }
+    [self showToast:toastView superView:superView duration:duration];
+    
+//    if (![IWXToastManager sharedManager].toastingView) {
+//
+//    }
 }
 
 - (UIView *)toastViewForMessage:(id)message superView:(UIView *)superView
@@ -58,6 +60,14 @@ static const CGFloat WXToastDefaultPadding = 30.0;
         messageLabel.text = message;
     }else if([message isKindOfClass:[NSDictionary class]]){
         messageLabel.text = [DictionaryUtil convertToJsonData:message];
+    }else if ([message isKindOfClass:[NSArray class]]){
+        NSMutableArray *data = [NSMutableArray new];
+        for (id m in message){
+            [data addObject:[DictionaryUtil objectToDictionary:m]];
+        }
+        NSMutableDictionary *dic = [NSMutableDictionary new];
+        [dic setObject:data forKey:@"content"];
+        messageLabel.text = [DictionaryUtil convertToJsonData:dic];
     }else{
         messageLabel.text = [message stringValue];
     }
