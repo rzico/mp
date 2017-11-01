@@ -126,6 +126,13 @@ let utilsFunc = {
             return url;
         }
     },
+    blur(url,r,s) {
+        if (url.substring(0,10) == "http://cdn") {
+            return url+"@"+r+"-"+s+"bl";
+        } else {
+            return url;
+        }
+    },
     //获取文章URL地址
     articleUrl(template,id) {
             return dataURL+"article/#/"+template+"?id="+id;
