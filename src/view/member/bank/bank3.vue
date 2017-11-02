@@ -146,7 +146,7 @@
                 event.toast(e);
                 let threedata =  JSON.parse(e.data);
                 event.toast(threedata);
-                _this.txtInput = threedata.caedNo;
+                _this.txtInput = threedata.cardNo;
                 _this.phone = threedata.mobile;
                 _this.idno = threedata.ldentity;
                 _this.accountName = threedata.name;
@@ -214,7 +214,7 @@
                         POST('weex/member/bankcard/send_mobile.jhtml?mobile=' + message.data).then(
                             function (data) {
                                 if (data.type == "success") {
-                                    event.toast(data);
+//                                    event.toast(data);
 
                                 } else {
                                     event.toast(data.content);
