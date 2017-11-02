@@ -31,7 +31,7 @@
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between">
-                <div class="flex-row flex-start">
+                    <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                         <text class="title ml10">我的账单</text>
                     </div>
@@ -101,10 +101,11 @@
         },
         methods: {
             goback: function (e) {
-                navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-                    animated: "true"
-                })
+//                navigator.pop({
+//                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
+//                    animated: "true"
+//                })
+                event.closeURL();
             },
             setup: function (e) {
 

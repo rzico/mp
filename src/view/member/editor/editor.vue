@@ -693,6 +693,9 @@
                             }
                         }else{//上传失败
                             _this.toSendArticle = false;
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 2;//总的进度
+                            _this.processWidth = 0;//进度条宽度
                             event.toast(data.content);
                         }
                     },function (data) {
@@ -752,6 +755,7 @@
                     title:_this.setTitle,
                     votes:voteData,
                 }
+
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
@@ -968,20 +972,20 @@
                     })
                     return;
                 }else{
-                    modal.confirm({
-                        message: '请选择裁剪或者更换图片',
-                        duration: 0.3,
-                        okTitle:'裁剪',
-                        cancelTitle:'更换',
-                    }, function (value) {
-                        event.toast(value);
-                        if(value == '更换'){
-//                                调用单选图片接口
-                            album.openAlbumSingle(false, function(data){
-                                _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
-                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
-                            })
-                        }else if(value == '裁剪'){
+//                    modal.confirm({
+//                        message: '请选择裁剪或者更换图片',
+//                        duration: 0.3,
+//                        okTitle:'裁剪',
+//                        cancelTitle:'更换',
+//                    }, function (value) {
+//                        event.toast(value);
+//                        if(value == '更换'){
+////                                调用单选图片接口
+//                            album.openAlbumSingle(false, function(data){
+//                                _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
+//                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
+//                            })
+//                        }else if(value == '裁剪'){
 //                                调用裁剪图片
                             album.openCrop(imgSrc,function (data) {
                                 if(data.type == 'success'){
@@ -991,10 +995,10 @@
                                     modal.toast({message:data.content,duration:10});
                                 }
                             })
-                        }else{
-                            event.toast(value);
-                        }
-                    })
+//                        }else{
+//                            event.toast(value);
+//                        }
+//                    })
                 }
             },
 //            下拉刷新

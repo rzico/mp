@@ -73,7 +73,7 @@
                     <text class="topBtn topBtnBigFont">{{collectNum}}</text>
                     <text class=" topBtn " >收藏</text>
                 </div>
-                <div class="topBtnSmallBox walletLayout"  @click="jump()">
+                <div class="topBtnSmallBox walletLayout"  @click="jumpWallet()">
                     <!--钱包两边的白色边框-->
                     <div  class="leftBtnBorder topBtnBorder" ></div>
                     <div  class="rightBtnBorder topBtnBorder" ></div>
@@ -1116,6 +1116,14 @@
 //            设置中心
             goManage(){
                 event.openURL(utils.locate('view/member/manage.js'),
+                    function (data) {
+                        return ;
+                    }
+                );
+            },
+//            钱包
+            jumpWallet(){
+                event.openURL(utils.locate('view/member/wallet/index.js'),
                     function (data) {
                         return ;
                     }

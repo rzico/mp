@@ -152,7 +152,7 @@
         methods: {
             open:function () {
                 var _this = this;
-                GET("weex/member/manager/view.jhtml").then(
+                GET("weex/member/manager/view.jhtml",
                     function (data) {
                        if (data.type=="success") {
                            _this.member = data.data;

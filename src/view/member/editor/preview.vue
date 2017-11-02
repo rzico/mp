@@ -5,7 +5,7 @@
         <!--网页-->
         <web class="webView" :src="webUrl"></web>
         <!--下一步-->
-        <div class="footBox">
+        <div class="footBox" @click="goOption()">
             <text class="nextStep">下一步</text>
         </div>
         <!--模版-->
@@ -26,14 +26,16 @@
                     </div>
                 </div>
                 <div>
-                    <scroller  class="templateImgBox" scroll-direction="horizontal">
-                        <image v-for="item in imageList" :src="item.url" resize="cover" :class="[item.tickShow ? 'imgActive': '','templateImg']" @click="tickImage(item)"></image>
-                    </scroller>
-                </div>
-                <div>
-                    <scroller  class="templateTitleBox"  scroll-direction="horizontal">
-                        <text v-for="item in titleList"  :class="[item.tickShow ? 'titleActive': '','templateTitle']" @click="tickTitle(item)">{{item.name}}</text>
-                    </scroller>
+                    <div>
+                        <scroller  class="templateImgBox" scroll-direction="horizontal">
+                            <image v-for="(item,index) in imageList" :src="item.url" resize="cover" :class="[item.tickShow ? 'imgActive': '','templateImg']" @click="tickImage(item,index)"></image>
+                        </scroller>
+                    </div>
+                    <div>
+                        <scroller  class="templateTitleBox"  scroll-direction="horizontal">
+                            <text v-for="(item,index) in titleList"  :class="[item.tickShow ? 'titleActive': '','templateTitle']" @click="tickTitle(item,index)">{{item.name}}</text>
+                        </scroller>
+                    </div>
                 </div>
             </div>
         </transition>
@@ -168,6 +170,7 @@
     import navbar from '../../../include/navbar.vue'
     import utils from '../../../assets/utils';
     const event = weex.requireModule('event');
+    import { POST, GET } from '../../../assets/fetch'
     export default {
         data:function () {
             return{
@@ -176,6 +179,8 @@
                 lastImageItem:'',
                 lastTitleItem:'',
                 articleId:'',
+                templateId:'',
+                templateList:[],
                 imageList:[{
                     url:'http://static2.ivwen.com/app/template/template_8081.png?v=1',
                     tickShow:false,
@@ -215,13 +220,37 @@
             complete:{ default : '编辑'}
         },
         created(){
+            var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
-           this.webUrl = utils.articleUrl('t1001',this.articleId);
+            GET('weex/member/template/list.jhtml?type=template',function (data) {
+                if(data.type == 'success' && data.data != ''){
+                    _this.templateList = data.data;
+                    event.toast(_this.templateList);
+                }
+            },function (err) {
+                event.toast(err.content);
+            })
+            POST('weex/member/article/template.jhtml?id=' + this.articleId).then(
+                function (data) {
+                    if(data.type == 'success'){
+                        _this.templateId = 't' + data.data;
+                        _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
+                    }else{
+                        event.toast(data.content);
+                    }
+                },
+                function (err) {
+                    event.toast(err.content);
+                }
+            )
+
+//            let a = utils.articleUrl('',this.articleId);
+//            event.toast(a);
         },
         methods:{
 //            点击 图片 更换模版的触发
-            tickImage(item){
+            tickImage(item,index){
                 if(item.tickShow == 'true'){
                 }else{
                     if(utils.isNull(this.lastImageItem)){
@@ -230,6 +259,10 @@
                     }
                     this.lastImageItem = item;
                     item.tickShow = true;
+
+                    this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
+//                   event.toast(a);
+
                 }
             },
 
@@ -243,6 +276,7 @@
                     }
                     this.lastTitleItem = item;
                     item.tickShow = true;
+
                 }
             },
             chooseTemplate(){
@@ -255,7 +289,16 @@
 //            点击返回
             goback(){
                 event.closeURL();
-            }
+            },
+//            点击下一步 跳转文章设置。
+            goOption(){
+                var _this = this;
+//                event.openURL(utils.locate('view/member/editor/option.js),
+                event.openURL('http://192.168.2.157:8081/option.weex.js',
+                    function (data) {
+                    }
+                );
+            },
         }
     }
 </script>

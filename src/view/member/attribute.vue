@@ -214,7 +214,7 @@
             },
             open:function () {
                 var _this = this;
-                GET("weex/member/attribute.jhtml").then(
+                GET("weex/member/attribute.jhtml",
                     function (data) {
                         if (data.type=="success") {
                             _this.attribute = data.data;
