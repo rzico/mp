@@ -125,16 +125,19 @@
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                         <div class="atricleHead">
                             <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                            <text class="articleSign">公开</text>
+                            <text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>
                             <text class="articleTitle">{{item.value.title}}</text>
                         </div>
                         <!--文章封面-->
-                        <div>
+                        <div style="position: relative">
                             <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
+                        </div>
+                        <div class="categoryBox">
+                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
                         </div>
                         <!--文章底部-->
                         <div class="articleFoot">
@@ -150,6 +153,7 @@
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                                 <text class="relevantText">{{item.value.review}}</text>
                             </div>
+
                         </div>
                         <!--右侧隐藏栏-->
                         <div class="rightHidden">
@@ -204,6 +208,13 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .categoryBox{
+        position: absolute;background-color: #888;left: 650px;bottom: 100px;opacity: 0.4;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
+    }
+    .categoryText{
+        color: #fff;
+        font-size: 28px;
+    }
     .moneyFormat{
         flex-direction: row;justify-content: center;
     }
@@ -660,7 +671,37 @@
                 }],
             }
         },
-
+        filters:{
+            watchWho:function (value) {
+                switch (value){
+                    case 'isPublic' ://公开
+                        return '公开';
+                        break;
+                    case 'isShare' ://不公开
+                        return '不公开';
+                        break;
+                    case 'isEncrypt' ://加密
+                        return '加密';
+                        break;
+                    case 'isPrivate' ://私密
+                        return '私密';
+                        break;
+                    case 'draft'://草稿
+                        return '草稿';
+                        break;
+                    default:
+                        return '公开';
+                        break;
+                }
+            },
+            watchCatetory:function (value) {
+                if(utils.isNull(value)){
+                    return '生活';
+                }else{
+                    return value;
+                }
+            }
+        },
         created:function () {
             utils.initIconFont();
             var _this = this;
@@ -694,7 +735,6 @@
             event.findList(options,function (data) {
                 if( data.type == "success" && data.data != '' ) {
                     data.data.forEach(function (item) {
-//                        event.toast(item);
 //                    将value json化
                         item.value = JSON.parse(item.value);
 //                        把读取到的文章push进去文章列表
@@ -852,14 +892,21 @@
 //                }
 //            },
 //            前往文章
-            goArticle(id){
+            goArticle(id,publish,draft){
                 var _this = this;
+                if(draft){
+                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
+//                    _this.updateArticle();
+                    })
+                }else{
+                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish' + publish,function () {
+//                    _this.updateArticle();
+                    })
+                }
+
 //                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
 ////                    _this.updateArticle();
 //                });
-                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
-//                    _this.updateArticle();
-                })
             },
 //            updateArticle(){
 //                var _this = this;

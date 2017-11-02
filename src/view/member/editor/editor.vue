@@ -380,6 +380,7 @@
 </style>
 
 <script>
+    import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     const storage = weex.requireModule('storage');
@@ -407,6 +408,7 @@
                 voteList:[],
                 proportion:'',//缩略图的比例
                 serveCover:'',//用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                catalogId:'',
             }
         },
         filters:{
@@ -484,6 +486,15 @@
                         key:op[1]
                     };
                     _this.articleId = op[1];
+
+                    GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
+                        if(data.type == 'success' && data.data != ''){
+                            _this.catalogId = data.data.articleCatalog.id;
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+
                     event.find(options,function (data) {
                         if(data.type == 'success'){
                             let articleData = JSON.parse(data.data.value);
@@ -754,50 +765,113 @@
                     id:sendId,
                     title:_this.setTitle,
                     votes:voteData,
+                    isDraft:false,
                 }
 
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
-                _this.saveArticle(articleData,res=>{
-//                    modal.toast({message:res});
-                    if(utils.isNull(res)){
-                        event.toast('系统繁忙,请稍后重试');
-                    }else{
-                        if(res.data != '' && res.data.type == 'success'){
-                            event.toast(res.data.data.id);
+                POST('weex/member/article/submit.jhtml',articleData).then(
+                    function (res) {
+                        if(res.data != '' && res.type == 'success'){
+                            _this.articleId = res.data.id;
+                            event.toast(res);
+                            let resDataStr = JSON.stringify(res.data);
+                            let saveData = {
+                                type:"article",
+                                key:res.data.id,
+                                value:res.data,
+                                sort:'0,'+ timestamp +'',
+                                keyword:',[ '+ _this.catalogId + '],' + _this.setTitle + ','
+                            }
+                            event.toast(saveData);
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
-                            utils.save("article",res.data.data.id,res.data.data,'0,'+ timestamp +'',',[],' + _this.setTitle + ',',function (data) {
+//                            utils.save("article",res.data.id,res.data.data,'0,'+ timestamp +'',',[ '+ _this.catalogId + '],' + _this.setTitle + ',',function (data) {
+                            event.save(saveData,function(data){
                                 if(data.type == 'success'){
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
-                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.data.id,function (message) {
-                                            _this.currentPro = 0;//当前进度
-                                            _this.proTotal = 2;//总的进度
-                                            _this.processWidth = 0;//进度条宽度
+                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
+                                        _this.currentPro = 0;//当前进度
+                                        _this.proTotal = 2;//总的进度
+                                        _this.processWidth = 0;//进度条宽度
+                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                                            let E = {
+//                                                isDone : 'complete'
+//                                            }
+//                                            let backData = utils.message('success','成功',E);
+                                            event.closeURL();
+                                        }
                                     })
                                 }else{
+                                    _this.toSendArticle = false;
+                                    _this.currentPro = 0;//当前进度
+                                    _this.proTotal = 2;//总的进度
+                                    _this.processWidth = 0;//进度条宽度
                                     modal.alert({
-                                        message: '系统繁忙,请稍后重试',
+                                        message: data.content,
                                         duration: 0.3
                                     })
                                 }
                             })
+                        }else{
+                            event.toast(res.content);
+                            _this.toSendArticle = false;
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 2;//总的进度
+                            _this.processWidth = 0;//进度条宽度
                         }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                        _this.toSendArticle = false;
+                        _this.currentPro = 0;//当前进度
+                        _this.proTotal = 2;//总的进度
+                        _this.processWidth = 0;//进度条宽度
                     }
+                )
 
-                })
+//                网络请求，保存文章
+//                _this.saveArticle(articleData,res=>{
+////                    modal.toast({message:res});
+//                    if(utils.isNull(res)){
+//                        event.toast('系统繁忙,请稍后重试');
+//                    }else{
+//                        event.toast(res);
+//                        if(res.data != '' && res.data.type == 'success'){
+//                            event.toast(res.data.data.id);
+////                1是置顶（默认倒序）  keyword ",[1],文章title,"
+//                            utils.save("article",res.data.data.id,res.data.data,'0,'+ timestamp +'',',[],' + _this.setTitle + ',',function (data) {
+//                                if(data.type == 'success'){
+////                                    event.closeURL();
+//                                    _this.toSendArticle = false;
+//                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.data.id,function (message) {
+//                                            _this.currentPro = 0;//当前进度
+//                                            _this.proTotal = 2;//总的进度
+//                                            _this.processWidth = 0;//进度条宽度
+//                                    })
+//                                }else{
+//                                    modal.alert({
+//                                        message: '系统繁忙,请稍后重试',
+//                                        duration: 0.3
+//                                    })
+//                                }
+//                            })
+//                        }
+//                    }
+//
+//                })
             },
 //        向服务器发送保存文章
-            saveArticle(articleData,callback) {
-//                modal.toast({message:articleData,duration:3});
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    body:articleData,
-                    url: 'weex/member/article/submit.jhtml'
-                }, callback)
-            },
+//            saveArticle(articleData,callback) {
+////                modal.toast({message:articleData,duration:3});
+//                return stream.fetch({
+//                    method: 'POST',
+//                    type: 'json',
+//                    body:articleData,
+//                    url: 'weex/member/article/submit.jhtml'
+//                }, callback)
+//            },
 //            点击"+"号里的文本时
             addTextPara:function(index){
                 var _this = this;
