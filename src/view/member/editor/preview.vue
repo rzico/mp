@@ -58,37 +58,41 @@
                 </div>
             </div>
         </transition>
-        <div style="position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5"></div>
-        <div class="operationBox">
-            <div class="flex-row pt20 pb20">
-                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                <text class="fz28 pl10">编辑</text>
-            </div>
-            <div class="flex-row pt20 pb20 ">
-                <text class="fz40 mianColor" :style="{fontFamily:'iconfont'}">&#xe652;</text>
-                <text class="fz28 pl10 mianColor">删除</text>
-            </div>
-            <div class="boder-bottom" style="position: absolute;left: 30px;right: 30px"></div>
-            <div class="flex-row pt20 pb20">
-                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                <text class="fz28 pl10">访问统计</text>
-            </div>
-            <div class="flex-row pt20 pb20">
-                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                <text class="fz28 pl10">文章设置</text>
-            </div>
-            <div class="flex-row pt20 pb20">
-                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
-                <text class="fz28 pl10">收藏</text>
-            </div>
-
-            <div class="flex-row pt20 pb20">
-                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                <text class="fz28 pl10">文章设置</text>
-            </div>
-            <div class="flex-row pt20 pb20">
-                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
-                <text class="fz28 pl10">收藏</text>
+        <div v-if="isOperation">
+            <div style="position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5" @touchstart="maskTouch"></div>
+            <div class="operationBox"  style="width: 230px;">
+                <div class="arrow-up" >
+                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                    <text class="fz28 pl10">编辑</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                    <text class="fz28 pl10">复制</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                    <text class="fz40 mianColor" :style="{fontFamily:'iconfont'}">&#xe652;</text>
+                    <text class="fz28 pl10 mianColor">删除</text>
+                </div>
+                <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe629;</text>
+                    <text class="fz28 pl10">访问统计</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                    <text class="fz28 pl10">文章设置</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                    <text class="fz28 pl10">打印成书</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                    <text class="fz28 pl10">收藏</text>
+                </div>
             </div>
         </div>
 
@@ -98,8 +102,11 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .arrow-up {
+        position: fixed;top: 145px;right:30px;
+    }
     .operationBox{
-        position: fixed;top: 150px;right: 15px;background-color: #fff;border-radius: 20px;padding-left: 30px;padding-right: 30px;padding-top: 20px;padding-bottom: 20px;
+        position: fixed;top: 150px;right: 15px;background-color:#fff;border-radius: 20px;padding-top: 20px;padding-bottom: 20px;
     }
     .bottomBtnBox{
         flex: 1;align-items: center;justify-content: center;
@@ -254,6 +261,7 @@
                 templateId:'',
                 templateList:[],
                 publish:false,
+                isOperation:false,
             }
         },
         components: {
@@ -267,9 +275,19 @@
             var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
-            this.publish = utils.getUrlParameter('publish');
-            if(this.publish){
+            var isPublish = utils.getUrlParameter('publish');
+//            event.toast(isPublish);
+            if(isPublish == null){
+            }else{
+                this.publish = isPublish;
+//                event.toast(this.publish);
+            }
+            if(this.publish == 'true'){
+                this.publish = true;
                 _this.complete = '操作';
+            }else if(this.publish == 'false'){
+                this.publish = false;
+                _this.complete = '编辑';
             }
 //            获取所有的文章模版
             GET('weex/member/template/list.jhtml?type=template',function (data) {
@@ -320,13 +338,38 @@
             },
 //            点击编辑
             goComplete(){
-                if(this.publish){
-                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
+                if(!this.publish){
+
+                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+//                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
 //                    _this.updateArticle();
                     })
                 }else{
-
+                    this.isOperation = true;
                 }
+            },
+//            点击操作里的编辑
+            operationEditor(){
+                this.isOperation = false;
+                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
+//                    _this.updateArticle();
+                })
+            },
+//            点击操作里的设置
+            operationSet(){
+                var _this = this;
+                this.isOperation = false;
+//                event.openURL(utils.locate('view/member/editor/option.js),
+
+                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
+//                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
+
+                    });
+            },
+//            触碰遮罩层
+            maskTouch(){
+                this.isOperation = false;
             },
 //            点击返回
             goback(){
@@ -336,8 +379,9 @@
             goOption(){
                 var _this = this;
 //                event.openURL(utils.locate('view/member/editor/option.js),
-                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId,
-                    function (data) {
+
+                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
+//                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                             if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                                 let E = {
                                     isDone : 'complete'
@@ -345,8 +389,7 @@
                                 let backData = utils.message('success','成功',E);
                                 event.closeURL(backData);
                             }
-                    }
-                );
+                    });
             },
 //            判断是否有模版，控制是否显示模版标题
             isNoTemplates(value){

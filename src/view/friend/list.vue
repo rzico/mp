@@ -74,7 +74,8 @@
             <cell>
                 <!--总共多少个好友-->
                 <div class="friendTotalBox">
-                    <text class="friendTotalText">{{friendTotal}}个朋友</text>
+                    <text class="friendTotalText" v-if="friendTotal != 0">{{friendTotal}}个朋友</text>
+                    <text class="friendTotalText" v-else>暂无朋友</text>
                 </div>
             </cell>
         </list>
@@ -405,6 +406,7 @@
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
+                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (friend) {
                           let jsonData = JSON.parse(friend.value);
@@ -422,9 +424,9 @@
                 }
             })
 //            获取用户id
-            this.userId = event.getUid();
+            this.userId = event.getUId();
 //            event.toast('1');
-            event.toast(this.userId);
+//            event.toast(this.userId);
             _this.hadFriend();
 //            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
@@ -445,6 +447,7 @@
                         lastTimestamp = '';
                     }
                     GET('weex/member/friends/list.jhtml?timestamp=' + lastTimestamp ,function (data) {
+
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -465,7 +468,7 @@
 //                                            将本次时间戳缓存起来
                                                 storage.setItem('lastTimestamp' + _this.userId, timestamp);
                                             }else{
-                                                event.toast('网络不稳定');
+                                                event.toast(message.content);
                                             }
                                         })
                                     }

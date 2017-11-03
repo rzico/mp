@@ -498,7 +498,7 @@
                     event.find(options,function (data) {
                         if(data.type == 'success'){
                             let articleData = JSON.parse(data.data.value);
-                            event.toast(articleData);
+//                            event.toast(articleData);
                             _this.setTitle = articleData.title;
                             _this.coverImage = articleData.thumbnail;
                             _this.musicName = articleData.music.name;
@@ -775,23 +775,24 @@
                     function (res) {
                         if(res.data != '' && res.type == 'success'){
                             _this.articleId = res.data.id;
-                            event.toast(res);
+//                            event.toast(res);
                             let resDataStr = JSON.stringify(res.data);
                             let saveData = {
                                 type:"article",
                                 key:res.data.id,
-                                value:res.data,
+                                value:resDataStr,
                                 sort:'0,'+ timestamp +'',
                                 keyword:',[ '+ _this.catalogId + '],' + _this.setTitle + ','
                             }
-                            event.toast(saveData);
+//                            event.toast(saveData);
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
 //                            utils.save("article",res.data.id,res.data.data,'0,'+ timestamp +'',',[ '+ _this.catalogId + '],' + _this.setTitle + ',',function (data) {
                             event.save(saveData,function(data){
                                 if(data.type == 'success'){
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
-                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
+//                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
+                                        event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + res.data.id),function (data) {
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 2;//总的进度
                                         _this.processWidth = 0;//进度条宽度
@@ -877,7 +878,7 @@
                 var _this = this;
                 event.openEditor('',function (data) {
                     let textImg = utils.locate('resources/images/text.png');
-                    event.toast(data);
+//                    event.toast(data);
 //                    将返回回来的html数据赋值进去
                     let newPara = {
                         //原图
@@ -888,7 +889,7 @@
                         show:true
                     }
                     _this.paraList.splice(index,0,newPara)
-                    modal.toast({message:_this.paraList[index].paraText,duration:3});
+//                    modal.toast({message:_this.paraList[index].paraText,duration:3});
                 })
             },
 //            点击"+"号里的图片时
