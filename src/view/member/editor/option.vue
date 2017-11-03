@@ -2,13 +2,13 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller" show- show-scrollbar="false">
-            <div class="cell-row cell-line">
+            <div class="cell-row cell-line" @click="goScope()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
                         <text class="title ml10">谁可以看</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">公开</text>
+                        <text class="sub_title">{{scope | watchScope}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -16,13 +16,13 @@
                 <div class="sub-panel">
                     <text class="sub_title">可自行控制文章展示范围</text>
                 </div>
-            <div class="cell-row cell-line">
+            <div class="cell-row cell-line" @click="goCategory()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
                         <text class="title ml10">文章分类</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">亲子</text>
+                        <text class="sub_title">{{categoryName}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -30,13 +30,13 @@
             <div class="sub-panel">
                 <text class="sub_title">正确设置分类的文章将展示在“身边”栏目</text>
             </div>
-            <div class="cell-row cell-line">
+            <div class="cell-row cell-line" @click="goChooseCorpus()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
                         <text class="title ml10">加入文集</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">全部文集 </text>
+                        <text class="sub_title">{{corpusName}} </text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -50,12 +50,12 @@
                         <text class="title ml10">启用打赏</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" checked="true"></switch>
+                        <switch class="switch" :checked="rewardSwitch" @change="rewardChange"></switch>
                     </div>
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">开启后本文可接现金打赏，获取收入</text>
+                <text class="sub_title">开启后本文可接现金赞赏，获取收入</text>
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
@@ -63,7 +63,7 @@
                         <text class="title ml10">允许评论</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" checked="true"></switch>
+                        <switch class="switch" :checked="commentsSwitch" @change="commentsChange"></switch>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                         <text class="title ml10">投稿</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" checked="true"></switch>
+                        <switch class="switch" :checked="contributeSwitch" @change="contributeChange"></switch>
                     </div>
                 </div>
             </div>
@@ -88,8 +88,11 @@
             </div>
 
         </scroller>
-        <div class="footer button-panel">
-            <text class="button">完成</text>
+        <!--<div class="footer button-panel" @click="goDone()">-->
+            <!--<text class="button">完成</text>-->
+        <!--</div>-->
+        <div  class="footer button-panel">
+            <text class="button" @click="goDone()">完成</text>
         </div>
     </div>
 
@@ -111,9 +114,118 @@
     }
 </style>
 <script>
-    var navigator = weex.requireModule('navigator')
-    import navbar from '../../../include/navbar.vue'
+    import {dom,event,stream,storage} from '../../../weex.js';
+    var navigator = weex.requireModule('navigator');
+    import { POST, GET } from '../../../assets/fetch';
+    import utils from '../../../assets/utils';
+    import navbar from '../../../include/navbar.vue';
+    const modal = weex.requireModule('modal');
     export default {
+        data(){
+            return{
+                scope:0,
+                password:'',
+                corpusName:'全部文章',
+                corpusId:0,
+                rewardSwitch:false,
+                commentsSwitch:true,
+                contributeSwitch:false,
+                articleId:'',
+                topData:false,
+                isPublish:false,
+                categoryName:'生活',
+                category:7,
+            }
+
+        },
+        created(){
+            var _this = this;
+            this.articleId = utils.getUrlParameter('articleId');
+            GET('weex/member/article/option.jhtml?id=' + this.articleId,function (data) {
+                if(data.type == 'success' && data.data != ''){
+                    event.toast(data);
+//                    文集
+                    if(!utils.isNull(data.data.articleCatalog)){
+                        if(!utils.isNull(data.data.articleCatalog.name)){
+                            _this.corpusName = data.data.articleCatalog.name;
+                        } if(!utils.isNull(data.data.articleCatalog.id)){
+                            _this.corpusId = data.data.articleCatalog.id;
+                        }
+                    }
+                    //                    分类
+                    if(!utils.isNull(data.data.articleCategory)){
+                        if(!utils.isNull(data.data.articleCategory.name)){
+                            _this.categoryName = data.data.articleCategory.name;
+                        } if(!utils.isNull(data.data.articleCategory.id)){
+                            _this.category = data.data.articleCategory.id;
+                        }
+                    }
+//                    投稿
+                    if(data.data.pitch  != null){
+                        _this.contributeSwitch = data.data.pitch;
+                    }
+                    //                    置顶
+                    if(data.data.top != null){
+                        _this.topData = data.data.top;
+                    }
+
+                    //                    打赏
+                    if(data.data.reward != null){
+                        _this.rewardSwitch = data.data.reward;
+                    }
+                    //                    评论
+                    if(data.data.review != null){
+                        _this.commentsSwitch = data.data.review;
+                    }
+//                    谁可以看
+                    if(!utils.isNull(data.data.authority)){
+                        switch (data.data.authority){
+                            case 'isPublic' ://公开
+                                _this.scope = 0;
+                                break;
+                            case 'isShare' ://不公开
+                                _this.scope = 1;
+                                break;
+                            case 'isEncrypt'://加密
+                                _this.scope = 2;
+                                break;
+                            case 'isPrivate' ://私密
+                                _this.scope = 3;
+                                break;
+                            default:
+                                _this.scope = 0;
+                                break;
+                        }
+                    }
+                    //                    是否发布
+                    if(data.data.publish != null){
+                        _this.isPublish = data.data.publish;
+                    }
+                }
+            },function (err) {
+                event.toast(err.content);
+            })
+        },
+        filters:{
+            watchScope(value){
+                switch (value){
+                    case 0 :
+                        return '公开';
+                        break;
+                    case 1 :
+                        return '不公开';
+                        break;
+                    case 2 :
+                        return '加密';
+                        break;
+                    case 3 :
+                        return '私密';
+                        break;
+                    default:
+                        return '公开';
+                }
+            },
+        },
         components: {
             navbar
         },
@@ -122,14 +234,117 @@
         },
         methods: {
             goback: function (e) {
-                navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-                    animated: "true"
-                })
+//                navigator.pop({
+//                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
+//                    animated: "true"
+//                })
+                event.closeURL();
             },
             setup: function (e) {
-
-            }
+            },
+//            跳转至选择范围
+            goScope:function () {
+                var _this = this;
+//                event.openURL(utils.locate('view/member/editor/scope.js?checkId=' + this.scope),
+                event.openURL('http://192.168.2.157:8081/scope.weex.js?checkId=' + _this.scope,
+                    function (data) {
+                        if(data.type == 'success' && data.data != '') {
+                            _this.scope = parseInt(data.data.checkId);
+                            if (data.data.checkId == 2 && !utils.isNull(data.data.password)) {
+                                _this.password = data.data.password;
+                            }
+                        }
+                    }
+                );
+            },
+//            跳转至选择类别
+            goCategory:function () {
+                var _this = this;
+//                event.openURL(utils.locate('view/member/editor/category.js?checkId=' + this.scope),
+                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
+                    function (data) {
+                        if(data.type == 'success' && data.data != '') {
+                            _this.category = parseInt(data.data.categoryId);
+                            _this.categoryName = data.data.categoryName;
+                        }
+                    }
+                );
+            },
+//            跳转至选择文集
+            goChooseCorpus:function () {
+                var _this = this;
+//                event.openURL(utils.locate('view/member/editor/corpus.js?corpusId=' + this.corpusId),
+                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + _this.corpusId,
+                    function (data) {
+                        if(data.type == 'success' && data.data != ''){
+                            _this.corpusId = parseInt(data.data.corpusId);
+                            _this.corpusName = data.data.corpusName;
+                        }
+                    }
+                );
+            },
+//            打赏开关
+            rewardChange:function (e) {
+                this.rewardSwitch = e.value;
+            },
+//            评论开关
+            commentsChange:function (e) {
+                this.commentsSwitch = e.value;
+            },
+//            投稿开关
+            contributeChange:function (e) {
+                this.contributeSwitch = e.value;
+            },
+//            点击完成，进行发布
+            goDone:function () {
+                var authorityData ='';
+                switch (this.scope){
+                    case 0 ://公开
+                        authorityData = 'isPublic';
+                        break;
+                    case 1 ://不公开
+                        authorityData = 'isShare';
+                        break;
+                    case 2 ://加密
+                        authorityData = 'isEncrypt';
+                        break;
+                    case 3 ://私密
+                        authorityData = 'isPrivate';
+                        break;
+                    default:
+                        authorityData = 'isPublic';
+                        break;
+                }
+//                传给服务器的数据
+//                var publishData = {
+//                    id:this.articleId,
+//                    isPublish:this.contributeSwitch,
+//                    isReview:this.commentsSwitch,
+//                    isReward:this.rewardSwitch,
+//                    authority:authorityData,
+//                    isTop:topData,
+//                    password:this.password,
+//                    articleCatalogId:this.corpusId,
+//                    articleCategoryId:this.category
+//                }
+//                publishData = JSON.stringify(publishData);
+                let urlData = 'weex/member/article/publish.jhtml?id=' + this.articleId + '&isPublish=' + this.contributeSwitch + '&isReview=' + this.commentsSwitch + '&isReward='
+                    + this.rewardSwitch + '&authority=' + authorityData + '&isTop=' + this.topData + '&password=' + this.password + '&articleCatalogId=' + this.corpusId
+                    + '&articleCategoryId=' + this.category;
+                POST(urlData).then(function (data) {
+                    if(data.type == 'success'){
+                        let E = {
+                            isDone : 'complete'
+                        }
+                        let backData = utils.message('success','成功',E);
+                        event.closeURL(backData);
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
         }
 
     }

@@ -31,7 +31,46 @@
     color: @font-gray;
 }
 
+.mianColor{
+    color: @baseColor;
+}
+.fz28{
+    font-size: 28px;
+}
+.fz30{
+    font-size: 30px;
+}
+.fz40{
+    font-size: 40px;
+}
+.boder-bottom{
+    border-style: solid;
+    border-bottom-width: 1px;
+    border-color: gainsboro;
+}
+.pl10{
+     padding-left: 10px;
+ }
+.pt10{
+    padding-top: 10px;
+}
+.pb10{
+    padding-bottom: 10px;
+}
+
+.pl20{
+    padding-left: 20px;
+}
+.pt20{
+    padding-top:20px;
+}
+.pb20{
+    padding-bottom: 20px;
+}
 /**top 大小**/
+.mt0{
+    margin-top: 0px;
+}
 .mt10 {
     margin-top: 10px;
 }
@@ -40,6 +79,9 @@
 }
 .mt30 {
     margin-top: 30px;
+}
+.mt50 {
+    margin-top: 50px;
 }
 /**left 大小**/
 .ml10 {
@@ -76,6 +118,12 @@
     background-color: @bg-gray;
 }
 
+/** 图标图像 **/
+.iconImg{
+    width:60px;
+    height:60px;
+    font-size: 60px;
+}
 /**cell 分组头**/
 .cell-header {
     height: 70px;
@@ -92,7 +140,16 @@
     padding-left: 20px;
     margin-top: 20px;
 }
-
+.cell-row-row {
+    min-height: 100px;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding-left: 20px;
+    padding-right: 20px;
+    align-items: center;
+    margin-top: 20px;
+}
 .cell-line {
     border-top-width: 1px;
     border-top-color: @border-gray;
@@ -112,11 +169,26 @@
     border-bottom-color: @border-gray;
     border-bottom-style: solid;
 }
-
+.cell-panel-column{
+    height: 98px;
+    min-height: 98px;
+    flex-direction: column;
+    justify-content: space-around;
+    border-bottom-width: 1px;
+    border-bottom-color: @border-gray;
+    border-bottom-style: solid;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.cell-panel-column :last-child{
+    border-bottom-width: 0px;
+}
 .cell-panel :last-child {
     border-bottom-width: 0px;
 }
-
+.cell-bottom-clear{
+    border-bottom-width:0px;
+}
 .cell-clear {
     margin-top: 0px;
     margin-bottom: 0px;
@@ -226,7 +298,12 @@
     color: @base-gray;
     width: 40px;
 }
-
+/**打勾 字体大小与颜色**/
+.check {
+    font-size: 32px;
+    color: @baseColor;
+    width: 40px;
+}
 /**默认按钮类型**/
 .button {
     font-size: 36px;
@@ -237,6 +314,10 @@
     background-color: @baseColor;
     border-radius:15px;
 }
+//.button-panel:active{
+//    background-color:@border-gray;
+//    color:@baseColor;
+//}
 .button:active {
     background-color:@border-gray;
     color:@baseColor;

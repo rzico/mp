@@ -5,8 +5,23 @@
         <!--网页-->
         <web class="webView" :src="webUrl"></web>
         <!--下一步-->
-        <div class="footBox">
+        <div class="footBox" v-if="!publish" @click="goOption()">
             <text class="nextStep">下一步</text>
+        </div>
+        <!--点赞 评论 分享-->
+        <div class="footBox" v-if="publish" @click="goOption()">
+            <div class="bottomBtnBox">
+                <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                <text class="fz26fff" >点赞 0</text>
+            </div>
+            <div class="bottomBtnBox">
+                <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                <text class="fz26fff">分享</text>
+            </div>
+            <div class="bottomBtnBox">
+                <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                <text class="fz26fff">评论 0</text>
+            </div>
         </div>
         <!--模版-->
         <div class="templateIcon"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose">
@@ -26,22 +41,77 @@
                     </div>
                 </div>
                 <div>
-                    <scroller  class="templateImgBox" scroll-direction="horizontal">
-                        <image v-for="item in imageList" :src="item.url" resize="cover" :class="[item.tickShow ? 'imgActive': '','templateImg']" @click="tickImage(item)"></image>
-                    </scroller>
-                </div>
-                <div>
-                    <scroller  class="templateTitleBox"  scroll-direction="horizontal">
-                        <text v-for="item in titleList"  :class="[item.tickShow ? 'titleActive': '','templateTitle']" @click="tickTitle(item)">{{item.name}}</text>
-                    </scroller>
+                    <div>
+                        <!--模版样图-->
+                        <scroller  class="templateImgBox" scroll-direction="horizontal" >
+                            <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
+                                <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn)"></image>
+                            </div>
+                        </scroller>
+                    </div>
+                    <div>
+                        <!--模版标题-->
+                        <scroller  class="templateTitleBox"  scroll-direction="horizontal">
+                            <text v-for="(item,index) in templateList" v-if="isNoTemplates(item.templates)" :class="[item.name == templateName ? 'titleActive': '','templateTitle']" @click="tickTitle(item.name)">{{item.name}}</text>
+                        </scroller>
+                    </div>
                 </div>
             </div>
         </transition>
+        <div style="position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5"></div>
+        <div class="operationBox">
+            <div class="flex-row pt20 pb20">
+                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                <text class="fz28 pl10">编辑</text>
+            </div>
+            <div class="flex-row pt20 pb20 ">
+                <text class="fz40 mianColor" :style="{fontFamily:'iconfont'}">&#xe652;</text>
+                <text class="fz28 pl10 mianColor">删除</text>
+            </div>
+            <div class="boder-bottom" style="position: absolute;left: 30px;right: 30px"></div>
+            <div class="flex-row pt20 pb20">
+                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe629;</text>
+                <text class="fz28 pl10">访问统计</text>
+            </div>
+            <div class="flex-row pt20 pb20">
+                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                <text class="fz28 pl10">文章设置</text>
+            </div>
+            <div class="flex-row pt20 pb20">
+                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                <text class="fz28 pl10">收藏</text>
+            </div>
+
+            <div class="flex-row pt20 pb20">
+                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                <text class="fz28 pl10">文章设置</text>
+            </div>
+            <div class="flex-row pt20 pb20">
+                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                <text class="fz28 pl10">收藏</text>
+            </div>
+        </div>
+
+
     </scroller>
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .operationBox{
+        position: fixed;top: 150px;right: 15px;background-color: #fff;border-radius: 20px;padding-left: 30px;padding-right: 30px;padding-top: 20px;padding-bottom: 20px;
+    }
+    .bottomBtnBox{
+        flex: 1;align-items: center;justify-content: center;
+    }
+    .fz26fff{
+        font-size: 26px;
+        color: #fff;
+    }
+
+    .fz45{
+        font-size: 50px;
+    }
     /* 可以设置不同的进入和离开动画 */
     /* 设置持续时间和动画函数 */
     .slide-fade-enter-active {
@@ -83,6 +153,7 @@
         border-style: solid;
         border-color: #D9141E;
         border-width: 5px;
+        border-radius: 20px;
     }
     .titleActive{
         background-color: #888;
@@ -149,6 +220,7 @@
     .footBox{
         align-items: center;
         justify-content: center;
+        flex-direction: row;
         width:750px;
         height:100px;
         background-color: #D9141E;
@@ -168,43 +240,20 @@
     import navbar from '../../../include/navbar.vue'
     import utils from '../../../assets/utils';
     const event = weex.requireModule('event');
+    import { POST, GET } from '../../../assets/fetch'
     export default {
         data:function () {
             return{
+                templateName:'热门',
+                templateSn:'1001',
                 templateChoose:false,
                 webUrl:'http://www.baidu.com',
                 lastImageItem:'',
                 lastTitleItem:'',
                 articleId:'',
-                imageList:[{
-                    url:'http://static2.ivwen.com/app/template/template_8081.png?v=1',
-                    tickShow:false,
-                },{
-                    url:'http://static2.ivwen.com/app/template/template_8082.png',
-                    tickShow:false,
-                },{
-                    url:'http://static2.ivwen.com/app/template/template_47.png',
-                    tickShow:false,
-                },{
-                    url:'http://static2.ivwen.com/app/template/template_41.png',
-                    tickShow:false,
-                },{
-                    url:'http://static2.ivwen.com/app/template/template_49.png',
-                    tickShow:false,
-                },{
-                    url:'http://static2.ivwen.com/app/template/template_44.png',
-                    tickShow:false,
-                },{
-                    url:'http://static2.ivwen.com/app/template/template_45.png',
-                    tickShow:false,
-                },{
-                    url:'http://static2.ivwen.com/app/template/template_46.png',
-                    tickShow:false,
-                },{
-                    url:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-                    tickShow:false,
-                },],
-                titleList:[{name:'假期', tickShow:false,},{name:'摄影', tickShow:false,},{name:'请柬', tickShow:false,},{name:'经典', tickShow:false,},{name:'假期', tickShow:false,},{name:'摄影', tickShow:false,},{name:'请柬', tickShow:false,},{name:'经典', tickShow:false,},{name:'假期', tickShow:false,}]
+                templateId:'',
+                templateList:[],
+                publish:false,
             }
         },
         components: {
@@ -215,46 +264,97 @@
             complete:{ default : '编辑'}
         },
         created(){
+            var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
-           this.webUrl = utils.articleUrl('t1001',this.articleId);
+            this.publish = utils.getUrlParameter('publish');
+            if(this.publish){
+                _this.complete = '操作';
+            }
+//            获取所有的文章模版
+            GET('weex/member/template/list.jhtml?type=template',function (data) {
+                if(data.type == 'success' && data.data != ''){
+                    _this.templateList = data.data;
+                }
+            },function (err) {
+                event.toast(err.content);
+            })
+//            获取该文章的模版
+            POST('weex/member/article/template.jhtml?id=' + this.articleId).then(
+                function (data) {
+                    if(data.type == 'success'){
+                        _this.templateId = 't' + data.data;
+                        _this.templateSn = data.data;
+                        _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
+                        _this.templateList.forEach(function (item) {
+                            if(item.templates.sn == data.data){
+                                _this.templateName = item.name;
+                            }
+                        })
+                    }else{
+                        event.toast(data.content);
+                    }
+                },
+                function (err) {
+                    event.toast(err.content);
+                }
+            )
         },
         methods:{
 //            点击 图片 更换模版的触发
-            tickImage(item){
-                if(item.tickShow == 'true'){
-                }else{
-                    if(utils.isNull(this.lastImageItem)){
-                    }else{
-                        this.lastImageItem.tickShow = false;
-                    }
-                    this.lastImageItem = item;
-                    item.tickShow = true;
-                }
+            tickImage(itemSn){
+                    this.templateSn= itemSn;
+                     this.templateId ='t' + itemSn;
+                    this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
+
             },
 
 //            点击 标题 更换模版类型的触发
-            tickTitle(item){
-                if(item.tickShow == 'true'){
-                }else{
-                    if(utils.isNull(this.lastTitleItem)){
-                    }else{
-                        this.lastTitleItem.tickShow = false;
-                    }
-                    this.lastTitleItem = item;
-                    item.tickShow = true;
-                }
+            tickTitle(name){
+                this.templateName= name;
+
             },
+//            点击模版按钮时
             chooseTemplate(){
                 this.templateChoose = !this.templateChoose;
             },
 //            点击编辑
             goComplete(){
-                event.closeURL();
+                if(this.publish){
+                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
+//                    _this.updateArticle();
+                    })
+                }else{
+
+                }
             },
 //            点击返回
             goback(){
                 event.closeURL();
+            },
+//            点击下一步 跳转文章设置。
+            goOption(){
+                var _this = this;
+//                event.openURL(utils.locate('view/member/editor/option.js),
+                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId,
+                    function (data) {
+                            if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                                let E = {
+                                    isDone : 'complete'
+                                }
+                                let backData = utils.message('success','成功',E);
+                                event.closeURL(backData);
+                            }
+                    }
+                );
+            },
+//            判断是否有模版，控制是否显示模版标题
+            isNoTemplates(value){
+                if(utils.isNull(value)){
+                    return false;
+                }else{
+                    return true;
+                }
             }
         }
     }
