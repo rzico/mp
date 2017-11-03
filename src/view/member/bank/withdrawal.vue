@@ -4,26 +4,81 @@
             <navbar :title="title" :complete="complete" @goback="goback" > </navbar>
         </div>
     <div class="big">
-        <div class="bank">
-            <div class="image">
-                <image style="width:100px; height:100px;" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1508910519&di=afad3aa3b15aa7ab6bdb97bf124601ee&imgtype=jpg&er=1&src=http%3A%2F%2Fimg.ishuo.cn%2Fdoc%2F1610%2F869-1610140Z924-51.jpg"></image>
-            </div>
+        <div class="bankWechat">
+        <div class="bank" @click="bankmessage()" v-bind:style="{borderBottomWidth:bankstyle + 'px',borderBottomColor:bankcolor}">
+                <text class="bankIconFont" :style="{fontFamily:'iconfont'}" >&#xe626;</text>
             <div class="bankInformation">
                 <text class="bankName">中国建设银行</text>
                 <text class="bankTailnumber">尾号3333 储蓄卡  </text>
             </div>
         </div>
-        <div class="money">
-            <text class="moneyText">提现金额 （收取0.1%服务费）</text>
-            <div class="input">
-                <image style="width:100px; height: 100px"
+            <div class="wechat" @click="wechatmessage" v-bind:style="{borderBottomWidth:wechatstyle + 'px',borderBottomColor:wechatcolor}">
+                <text class="wechatIconFont" :style="{fontFamily:'iconfont'}" >&#xe659;</text>
+                <div class="wechatInformation">
+                <text class="wechatFont">微信提现</text>
+                    <text class="wechatName">微信昵称</text>
             </div>
+        </div>
+        </div>
+        <div class="money">
+            <text class="maxQuota">{{message}}</text>
+            <div class="fontInput">
+                <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
+                <input class="input" type="number" placeholder="" maxlength="7":autofocus="true" value="" @input="onmoney" v-model="quota" />
+            </div>
+            <div class="maxQuotaServicefee">
+                <div class="serviceArrival">
+                <text class="servicefee">服务费 {{difference}}元</text>
+                    <text class="arrival">实际到账 元</text>
+            </div>
+            </div>
+        </div>
+        <div class="botton">
+            <text class="bottontext">确认提现</text>
         </div>
     </div>
     </div>
 </template>
 <style>
+    .bankWechat{
+        flex-direction: row;
+        justify-content: space-between;
+    }
     .bank{
+        background-color:#ffffff;
+        border-style: solid;
+        border-bottom-width:5px;
+        border-bottom-color:#D9141E;
+        border-top-width:1px;
+        /*border-right-style: dashed;*/
+        border-right-width: 1px;
+        border-color:#CCC;
+        height: 120px;
+        margin-top: 30px;
+        flex-direction: row;
+        align-items:center;
+        flex:1;
+    }
+    .bankIconFont{
+        font-size: 80px;
+        margin-left: 30px;
+    }
+    .bankInformation{
+        width:auto;
+        height:120px;
+        border-style: solid;
+        flex-direction: column;
+        margin-left: 20px;
+        justify-content:center;
+    }
+    .bankName{
+        font-size: 32px;
+    }
+    .bankTailnumber{
+        font-size: 28px;
+        color:#cccccc;
+    }
+    .wechat{
         background-color:#ffffff;
         border-style: solid;
         border-bottom-width:1px;
@@ -31,33 +86,121 @@
         border-color:#CCC;
         height: 120px;
         margin-top: 30px;
+        flex-direction: row;
+        align-items:center;
+        flex:1;
     }
-    .image{
-        width:100px;
-        height:100px;
-        padding-top:20px;
+    .wechatInformation{
+        flex-direction: column;
+        margin-left: 20px;
+        justify-content:center;
     }
-    .bankInformation{
-        width:auto;
-        height:120px;
+    .wechatIconFont{
+        font-size: 80px;
+        color: chartreuse;
+        margin-left: 30px;
+    }
+    .wechatFont{
+        font-size: 32px;
+    }
+    .wechatName{
+        font-size:28px;
+        color:#ccc;
+    }
+    .money{
+        background-color:#ffffff;
         border-style: solid;
-        padding-left:120px;
+        border-bottom-width:1px;
+        border-top-width:1px;
+        border-color:#CCC;
+        margin-top:40px;
         flex-direction: column;
     }
-    .bankName{
-        font-size: 32px;
-        margin-bottom: 20px;
+    .fontInput{
+        border-style: solid;
+        border-bottom-width:1px;
+        border-color:#CCC;
+        margin-left: 30px;
+        margin-right: 30px;
+        flex-direction: row;
+        align-items:center;
+        height: 160px;
     }
-    .bankTailnumber{
+    .iconFont{
+        font-size: 80px;
+    }
+    .input{
+        width: 500px;
+        height: 120px;
+       font-size:100px;
+    }
+    .maxQuotaServicefee{
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items:center;
+        height: 60px;
+    }
+    .maxQuota{
+        font-size: 28px;
+        margin-top: 20px;
+        color:#cccccc;
+        margin-left: 30px;
+    }
+    .serviceArrival{
+        flex-direction: row;
+        align-items:center;
+        margin-right: 30px;
+    }
+    .servicefee{
         font-size: 28px;
         color:#cccccc;
-        margin-bottom: 20px;
+    }
+    .arrival{
+        font-size: 28px;
+        color:#D9141E;
+        margin-left: 10px;
+    }
+    .botton{
+        background-color:#D9141E;
+        margin-left: 30px;
+        margin-right: 30px;
+        margin-top: 70px;
+        height: 82px;
+        align-items:center;
+        justify-content: center;
+        border-radius:15px;
+    }
+    .bottontext{
+        font-size: 40px;
+        color:#ffffff;
     }
 </style>
+
 <script>
+    var event = weex.requireModule('event')
     import navbar from '../../../include/navbar.vue';
 
     export default {
+        data() {
+            return {
+                quota:'',
+                service:'0.001',
+                message:'单笔最大额度 5万元',
+                bankstyle:5,
+                bankcolor:'#D9141E',
+                wechatstyle:1,
+                wechatcolor:'#ccc'
+            }
+        },
+        computed:{
+            difference:function () {
+                return Number(this.quota) * Number(this.service)
+            }
+        },
+        onmoney:function (event){
+            this.quota = event.value;
+            console.log('onmoney', event.value);
+        },
         components: {
             navbar
         },
@@ -65,7 +208,23 @@
             title: { default: "提现" },
         },
         methods: {
-            goback: function () {
+            bankmessage: function () {
+                var self = this
+                self.message = '单笔最大额度 5万元'
+                this.bankstyle=5
+                this.bankcolor='#D9141E'
+                this.wechatstyle=1
+                this.wechatcolor='#ccc'
+            },
+            wechatmessage: function () {
+                var self = this
+                self.message = '单笔最大额度 1万元'
+                this.wechatstyle=5
+                this.wechatcolor='#D9141E'
+                this.bankstyle=1
+                this.bankcolor='#ccc'
+            },
+                goback: function () {
                 event.closeURL()
             },
         }

@@ -10,9 +10,7 @@
                 </div>
                 <div class="div1">
                     <text class="text">中国人民银行</text>
-
                     <text class="text1">尾号1111 储蓄卡  </text>
-
                 </div>
             </div>
             <div class="left">

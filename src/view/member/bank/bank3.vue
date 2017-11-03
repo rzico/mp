@@ -71,10 +71,10 @@
         height: 80px;
         padding-left:50px;
     }
-    .textC{
-        color:#0088fb;
-        font-size:32px;
-    }
+    /*.textC{*/
+        /*color:#0088fb;*/
+        /*font-size:32px;*/
+    /*}*/
     .button{
         background-color: #D9141E;
         margin-left: 20px;
@@ -83,6 +83,7 @@
         height: 82px;
         align-items:center;
         justify-content: center;
+        border-radius:15px;
     }
     .textD{
         color:#fff;

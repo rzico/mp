@@ -87,6 +87,7 @@
         height: 82px;
         align-items:center;
         justify-content: center;
+        border-radius:15px;
     }
     .bottom{
         position: absolute;

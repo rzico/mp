@@ -74,6 +74,7 @@
         align-items:center;
         justify-content: center;
         margin-top:48px;
+        border-radius:15px;
     }
     .A3{
         flex-direction: row;
