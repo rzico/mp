@@ -191,7 +191,6 @@
                                 function (data) {
                                     if (data.type == "success") {
                                         event.toast(data);
-
                                     } else {
                                         event.toast(data.content);
                                     }

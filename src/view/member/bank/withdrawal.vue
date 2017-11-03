@@ -24,16 +24,16 @@
             <text class="maxQuota">{{message}}</text>
             <div class="fontInput">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
-                <input class="input" type="number" placeholder="" maxlength="7":autofocus="true" value="" @input="onmoney" v-model="quota" />
+                <input type="text" placeholder="Input Text" class="input" :autofocus=true value="" @input="oninput"/>>
             </div>
             <div class="maxQuotaServicefee">
                 <div class="serviceArrival">
-                <text class="servicefee">服务费 {{difference}}元</text>
+                <text class="servicefee">服务费 元</text>
                     <text class="arrival">实际到账 元</text>
             </div>
             </div>
         </div>
-        <div class="botton">
+        <div class="botton" @click="withdrawals">
             <text class="bottontext">确认提现</text>
         </div>
     </div>
@@ -179,27 +179,26 @@
 <script>
     var event = weex.requireModule('event')
     import navbar from '../../../include/navbar.vue';
-
+    import { POST, GET } from '../../../assets/fetch'
     export default {
         data() {
             return {
                 quota:'',
-                service:'0.001',
                 message:'单笔最大额度 5万元',
                 bankstyle:5,
                 bankcolor:'#D9141E',
                 wechatstyle:1,
-                wechatcolor:'#ccc'
+                wechatcolor:'#ccc',
+                bankWithdrawals:'bankcard'
             }
         },
-        computed:{
-            difference:function () {
-                return Number(this.quota) * Number(this.service)
-            }
+        oninput:function (e) {
+            event.toast(e);
         },
-        onmoney:function (event){
-            this.quota = event.value;
-            console.log('onmoney', event.value);
+        onmoney:function (e){
+            this.quota = e.value;
+            event.toast(e.value)
+            console.log('onmoney', e.value);
         },
         components: {
             navbar
@@ -215,6 +214,7 @@
                 this.bankcolor='#D9141E'
                 this.wechatstyle=1
                 this.wechatcolor='#ccc'
+                this.bankWithdrawals ='bankcard'
             },
             wechatmessage: function () {
                 var self = this
@@ -223,7 +223,23 @@
                 this.wechatcolor='#D9141E'
                 this.bankstyle=1
                 this.bankcolor='#ccc'
+                this.bankWithdrawals ='weixin'
             },
+            withdrawals:function () {
+                var _this = this;
+                event.toast('weex/member/wallet/transfer.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota)
+                        POST('weex/member/wallet/transfer.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
+                            function (data) {
+                                if (data.type == "success") {
+//                                    event.toast(data);
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            }, function (err) {
+//                                event.toast("网络不稳定");
+                            }
+                        )
+                },
                 goback: function () {
                 event.closeURL()
             },
