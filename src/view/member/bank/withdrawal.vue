@@ -24,11 +24,11 @@
             <text class="maxQuota">{{message}}</text>
             <div class="fontInput">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
-                <input type="text" placeholder="Input Text" class="input" :autofocus=true value="" @input="oninput"/>>
+                <input class="input" type="number" placeholder="" maxlength="7":autofocus="true" value="" @input="onmoney"  />
             </div>
             <div class="maxQuotaServicefee">
                 <div class="serviceArrival">
-                <text class="servicefee">服务费 元</text>
+                <text class="servicefee">服务费 {{service}}元</text>
                     <text class="arrival">实际到账 元</text>
             </div>
             </div>
@@ -189,16 +189,9 @@
                 bankcolor:'#D9141E',
                 wechatstyle:1,
                 wechatcolor:'#ccc',
-                bankWithdrawals:'bankcard'
+                bankWithdrawals:'bankcard',
+                service:''
             }
-        },
-        oninput:function (e) {
-            event.toast(e);
-        },
-        onmoney:function (e){
-            this.quota = e.value;
-            event.toast(e.value)
-            console.log('onmoney', e.value);
         },
         components: {
             navbar
@@ -207,6 +200,15 @@
             title: { default: "提现" },
         },
         methods: {
+            onmoney:function (e){
+                this.quota = e.value;
+                var _this=this;
+//                event.toast(e.value);
+                console.log('onmoney', e.value);
+                setTimeout(function () {
+                    _this.serviceCharge()
+                },3000)
+            },
             bankmessage: function () {
                 var self = this
                 self.message = '单笔最大额度 5万元'
@@ -227,7 +229,7 @@
             },
             withdrawals:function () {
                 var _this = this;
-                event.toast('weex/member/wallet/transfer.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota)
+//                event.toast('weex/member/wallet/transfer.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota)
                         POST('weex/member/wallet/transfer.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
                             function (data) {
                                 if (data.type == "success") {
@@ -240,6 +242,21 @@
                             }
                         )
                 },
+            serviceCharge:function(){
+                var _this = this;
+                POST('weex/member/wallet/calculateFee.jhtml?amount=' +this.quota ).then(
+                    function (data) {
+                        if (data.type == "success") {
+                                 _this.service = data.data;
+                                    event.toast(data);
+                        } else {
+                            event.toast(data.content);
+                        }
+                    }, function (err) {
+//                                event.toast("网络不稳定");
+                    }
+                )
+            },
                 goback: function () {
                 event.closeURL()
             },
