@@ -27,9 +27,11 @@
                 <input class="input" type="number" placeholder="" maxlength="7":autofocus="true" value="" @input="onmoney"  />
             </div>
             <div class="maxQuotaServicefee">
+                <div class="servicefeeText" v-bind:style="{visibility:hide}">
+                    <text class="servicefee">服务费 {{service}}元</text>
+                </div>
                 <div class="serviceArrival">
-                <text class="servicefee">服务费 {{service}}元</text>
-                    <text class="arrival">实际到账 元</text>
+                    <text class="arrival">实际到账 {{creditedAmount}}元</text>
             </div>
             </div>
         </div>
@@ -136,9 +138,9 @@
     }
     .maxQuotaServicefee{
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items:center;
-        height: 60px;
+        height: 70px;
     }
     .maxQuota{
         font-size: 28px;
@@ -154,6 +156,7 @@
     .servicefee{
         font-size: 28px;
         color:#cccccc;
+        margin-left: 30px;
     }
     .arrival{
         font-size: 28px;
@@ -177,7 +180,8 @@
 </style>
 
 <script>
-    var event = weex.requireModule('event')
+    var event = weex.requireModule('event');
+    var modal = weex.requireModule('modal');
     import navbar from '../../../include/navbar.vue';
     import { POST, GET } from '../../../assets/fetch'
     export default {
@@ -190,7 +194,8 @@
                 wechatstyle:1,
                 wechatcolor:'#ccc',
                 bankWithdrawals:'bankcard',
-                service:''
+                service:'',
+                hide:' hidden'
             }
         },
         components: {
@@ -198,6 +203,11 @@
         },
         props: {
             title: { default: "提现" },
+        },
+        computed:{
+            creditedAmount:function(){
+                return Number(this.quota) - Number(this.service)
+            }
         },
         methods: {
             onmoney:function (e){
@@ -208,6 +218,7 @@
                 setTimeout(function () {
                     _this.serviceCharge()
                 },3000)
+                _this.hide= 'visible'
             },
             bankmessage: function () {
                 var self = this
@@ -218,7 +229,7 @@
                 this.wechatcolor='#ccc'
                 this.bankWithdrawals ='bankcard'
             },
-            wechatmessage: function () {
+            wechatmessage: function (event) {
                 var self = this
                 self.message = '单笔最大额度 1万元'
                 this.wechatstyle=5
@@ -226,6 +237,15 @@
                 this.bankstyle=1
                 this.bankcolor='#ccc'
                 this.bankWithdrawals ='weixin'
+                console.log('will show alert')
+                modal.alert({
+                    message: '微信提现功能尚未开通，敬请谅解',
+                    okTitle: '知道了',
+                    duration: 0.3
+                }, function (value) {
+                    console.log('alert callback', value)
+                })
+                this.bankmessage()
             },
             withdrawals:function () {
                 var _this = this;
