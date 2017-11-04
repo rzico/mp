@@ -197,7 +197,7 @@
                 wechatcolor:'#ccc',
                 bankWithdrawals:'bankcard',
                 service:'',
-                hide:' hidden'
+                hide:'hidden'
             }
         },
         components: {

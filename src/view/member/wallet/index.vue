@@ -8,7 +8,7 @@
             </div>
 
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between">
+                <div class="cell-panel space-between" @click="bindingCard">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe64f;</text>
                         <text class="title ml10">银行卡</text>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <div class="cell-panel space-between cell-clear">
+                <div class="cell-panel space-between cell-clear" @click="cashCard">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
                         <text class="title ml10">提现到银行卡</text>
@@ -91,6 +91,7 @@
 </style>
 <script>
     var navigator = weex.requireModule('navigator')
+    var event = weex.requireModule('event')
     import navbar from '../../../include/navbar.vue'
     export default {
         components: {
@@ -106,6 +107,14 @@
 //                    animated: "true"
 //                })
                 event.closeURL();
+            },
+            cashCard:function (e) {
+                event.openURL('http://192.168.2.241:8081/withdrawal.weex.js', function () {
+                })
+            },
+            bindingCard:function (e) {
+                event.openURL('http://192.168.2.241:8081/bank.weex.js', function () {
+                })
             },
             setup: function (e) {
 
