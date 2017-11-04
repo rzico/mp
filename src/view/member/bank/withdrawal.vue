@@ -42,6 +42,7 @@
     </div>
 </template>
 <style>
+
     .bankWechat{
         flex-direction: row;
         justify-content: space-between;
@@ -186,6 +187,7 @@
     import { POST, GET } from '../../../assets/fetch'
     export default {
         data() {
+
             return {
                 quota:'',
                 message:'单笔最大额度 5万元',
