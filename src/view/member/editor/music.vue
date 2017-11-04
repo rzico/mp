@@ -223,7 +223,7 @@
                     item.tickShow = !item.tickShow;
                 }
                 lastTickItem = item;
-                modal.toast({message:item,duration:1});
+//                modal.toast({message:item,duration:1});
                 this.noMusicShow = false;
             },
 //            返回

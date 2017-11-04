@@ -1,7 +1,7 @@
 <template>
-    <scroller class="wrapper">
+    <scroller class="wrapper" :class="[bgWhite ? 'whiteColor' : '']">
         <navbar :title="title"@goback="goback"></navbar>
-        <div>
+        <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10202' || messageType == 'gm_10200'">
             <div class="dateBox">
                 <text class="dateText">昨天17:46</text>
             </div>
@@ -30,8 +30,8 @@
             </div>
         </div>
         <!--收藏-->
-        <div class="lineBox">
-            <div style="flex-direction: row;align-items: center">
+        <div class="lineBox" v-if="messageType == 'gm_10206'">
+            <div class="flex-row" >
                 <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
                 <div class="userInfo">
                     <text class="fz30 nameColor" >陈星星</text>
@@ -42,8 +42,8 @@
             <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
         </div>
         <!--评论-->
-        <div class="lineBox">
-            <div style="flex-direction: row;align-items: center">
+        <div class="lineBox"  v-if="messageType == 'gm_10203'">
+            <div class="flex-row">
                 <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
                 <div class="userInfo">
                     <text class="fz30 nameColor" >陈星星</text>
@@ -54,8 +54,8 @@
             <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
         </div>
         <!--点赞-->
-        <div class="lineBox">
-            <div style="flex-direction: row;align-items: center">
+        <div class="lineBox"  v-if="messageType == 'gm_10204'">
+            <div class="flex-row">
                 <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
                 <div class="userInfo">
                     <text class="fz30 nameColor" >陈星星</text>
@@ -66,8 +66,8 @@
             <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
         </div>
         <!--关注-->
-        <div class="lineBox">
-            <div style="flex-direction: row;align-items: center">
+        <div class="lineBox"  v-if="messageType == 'gm_10205'">
+            <div class="flex-row">
                 <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
                 <div class="userInfo">
                     <text class="fz30 nameColor" >陈星星</text>
@@ -81,6 +81,9 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .whiteColor{
+        background-color: #fff;
+    }
     .infoText{
         font-size: 32px;color: #444;
         width: 480px;
@@ -196,7 +199,8 @@
     export default {
         data(){
             return{
-
+                messageType:'',
+                bgWhite:false
             }
         },
         components: {
@@ -207,35 +211,44 @@
         },
         created(){
             utils.initIconFont();
-            let messageType = utils.getUrlParameter('type');
-            event.toast(messageType);
-            switch(messageType){
-                case 'order':
-                    this.title = '订单提醒';
+            this.messageType = utils.getUrlParameter('type');
+            event.toast(this.messageType);
+            switch(this.messageType){
+                case 'gm_10200':
+                    this.title =  '订单提醒';
+                    this.bgWhite = false;
                     break;
-                case 'account':
-                    this.title =  '账单提醒'
+                case 'gm_10201':
+                    this.title =  '账单提醒';
+                    this.bgWhite = false;
                     break;
-                case 'message':
+                case 'gm_10202':
                     this.title =  '系统消息';
+                    this.bgWhite = false;
                     break;
-                case 'review':
-                    this.title =  '评论回复'
+                case 'gm_10203':
+                    this.title =  '评论回复';
+                    this.bgWhite = true;
                     break;
-                case 'laud':
+                case 'gm_1024':
                     this.title =  '点赞提醒';
+                    this.bgWhite = true;
                     break;
-                case 'follow':
+                case 'gm_10205':
                     this.title =  '关注提醒';
+                    this.bgWhite = true;
                     break;
-                case 'favorite':
+                case 'gm_10206':
                     this.title =  '收藏提醒';
+                    this.bgWhite = true;
                     break;
                 default:
                     this.title = '消息助手';
+                    this.bgWhite = false;
                     break;
             }
-            GET('weex/member/message/list.jhtml?type=' + messageType ,function (weex) {
+            event.toast('weex/member/message/list.jhtml?userId=' + this.messageType);
+            GET('weex/member/message/list.jhtml?userId=' + this.messageType ,function (weex) {
                 event.toast(weex);
                 if(weex.type == 'success'){
 

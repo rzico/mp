@@ -24,7 +24,7 @@
         <!--绑定动画-->
         <transition-group name="paraTransition" tag="div">
             <!--文集行背景-->
-            <div class="bgWhite " v-for="(item,index) in corpusList" :key="index"   @click="chooseCorpus(item.id,item.name)">
+            <div class="bgWhite " v-for="(item,index) in corpusList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
                 <!--文集行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧文集名称-->
@@ -112,7 +112,12 @@
             var _this = this;
             utils.initIconFont();
             this.getCorpus();
-            this.corpusId = utils.getUrlParameter('corpusId');
+             let urlId = utils.getUrlParameter('corpusId');
+            if(utils.isNull(urlId)){
+
+            }else{
+                this.corpusId = urlId;
+            }
         },
         methods:{
             goback(){
@@ -188,12 +193,13 @@
 
             },
 //            更改文集后
-            chooseCorpus:function (id,name) {
+            chooseCorpus:function (id,name,itemCount) {
                 this.corpusId = id;
                 this.corpusName = name;
                 let E = {
                     corpusId : this.corpusId,
-                    corpusName : this.corpusName
+                    corpusName : this.corpusName,
+                    count:itemCount
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);

@@ -47,7 +47,7 @@
             this.categoryId = utils.getUrlParameter('categoryId');
             let urlType = utils.getUrlParameter('type');
             GET(urlType + '/list.jhtml',function (data) {
-                event.toast(data);
+//                event.toast(data);
                 if(data.type == 'success' && data.data != ''){
                     _this.dataList = data.data;
                     data.data.forEach(function (item) {

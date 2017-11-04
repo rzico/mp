@@ -2,10 +2,10 @@
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
         <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-            <!--<image class="gif" resize="cover"-->
-                   <!--src="file://resources/image/loading.gif"></image>-->
-            <!--<text class="indicator">{{refreshState}}</text>-->
-            <!--<loading-indicator>...</loading-indicator>-->
+        <!--<image class="gif" resize="cover"-->
+        <!--src="file://resources/image/loading.gif"></image>-->
+        <!--<text class="indicator">{{refreshState}}</text>-->
+        <!--<loading-indicator>...</loading-indicator>-->
         <!--</refresh>-->
         <!--<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">-->
         <!--<text class="indicator">Refreshing ...</text>-->
@@ -172,7 +172,7 @@
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
                                     <text class="rightHiddenText">置顶</text>
                                 </div>
-                                <div class="rightHiddenIconBox" @click="jumpCorpus()">
+                                <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                                     <text class="rightHiddenText">文集</text>
                                 </div>
@@ -781,7 +781,7 @@
                             storage.setItem('corpusList',data.data);
                         }
                     } else {
-                        event.toast('文集');
+//                        event.toast('文集');
                         event.toast(data.content);
                     }
                 },function (err) {
@@ -865,8 +865,37 @@
             jumpTop:function () {
                 event.toast('文章置顶');
             },
-            jumpCorpus:function () {
-                event.toast('跳转文集');
+//            右侧隐藏栏里跳转文集
+            jumpCorpus:function (item) {
+                var _this = this;
+                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id),
+//                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
+                    function (data) {
+                        if(data.type == 'success'){
+                            item.value.articleOption.articleCatalog.id = data.data.corpusId;
+                            item.value.articleOption.articleCatalog.name = data.data.corpusName;
+                            item.value.articleOption.articleCatalog.count = data.data.count;
+                            let resDataStr = JSON.stringify(item.value);
+                            let saveData = {
+                                type:item.type,
+                                key:item.key,
+                                value:resDataStr,
+                                sort:item.sort,
+                                keyword:',[ '+ data.data.corpusId + '],' + item.title + ','
+                            }
+//                            event.toast(saveData);
+//                1是置顶（默认倒序）  keyword ",[1],文章title,"
+                            event.save(saveData,function(data) {
+                                if (data.type == 'success') {
+                                    event.toast('设置成功');
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            })
+
+                        }
+                    }
+                );
             },
 //            open (callback) {
 //                return stream.fetch({
@@ -893,13 +922,20 @@
 //            },
 //            前往文章
             goArticle(id,publish,draft){
+//                event.toast(publish);
                 var _this = this;
                 if(draft){
-                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
+
+                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),
+//                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
+                        function () {
 //                    _this.updateArticle();
                     })
                 }else{
-                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish' + publish,function () {
+
+                    event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=' + publish),
+//                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
+                        function () {
 //                    _this.updateArticle();
                     })
                 }

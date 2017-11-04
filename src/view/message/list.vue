@@ -163,6 +163,8 @@
                 canScroll:true,
                 currentNum:0,
                 pageNum:20,
+                chatItem:'',
+                selfUserId:'',
 //                messageList:[]
 //                messageList:[{
 //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
@@ -265,7 +267,7 @@
         },
         filters:{
             watchName:function (value) {
-                switch(value.id){
+                switch(value.userId){
                     case 'gm_10200':
                         return '订单提醒';
                         break;
@@ -303,6 +305,8 @@
                 current:0,
                 pageSize:20,
             };
+            this.selfUserId = event.getUserId();
+//            event.toast(a);
 //            读取本地缓存
             event.findList(listoption,function (data) {
                 if(data.type == 'success'){
@@ -316,14 +320,24 @@
             })
             this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
-                event.toast(e);
-//                判断是系统消息还是用户消息
+//                event.toast(e);
+//                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
                 if(!utils.isNull(e.data.data.id) && e.data.data.id.substring(0,1) == 'g'){
                     _this.hadMessage();
                 }else{
 //                    用户消息没有userId。只有id。
                     e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
-                    _this.addMessage(e.data,1);
+
+                    if(_this.selfUserId == e.data.data.userId){
+                        _this.chatItem.createDate = e.data.data.createDate;
+                        _this.chatItem.content = e.data.data.content;
+                        e.data = _this.chatItem;
+                        e.type = 'success';
+                        _this.addMessage(e,1);
+//                        event.toast(e.data);
+                    }else{
+                        _this.addMessage(e.data,1);
+                    }
                 }
             });
         },
@@ -348,7 +362,6 @@
                                 sort:'0' + timestamp
                             }
                             event.save(option,function (message) {
-                                event.toast(message);
                                 if(message.type == 'success' && message.content =='保存成功'){
                                     _this.messageList.splice(0,0,_weex.data[i]);
                                 }else if(message.type == 'success' && message.content =='更新成功'){
@@ -378,7 +391,7 @@
                             sort:'0' + timestamp
                         }
                         event.save(option,function (message) {
-                            event.toast(message);
+//                            event.toast(message);
                             if(message.type == 'success' && message.content =='保存成功'){
                                 _this.messageList.splice(0,0,_weex.data);
                             }else if(message.type == 'success' && message.content =='更新成功'){
@@ -463,9 +476,9 @@
 //                event.toast(messageType);
 //                event.toast(isRead);
                 var _this = this;
-                event.toast(item);
+//                event.toast(item);
 
-                if(!utils.isNull(item.id) && item.id.substring(0,1) == 'g'){
+                if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
                     item.unRead = 0;
                     let timestamp = Math.round(new Date().getTime()/1000);
                     let option = {
@@ -483,6 +496,8 @@
                     })
 
                 }else{
+                    this.chatItem = item;
+//                    event.toast(this.chatItem);
                     event.navToChat(item.userId);
                 }
             },

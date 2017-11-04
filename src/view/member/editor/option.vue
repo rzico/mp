@@ -143,7 +143,7 @@
             this.articleId = utils.getUrlParameter('articleId');
             GET('weex/member/article/option.jhtml?id=' + this.articleId,function (data) {
                 if(data.type == 'success' && data.data != ''){
-                    event.toast(data);
+//                    event.toast(data);
 //                    文集
                     if(!utils.isNull(data.data.articleCatalog)){
                         if(!utils.isNull(data.data.articleCatalog.name)){
@@ -245,8 +245,8 @@
 //            跳转至选择范围
             goScope:function () {
                 var _this = this;
-//                event.openURL(utils.locate('view/member/editor/scope.js?checkId=' + this.scope),
-                event.openURL('http://192.168.2.157:8081/scope.weex.js?checkId=' + _this.scope,
+                event.openURL(utils.locate('view/member/editor/scope.js?checkId=' + this.scope),
+//                event.openURL('http://192.168.2.157:8081/scope.weex.js?checkId=' + _this.scope,
                     function (data) {
                         if(data.type == 'success' && data.data != '') {
                             _this.scope = parseInt(data.data.checkId);
@@ -260,8 +260,8 @@
 //            跳转至选择类别
             goCategory:function () {
                 var _this = this;
-//                event.openURL(utils.locate('view/member/editor/category.js?checkId=' + this.scope),
-                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
+                event.openURL(utils.locate('view/member/editor/category.js?categoryId=' + this.category + '&type=article_category'),
+//                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
                     function (data) {
                         if(data.type == 'success' && data.data != '') {
                             _this.category = parseInt(data.data.categoryId);
@@ -273,8 +273,8 @@
 //            跳转至选择文集
             goChooseCorpus:function () {
                 var _this = this;
-//                event.openURL(utils.locate('view/member/editor/corpus.js?corpusId=' + this.corpusId),
-                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + _this.corpusId,
+                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + this.corpusId),
+//                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + _this.corpusId,
                     function (data) {
                         if(data.type == 'success' && data.data != ''){
                             _this.corpusId = parseInt(data.data.corpusId);
@@ -297,6 +297,7 @@
             },
 //            点击完成，进行发布
             goDone:function () {
+                var _this =this;
                 var authorityData ='';
                 switch (this.scope){
                     case 0 ://公开
@@ -332,12 +333,33 @@
                     + this.rewardSwitch + '&authority=' + authorityData + '&isTop=' + this.topData + '&password=' + this.password + '&articleCatalogId=' + this.corpusId
                     + '&articleCategoryId=' + this.category;
                 POST(urlData).then(function (data) {
+//                    event.toast(data);
+//                    将服务器返回回来的最新文章信息 存入缓存。
                     if(data.type == 'success'){
-                        let E = {
-                            isDone : 'complete'
+                        //            获取当前时间戳 作为唯一标识符key
+                        var timestamp = Math.round(new Date().getTime()/1000);
+                        let resDataStr = JSON.stringify(data.data);
+                        let saveData = {
+                            type:'article',
+                            key:_this.articleId,
+                            value:resDataStr,
+                            sort:'0,'+ timestamp +'',
+                            keyword:',[ '+ _this.corpusId + '],' + data.data.title + ','
                         }
-                        let backData = utils.message('success','成功',E);
-                        event.closeURL(backData);
+//                        event.toast(saveData);
+//                1是置顶（默认倒序）  keyword ",[1],文章title,"
+                        event.save(saveData,function(data) {
+                            if (data.type == 'success') {
+                                event.toast('设置成功');
+                                let E = {
+                                    isDone : 'complete'
+                                }
+                                let backData = utils.message('success','成功',E);
+                                event.closeURL(backData);
+                            } else {
+                                event.toast(data.content);
+                            }
+                        })
                     }else{
                         event.toast(data.content);
                     }
