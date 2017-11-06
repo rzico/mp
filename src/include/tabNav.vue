@@ -1,6 +1,6 @@
 <template>
     <div class="corpusBox"  >
-        <scroller scroll-direction="horizontal" class="corpusScroll">
+        <scroller scroll-direction="horizontal" class="corpusScroll" show-scrollbar="false">
             <div class="articleClass">
                 <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
             </div>
@@ -9,8 +9,10 @@
 </template>
 <style>
     .active{
-        color: #F0AD3C;
-        border-color: #F0AD3C;
+        /*color: #F0AD3C;*/
+        /*border-color: #F0AD3C;*/
+        color: #D9141E;
+        border-color: #D9141E;
         border-style: solid;
         border-bottom-width:4px;
     }
@@ -34,7 +36,6 @@
         height:80px;
         background-color: #fff;
     }
-
     .allArticle{
         font-size: 29px;
         line-height: 80px;
@@ -47,14 +48,19 @@
 </style>
 <script>
     export default {
+        data:function () {
+            return{
+                corpusIndex :this.whichCorpus,
+                arrayList:this.corpusList,
+            }
+        },
         props:{
-            corpusList:{default:[{id:0,name:"你好"},{id:1,name:"支付宝"},{id:2,name:"钱包余额"},{id:2,name:"钱包余额"},{id:2,name:"钱包余额"},{id:2,name:"钱包余额"},{id:2,name:"钱包余额"}]},
+            corpusList:{default:[]},
             whichCorpus: {default:0}
         },
         methods:{
             corpusChange:function(index,id){
-                var _this = this;
-                _this.whichCorpus = index;
+                this.$emit('corpusChange',index);
             }
         }
 

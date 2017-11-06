@@ -18,9 +18,7 @@
                 <text class="name" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
                 <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
             </div>
-            <div class="option-cell" style=" border-bottom-width: 0px;">
-
-            </div>
+            <div class="option-cell" style="border-bottom-width: 0px;"></div>
         </div>
         </transition-group>
     </div>

@@ -1109,7 +1109,9 @@
 //                event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
-                    _this.coverImage = message.data;
+                    if(message.type == 'success' && message.data != ''){
+                        _this.coverImage = message.data;
+                    }
                 });
             },
 //            跳转音乐页面
