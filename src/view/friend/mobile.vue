@@ -19,7 +19,11 @@
                 <!--姓氏里每个人的名子-->
                 <div class="addFriendsBorder">
                     <div class="friendsLine" @click="jump()">
-                        <image :src="friend.logo | watchlogo" class="friendsImage"></image>
+                        <!--判断是否有本软件图片，若没有就用默认字体图标-->
+                        <image v-if="friend.logo != '' && friend.logo != null && friend.logo != undefined " :src="friend.logo " class="friendsImage"></image>
+                        <div v-else class="friendsImage" style="background-color: #999;" >
+                            <text style="font-size: 80px;color: #fff;" :style="{fontFamily:'iconfont'}">&#xe61b;</text>
+                        </div>
                         <div class="friendsName">
                             <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
                             <text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>
@@ -89,6 +93,7 @@
 <style>
     .green{
         background-color: #19A317;
+
     }
     .list {
         background-color: white;
@@ -228,13 +233,13 @@
                 return getLetter.getFirstLetter(value.substring(0,1));
             },
 //            判断在软件上是否有头像
-            watchlogo:function (value) {
-                if(utils.isNull(value)){
-                    return utils.locate('resources/images/background.jpg');
-                }else{
-                    return value;
-                }
-            },
+//            watchlogo:function (value) {
+//                if(utils.isNull(value)){
+//                    return utils.locate('resources/images/background.jpg');
+//                }else{
+//                    return value;
+//                }
+//            },
 //            过滤在用户在软件mp上的昵称
             watchNickNmae:function (value) {
                 if(utils.isNull(value)){
@@ -300,9 +305,7 @@
 
 //            判断是否用户有用软件
             useSoft(data){
-
                 var _this = this;
-                var timestamp = Math.round(new Date().getTime()/1000);
                 GET('weex/member/friends/search.jhtml?keyword=' + _this.numberList,function (message) {
                         if(message.type == 'success' && message.data != ''){
                             _this.currentNum = _this.currentNum + _this.pageNum;
@@ -317,29 +320,10 @@
                                     };
                                 };
                             });
-                            data.data.forEach(function (contactItem) {
-                                let option = {
-                                    type:'contact',
-                                    key:contactItem.numberMd5,
-                                    value:contactItem,
-                                    keyword:','+ contactItem.name + ',' + contactItem.nickName + ',',
-                                    sort:  getLetter.getFirstLetter(contactItem.name.substring(0,1)) + ',' + timestamp
-                                }
-//                                将数据缓存起来，用于搜索时的模糊查询
-                                event.save(option,function (message) {})
-                            })
-                            data.data.forEach(function (mailPeople) {
-                                _this.friendsList.push(mailPeople);
-//                            把数据存起来
-                                _this.initList.push(mailPeople);
-                            })
+                            _this.saveStorage(data);
                         }else if(message.type == 'success' && message.data == '' ){//如果通讯录里没有人使用该软件，则直接放入数组
                             _this.currentNum = _this.currentNum + _this.pageNum;
-                            data.data.forEach(function (mailPeople) {
-                                _this.friendsList.push(mailPeople);
-//                            把数据存起来
-                                _this.initList.push(mailPeople);
-                            })
+                            _this.saveStorage(data);
                         }
                         else{
                             event.toast(message.content);
@@ -348,6 +332,29 @@
                         event.toast(err)
                     });
             },
+//            将通讯录数据放入缓存 并且更改数组数据
+            saveStorage(data){
+                var _this = this;
+                var timestamp = Math.round(new Date().getTime()/1000);
+                data.data.forEach(function (contactItem) {
+                    let option = {
+                        type:'contact',
+                        key:contactItem.numberMd5,
+                        value:contactItem,
+                        keyword:','+ contactItem.name + ',' + contactItem.nickName + ',',
+                        sort:  getLetter.getFirstLetter(contactItem.name.substring(0,1)) + ',' + timestamp
+                    }
+//                                将数据缓存起来，用于搜索时的模糊查询
+                    event.save(option,function (message) {})
+                })
+                data.data.forEach(function (mailPeople) {
+                    _this.friendsList.push(mailPeople);
+//                            把数据存起来
+                    _this.initList.push(mailPeople);
+                })
+            },
+
+
 
 //            根据字母排序
             sortLetter:function (a,b) {
