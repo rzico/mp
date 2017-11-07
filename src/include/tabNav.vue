@@ -2,7 +2,7 @@
     <div class="corpusBox"  >
         <scroller scroll-direction="horizontal" class="corpusScroll" show-scrollbar="false">
             <div class="articleClass">
-                <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                <text @click="corpusChange(index,item.id)"class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
             </div>
         </scroller>
     </div>
@@ -47,6 +47,7 @@
      }
 </style>
 <script>
+    const dom = weex.requireModule('dom')
     export default {
         data:function () {
             return{
@@ -59,7 +60,15 @@
             whichCorpus: {default:0}
         },
         methods:{
+//            点击导航栏时
             corpusChange:function(index,id){
+                let loca = index - 3;
+                if(loca < 0){
+                }else {
+//                            控制顶部导航的滑动
+                    const el = this.$refs['corpus' + loca][0];
+                    dom.scrollToElement(el, { offset: 0 });
+                }
                 this.$emit('corpusChange',index);
             }
         }

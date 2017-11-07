@@ -1,20 +1,11 @@
 <template>
     <div class="wrapper">
         <headerNav></headerNav>
-        <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" @corpusChange="corpusChange"></tabNav>
+        <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="testRef" @corpusChange="corpusChange"></tabNav>
         <div  class="pageBox" :style="{width:pageWidth + 'px'}" ref="contentBox">
-            <div v-for="(item,index) in corpusList" :style="{left: index * 750 + 'px'}" class="categoryBox">
+            <div v-for="(item,index) in corpusList" v-if="item.load == 1" :style="{left: index * 750 + 'px'}" class="categoryBox">
                 <hotCategory  @onpanmove="onpanmove" :type="item.name" :scrollable="canScroll"></hotCategory>
             </div>
-            <!--<div style="left:0" class="categoryBox">-->
-                <!--<hotCategory  @onpanmove="onpanmove"  :scrollable="canScroll"></hotCategory>-->
-            <!--</div>-->
-            <!--<div style="left: 750px;" class="categoryBox">-->
-                <!--&lt;!&ndash;<focusCategory class="activeClasss"  ref="ss1" @onpanmove="onpanmove" :scrollable="canScroll"></focusCategory>&ndash;&gt;-->
-                <!--<focusCategory  @onpanmove="onpanmove"   :scrollable="canScroll"></focusCategory>-->
-            <!--</div>-->
-            <!--<focusCategory :class="[whichCorpus == 1 ? 'activeClass' : 'noactive']" ref="ss2" @onpanmove="onpanmove"></focusCategory>-->
-            <!--<focusCategory  :class="[whichCorpus == 2 ? 'activeClass' : 'noactive']"></focusCategory>-->
         </div>
     </div>
 </template>
@@ -23,15 +14,7 @@
     .pageBox{
         position: fixed;top: 216px;left: 0;bottom: 0;
     }
-    .activeClass{
-        /*visibility: visible;*/
-        top: 0px;
-        width: 750px;
-        bottom:0;
-        position: absolute;
-    }
     .categoryBox{
-        /*visibility: visible;*/
         width: 750px;
         bottom:0;
         top:0;
@@ -39,6 +22,7 @@
     }
 </style>
 <script>
+    const dom = weex.requireModule('dom')
     import headerNav from './header.vue';
     import hotCategory from './hotCategory.vue';
     import focusCategory from './focusCategory.vue';
@@ -69,10 +53,18 @@
                 }},
 //            whichCorpus: {default:0}
         },
+
         created(){
             var _this = this;
             GET('article_category/list.jhtml',function (data) {
                 if(data.type == 'success' && data.data != ''){
+                    data.data.forEach(function (item,index) {
+                        if(index == 0){
+                            item.load = 1
+                        }else{
+                            item.load = 0
+                        }
+                    })
                     _this.corpusList = data.data;
                     _this.pageWidth = data.data.length * 750;
                 }
@@ -89,12 +81,14 @@
 //            点击顶部分类时。
             corpusChange(index){
                 this.whichCorpus = index;
+                //                        滑到才渲染页面
+                this.corpusList[this.whichCorpus].load = 1;
                 let distance = index * 750;
                 animation.transition(this.$refs.contentBox, {
                     styles: {
                         transform: 'translateX(-' +distance +')',
                     },
-                    duration: 600, //ms
+                    duration: 400, //ms
                     timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
                     needLayout:false,
@@ -111,12 +105,21 @@
                     }
                     _this.canScroll = false;
                     _this.whichCorpus ++;
+                    let loca = this.whichCorpus - 3;
+                    if(loca < 0){
+                    }else {
+//                            控制顶部导航的滑动
+                        const el = this.$refs.testRef.$refs['corpus' + loca][0];
+                        dom.scrollToElement(el, { offset: 0 });
+                    }
+                    //                        滑到才渲染页面
+                    _this.corpusList[_this.whichCorpus].load = 1;
                     let leftDistance = _this.whichCorpus * 750;
                     animation.transition(this.$refs.contentBox, {
                         styles: {
                             transform: 'translateX(-' + leftDistance +')',
                         },
-                        duration: 600, //ms
+                        duration: 400, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
                         needLayout:false,
@@ -124,19 +127,27 @@
                     },function () {
                         _this.canScroll = true;
                     })
-
                 }else if(e == 'right'){
                     if(this.whichCorpus == 0){
                         return;
                     }else{
                         _this.canScroll = false;
                         this.whichCorpus --;
+                        let loca = this.whichCorpus - 3;
+                        if(loca < 0){
+                        }else {
+//                            控制顶部导航的滑动
+                            const el = this.$refs.testRef.$refs['corpus' + loca][0];
+                            dom.scrollToElement(el, { offset: 0 });
+                        }
+//                        滑到才渲染页面
+                        _this.corpusList[_this.whichCorpus].load = 1;
                         let rightDistance = _this.whichCorpus * 750;
                         animation.transition(this.$refs.contentBox, {
                             styles: {
                                 transform: 'translateX(-' + rightDistance +')',
                             },
-                            duration: 600, //ms
+                            duration: 400, //ms
                             timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
                             needLayout:false,

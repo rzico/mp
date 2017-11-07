@@ -120,7 +120,6 @@
         border-color: gainsboro;
         border-style: solid;
         border-bottom-width:1px;
-
     }
     .bottomBtn{
         width: 700px;
@@ -212,7 +211,6 @@
         created(){
             utils.initIconFont();
             this.messageType = utils.getUrlParameter('type');
-            event.toast(this.messageType);
             switch(this.messageType){
                 case 'gm_10200':
                     this.title =  '订单提醒';
@@ -247,7 +245,6 @@
                     this.bgWhite = false;
                     break;
             }
-            event.toast('weex/member/message/list.jhtml?userId=' + this.messageType);
             GET('weex/member/message/list.jhtml?userId=' + this.messageType ,function (weex) {
                 event.toast(weex);
                 if(weex.type == 'success'){

@@ -239,7 +239,6 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入文集名',duration:1})
                         }else{
-
                             let orders = _this.corpusList.length + 1;
 //                            event.toast(orders);
                             value.data = encodeURI(value.data);
