@@ -2,27 +2,30 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller" show- show-scrollbar="false">
-            <div class="cell-row-row cell-line mt0 cell-bottom-clear" v-for="item in dataList"  @click="checkChange(item.id,item.name)">
+            <div class="cell-row-row cell-line mt0 cell-bottom-clear active" v-for="item in dataList"  @click="checkChange(item.id,item.name)">
                     <div class="flex-row ml10">
-                        <text class="title ml10">{{item.name}}</text>
+                        <text class="title ml10 sss">{{item.name}}</text>
                     </div>
                 <div v-if="listId == item.id" >
                     <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                 </div>
             </div>
-
         </scroller>
     </div>
 </template>
 <style lang="less" src="../style/wx.less"/>
+
 <style scoped>
+    .active:active{
+        background-color: #999;
+    }
 </style>
 <script>
-    import {dom,event,stream,storage} from './weex.js'
-    import navbar from './include/navbar.vue'
-    import utils from './assets/utils'
+    import {dom,event,stream,storage} from '../weex.js'
+    import navbar from '../include/navbar.vue'
+    import utils from '../assets/utils'
     const modal = weex.requireModule('modal');
-    import { POST, GET } from './assets/fetch';
+    import { POST, GET } from '../assets/fetch';
     export default {
         data(){
             return{

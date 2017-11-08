@@ -297,17 +297,15 @@
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
             var isPublish = utils.getUrlParameter('publish');
-            GET('weex/article/preview.jhtml?id=' + this.articleId){
-
-            }
+//            GET('weex/article/preview.jhtml?id=' + this.articleId)
 
             let uId = event.getUId();
 //            判断是否作者本人
-            if(uId == userId){
-                this.isSelf = 1;
-            }else{
-                this.isSelf = 0;
-            }
+//            if(uId == userId){
+//                this.isSelf = 1;
+//            }else{
+//                this.isSelf = 0;
+//            }
 //            event.toast(isPublish);
             if(isPublish == null){
             }else{
