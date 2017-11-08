@@ -9,14 +9,14 @@
             <text class="nextStep">下一步</text>
         </div>
         <!--点赞 评论 分享-->
-        <div class="footBox" v-if="publish" @click="goOption()">
-            <div class="bottomBtnBox">
+        <div class="footBox" v-if="publish" >
+            <div class="bottomBtnBox" @click="goRelated(0)">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                 <text class="fz26fff" >点赞 0</text>
             </div>
-            <div class="bottomBtnBox">
+            <div class="bottomBtnBox"  @click="goRelated(1)">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                <text class="fz26fff">分享</text>
+                <text class="fz26fff">分享 0</text>
             </div>
             <div class="bottomBtnBox">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
@@ -31,10 +31,10 @@
             <!--模版内容-->
             <div class="templateBox" v-if="templateChoose"  key="templateContent">
                 <div class="templateBtn">
-                    <div class="btnTextBox">
-                        <text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>
-                        <text class="btnTextSize " style="padding-left: 10px">图上字下</text>
-                    </div>
+                    <!--<div class="btnTextBox">-->
+                        <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
+                        <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
+                    <!--</div>-->
                     <div class="btnTextBox"  @click="chooseTemplate()">
                         <text class="btnTextSize btnTextColor" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                         <text class="btnTextSize btnTextColor" style="padding-left: 10px">完成</text>
@@ -77,21 +77,13 @@
                     <text class="fz28 pl10 mianColor">删除</text>
                 </div>
                 <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                    <text class="fz28 pl10">访问统计</text>
-                </div>
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
                     <text class="fz28 pl10">文章设置</text>
                 </div>
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                    <text class="fz28 pl10">打印成书</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
-                    <text class="fz28 pl10">收藏</text>
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                    <text class="fz28 pl10">分享</text>
                 </div>
             </div>
         </div>
@@ -154,7 +146,7 @@
         left: 10px;
         right: 10px;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: flex-end;
     }
     .imgActive{
         border-style: solid;
@@ -285,9 +277,11 @@
             if(this.publish == 'true'){
                 this.publish = true;
                 _this.complete = '操作';
+                _this.title = '文章详情';
             }else if(this.publish == 'false'){
                 this.publish = false;
                 _this.complete = '编辑';
+                _this.title = '预览';
             }
 //            获取所有的文章模版
             GET('weex/member/template/list.jhtml?type=template',function (data) {
@@ -398,6 +392,18 @@
                 }else{
                     return true;
                 }
+            },
+            goRelated(name){
+                if (name == 0){
+                    name = 'laud';
+                }else if(name == 1){
+                    name = 'share';
+                }else{
+                    return;
+                }
+                event.openURL(utils.locate('view/member/editor/related.js?name=' + name),function (data) {
+
+                })
             }
         }
     }

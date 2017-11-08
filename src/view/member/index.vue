@@ -345,6 +345,7 @@
         border-style: solid;
         border-color: gainsboro;
         background-color: #fff;
+
     }
     .redColor{
         color: #D9141E;

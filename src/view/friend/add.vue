@@ -66,11 +66,11 @@
 
 </style>
 <script>
-    const event = weex.requireModule('event');
     const stream = weex.requireModule('stream');
     import navbar from '../../include/navbar.vue';
     import qrcode from '../../include/qrcode.vue';
     import utils from '../../assets/utils';
+    const event = weex.requireModule('event');
     export default {
         components: {
             navbar,qrcode
@@ -109,8 +109,8 @@
                 });
             },
             goMobile:function () {
-                event.openURL('http://192.168.2.157:8081/mobile.weex.js',function (message) {
-//                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
+//                event.openURL('http://192.168.2.157:8081/mobile.weex.js',function (message) {
+                event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
 //                    event.closeURL();
                 })
             }
