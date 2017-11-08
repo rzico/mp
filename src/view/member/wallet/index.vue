@@ -75,7 +75,7 @@
     }
 
     .wallet-panel {
-        background-color: #F0AD3C;
+        background-color:  #D9141E;
         height:400px;
         flex-direction: column;
         align-items:flex-start;

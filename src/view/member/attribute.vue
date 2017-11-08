@@ -8,17 +8,17 @@
                         <text class="title ml10">通用设置</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <image class="logo" resize="cover"
+                        <image class="logo" resize="cover" @click="headLogo"
                                :src="logo">
                         </image>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between">
+                <div class="cell-panel space-between" @click="petname">
                     <div class="flex-row">
                         <text class="title ml10">昵称</text>
                     </div>
-                    <div class="flex-row flex-end">
+                    <div class="flex-row flex-end" >
                         <text class="sub_title">{{nickName}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
@@ -32,7 +32,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between">
+                <div class="cell-panel space-between" @click="pickDate">
                     <div class="flex-row">
                         <text class="title ml10">生日</text>
                     </div>
@@ -125,7 +125,10 @@
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
+    const album = weex.requireModule('album');
+    const picker = weex.requireModule('picker')
     import navbar from '../../include/navbar.vue'
+    var modal = weex.requireModule('modal');
     export default {
         components: {
             navbar
@@ -138,7 +141,7 @@
                 hasPassword:"未设置",
                 autograph:"未设置",
                 gender:"保密",
-                birthday:"未设置",
+                birthday:"",
                 logo: utils.locate("logo.png"),
                 nickName:"未登录",
                 areaName:"未设置",
@@ -155,6 +158,46 @@
         methods: {
             goback: function (e) {
                 event.closeURL();
+            },
+            petname:function () {
+                let _this = this;
+                modal.prompt({
+                    message: '修改昵称',
+                    duration: 0.3,
+                    okTitle:'确定',
+                    cancelTitle:'取消',
+                    placeholder:'请输入昵称'
+                }, function (value) {
+                    if(value.result == '确定'){
+                        if(value.data == '' || value.data == null ){
+                            modal.toast({message:'请输入昵称',duration:1})
+                        }else{
+                            _this.nickName = value.data
+                    }
+                    }
+                })
+            },
+            pickDate () {
+                picker.pickDate({
+                    value: this.birthday
+                }, event => {
+                    if (event.result === 'success') {
+                        this.birthday = event.data
+                    }
+                })
+            },
+            headLogo: function () {
+                var _this = this;
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    true,function (data) {
+                        event.toast(data);
+                        if(data.type == 'success') {
+                            _this.logo =  'file:/'+data.data.thumbnailSmallPath;
+//                    data.data里存放的是用户选取的图片路
+                            _this.original =  'file:/'+data.data.originalPath
+                        }
+            })
             },
             updateStatus: function (attr) {
                 var _this = this;
