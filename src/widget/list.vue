@@ -3,15 +3,10 @@
         <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller" show- show-scrollbar="false">
             <div class="cell-row-row cell-line mt0 cell-bottom-clear" v-for="item in dataList"  @click="checkChange(item.id,item.name)">
-                <!--<div class="cell-panel  cell-clear ml10">-->
-                    <!--<div class="flex-row" >-->
-                        <!--<text class="iconImg" :style="{fontFamily:'iconfont'}">&#xe61a;</text>-->
-                    <!--</div>-->
                     <div class="flex-row ml10">
                         <text class="title ml10">{{item.name}}</text>
                     </div>
-                <!--</div>-->
-                <div v-if="categoryId == item.id" >
+                <div v-if="listId == item.id" >
                     <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                 </div>
             </div>
@@ -19,20 +14,20 @@
         </scroller>
     </div>
 </template>
-<style lang="less" src="../../../style/wx.less"/>
+<style lang="less" src="../style/wx.less"/>
 <style scoped>
 </style>
 <script>
-    import {dom,event,stream,storage} from '../../../weex.js'
-    import navbar from '../../../include/navbar.vue'
-    import utils from '../../../assets/utils'
+    import {dom,event,stream,storage} from './weex.js'
+    import navbar from './include/navbar.vue'
+    import utils from './assets/utils'
     const modal = weex.requireModule('modal');
-    import { POST, GET } from '../../../assets/fetch';
+    import { POST, GET } from './assets/fetch';
     export default {
         data(){
             return{
-                categoryId:7,
-                categoryName:'生活',
+                listId:'',
+                listName:'',
                 dataList:[],
             }
         },
@@ -44,15 +39,18 @@
         },
         created(){
             var _this = this;
-            this.categoryId = utils.getUrlParameter('categoryId');
+            this.listId = utils.getUrlParameter('listId');
             let urlType = utils.getUrlParameter('type');
+            if(urlType == 'article_category'){
+                this.title = '文章类别';
+            }
             GET(urlType + '/list.jhtml',function (data) {
 //                event.toast(data);
                 if(data.type == 'success' && data.data != ''){
                     _this.dataList = data.data;
                     data.data.forEach(function (item) {
-                        if(item.id == _this.categoryId){
-                            _this.categoryName = item.name;
+                        if(item.id == _this.listId){
+                            _this.listName = item.name;
                         }
                     })
                 }
@@ -63,8 +61,8 @@
         methods: {
             goback: function (e) {
                 let E = {
-                    categoryId : this.categoryId,
-                    categoryName : this.categoryName
+                    listId : this.listId,
+                    listName : this.listName
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
@@ -75,11 +73,11 @@
 //            选择相应数据时触发。
             checkChange:function (id,name) {
                 var _this = this;
-                    this.categoryId = id;
-                    this.categoryName = name;
+                    this.listId = id;
+                    this.listName = name;
                     let E = {
-                        categoryId : this.categoryId,
-                        categoryName : this.categoryName
+                        listId : this.listId,
+                        listName : this.listName
                     }
                     let backData = utils.message('success','成功',E);
                     event.closeURL(backData);

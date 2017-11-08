@@ -260,12 +260,12 @@
 //            跳转至选择类别
             goCategory:function () {
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/category.js?categoryId=' + this.category + '&type=article_category'),
+                event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=article_category'),
 //                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
                     function (data) {
                         if(data.type == 'success' && data.data != '') {
-                            _this.category = parseInt(data.data.categoryId);
-                            _this.categoryName = data.data.categoryName;
+                            _this.category = parseInt(data.data.listId);
+                            _this.categoryName = data.data.listName;
                         }
                     }
                 );
