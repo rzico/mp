@@ -4,7 +4,7 @@
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="testRef" @corpusChange="corpusChange"></tabNav>
         <div  class="pageBox" :style="{width:pageWidth + 'px'}" ref="contentBox">
             <div v-for="(item,index) in corpusList" v-if="item.load == 1" :style="{left: index * 750 + 'px'}" class="categoryBox">
-                <hotCategory  @onpanmove="onpanmove" :type="item.name" :scrollable="canScroll"></hotCategory>
+                <hotCategory  @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></hotCategory>
             </div>
         </div>
     </div>

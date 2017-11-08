@@ -10,30 +10,35 @@
         </div>
         <!--点赞 评论 分享-->
         <div class="footBox" v-if="publish" >
-            <div class="bottomBtnBox" @click="goRelated(0)">
-                <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                <text class="fz26fff" >点赞 0</text>
+            <div class="bottomBtnBox" @click="goLaud()">
+                <text class="fz26fff fz45" :class="[isLaud ? 'laudActive' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                <text class="fz26fff"  :class="[isLaud ? 'laudActive' : '']">点赞 {{laudNum}}</text>
             </div>
-            <div class="bottomBtnBox"  @click="goRelated(1)">
+            <div class="bottomBtnBox"  @click="goShare()">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                <text class="fz26fff">分享 0</text>
+                <text class="fz26fff">分享 {{shareNum}}</text>
             </div>
-            <div class="bottomBtnBox">
+            <div class="bottomBtnBox" @click="goReview()">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                <text class="fz26fff">评论 0</text>
+                <text class="fz26fff">评论 {{reviewNum}}</text>
             </div>
         </div>
         <!--模版-->
-        <div class="templateIcon"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose">
+        <div class="templateIcon"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
             <text class="templateText" >模版</text>
+        </div>
+        <!--收藏-->
+        <div class="templateIcon"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && isCollect == 0">
+            <text class="templateText" style="font-size: 35px;margin-bottom: 5px" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+            <text class="templateText" style="font-size: 24px">收藏</text>
         </div>
         <transition name="slide-fade" mode="out-in">
             <!--模版内容-->
             <div class="templateBox" v-if="templateChoose"  key="templateContent">
                 <div class="templateBtn">
                     <!--<div class="btnTextBox">-->
-                        <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
-                        <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
+                    <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
+                    <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
                     <!--</div>-->
                     <div class="btnTextBox"  @click="chooseTemplate()">
                         <text class="btnTextSize btnTextColor" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
@@ -58,7 +63,7 @@
                 </div>
             </div>
         </transition>
-        <div v-if="isOperation">
+        <div v-if="isOperation && isSelf == 1">
             <div style="position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5" @touchstart="maskTouch"></div>
             <div class="operationBox"  style="width: 230px;">
                 <div class="arrow-up" >
@@ -87,13 +92,32 @@
                 </div>
             </div>
         </div>
+        <div v-if="isOperation  && isSelf == 0">
+            <div style="position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5" @touchstart="maskTouch"></div>
+            <div class="operationBox"  style="width: 230px;">
+                <div class="arrow-up" >
+                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                    <text class="fz28 pl10">作者主页</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                    <text class="fz28 pl10">举报</text>
+                </div>
 
-
+            </div>
+        </div>
     </scroller>
 </template>
-
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .laudActive{
+        /*color: #F0AD3C;*/
+        /*color: darkseagreen;*/
+        color: #888;
+    }
     .arrow-up {
         position: fixed;top: 145px;right:30px;
     }
@@ -107,7 +131,6 @@
         font-size: 26px;
         color: #fff;
     }
-
     .fz45{
         font-size: 50px;
     }
@@ -254,6 +277,12 @@
                 templateList:[],
                 publish:false,
                 isOperation:false,
+                isSelf:0,
+                isCollect:0,
+                laudNum:0,
+                shareNum:0,
+                reviewNum:0,
+                isLaud:false,
             }
         },
         components: {
@@ -268,20 +297,35 @@
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
             var isPublish = utils.getUrlParameter('publish');
+            GET('weex/article/preview.jhtml?id=' + this.articleId){
+
+            }
+
+            let uId = event.getUId();
+//            判断是否作者本人
+            if(uId == userId){
+                this.isSelf = 1;
+            }else{
+                this.isSelf = 0;
+            }
 //            event.toast(isPublish);
             if(isPublish == null){
             }else{
                 this.publish = isPublish;
 //                event.toast(this.publish);
             }
-            if(this.publish == 'true'){
-                this.publish = true;
-                _this.complete = '操作';
-                _this.title = '文章详情';
-            }else if(this.publish == 'false'){
+            if(this.publish == 'false'){
                 this.publish = false;
                 _this.complete = '编辑';
                 _this.title = '预览';
+            }else if(this.publish == 'true' && this.isSelf == 1){
+                this.publish = true;
+                _this.complete = '操作';
+                _this.title = '文章详情';
+            }else if(this.publish == 'true' && this.isSelf == 0){
+                this.publish = true;
+                _this.complete = '· · ·';
+                _this.title = '文章详情';
             }
 //            获取所有的文章模版
             GET('weex/member/template/list.jhtml?type=template',function (data) {
@@ -315,9 +359,9 @@
         methods:{
 //            点击 图片 更换模版的触发
             tickImage(itemSn){
-                    this.templateSn= itemSn;
-                     this.templateId ='t' + itemSn;
-                    this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
+                this.templateSn= itemSn;
+                this.templateId ='t' + itemSn;
+                this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
 
             },
 
@@ -359,7 +403,7 @@
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
 
-                    });
+                });
             },
 //            触碰遮罩层
             maskTouch(){
@@ -376,14 +420,14 @@
 
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
-                            if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                                let E = {
-                                    isDone : 'complete'
-                                }
-                                let backData = utils.message('success','成功',E);
-                                event.closeURL(backData);
-                            }
-                    });
+                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                        let E = {
+                            isDone : 'complete'
+                        }
+                        let backData = utils.message('success','成功',E);
+                        event.closeURL(backData);
+                    }
+                });
             },
 //            判断是否有模版，控制是否显示模版标题
             isNoTemplates(value){
@@ -393,17 +437,36 @@
                     return true;
                 }
             },
-            goRelated(name){
-                if (name == 0){
-                    name = 'laud';
-                }else if(name == 1){
-                    name = 'share';
-                }else{
-                    return;
-                }
-                event.openURL(utils.locate('view/member/editor/related.js?name=' + name),function (data) {
+//            点赞
+            goLaud(){
+                if(this.isSelf == 0){
+                    if(this.isLaud){
+                        this.isLaud = false;
 
+                        this.laudNum --;
+                    }else{
+                        this.laudNum ++;
+                        this.isLaud = true;
+                    }
+                }else{
+                    event.openURL(utils.locate('view/member/editor/related.js?name=laud'),function (data) {
+                    })
+                }
+            },
+//            分享
+            goShare(){
+                event.openURL(utils.locate('view/member/editor/related.js?name=share' ),function (data) {
                 })
+            },
+//            前往评论
+            goReview(){
+                event.openURL(utils.locate('view/member/editor/review.js?name=share' ),function (data) {
+                })
+            },
+//            收藏文章
+            collectArticle(){
+                event.toast('收藏成功');
+                this.isCollect = 1;
             }
         }
     }

@@ -18,15 +18,10 @@
                 <text class="title gray" @click="goback()">关闭随便看看</text>
             </div>
         </div>
-
     </div>
-
 </template>
-
 <style lang="less" src="../style/wx.less"/>
-
 <style scoped>
-
     .image {
         width:750px;
         height: 1334px;
@@ -38,7 +33,6 @@
         flex:1;
         position: relative;
     }
-
     .indicator {
         item-color: #ddd;
         item-selected-color:#888;
@@ -48,7 +42,6 @@
         width:750px;
         bottom:300px;
     }
-
     .footer-panel {
         width:750px;
         height: 230px;
@@ -56,7 +49,6 @@
         padding-right:60px ;
         background-color: white;
     }
-
     .btn {
         background-color:limegreen;
         border-color:limegreen;
@@ -71,7 +63,6 @@
     .btn:active {
         background-color:#ccc;
     }
-
     .ico {
         font-size: 58px;
         color: white;
@@ -81,7 +72,6 @@
         color : white;
         font-size: 34px;
     }
-
 </style>
 <script>
     import { POST, GET } from '../assets/fetch'

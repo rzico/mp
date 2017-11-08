@@ -499,9 +499,9 @@
 //                    }
 //                )
             },
-            //同意添加好友
+            //添加好友
             adopt:function (id) {
-                POST('weex/member/friends/adopt.jhtml?friendId='+id).then(
+                POST('weex/member/friends/add.jhtml?friendId='+id).then(
                     function (data) {
                         if (data.type == "success") {
                             event.toast(data.content);
