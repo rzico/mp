@@ -30,7 +30,7 @@
             </div>
             <!--导航栏设置-->
             <div style="position: fixed;top: 63px;right: 30px;" @click="goManage()">
-                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
+                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe60e;</text>
             </div>
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
@@ -41,9 +41,9 @@
                         <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
-                <div class="corpusIconBox"  @click="goCorpus()">
-                    <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
-                </div>
+                <!--<div class="corpusIconBox"  @click="goCorpus()">-->
+                    <!--<text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe60e;</text>-->
+                <!--</div>-->
                 <!--文集前后白色遮罩层-->
                 <!--<div class="blur leftBlur"></div>-->
                 <!--<div class="blur rightBlur"></div>-->
@@ -76,12 +76,10 @@
                 <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
                     <!--钱包两边的白色边框-->
                     <div  class="leftBtnBorder topBtnBorder" ></div>
-                    <div  class="rightBtnBorder topBtnBorder" ></div>
+                    <!--<div  class="rightBtnBorder topBtnBorder" ></div>-->
                     <div class="moneyFormat">
-                        <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
-                        <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
                     </div>
-                    <text class="topBtn" >钱包</text>
+                    <text class="topBtn" ></text>
                 </div>
                 <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFocus()">
                     <text class="topBtn topBtnBigFont">{{focusNum}}</text>
@@ -90,12 +88,10 @@
             </div>
         </div>
         <div >
-
             <!--<div v-if="isAllArticle" v-cloak >-->
             <!--<div>-->
             <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
             <!--</div>-->
-
             <!--全部文章、回收站栏-->
             <!--<div class="articleClass">-->
             <!--<text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>-->
@@ -109,9 +105,9 @@
 
                     </div>
                 </scroller>
-                <div class="corpusIconBox" @click="goCorpus()"  >
-                    <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
-                </div>
+                <!--<div class="corpusIconBox" @click="goCorpus()"  >-->
+                    <!--<text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>-->
+                <!--</div>-->
                 <!--文集前后白色遮罩层-->
                 <!--<div class="blur leftBlur" >-->
                 <!--<image src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" style="width: 20px;height:79px;"></image>-->
@@ -125,11 +121,11 @@
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @swipe="onpanmove()">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                         <div class="atricleHead">
                             <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                            <text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>
+                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
                             <text class="articleTitle">{{item.value.title}}</text>
                         </div>
                         <!--文章封面-->
@@ -155,50 +151,88 @@
                             </div>
 
                         </div>
-                        <!--右侧隐藏栏-->
-                        <div class="rightHidden">
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
-                                    <text class="rightHiddenText">编辑</text>
-                                </div>
-                                <div class="rightHiddenIconBox" @click="jumpDelete()">
-                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
-                                    <text class="rightHiddenText redColor" >删除</text>
-                                </div>
+                    </div>
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @swipe="onpanmove()">
+                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
+                        <div class="atricleHead">
+                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
+                            <text class="articleTitle">{{item.value.title}}</text>
+                        </div>
+                        <!--文章封面-->
+                        <div style="position: relative">
+                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
+                        </div>
+                        <div class="categoryBox">
+                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
+                        </div>
+                        <!--文章底部-->
+                        <div class="articleFoot">
+                            <div>
+                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
+                                <text class="articleDate">2017-09-01</text>
                             </div>
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpTop()">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                                    <text class="rightHiddenText">置顶</text>
-                                </div>
-                                <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                                    <text class="rightHiddenText">文集</text>
-                                </div>
+                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.value.hits}}</text>
+                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.value.laud}}</text>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.value.review}}</text>
                             </div>
+
+                        </div>
+                    </div>
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @swipe="onpanmove()">
+                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
+                        <div class="atricleHead">
+                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
+                            <text class="articleTitle">{{item.value.title}}</text>
+                        </div>
+                        <!--文章封面-->
+                        <div style="position: relative">
+                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
+                        </div>
+                        <div class="categoryBox">
+                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
+                        </div>
+                        <!--文章底部-->
+                        <div class="articleFoot">
+                            <div>
+                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
+                                <text class="articleDate">2017-09-01</text>
+                            </div>
+                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.value.hits}}</text>
+                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.value.laud}}</text>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.value.review}}</text>
+                            </div>
+
                         </div>
                     </div>
                 </transition-group>
-                <!--帮助使用文章-->
-                <div class="articleBox" v-for="item in helpList"  >
-                    <div class="atricleHead">
-                        <text class="articleSign">{{item.articleSign}}</text>
-                        <text class="articleTitle">{{item.articleTitle}}</text>
-                    </div>
-                    <!--文章封面-->
-                    <div>
-                        <image :src="item.articleCoverUrl" class="articleCover"></image>
-                    </div>
-                    <!--文章底部-->
-                    <div class="articleFoot">
-                        <div>
-                            <text class="articleDate">{{item.articleDate}}</text>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+        <div class="bottomBtnBox">
+            <div class="bottomBtn " v-if="!isFocus" @click="focus()">
+                <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
+                <text class="fz35 ml10" >关注</text>
+            </div>
+            <div class="bottomBtn " v-else="!isFocus" @click="focus()">
+                <text class="fz35 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
+                <text class="fz35 ml10 gray" >已关注</text>
+            </div>
+            <div class="rightBorder"></div>
+            <div class="bottomBtn">
+                <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62f;</text>
+                <text class="fz35 ml10" >私信</text>
+            </div>
+        </div>
+
         <!--</div>-->
         <loading class="loading" @loading="onloading" :display="showLoading">
             <text class="indicator">Loading ...</text>
@@ -208,6 +242,36 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .bottomBtn{
+        flex:1;
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        height: 100px;
+    }
+    .bottomBtn:active{
+        background-color: #ccc;
+    }
+    .rightBorder{
+        border-style: solid;
+        border-color: #ccc;
+        border-right-width: 1px;
+        width:1px;
+        height: 70px;
+    }
+    .bottomBtnBox{
+        border-style: solid;
+        border-color: #ccc;
+        border-top-width: 1px;
+        position: fixed;
+        flex-direction: row;
+        background-color: #fff;
+        align-items: center;
+        bottom: 0;
+        left:0;
+        right: 0;
+        height: 100px;
+    }
     .categoryBox{
         position: absolute;background-color: #888;left: 650px;bottom: 100px;opacity: 0.4;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
     }
@@ -219,7 +283,7 @@
         flex-direction: row;justify-content: center;
     }
     .corpusScroll{
-        flex-direction: row;width: 650px;
+        flex-direction: row;width: 750px;
         background-color: #fff;
     }
     .fz35{
@@ -323,11 +387,9 @@
     .rightBlur{
         right: 100px;
         width:20px;
-        /*background-image: linear-gradient(to left, #F8F9FC,#fff);*/
     }
     .leftBlur{
         left:0;
-        /*background-image: linear-gradient(to right, #F8F9FC,#fff);*/
     }
     .blur{
         position: absolute;
@@ -349,41 +411,6 @@
     }
     .redColor{
         color: #D9141E;
-    }
-    .rightHiddenIconBox{
-        justify-content: center;
-        align-items: center;
-    }
-    .rightHiddenSmallBox{
-        flex-direction: row;
-        flex: 1;
-        justify-content: space-around;
-        align-items: center;
-    }
-    .rightHiddenText{
-        font-size: 24px;
-        color: #999;
-    }
-    .rightHiddenIcon{
-        text-align: center;
-        line-height: 90px;
-        font-size: 40px;
-        width:90px;
-        height:90px;
-        border-radius: 45px;
-        color: black;
-        background-color: #fff;
-        margin-bottom: 15px;
-    }
-    .rightHidden{
-        position: absolute;
-        right: 0px;
-        top: 0;
-        background-color: #f4f4f4;
-        width: 330px;
-        height:457px ;
-        /*align-items: center;*/
-        /*justify-content:space-around;*/
     }
     .relevantImage {
         flex-direction: row;
@@ -431,9 +458,6 @@
         padding-right: 30px;
         padding-bottom: 30px;
         margin-bottom: 10px;
-        /*========= 9.27*/
-        width:1080px;
-        display: inline-block
     }
 
     .atricleHead {
@@ -514,12 +538,6 @@
         border-color: #fff;
         border-right-width: 1px
     }
-    /*.backgroundMask{*/
-    /*position: absolute;*/
-    /*width:750px;*/
-    /*top:0;*/
-    /*height:420px;*/
-    /*}*/
     .backgroundImage{
         position: absolute;
         width:750px;
@@ -527,11 +545,6 @@
         height:420px;
         filter: blur(4px);
         opacity: 1;
-        /*-moz-filter: blur(4px);*/
-        /*-webkit-filter: blur(4px);*/
-        /*-o-filter: blur(4px);*/
-        /*-ms-filter: blur(4px);*/
-        /*-webkit-backdrop-filter: blur(4px);*/
     }
     .topBox{
         position: relative;
@@ -554,7 +567,8 @@
         align-items: center;
     }
     .walletLayout{
-        min-width: 166px;flex-shrink:0;padding-left: 30px;padding-right: 30px;
+        flex-shrink:0;
+        width: 1px;
     }
     .topBtn{
         color:white;
@@ -648,53 +662,10 @@
                 listPageSize:10,
 //                全部文章==================
                 articleList: [],
-
-                helpList:[{
-                    articleSign:'样例',
-                    articleTitle:'我在魔篇有了自己的专栏！',
-                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                    articleDate:'2017-10-19'
-                },{
-                    articleSign:'样例',
-                    articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
-                    articleDate:'2017-10-19'
-                },{
-                    articleSign:'样例',
-                    articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                    articleDate:'2017-10-19'
-                },{
-                    articleSign:'样例',
-                    articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
-                    articleDate:'2017-10-19'
-                }],
+                isFocus:false,
             }
         },
         filters:{
-            watchWho:function (value) {
-                switch (value){
-                    case 'isPublic' ://公开
-                        return '公开';
-                        break;
-                    case 'isShare' ://不公开
-                        return '不公开';
-                        break;
-                    case 'isEncrypt' ://加密
-                        return '加密';
-                        break;
-                    case 'isPrivate' ://私密
-                        return '私密';
-                        break;
-                    case 'draft'://草稿
-                        return '草稿';
-                        break;
-                    default:
-                        return '公开';
-                        break;
-                }
-            },
             watchCatetory:function (value) {
                 if(utils.isNull(value)){
                     return '生活';
@@ -721,11 +692,8 @@
             },function (err) {
                 event.toast(err.content);
             })
-
 //            获取文集列表
             this.getCorpus();
-
-
             let options = {
                 type:'article',
                 keyword:'',
@@ -746,19 +714,6 @@
                     return;
                 }
             })
-//            let option = {
-//                type:'arcticle',//类型
-//                keyword:'N',//关键址
-//                orderBy:'desc',//"desc"降序 ,"asc"升序
-//                current:'0', //当前有几页
-//                pageSize:'10' //一页显示几行
-//            }
-//            event.findList(option,function (message) {
-//                event.toast(message);
-//                if(message.type == 'success' && message.data != ''){
-//
-//                }
-//            })
         },
         methods: {
             getCorpus:function () {
@@ -789,77 +744,12 @@
                 },function (err) {
                     event.toast(err.content);
                 })
-
-//                return stream.fetch({
-//                    method: 'GET',
-//                    type: 'json',
-//                    url: 'weex/member/article_catalog/list.jhtml'
-//                }, function (data) {
-//                    if (data.data.type == "success") {
-//                        if(data.data == ''){
-//                        }else{
-////                            event.toast(data.data);
-//                            _this.corpusList = '';
-//                            _this.corpusList =[{
-//                                name:'全部文章',
-//                                id:''
-//                            },{
-//                                name:'回收站',
-//                                id:'99'
-//                            }];
-////                                将文集名循环插入数组中
-//                            for(let i = 0; i<data.data.data.length;i++){
-//                                _this.corpusList.splice(1 + i,0,data.data.data[i]);
-//                            }
-//                            storage.setItem('corpusList',data.data.data);
-//                        }
-//                    } else {
-//                        event.toast(data);
-//                    }
-////                    event.toast(data);
-//                },)
-
-
-
-
-//                GET('weex/member/article_catalog/list.jhtml','',
-//                    function (data) {
-//                        if (data.type == "success") {
-//                            if(data.data == ''){
-//                            }else{
-//                                _this.corpusList = '';
-//                                _this.corpusList =[{
-//                                    name:'全部文章',
-//                                    id:''
-//                                },{
-//                                    name:'回收站',
-//                                    id:'99'
-//                                }];
-////                                将文集名循环插入数组中
-//                                for(let i = 0; i<data.data.length;i++){
-//                                    _this.corpusList.splice(1 + i,0,data.data[i]);
-//                                }
-//                                storage.setItem('corpusList',data.data);
-//                            }
-//                        } else {
-//                            event.toast(data);
-//                        }
-//                    },function(err) {
-//                        event.toast("网络不稳定")
-//                    })
-
-
-
             },
             jumpEditor:function (id) {
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
 //                    _this.updateArticle();
                 });
-
-//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
-////                    _this.updateArticle();
-//                })
             },
             jumpDelete:function () {
                 event.toast('文章删除');
@@ -894,34 +784,10 @@
                                     event.toast(data.content);
                                 }
                             })
-
                         }
                     }
                 );
             },
-//            open (callback) {
-//                return stream.fetch({
-//                    method: 'GET',
-//                    type: 'json',
-//                    url: 'weex/member/article/list.jhtml'
-//                }, callback)
-//            },
-//            switchArticle:function (item) {
-//                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
-//                    return true;
-//                }else{
-//                    return false;
-//                }
-//                if(this.isAllArticle == false){
-//                    if(item.articleSign == '已删除'){
-//                        return true;
-//                    }else{
-//                        return false;
-//                    }
-//                }else{
-//                    return true;
-//                }
-//            },
 //            前往文章
             goArticle(id,publish,draft){
 //                event.toast(publish);
@@ -931,53 +797,16 @@
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
 //                    _this.updateArticle();
-                    })
+                        })
                 }else{
 
                     event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=' + publish ),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
 //                    _this.updateArticle();
-                    })
+                        })
                 }
-
-//                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
-////                    _this.updateArticle();
-//                });
             },
-//            updateArticle(){
-//                var _this = this;
-////            获取文章缓存。
-//                event.findList(1,'articleListTest1','desc',function (data) {
-////                    modal.toast({message:data.data});
-//                    if(data.type == 'success'){
-//                        for(let i = 0;i < data.data.length;i++){
-//                            let articleData = JSON.parse(data.data[i].value);
-//                            _this.articleList.splice(0,0,{
-//                                articleSign: '草稿',
-//                                articleTitle:   articleData[0].title,
-//                                articleCoverUrl:  articleData[0].thumbnail,
-//                                articleDate: '2017-09-23',
-//                                browse: 0,
-//                                praise: 0,
-//                                comments: 0,
-//                                id:articleData[0].id,
-//                            })
-//                        }
-//                    }else{
-//                        modal.alert({
-//                            message: data.content,
-//                            duration: 0.3
-//                        })
-//                    }
-//                })
-//            },
-//            toPage: function(url){
-////                event.pageTo(url, false);
-//                event.wxConfig(function (data) {
-//                    event.showToast(data.color);
-//                });
-//            },
             jump:function (vueName) {
                 event.toast('will jump');
             },
@@ -985,117 +814,7 @@
 //                event.toast(id);
                 var _this = this;
                 _this.whichCorpus = index;
-//                if(this.isAllArticle == true){
-//
-//                }else{
-//                    this.isAllArticle = true;
-//                    recycleScroll = scrollTop;
-//                    setTimeout(function () {
-//
-//                        if(allArticleScroll > 424){
-//                            let listHeight = allArticleScroll - 424;
-//                            let positionIndex =parseInt( listHeight / 457);
-//                            let offsetLength = - listHeight % 457;
-//                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
-//                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
-//                            dom.scrollToElement(el, {
-//                                animated:false,
-//                                offset:  -80 - offsetLength
-//
-//                            })
-//                        }
-//                    },50)
-//                }
 
-            },
-            //废弃
-//            recycleSite:function(){
-//                var _this = this;
-//                if(this.isAllArticle == false){
-//                    modal.toast({message:"相等"})
-//                }else{
-//                    this.isAllArticle = false;
-//                    allArticleScroll = scrollTop;
-//                    setTimeout(function () {
-//
-//                        if(recycleScroll > 424){
-//                            let listHeight = recycleScroll - 424;
-//                            let positionIndex =parseInt( listHeight / 457);
-//                            let offsetLength = - listHeight % 457;
-//                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
-//                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
-//                            dom.scrollToElement(el, {
-//                                animated:false,
-//                                offset:  -80 - offsetLength
-//                            })
-//                        }
-//                    },50)
-//                }
-//
-//            },
-            swipeHappen:function(event){
-                console.log(event);
-//                console.log(event.direction);
-//                if(event.direction == 'left'){
-//                    this.isAllArticle = false;
-//                }else if(event.direction == 'right'){
-//                    this.isAllArticle = true;
-//                }
-            },
-//            点击屏幕时
-            ontouchstart:function (event,index) {
-                var _this = this;
-                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
-                }else{
-                    animation.transition(animationPara, {
-                        styles: {
-                            transform: 'translateX(0)',
-                        },
-                        duration: 350, //ms
-                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
-//                      timingFunction: 'ease-out',
-                        needLayout:false,
-                        delay: 0 //ms
-                    })
-                }
-//                获取当前点击的元素。
-                animationPara =  event.currentTarget;
-            },
-//            移动时
-            onpanmove:function (event,index) {
-                var _this = this;
-                if(event.direction == 'right'){
-                    _this.canScroll = false;
-                    animation.transition(animationPara, {
-                        styles: {
-                            transform: 'translateX(0)',
-                        },
-                        duration: 350, //ms
-                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
-//                      timingFunction: 'ease-out',
-                        needLayout:false,
-                        delay: 0 //ms
-                    },function () {
-                        _this.canScroll = true;
-                    })
-                }else if(event.direction == 'left'){
-                    _this.canScroll = false;
-//                  modal.toast({message:distance});
-                    animation.transition(animationPara, {
-                        styles: {
-                            transform: 'translateX(-330)',
-                        },
-                        duration:350, //ms
-                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
-//                      timingFunction: 'ease-out',
-                        needLayout:false,
-                        delay: 0 //ms
-                    },function () {
-                        _this.canScroll = true;
-                    })
-                }
-            },
-            onpanend:function (event) {
             },
             onloading(e) {
                 var _this = this;
@@ -1124,7 +843,6 @@
                             event.toast(data.content);
                         }
                     })
-
                     this.showLoading = 'hide'
                 }, 1500)
             },
@@ -1170,25 +888,6 @@
                     allArticleScroll = 0;
                 }
             },
-//            ondisappear(){
-//              modal.toast({message:'消失',duration:1});
-////                    this.corpusScrollTop = 0;
-//                    this.corpusPosition = 'fixed';
-//                    this.isDisappear = true;
-//            },
-//            onappear(){
-//                modal.toast({message:'显示',duration:1});
-//                this.isDisappear = false;
-//                this.corpusPosition = 'relative';
-//            },
-//            文集
-            goCorpus(){
-                var _this = this;
-//                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
-                event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
-                    _this.getCorpus();
-                });
-            },
 //            个人信息
             goAttribute(){
                 event.openURL(utils.locate('view/member/attribute.js'),
@@ -1199,11 +898,12 @@
             },
 //            设置中心
             goManage(){
-                event.openURL(utils.locate('view/member/manage.js'),
-                    function (data) {
-                        return ;
-                    }
-                );
+//                event.openURL(utils.locate('view/member/manage.js'),
+//                    function (data) {
+//                        return ;
+//                    }
+//                );
+                event.toast('弹出菜单栏');
             },
 //            我的关注
             goFocus(){
@@ -1261,6 +961,13 @@
                     }
                 )
             },
+            onpanmove:function () {
+                return;
+            },
+//            关注
+            focus:function () {
+                this.isFocus = !this.isFocus;
+            }
         }
     }
 </script>

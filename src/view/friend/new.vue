@@ -10,10 +10,10 @@
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list class="list" v-if="isNoEmpty()">
+        <list  class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image class="gif" resize="cover"
-                       src="file://resources/images/loading.gif"></image>
+                <!--<image class="gif" resize="cover"-->
+                       <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <cell v-for="(friend,index) in friendsList">
@@ -26,7 +26,7 @@
                     <div class="friendsLine" @click="jump()">
                         <image :src="friend.logo" class="friendsImage"></image>
                         <div class="friendsName">
-                            <text class="lineTitle lines-ellipsis">{{friend.nickName}}</text>
+                            <text class="lineTitle ">{{friend.nickName}}</text>
                             <text class="realName">真实姓名:{{friend.name | watchName}}</text>
                         </div>
                     </div>
@@ -37,8 +37,8 @@
                 </div>
             </cell>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <image class="gif" resize="cover"
-                       src="file://resources/images/loading.gif"></image>
+                <!--<image class="gif" resize="cover"-->
+                       <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{loadingState}}</text>
             </loading>
         </list>
@@ -110,6 +110,9 @@
     .lineTitle{
         font-size: 34px;
         margin-left: 20px;
+        lines:1;
+        text-overflow: ellipsis;
+        max-width: 450px;
     }
     .status_panel {
         flex-direction: column;

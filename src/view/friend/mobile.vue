@@ -7,8 +7,8 @@
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image class="gif" resize="cover"
-                       src="file://resources/images/loading.gif"></image>
+                <!--<image class="gif" resize="cover"-->
+                       <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <cell v-for="(friend,index) in sortList" >
@@ -26,7 +26,7 @@
                         </div>
                         <div class="friendsName">
                             <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
-                            <text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>
+                            <text class="realName">手机号:{{friend.number}}</text>
                         </div>
                     </div>
                     <div class="status_panel">
@@ -82,9 +82,10 @@
             <!--</div>-->
             <!--</cell>-->
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <image class="gif" resize="cover"
-                       src="file://resources/images/loading.gif"></image>
-                <text class="indicator">{{loadingState}}</text>
+                <!--<image class="gif" resize="cover"-->
+                       <!--src="file://resources/images/loading.gif"></image>-->
+                <text class="indicator">加载中...</text>
+                <!--{{loadingState}}-->
             </loading>
         </list>
     </div>
@@ -204,7 +205,7 @@
 //                keyword:"",
 //                startList:true,
                 loadingState:'',
-                showLoading:'hide',
+//                showLoading:'hide',
                 friendsList:[],
                 initList:[],
                 allLetter:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'],
@@ -241,13 +242,13 @@
 //                }
 //            },
 //            过滤在用户在软件mp上的昵称
-            watchNickNmae:function (value) {
-                if(utils.isNull(value)){
-                    return '暂无';
-                }else{
-                    return value;
-                }
-            }
+//            watchNickNmae:function (value) {
+//                if(utils.isNull(value)){
+//                    return '暂无';
+//                }else{
+//                    return value;
+//                }
+//            }
         },
         created() {
             utils.initIconFont();

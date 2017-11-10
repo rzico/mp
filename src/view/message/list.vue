@@ -9,7 +9,8 @@
                 <text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
             </div>
         </div>
-        <list class="list" :scrollable="canScroll">
+        <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
+        <list v-else class="list" :scrollable="canScroll">
             <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新 ...</text>
             </refresh>
@@ -150,6 +151,7 @@
     import { POST, GET } from '../../assets/fetch'
     import utils from '../../assets/utils'
     import {dom,event,stream} from '../../weex.js';
+    import noData from '../../include/noData.vue';
     import filters from '../../filters/filters.js';
     var globalEvent = weex.requireModule('globalEvent');
     const animation = weex.requireModule('animation');
@@ -172,92 +174,11 @@
 //                    friendMessage:'怎么不回消息？',
 //                    messageTime:'10:07',
 //                    messageTotal:99
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'霍建华',
-//                    friendMessage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXX',
-//                    messageTime:'11:08',
-//                    messageTotal:17
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'胡歌',
-//                    friendMessage:'胡歌邀请你参加《琅琊榜2》的录制,点击链接即可报名！',
-//                    messageTime:'12:09',
-//                    messageTotal:1
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'Famous、库',
-//                    friendMessage:'哈哈哈，好无聊',
-//                    messageTime:'昨天',
-//                    messageTotal:''
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'陈小春',
-//                    friendMessage:'',
-//                    messageTime:'12:07',
-//                    messageTotal:''
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'番茄',
-//                    friendMessage:'炒蛋吗？',
-//                    messageTime:'9月8日',
-//                    messageTotal:'1'
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'豪客来',
-//                    friendMessage:'秋天，又到了吃货的季节。快上库鲁子网挑选吧！',
-//                    messageTime:'9月8日',
-//                    messageTotal:'1'
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'中国有嘻哈',
-//                    friendMessage:'你会freestyle吗？',
-//                    messageTime:'昨天',
-//                    messageTotal:''
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'那英',
-//                    friendMessage:'！',
-//                    messageTime:'昨天',
-//                    messageTotal:''
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'中国新歌声',
-//                    friendMessage:'',
-//                    messageTime:'昨天',
-//                    messageTotal:''
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'陈小春',
-//                    friendMessage:'',
-//                    messageTime:'12:07',
-//                    messageTotal:''
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'番茄',
-//                    friendMessage:'炒蛋吗？',
-//                    messageTime:'9月8日',
-//                    messageTotal:'1'
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'豪客来',
-//                    friendMessage:'秋天，又到了吃货的季节。快上库鲁子网挑选吧！',
-//                    messageTime:'9月8日',
-//                    messageTotal:'1'
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'中国有嘻哈',
-//                    friendMessage:'你会freestyle吗？',
-//                    messageTime:'昨天',
-//                    messageTotal:''
-//                },{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'那英',
-//                    friendMessage:'！',
-//                    messageTime:'昨天',
-//                    messageTotal:''
 //                }]
             }
+        },
+        components: {
+            noData
         },
         computed:{
 //            计算属性
@@ -295,6 +216,9 @@
                 }
             }
         },
+        props:{
+            noDataHint: { default: "没有消息，快去聊天吧" },
+        },
         created() {
             var _this = this;
             utils.initIconFont();
@@ -309,7 +233,6 @@
 //            event.toast(a);
 //            读取本地缓存
             event.findList(listoption,function (data) {
-                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (item) {
                         _this.messageList.push(JSON.parse(item.value));
@@ -321,14 +244,14 @@
             })
             this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
-//                event.toast(e);
+                event.toast(e);
 //                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
                 if(!utils.isNull(e.data.data.id) && e.data.data.id.substring(0,1) == 'g'){
                     _this.hadMessage();
                 }else{
 //                    用户消息没有userId。只有id。
                     e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
-
+//                  判断是否是本人发送所触发的onmessage
                     if(_this.selfUserId == e.data.data.userId){
                         _this.chatItem.createDate = e.data.data.createDate;
                         _this.chatItem.content = e.data.data.content;
@@ -343,6 +266,10 @@
             });
         },
         methods:{
+//            判断是否有消息
+            isEmpty(){
+                return this.sortList.length == 0;
+            },
 //            向消息列表填入新的消息数据并存入缓存
             addMessage(_weex,sign){
                 var _this = this;

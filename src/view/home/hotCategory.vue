@@ -33,9 +33,6 @@
     </scroller>
 </template>
 <style>
-    .authorImg{
-        width: 60px;height: 60px;border-radius: 30px;
-    }
     .mt20{
         margin-top: 20px;
     }
@@ -77,6 +74,9 @@
         font-size: 30px;
         margin-left: 10px;
         color: #888;
+    }
+    .authorImg{
+        width: 60px;height: 60px;border-radius: 30px;
     }
     .articleCover {
         height: 450px;

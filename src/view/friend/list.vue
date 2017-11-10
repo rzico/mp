@@ -61,8 +61,8 @@
                 <!--姓氏里每个人的名子-->
                 <div v-for="item in friend.name"  >
                     <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="jump('/member')">
-                            <image :src="item.logo" class="friendsImage"></image>
+                        <div class="friendsLine" @click="goChat(item.id)">
+                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
                             <div class="friendsName">
                                 <text class="lineTitle">{{item.nickName}}</text>
                                 <text class="realName">真实姓名:{{item.realName | watchName}}</text>
@@ -429,11 +429,13 @@
 //            event.toast(this.userId);
             _this.hadFriend();
 //            全局监听 消息
-            globalEvent.addEventListener("onMessage", function (e) {
-                _this.hadFriend();
-            });
+//            globalEvent.addEventListener("onMessage", function (e) {
+
+//                _this.hadFriend();
+//            });
         },
         methods: {
+
 //            有新朋友时，
             hadFriend(){
                 var _this = this;
@@ -500,8 +502,16 @@
             goback:function () {
                 event.closeURL();
             },
-            jump:function (vueName) {
-                modal.toast({message:'点击了信息栏'});
+//            前往聊天
+            goChat:function (id) {
+                let userId = 'u' + parseInt(10200 + id);
+                event.navToChat(userId);
+            },
+//            作者主页
+            goAuthor:function (id) {
+                event.openURL(utils.locate("view/member/author.js"),function (message) {
+
+                });
             },
             onlongpress :function(count) {
 //                modal.toast({ message:this.allLetter[count] ,duration: 0.3});
@@ -589,6 +599,24 @@
                 switch(index){
                     case 0:
                       event.openURL(utils.locate('view/friend/new.js'),function (message) {
+//                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
+//                            event.toast(message);
+                        });
+                        break;
+                    case 1:
+                        event.openURL(utils.locate('view/member/focus.js'),function (message) {
+//                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
+//                            event.toast(message);
+                        });
+                        break;
+                    case 2:
+                        event.openURL(utils.locate('view/friend/fans.js'),function (message) {
+//                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
+//                            event.toast(message);
+                        });
+                        break;
+                    case 3:
+                        event.openURL(utils.locate('view/member/collect.js'),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });
