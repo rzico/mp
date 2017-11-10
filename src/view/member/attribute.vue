@@ -23,7 +23,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between">
+                <div class="cell-panel space-between" @click="pick">
                     <div class="flex-row">
                          <text class="title ml10">性别</text>
                     </div>
@@ -41,7 +41,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between">
+                <div class="cell-panel space-between" @click="profession">
                     <div class="flex-row">
                         <text class="title ml10">职业</text>
                     </div>
@@ -59,7 +59,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear">
+                <div class="cell-panel space-between cell-clear" @click="goAutograph">
                     <div class="flex-row">
                         <text class="title ml10">个性签名</text>
                     </div>
@@ -128,6 +128,7 @@
     const album = weex.requireModule('album');
     const picker = weex.requireModule('picker')
     import navbar from '../../include/navbar.vue'
+    const storage = weex.requireModule('storage');
     var modal = weex.requireModule('modal');
     export default {
         components: {
@@ -139,13 +140,14 @@
                 bindWeiXin:"未绑定",
                 bindMobile:"未绑定",
                 hasPassword:"未设置",
-                autograph:"未设置",
+                autograph:"",
                 gender:"保密",
                 birthday:"",
                 logo: utils.locate("logo.png"),
                 nickName:"未登录",
                 areaName:"未设置",
-                occupation:"未设置"
+                occupation:"未设置",
+                category:1
             }
         },
         props: {
@@ -158,6 +160,15 @@
         methods: {
             goback: function (e) {
                 event.closeURL();
+            },
+            profession: function () {
+                var _this = this;
+                event.openURL('http://192.168.2.241:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
+                    if(data.type == 'success' && data.data != '') {
+                        _this.category = parseInt(data.data.listId);
+                        _this.occupation = data.data.listName;
+                    }
+                })
             },
             petname:function () {
                 let _this = this;
@@ -198,6 +209,39 @@
                             _this.original =  'file:/'+data.data.originalPath
                         }
             })
+            },
+            pick () {
+                picker.pick({
+                    index:0,
+                    items:['男','女','保密']
+                }, event => {
+                    if (event.result === 'success') {
+                        if (event.data == 0){
+                            this.gender = '男'
+
+                        }else if(event.data == 1){
+                            this.gender = '女'
+                        }
+                        else{
+                            this.gender = '保密'
+                        }
+                    }
+                })
+            },
+            goAutograph:function () {
+                let _this = this;
+                let senfData = this.autograph == '未设置' ? '' : this.autograph;
+                let textData = {
+                    autograph:senfData
+                };
+                textData = JSON.stringify(textData);
+                storage.setItem('oneNumber', textData,e=>{
+                event.openURL('http://192.168.2.241:8081/autograph.weex.js?name=oneNumber', function (message) {
+                    if(message.data != ''){
+                        _this.autograph = message.data.text;
+                    }
+                })
+                });
             },
             updateStatus: function (attr) {
                 var _this = this;
