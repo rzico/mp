@@ -58,11 +58,15 @@ Vue.filter('timefmt', function (value) {
     if (m < 10) {
         m = '0' + m;
     }
+    let    d = date.getDate();
+    if (d < 10) {
+        d = '0' + d;
+    }
     //如果是今年 就不返回年份
     if(nowy != y){
-        return  m + '月' + date.getDate() + '日';
+        return  m + '月' + d + '日';
     }else{
-        return y + '年' + m + '月' + date.getDate()+ '日';
+        return y + '年' + m + '月' + d+ '日';
     }
     // return value;
 })
