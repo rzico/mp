@@ -184,12 +184,14 @@
         },
         methods: {
             goComplete:function () {
-             event.openURL(utils.locate("view/friends/add.js"),function (message) {
+             event.openURL(utils.locate("view/friend/add.js"),function (message) {
 //                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
                     if(message.data != ''){
                         event.closeURL(message);
                     }
                 });
+
+
             },
 //            触发自组件的跳转方法
             gosearch:function () {

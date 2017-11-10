@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <!--顶部功能栏-->
-                <div class="我的粉丝">
+                <div class="addBorder">
                     <div class="topLine " @click="openPage(2)">
                         <!--<image :src="item.lineImage" class="lineImage"></image>-->
                         <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
@@ -401,12 +401,12 @@
             utils.initIconFont();
             let listoption = {
                 type:'friend',//类型
-                keyword:'friendList',//关键址
+                keyword:'',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
-                event.toast(data);
+//                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (friend) {
                           let jsonData = JSON.parse(friend.value);
@@ -440,6 +440,8 @@
                 let lastTimestamp;
 //                获取本地缓存是否有时间戳数据
                 storage.getItem('lastTimestamp' + _this.userId, e => {
+//                    event.toast('lastTimestamp' + _this.userId);
+
 //                     lastTimestamp = e.data == undefined ? '' : e.data;
                     if(e.result == 'success' && !utils.isNull(e.data)){
                         lastTimestamp = e.data;
@@ -452,6 +454,7 @@
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
                             data.data.data.forEach(function (friend) {
+                                friend.name = utils.isNull(friend.name) ? '' : friend.name;
                                 _this.friendsList.forEach(function (item) {
                                     if(item.letter == getLetter.getFirstLetter(friend.nickName.substring(0,1))){
                                         let option = {
@@ -462,11 +465,14 @@
                                             sort:item.letter + ',' + timestamp
                                         }
                                         event.save(option,function (message) {
+//                                            event.toast(message);
                                             if(message.type == 'success' && message.content =='保存成功'){
                                                 item.name.push(friend);
                                                 _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
                                                 storage.setItem('lastTimestamp' + _this.userId, timestamp);
+                                            }else if(message.type == 'success' && message.content =='更新成功'){
+                                                //现在的会一直弹出更新成功
                                             }else{
                                                 event.toast(message.content);
                                             }
@@ -584,7 +590,7 @@
                     case 0:
                       event.openURL(utils.locate('view/friend/new.js'),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
-                            event.toast(message);
+//                            event.toast(message);
                         });
                         break;
                     default:

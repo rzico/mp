@@ -16,7 +16,6 @@
         </div>
     </div>
 </template>
-
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .search_box {
@@ -60,7 +59,6 @@
                 event.scan(function (resp) {
                     if (resp.type="success") {
                         event.openURL(resp.data,function (data) {
-
                         })
                     }
 

@@ -115,27 +115,40 @@
             },
             search: function (e) {
                 var _this = this;
-                return stream.fetch({
-                    method: 'GET',
-                    type: 'json',
-                    url: 'weex/member/friends/search.jhtml?keyword='+_this.keyword
-                }, function (weex) {
-                    event.toast(weex.data.data);
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
-                            _this.friendsList = weex.data.data;
+                GET('weex/member/friends/search.jhtml?keyword='+_this.keyword,function (data) {
+                        if(data.type == 'success'){
+                            data.data.forEach(function (item) {
+                                _this.friendsList.push(item);
+                            })
+//                            _this.friendsList = data.data;
                             _this.noDataHint = '该用户不存在';
-                         } else {
-//                            判断是否数据有更新
-                            if(weex.data.content == 'cache.success'){
-                            }else{
-                                event.toast(weex.data.content);
-                            }
+                        }else{
+                            event.toast(data.content);
                         }
-                    } else {
-                        event.toast("网络不稳定请重试");
-                    }
+                },function (err) {
+                    event.toast(err.content);
                 })
+//                return stream.fetch({
+//                    method: 'GET',
+//                    type: 'json',
+//                    url: 'weex/member/friends/search.jhtml?keyword='+_this.keyword
+//                }, function (weex) {
+//                    event.toast(weex.data.data);
+//                    if (weex.ok) {
+//                        if (weex.data.type == "success") {
+//                            _this.friendsList = weex.data.data;
+//                            _this.noDataHint = '该用户不存在';
+//                         } else {
+////                            判断是否数据有更新
+//                            if(weex.data.content == 'cache.success'){
+//                            }else{
+//                                event.toast(weex.data.content);
+//                            }
+//                        }
+//                    } else {
+//                        event.toast("网络不稳定请重试");
+//                    }
+//                })
             },
 //            通知自组件将input失去焦点
             childSearch(){

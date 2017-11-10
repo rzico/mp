@@ -1,6 +1,6 @@
 <template>
-    <scroller show-scrollbar="false">
-        <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove($event)">
+    <scroller show-scrollbar="false" >
+        <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
             <div class="atricleHead">
                 <text class="articleTitle">{{item.title}}</text>
             </div>
@@ -122,6 +122,7 @@
             return{
                 showLoading: 'hide',
                 listCurrent:0,
+                pageSize:10,
 //                articleList:[]
                 articleList:[
 //                    {
@@ -207,9 +208,26 @@
         created(){
             utils.initIconFont();
             var _this = this;
-            GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listCurrent + 10,function (data) {
+            GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize ,function (data) {
                 if(data.type == 'success'){
+                    data.data.data.forEach(function (item) {
+                        if(utils.isNull(item.thumbnail)){
+                        }else{
+                            item.thumbnail = utils.thumbnail(item.thumbnail,750,450);
+                        }
+                    })
                     _this.articleList = data.data.data;
+//                    data.data.data.forEach(function (dss) {
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                        _this.articleList.push(dss);
+//                    })
                 }
             },function (err) {
                 event.toast(err.content)
@@ -217,19 +235,29 @@
 
         },
         methods:{
-            goArticle(){
-                event.toast('跳转文章');
+            goArticle(id){
+                event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=true' ),
+                    function () {
+                    })
+
             },
             onpanmove(e){
                 this.$emit('onpanmove',e.direction);
             },
-            onloading (event) {
+            onloading (e) {
+                var _this = this;
                 this.showLoading = 'show'
                 setTimeout(() => {
-                    this.listCurrent = this.listCurrent + 10;
-                    GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listCurrent + 10,function (data) {
+                    this.listCurrent = this.listCurrent + this.pageSize;
+                    GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success'){
-                            _this.articleList = data.data.data;
+                            if(utils.isNull(data.data.data)){
+                                event.toast('已经到底了');
+                            }else{
+                                data.data.data.forEach(function (item) {
+                                    _this.articleList.push(item);
+                                })
+                            }
                         }
                     },function (err) {
                         event.toast(err.content)

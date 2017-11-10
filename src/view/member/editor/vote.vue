@@ -207,7 +207,7 @@
                 storage.getItem(vote, e => {
                     let voteData =  JSON.parse(e.data);
                     _this.chooseOptions = _this.optionArray[voteData.optionsIndex];
-                    event.toast(voteData);
+//                    event.toast(voteData);
 //                    添加上服务器过滤掉的属性
 //                    if(utils.isNull(voteData.pageBox[0].textHeight)){
 //                        event.toast('执行下');

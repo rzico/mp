@@ -88,7 +88,7 @@
                     styles: {
                         transform: 'translateX(-' +distance +')',
                     },
-                    duration: 400, //ms
+                    duration: 300, //ms
                     timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
                     needLayout:false,
@@ -119,7 +119,7 @@
                         styles: {
                             transform: 'translateX(-' + leftDistance +')',
                         },
-                        duration: 400, //ms
+                        duration: 300, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
                         needLayout:false,
@@ -147,7 +147,7 @@
                             styles: {
                                 transform: 'translateX(-' + rightDistance +')',
                             },
-                            duration: 400, //ms
+                            duration: 300, //ms
                             timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
                             needLayout:false,

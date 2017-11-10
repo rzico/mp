@@ -309,6 +309,7 @@
 //            event.toast(a);
 //            读取本地缓存
             event.findList(listoption,function (data) {
+                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (item) {
                         _this.messageList.push(JSON.parse(item.value));
@@ -350,7 +351,6 @@
                     let timestamp = Math.round(new Date().getTime()/1000);
 //                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
                     if(sign == 0){
-
                         _weex.data = _weex.data.reverse();
                         for(let i = 0;i<_weex.data.length -1 ;i++){
                             _weex.data[i].name = utils.isNull(_weex.data[i].name) ? '' : _weex.data[i].name;
@@ -367,7 +367,6 @@
                                 }else if(message.type == 'success' && message.content =='更新成功'){
                                     _this.messageList.forEach(function (nowData,nowIndex) {
                                         if(nowData.userId == _weex.data[i].userId){
-
 //                                        删除原来的对话
                                             _this.messageList.splice(nowIndex,1);
 //                                        将新的对话push进
@@ -388,10 +387,9 @@
                             key:_weex.data.userId,
                             value:_weex.data,
                             keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
-                            sort:'0' + timestamp
+                            sort:'0,' + timestamp
                         }
                         event.save(option,function (message) {
-//                            event.toast(message);
                             if(message.type == 'success' && message.content =='保存成功'){
                                 _this.messageList.splice(0,0,_weex.data);
                             }else if(message.type == 'success' && message.content =='更新成功'){
@@ -477,7 +475,6 @@
 //                event.toast(isRead);
                 var _this = this;
 //                event.toast(item);
-
                 if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
                     item.unRead = 0;
                     let timestamp = Math.round(new Date().getTime()/1000);
@@ -497,6 +494,7 @@
 
                 }else{
                     this.chatItem = item;
+                    item.unRead = 0;
 //                    event.toast(this.chatItem);
                     event.navToChat(item.userId);
                 }

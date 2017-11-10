@@ -640,10 +640,10 @@
 
                 this.toSendArticle = true;
                 this.proTotal = _this.paraList.length + 1;
-//                获取设备宽度
-                let devWidth = weex.config.env.deviceWidth;
-//                获取缩略图的宽高
-                _this.proportion = parseInt(155 * devWidth/750);
+////                获取设备宽度
+//                let devWidth = weex.config.env.deviceWidth;
+////                获取缩略图的宽高
+//                _this.proportion = parseInt(155 * devWidth/750);
                 let frontcoverUrl = this.coverImage.substring(0,5);
 //                event.toast(frontcoverUrl);
                 if(frontcoverUrl == 'http:'){
@@ -693,7 +693,7 @@
                         if(data.type == 'success' && data.data != ''){
                             _this.paraList[sendIndex].paraImage = data.data;
                             //                            向后台获取缩略图
-                            _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,_this.proportion,_this.proportion);
+                            _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
                             sendIndex ++ ;
 //                        判断是否最后一张图
                             if(sendIndex < sendLength){
@@ -1135,6 +1135,7 @@
                 let _this = this;
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
+                    event.toast(message);
                     if(message.data != '') {
                         _this.voteList.push(message.data);
                     }
@@ -1147,7 +1148,9 @@
                 storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
+                    event.toast( _this.voteList);
                     if(message.data != '') {
+//                        直接=无法重新渲染页面。需要push后才可以
                         _this.voteList[index] = message.data;
                     }
                 });

@@ -28,13 +28,13 @@
             <text class="templateText" >模版</text>
         </div>
         <!--收藏-->
-        <div class="templateIcon"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && isCollect == 0">
+        <div class="templateIcon"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
             <text class="templateText" style="font-size: 35px;margin-bottom: 5px" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
             <text class="templateText" style="font-size: 24px">收藏</text>
         </div>
         <transition name="slide-fade" mode="out-in">
             <!--模版内容-->
-            <div class="templateBox" v-if="templateChoose"  key="templateContent">
+            <div class="templateBox" v-if="isSelf == 1 && templateChoose"  key="templateContent">
                 <div class="templateBtn">
                     <!--<div class="btnTextBox">-->
                     <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
@@ -64,7 +64,7 @@
             </div>
         </transition>
         <div v-if="isOperation && isSelf == 1">
-            <div style="position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5" @touchstart="maskTouch"></div>
+            <div class="mask" @touchstart="maskTouch"></div>
             <div class="operationBox"  style="width: 230px;">
                 <div class="arrow-up" >
                     <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
@@ -93,26 +93,37 @@
             </div>
         </div>
         <div v-if="isOperation  && isSelf == 0">
-            <div style="position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5" @touchstart="maskTouch"></div>
+            <div class="mask" @touchstart="maskTouch"></div>
             <div class="operationBox"  style="width: 230px;">
                 <div class="arrow-up" >
                     <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
                 </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                     <text class="fz28 pl10">作者主页</text>
                 </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
                     <text class="fz28 pl10">举报</text>
                 </div>
 
             </div>
         </div>
+        <transition name="slide-fade-share" mode="out-in">
+            <div v-if="showShare"  key="share">
+                <!--<div class="mask" @touchstart="maskTouch"></div>-->
+                <share @doCancel="doCancel"></share>
+                <sasa></sasa>
+            </div>
+            <!--模版内容-->
+        </transition>
     </scroller>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .mask{
+        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
+    }
     .laudActive{
         /*color: #F0AD3C;*/
         /*color: darkseagreen;*/
@@ -134,13 +145,24 @@
     .fz45{
         font-size: 50px;
     }
+    .slide-fade-share-enter-active {
+        transition: all .2s ease;
+    }
+    .slide-fade-share-enter{
+        transform: translateY(300px);
+        opacity: 1;
+    }
     /* 可以设置不同的进入和离开动画 */
     /* 设置持续时间和动画函数 */
     .slide-fade-enter-active {
         transition: all .2s ease;
     }
     /*.slide-fade-leave-active {*/
-    /*transition: all .3s ;*/
+        /*transition: all .2s ease;*/
+    /*}*/
+    /*.slide-fade-leave-to{*/
+        /*transform: translateY(300px);*/
+        /*opacity: 1;*/
     /*}*/
     .slide-fade-enter{
         transform: translateY(300px);
@@ -260,6 +282,8 @@
 <script>
     const modal = weex.requireModule('modal');
     import navbar from '../../../include/navbar.vue'
+    import share from '../../../include/share.vue'
+    import sasa from '../../../include/sasa.vue'
     import utils from '../../../assets/utils';
     const event = weex.requireModule('event');
     import { POST, GET } from '../../../assets/fetch'
@@ -278,15 +302,17 @@
                 publish:false,
                 isOperation:false,
                 isSelf:0,
-                isCollect:0,
+                isCollect:false,
                 laudNum:0,
                 shareNum:0,
                 reviewNum:0,
                 isLaud:false,
+                memberId:'',
+                showShare:false
             }
         },
         components: {
-            navbar
+            navbar,share,sasa
         },
         props: {
             title: { default: "预览"},
@@ -297,42 +323,11 @@
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
             var isPublish = utils.getUrlParameter('publish');
-//            GET('weex/article/preview.jhtml?id=' + this.articleId)
-
-            let uId = event.getUId();
-//            判断是否作者本人
-//            if(uId == userId){
-//                this.isSelf = 1;
-//            }else{
-//                this.isSelf = 0;
-//            }
-//            event.toast(isPublish);
             if(isPublish == null){
             }else{
                 this.publish = isPublish;
-//                event.toast(this.publish);
             }
-            if(this.publish == 'false'){
-                this.publish = false;
-                _this.complete = '编辑';
-                _this.title = '预览';
-            }else if(this.publish == 'true' && this.isSelf == 1){
-                this.publish = true;
-                _this.complete = '操作';
-                _this.title = '文章详情';
-            }else if(this.publish == 'true' && this.isSelf == 0){
-                this.publish = true;
-                _this.complete = '· · ·';
-                _this.title = '文章详情';
-            }
-//            获取所有的文章模版
-            GET('weex/member/template/list.jhtml?type=template',function (data) {
-                if(data.type == 'success' && data.data != ''){
-                    _this.templateList = data.data;
-                }
-            },function (err) {
-                event.toast(err.content);
-            })
+
 //            获取该文章的模版
             POST('weex/member/article/template.jhtml?id=' + this.articleId).then(
                 function (data) {
@@ -340,11 +335,6 @@
                         _this.templateId = 't' + data.data;
                         _this.templateSn = data.data;
                         _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
-                        _this.templateList.forEach(function (item) {
-                            if(item.templates.sn == data.data){
-                                _this.templateName = item.name;
-                            }
-                        })
                     }else{
                         event.toast(data.content);
                     }
@@ -353,6 +343,53 @@
                     event.toast(err.content);
                 }
             )
+
+
+            GET('weex/article/preview.jhtml?id=' + this.articleId,function (data) {
+                if( data.type=='success' && data.data != ''){
+                    _this.memberId = data.data.memberId;
+                    _this.reviewNum = data.data.review;
+                    _this.laudNum = data.data.laud;
+                    _this.isLaud = data.data.hasLaud;
+                    _this.isCollect = data.data.hasFavorite;
+                    let uId = event.getUId();
+//            判断是否作者本人
+                    if(uId == _this.memberId){
+                        _this.isSelf = 1;
+                        //获取所有的文章模版
+                        GET('weex/member/template/list.jhtml?type=template',function (data) {
+                            if(data.type == 'success' && data.data != ''){
+                                _this.templateList = data.data;
+                                _this.templateList.forEach(function (item) {
+                                    if(item.templates.sn == data.data){
+                                        _this.templateName = item.name;
+                                    }
+                                })
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        })
+                    }else{
+                        _this.isSelf = 0;
+                    }
+                    if(_this.publish == 'false'){
+                        _this.publish = false;
+                        _this.complete = '编辑';
+                        _this.title = '预览';
+                    }else if(_this.publish == 'true' && _this.isSelf == 1){
+                        _this.publish = true;
+                        _this.complete = '操作';
+                        _this.title = '文章详情';
+                    }else if(_this.publish == 'true' && _this.isSelf == 0){
+                        _this.publish = true;
+                        _this.complete = '· · ·';
+                        _this.title = '文章详情';
+                    }
+                }
+            },function (err) {
+                event.toast(err.content);
+            })
+
         },
         methods:{
 //            点击 图片 更换模版的触发
@@ -371,6 +408,7 @@
 //            点击模版按钮时
             chooseTemplate(){
                 this.templateChoose = !this.templateChoose;
+
             },
 //            点击编辑
             goComplete(){
@@ -406,6 +444,11 @@
 //            触碰遮罩层
             maskTouch(){
                 this.isOperation = false;
+                this.showShare = false;
+            },
+//            取消分享
+            doCancel(){
+                this.showShare = false;
             },
 //            点击返回
             goback(){
@@ -440,7 +483,6 @@
                 if(this.isSelf == 0){
                     if(this.isLaud){
                         this.isLaud = false;
-
                         this.laudNum --;
                     }else{
                         this.laudNum ++;
@@ -453,8 +495,12 @@
             },
 //            分享
             goShare(){
-                event.openURL(utils.locate('view/member/editor/related.js?name=share' ),function (data) {
-                })
+                if(this.isSelf == 0){
+                    this.showShare = true;
+                }else{
+                    event.openURL(utils.locate('view/member/editor/related.js?name=share' ),function (data) {
+                    })
+                }
             },
 //            前往评论
             goReview(){
@@ -464,7 +510,15 @@
 //            收藏文章
             collectArticle(){
                 event.toast('收藏成功');
-                this.isCollect = 1;
+                this.isCollect = true;
+            },
+//            作者主页
+            goAuthor(){
+                event.toast('作者主页');
+            },
+//            举报
+            report(){
+                event.toast('举报');
             }
         }
     }

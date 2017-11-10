@@ -119,7 +119,13 @@ let utilsFunc = {
         // var t = Y + '-' + m + '-' + d;
         return t;
     },
+    //获取缩略图
     thumbnail(url,w,h) {
+        //获取屏幕宽度计算得出比例
+        let proportion = weex.config.env.deviceWidth/750;
+//                获取缩略图的宽高
+        w = parseInt(w * proportion);
+        h = parseInt(h * proportion);
         if (url.substring(0,10) == "http://cdn") {
             return url+"@"+w+"w_"+h+"h_1e_1c_100Q";
         } else {
