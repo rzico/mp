@@ -10,7 +10,7 @@
             </div>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list v-else class="list" :scrollable="canScroll">
+        <list  class="list" :scrollable="canScroll">
             <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新 ...</text>
             </refresh>
@@ -25,7 +25,7 @@
                         <image :src="item.logo" class="friendsImage"></image>
                     </div>
                     <!--有新消息-->
-                    <div class="newMessage" v-if="item.unRead != '' || item.unRead != 0 ">
+                    <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
                         <text class="messageTotal">{{item.unRead}}</text>
                     </div>
                     <div style="flex: 5;">
@@ -167,14 +167,6 @@
                 pageNum:20,
                 chatItem:'',
                 selfUserId:'',
-//                messageList:[]
-//                messageList:[{
-//                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                    friendName:'信徒',
-//                    friendMessage:'怎么不回消息？',
-//                    messageTime:'10:07',
-//                    messageTotal:99
-//                }]
             }
         },
         components: {
@@ -252,23 +244,23 @@
 //                    用户消息没有userId。只有id。
                     e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
 //                  判断是否是本人发送所触发的onmessage
-                    if(_this.selfUserId == e.data.data.userId){
-                        _this.chatItem.createDate = e.data.data.createDate;
-                        _this.chatItem.content = e.data.data.content;
-                        e.data = _this.chatItem;
-                        e.type = 'success';
-                        _this.addMessage(e,1);
-//                        event.toast(e.data);
-                    }else{
+//                    if(_this.selfUserId == e.data.data.userId){
+//                        _this.chatItem.createDate = e.data.data.createDate;
+//                        _this.chatItem.content = e.data.data.content;
+//                        e.data = _this.chatItem;
+//                        e.type = 'success';
+//                        _this.addMessage(e,1);
+////                        event.toast(e.data);
+//                    }else{
                         _this.addMessage(e.data,1);
-                    }
+//                    }
                 }
             });
         },
         methods:{
 //            判断是否有消息
             isEmpty(){
-                return this.sortList.length == 0;
+                return this.messageList.length == 0;
             },
 //            向消息列表填入新的消息数据并存入缓存
             addMessage(_weex,sign){
@@ -309,29 +301,58 @@
                     }else{
                         _weex.data.name = utils.isNull(_weex.data.name) ? '' : _weex.data.name;
 //                        _weex.data.userId = utils.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
-                        let option = {
+                        let findOption = {
                             type:'message',
-                            key:_weex.data.userId,
-                            value:_weex.data,
-                            keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
-                            sort:'0,' + timestamp
+                            key:_weex.data.userId
                         }
-                        event.save(option,function (message) {
-                            if(message.type == 'success' && message.content =='保存成功'){
-                                _this.messageList.splice(0,0,_weex.data);
-                            }else if(message.type == 'success' && message.content =='更新成功'){
-                                _this.messageList.forEach(function (nowData,nowIndex) {
-                                    if(nowData.userId == _weex.data.userId){
+//                        本地查找是已有消息列表还是新消息列表
+                        event.find(findOption,function (data) {
+                            if(data.type == 'success' && data.data != ''){
+                                let storageData = JSON.stringify(data.data.value);
+                                storageData.createDate = _weex.data.createDate;
+                                storageData.content = _weex.data.content;
+                                let option = {
+                                    type:'message',
+                                    key:_weex.data.userId,
+                                    value:storageData,
+                                    keyword:',' + storageData.name + ',' + storageData.nickName + ',' + _weex.data.content +',',
+                                    sort:'0,' + timestamp
+                                }
+                                event.save(option,function (message) {
+                                    if(message.type == 'success' && message.content =='更新成功'){
+                                        _this.messageList.forEach(function (nowData,nowIndex) {
+                                            if(nowData.userId == _weex.data.userId){
 //                                        删除原来的对话
-                                        _this.messageList.splice(nowIndex,1);
+                                                _this.messageList.splice(nowIndex,1);
 //                                        将新的对话push进
-                                        _this.messageList.splice(0,0,_weex.data);
+                                                _this.messageList.splice(0,0,storageData);
+                                            }
+                                        })
+                                    }else{
+                                        event.toast('网络不稳定');
                                     }
                                 })
+
                             }else{
-                                event.toast('网络不稳定');
+                                let option = {
+                                    type:'message',
+                                    key:_weex.data.userId,
+                                    value:_weex.data,
+                                    keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
+                                    sort:'0,' + timestamp
+                                }
+                                event.save(option,function (message) {
+                                    if(message.type == 'success' && message.content =='保存成功'){
+                                        _this.messageList.splice(0,0,_weex.data);
+                                    }else{
+                                        event.toast('网络不稳定');
+                                    }
+                                })
                             }
                         })
+
+
+
 
                     }
 
@@ -422,7 +443,6 @@
                 }else{
                     this.chatItem = item;
                     item.unRead = 0;
-//                    event.toast(this.chatItem);
                     event.navToChat(item.userId);
                 }
             },

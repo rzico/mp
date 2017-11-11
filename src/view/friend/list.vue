@@ -62,7 +62,7 @@
                 <div v-for="item in friend.name"  >
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="goChat(item.id)">
-                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
+                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item,item.id)"></image>
                             <div class="friendsName">
                                 <text class="lineTitle">{{item.nickName}}</text>
                                 <text class="realName">真实姓名:{{item.realName | watchName}}</text>
@@ -425,17 +425,13 @@
             })
 //            获取用户id
             this.userId = event.getUId();
-//            event.toast('1');
-//            event.toast(this.userId);
             _this.hadFriend();
 //            全局监听 消息
 //            globalEvent.addEventListener("onMessage", function (e) {
-
 //                _this.hadFriend();
 //            });
         },
         methods: {
-
 //            有新朋友时，
             hadFriend(){
                 var _this = this;
@@ -443,7 +439,6 @@
 //                获取本地缓存是否有时间戳数据
                 storage.getItem('lastTimestamp' + _this.userId, e => {
 //                    event.toast('lastTimestamp' + _this.userId);
-
 //                     lastTimestamp = e.data == undefined ? '' : e.data;
                     if(e.result == 'success' && !utils.isNull(e.data)){
                         lastTimestamp = e.data;
@@ -451,7 +446,6 @@
                         lastTimestamp = '';
                     }
                     GET('weex/member/friends/list.jhtml?timestamp=' + lastTimestamp ,function (data) {
-
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -476,6 +470,7 @@
                                             }else if(message.type == 'success' && message.content =='更新成功'){
                                                 //现在的会一直弹出更新成功
                                             }else{
+
                                                 event.toast(message.content);
                                             }
                                         })
@@ -486,6 +481,7 @@
                             event.toast('没有数据');
                         }
                     },function (data) {
+
                         event.toast(data.content);
                     })
                 })
@@ -494,9 +490,6 @@
             goAddFriend:function () {
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
 //                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.toast(message.data);
-                    }
                 });
             },
             goback:function () {
@@ -508,9 +501,9 @@
                 event.navToChat(userId);
             },
 //            作者主页
-            goAuthor:function (id) {
-                event.openURL(utils.locate("view/member/author.js"),function (message) {
-
+            goAuthor:function (item,id) {
+//                event.toast(item);
+                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
                 });
             },
             onlongpress :function(count) {
@@ -624,9 +617,7 @@
                     default:
                         break;
                 }
-
             }
-
         }
     }
 </script>

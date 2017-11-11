@@ -1103,7 +1103,6 @@
                 this.showLoading = 'show'
                 setTimeout(() => {
                     _this.listCurrent = _this.listCurrent + 10;
-                    _this.listPageSize = _this.listPageSize + 10;
                     let options = {
                         type:'article',
                         keyword:'',

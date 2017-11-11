@@ -1,38 +1,45 @@
 <template>
-    <scroller show-scrollbar="false" >
-        <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
-            <div class="atricleHead">
-                <text class="articleTitle">{{item.title}}</text>
-            </div>
-            <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                <text class="articleContent">{{item.htmlTag}}</text>
-            </div>
-            <!--文章封面-->
-            <div style="position: relative">
-                <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
-            </div>
-            <!--文章底部-->
-            <div class="articleFoot">
-                <div style="flex-direction: row;align-items: center">
-                    <image :src="item.logo" resize="cover" class="authorImg"></image>
-                    <text class="authorName">{{item.author}}</text>
+    <scroller show-scrollbar="false"  >
+        <div :style="{minHeight:screenHeight + 'px'}"@swipe="onpanmove($event)">
+            <noData :noDataHint="noDataHint" v-if="articleList.length == 0"></noData>
+            <div class="articleBox" v-for="(item,index) in articleList" v-else :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
+                <div class="atricleHead">
+                    <text class="articleTitle">{{item.title}}</text>
                 </div>
-                <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                    <text class="relevantText">{{item.hits}}</text>
-                    <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="relevantText">{{item.laud}}</text>
-                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                    <text class="relevantText">{{item.review}}</text>
+                <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                    <text class="articleContent">{{item.htmlTag}}</text>
+                </div>
+                <!--文章封面-->
+                <div style="position: relative">
+                    <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
+                </div>
+                <!--文章底部-->
+                <div class="articleFoot">
+                    <div style="flex-direction: row;align-items: center">
+                        <image :src="item.logo" resize="cover" class="authorImg"></image>
+                        <text class="authorName">{{item.author}}</text>
+                    </div>
+                    <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                        <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                        <text class="relevantText">{{item.hits}}</text>
+                        <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                        <text class="relevantText">{{item.laud}}</text>
+                        <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                        <text class="relevantText">{{item.review}}</text>
+                    </div>
                 </div>
             </div>
         </div>
         <loading class="loading" @loading="onloading" :display="showLoading">
-            <text class="indicator">Loading ...</text>
+            <text class="indicator">加载中 ...</text>
         </loading>
     </scroller>
 </template>
 <style>
+    .loading{
+        width: 750px;
+        align-items: center;
+    }
     .mt20{
         margin-top: 20px;
     }
@@ -117,13 +124,16 @@
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch';
+    import noData from '../../include/noData.vue';
     export default {
         data(){
             return{
                 showLoading: 'hide',
                 listCurrent:0,
                 pageSize:10,
+                screenHeight:0,
 //                articleList:[]
+
                 articleList:[
 //                    {
 //                            id:1,
@@ -198,16 +208,22 @@
 //                            laud:0
 //                        }
 //                    }
-                    ]
+                ]
             }
+        },
+        components: {
+           noData
         },
         props:{
 //            whichCorpus:{default:0}
+            noDataHint:{default:'暂无文章'},
             articleCategoryId:{default:'0'}
         },
         created(){
             utils.initIconFont();
             var _this = this;
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(216);
             GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize ,function (data) {
                 if(data.type == 'success'){
                     data.data.data.forEach(function (item) {
@@ -215,31 +231,17 @@
                         }else{
                             item.thumbnail = utils.thumbnail(item.thumbnail,750,450);
                         }
-                    })
+                    });
                     _this.articleList = data.data.data;
-//                    data.data.data.forEach(function (dss) {
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                        _this.articleList.push(dss);
-//                    })
                 }
             },function (err) {
                 event.toast(err.content)
             })
-
         },
         methods:{
             goArticle(id){
                 event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {
-                    })
-
+                    function () {})
             },
             onpanmove(e){
                 this.$emit('onpanmove',e.direction);
@@ -252,7 +254,11 @@
                     GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success'){
                             if(utils.isNull(data.data.data)){
-                                event.toast('已经到底了');
+                                if(_this.articleList.length == 0){
+                                    event.toast('该分类暂无文章');
+                                }else{
+                                    event.toast('已经到底了');
+                                }
                             }else{
                                 data.data.data.forEach(function (item) {
                                     _this.articleList.push(item);
@@ -260,9 +266,9 @@
                             }
                         }
                     },function (err) {
-                        event.toast(err.content)
+                        event.toast(err.content);
                     })
-                    this.showLoading = 'hide'
+                    this.showLoading = 'hide';
                 }, 1500)
             }
         }

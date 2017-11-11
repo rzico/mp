@@ -580,7 +580,7 @@
         methods:{
 //            控制进度条
             ctrlProcess(data){
-                this.processWidth = data.data * 5;
+                this.processWidth = parseInt(data.data) * 5;
                 if(this.processWidth == 500){
                     this.currentPro ++ ;
                 }
@@ -650,7 +650,15 @@
 //                    event.toast('1');
                     _this.sendImage(0);
                 }else{
-                    let sendcover = frontcoverUrl == 'file:' ? this.coverImage.substring(7) : this.coverImage;
+//                    modal.toast({message:this.coverImage,duration:3});
+//                    modal.toast({message:'substring后',duration:3});
+//                    event.toast(this.coverImage);
+//                    event.toast('substring后');
+                    var sendcover = frontcoverUrl == 'file:' ? this.coverImage.substring(6) : this.coverImage;
+//                    ios是file:/ 安卓是file://
+                    sendcover = sendcover.substring(0,1) == '/' ? sendcover.substring(1) : sendcover;
+//                    event.toast(sendcover);
+//                    modal.toast({message:sendcover,duration:3});
                     //                将封面上传服务器
                     event.upload(sendcover,function (data) {
                         if(data.type == 'success' && data.data != ''){
@@ -661,6 +669,7 @@
                             _this.sendImage(0);
                         }else{
                             _this.toSendArticle = false;
+                            event.toast('1');
                             event.toast(data.content);
                         }
                     },function (data) {
@@ -688,7 +697,10 @@
                         _this.realSave();
                     }
                 }else{
-                    let sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(7) : _this.paraList[sendIndex].paraImage;//将图片前的file://字符去掉
+//                    let sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(7) : _this.paraList[sendIndex].paraImage;//将图片前的file://字符去掉
+                    var sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(6) :  _this.paraList[sendIndex].paraImage;
+//                    ios是file:/ 安卓是file://
+                    sendparaimg = sendparaimg.substring(0,1) == '/' ? sendparaimg.substring(1) : sendparaimg;
                     event.upload(sendparaimg,function (data) {
                         if(data.type == 'success' && data.data != ''){
                             _this.paraList[sendIndex].paraImage = data.data;
@@ -698,7 +710,7 @@
 //                        判断是否最后一张图
                             if(sendIndex < sendLength){
 //                            回调自己自己
-                                _this.sendImage(sendIndex)
+                                _this.sendImage(sendIndex);
                             }else{//进行上传文章
                                 _this.realSave();
                             }
@@ -707,6 +719,7 @@
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 2;//总的进度
                             _this.processWidth = 0;//进度条宽度
+                            event.toast('2');
                             event.toast(data.content);
                         }
                     },function (data) {

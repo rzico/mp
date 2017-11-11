@@ -175,6 +175,7 @@
                 POST('weex/member/friends/add.jhtml?friendId='+ userId).then(
                     function (weex) {
                         if (weex.type == "success") {
+                            event.toast('请求已发送,请等待对方验证');
                             let backData = utils.message('success','成功','请求已发送,请等待对方验证');
                             event.closeURL(backData);
                         } else {

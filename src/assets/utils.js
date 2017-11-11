@@ -132,6 +132,12 @@ let utilsFunc = {
             return url;
         }
     },
+    //获取全屏的高度尺寸,可传入父组件的导航栏高度进行适配
+    fullScreen(topHeight){
+        //减1是为了能触发loading，不能够高度刚刚好
+        topHeight = topHeight == '' ? 0 : topHeight - 1;
+        return 750/weex.config.env.deviceWidth * weex.config.env.deviceHeight - topHeight;
+    },
     //模糊图片，r , s  为 1-50，超大超模糊
     blur(url,r,s) {
         if (url.substring(0,10) == "http://cdn") {

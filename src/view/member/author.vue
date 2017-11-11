@@ -117,101 +117,35 @@
                 <!--</div>-->
             </div>
             <!--文章模块-->
-            <div >
+            <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @swipe="onpanmove()">
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                         <div class="atricleHead">
                             <!--<text class="articleSign">{{item.articleSign}}</text>-->
                             <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
-                            <text class="articleTitle">{{item.value.title}}</text>
+                            <text class="articleTitle">{{item.title}}</text>
                         </div>
                         <!--文章封面-->
                         <div style="position: relative">
-                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
-                        </div>
-                        <div class="categoryBox">
-                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
+                            <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
                         </div>
                         <!--文章底部-->
                         <div class="articleFoot">
                             <div>
-                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
                                 <text class="articleDate">2017-09-01</text>
+                                <!--<text class="articleDate">{{item.createDate}}</text>-->
                             </div>
-                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                            <div class="relevantInfo">
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.value.hits}}</text>
+                                <text class="relevantText">{{item.hits}}</text>
                                 <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.value.laud}}</text>
+                                <text class="relevantText">{{item.laud}}</text>
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.value.review}}</text>
+                                <text class="relevantText">{{item.review}}</text>
                             </div>
-
-                        </div>
-                    </div>
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @swipe="onpanmove()">
-                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                        <div class="atricleHead">
-                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
-                            <text class="articleTitle">{{item.value.title}}</text>
-                        </div>
-                        <!--文章封面-->
-                        <div style="position: relative">
-                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
-                        </div>
-                        <div class="categoryBox">
-                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
-                        </div>
-                        <!--文章底部-->
-                        <div class="articleFoot">
-                            <div>
-                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
-                                <text class="articleDate">2017-09-01</text>
-                            </div>
-                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.value.hits}}</text>
-                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.value.laud}}</text>
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.value.review}}</text>
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @swipe="onpanmove()">
-                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                        <div class="atricleHead">
-                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
-                            <text class="articleTitle">{{item.value.title}}</text>
-                        </div>
-                        <!--文章封面-->
-                        <div style="position: relative">
-                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
-                        </div>
-                        <div class="categoryBox">
-                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
-                        </div>
-                        <!--文章底部-->
-                        <div class="articleFoot">
-                            <div>
-                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
-                                <text class="articleDate">2017-09-01</text>
-                            </div>
-                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.value.hits}}</text>
-                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.value.laud}}</text>
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.value.review}}</text>
-                            </div>
-
                         </div>
                     </div>
                 </transition-group>
@@ -222,7 +156,7 @@
                 <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
                 <text class="fz35 ml10" >关注</text>
             </div>
-            <div class="bottomBtn " v-else="!isFocus" @click="focus()">
+            <div class="bottomBtn " v-else @click="focus()">
                 <text class="fz35 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
                 <text class="fz35 ml10 gray" >已关注</text>
             </div>
@@ -627,7 +561,6 @@
     export default {
         data:function() {
             return{
-                testaaa:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 settingColor:'white',
                 opacityNum:0,
                 twoTop:false,
@@ -640,9 +573,7 @@
                 isNoArticle:false,
 //                refreshing:false,
 //                refreshState:'',
-                fontName: '&#xe685;',
                 collectNum:0,
-                moneyNum:888.88,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.jpg'),
                 bgImgUrl:utils.locate('resources/images/background.jpg'),
@@ -654,15 +585,15 @@
                 corpusList:[{
                     name:'全部文章',
                     id:''
-                },{
-                    name:'回收站',
-                    id:'99'
                 }],
                 listCurrent:0,
                 listPageSize:10,
 //                全部文章==================
                 articleList: [],
                 isFocus:false,
+                UId:'',
+                screenHeight:'',
+                corpusId:'',
             }
         },
         filters:{
@@ -677,135 +608,96 @@
         created:function () {
             utils.initIconFont();
             var _this = this;
-//            获取用户信息
-            GET('weex/member/attribute.jhtml',function (weex) {
-                if(weex.type == 'success'){
-                    if(!utils.isNull(weex.data.nickName)){
-                        _this.userName = weex.data.nickName;
+            this.UId = utils.getUrlParameter('id');
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(500);
+            GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
+                if(data.type == 'success' && data.data != ''){
+                    if(!utils.isNull(data.data.name)){
+                        _this.userName = data.data.name;
+                    };
+                    if(!utils.isNull(data.data.logo)){
+                        _this.imageUrl = data.data.logo;
+                    };
+                    _this.collectNum = data.data.favorite;
+                    _this.focusNum = data.data.follow;
+                    _this.isFocus = data.data.followed;
+                    _this.corpusList = '';
+                    _this.corpusList =[{
+                        name:'全部文章',
+                        id:''
+                    }];
+//                                将文集名循环插入数组中
+                    for(let i = 0; i<data.data.catalogs.length;i++){
+                        _this.corpusList.splice(1 + i,0,data.data[i]);
                     }
-                    if(!utils.isNull(weex.data.logo)){
-                        _this.imageUrl = weex.data.logo;
-                    }
+
+                    _this.addArticle();
                 }else{
-                    event.toast(weex.content);
+                    event.toast(data.content);
                 }
             },function (err) {
                 event.toast(err.content);
             })
-//            获取文集列表
-            this.getCorpus();
-            let options = {
-                type:'article',
-                keyword:'',
-                orderBy:'desc',
-                current:_this.listCurrent,
-                pageSize:_this.listPageSize,
-            }
-            event.findList(options,function (data) {
-                if( data.type == "success" && data.data != '' ) {
-                    data.data.forEach(function (item) {
-//                        event.toast(item);
-//                    将value json化
-                        item.value = JSON.parse(item.value);
-//                        把读取到的文章push进去文章列表
-                        _this.articleList.push(item);
-                    })
-                }else{
-                    return;
-                }
-            })
+
+
+
         },
         methods: {
-            getCorpus:function () {
-                var _this = this;
-                GET('weex/member/article_catalog/list.jhtml',function (data) {
-                    if (data.type == "success") {
-                        if(data.data == ''){
-                        }else{
-//                            event.toast(data.data);
-                            _this.corpusList = '';
-                            _this.corpusList =[{
-                                name:'全部文章',
-                                id:''
-                            },{
-                                name:'回收站',
-                                id:'99'
-                            }];
-//                                将文集名循环插入数组中
-                            for(let i = 0; i<data.data.length;i++){
-                                _this.corpusList.splice(1 + i,0,data.data[i]);
-                            }
-                            storage.setItem('corpusList',data.data);
-                        }
-                    } else {
-//                        event.toast('文集');
+//            加载文章
+            addArticle:function () {
+                let _this = this;
+//                this.listCurrent = this.listPageSize + this.listCurrent;
+                GET('weex/article/list.jhtml?authorId='+ this.UId + '&articleCatalogId=' + this.corpusId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
+                    if(data.type == 'success' && data.data.data != ''){
+                        data.data.data.forEach(function (item) {
+                            _this.articleList.push(item);
+                        });
+                    }else if(data.type == 'success' && data.data.data == ''){
+                        event.toast('没有文章了');
+                    }else{
                         event.toast(data.content);
                     }
-                },function (err) {
-                    event.toast(err.content);
-                })
+              },function (err) {
+                  event.toast(err.content);
+              })
             },
-            jumpEditor:function (id) {
-                var _this = this;
-                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
-//                    _this.updateArticle();
-                });
-            },
-            jumpDelete:function () {
-                event.toast('文章删除');
-            },
-            jumpTop:function () {
-                event.toast('文章置顶');
-            },
-//            右侧隐藏栏里跳转文集
-            jumpCorpus:function (item) {
-                var _this = this;
-                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id),
-//                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
-                    function (data) {
-                        if(data.type == 'success'){
-                            item.value.articleOption.articleCatalog.id = data.data.corpusId;
-                            item.value.articleOption.articleCatalog.name = data.data.corpusName;
-                            item.value.articleOption.articleCatalog.count = data.data.count;
-                            let resDataStr = JSON.stringify(item.value);
-                            let saveData = {
-                                type:item.type,
-                                key:item.key,
-                                value:resDataStr,
-                                sort:item.sort,
-                                keyword:',[ '+ data.data.corpusId + '],' + item.title + ','
-                            }
-//                            event.toast(saveData);
-//                1是置顶（默认倒序）  keyword ",[1],文章title,"
-                            event.save(saveData,function(data) {
-                                if (data.type == 'success') {
-                                    event.toast('设置成功');
-                                } else {
-                                    event.toast(data.content);
-                                }
-                            })
-                        }
-                    }
-                );
-            },
-//            前往文章
-            goArticle(id,publish,draft){
-//                event.toast(publish);
-                var _this = this;
-                if(draft){
-                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),
-//                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
-                        function () {
-//                    _this.updateArticle();
-                        })
-                }else{
+//            getCorpus:function () {
+//                var _this = this;
+//                GET('weex/member/article_catalog/list.jhtml',function (data) {
+//                    if (data.type == "success") {
+//                        if(data.data == ''){
+//                        }else{
+////                            event.toast(data.data);
+//                            _this.corpusList = '';
+//                            _this.corpusList =[{
+//                                name:'全部文章',
+//                                id:''
+//                            },{
+//                                name:'回收站',
+//                                id:'99'
+//                            }];
+////                                将文集名循环插入数组中
+//                            for(let i = 0; i<data.data.length;i++){
+//                                _this.corpusList.splice(1 + i,0,data.data[i]);
+//                            }
+////                            storage.setItem('corpusList',data.data);
+//                        }
+//                    } else {
+////                        event.toast('文集');
+//                        event.toast(data.content);
+//                    }
+//                },function (err) {
+//                    event.toast(err.content);
+//                })
+//            },
 
-                    event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=' + publish ),
-//                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
+//            前往文章
+            goArticle(id){
+                var _this = this;
+                    event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id + '&publish=true'),
                         function () {
-//                    _this.updateArticle();
                         })
-                }
             },
             jump:function (vueName) {
                 event.toast('will jump');
@@ -813,36 +705,23 @@
             corpusChange:function(index,id){
 //                event.toast(id);
                 var _this = this;
+                if(_this.whichCorpus == index){
+                    return;
+                }
+                _this.corpusId = id;
                 _this.whichCorpus = index;
+                _this.listCurrent = 0;
+                _this.listPageSize = 10;
+                _this.addArticle();
+
 
             },
             onloading(e) {
                 var _this = this;
-                modal.toast({message: '加载中...', duration: 1})
                 this.showLoading = 'show'
                 setTimeout(() => {
                     _this.listCurrent = _this.listCurrent + 10;
-                    _this.listPageSize = _this.listPageSize + 10;
-                    let options = {
-                        type:'article',
-                        keyword:'',
-                        orderBy:'desc',
-                        current:_this.listCurrent ,
-                        pageSize:_this.listPageSize,
-                    }
-                    event.findList(options,function (data) {
-                        if( data.type == "success" && data.data != '' ) {
-                            data.data.forEach(function (item) {
-//                        event.toast(item);
-//                    将value json化
-                                item.value = JSON.parse(item.value);
-//                        把读取到的文章push进去文章列表
-                                _this.articleList.push(item);
-                            })
-                        }else{
-                            event.toast(data.content);
-                        }
-                    })
+                    _this.addArticle();
                     this.showLoading = 'hide'
                 }, 1500)
             },
@@ -966,7 +845,32 @@
             },
 //            关注
             focus:function () {
-                this.isFocus = !this.isFocus;
+                var _this = this;
+                if(this.isFocus){
+                    POST('weex/member/follow/delete.jhtml?authorId=' + this.UId).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.isFocus = !_this.isFocus;
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }else{
+                    POST('weex/member/follow/add.jhtml?authorId=' + this.UId).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.isFocus = !_this.isFocus;
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }
             }
         }
     }

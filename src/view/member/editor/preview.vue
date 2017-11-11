@@ -158,11 +158,11 @@
         transition: all .2s ease;
     }
     /*.slide-fade-leave-active {*/
-        /*transition: all .2s ease;*/
+    /*transition: all .2s ease;*/
     /*}*/
     /*.slide-fade-leave-to{*/
-        /*transform: translateY(300px);*/
-        /*opacity: 1;*/
+    /*transform: translateY(300px);*/
+    /*opacity: 1;*/
     /*}*/
     .slide-fade-enter{
         transform: translateY(300px);
@@ -323,6 +323,7 @@
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
             var isPublish = utils.getUrlParameter('publish');
+//            如果不传就是null
             if(isPublish == null){
             }else{
                 this.publish = isPublish;
@@ -481,12 +482,33 @@
 //            点赞
             goLaud(){
                 if(this.isSelf == 0){
+                    var _this =this;
                     if(this.isLaud){
-                        this.isLaud = false;
-                        this.laudNum --;
+                        POST('weex/member/laud/delete.jhtml?articleId=' + this.articleId).then(
+                            function (data) {
+                                if(data.type == 'success'){
+                                    _this.isLaud = false;
+                                    _this.laudNum --;
+                                }else{
+                                    event.toast(err.content);
+                                }
+                            },function (err) {
+                                event.toast(err.content);
+                            }
+                        )
                     }else{
-                        this.laudNum ++;
-                        this.isLaud = true;
+                        POST('weex/member/laud/add.jhtml?articleId=' + this.articleId).then(
+                            function (data) {
+                                if(data.type == 'success'){
+                                    _this.laudNum ++;
+                                    _this.isLaud = true;
+                                }else{
+                                    event.toast(err.content);
+                                }
+                            },function (err) {
+                                event.toast(err.content);
+                            }
+                        )
                     }
                 }else{
                     event.openURL(utils.locate('view/member/editor/related.js?name=laud'),function (data) {
@@ -509,8 +531,18 @@
             },
 //            收藏文章
             collectArticle(){
-                event.toast('收藏成功');
-                this.isCollect = true;
+                let _this = this;
+                POST('weex/member/favorite/add.jhtml?articleId=' + this.articleId).then(
+                    function (data) {
+                        if(data.type == 'success'){
+                            event.toast('收藏成功');
+                            _this.isCollect = true;
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    }
+                )
             },
 //            作者主页
             goAuthor(){
