@@ -1,12 +1,12 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback" :border="false" :complete="'账单'" @goComplete="deposit"> </navbar>
+        <navbar :title="title" @goback="goback" :border="false" :complete="'收银账单'" @goComplete="deposit"> </navbar>
         <scroller class="scroller">
             <div class="wallet-panel">
                 <text class="balance">1000000.00</text>
                 <div class="wallet-title">
-                    <text class="sub_title">今天收款（元）</text>
-                    <text class="sub_title">昨天收款:29294</text>
+                    <text class="sub_title">今天收银（元）</text>
+                    <text class="sub_title">昨天收银:29294</text>
                 </div>
             </div>
             <div class="fontInput">
@@ -14,24 +14,29 @@
                 <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" value="" @input="onmoney"  />
             </div>
             <div class="buttombox">
-                <div class="btn weixin">
-                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信钱包" @click="weixin()">微信钱包</text>
-                </div>
-                <div class="btn alipay">
-                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
+                <div class="btn ">
+                    <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
                     <text class="btn-text" value="支付宝" @click="weixin()">支付宝</text>
+                </div>
+                <div class="btn ">
+                    <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
+                    <text class="btn-text" value="微信钱包" @click="weixin()">微信钱包</text>
                 </div>
             </div>
             <div class="buttombox">
-                <div class="btn weixin">
-                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信快捷登录" @click="weixin()">微信快捷登录</text>
+                <div class="btn ">
+                    <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
+                    <text class="btn-text" value="会员卡" @click="weixin()">会员卡</text>
                 </div>
-                <div class="btn alipay">
-                    <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信快捷登录" @click="weixin()">微信快捷登录</text>
+                <div class="btn ">
+                    <text class="ico refund" :style="{fontFamily:'iconfont'}">&#xe710;</text>
+                    <text class="btn-text" value="扫码退款" @click="weixin()">扫码退款</text>
                 </div>
+            </div>
+            <div class="content">
+                <text class="sub_title">1.支持微信钱包、支付宝、店内会员卡</text>
+                <text class="sub_title">2.单笔收钱金额不能超过5000元</text>
+                <text class="sub_title">3.快速秒到,超过30秒没到账联系客服处理</text>
             </div>
         </scroller>
     </div>
@@ -53,13 +58,13 @@
 
     .wallet-panel {
         background-color:  #D9141E;
-        height:300px;
+        height:280px;
         flex-direction: column;
         align-items:flex-start;
     }
 
     .balance {
-        margin-top: 40px;
+        margin-top: 30px;
         font-size: 120px;
         color: #fff;
         margin-left:40px;
@@ -101,30 +106,43 @@
         margin-right: 20px;
         margin-top: 10px;
         flex-direction: row;
-        justify-content: center;
-        padding-top: 0px;
+        align-items: center;
         padding-top: 0px;
         height: 80px;
         flex:1;
-        align-items: center;
+        padding-left: 40px;
         border-radius:12px;
+        border-width: 1px;
+        border-color:#ccc;
+        background-color: #eee;
+    }
+    .btn-text {
+        margin-left: 10px;
     }
     .btn:active {
         background-color:#ccc;
     }
     .weixin {
-        background-color:limegreen;
-        border-color:limegreen;
+        color:limegreen;
+        margin-top: 4px;
     }
     .alipay {
-        background-color:#0088fb;
-        border-color:#0088fb;
+        color:#0088fb;
+        margin-top: 4px;
     }
     .card {
-        background-color:#0088fb;
-        border-color:#0088fb;
+        color:red;
+        margin-top: 3px;
+    }
+    .refund {
+        color:sandybrown;
+        margin-top: 4px;
     }
 
+    .content {
+        margin-left: 30px;
+        margin-top: 50px;
+    }
 
 </style>
 <script>
