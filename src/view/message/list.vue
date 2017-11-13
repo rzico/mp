@@ -9,7 +9,7 @@
                 <text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
             </div>
         </div>
-        <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
+        <!--<noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>-->
         <list  class="list" :scrollable="canScroll">
             <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新 ...</text>
@@ -33,7 +33,6 @@
                             <!--名字与内容-->
                             <div class="messageText">
                                 <text class="friendName">{{item | watchName}}</text>
-                                <!--<text class="friendMessage">{{item.content}}</text>-->
                             </div>
                             <!--消息时间-->
                             <div class="messageTimeBox">
@@ -225,6 +224,8 @@
 //            event.toast(a);
 //            读取本地缓存
             event.findList(listoption,function (data) {
+//                event.toast('本地缓存:');
+//                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (item) {
                         _this.messageList.push(JSON.parse(item.value));
@@ -234,7 +235,7 @@
                     event.toast(data.content);
                 }
             })
-            this.hadMessage();
+//            this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
                 event.toast(e);
 //                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
@@ -252,7 +253,7 @@
 //                        _this.addMessage(e,1);
 ////                        event.toast(e.data);
 //                    }else{
-                        _this.addMessage(e.data,1);
+                    _this.addMessage(e.data,1);
 //                    }
                 }
             });
@@ -271,8 +272,10 @@
 //                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
                     if(sign == 0){
                         _weex.data = _weex.data.reverse();
-                        for(let i = 0;i<_weex.data.length -1 ;i++){
+                        for(let i = 0;i<_weex.data.length  ;i++){
                             _weex.data[i].name = utils.isNull(_weex.data[i].name) ? '' : _weex.data[i].name;
+
+                            _weex.data[i] = JSON.stringify(_weex.data[i]);
                             let option = {
                                 type:'message',
                                 key:_weex.data[i].userId,
@@ -280,6 +283,7 @@
                                 keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
                                 sort:'0' + timestamp
                             }
+                            event.toast('1');
                             event.save(option,function (message) {
                                 if(message.type == 'success' && message.content =='保存成功'){
                                     _this.messageList.splice(0,0,_weex.data[i]);
@@ -288,6 +292,8 @@
                                         if(nowData.userId == _weex.data[i].userId){
 //                                        删除原来的对话
                                             _this.messageList.splice(nowIndex,1);
+//                                                json字符串再次转换回来
+                                            _weex.data[i] = JSON.parse(_weex.data[i]);
 //                                        将新的对话push进
                                             _this.messageList.splice(0,0,_weex.data[i]);
                                         }
@@ -300,7 +306,7 @@
 
                     }else{
                         _weex.data.name = utils.isNull(_weex.data.name) ? '' : _weex.data.name;
-//                        _weex.data.userId = utils.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
+                        _weex.data.userId = utils.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
                         let findOption = {
                             type:'message',
                             key:_weex.data.userId
@@ -308,9 +314,10 @@
 //                        本地查找是已有消息列表还是新消息列表
                         event.find(findOption,function (data) {
                             if(data.type == 'success' && data.data != ''){
-                                let storageData = JSON.stringify(data.data.value);
+                                var storageData = JSON.parse(data.data.value);
                                 storageData.createDate = _weex.data.createDate;
                                 storageData.content = _weex.data.content;
+                                storageData = JSON.stringify(storageData);
                                 let option = {
                                     type:'message',
                                     key:_weex.data.userId,
@@ -318,14 +325,21 @@
                                     keyword:',' + storageData.name + ',' + storageData.nickName + ',' + _weex.data.content +',',
                                     sort:'0,' + timestamp
                                 }
+                                event.toast('2');
                                 event.save(option,function (message) {
                                     if(message.type == 'success' && message.content =='更新成功'){
                                         _this.messageList.forEach(function (nowData,nowIndex) {
+//                                            存入缓存里的userId 会消失掉
+                                            nowData.userId = utils.isNull(nowData.userId) ? 'u' + parseInt(10200 + nowData.id) : nowData.userId;
                                             if(nowData.userId == _weex.data.userId){
 //                                        删除原来的对话
                                                 _this.messageList.splice(nowIndex,1);
+//                                                json字符串再次转换回来
+                                                 storageData = JSON.parse(storageData);
 //                                        将新的对话push进
                                                 _this.messageList.splice(0,0,storageData);
+                                            }else{
+                                                event.toast('网络不稳定');
                                             }
                                         })
                                     }else{
@@ -334,6 +348,7 @@
                                 })
 
                             }else{
+                                event.toast('3');
                                 let option = {
                                     type:'message',
                                     key:_weex.data.userId,
@@ -396,6 +411,7 @@
                 var _this = this;
                 GET('weex/member/message/dialogue.jhtml',function (_weex) {
 //            向消息列表填入新的消息数据并存入缓存
+//                     读取服务器上的数据；
                     _this.addMessage(_weex,0);
                 },function (err) {
                     event.toast("网络不稳定");
@@ -422,7 +438,7 @@
 //                event.toast(messageType);
 //                event.toast(isRead);
                 var _this = this;
-//                event.toast(item);
+                event.toast(item);
                 if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
                     item.unRead = 0;
                     let timestamp = Math.round(new Date().getTime()/1000);
