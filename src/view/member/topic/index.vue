@@ -127,7 +127,7 @@
     }
 
     .tip {
-        background-color:lightgoldenrodyellow;
+        background-color:#FFBE00;
         padding-bottom: 20px;
     }
 
