@@ -38,7 +38,7 @@
         font-family: Verdana, Geneva, sans-serif;
         font-size: 34px;
         line-height: 34px;
-        color: #FFFFFF!important;
+        color: #FFFFFF;
     }
 
 </style>
