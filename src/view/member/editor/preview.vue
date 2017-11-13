@@ -113,7 +113,6 @@
             <div v-if="showShare"  key="share">
                 <!--<div class="mask" @touchstart="maskTouch"></div>-->
                 <share @doCancel="doCancel"></share>
-                <sasa></sasa>
             </div>
             <!--模版内容-->
         </transition>
@@ -291,7 +290,6 @@
     const modal = weex.requireModule('modal');
     import navbar from '../../../include/navbar.vue'
     import share from '../../../include/share.vue'
-    import sasa from '../../../include/sasa.vue'
     import utils from '../../../assets/utils';
     const event = weex.requireModule('event');
     import { POST, GET } from '../../../assets/fetch'
@@ -320,7 +318,7 @@
             }
         },
         components: {
-            navbar,share,sasa
+            navbar,share
         },
         props: {
             title: { default: "预览"},

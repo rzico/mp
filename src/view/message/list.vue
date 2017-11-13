@@ -283,7 +283,7 @@
                                 keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
                                 sort:'0' + timestamp
                             }
-                            event.toast('1');
+//                            event.toast('1');
                             event.save(option,function (message) {
                                 if(message.type == 'success' && message.content =='保存成功'){
                                     _this.messageList.splice(0,0,_weex.data[i]);
@@ -325,7 +325,7 @@
                                     keyword:',' + storageData.name + ',' + storageData.nickName + ',' + _weex.data.content +',',
                                     sort:'0,' + timestamp
                                 }
-                                event.toast('2');
+//                                event.toast('2');
                                 event.save(option,function (message) {
                                     if(message.type == 'success' && message.content =='更新成功'){
                                         _this.messageList.forEach(function (nowData,nowIndex) {
@@ -348,7 +348,7 @@
                                 })
 
                             }else{
-                                event.toast('3');
+//                                event.toast('3');
                                 let option = {
                                     type:'message',
                                     key:_weex.data.userId,
