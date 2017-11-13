@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+    <div class="header" :class="[border==true?'' : 'cb']">
         <div class="nav_back" @click="goback('/')">
             <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
@@ -11,6 +11,9 @@
  </template>
 <style lang="less" src="../style/wx.less"/>
 <style scoped>
+    .cb {
+        border-bottom-width: 0px;
+    }
     .nav_back {
         margin-top: 40px;
         flex-direction: row;
@@ -35,7 +38,7 @@
         font-family: Verdana, Geneva, sans-serif;
         font-size: 34px;
         line-height: 34px;
-        color: #FFFFFF;
+        color: #FFFFFF!important;
     }
 
 </style>
@@ -44,7 +47,8 @@
         props: {
             title: { default: "navbar" },
             complete:{default:''},
-            showComplete:{default:true}
+            showComplete:{default:true},
+            border:{default:true}
         },
         methods: {
             goback: function (e) {
