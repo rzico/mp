@@ -460,6 +460,7 @@
                                             keyword:',' + friend.name + ',' +friend.nickName + ',' + friend.md5 + ',',
                                             sort:item.letter + ',' + timestamp
                                         }
+
                                         event.save(option,function (message) {
 //                                            event.toast(message);
                                             if(message.type == 'success' && message.content =='保存成功'){

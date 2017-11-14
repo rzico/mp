@@ -5,7 +5,7 @@
         <!--网页-->
         <web class="webView" :src="webUrl"></web>
         <!--下一步-->
-        <div class="footBox" v-if="!publish" @click="goOption()">
+        <div class="footBox" v-if="!publish"  @click="goOption()">
             <text class="nextStep">下一步</text>
         </div>
         <!--点赞 评论 分享-->
@@ -29,8 +29,8 @@
         </div>
         <!--收藏-->
         <div class="templateIcon"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
-            <text class="templateText" style="font-size: 35px;margin-bottom: 5px" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
-            <text class="templateText" style="font-size: 24px">收藏</text>
+            <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+            <text class="templateText collectText" >收藏</text>
         </div>
         <transition name="slide-fade" mode="out-in">
             <!--模版内容-->
@@ -113,7 +113,6 @@
             <div v-if="showShare"  key="share">
                 <!--<div class="mask" @touchstart="maskTouch"></div>-->
                 <share @doCancel="doCancel"></share>
-                <sasa></sasa>
             </div>
             <!--模版内容-->
         </transition>
@@ -121,6 +120,12 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .collectText{
+        font-size: 24px;line-height:24px;
+    }
+    .collectIcon{
+        font-size: 35px;line-height: 35px;margin-bottom: 2px;
+    }
     .mask{
         position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
     }
@@ -140,10 +145,12 @@
     }
     .fz26fff{
         font-size: 26px;
+        line-height: 26px;
         color: #fff;
     }
     .fz45{
         font-size: 50px;
+        line-height:50px;
     }
     .slide-fade-share-enter-active {
         transition: all .2s ease;
@@ -283,7 +290,6 @@
     const modal = weex.requireModule('modal');
     import navbar from '../../../include/navbar.vue'
     import share from '../../../include/share.vue'
-    import sasa from '../../../include/sasa.vue'
     import utils from '../../../assets/utils';
     const event = weex.requireModule('event');
     import { POST, GET } from '../../../assets/fetch'
@@ -312,7 +318,7 @@
             }
         },
         components: {
-            navbar,share,sasa
+            navbar,share
         },
         props: {
             title: { default: "预览"},

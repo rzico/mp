@@ -68,7 +68,6 @@ Vue.filter('timefmt', function (value) {
     }else{
         return y + '年' + m + '月' + d+ '日';
     }
-    // return value;
 })
 
 

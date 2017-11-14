@@ -200,7 +200,7 @@
             </div>
         </div>
         <!--</div>-->
-        <loading class="loading" @loading="onloading" :display="showLoading">
+        <loading class="loading" @loading="onloading"  :display="showLoading">
             <text class="indicator">Loading ...</text>
         </loading>
     </scroller>
@@ -209,7 +209,7 @@
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
     .categoryBox{
-        position: absolute;background-color: #888;left: 650px;bottom: 100px;opacity: 0.4;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
+        position: absolute;background-color: rgba(136,136,136,0.1);left: 650px;bottom: 100px;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
     }
     .categoryText{
         color: #fff;
@@ -736,7 +736,7 @@
             event.findList(options,function (data) {
                 if( data.type == "success" && data.data != '' ) {
                     data.data.forEach(function (item) {
-//                        event.toast(item);
+                        event.toast(item);
 //                    将value json化
                         item.value = JSON.parse(item.value);
 //                        把读取到的文章push进去文章列表
