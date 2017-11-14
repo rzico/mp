@@ -157,7 +157,7 @@
         created() {
             utils.initIconFont();
             this.open();
-            event.toast(this.logo)
+//            event.toast(this.logo)
         },
         methods: {
             potting:function () {
@@ -214,7 +214,7 @@
 //                            _this.original = data.data.originalPath
 //                            上传原图
                             event.upload(data.data.originalPath,function (data) {
-                                event.toast(data);
+//                                event.toast(data);
                                 if (data.type == 'success' && data.data != '') {
 //                            修改后访问修改专栏信息接口
                                     POST('weex/member/update.jhtml?logo=' + data.data).then(
