@@ -12,7 +12,7 @@
     .textarea {
         font-size: 32px;
         width: 750px;
-        height: 750px;
+        height: 400px;
         padding-top: 20px;
         padding-bottom: 20px;
         padding-left: 20px;
@@ -54,7 +54,7 @@
                 console.log('oninput:', event.value);
                 this.text = event.value
             },
-            back: function () {
+            goback: function () {
                 event.closeURL()
             },
             goComplete:function (e) {
