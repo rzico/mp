@@ -235,9 +235,7 @@
                 };
                 threedata = JSON.stringify(threedata);
                 storage.setItem('threenumber', threedata,e=>{
-                    event.openURL('http://192.168.2.241:8081/bank3.weex.js?name=threenumber', function (message) {
-
-
+                    event.openURL('view/member/bank/bindThirdSteps.js?name=threenumber', function (message) {
                     })
                 });
 

@@ -204,9 +204,10 @@
                     true,function (data) {
                         event.toast(data);
                         if(data.type == 'success') {
-                            _this.logo =  'file:/'+data.data.thumbnailSmallPath;
+                            _this.logo =  data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
-                            _this.original =  'file:/'+data.data.originalPath
+                            _this.original = data.data.originalPath
+
                         }
             })
             },

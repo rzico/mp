@@ -22,7 +22,7 @@
     const storage = weex.requireModule('storage');
     var stream = weex.requireModule('stream');
     var event = weex.requireModule('event');
-
+    import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue';
     import mobile from '../../../include/mobile.vue';
 
@@ -44,29 +44,36 @@
         },
         methods: {
             onSend: function (e) {
-                return stream.fetch({
-                    method: 'POST',
-                    type: 'json',
-                    url: '/weex/login/send_mobile.jhtml?mobile=' + this.value
-                }, function (weex) {
-                    if (weex.ok) {
-                        if (weex.data.type == "success") {
-                           event.openUrl({
-                               url:"file://login/captcha.js"
-                           });
-                        } else {
-                            native.showToast(weex.data.content);
-                        }
-                    } else {
-                        modal.toast({message:"网络不稳定请重试"});
-                    }
-                })
+                var _this = this;
+                event.encrypt(this.value, function (message){
+                    if (message.type == "success") {
+//                        event.toast(message)
+                    POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
+                        function (weex) {
+//                            event.toast('weex/login/send_mobile.jhtml?mobile=' + _this.value)
+                            if (weex.type == "success") {
+                                event.openURL('view/member/mobile/captcha.js', function () {
+
+                                })
+                                event.closeURL();
+                            } else {
+                                native.showToast(weex.data.content);
+                            }
+
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                }
+            })
             },
             goBack:function(e) {
                 event.closeUrl();
             },
             onChange: function (e) {
-                modal.toast({message:this.value});
+                var _this = this;
+//                modal.toast({message:this.value});
+//                event.toast(e);
+                _this.value = e
             }
         }
     }

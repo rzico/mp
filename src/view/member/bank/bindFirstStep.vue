@@ -213,7 +213,7 @@
                 };
                 twodata = JSON.stringify(twodata);
                 storage.setItem('twonumber', twodata,e=> {
-                    event.openURL('http://192.168.2.241:8081/bank2.weex.js?name=twonumber', function (message) {
+                    event.openURL('view/member/bank/bindSecondSteps.js?name=twonumber', function (message) {
 
                     })
                 });

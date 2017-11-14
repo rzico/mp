@@ -79,6 +79,7 @@
         height:400px;
         flex-direction: column;
         align-items:flex-start;
+
     }
 
     .balance {
@@ -109,11 +110,11 @@
                 event.closeURL();
             },
             cashCard:function (e) {
-                event.openURL('http://192.168.2.241:8081/withdrawal.weex.js', function () {
+                event.openURL('view/member/wallet/withdrawal.js', function () {
                 })
             },
             bindingCard:function (e) {
-                event.openURL('http://192.168.2.241:8081/bank.weex.js', function () {
+                event.openURL('view/member/bank/bindFirstStep.js', function () {
                 })
             },
             setup: function (e) {

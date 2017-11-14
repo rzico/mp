@@ -32,7 +32,6 @@
                     <text class="text">中国建设银行</text>
 
                     <text class="text1">尾号3333 储蓄卡  </text>
-
                 </div>
             </div>
             <div class="left">
@@ -106,7 +105,7 @@
                 event.closeURL()
             },
             goComplete:function (e) {
-                event.openURL('http://192.168.2.241:8081/bank.weex.js', function () {
+                event.openURL('view/member/bank/bindFirstStep.js', function () {
 
                 })
             }
