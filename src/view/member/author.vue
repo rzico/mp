@@ -38,7 +38,7 @@
                 <scroller scroll-direction="horizontal" class="corpusScroll">
                     <div class="articleClass">
                         <div v-for="(item,index) in corpusList">
-                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
                         </div>
                     </div>
                 </scroller>
@@ -88,16 +88,6 @@
             </div>
         </div>
         <div >
-            <!--<div v-if="isAllArticle" v-cloak >-->
-            <!--<div>-->
-            <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
-            <!--</div>-->
-            <!--全部文章、回收站栏-->
-            <!--<div class="articleClass">-->
-            <!--<text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>-->
-            <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
-            <!--</div>-->
-            <!--<div  class="corpusBox"  :class = "[isTop  ? 'posFixed' : 'posRelative']">-->
             <div  class="corpusBox"  >
                 <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
@@ -106,16 +96,6 @@
                         </div>
                     </div>
                 </scroller>
-                <!--<div class="corpusIconBox" @click="goCorpus()"  >-->
-                <!--<text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>-->
-                <!--</div>-->
-                <!--文集前后白色遮罩层-->
-                <!--<div class="blur leftBlur" >-->
-                <!--<image src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" style="width: 20px;height:79px;"></image>-->
-                <!--</div>-->
-                <!--<div class="blur rightBlur"  >-->
-                <!--<image :src="testaaa" style="width: 20px;height:79px;"></image>-->
-                <!--</div>-->
             </div>
             <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
             <!--文章模块-->

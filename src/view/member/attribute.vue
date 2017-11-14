@@ -213,7 +213,8 @@
 //                    data.data里存放的是用户选取的图片路
 //                            _this.original = data.data.originalPath
 //                            上传原图
-                            event.upload( _this.original,function (data) {
+                            event.upload(data.data.originalPath,function (data) {
+                                event.toast(data);
                                 if (data.type == 'success' && data.data != '') {
 //                            修改后访问修改专栏信息接口
                                     POST('weex/member/update.jhtml?logo=' + data.data).then(

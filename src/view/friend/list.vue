@@ -402,32 +402,7 @@
         created(){
             var _this = this;
             utils.initIconFont();
-            let listoption = {
-                type:'friend',//类型
-                keyword:'',//关键址
-                orderBy:'desc',//"desc"降序 ,"asc"升序
-                current:0,
-                pageSize:20,
-            }
-//            读取本地缓存
-            event.findList(listoption,function (data) {
-                event.toast(data);
-                if(data.type == 'success'){
-                    data.data.forEach(function (friend) {
-                          let jsonData = JSON.parse(friend.value);
-//                          获取首字母
-                          let firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
-                        _this.friendsList.forEach(function (item) {
-                            if(item.letter == firstLetter){
-                                item.name.push(jsonData);
-                            }
-                        })
-                    })
-                    _this.friendTotal = data.data.length;
-                }else{
-                    event.toast(data.content);
-                }
-            })
+
 //            获取用户id
             this.UId = event.getUId();
             _this.hadFriend();
@@ -437,6 +412,36 @@
 //            });
         },
         methods: {
+            storageFriend(){
+                let _this = this;
+                let listoption = {
+                    type:'friend',//类型
+                    keyword:'',//关键址
+                    orderBy:'desc',//"desc"降序 ,"asc"升序
+                    current:0,
+                    pageSize:20,
+                }
+//            读取本地缓存
+                event.findList(listoption,function (data) {
+                    if(data.type == 'success'){
+                        data.data.forEach(function (friend) {
+                            let jsonData = JSON.parse(friend.value);
+//                          获取首字母
+                            let firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
+                            _this.friendsList.forEach(function (item) {
+                                if(item.letter == firstLetter){
+                                    item.name.push(jsonData);
+                                }
+                            })
+                        })
+                        _this.friendTotal = data.data.length;
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+            },
+
+
 //            有新朋友时，
             hadFriend(){
                 var _this = this;
@@ -450,8 +455,8 @@
                     }else{
                         lastTimestamp = '';
                     }
-//                    + '&timeStamp=' + lastTimestamp
-                    GET('weex/member/friends/list.jhtml?status=adopt' ,function (data) {
+
+                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + lastTimestamp ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -465,7 +470,7 @@
                                             value:friend,
                                             keyword:',' + friend.name + ',' +friend.nickName + ',' + friend.md5 + ',',
                                             sort:item.letter + ',' + timestamp
-                                        }
+                                        };
 
                                         event.save(option,function (message) {
                                             event.toast(message);
@@ -476,19 +481,21 @@
                                                 storage.setItem('lastTimestamp' + _this.UId, timestamp);
                                             }else if(message.type == 'success' && message.content =='更新成功'){
                                                 //现在的会一直弹出更新成功
+//                                            将本次时间戳缓存起来
+                                                storage.setItem('lastTimestamp' + _this.UId, timestamp);
                                             }else{
 
                                                 event.toast(message.content);
-                                            }
-                                        })
-                                    }
-                                })
+                                            };
+                                        });
+                                    };
+                                });
+                                _this.storageFriend();
                             })
                         }else{
-                            event.toast('没有数据');
+                            _this.storageFriend();
                         }
                     },function (data) {
-
                         event.toast(data.content);
                     })
                 })
