@@ -5,7 +5,7 @@
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <div class="addFriendsBorder" v-for="item in userList" @click="goAuthor()">
+            <div class="addFriendsBorder" v-for="(item,index) in userList" @click="goAuthor()">
                 <div class="friendsLine" >
                     <image :src="item.logo" class="friendsImage"></image>
                     <div class="friendsName">
@@ -13,14 +13,14 @@
                         <text class="realName">{{item.sign}}</text>
                     </div>
                 </div>
-                <div class="status_panel" @click="doCancel()" v-if="isSelf">
-                    <text class="ask " v-if="item.status == 'adopt'" >已关注</text>
+                <div class="status_panel" @click="doCancel(item,index)" v-if="isSelf">
+                    <text class="ask " v-if="item.follow && !item.followed" >已关注</text>
                     <text class="ask  "v-else>互相关注</text>
                 </div>
-                <!--<div class="status_panel" @click="doFocus()" v-else="">-->
-                    <!--<text class="ask " v-if="item.status == 'adopt'" >已关注</text>-->
-                    <!--<text class="ask  "v-else>互相关注</text>-->
-                <!--</div>-->
+                <div class="status_panel" @click="doCancel(item,index)" v-else="">
+                    <text class="ask " v-if="item.follow" >已关注</text>
+                    <text class="focus bkg-primary"  v-else>关注</text>
+                </div>
             </div>
 
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
@@ -78,7 +78,18 @@
         flex:1.5;
         padding-right: 20px;
     }
-
+    .focus{
+        font-size: 26px;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius:10px;
+        width: 125px;
+        color:#fff;
+        border-color: #fff;
+        border-style: solid;
+        border-width: 1px;
+    }
     .ask {
         font-size: 26px;
         text-align: center;
@@ -145,18 +156,72 @@
                 event.toast('作者主页');
             },
 //            取消关注
-            doCancel(){
-                modal.confirm({
-                    message: '确定要取消关注?',
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                    duration: 0.3
-                }, function (value) {
-                    if(value == '确定'){
-                        //    将内容删掉
-                        event.toast('取消成功');
+            doCancel(item,index){
+                let _this = this;
+//                判断是我的关注还是作者的关注
+                if(this.isSelf){
+                    modal.confirm({
+                        message: '确定要取消关注?',
+                        okTitle:'确定',
+                        cancelTitle:'取消',
+                        duration: 0.3
+                    }, function (value) {
+                        if(value == '确定'){
+                            //    将内容删掉
+                            POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
+                                function(data){
+                                    if(data.type == 'success'){
+                                        _this.userList.splice(index,1);
+                                    }else{
+                                        event.toast(err.content);
+                                    }
+                                },
+                                function(err){
+                                    event.toast(err.content);
+                                }
+                            )
+                        }
+                    })
+                }else{
+                    if(item.follow){
+                        modal.confirm({
+                            message: '确定要取消关注?',
+                            okTitle:'确定',
+                            cancelTitle:'取消',
+                            duration: 0.3
+                        }, function (value) {
+                            if(value == '确定'){
+                                event.toast('weex/member/follow/delete.jhtml?authorId=' + item.id);
+                                POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
+                                    function(data){
+                                        if(data.type == 'success'){
+                                            item.follow = false;
+                                        }else{
+                                            event.toast(err.content);
+                                        }
+                                    },
+                                    function(err){
+                                        event.toast(err.content);
+                                    }
+                                )
+                            }
+                        })
+                    }else{
+                        POST('weex/member/follow/add.jhtml?authorId=' + item.id).then(
+                            function(data){
+                                if(data.type == 'success'){
+                                    item.follow = true;
+                                }else{
+                                    event.toast(err.content);
+                                }
+                            },
+                            function(err){
+                                event.toast(err.content);
+                            }
+                        )
                     }
-                })
+                }
+
             },
             onrefresh:function () {
                 var _this = this;

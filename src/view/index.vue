@@ -101,7 +101,8 @@
                                 .then(
                                     function(data) {
                                         if (data.type == "success") {
-                                            event.closeURL();
+//                                            event.closeURL();
+                                            event.activityResult();
                                         } else {
                                             event.toast(data.content);
                                         }
@@ -121,12 +122,14 @@
                 event.openURL(utils.locate('view/login/index.js'),
                     function (data) {
                         if (data!=null && data.type=='success') {
-                            event.closeURL();
+//                            event.closeURL();
+                            event.activityResult();
                         }
                     })
             },
             goback: function (e) {
-                event.closeURL();
+//                event.closeURL();
+                event.activityCancel();
             }
         }
     }

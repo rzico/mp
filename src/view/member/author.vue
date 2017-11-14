@@ -28,7 +28,11 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <div style="position: fixed;top: 63px;right: 30px;" @click="goManage()">
+            <div class="backMenu" style="left: 0px;" @click="goback()">
+                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:38px;">&#xe669;</text>
+            </div>
+            <!--导航栏设置-->
+            <div class="backMenu" style="right: 0px;" @click="goManage()">
                 <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe60e;</text>
             </div>
             <!--绑定动画-->
@@ -158,6 +162,10 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .backMenu{
+        position: fixed;top: 40px;height: 96px;width: 96px;align-items: center;justify-content: center;
+    }
+
     .bottomBtn{
         flex:1;
         align-items: center;
@@ -802,6 +810,9 @@
             },
             onpanmove:function () {
                 return;
+            },
+            goback(){
+              event.closeURL();
             },
 //            关注
             focus:function () {

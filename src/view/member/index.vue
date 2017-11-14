@@ -741,7 +741,7 @@
             event.findList(options,function (data) {
                 if( data.type == "success" && data.data != '' ) {
                     data.data.forEach(function (item) {
-                        event.toast(item);
+//                        event.toast(item);
 //                    将value json化
                         item.value = JSON.parse(item.value);
 //                        把读取到的文章push进去文章列表
