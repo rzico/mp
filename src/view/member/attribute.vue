@@ -156,14 +156,18 @@
         created() {
             utils.initIconFont();
             this.open();
+            event.toast(this.logo)
         },
         methods: {
+            potting:function () {
+
+            },
             goback: function (e) {
                 event.closeURL();
             },
             profession: function () {
                 var _this = this;
-                event.openURL('http://192.168.2.241:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
+                event.openURL('http://192.168.2.202:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
                     if(data.type == 'success' && data.data != '') {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
@@ -202,11 +206,32 @@
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
                     true,function (data) {
-                        event.toast(data);
+//                        event.toast(data);
                         if(data.type == 'success') {
-                            _this.logo =  data.data.thumbnailSmallPath;
+                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
                             _this.original = data.data.originalPath
+//                            上传原图
+                            event.upload( _this.original,function (data) {
+                                if (data.type == 'success' && data.data != '') {
+//                            修改后访问修改专栏信息接口
+                                    POST('weex/member/update.jhtml?logo=' + data.data).then(
+                                        function (mes) {
+                                            if (mes.type == "success") {
+
+//                                    event.toast(data);
+                                            } else {
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            event.toast("网络不稳定");
+                                        }
+                                    )
+//
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            })
 
                         }
             })
@@ -237,7 +262,7 @@
                 };
                 textData = JSON.stringify(textData);
                 storage.setItem('oneNumber', textData,e=>{
-                event.openURL('http://192.168.2.241:8081/autograph.weex.js?name=oneNumber', function (message) {
+                event.openURL('http://192.168.2.202:8081/autograph.weex.js?name=oneNumber', function (message) {
                     if(message.data != ''){
                         _this.autograph = message.data.text;
                     }
@@ -247,6 +272,7 @@
             updateStatus: function (attr) {
                 var _this = this;
                 _this.logo = attr.logo;
+                event.toast(_this.logo)
                 _this.nickName = attr.nickName;
                 if (attr.autograph!=null && attr.autograph!="") {
                     _this.autograph = attr.autograph;
@@ -268,7 +294,7 @@
                 } else {
                     _this.bindMobile = "未绑定";
                 }
-                event.toast(_this.attribute);
+//                event.toast(_this.attribute);
                 if (attr.bindWeiXin!=null && attr.bindWeiXin==true) {
                     _this.bindWeiXin = "已绑定";
                 } else {
