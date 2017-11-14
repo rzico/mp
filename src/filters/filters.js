@@ -119,6 +119,18 @@ Vue.filter('monthfmt', function (value) {
     return date.getYear()+"年"+date.getMonth()+"月";
 })
 
+//2017-01-01
+Vue.filter('datefmt', function (value) {
+    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+    value = value + '';
+    if(value.length == 10){
+        value = parseInt(value) * 1000;
+    }else{
+        value = parseInt(value);
+    }
+    // 返回处理后的值
+    return date.getYear()+"年"+date.getMonth()+"月"+date.getDay()+"日";
+})
 
 //返回月份 7 8 9 单数字
 Vue.filter('detailMonth', function (value) {

@@ -9,7 +9,7 @@
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
                     <div class="flex-row flex-start">
-                        <text class="title" >{{deposit.createDate | monthfmt}}</text>
+                        <text class="title" >{{deposit.create_date | monthfmt}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"   >查看账单</text>
@@ -20,13 +20,13 @@
                     <div class="cell-panel newHeight"  :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
-                                   :src="deposit.logo">
+                                   src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
                             </image>
                         </div>
                         <div class="content flex5">
                             <text class="title lines-ellipsis">{{deposit.memo}}</text>
                             <div class="flex-row space-between align-bottom">
-                                <text class="datetime">{{deposit.createDate | datetimefmt}}</text>
+                                <text class="datetime">{{deposit.create_date | datetimefmt}}</text>
                                 <text class="money">{{deposit.amount | currencyfmt}}</text>
                             </div>
                         </div>
@@ -40,7 +40,7 @@
     </div>
 
 </template>
-<style lang="less" src="../../../style/wx.less"/>
+<style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .newHeight{
         height: 130px;
@@ -81,11 +81,11 @@
 
 </style>
 <script>
-    import { POST, GET } from '../../../assets/fetch'
-    import utils from '../../../assets/utils'
-    var event = weex.requireModule('event')
-    import navbar from '../../../include/navbar.vue'
-    import filters from '../../../filters/filters.js'
+    const modal = weex.requireModule('modal')
+    var navigator = weex.requireModule('navigator')
+    import navbar from '../../include/navbar.vue'
+    var stream = weex.requireModule('stream')
+    import filters from '../../filters/filters.js'
 
     var pageNumber = 1;
     export default {
@@ -94,8 +94,6 @@
                 depositList:[],
                 refreshing: false,
                 showLoading: 'hide',
-                pageStart:0,
-                pageSize:20
             }
         },
         components: {
@@ -135,45 +133,48 @@
                 return true;
             },
             goback: function (e) {
-                event.closeURL();
-            },
-            open (pageStart) {
-                this.pageStart = pageStart;
-                var _this = this;
-                GET('weex/member/deposit/list.jhtml?pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
-                   if (res.type=="success") {
-                       if (res.data.pageStart==0) {
-                          _this.depositList = res.data.data;
-                       } else {
-                           data.data.data.forEach(function (item) {
-                               _this.depositList.push(item);
-                           })
-                       }
-                       _this.pageStart = res.data.pageStart+res.data.data.length;
-                       _this.pageSize = res.data.pageSize;
-                       _this.showLoading = 'hide';
-                       _this.refreshing = false;
-                   } else {
-                       _this.showLoading = 'hide';
-                       _this.refreshing = false;
-                       event.toast(err.content);
-                   }
-                }, function (err) {
-                    _this.showLoading = 'hide';
-                    _this.refreshing = false;
-                    event.toast(err.content);
+                navigator.pop({
+                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
+                    animated: "true"
                 })
+            },
+            setup: function (e) {
+                toPage(e);
+            },
+            open (pageNumber,callback) {
+                return stream.fetch({
+                    method: 'GET',
+                    type: 'json',
+                    url: 'http://www.rzico.com/applet/member/wallet/bill.jhtml?begin_date=2017-01-01%2000:00:00&end_date=2018-01-01%2000:00:00&pageNumber=' + pageNumber +'&pageSize=10'
+                }, callback)
             },
 //            上拉加载
             onloading (event) {
-                this.showLoading = 'show';
-                this.open(this.pageStart);
+                pageNumber ++ ;
+                modal.toast({ message: '加载中...', duration: 0.5 })
+                this.showLoading = 'show'
+                this.open(pageNumber, res => {
+                    if(res.data.message.type == 'success'){
+                        this.depositList = this.depositList.concat(res.data.data);
+                    }else{
+                        modal.toast({ message: '系统繁忙', duration: 1 })
+                    }
+                    this.showLoading = 'hide'
+                })
             },
 //            下拉刷新
             onrefresh (event) {
-                this.pageStart = 0;
-                this.refreshing = true;
-                this.open(this.pageStart);
+                pageNumber = 1;
+                modal.toast({ message: '加载中...', duration: 1 })
+                this.refreshing = true
+                this.open(pageNumber, res => {
+                    if(res.data.message.type == 'success'){
+                        this.depositList = res.data.data;
+                    }else{
+                        modal.toast({ message: '系统繁忙', duration: 1 })
+                    }
+                    this.refreshing = false
+                })
             },
 //            获取月份
             getDate: function(value) {
@@ -182,9 +183,19 @@
                 return m;
             }
         },
-        created () {
+        created:function () {
 //              页面创建时请求数据
-            this.open(0);
+            this.open( pageNumber,res => {
+                if(res.data.message.type == 'success'){
+                    this.depositList = res.data.data;
+                    modal.toast({message:res.data.data,duration:3});
+                }else{
+                    modal.alert({
+                        message: '系统繁忙',
+                        duration: 0.3
+                    })
+                }
+            });
         }
     }
 </script>

@@ -1,17 +1,28 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback" :border="false" :complete="'收银账单'" @goComplete="deposit"> </navbar>
+        <div class="header cb" @click="goback()">
+            <div style="flex-direction: row;margin-top: 40px;height: 96px;align-items: center;flex: 1;">
+                <div class="flex-center flex3" >
+                    <image class="logo" :src="cashier.logo" ></image>
+                    <text class="title">土楼雄风</text>
+                </div>
+                <div class="flex-end flex2">
+                    <text class="scan" :style="{fontFamily:'iconfont'}"  @click="scan()">&#xe607;</text>
+                    <text class="add" :style="{fontFamily:'iconfont'}"  @click="scan()">&#xe62a;</text>
+                </div>
+            </div>
+        </div>
         <scroller class="scroller">
             <div class="wallet-panel">
-                <text class="balance">1000000.00</text>
+                <text class="balance">{{cashier.today | currencyfmt}}</text>
                 <div class="wallet-title">
                     <text class="sub_title">今天收银（元）</text>
-                    <text class="sub_title">昨天收银:29294</text>
+                    <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
                 </div>
             </div>
             <div class="fontInput">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
-                <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" value="" @input="onmoney"  />
+                <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" v-model="amount" />
             </div>
             <div class="buttombox">
                 <div class="btn ">
@@ -44,6 +55,40 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .search_box {
+        flex-direction: row;
+        align-items: center;
+    }
+    .title {
+        font-size: 32px;
+        line-height: 60px;
+        color:white;
+    }
+    .logo {
+        height:55px;
+        width:55px;
+        border-radius:6px;
+    }
+    .scan {
+        font-size: 36px;
+        line-height: 60px;
+        height:60px;
+        width:60px;
+        color:white;
+        margin-right: 30px;
+    }
+    .add {
+        font-size: 40px;
+        line-height: 60px;
+        height:60px;
+        width:60px;
+        color:white;
+        margin-right: 20px;
+    }
+
+    .cb {
+        border-bottom-width: 0px!important;
+    }
 
     .wallet-title {
         width: 620px;
@@ -88,6 +133,7 @@
         font-size: 80px;
     }
     .input{
+        margin-left:10px;
         width: 600px;
         height: 100px;
         font-size:50px;
@@ -146,17 +192,40 @@
 
 </style>
 <script>
-    var navigator = weex.requireModule('navigator')
-    var event = weex.requireModule('event')
-    import navbar from '../../include/navbar.vue'
+    import { POST, GET } from '../../assets/fetch'
+    import utils from '../../assets/utils'
+    import filters from '../../filters/filters.js'
+    const event = weex.requireModule('event');
     export default {
+        data() {
+            return {
+                cashier:{today:0,yesterday:0,shopId:""},
+                shopId:"",
+                amount:"",
+            }
+        },
         components: {
-            navbar
         },
         props: {
             title: { default: "收银台" }
         },
+        created() {
+            this.view();
+        },
         methods: {
+            view:function () {
+                GET("weex/member/cashier/view.jhtml",function (res) {
+                   event.toast(res);
+                   if (res.type=="success") {
+                       cashier = res.data;
+                       shopId = res.data.shopId;
+                   } else {
+                       event.toast(res.message);
+                   }
+                },function (err) {
+                   event.toast(err.message);
+                });
+            },
             goback: function (e) {
                 event.closeURL();
             },
