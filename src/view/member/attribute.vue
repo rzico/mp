@@ -143,7 +143,8 @@
                 autograph:"",
                 gender:"保密",
                 birthday:"",
-                logo: utils.locate("logo.png"),
+//                logo: utils.locate("logo.png"),
+                logo:'',
                 nickName:"未登录",
                 areaName:"未设置",
                 occupation:"未设置",
@@ -208,9 +209,9 @@
                     true,function (data) {
 //                        event.toast(data);
                         if(data.type == 'success') {
-                            _this.logo = data.data.thumbnailSmallPath;
+//                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
-                            _this.original = data.data.originalPath
+//                            _this.original = data.data.originalPath
 //                            上传原图
                             event.upload( _this.original,function (data) {
                                 if (data.type == 'success' && data.data != '') {
@@ -218,7 +219,8 @@
                                     POST('weex/member/update.jhtml?logo=' + data.data).then(
                                         function (mes) {
                                             if (mes.type == "success") {
-
+//                                                将服务器上的路径写入页面中
+                                                _this.logo = data.data;
 //                                    event.toast(data);
                                             } else {
                                                 event.toast(mes.content);
@@ -272,7 +274,7 @@
             updateStatus: function (attr) {
                 var _this = this;
                 _this.logo = attr.logo;
-                event.toast(_this.logo)
+                event.toast(_this.logo);
                 _this.nickName = attr.nickName;
                 if (attr.autograph!=null && attr.autograph!="") {
                     _this.autograph = attr.autograph;

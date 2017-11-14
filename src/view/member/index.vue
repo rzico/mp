@@ -127,7 +127,7 @@
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
                     <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                        <div class="atricleHead">
+                        <div class="atricleHead" >
                             <!--<text class="articleSign">{{item.articleSign}}</text>-->
                             <text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>
                             <text class="articleTitle">{{item.value.title}}</text>
@@ -633,7 +633,7 @@
                 imageUrl:utils.locate('resources/images/background.jpg'),
                 bgImgUrl:utils.locate('resources/images/background.jpg'),
 //                maskUrl:utils.locate('resources/images/frosted.png'),
-                id:'334',
+//                id:'334',
                 showLoading: 'hide',
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
 
@@ -670,6 +670,7 @@
                     articleCoverUrl:utils.locate('resources/images/help.jpg'),
                     articleDate:'2017-10-19'
                 }],
+                UId:''
             }
         },
         filters:{
@@ -705,18 +706,22 @@
         },
         created:function () {
             utils.initIconFont();
+            this.UId = event.getUId();
             var _this = this;
 //            获取用户信息
-            GET('weex/member/attribute.jhtml',function (weex) {
-                if(weex.type == 'success'){
-                    if(!utils.isNull(weex.data.nickName)){
-                        _this.userName = weex.data.nickName;
+            GET('weex/member/view.jhtml',function (data) {
+                if(data.type == 'success'){
+                    if(!utils.isNull(data.data.nickName)){
+                        _this.userName = data.data.nickName;
                     }
-                    if(!utils.isNull(weex.data.logo)){
-                        _this.imageUrl = weex.data.logo;
+                    if(!utils.isNull(data.data.logo)){
+                        _this.imageUrl = data.data.logo;
                     }
+                    _this.collectNum = data.data.favorite;
+                    _this.focusNum = data.data.follow;
+                    _this.moneyNum = data.data.balance;
                 }else{
-                    event.toast(weex.content);
+                    event.toast(data.content);
                 }
             },function (err) {
                 event.toast(err.content);
@@ -922,9 +927,9 @@
 //                    return true;
 //                }
 //            },
+
 //            前往文章
             goArticle(id,publish,draft){
-//                event.toast(publish);
                 var _this = this;
                 if(draft){
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),
@@ -1206,7 +1211,7 @@
             },
 //            我的关注
             goFocus(){
-                event.openURL(utils.locate('view/member/focus.js'),
+                event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
                     function (data) {
                         return ;
                     }
@@ -1214,7 +1219,7 @@
             },
 //            我的收藏
             goCollect(){
-                event.openURL(utils.locate('view/member/collect.js'),
+                event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
                     function (data) {
                         return ;
                     }

@@ -4,13 +4,13 @@
         <div class="header">
             <!--顶部导航-->
             <div class="nav">
-                <div style="width: 50px;" >
+                <div style="width: 100px;" >
                 </div>
                 <!--页面名称-->
                 <div class="userBox" >
                     <text class=" nav_title">{{pageName}}</text>
                 </div>
-                <div style="width: 50px;" @click="goAddFriend()">
+                <div class="rightTop" @click="goAddFriend()" >
                     <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
                 </div>
             </div>
@@ -96,6 +96,9 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .rightTop{
+        height: 96px;width: 100px;align-items: center;justify-content: center;
+    }
     .nav_ico {
         font-size: 38px;
         color: #fff;
@@ -282,7 +285,7 @@
                 showText:'',
                 isPress:false,
                 friendTotal:0,
-                userId:0,
+                UId:'',
 //                topLineList:[{
 //                    lineImage:'&#xe631;',
 //                    lineTitle:'新的朋友'
@@ -403,10 +406,12 @@
                 type:'friend',//类型
                 keyword:'',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
+                current:0,
+                pageSize:20,
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
-//                event.toast(data);
+                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (friend) {
                           let jsonData = JSON.parse(friend.value);
@@ -424,7 +429,7 @@
                 }
             })
 //            获取用户id
-            this.userId = event.getUId();
+            this.UId = event.getUId();
             _this.hadFriend();
 //            全局监听 消息
 //            globalEvent.addEventListener("onMessage", function (e) {
@@ -437,15 +442,16 @@
                 var _this = this;
                 let lastTimestamp;
 //                获取本地缓存是否有时间戳数据
-                storage.getItem('lastTimestamp' + _this.userId, e => {
-//                    event.toast('lastTimestamp' + _this.userId);
+                storage.getItem('lastTimestamp' + _this.UId, e => {
+//                    event.toast('lastTimestamp' + _this.UId);
 //                     lastTimestamp = e.data == undefined ? '' : e.data;
                     if(e.result == 'success' && !utils.isNull(e.data)){
                         lastTimestamp = e.data;
                     }else{
                         lastTimestamp = '';
                     }
-                    GET('weex/member/friends/list.jhtml?timestamp=' + lastTimestamp ,function (data) {
+//                    + '&timeStamp=' + lastTimestamp
+                    GET('weex/member/friends/list.jhtml?status=adopt' ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -462,12 +468,12 @@
                                         }
 
                                         event.save(option,function (message) {
-//                                            event.toast(message);
+                                            event.toast(message);
                                             if(message.type == 'success' && message.content =='保存成功'){
                                                 item.name.push(friend);
                                                 _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
-                                                storage.setItem('lastTimestamp' + _this.userId, timestamp);
+                                                storage.setItem('lastTimestamp' + _this.UId, timestamp);
                                             }else if(message.type == 'success' && message.content =='更新成功'){
                                                 //现在的会一直弹出更新成功
                                             }else{
@@ -592,25 +598,25 @@
             openPage(index){
                 switch(index){
                     case 0:
-                      event.openURL(utils.locate('view/friend/new.js'),function (message) {
+                      event.openURL(utils.locate('view/friend/new.js?id='+ this.UId),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });
                         break;
                     case 1:
-                        event.openURL(utils.locate('view/member/focus.js'),function (message) {
+                        event.openURL(utils.locate('view/member/focus.js?id='+ this.UId),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });
                         break;
                     case 2:
-                        event.openURL(utils.locate('view/friend/fans.js'),function (message) {
+                        event.openURL(utils.locate('view/friend/fans.js?id='+ this.UId),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });
                         break;
                     case 3:
-                        event.openURL(utils.locate('view/member/collect.js'),function (message) {
+                        event.openURL(utils.locate('view/member/collect.js?id='+ this.UId),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });

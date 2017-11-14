@@ -1,4 +1,3 @@
-
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
         <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
@@ -38,11 +37,13 @@
             <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
                 <scroller scroll-direction="horizontal" class="corpusScroll">
                     <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                        <div v-for="(item,index) in corpusList">
+                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                        </div>
                     </div>
                 </scroller>
                 <!--<div class="corpusIconBox"  @click="goCorpus()">-->
-                    <!--<text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe60e;</text>-->
+                <!--<text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe60e;</text>-->
                 <!--</div>-->
                 <!--文集前后白色遮罩层-->
                 <!--<div class="blur leftBlur"></div>-->
@@ -69,21 +70,20 @@
             </div>
             <!--功能按钮-->
             <div class="topBtnBox">
-                <div class="topBtnSmallBox " style="min-width: 120px" @click="goCollect()">
-                    <text class="topBtn topBtnBigFont">{{collectNum}}</text>
-                    <text class=" topBtn " >收藏</text>
+                <div class="topBtnSmallBox " style="min-width: 120px" @click="goFocus()">
+                    <text class="topBtn topBtnBigFont">{{focusNum}}</text>
+                    <text class=" topBtn " >关注</text>
                 </div>
-                <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
+                <div class="topBtnSmallBox "  @click="goCollect()">
                     <!--钱包两边的白色边框-->
                     <div  class="leftBtnBorder topBtnBorder" ></div>
-                    <!--<div  class="rightBtnBorder topBtnBorder" ></div>-->
-                    <div class="moneyFormat">
-                    </div>
-                    <text class="topBtn" ></text>
+                    <div  class="rightBtnBorder topBtnBorder" ></div>
+                    <text class="topBtn topBtnBigFont">{{collectNum}}</text>
+                    <text class="topBtn">收藏</text>
                 </div>
-                <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFocus()">
-                    <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                    <text class="topBtn">关注</text>
+                <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFans()">
+                    <text class="topBtn topBtnBigFont">{{fansNum}}</text>
+                    <text class="topBtn">粉丝</text>
                 </div>
             </div>
         </div>
@@ -101,12 +101,13 @@
             <div  class="corpusBox"  >
                 <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
-
+                        <div v-for="(item,index) in corpusList">
+                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                        </div>
                     </div>
                 </scroller>
                 <!--<div class="corpusIconBox" @click="goCorpus()"  >-->
-                    <!--<text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>-->
+                <!--<text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>-->
                 <!--</div>-->
                 <!--文集前后白色遮罩层-->
                 <!--<div class="blur leftBlur" >-->
@@ -116,8 +117,9 @@
                 <!--<image :src="testaaa" style="width: 20px;height:79px;"></image>-->
                 <!--</div>-->
             </div>
+            <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
             <!--文章模块-->
-            <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
+            <div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
@@ -421,7 +423,7 @@
         line-height: 80px;
     }
     .wrapper{
-        background-color: #f4f4f4;
+        background-color: #eee;
     }
     [v-cloak] {
         display: none;
@@ -496,6 +498,7 @@
         justify-content: space-around;
     }
     .topBtnSmallBox{
+        flex: 1;
         height:80px;
         justify-content: center;
         align-items: center;
@@ -554,6 +557,7 @@
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
     import filters from '../../filters/filters.js'
+    import noData from '../../include/noData.vue';
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -574,27 +578,28 @@
 //                refreshing:false,
 //                refreshState:'',
                 collectNum:0,
+                fansNum:0,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.jpg'),
                 bgImgUrl:utils.locate('resources/images/background.jpg'),
 //                maskUrl:utils.locate('resources/images/frosted.png'),
-                id:'334',
                 showLoading: 'hide',
-//                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-
                 corpusList:[{
                     name:'全部文章',
                     id:''
                 }],
                 listCurrent:0,
                 listPageSize:10,
-//                全部文章==================
+//                全部文章
                 articleList: [],
                 isFocus:false,
                 UId:'',
                 screenHeight:'',
                 corpusId:'',
             }
+        },
+        components: {
+            noData
         },
         filters:{
             watchCatetory:function (value) {
@@ -609,8 +614,9 @@
             utils.initIconFont();
             var _this = this;
             this.UId = utils.getUrlParameter('id');
+//            this.UId = 5;
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(500);
+            this.screenHeight = utils.fullScreen(500) + 1300;
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     if(!utils.isNull(data.data.name)){
@@ -622,16 +628,11 @@
                     _this.collectNum = data.data.favorite;
                     _this.focusNum = data.data.follow;
                     _this.isFocus = data.data.followed;
-                    _this.corpusList = '';
-                    _this.corpusList =[{
-                        name:'全部文章',
-                        id:''
-                    }];
+                    _this.fansNum = data.data.fans;
 //                                将文集名循环插入数组中
-                    for(let i = 0; i<data.data.catalogs.length;i++){
-                        _this.corpusList.splice(1 + i,0,data.data[i]);
+                    for(let i = 0; i < data.data.catalogs.length;i++){
+                        _this.corpusList.splice(1 + i,0,data.data.catalogs[i]);
                     }
-
                     _this.addArticle();
                 }else{
                     event.toast(data.content);
@@ -639,11 +640,15 @@
             },function (err) {
                 event.toast(err.content);
             })
-
-
-
+        },
+        props:{
+            noDataHint:{default:'暂无文章'}
         },
         methods: {
+//            判断是否有消息
+            isEmpty(){
+                return this.articleList.length == 0;
+            },
 //            加载文章
             addArticle:function () {
                 let _this = this;
@@ -651,53 +656,29 @@
                 GET('weex/article/list.jhtml?authorId='+ this.UId + '&articleCatalogId=' + this.corpusId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
                     if(data.type == 'success' && data.data.data != ''){
                         data.data.data.forEach(function (item) {
+                            if(utils.isNull(item.thumbnail)){
+                            }else{
+                                item.thumbnail = utils.thumbnail(item.thumbnail,690,300);
+                            }
                             _this.articleList.push(item);
                         });
-                    }else if(data.type == 'success' && data.data.data == ''){
-                        event.toast('没有文章了');
-                    }else{
+                    }
+//                    else if(data.type == 'success' && data.data.data == ''){
+//                        event.toast('没有文章了');
+//                    }
+                    else{
                         event.toast(data.content);
                     }
-              },function (err) {
-                  event.toast(err.content);
-              })
+                },function (err) {
+                    event.toast(err.content);
+                })
             },
-//            getCorpus:function () {
-//                var _this = this;
-//                GET('weex/member/article_catalog/list.jhtml',function (data) {
-//                    if (data.type == "success") {
-//                        if(data.data == ''){
-//                        }else{
-////                            event.toast(data.data);
-//                            _this.corpusList = '';
-//                            _this.corpusList =[{
-//                                name:'全部文章',
-//                                id:''
-//                            },{
-//                                name:'回收站',
-//                                id:'99'
-//                            }];
-////                                将文集名循环插入数组中
-//                            for(let i = 0; i<data.data.length;i++){
-//                                _this.corpusList.splice(1 + i,0,data.data[i]);
-//                            }
-////                            storage.setItem('corpusList',data.data);
-//                        }
-//                    } else {
-////                        event.toast('文集');
-//                        event.toast(data.content);
-//                    }
-//                },function (err) {
-//                    event.toast(err.content);
-//                })
-//            },
-
 //            前往文章
             goArticle(id){
                 var _this = this;
-                    event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id + '&publish=true'),
-                        function () {
-                        })
+                event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id + '&publish=true'),
+                    function () {
+                    })
             },
             jump:function (vueName) {
                 event.toast('will jump');
@@ -708,13 +689,12 @@
                 if(_this.whichCorpus == index){
                     return;
                 }
+                _this.articleList = [];
                 _this.corpusId = id;
                 _this.whichCorpus = index;
                 _this.listCurrent = 0;
                 _this.listPageSize = 10;
                 _this.addArticle();
-
-
             },
             onloading(e) {
                 var _this = this;
@@ -786,7 +766,7 @@
             },
 //            我的关注
             goFocus(){
-                event.openURL(utils.locate('view/member/focus.js'),
+                event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
                     function (data) {
                         return ;
                     }
@@ -794,15 +774,15 @@
             },
 //            我的收藏
             goCollect(){
-                event.openURL(utils.locate('view/member/collect.js'),
+                event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
                     function (data) {
                         return ;
                     }
                 );
             },
-//            钱包
-            goWallet(){
-                event.openURL(utils.locate('view/member/wallet/index.js'),
+//            粉丝
+            goFans(){
+                event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId),
                     function (data) {
                         return ;
                     }
@@ -875,6 +855,7 @@
         }
     }
 </script>
+
 
 
 

@@ -70,6 +70,28 @@ Vue.filter('timefmt', function (value) {
     }
 })
 
+// 时间格式化  2017-09-01
+Vue.filter('timeDatefmt', function (value) {
+    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+    value = value + '';
+    if(value.length == 10){
+        value = parseInt(value) * 1000;
+    }else{
+        value = parseInt(value);
+    }
+    let    date = new Date(value);
+    let    tody = new Date();
+    let    y = date.getFullYear();
+    let    m = date.getMonth() + 1;
+    let    d = date.getDate();
+    if (m < 10) {
+        m = '0' + m;
+    }
+    if (d < 10) {
+        d = '0' + d;
+    }
+        return y + '-' + m + '-' + d;
+})
 
 //月份格式化 本月 上月 2..12月  2016年1月..
 Vue.filter('monthfmt', function (value) {

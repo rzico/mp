@@ -1,20 +1,33 @@
 <template>
-    <scroller style="background-color: #fff">
+    <div>
         <navbar :title="title" @goback="goback" > </navbar>
-        <div class="addFriendsBorder" v-for="item in userList" @click="goAuthor()">
-            <div class="friendsLine" >
-                <image :src="item.logo" class="friendsImage"></image>
-                <div class="friendsName">
-                    <text class="lineTitle ">{{item.nickName}}</text>
-                    <text class="realName">{{item.sign}}</text>
+        <scroller style="background-color: #fff">
+            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">{{refreshState}}</text>
+            </refresh>
+            <div class="addFriendsBorder" v-for="item in userList" @click="goAuthor()">
+                <div class="friendsLine" >
+                    <image :src="item.logo" class="friendsImage"></image>
+                    <div class="friendsName">
+                        <text class="lineTitle ">{{item.nickName}}</text>
+                        <text class="realName">{{item.sign}}</text>
+                    </div>
                 </div>
+                <div class="status_panel" @click="doCancel()" v-if="isSelf">
+                    <text class="ask " v-if="item.status == 'adopt'" >已关注</text>
+                    <text class="ask  "v-else>互相关注</text>
+                </div>
+                <!--<div class="status_panel" @click="doFocus()" v-else="">-->
+                    <!--<text class="ask " v-if="item.status == 'adopt'" >已关注</text>-->
+                    <!--<text class="ask  "v-else>互相关注</text>-->
+                <!--</div>-->
             </div>
-            <div class="status_panel" @click="doCancel()">
-                <text class="ask " v-if="item.status == 'adopt'" >已关注</text>
-                <text class="ask  "v-else>互相关注</text>
-            </div>
-        </div>
-    </scroller>
+
+            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
+                <text class="indicator">加载中...</text>
+            </loading>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
@@ -83,6 +96,9 @@
     import navbar from '../../include/navbar.vue';
     const event = weex.requireModule('event');
     const modal = weex.requireModule('modal');
+    import { POST, GET } from '../../assets/fetch';
+    import utils from '../../assets/utils';
+    import filters from '../../filters/filters.js';
     export default {
         components: {
             navbar
@@ -92,20 +108,33 @@
         },
         data(){
             return{
-                userList:[{
-                    logo:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg',
-                    nickName:'独自听风',
-                    sign:'春夏秋冬，读书喝茶，只闻花香，羡慕煞人',
-                    id:3,
-                    status:'adopt'
-                },{
-                    logo:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg',
-                    nickName:'素心',
-                    sign:'"一花一世纪，遗影一乾坤"',
-                    id:3,
-                    status:'adoptt'
-                }]
+                userList:[],
+                refreshing:false,
+                showLoading:false,
+                listCurrent:0,
+                pageSize:15,
+                UId:'',
+                refreshState:'',
+                isSelf:false
             }
+        },
+        created(){
+            this.UId = utils.getUrlParameter('id');
+            let selfId = event.getUId();
+            if(this.UId == selfId){
+                this.isSelf = true;
+            }
+            let _this = this;
+            event.toast('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize);
+            GET('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                if(data.type == 'success' && data.data.data != '' ){
+                    _this.userList = data.data.data;
+                }else{
+                    event.toast(data.content);
+                }
+            },function (err) {
+                event.toast(err.content);
+            })
         },
         methods:{
             goback(){
@@ -128,7 +157,38 @@
                         event.toast('取消成功');
                     }
                 })
-            }
+            },
+            onrefresh:function () {
+                var _this = this;
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 50)
+            },
+            onloading:function () {
+                var _this = this;
+                _this.showLoading = true;
+//                _this.loadingState = "正在加载数据";
+                setTimeout(() => {
+                    this.listCurrent = this.listCurrent + this.pageSize;
+                    GET('weex/follow/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                        if(data.type == 'success' && data.data.data != '' ){
+                            data.data.data.foreach(function (item) {
+                                _this.userList.push(item);
+                            })
+                        }else if(data.type == 'success' && data.data.data == '' ){
+                            event.toast('已经到底了');
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+
+
+                    _this.showLoading = false;
+                }, 1500)
+            },
 
         }
     }

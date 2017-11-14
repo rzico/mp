@@ -654,28 +654,28 @@
 //                    modal.toast({message:'substring后',duration:3});
 //                    event.toast(this.coverImage);
 //                    event.toast('substring后');
+
+
                     var sendcover = frontcoverUrl == 'file:' ? this.coverImage.substring(6) : this.coverImage;
 //                    ios是file:/ 安卓是file://
                     sendcover = sendcover.substring(0,1) == '/' ? sendcover.substring(1) : sendcover;
+
+
 //                    event.toast(sendcover);
 //                    modal.toast({message:sendcover,duration:3});
                     //                将封面上传服务器
                     event.upload(sendcover,function (data) {
                         if(data.type == 'success' && data.data != ''){
                             //这边会由于避免重复渲染而需要再次向服务器上传该图片
-//                            _this.coverImage = data.data;
                             _this.serveCover = data.data;
 //                        上传段落图片
                             _this.sendImage(0);
                         }else{
                             _this.toSendArticle = false;
-                            event.toast('1');
                             event.toast(data.content);
                         }
                     },function (data) {
                         _this.ctrlProcess(data);
-//                    _this.setTitle = data.data;
-//                    event.toast(data);
                     })
                 }
 

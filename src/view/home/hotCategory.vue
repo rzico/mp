@@ -15,7 +15,7 @@
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
-                    <div style="flex-direction: row;align-items: center">
+                    <div style="flex-direction: row;align-items: center" @click="goAuthor(item)">
                         <image :src="item.logo" resize="cover" class="authorImg"></image>
                         <text class="authorName">{{item.author}}</text>
                     </div>
@@ -86,7 +86,7 @@
         width: 60px;height: 60px;border-radius: 30px;
     }
     .articleCover {
-        height: 450px;
+        height: 375px;
         /*width:690px;*/
         width:750px;
         /*border-radius: 5px;*/
@@ -229,7 +229,7 @@
                     data.data.data.forEach(function (item) {
                         if(utils.isNull(item.thumbnail)){
                         }else{
-                            item.thumbnail = utils.thumbnail(item.thumbnail,750,450);
+                            item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
                         }
                     });
                     _this.articleList = data.data.data;
@@ -239,9 +239,17 @@
             })
         },
         methods:{
+//            前往作者专栏
+            goAuthor(item){
+                let id = 5;
+                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                });
+//                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
+            },
             goArticle(id){
                 event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {})
+                    function () {}
+                    )
             },
             onpanmove(e){
                 this.$emit('onpanmove',e.direction);

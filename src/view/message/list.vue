@@ -1,15 +1,29 @@
 <template>
     <div class="wrapper">
+        <!--<div class="header">-->
+            <!--<div class="flex-center flex1"></div>-->
+            <!--<div class="nav flex4">-->
+                <!--<text class="nav_title">消息</text>-->
+            <!--</div>-->
+            <!--<div class="flex-center flex1" @click="menu()">-->
+                <!--<text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="header">
-            <div class="flex-center flex1"></div>
-            <div class="nav flex4">
-                <text class="nav_title">消息</text>
-            </div>
-            <div class="flex-center flex1" @click="menu()">
-                <text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+            <!--顶部导航-->
+            <div class="nav">
+                <div style="width: 100px;" >
+                </div>
+                <!--页面名称-->
+                <div class="userBox" >
+                    <text class=" nav_title">{{pageName}}</text>
+                </div>
+                <div class="rightTop" @click="menu()" >
+                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe618;</text>
+                </div>
             </div>
         </div>
-        <!--<noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>-->
+        <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" :scrollable="canScroll">
             <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新 ...</text>
@@ -51,27 +65,60 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style>
+
+    .rightTop{
+        height: 96px;width: 100px;align-items: center;justify-content: center;
+    }
+    .nav_ico {
+        font-size: 38px;
+        color: #fff;
+    }
+    .userBox{
+        flex-direction: row;
+        align-items: center;
+    }
+    .nav{
+        margin-top: 40px;
+        flex-direction: row;
+        height: 96px;
+        width: 750px;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+    /*顶部导航栏*/
+    .header {
+        flex-direction: row;
+        background-color: #D9141E;
+        /*background-color: #fff;*/
+        left: 0;
+        right: 0;
+        top:0;
+        height: 136px;
+    }
+
     .deleteText{
         font-size: 32px;color: #fff;
     }
     .deleteBox{
         position: absolute;right: 0px;top: 0px;height: 130px;align-items: center;width: 130px;justify-content: center;background-color: red;
     }
-    .nav {
-        flex:1;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        margin-top: 40px;
-    }
-    .menu {
-        margin-top: 40px;
-        font-size: 50px;
-        line-height: 60px;
-        height:60px;
-        width:60px;
-        color:white;
-    }
+    /*.nav {*/
+        /*flex:1;*/
+        /*flex-direction: row;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        /*margin-top: 40px;*/
+    /*}*/
+    /*.menu {*/
+        /*margin-top: 40px;*/
+        /*font-size: 50px;*/
+        /*line-height: 60px;*/
+        /*height:60px;*/
+        /*width:60px;*/
+        /*color:white;*/
+    /*}*/
     .messageTotal{
         background-color: red;
         line-height: 38px;
@@ -166,6 +213,7 @@
                 pageNum:20,
                 chatItem:'',
                 selfUserId:'',
+                pageName:'朋友',
             }
         },
         components: {
@@ -438,7 +486,7 @@
 //                event.toast(messageType);
 //                event.toast(isRead);
                 var _this = this;
-                event.toast(item);
+//                event.toast(item);
                 if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
                     item.unRead = 0;
                     let timestamp = Math.round(new Date().getTime()/1000);
