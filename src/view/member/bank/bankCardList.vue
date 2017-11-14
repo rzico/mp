@@ -90,6 +90,7 @@
 <script>
     var modal = weex.requireModule('modal')
     var event = weex.requireModule('event')
+    import utils from '../../../assets/utils';
     import navbar from '../../../include/navbar.vue';
 
     export default {
