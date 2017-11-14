@@ -213,9 +213,10 @@
                 };
                 twodata = JSON.stringify(twodata);
                 storage.setItem('twonumber', twodata,e=> {
-                    event.openURL('view/member/bank/bindSecondSteps.js?name=twonumber', function (message) {
+                    event.openURL(utils.locate('view/member/bank/bindSecondSteps.js?name=twonumber', function (message) {
 
                     })
+                    )
                 });
         }
     }

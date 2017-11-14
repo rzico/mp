@@ -235,8 +235,9 @@
                 };
                 threedata = JSON.stringify(threedata);
                 storage.setItem('threenumber', threedata,e=>{
-                    event.openURL('view/member/bank/bindThirdSteps.js?name=threenumber', function (message) {
+                    event.openURL (utils.locate('view/member/bank/bindThirdSteps.js?name=threenumber', function (message) {
                     })
+                    )
                 });
 
             }

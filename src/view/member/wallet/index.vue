@@ -110,12 +110,14 @@
                 event.closeURL();
             },
             cashCard:function (e) {
-                event.openURL('view/member/wallet/withdrawal.js', function () {
+                event.openURL(utils.locate('view/member/wallet/withdrawal.js', function () {
                 })
+                )
             },
             bindingCard:function (e) {
-                event.openURL('view/member/bank/bindFirstStep.js', function () {
+                event.openURL(utils.locate('view/member/bank/bindFirstStep.js', function () {
                 })
+                )
             },
             setup: function (e) {
 

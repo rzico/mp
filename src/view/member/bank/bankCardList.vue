@@ -105,9 +105,10 @@
                 event.closeURL()
             },
             goComplete:function (e) {
-                event.openURL('view/member/bank/bindFirstStep.js', function () {
+                event.openURL(utils.locate('view/member/bank/bindFirstStep.js', function () {
 
                 })
+                )
             }
             }
 
