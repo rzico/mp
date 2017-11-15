@@ -111,6 +111,7 @@
                 phone: '',
                 txtInput:'',
                 indo: '',
+                retry: false,
                 accountName:'',
                 cardname:'',
                 bankname:'',
@@ -208,7 +209,6 @@
 
             onSend: function (e) {
                 var _this = this;
-                event.toast("send");
                 event.encrypt(_this.phone, function (message) {
                     if (message.type == "success") {
                         POST('weex/member/bankcard/send_mobile.jhtml?mobile=' + message.data).then(
@@ -255,9 +255,9 @@
             },
             statusStyle: function () {
                 if (this.retry) {
-                    return "";
+                    return "margin-right: 20px;";
                 } else {
-                    return "color:#ccc";
+                    return "margin-right: 20px;color:#ccc;";
                 }
             },
             clear:function () {
