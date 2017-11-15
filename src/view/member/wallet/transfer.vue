@@ -8,15 +8,15 @@
         <div class="bank" @click="bankmessage()" v-bind:style="{borderBottomWidth:bankstyle + 'px',borderBottomColor:bankcolor}">
                 <text class="bankIconFont" :style="{fontFamily:'iconfont'}" >&#xe626;</text>
             <div class="bankInformation">
-                <text class="bankName">中国建设银行</text>
-                <text class="bankTailnumber">尾号3333 储蓄卡  </text>
+                <text class="bankName">{{wdata.bankname}}</text>
+                <text class="bankTailnumber">{{wdata.cardno}}</text>
             </div>
         </div>
             <div class="wechat" @click="wechatmessage" v-bind:style="{borderBottomWidth:wechatstyle + 'px',borderBottomColor:wechatcolor}">
                 <text class="wechatIconFont" :style="{fontFamily:'iconfont'}" >&#xe659;</text>
                 <div class="wechatInformation">
                 <text class="wechatFont">微信提现</text>
-                    <text class="wechatName">微信昵称</text>
+                    <text class="wechatName">{{nickName}}</text>
             </div>
         </div>
         </div>
@@ -28,7 +28,7 @@
             </div>
             <div class="maxQuotaServicefee">
                 <div class="servicefeeText" v-bind:style="{visibility:hide}">
-                    <text class="servicefee">服务费 {{service}}元</text>
+                    <text class="servicefee">手续费 {{service}}元</text>
                 </div>
                 <div class="serviceArrival">
                     <text class="arrival">实际到账 {{creditedAmount}}元</text>
@@ -197,7 +197,9 @@
                 wechatcolor:'#ccc',
                 bankWithdrawals:'bankcard',
                 service:'',
-                hide:'hidden'
+                hide:'hidden',
+                wdata:{bankname:"",cardno:""},
+                timer:null
             }
         },
         components: {
@@ -212,19 +214,24 @@
             }
         },
         methods: {
+            created() {
+                this.load();
+            },
             onmoney:function (e){
                 this.quota = e.value;
                 var _this=this;
-//                event.toast(e.value);
-                console.log('onmoney', e.value);
-                setTimeout(function () {
+                if (_this.timer!=null) {
+                    clearTimeout(_this.timer);
+                    _this.timer = null;
+                }
+                _this.timer = setTimeout(function () {
                     _this.serviceCharge()
-                },3000)
+                },2000)
                 _this.hide= 'visible'
             },
             bankmessage: function () {
                 var self = this
-                self.message = '单笔最大额度 5万元'
+                self.message = '单笔最大限额 5万元'
                 this.bankstyle=5
                 this.bankcolor='#D9141E'
                 this.wechatstyle=1
@@ -233,7 +240,7 @@
             },
             wechatmessage: function (event) {
                 var self = this
-                self.message = '单笔最大额度 1万元'
+                self.message = '单笔最大限度 1万元'
                 this.wechatstyle=5
                 this.wechatcolor='#D9141E'
                 this.bankstyle=1
@@ -242,46 +249,55 @@
                 console.log('will show alert')
                 modal.alert({
                     message: '微信提现功能尚未开通，敬请谅解',
-                    okTitle: '知道了',
-                    duration: 0.3
-                }, function (value) {
-                    console.log('alert callback', value)
+                    okTitle: '知道了'
                 })
                 this.bankmessage()
             },
             withdrawals:function () {
                 var _this = this;
-//                event.toast('weex/member/wallet/transfer.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota)
-                        POST('weex/member/wallet/transfer.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
+                        POST('weex/member/transfer/submit.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
                             function (data) {
                                 if (data.type == "success") {
-//                                    event.toast(data);
+                                    modal.alert({
+                                        message: '提交成功，请注意到账情况',
+                                        okTitle: '知道了'
+                                    })
                                 } else {
                                     event.toast(data.content);
                                 }
                             }, function (err) {
-//                                event.toast("网络不稳定");
+                                event.toast(err.content);
                             }
                         )
-                },
+            },
             serviceCharge:function(){
                 var _this = this;
-                POST('weex/member/wallet/calculateFee.jhtml?amount=' +this.quota ).then(
+                POST('weex/member/transfer/calculate.jhtml?amount=' +this.quota ).then(
                     function (data) {
                         if (data.type == "success") {
                                  _this.service = data.data;
-                                    event.toast(data);
                         } else {
                             event.toast(data.content);
                         }
                     }, function (err) {
-//                                event.toast("网络不稳定");
                     }
                 )
             },
-                goback: function () {
+            goback: function () {
                 event.closeURL()
             },
+            load:function () {
+                var _this = this;
+                GET("weex/member/transfer/view.jhtml",function (res) {
+                    if (res.type=='success') {
+                        _this.wdata = res.data;
+                    } else {
+                        event.toast(res.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            }
         }
     }
 </script>

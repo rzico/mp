@@ -215,7 +215,9 @@
                 twodata = JSON.stringify(twodata);
                 storage.setItem('twonumber', twodata,e=> {
                     event.openURL(utils.locate('view/member/bank/bindSecondSteps.js?name=twonumber', function (message) {
-
+                        if (message.type=="success") {
+                            event.closeURL(message);
+                        }
                     })
                     )
                 });

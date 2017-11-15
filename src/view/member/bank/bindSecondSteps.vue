@@ -234,6 +234,9 @@
                 threedata = JSON.stringify(threedata);
                 storage.setItem('threenumber', threedata,e=>{
                     event.openURL (utils.locate('view/member/bank/bindThirdSteps.js?name=threenumber', function (message) {
+                        if (message.type=="success") {
+                            event.closeURL(message);
+                        }
                     })
                     )
                 });

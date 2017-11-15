@@ -95,14 +95,14 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     var event = weex.requireModule('event')
+    var modal = weex.requireModule('modal')
     import filters from '../../../filters/filters.js'
     import navbar from '../../../include/navbar.vue'
      export default {
         data() {
             return {
-                wallet:{balance:0,bankinfo:"未绑定",}
+                wallet:{balance:0,bankinfo:"未绑定",binded:true}
             }
-
         },
         components: {
             navbar
@@ -111,22 +111,55 @@
             title: { default: "钱包" }
         },
         methods: {
+            created() {
+              this.load();
+            },
             goback: function (e) {
                 event.closeURL();
             },
-            cashCard:function (e) {
-                event.openURL(utils.locate('view/member/wallet/withdrawal.js', function () {
-                })
+            cashCard:function () {
+                var _this = this;
+                if (this.wallet.binded==false) {
+                    _this.bindingCard(_this.cashCard());
+                }
+                event.openURL(utils.locate('view/member/wallet/transfer.js', function () {
+                    if (message.type=='success') {
+                        _this.load();
+                    }
+                 })
                 )
             },
-            bindingCard:function (e) {
-                event.openURL(utils.locate('view/member/bank/bindFirstStep.js', function () {
+            bindingCard:function (fn) {
+                var _this = this;
+                event.openURL(utils.locate('view/member/bank/bindFirstStep.js', function (message) {
+                    if (message.type=='success') {
+                        if (!utils.isNull(fn))  {
+                            fn();
+                        }
+                        _this.load();
+
+                    }
                 })
                 )
             },
             reward:function () {
-                event.openURL('view/member/wallet/reward.js',function () {
+                var _this = this;
+                event.openURL('view/member/wallet/reward.js',function (message) {
+
                 })
+            },
+            load:function () {
+                GET("weex/member/wallet/view.jhtml",function (res) {
+                    if (res.type=='success') {
+                        wallet = res.data;
+                    } else {
+                        event.toast(res.content);
+                    }
+
+                },function (err) {
+                    event.toast(err.content);
+                })
+
             }
         }
 
