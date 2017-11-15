@@ -171,7 +171,7 @@
             binding:function (e){
                 var _this=this;
                 var  threedata = {
-                    cardNo : this.txtInput,
+                    cardno : this.txtInput,
                     mobile :this.phone,
                     identity:this.idno,
                     name:this.accountName,
