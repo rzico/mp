@@ -1,35 +1,42 @@
 <template>
-    <div style="background-color: #eeeeee">
-        <div class="header">
-            <navbar :title="title" :complete="complete" @goback="goback"></navbar>
-        </div>
-
-        <scroller class="scroller">
+    <div class="wrapper">
+        <navbar :title="title" :complete="complete" @goback="goback"></navbar>
+        <list class="list">
+            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">下拉刷新</text>
+            </refresh>
             <div class="cumulative">
-                <text class="cumulativeMoney">累计： 元</text>
+                <text class="cumulativeMoney">累计：{{total}}元</text>
             </div>
-            <div class="cell " v-for="num in lists">
+            <cell v-if="noData()" >
+                <noData :ndBgColor="'#fff'"> </noData>
+            </cell>
+            <cell class="cell " v-for="num in lists">
                 <div class="month">
-                    <text class="monthText">{{num.createDate | detailMonth}}月</text>
+                    <text class="monthText">{{num.createDate | monthfmt}}</text>
                 </div>
                 <div class="panel">
                     <div class="monthFont">
-                        <text class="textMonth">{{num.createDate | timefmt}}</text>
+                        <text class="textMonth">{{num.createDate | datetimefmt}}</text>
                         <text class="font" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                     </div>
                     <div class="moneyname">
-                        <text class="money">+ {{num.amount}}元</text>
+                        <text class="money">+{{num.amount | currencyfmt}}</text>
                         <text class="name">来自{{num.nickName}}的打赏</text>
                     </div>
                 </div>
-            </div>
-            <loading class="loading" @loading="onloading" :display="showLoading">
-                <text class="indicator">Loading ...</text>
+            </cell>
+            <cell v-if="noLoading">
+                <div class="noLoading"></div>
+            </cell>
+            <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
+                <text class="indicator">加载中..</text>
             </loading>
-        </scroller>
+        </list>
     </div>
 </template>
 
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .cumulative {
         width: auto;
@@ -116,11 +123,14 @@
     export default {
         data() {
             return {
-                showLoading: 'hide',
-                listCurrent: 0,
-                pageSize: 10,
+                loading: false,
+                refreshing : false,
+                pageStart: 0,
+                pageSize: 20,
                 lists: [],
-                month: ''
+                month: '',
+                total:0,
+                noLoading:false
             }
         },
         components: {
@@ -130,37 +140,58 @@
             title: {default: "我的赏金"},
         },
         created() {
-            var _this = this;
-            GET('weex/member/reward/list.jhtml?pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize, function (data) {
-                if (data.type == 'success') {
-                    _this.lists = data.data.data
-                }
-            }, function (err) {
-                event.toast(err.content)
-            })
+            utils.initIconFont();
+            this.open(0,function () {
 
+            });
         },
         methods: {
-            onloading(e) {
+            noData:function () {
+                return this.lists.length==0;
+            },
+            open:function (callback) {
                 var _this = this;
-                this.showLoading = 'show'
-                setTimeout(() => {
-                    this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/member/reward/list.jhtml?pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize, function (data) {
-                        if (data.type == 'success') {
-                            if (utils.isNull(data.data.data)) {
-                                event.toast('已经到底了');
-                            } else {
-                                data.data.data.forEach(function (item) {
-                                   _this.lists.push(item);
-                                })
-                            }
+                GET('weex/member/reward/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize, function (res) {
+                    event.toast(JSON.stringify(res));
+                    if (res.type == 'success') {
+                        if (res.data.start==0) {
+                            _this.lists = res.data.data;
+                        } else {
+                            data.data.data.forEach(function (item) {
+                                _this.lists.push(item);
+                            })
                         }
-                    }, function (err) {
-                        event.toast(err.content)
+                        _this.pageStart = res.data.start+res.data.data.length;
+                        _this.noLoading = res.data.data.length<_this.pageSize;
+                    } else {
+                        event.toast(err.content);
+                    }
+                    callback();
+                }, function (err) {
+                    callback();
+                    event.toast(err.content)
+                })
+            },
+//            上拉加载
+            onloading (event) {
+                var _this = this;
+                _this.loading = true;
+                setTimeout(
+                    _this.open(_this.pageStart,function () {
+                        _this.loading = false;
                     })
-                    this.showLoading = 'hide'
-                }, 1500)
+                    ,1500)
+            },
+//            下拉刷新
+            onrefresh (event) {
+                var _this = this;
+                _this.pageStart = 0;
+                _this.refreshing = true;
+                setTimeout(
+                    _this.open(_this.pageStart,function () {
+                        _this.refreshing = false;
+                    })
+                    ,1500)
             },
 
             goback: function () {

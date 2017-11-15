@@ -32,7 +32,7 @@
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between">
-                    <div class="flex-row flex-start">
+                    <div class="flex-row flex-start" @click="deposit()">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                         <text class="title ml10">我的账单</text>
                     </div>
@@ -131,7 +131,7 @@
             },
             bindingCard:function (fn) {
                 var _this = this;
-                event.openURL(utils.locate('view/member/bank/bindFirstStep.js', function (message) {
+                event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
                     if (message.type=='success') {
                         if (!utils.isNull(fn))  {
                             fn();
@@ -140,11 +140,16 @@
 
                     }
                 })
-                )
             },
             reward:function () {
                 var _this = this;
-                event.openURL('view/member/wallet/reward.js',function (message) {
+                event.openURL(utils.locate('view/member/wallet/reward.js'),function (message) {
+
+                })
+            },
+            deposit:function () {
+                var _this = this;
+                event.openURL(utils.locate('view/member/wallet/deposit.js'),function (message) {
 
                 })
             },

@@ -1,11 +1,13 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
-        <noData v-if="noData()" :ndBgColor="'#fff'"> </noData>
         <list class="list">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新 ...</text>
+                <text class="indicator">下拉刷新</text>
             </refresh>
+            <cell v-if="noData()" >
+                   <noData :ndBgColor="'#fff'"> </noData>
+            </cell>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
@@ -34,8 +36,11 @@
                     </div>
                 </div>
             </cell>
-            <loading class="loading" @loading="onloading" :display="showLoading">
-                <text class="indicator">Loading ...</text>
+            <cell v-if="noLoading">
+                <div class="noLoading"></div>
+            </cell>
+            <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
+                <text class="indicator">加载中..</text>
             </loading>
         </list>
     </div>
@@ -74,6 +79,7 @@
     .datetime {
         color:#ccc;
         font-size: 28px;
+        margin-top: 5px;
     }
     .money {
         font-weight: 700;
@@ -95,9 +101,10 @@
             return{
                 depositList:[],
                 refreshing: false,
-                showLoading: 'hide',
+                loading: 'hide',
                 pageStart:0,
-                pageSize:20
+                pageSize:20,
+                noLoading:true
             }
         },
         components: {
@@ -155,30 +162,36 @@
                            })
                        }
                        _this.pageStart = res.data.start+res.data.data.length;
+                       _this.noLoading = res.data.data.length<_this.pageSize;
                    } else {
                        event.toast(err.content);
                    }
-
                     callback();
-                }, function (err) {
+                 }, function (err) {
                     callback();
                     event.toast(err.content);
                 })
             },
 //            上拉加载
             onloading (event) {
-                this.showLoading = 'show';
-                this.open(this.pageStart,function () {
-                    _this.showLoading = 'hide';
-                });
+                var _this = this;
+                _this.loading = true;
+                setTimeout(
+                  _this.open(_this.pageStart,function () {
+                     _this.loading = false;
+                  })
+                ,1500)
             },
 //            下拉刷新
             onrefresh (event) {
-                this.pageStart = 0;
-                this.refreshing = true;
-                this.open(this.pageStart,function () {
-                    _this.refreshing = false;
-                });
+                var _this = this;
+                _this.pageStart = 0;
+                _this.refreshing = true;
+                setTimeout(
+                   _this.open(_this.pageStart,function () {
+                     _this.refreshing = false;
+                  })
+                ,1500)
             },
 //            获取月份
             getDate: function(value) {
