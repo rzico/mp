@@ -15,7 +15,7 @@
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
-                    <div style="flex-direction: row;align-items: center" @click="goAuthor(item)">
+                    <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
                         <image :src="item.logo" resize="cover" class="authorImg"></image>
                         <text class="authorName">{{item.author}}</text>
                     </div>
@@ -240,8 +240,7 @@
         },
         methods:{
 //            前往作者专栏
-            goAuthor(item){
-                let id = 5;
+            goAuthor(id){
                 event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
                 });
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})

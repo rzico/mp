@@ -1,5 +1,5 @@
 <template>
-    <div class="noData">
+    <div class="noData" :style="{backgroundColor:ndBgColor}">
                 <text class="noData_ico" :style="{fontFamily:'iconfont'}">&#xe615;</text>
                 <text class="noData_hint">{{noDataHint}}</text>
     </div>
@@ -8,7 +8,6 @@
 
 <style scoped>
     .noData {
-        background-color:#eee;
         padding-top:250px;
         align-items: center;
     }
@@ -24,6 +23,7 @@
 <script>
     export default {
         props: {
+            ndBgColor:{default:'#eee'},
             noDataHint:{default:'没有数据'}
         }
     }

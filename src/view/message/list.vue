@@ -67,7 +67,7 @@
 <style>
 
     .rightTop{
-        height: 96px;width: 100px;align-items: center;justify-content: center;
+        height: 96px;width: 98px;align-items: center;justify-content: center;
     }
     .nav_ico {
         font-size: 38px;
@@ -84,8 +84,6 @@
         width: 750px;
         align-items: center;
         justify-content: space-between;
-        padding-right: 30px;
-        padding-left: 30px;
     }
     /*顶部导航栏*/
     .header {

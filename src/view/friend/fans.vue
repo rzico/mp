@@ -1,22 +1,38 @@
 <template>
-    <scroller style="background-color: #fff">
+    <div>
         <navbar :title="title" @goback="goback" > </navbar>
-        <div class="addFriendsBorder" v-for="item in userList" @click="goAuthor()">
-            <div class="friendsLine" >
-                <image :src="item.logo" class="friendsImage"></image>
-                <div class="friendsName">
-                    <text class="lineTitle ">{{item.nickName}}</text>
-                    <text class="realName">{{item.sign}}</text>
+        <scroller style="background-color: #fff">
+            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">{{refreshState}}</text>
+            </refresh>
+            <div :style="{minHeight:screenHeight + 'px'}">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="userList.length == 0"></noData>
+                <div class="addFriendsBorder" v-else v-for="item in userList" @click="goAuthor(item.id)">
+                    <!--用户头像与昵称签名-->
+                    <div class="friendsLine" >
+                        <image :src="item.logo" class="friendsImage"></image>
+                        <div class="friendsName">
+                            <text class="lineTitle ">{{item.nickName}}</text>
+                            <text class="realName">{{item.autograph}}</text>
+                        </div>
+                    </div>
+                    <!--关注与否-->
+                    <div class="status_panel" v-if="!item.follow" @click="doFocus(item)">
+                        <text class="focus bkg-primary" >关注</text>
+                    </div>
+                    <div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">
+                        <text class="ask ">已关注</text>
+                    </div>
+                    <div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">
+                        <text class="ask ">互相关注</text>
+                    </div>
                 </div>
             </div>
-            <div class="status_panel" v-if="item.status == 'adopt'" @click="doFocus()">
-                <text class="focus bkg-primary" >关注</text>
-            </div>
-            <div class="status_panel" v-else @click="doCancel()">
-                <text class="ask ">互相关注</text>
-            </div>
-        </div>
-    </scroller>
+            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
+                <text class="indicator">加载中...</text>
+            </loading>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
@@ -96,56 +112,138 @@
     import navbar from '../../include/navbar.vue';
     const event = weex.requireModule('event');
     const modal = weex.requireModule('modal');
+    import { POST, GET } from '../../assets/fetch';
+    import utils from '../../assets/utils';
+    import noData from '../../include/noData.vue';
     export default {
-        components: {
-            navbar
-        },
-        props:{
-            title:{default:'我的粉丝'}
-        },
         data(){
             return{
-                userList:[{
-                    logo:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg',
-                    nickName:'独自听风',
-                    sign:'春夏秋冬，读书喝茶，只闻花香，羡慕煞人',
-                    id:3,
-                    status:'adopt'
-                },{
-                    logo:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg',
-                    nickName:'素心',
-                    sign:'"一花一世纪，遗影一乾坤"',
-                    id:3,
-                    status:'adoptt'
-                }]
+                userList:[],
+                refreshing:false,
+                showLoading:false,
+                listCurrent:0,
+                pageSize:15,
+                UId:'',
+                refreshState:'',
+                isSelf:false,
+                userName:'我'
             }
+        },
+        components: {
+            navbar,noData
+        },
+        props:{
+            noDataHint:{default:'暂无粉丝'},
+        },
+        computed:{
+            title:function () {
+//              如果用户名称过长，便截取拼成名字
+                if((utils.getLength(this.userName) > 20)){
+                    this.userName = utils.changeStr(this.userName);
+                }
+                return this.userName + '的粉丝';
+            }
+        },
+        created(){
+            let _this = this;
+            this.UId = utils.getUrlParameter('id');
+            let selfId = event.getUId();
+            if(this.UId == selfId){
+                this.isSelf = true;
+            }else{
+                let name = decodeURI(utils.getUrlParameter('name'));
+                this.userName = utils.isNull(name) ? '我' : name;
+            }
+//            获取粉丝列表
+            GET('weex/fans/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                if(data.type == 'success' && data.data.data != '' ){
+                    _this.userList = data.data.data;
+                }else{
+                    event.toast(data.content);
+                }
+            },function (err) {
+                event.toast(err.content);
+            })
         },
         methods:{
             goback(){
                 event.closeURL();
             },
 //            前往作者主页
-            goAuthor(){
-                event.toast('作者主页');
-            },
-//            取消关注
-            doCancel(){
-                modal.confirm({
-                    message: '确定要取消关注?',
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                    duration: 0.3
-                }, function (value) {
-                    if(value == '确定'){
-                        //    将内容删掉
-                        event.toast('取消成功');
-                    }
-                })
+            goAuthor(id){
+                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                });
             },
 //            关注
-            doFocus(){
+            doFocus(item){
+                if(item.follow){
+                    modal.confirm({
+                        message: '确定要取消关注?',
+                        okTitle:'确定',
+                        cancelTitle:'取消',
+                        duration: 0.3
+                    }, function (value) {
+                        if(value == '确定'){
+                            POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
+                                function(data){
+                                    if(data.type == 'success'){
+                                        item.follow = false;
+                                    }else{
+                                        event.toast(err.content);
+                                    }
+                                },
+                                function(err){
+                                    event.toast(err.content);
+                                }
+                            )
+                        }
+                    })
+                }else{
+                    POST('weex/member/follow/add.jhtml?authorId=' + item.id).then(
+                        function(data){
+                            if(data.type == 'success'){
+                                item.follow = true;
+                            }else{
+                                event.toast(err.content);
+                            }
+                        },
+                        function(err){
+                            event.toast(err.content);
+                        }
+                    )
+                }
+            },
+            onrefresh:function () {
+                var _this = this;
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 50)
+            },
+            onloading:function () {
+                var _this = this;
+                _this.showLoading = true;
+//                _this.loadingState = "正在加载数据";
+                setTimeout(() => {
+                    this.listCurrent = this.listCurrent + this.pageSize;
+                    GET('weex/fans/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                        if(data.type == 'success' && data.data.data != '' ){
+                            data.data.data.foreach(function (item) {
+                                _this.userList.push(item);
+                            })
+                        }else if(data.type == 'success' && data.data.data == '' ){
+                            event.toast('已经到底了');
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    })
 
-            }
+
+                    _this.showLoading = false;
+                }, 1500)
+            },
 
         }
     }

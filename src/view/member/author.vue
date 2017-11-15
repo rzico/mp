@@ -41,9 +41,7 @@
             <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
                 <scroller scroll-direction="horizontal" class="corpusScroll">
                     <div class="articleClass">
-                        <div v-for="(item,index) in corpusList">
-                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
-                        </div>
+                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
                 <!--<div class="corpusIconBox"  @click="goCorpus()">-->
@@ -95,9 +93,7 @@
             <div  class="corpusBox"  >
                 <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
-                        <div v-for="(item,index) in corpusList">
-                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
-                        </div>
+                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
             </div>
@@ -602,9 +598,8 @@
             utils.initIconFont();
             var _this = this;
             this.UId = utils.getUrlParameter('id');
-//            this.UId = 5;
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(500) + 1300;
+            this.screenHeight = utils.fullScreen(500) ;
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     if(!utils.isNull(data.data.name)){
@@ -754,7 +749,7 @@
             },
 //            我的关注
             goFocus(){
-                event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
+                event.openURL(utils.locate('view/member/focus.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
                         return ;
                     }
@@ -762,7 +757,7 @@
             },
 //            我的收藏
             goCollect(){
-                event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
+                event.openURL(utils.locate('view/member/collect.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
                         return ;
                     }
@@ -770,7 +765,7 @@
             },
 //            粉丝
             goFans(){
-                event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId),
+                event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
                         return ;
                     }
@@ -812,7 +807,7 @@
                 return;
             },
             goback(){
-              event.closeURL();
+                event.closeURL();
             },
 //            关注
             focus:function () {
@@ -846,6 +841,7 @@
         }
     }
 </script>
+
 
 
 

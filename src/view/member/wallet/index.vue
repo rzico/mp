@@ -4,7 +4,7 @@
         <scroller class="scroller">
             <div class="wallet-panel">
                 <text class="wallet-title">钱包余额（元）</text>
-                <text class="balance">{{wallet.balance | currencyfmt}}</text>
+                <text class="balance">1000000.00</text>
             </div>
 
             <div class="cell-row cell-line">
@@ -14,7 +14,7 @@
                         <text class="title ml10">银行卡</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">{{wallet.bankinfo}}</text>
+                        <text class="sub_title">已绑定</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -25,7 +25,6 @@
                         <text class="title ml10">提现到银行卡</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -41,7 +40,7 @@
                     </div>
                 </div>
                 <div class="cell-panel space-between">
-                    <div class="flex-row flex-start" @click="reward()">
+                    <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe698;</text>
                         <text class="title ml10">我的赏金</text>
                     </div>
@@ -92,18 +91,11 @@
 
 </style>
 <script>
-    import { POST, GET } from '../../../assets/fetch'
-    import utils from '../../../assets/utils'
+    var navigator = weex.requireModule('navigator')
     var event = weex.requireModule('event')
-    import filters from '../../../filters/filters.js'
     import navbar from '../../../include/navbar.vue'
-     export default {
-        data() {
-            return {
-                wallet:{balance:0,bankinfo:"未绑定",}
-            }
-
-        },
+    import utils from '../../../assets/utils'
+    export default {
         components: {
             navbar
         },
@@ -112,6 +104,10 @@
         },
         methods: {
             goback: function (e) {
+//                navigator.pop({
+//                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
+//                    animated: "true"
+//                })
                 event.closeURL();
             },
             cashCard:function (e) {
@@ -124,9 +120,8 @@
                 })
                 )
             },
-            reward:function () {
-                event.openURL('view/member/wallet/reward.js',function () {
-                })
+            setup: function (e) {
+
             }
         }
 

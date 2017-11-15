@@ -5,24 +5,28 @@
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <div class="addFriendsBorder" v-for="(item,index) in userList" @click="goAuthor()">
-                <div class="friendsLine" >
-                    <image :src="item.logo" class="friendsImage"></image>
-                    <div class="friendsName">
-                        <text class="lineTitle ">{{item.nickName}}</text>
-                        <text class="realName">{{item.sign}}</text>
+            <div :style="{minHeight:screenHeight + 'px'}">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="userList.length == 0"></noData>
+                <div class="addFriendsBorder" v-else v-for="(item,index) in userList" @click="goAuthor(item.id)">
+                    <!--用户头像与昵称签名-->
+                    <div class="friendsLine" >
+                        <image :src="item.logo" class="friendsImage"></image>
+                        <div class="friendsName">
+                            <text class="lineTitle ">{{item.nickName}}</text>
+                            <text class="realName">{{item.autograph}}</text>
+                        </div>
+                    </div>
+                    <!--关注与否-->
+                    <div class="status_panel" @click="doCancel(item,index)" v-if="isSelf">
+                        <text class="ask " v-if="item.follow && !item.followed" >已关注</text>
+                        <text class="ask  "v-else>互相关注</text>
+                    </div>
+                    <div class="status_panel" @click="doCancel(item,index)" v-else="">
+                        <text class="ask " v-if="item.follow" >已关注</text>
+                        <text class="focus bkg-primary"  v-else>关注</text>
                     </div>
                 </div>
-                <div class="status_panel" @click="doCancel(item,index)" v-if="isSelf">
-                    <text class="ask " v-if="item.follow && !item.followed" >已关注</text>
-                    <text class="ask  "v-else>互相关注</text>
-                </div>
-                <div class="status_panel" @click="doCancel(item,index)" v-else="">
-                    <text class="ask " v-if="item.follow" >已关注</text>
-                    <text class="focus bkg-primary"  v-else>关注</text>
-                </div>
             </div>
-
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
                 <text class="indicator">加载中...</text>
             </loading>
@@ -110,15 +114,14 @@
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
     import filters from '../../filters/filters.js';
+    import noData from '../../include/noData.vue';
     export default {
         components: {
-            navbar
-        },
-        props:{
-            title:{default:'我的关注'}
+            navbar,noData
         },
         data(){
             return{
+                screenHeight:0,
                 userList:[],
                 refreshing:false,
                 showLoading:false,
@@ -126,17 +129,34 @@
                 pageSize:15,
                 UId:'',
                 refreshState:'',
-                isSelf:false
+                isSelf:false,
+                userName:'我'
+            }
+        },
+        props:{
+            noDataHint:{default:'暂无关注'},
+        },
+        computed:{
+            title:function () {
+//              如果用户名称过长，便截取拼成名字
+                if((utils.getLength(this.userName) > 20)){
+                    this.userName = utils.changeStr(this.userName);
+                }
+                return this.userName + '的关注';
             }
         },
         created(){
             this.UId = utils.getUrlParameter('id');
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(136);
             let selfId = event.getUId();
             if(this.UId == selfId){
                 this.isSelf = true;
+            }else{
+                let name = decodeURI(utils.getUrlParameter('name'));
+                this.userName = utils.isNull(name) ? '我' : name;
             }
             let _this = this;
-            event.toast('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize);
             GET('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != '' ){
                     _this.userList = data.data.data;
@@ -149,11 +169,16 @@
         },
         methods:{
             goback(){
+//                let E = {
+//                    isChange:true,
+//                }
+//                let backData = utils.message('success','成功',E);
                 event.closeURL();
             },
 //            前往作者主页
-            goAuthor(){
-                event.toast('作者主页');
+            goAuthor(id){
+                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                });
             },
 //            取消关注
             doCancel(item,index){
@@ -191,7 +216,6 @@
                             duration: 0.3
                         }, function (value) {
                             if(value == '确定'){
-                                event.toast('weex/member/follow/delete.jhtml?authorId=' + item.id);
                                 POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
                                     function(data){
                                         if(data.type == 'success'){

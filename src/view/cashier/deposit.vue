@@ -81,12 +81,12 @@
 
 </style>
 <script>
-    const modal = weex.requireModule('modal')
-    var navigator = weex.requireModule('navigator')
-    import navbar from '../../include/navbar.vue'
-    var stream = weex.requireModule('stream')
-    import filters from '../../filters/filters.js'
-
+    const modal = weex.requireModule('modal');
+    var navigator = weex.requireModule('navigator');
+    import navbar from '../../include/navbar.vue';
+    var stream = weex.requireModule('stream');
+    import filters from '../../filters/filters.js';
+    const event = weex.requireModule('event');
     var pageNumber = 1;
     export default {
         data:function(){
@@ -133,10 +133,7 @@
                 return true;
             },
             goback: function (e) {
-                navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-                    animated: "true"
-                })
+                event.closeURL();
             },
             setup: function (e) {
                 toPage(e);
