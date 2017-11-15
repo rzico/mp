@@ -10,12 +10,12 @@
             <text class="textA3">收到的短信验证码</text>
         </div>
         <div class="inputA">
-            <text class="textB">验证码</text>
-            <div class="flex-row inputTextBox mtb50" @click="getFocus()">
+            <div class="flex-start" @click="getFocus()">
+                <text class="textB">验证码</text>
                 <!--隐藏的输入框-->
                 <input type="tel" ref="captchRef" v-model="captcha" maxlength="6" @input="captchaInput" autofocus="true" class="input" />
             </div>
-            <div class="flex-center">
+            <div class="flex-end">
                 <text class="status primary" @click="send()" :style="statusStyle()" v-if="retry">{{status}}</text>
                 <text class="status gray"  :style="statusStyle()"  v-else> {{time}}秒后刷新</text>
             </div>
@@ -43,11 +43,10 @@
     .textA{
         color:#cccccc;
         font-size: 28px;
-        width:450px;
     }
     .textA2{
         color:#cccccc;
-        font-size: 28px;
+        font-size: 32px;
     }
     .textA3{
         color:#cccccc;
@@ -64,19 +63,18 @@
         border-top-width: 1px;
         border-color:#ccc;
         align-items:center;
+        justify-content: space-between;
     }
     .textB{
         font-size: 32px;
+        line-height: 80px;
+        height: 80px;
     }
     .input{
         width:450px;
         height: 80px;
         padding-left:50px;
     }
-    /*.textC{*/
-        /*color:#0088fb;*/
-        /*font-size:32px;*/
-    /*}*/
     .button{
         background-color: #D9141E;
         margin-left: 20px;
@@ -90,6 +88,10 @@
     .textD{
         color:#fff;
         font-size:40px;
+    }
+    .status {
+        min-width: 200px;
+        margin-right: 20px;
     }
 </style>
 <script>
@@ -146,12 +148,10 @@
             });
             var three = utils.getUrlParameter('name');
             storage.getItem(three, e => {
-                event.toast(e);
                 let threedata =  JSON.parse(e.data);
-                event.toast(threedata);
                 _this.txtInput = threedata.cardNo;
                 _this.phone = threedata.mobile;
-                _this.idno = threedata.ldentity;
+                _this.idno = threedata.identity;
                 _this.accountName = threedata.name;
                 _this.cardname = threedata.cardname;
                 _this.bankname = threedata.bankname;
@@ -164,8 +164,6 @@
                 this.onSend();
             });
             this.beginTimer();
-
-//            event.toast(this.phone);
         },
         methods: {
 
@@ -174,7 +172,7 @@
                 var  threedata = {
                     cardNo : this.txtInput,
                     mobile :this.phone,
-                    ldentity:this.idno,
+                    identity:this.idno,
                     name:this.accountName,
                     cardname:this.cardname,
                     bankname:this.bankname,
@@ -184,23 +182,24 @@
                     province:this.province,
                     city:this.city
                 };
-//                event.toast(threedata);
                 let threedatastr = JSON.stringify(threedata);
-//                event.toast(threedatastr);
                     event.encrypt(threedatastr, function (message) {
                         if (message.type == "success") {
                             POST('weex/member/bankcard/submit.jhtml?captcha=' +_this.verification,message.data).then(
                                 function (data) {
                                     if (data.type == "success") {
-                                        event.toast(data);
+                                        event.closeURL(data);
                                     } else {
+                                        _this.endTimer();
                                         event.toast(data.content);
                                     }
                                 }, function (err) {
+                                    _this.endTimer();
                                     event.toast("网络不稳定");
                                 }
                             )
                         }else {
+                            _this.endTimer();
                             event.toast(message.content);
                         }
                 });
@@ -209,28 +208,29 @@
 
             onSend: function (e) {
                 var _this = this;
-
+                event.toast("send");
                 event.encrypt(_this.phone, function (message) {
-
                     if (message.type == "success") {
                         POST('weex/member/bankcard/send_mobile.jhtml?mobile=' + message.data).then(
                             function (data) {
                                 if (data.type == "success") {
-                                   this.beginTimer();
-
+                                    _this.beginTimer();
                                 } else {
                                     event.toast(data.content);
                                 }
                             }, function (err) {
-                                event.toast("网络不稳定");
+                                event.toast(err.content);
                             }
                         )
+                    } else {
+                        event.toast(message.content);
                     }
                 })
 
             },
             beginTimer: function () {
                 var _this = this;
+                _this.time = 60;
                 _this.retry = false;
                 if (utils.isNull(timer) == false) {
                     clearInterval(timer);
@@ -277,7 +277,6 @@
             },
 
             send:function () {
-
                 this.onSend();
             }
         }

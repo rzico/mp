@@ -1,3 +1,4 @@
+<script src="../../../../dist/view/member/bank/bindThirdSteps.js"></script>
 <template>
     <div  style="background-color: #eeeeee">
 
