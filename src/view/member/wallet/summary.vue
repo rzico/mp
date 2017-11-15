@@ -107,8 +107,9 @@
 
 </style>
 <script>
-    var navigator = weex.requireModule('navigator')
-    import navbar from '../../../include/navbar.vue'
+    var navigator = weex.requireModule('navigator');
+    import navbar from '../../../include/navbar.vue';
+    const event = weex.requireModule('event');
     export default {
         components: {
             navbar
@@ -118,10 +119,11 @@
         },
         methods: {
             goback: function (e) {
-                navigator.pop({
-                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-                    animated: "true"
-                })
+//                navigator.pop({
+//                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
+//                    animated: "true"
+//                })
+                event.closeURL();
             },
             setup: function (e) {
 

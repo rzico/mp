@@ -62,7 +62,7 @@
                 <div v-for="item in friend.name"  >
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="goChat(item.id)">
-                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item,item.id)"></image>
+                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
                             <div class="friendsName">
                                 <text class="lineTitle">{{item.nickName}}</text>
                                 <text class="realName">真实姓名:{{item.realName | watchName}}</text>
@@ -97,7 +97,7 @@
 <style lang="less" src="../../style/wx.less"/>
 <style>
     .rightTop{
-        height: 96px;width: 100px;align-items: center;justify-content: center;
+        height: 96px;width: 98px;align-items: center;justify-content: center;
     }
     .nav_ico {
         font-size: 38px;
@@ -114,8 +114,6 @@
         width: 750px;
         align-items: center;
         justify-content: space-between;
-        padding-right: 30px;
-        padding-left: 30px;
     }
     /*顶部导航栏*/
     .header {
@@ -506,8 +504,7 @@
                 event.navToChat(userId);
             },
 //            作者主页
-            goAuthor:function (item,id) {
-//                event.toast(item);
+            goAuthor:function (id) {
                 event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
                 });
             },

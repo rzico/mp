@@ -5,51 +5,57 @@
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <div class="collectBox" v-for="item in collectList">
-                <div class="nameDate">
-                    <div style="flex-direction: row;align-items: center" >
-                        <image resize="cover" class="authorImg" :src="item.logo"></image>
-                        <text class="authorName ml10">{{item.author}}</text>
+            <div :style="{minHeight:screenHeight + 'px'}">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="collectList.length == 0"></noData>
+                <div class="collectBox" v-else v-for="item in collectList" @click="goArticle(item.id)">
+                    <!--名字与日期-->
+                    <div class="nameDate">
+                        <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
+                            <image resize="cover" class="authorImg" :src="item.logo"></image>
+                            <text class="authorName ml10">{{item.author}}</text>
+                        </div>
+                        <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                     </div>
-                    <text class="authorName">{{item.createDate | timeDatefmt}}</text>
-                </div>
-                <div class="flex-row">
-                    <image resize="cover" class="articleImg" :src="item.thumbnail" ></image>
-                    <div class="articleInfo">
-                        <text class="fz30 articleTitle">{{item.title}}</text>
-                        <div class="relevantInfo">
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                            <text class="relevantText">{{item.hits}}</text>
-                            <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="relevantText">{{item.laud}}</text>
-                            <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                            <text class="relevantText">{{item.review}}</text>
+                    <div class="flex-row">
+                        <!--文章封面-->
+                        <image resize="cover" class="articleImg" :src="item.thumbnail" ></image>
+                        <!--文章相关信息。标题点赞...-->
+                        <div class="articleInfo">
+                            <text class="fz30 articleTitle">{{item.title}}</text>
+                            <div class="relevantInfo">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.hits}}</text>
+                                <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.laud}}</text>
+                                <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.review}}</text>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="collectBox">
-                <div class="nameDate">
-                    <div style="flex-direction: row;align-items: center">
-                        <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg" resize="cover" class="authorImg"></image>
-                        <text class="authorName ml10">大马哥</text>
-                    </div>
-                    <text class="authorName">2017-11-07</text>
-                </div>
-                <div class="flex-row">
-                    <image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg"  resize="cover" class="articleImg"></image>
-                    <div class="articleInfo">
-                        <text class="fz30 articleTitle">立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)</text>
-                        <div class="relevantInfo">
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                            <text class="relevantText">121</text>
-                            <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="relevantText">233</text>
-                            <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                            <text class="relevantText">3222</text>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="collectBox">-->
+                <!--<div class="nameDate">-->
+                <!--<div style="flex-direction: row;align-items: center">-->
+                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg" resize="cover" class="authorImg"></image>-->
+                <!--<text class="authorName ml10">大马哥</text>-->
+                <!--</div>-->
+                <!--<text class="authorName">2017-11-07</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg"  resize="cover" class="articleImg"></image>-->
+                <!--<div class="articleInfo">-->
+                <!--<text class="fz30 articleTitle">立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)</text>-->
+                <!--<div class="relevantInfo">-->
+                <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                <!--<text class="relevantText">121</text>-->
+                <!--<text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                <!--<text class="relevantText">233</text>-->
+                <!--<text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                <!--<text class="relevantText">3222</text>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
             </div>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
                 <text class="indicator">加载中...</text>
@@ -126,12 +132,10 @@
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
     import filters from '../../filters/filters.js';
+    import noData from '../../include/noData.vue';
     export default {
         components: {
-            navbar
-        },
-        props:{
-            title:{default:'我的收藏'}
+            navbar,noData
         },
         data(){
             return{
@@ -141,12 +145,34 @@
                 listCurrent:0,
                 pageSize:15,
                 UId:'',
-                refreshState:''
+                refreshState:'',
+                isSelf:false,
+                userName:'我'
+            }
+        },
+        props:{
+            noDataHint:{default:'暂无收藏'},
+        },
+        computed:{
+            title:function () {
+//              如果用户名称过长，便截取拼成名字
+                if((utils.getLength(this.userName) > 20)){
+                    this.userName = utils.changeStr(this.userName);
+                }
+                return this.userName + '的收藏';
             }
         },
         created(){
             this.UId = utils.getUrlParameter('id');
+            let selfId = event.getUId();
+            if(this.UId == selfId){
+                this.isSelf = true;
+            }else{
+                let name = decodeURI(utils.getUrlParameter('name'));
+                this.userName = utils.isNull(name) ? '我' : name;
+            }
             let _this = this;
+//            获取收藏列表
             GET('weex/favorite/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != '' ){
                     _this.collectList = data.data.data;
@@ -167,6 +193,15 @@
                 setTimeout(() => {
                     this.refreshing = false
                 }, 50)
+            },
+            goAuthor(id){
+                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                });
+            },
+            goArticle(id){
+                event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=true' ),
+                    function () {}
+                )
             },
             onloading:function () {
                 var _this = this;

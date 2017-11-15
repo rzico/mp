@@ -245,7 +245,6 @@
 //                            向服务器存入文集名称
                             POST('weex/member/article_catalog/add.jhtml?name=' + value.data + '&orders=' + orders).then(
                                 function (res) {
-                                    event.toast(res);
                                     if(res.type == 'success' && res.data != ''){
                                         _this.corpusList.push({
                                             name:res.data.name,
@@ -280,18 +279,32 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入文集名',duration:1})
                         }else{
-                            return stream.fetch({
-                                method: 'POST',
-                                type: 'json',
-                                url: '/weex/member/article_catalog/update.jhtml?id=' + id + '&name=' + value.data,
-                            },function (data) {
-                                if(data.data.type == 'success'){
-                                    _this.corpusList[index].name = value.data;//把名字改上去
-                                    event.toast('修改成功');
-                                }else{
-                                    event.toast(data.data.content);
+                            POST('weex/member/article_catalog/update.jhtml?id=' + id + '&name=' + value.data).then(
+                                function (data) {
+                                    if(data.type == 'success'){
+                                        _this.corpusList[index].name = value.data;//把名字改上去
+                                        event.toast('修改成功');
+                                    }else{
+                                        event.toast(data.content);
+                                    }
+                                },
+                                function (err) {
+                                    event.toast(err.content);
                                 }
-                            })
+                            )
+
+//                            return stream.fetch({
+//                                method: 'POST',
+//                                type: 'json',
+//                                url: '/weex/member/article_catalog/update.jhtml?id=' + id + '&name=' + value.data,
+//                            },function (data) {
+//                                if(data.data.type == 'success'){
+//                                    _this.corpusList[index].name = value.data;//把名字改上去
+//                                    event.toast('修改成功');
+//                                }else{
+//                                    event.toast(data.data.content);
+//                                }
+//                            })
                         }
                     }
                 })
@@ -306,14 +319,25 @@
                     cancelTitle:'取消',
                 }, function (value) {
                     if(value == '确定'){
-                        _this.corpusList.splice(index,1);
-                        return stream.fetch({
-                            method: 'POST',
-                            type: 'json',
-                            url: '/weex/member/article_catalog/delete.jhtml?id=' + id
-                        },function (data) {
-                            event.toast(data);
-                        })
+                        POST('weex/member/article_catalog/delete.jhtml?id=' + id).then(
+                            function (data) {
+                                if(data.type == 'success'){
+                                    _this.corpusList.splice(index,1);
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                event.toast(err.content);
+                            }
+                        )
+//                        return stream.fetch({
+//                            method: 'POST',
+//                            type: 'json',
+//                            url: '/weex/member/article_catalog/delete.jhtml?id=' + id
+//                        },function (data) {
+//                            event.toast(data);
+//                        })
 
                     }
                 })

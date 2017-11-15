@@ -604,8 +604,8 @@
     const modal = weex.requireModule('modal');
     const animation = weex.requireModule('animation');
     import utils from '../../assets/utils';
-    import { POST, GET } from '../../assets/fetch'
-    import filters from '../../filters/filters.js'
+    import { POST, GET } from '../../assets/fetch';
+    import filters from '../../filters/filters.js';
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -708,25 +708,8 @@
             utils.initIconFont();
             this.UId = event.getUId();
             var _this = this;
-//            获取用户信息
-            GET('weex/member/view.jhtml',function (data) {
-                if(data.type == 'success'){
-                    if(!utils.isNull(data.data.nickName)){
-                        _this.userName = data.data.nickName;
-                    }
-                    if(!utils.isNull(data.data.logo)){
-                        _this.imageUrl = data.data.logo;
-                    }
-                    _this.collectNum = data.data.favorite;
-                    _this.focusNum = data.data.follow;
-                    _this.moneyNum = data.data.balance;
-                }else{
-                    event.toast(data.content);
-                }
-            },function (err) {
-                event.toast(err.content);
-            })
-
+//           获取用户信息;
+            this.updateUserInfo();
 //            获取文集列表
             this.getCorpus();
 
@@ -766,6 +749,29 @@
 //            })
         },
         methods: {
+//            更新用户信息；
+            updateUserInfo(){
+                let _this = this;
+//            获取用户信息
+                GET('weex/member/view.jhtml',function (data) {
+                    if(data.type == 'success'){
+                        if(!utils.isNull(data.data.nickName)){
+                            _this.userName = data.data.nickName;
+                        }
+                        if(!utils.isNull(data.data.logo)){
+                            _this.imageUrl = data.data.logo;
+                        }
+                        _this.collectNum = data.data.favorite;
+                        _this.focusNum = data.data.follow;
+                        _this.moneyNum = data.data.balance;
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+//            获取文集
             getCorpus:function () {
                 var _this = this;
                 GET('weex/member/article_catalog/list.jhtml',function (data) {
@@ -1195,41 +1201,66 @@
             },
 //            个人信息
             goAttribute(){
+                let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
-                        return ;
+                        if(data.type == 'success'){
+                            _this.updateUserInfo();
+                        }else{
+                            return ;
+                        }
                     }
                 );
             },
 //            设置中心
             goManage(){
+                let _this = this;
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
-                        return ;
+                        if(data.type == 'success'){
+                            _this.updateUserInfo();
+                        }else{
+                            return ;
+                        }
                     }
                 );
             },
 //            我的关注
             goFocus(){
+                let _this = this;
                 event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
                     function (data) {
-                        return ;
+                        if(data.type == 'success'){
+                            _this.updateUserInfo();
+                        }else {
+                            return ;
+                        }
                     }
                 );
             },
 //            我的收藏
             goCollect(){
+                let _this = this;
                 event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
                     function (data) {
-                        return ;
+                        if(data.type == 'success'){
+                            _this.updateUserInfo();
+                        }else{
+                            return ;
+                        }
                     }
                 );
             },
 //            钱包
             goWallet(){
+                let _this = this;
                 event.openURL(utils.locate('view/member/wallet/index.js'),
                     function (data) {
-                        return ;
+                        if(data.type == 'success'){
+                            _this.updateUserInfo();
+                        }else{
+                            return ;
+                        }
                     }
                 );
             },

@@ -157,6 +157,25 @@ let utilsFunc = {
         if (debug) {
             event.toast(msg);
         }
+    },
+    //  获取字符串的字符总长度
+    getLength(e){
+        var name = e;
+        var len = 0;
+        for (let i = 0; i < name.length; i++) {
+            var a = name.charAt(i);
+            if (a.match(/[^\x00-\xff]/ig) != null) {
+                len += 2;
+            }
+            else {
+                len += 1;
+            }
+        }
+        return len;
+    },
+//    将过长的字符串换成 XXX...XXX格式
+    changeStr(e){
+       return e.substr(0,4) + '...' + e.substr(-4);
     }
 };
 
