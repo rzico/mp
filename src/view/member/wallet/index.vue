@@ -110,10 +110,10 @@
         props: {
             title: { default: "钱包" }
         },
+        created() {
+            this.load();
+        },
         methods: {
-            created() {
-              this.load();
-            },
             goback: function (e) {
                 event.closeURL();
             },

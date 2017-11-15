@@ -213,10 +213,11 @@
                 return Number(this.quota) - Number(this.service)
             }
         },
+        created() {
+            this.load();
+        },
         methods: {
-            created() {
-                this.load();
-            },
+
             onmoney:function (e){
                 this.quota = e.value;
                 var _this=this;
