@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
+        <navbar :title="title" @goback="goback" border="false"> </navbar>
         <scroller class="scroller">
             <div class="wallet-panel">
                 <text class="wallet-title">钱包余额（元）</text>
