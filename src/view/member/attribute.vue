@@ -157,7 +157,7 @@
         created() {
             utils.initIconFont();
             this.open();
-            event.toast(this.logo)
+//            event.toast(this.logo)
         },
         methods: {
             potting:function () {
@@ -207,13 +207,13 @@
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
                     true,function (data) {
-//                        event.toast(data);
                         if(data.type == 'success') {
 //                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
 //                            _this.original = data.data.originalPath
 //                            上传原图
-                            event.upload( _this.original,function (data) {
+                            event.upload(data.data.originalPath,function (data) {
+//                                event.toast(data);
                                 if (data.type == 'success' && data.data != '') {
 //                            修改后访问修改专栏信息接口
                                     POST('weex/member/update.jhtml?logo=' + data.data).then(
@@ -221,7 +221,7 @@
                                             if (mes.type == "success") {
 //                                                将服务器上的路径写入页面中
                                                 _this.logo = data.data;
-//                                    event.toast(data);
+//                                              event.toast(data);
                                             } else {
                                                 event.toast(mes.content);
                                             }
@@ -229,12 +229,10 @@
                                             event.toast("网络不稳定");
                                         }
                                     )
-//
                                 } else {
                                     event.toast(data.content);
                                 }
                             })
-
                         }
             })
             },

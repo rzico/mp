@@ -411,7 +411,7 @@
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
-                event.toast(data);
+//                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (friend) {
                           let jsonData = JSON.parse(friend.value);
@@ -450,8 +450,8 @@
                     }else{
                         lastTimestamp = '';
                     }
-//                    + '&timeStamp=' + lastTimestamp
-                    GET('weex/member/friends/list.jhtml?status=adopt' ,function (data) {
+
+                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + lastTimestamp ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -466,7 +466,6 @@
                                             keyword:',' + friend.name + ',' +friend.nickName + ',' + friend.md5 + ',',
                                             sort:item.letter + ',' + timestamp
                                         }
-
                                         event.save(option,function (message) {
                                             event.toast(message);
                                             if(message.type == 'success' && message.content =='保存成功'){
@@ -475,7 +474,6 @@
 //                                            将本次时间戳缓存起来
                                                 storage.setItem('lastTimestamp' + _this.UId, timestamp);
                                             }else if(message.type == 'success' && message.content =='更新成功'){
-                                                //现在的会一直弹出更新成功
                                             }else{
 
                                                 event.toast(message.content);
