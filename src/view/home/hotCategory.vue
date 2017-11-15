@@ -264,7 +264,6 @@
                                 if(_this.articleList.length == 0){
                                     event.toast('该分类暂无文章');
                                 }else{
-                                    event.toast('已经到底了');
                                 }
                             }else{
                                 data.data.data.forEach(function (item) {

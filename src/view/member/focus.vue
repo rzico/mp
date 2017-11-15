@@ -266,7 +266,6 @@
                                 _this.userList.push(item);
                             })
                         }else if(data.type == 'success' && data.data.data == '' ){
-                            event.toast('已经到底了');
                         }else{
                             event.toast(data.content);
                         }

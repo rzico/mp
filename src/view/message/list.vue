@@ -267,11 +267,8 @@
                 pageSize:20,
             };
             this.selfUserId = event.getUserId();
-//            event.toast(a);
 //            读取本地缓存
             event.findList(listoption,function (data) {
-//                event.toast('本地缓存:');
-//                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (item) {
                         _this.messageList.push(JSON.parse(item.value));
@@ -329,7 +326,6 @@
                                 keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
                                 sort:'0' + timestamp
                             }
-//                            event.toast('1');
                             event.save(option,function (message) {
                                 if(message.type == 'success' && message.content =='保存成功'){
                                     _this.messageList.splice(0,0,_weex.data[i]);
@@ -371,7 +367,6 @@
                                     keyword:',' + storageData.name + ',' + storageData.nickName + ',' + _weex.data.content +',',
                                     sort:'0,' + timestamp
                                 }
-//                                event.toast('2');
                                 event.save(option,function (message) {
                                     if(message.type == 'success' && message.content =='更新成功'){
                                         _this.messageList.forEach(function (nowData,nowIndex) {
@@ -384,8 +379,6 @@
                                                  storageData = JSON.parse(storageData);
 //                                        将新的对话push进
                                                 _this.messageList.splice(0,0,storageData);
-                                            }else{
-                                                event.toast('网络不稳定');
                                             }
                                         })
                                     }else{
@@ -394,7 +387,6 @@
                                 })
 
                             }else{
-//                                event.toast('3');
                                 let option = {
                                     type:'message',
                                     key:_weex.data.userId,
@@ -418,35 +410,6 @@
                     }
 
 
-//                    _weex.data.forEach(function (item,index) {
-//                        item.name = utils.isNull(item.name) ? '' : item.name;
-//                        let option = {
-//                            type:'message',
-//                            key:item.userId,
-//                            value:item,
-//                            keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
-//                            sort:'0' + timestamp
-//                        }
-//                        event.save(option,function (message) {
-//                            event.toast(message);
-//                            if(message.type == 'success' && message.content =='保存成功'){
-//                                _this.messageList.splice(0,0,item);
-//                            }else if(message.type == 'success' && message.content =='更新成功'){
-////                                event.toast('1');
-//                                _this.messageList.forEach(function (nowData,nowIndex) {
-//                                    if(nowData.userId == item.userId){
-////                                        event.toast('2');
-////                                        删除原来的对话
-//                                        _this.messageList.splice(nowIndex,1);
-////                                        将新的对话push进
-//                                        _this.messageList.splice(0,0,item);
-//                                    }
-//                                })
-//                            }else{
-//                                event.toast('网络不稳定');
-//                            }
-//                        })
-//                    })
                 }else{
                     event.toast(_weex.content);
                 }
@@ -481,10 +444,7 @@
             },
 //            跳转消息列表
             jumpMessage:function(item,index){
-//                event.toast(messageType);
-//                event.toast(isRead);
                 var _this = this;
-//                event.toast(item);
                 if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
                     item.unRead = 0;
                     let timestamp = Math.round(new Date().getTime()/1000);

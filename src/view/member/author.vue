@@ -645,10 +645,8 @@
                             }
                             _this.articleList.push(item);
                         });
+                    } else if(data.type == 'success' && data.data.data == ''){
                     }
-//                    else if(data.type == 'success' && data.data.data == ''){
-//                        event.toast('没有文章了');
-//                    }
                     else{
                         event.toast(data.content);
                     }
@@ -667,11 +665,15 @@
                 event.toast('will jump');
             },
             corpusChange:function(index,id){
+
 //                event.toast(id);
                 var _this = this;
                 if(_this.whichCorpus == index){
                     return;
                 }
+                _this.canScroll = false;
+                _this.twoTop = false;
+                _this.canScroll = true;
                 _this.articleList = [];
                 _this.corpusId = id;
                 _this.whichCorpus = index;
@@ -686,7 +688,7 @@
                     _this.listCurrent = _this.listCurrent + 10;
                     _this.addArticle();
                     this.showLoading = 'hide'
-                }, 1500)
+                }, 10)
             },
             scrollHandler: function(e) {
                 var _this = this;

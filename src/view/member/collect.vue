@@ -7,7 +7,7 @@
             </refresh>
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="collectList.length == 0"></noData>
-                <div class="collectBox" v-else v-for="item in collectList" @click="goArticle(item.id)">
+                <div class="collectBox"  v-for="item in collectList" @click="goArticle(item.id)">
                     <!--名字与日期-->
                     <div class="nameDate">
                         <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
@@ -147,7 +147,8 @@
                 UId:'',
                 refreshState:'',
                 isSelf:false,
-                userName:'我'
+                userName:'我',
+                screenHeight:0
             }
         },
         props:{
@@ -164,6 +165,8 @@
         },
         created(){
             this.UId = utils.getUrlParameter('id');
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(136);
             let selfId = event.getUId();
             if(this.UId == selfId){
                 this.isSelf = true;
@@ -215,7 +218,6 @@
                                 _this.collectList.push(item);
                             })
                         }else if(data.type == 'success' && data.data.data == '' ){
-                            event.toast('已经到底了');
                         }else{
                             event.toast(data.content);
                         }
