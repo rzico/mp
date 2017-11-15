@@ -177,7 +177,6 @@
                 event.encrypt(this.txtInput, function (message) {
                     if (message.type == "success") {
                         POST('weex/member/bankcard/query.jhtml?banknum=' +message.data).then(function (data) {
-//                            event.toast('1234');
                                 if (data.type == "success" && data.data != '') {
                                     _this.cardname = data.data.cardname;
                                     _this.bankname = data.data.bankname;
@@ -186,17 +185,16 @@
                                     _this.bankimage = data.data.bankimage;
                                     _this.province = data.data.province;
                                     _this.city =data.data.city;
-                                    event.toast(data);
                                 } else {
                                     event.toast(data.content);
                                 }
-                            }, function () {
-                                event.toast("网络不稳定请重试");
+                            }, function (err) {
+                                event.toast(err.content);
                             }
                         )
                     }
                     else {
-                        event.toast(data.content);
+                        event.toast(message.content);
                     }
                 })
             },
@@ -222,7 +220,7 @@
                 let  threedata = {
                     cardNo : this.txtInput,
                     mobile :this.phone,
-                    ldentity:this.idno,
+                    identity:this.idno,
                     name:this.accountName,
                     cardname:this.cardname,
                     bankname:this.bankname,
