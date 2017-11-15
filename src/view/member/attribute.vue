@@ -148,7 +148,8 @@
                 nickName:"未登录",
                 areaName:"未设置",
                 occupation:"未设置",
-                category:1
+                category:1,
+                sex:''
             }
         },
         props: {
@@ -168,10 +169,21 @@
             },
             profession: function () {
                 var _this = this;
-                event.openURL('http://192.168.2.202:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
+                event.openURL('http://192.168.2.147:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
                     if(data.type == 'success' && data.data != '') {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
+                        POST('weex/member/update.jhtml?occupationId=' +_this.category).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+                                    utils.debug(mes)
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
                     }
                 })
             },
@@ -192,7 +204,7 @@
                             POST('weex/member/update.jhtml?nickName=' +encodeURI(value.data)).then(
                                 function (mes) {
                                     if (mes.type == "success") {
-                                        utils.debug(mes)
+//                                        utils.debug(mes)
                                         _this.nickName = value.data
                                     } else {
                                         event.toast(mes.content);
@@ -252,31 +264,56 @@
                 picker.pick({
                     index:0,
                     items:['男','女','保密']
-                }, event => {
-                    if (event.result === 'success') {
-                        if (event.data == 0){
+                }, e => {
+                    if (e.result === 'success') {
+                        if (e.data == 0){
                             this.gender = '男'
+                            this.sex = 'male'
 
-                        }else if(event.data == 1){
+                        }else if(e.data == 1){
                             this.gender = '女'
+                            this.sex = 'female'
                         }
                         else{
                             this.gender = '保密'
+                            this.sex = 'secrecy'
                         }
+                        POST('weex/member/update.jhtml?gender=' +this.sex).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
                     }
                 })
             },
             goAutograph:function () {
                 let _this = this;
-                let senfData = this.autograph == '未设置' ? '' : this.autograph;
+                let senfData = this.autograph == '未填写' ? '' : this.autograph;
                 let textData = {
                     autograph:senfData
                 };
                 textData = JSON.stringify(textData);
                 storage.setItem('oneNumber', textData,e=>{
-                event.openURL('http://192.168.2.202:8081/autograph.weex.js?name=oneNumber', function (message) {
+                event.openURL('http://192.168.2.147:8081/autograph.weex.js?name=oneNumber', function (message) {
                     if(message.data != ''){
-                        _this.autograph = message.data.text;
+                       utils.debug('weex/member/update.jhtml?autograph=' + encodeURI(message.data.text))
+                        POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+                                    _this.autograph = message.data.text;
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
                     }
                 })
                 });

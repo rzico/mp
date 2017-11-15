@@ -20,6 +20,7 @@
 <script>
     const modal = weex.requireModule('modal');
     const storage = weex.requireModule('storage');
+    import utils from '../../../assets/utils';
     var stream = weex.requireModule('stream');
     var event = weex.requireModule('event');
     import { POST, GET } from '../../../assets/fetch'
@@ -52,10 +53,12 @@
                         function (weex) {
 //                            event.toast('weex/login/send_mobile.jhtml?mobile=' + _this.value)
                             if (weex.type == "success") {
-                                event.openURL('view/member/mobile/captcha.js', function () {
+                                event.openURL(utils.locate('view/member/mobile/captcha.js', function () {
 
                                 })
+                                )
                                 event.closeURL();
+
                             } else {
                                 native.showToast(weex.data.content);
                             }
