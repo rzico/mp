@@ -94,7 +94,7 @@
     var navigator = weex.requireModule('navigator')
     var event = weex.requireModule('event')
     import navbar from '../../../include/navbar.vue'
-    import utils from '../../../assets/utils';
+    import utils from '../../../assets/utils'
     export default {
         components: {
             navbar

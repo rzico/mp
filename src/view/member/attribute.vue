@@ -188,7 +188,19 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入昵称',duration:1})
                         }else{
-                            _this.nickName = value.data
+
+                            POST('weex/member/update.jhtml?nickName=' +encodeURI(value.data)).then(
+                                function (mes) {
+                                    if (mes.type == "success") {
+                                        utils.debug(mes)
+                                        _this.nickName = value.data
+                                    } else {
+                                        event.toast(mes.content);
+                                    }
+                                }, function (err) {
+                                    event.toast("网络不稳定");
+                                }
+                            )
                     }
                     }
                 })
