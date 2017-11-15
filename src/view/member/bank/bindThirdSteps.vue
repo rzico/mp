@@ -5,7 +5,9 @@
         </div>
     <div class="big">
         <div class="text">
-            <text class="textA">本次操作需要短信确认，请输入</text> <text class="textA2" > {{phone}}</text> <text class="textA3">收到的短信验证码</text>
+            <text class="textA">本次操作需要短信确认，请输入</text>
+            <text class="textA2" > {{phone}}</text>
+            <text class="textA3">收到的短信验证码</text>
         </div>
         <div class="inputA">
             <text class="textB">验证码</text>
@@ -32,8 +34,8 @@
         background-color: #eeeeee;
     }
     .text{
+        flex-wrap: wrap;
         background-color:#ffffff;
-
         height: 200px;
         align-items:center;
         justify-content: center;
@@ -214,7 +216,7 @@
                         POST('weex/member/bankcard/send_mobile.jhtml?mobile=' + message.data).then(
                             function (data) {
                                 if (data.type == "success") {
-//                                    event.toast(data);
+                                   this.beginTimer();
 
                                 } else {
                                     event.toast(data.content);
@@ -276,8 +278,8 @@
 
             send:function () {
 
-            this.onSend();
-    }
+                this.onSend();
+            }
         }
     }
 </script>

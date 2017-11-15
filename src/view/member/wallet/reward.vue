@@ -152,7 +152,7 @@
                                 event.toast('已经到底了');
                             } else {
                                 data.data.data.forEach(function (item) {
-                                    _this.lists.push(item);
+                                   _this.lists.push(item);
                                 })
                             }
                         }

@@ -1,22 +1,22 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
+        <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <scroller class="scroller" show-scrollbar="false">
-            <div class="flex-column">
+            <div class="flex-column bkg-primary">
                 <image class="bg"
-                       v-bind:src="headLogo">
+                       v-bind:src="topic.logo">
                 </image>
                 <div class="topic">
                     <image class="logo" @click="changeLogo"
-                           v-bind:src="headLogo">
+                           v-bind:src="topic.logo">
                     </image>
                     <div class="topic_footer">
-                        <text class="name" @click="petname">{{userName}}</text>
-                        <text class="autograph" @click="getColumn">{{clickSettings}}</text>
+                        <text class="name" @click="petname">{{topic.name}}</text>
+                        <text class="autograph" @click="petname">{{opened()?'点击修改专栏':'点击开通专栏'}}</text>
                     </div>
                 </div>
             </div>
-            <div class="sub-panel tip">
+            <div class="sub-panel tip" v-if="opened()">
                 <text class="sub_title">点亮VIP专栏特权（388元/年）</text>
             </div>
 
@@ -113,9 +113,10 @@
     .bg {
         position:absolute;
         width:750px;
-        height: 320px;
-        filter: blur(4px);
-        opacity: 0.8;
+        height: 325px;
+        filter: blur(10px);
+        opacity: 0.5;
+        background-size: cover;
     }
 
     .topic {
@@ -155,36 +156,30 @@
     }
     .name {
         font-size: 34px;
-        color: black;
+        color: white;
     }
     .autograph {
         margin-top: 10px;
         font-size: 28px;
-        color: #ccc;
+        color: #eee;
     }
     .switch {
         margin-right: 20px;
         align-items:flex-start;
     }
-
 </style>
 <script>
+    import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue'
     import utils from '../../../assets/utils'
     import music from '../../../assets/music'
     const album = weex.requireModule('album');
-    import { POST, GET } from '../../../assets/fetch'
     const event = weex.requireModule('event');
     var modal = weex.requireModule('modal');
     export default {
         data() {
           return {
-              topic:{},
-              clickSettings:'点击获取专栏',
-              userId:'',
-              userName:'',
-              headLogo:'',
-
+              topic:{logo:"",name:"",id:""},
           }
         },
         components: {
@@ -194,11 +189,16 @@
             title: { default: "我的专栏" }
         },
         created(){
-            this.userId = event.getUId()
+            utils.initIconFont();
+            this.load();
         },
         methods: {
 //            修改头像
             changeLogo: function () {
+                if (!this.opened()) {
+                    this.create();
+                    return;
+                }
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
@@ -236,6 +236,10 @@
             },
 //            修改昵称
             petname:function () {
+                if (!this.opened()) {
+                    this.create();
+                    return;
+                }
                 let _this = this;
                 modal.prompt({
                     message: '修改昵称',
@@ -254,43 +258,38 @@
                 })
             },
 //            获取专栏信息
-            getColumn:function () {
+            load:function () {
                 var _this = this;
-//                if( this.userName == ''){
-                GET('weex/topic/view.jhtml?id=' + this.userId, function (data) {
-                    event.toast(data)
+                GET('weex/member/topic/view.jhtml', function (data) {
                     if (data.type == 'success') {
-                       _this.userName = data.data.name
-                        _this.headLogo = data.data.logo
-                        _this.clickSettings = ''
+                        _this.topic = data.data;
+                    } else {
+                        event.toast(err.content)
                     }
                 },function (err) {
                     event.toast(err.content)
                 })
-//            }else{
-//                    let _this = this;
-//                    modal.prompt({
-//                        message: '修改昵称',
-//                        duration: 0.3,
-//                        okTitle:'确定',
-//                        cancelTitle:'取消',
-//                        placeholder:'请输入昵称'
-//                    }, function (value) {
-//                        if(value.result == '确定'){
-//                            if(value.data == '' || value.data == null ){
-//                                modal.toast({message:'请输入昵称',duration:1})
-//                            }else{
-//                                _this.userName = value.data
-//                            }
-//                        }
-//                    })
-//                }
+            },
+//             开通专栏
+            create:function () {
+                var _this = this;
+                POST('weex/member/topic/submit.jhtml').then(
+                function (data) {
+                    if (data.type == 'success') {
+                        _this.topic = data.data;
+                        event.toast("开通专栏成功");
+                    } else {
+                        event.toast(err.content)
+                    }
+                },function (err) {
+                    event.toast(err.content)
+                })
             },
             goback: function (e) {
                 event.closeURL();
             },
             opened:function () {
-                return !utils.isNull(topic.id);
+                return this.topic.id>0;
             }
         }
 
