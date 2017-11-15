@@ -126,7 +126,8 @@
                 UId:'',
                 refreshState:'',
                 isSelf:false,
-                userName:'我'
+                userName:'我',
+                screenHeight:0
             }
         },
         components: {
@@ -148,6 +149,8 @@
             let _this = this;
             this.UId = utils.getUrlParameter('id');
             let selfId = event.getUId();
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(136);
             if(this.UId == selfId){
                 this.isSelf = true;
             }else{
@@ -232,7 +235,6 @@
                                 _this.userList.push(item);
                             })
                         }else if(data.type == 'success' && data.data.data == '' ){
-                            event.toast('已经到底了');
                         }else{
                             event.toast(data.content);
                         }

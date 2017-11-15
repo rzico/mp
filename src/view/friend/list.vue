@@ -409,7 +409,6 @@
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
-//                event.toast(data);
                 if(data.type == 'success'){
                     data.data.forEach(function (friend) {
                           let jsonData = JSON.parse(friend.value);
@@ -465,7 +464,6 @@
                                             sort:item.letter + ',' + timestamp
                                         }
                                         event.save(option,function (message) {
-                                            event.toast(message);
                                             if(message.type == 'success' && message.content =='保存成功'){
                                                 item.name.push(friend);
                                                 _this.friendTotal ++;
@@ -473,18 +471,17 @@
                                                 storage.setItem('lastTimestamp' + _this.UId, timestamp);
                                             }else if(message.type == 'success' && message.content =='更新成功'){
                                             }else{
-
                                                 event.toast(message.content);
                                             }
                                         })
                                     }
                                 })
                             })
+                        }else if(data.type == 'success' && data.data.data ==''){
                         }else{
-                            event.toast('没有数据');
+                            event.toast(data.content);
                         }
                     },function (data) {
-
                         event.toast(data.content);
                     })
                 })
