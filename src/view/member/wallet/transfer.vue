@@ -232,7 +232,7 @@
             bankmessage: function () {
                 var self = this
                 self.message = '单笔最大限额 5万元'
-                this.bankstyle=5
+                this.bankstyle=2
                 this.bankcolor='#D9141E'
                 this.wechatstyle=1
                 this.wechatcolor='#ccc'
@@ -241,7 +241,7 @@
             wechatmessage: function (event) {
                 var self = this
                 self.message = '单笔最大限度 1万元'
-                this.wechatstyle=5
+                this.wechatstyle=2
                 this.wechatcolor='#D9141E'
                 this.bankstyle=1
                 this.bankcolor='#ccc'

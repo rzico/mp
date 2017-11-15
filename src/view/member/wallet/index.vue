@@ -71,7 +71,7 @@
         flex:1;
         font-size: 32px;
         color: #fff;
-        margin-left:60px;
+        margin-left:50px;
         justify-content: center;
     }
 
