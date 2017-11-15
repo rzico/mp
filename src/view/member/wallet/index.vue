@@ -149,14 +149,15 @@
                 })
             },
             load:function () {
+                var _this = this;
                 GET("weex/member/wallet/view.jhtml",function (res) {
                     if (res.type=='success') {
-                        wallet = res.data;
+                        _this.wallet = res.data;
                     } else {
                         event.toast(res.content);
                     }
-
-                },function (err) {
+                },
+                function (err) {
                     event.toast(err.content);
                 })
 

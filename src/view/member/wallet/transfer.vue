@@ -6,17 +6,17 @@
     <div class="big">
         <div class="bankWechat">
         <div class="bank" @click="bankmessage()" v-bind:style="{borderBottomWidth:bankstyle + 'px',borderBottomColor:bankcolor}">
-                <text class="bankIconFont" :style="{fontFamily:'iconfont'}" >&#xe626;</text>
+                <text class="bankIconFont primary" :style="{fontFamily:'iconfont'}" >&#xe64f;</text>
             <div class="bankInformation">
-                <text class="bankName">{{wdata.bankname}}</text>
-                <text class="bankTailnumber">{{wdata.cardno}}</text>
+                <text class="bankName">{{wdata.bankName}}</text>
+                <text class="bankTailnumber">{{wdata.cardNo}}</text>
             </div>
         </div>
             <div class="wechat" @click="wechatmessage" v-bind:style="{borderBottomWidth:wechatstyle + 'px',borderBottomColor:wechatcolor}">
                 <text class="wechatIconFont" :style="{fontFamily:'iconfont'}" >&#xe659;</text>
                 <div class="wechatInformation">
                 <text class="wechatFont">微信提现</text>
-                    <text class="wechatName">{{nickName}}</text>
+                    <text class="wechatName">{{wdata.nickName}}</text>
             </div>
         </div>
         </div>
@@ -41,6 +41,7 @@
     </div>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style>
 
     .bankWechat{
@@ -65,6 +66,7 @@
     .bankIconFont{
         font-size: 80px;
         margin-left: 30px;
+        margin-top:5px;
     }
     .bankInformation{
         width:auto;
@@ -80,6 +82,8 @@
     .bankTailnumber{
         font-size: 28px;
         color:#cccccc;
+        lines:1;
+        text-overflow: ellipsis;
     }
     .wechat{
         background-color:#ffffff;
@@ -102,6 +106,7 @@
         font-size: 80px;
         color: chartreuse;
         margin-left: 30px;
+        margin-top:5px;
     }
     .wechatFont{
         font-size: 32px;
@@ -109,6 +114,8 @@
     .wechatName{
         font-size:28px;
         color:#ccc;
+        lines:1;
+        text-overflow: ellipsis;
     }
     .money{
         background-color:#ffffff;
@@ -189,14 +196,14 @@
         data() {
 
             return {
-                quota:'',
+                quota:'0',
                 message:'单笔最大额度 5万元',
                 bankstyle:5,
                 bankcolor:'#D9141E',
                 wechatstyle:1,
                 wechatcolor:'#ccc',
                 bankWithdrawals:'bankcard',
-                service:'',
+                service:'0',
                 hide:'hidden',
                 wdata:{bankname:"",cardno:""},
                 timer:null
@@ -210,7 +217,11 @@
         },
         computed:{
             creditedAmount:function(){
-                return Number(this.quota) - Number(this.service)
+                if (this.quota==0) {
+                    return 0;
+                } else {
+                    return Number(this.quota) - Number(this.service)
+                }
             }
         },
         created() {
@@ -219,7 +230,11 @@
         methods: {
 
             onmoney:function (e){
-                this.quota = e.value;
+                if (e.value=='') {
+                    this.quota = 0;
+                } else {
+                    this.quota = e.value;
+                }
                 var _this=this;
                 if (_this.timer!=null) {
                     clearTimeout(_this.timer);
@@ -227,7 +242,7 @@
                 }
                 _this.timer = setTimeout(function () {
                     _this.serviceCharge()
-                },2000)
+                },1000)
                 _this.hide= 'visible'
             },
             bankmessage: function () {
@@ -256,33 +271,38 @@
             },
             withdrawals:function () {
                 var _this = this;
-                        POST('weex/member/transfer/submit.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
-                            function (data) {
-                                if (data.type == "success") {
-                                    modal.alert({
-                                        message: '提交成功，请注意到账情况',
-                                        okTitle: '知道了'
-                                    })
-                                } else {
-                                    event.toast(data.content);
-                                }
-                            }, function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-            },
-            serviceCharge:function(){
-                var _this = this;
-                POST('weex/member/transfer/calculate.jhtml?amount=' +this.quota ).then(
+                POST('weex/member/transfer/submit.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
                     function (data) {
                         if (data.type == "success") {
-                                 _this.service = data.data;
+                            modal.alert({
+                                message: '提交成功，请注意到账情况',
+                                okTitle: '知道了'
+                            })
+                            event.closeURL(data);
                         } else {
                             event.toast(data.content);
                         }
                     }, function (err) {
+                        event.toast(err.content);
                     }
                 )
+            },
+            serviceCharge:function(){
+                var _this = this;
+                if (this.quota==0) {
+                    _this.service = 0;
+                } else {
+                    POST('weex/member/transfer/calculate.jhtml?amount=' +this.quota ).then(
+                        function (data) {
+                            if (data.type == "success") {
+                                _this.service = data.data;
+                            } else {
+                                event.toast(data.content);
+                            }
+                        }, function (err) {
+                        }
+                    )
+                }
             },
             goback: function () {
                 event.closeURL()

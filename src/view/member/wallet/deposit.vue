@@ -1,6 +1,7 @@
 <template>
     <div class="wrapper">
-        <!--<navbar :title="title" @goback="goback"> </navbar>-->
+        <navbar :title="title" @goback="goback"> </navbar>
+        <noData v-if="noData()" :ndBgColor="'#fff'"> </noData>
         <list class="list">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新 ...</text>
@@ -12,7 +13,7 @@
                         <text class="title" >{{deposit.createDate | monthfmt}}</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title"   >查看账单</text>
+                        <text class="sub_title">查看账单</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -85,6 +86,7 @@
     import utils from '../../../assets/utils'
     var event = weex.requireModule('event')
     import navbar from '../../../include/navbar.vue'
+    import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
 
     var pageNumber = 1;
@@ -99,12 +101,15 @@
             }
         },
         components: {
-            navbar
+            navbar,noData
         },
         props: {
             title: { default: "账单" }
         },
         methods: {
+            noData:function () {
+                return this.depositList.length==0;
+            },
 //            是否添加底部边框
             addBorder: function (index) {
                 let listLength = this.depositList.length;
@@ -137,54 +142,75 @@
             goback: function (e) {
                 event.closeURL();
             },
-            open (pageStart) {
+            open (pageStart,callback) {
                 this.pageStart = pageStart;
                 var _this = this;
                 GET('weex/member/deposit/list.jhtml?pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
-                       if (res.data.pageStart==0) {
+                       if (res.data.start==0) {
                           _this.depositList = res.data.data;
                        } else {
                            data.data.data.forEach(function (item) {
                                _this.depositList.push(item);
                            })
                        }
-                       _this.pageStart = res.data.pageStart+res.data.data.length;
-                       _this.pageSize = res.data.pageSize;
-                       _this.showLoading = 'hide';
-                       _this.refreshing = false;
+                       _this.pageStart = res.data.start+res.data.data.length;
                    } else {
-                       _this.showLoading = 'hide';
-                       _this.refreshing = false;
                        event.toast(err.content);
                    }
+
+                    callback();
                 }, function (err) {
-                    _this.showLoading = 'hide';
-                    _this.refreshing = false;
+                    callback();
                     event.toast(err.content);
                 })
             },
 //            上拉加载
             onloading (event) {
                 this.showLoading = 'show';
-                this.open(this.pageStart);
+                this.open(this.pageStart,function () {
+                    _this.showLoading = 'hide';
+                });
             },
 //            下拉刷新
             onrefresh (event) {
                 this.pageStart = 0;
                 this.refreshing = true;
-                this.open(this.pageStart);
+                this.open(this.pageStart,function () {
+                    _this.refreshing = false;
+                });
             },
 //            获取月份
             getDate: function(value) {
+                value = value + '';
+                if(value.length == 10){
+                    value = parseInt(value) * 1000;
+                }else{
+                    value = parseInt(value);
+                }
+                // 返回处理后的值
                 let date = new Date(value);
-                let     m = date.getMonth() + 1;
-                return m;
+                let tody = new Date();
+                let m = tody.getMonth() - date.getMonth();
+                let y = tody.getYear() - date.getYear();
+                if (m<1) {
+                    return "本月"
+                }
+                if (m<2) {
+                    return "上月"
+                }
+                if (y<1) {
+                    return date.getMonth()+"月"
+                }
+                return date.getYear()+"年"+date.getMonth()+"月";
             }
         },
         created () {
 //              页面创建时请求数据
-            this.open(0);
+            utils.initIconFont();
+            this.open(0,function () {
+                
+            });
         }
     }
 </script>
