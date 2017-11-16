@@ -40,6 +40,7 @@
             storage.getItem('mobile', event => {
                 if (event.data!="" && event.data!="undefined") {
                     this.value = event.data
+
                 }
             })
         },

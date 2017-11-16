@@ -22,6 +22,7 @@
     export default {
         components: {
             navbar,captcha
+
         },
         props: {
             title: { default: "登录"},
