@@ -97,10 +97,10 @@
 <style lang="less" src="../../style/wx.less"/>
 <style>
     .rightTop{
-        height: 96px;width: 98px;align-items: center;justify-content: center;
+        height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
     }
     .nav_ico {
-        font-size: 38px;
+        font-size: 50px;
         color: #fff;
     }
     .userBox{
@@ -449,12 +449,19 @@
                         lastTimestamp = '';
                     }
 
-                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + lastTimestamp ,function (data) {
+                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + '' ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
                             data.data.data.forEach(function (friend) {
                                 friend.name = utils.isNull(friend.name) ? '' : friend.name;
+//                          存入md5
+//                                let option = {
+//                                    type:'friend',
+//                                    key:friend
+//                                }
+
+
                                 _this.friendsList.forEach(function (item) {
                                     if(item.letter == getLetter.getFirstLetter(friend.nickName.substring(0,1))){
                                         let option = {

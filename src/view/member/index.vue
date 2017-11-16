@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <div style="position: fixed;top: 63px;right: 30px;" @click="goManage()">
+            <div  class="rightTop" @click="goManage()">
                 <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
             </div>
             <!--绑定动画-->
@@ -56,11 +56,11 @@
             <image   class="backgroundImage" :src="bgImgUrl"></image>
             <!--遮罩层-->
             <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-            <div  class="topHead">
+            <div  class="topHead" >
                 <!--用户头像-->
                 <image class="testImage" :src="imageUrl" ></image>
                 <!--个性签名 用户昵称-->
-                <div style="align-items: center;" @click="goAttribute()">
+                <div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >
                     <!--用户昵称-->
                     <text class="userName">{{userName}}</text>
                     <!--用户签名-->
@@ -69,7 +69,7 @@
             </div>
             <!--功能按钮-->
             <div class="topBtnBox">
-                <div class="topBtnSmallBox " style="min-width: 120px" @click="goCollect()">
+                <div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">
                     <text class="topBtn topBtnBigFont">{{collectNum}}</text>
                     <text class=" topBtn " >收藏</text>
                 </div>
@@ -83,7 +83,7 @@
                     </div>
                     <text class="topBtn" >钱包</text>
                 </div>
-                <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFocus()">
+                <div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">
                     <text class="topBtn topBtnBigFont">{{focusNum}}</text>
                     <text class="topBtn">关注</text>
                 </div>
@@ -208,6 +208,16 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .rightTop{
+        position: fixed;
+        top: 40px;
+        right: 0;
+        /*width: 110px;*/
+        width: 96px;
+        height: 96px;
+        align-items: center;
+        justify-content: center;
+    }
     .categoryBox{
         position: absolute;background-color: rgba(136,136,136,0.1);left: 650px;bottom: 100px;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
     }
@@ -543,7 +553,7 @@
         flex-direction: row;
         align-items: center;
 
-        margin-top: 30px;
+        margin-top: 10px;
         width:500px;
         margin-left: 125px;
         justify-content: space-around;
@@ -554,7 +564,11 @@
         align-items: center;
     }
     .walletLayout{
-        min-width: 166px;flex-shrink:0;padding-left: 30px;padding-right: 30px;
+        min-width: 166px;
+        max-width: 260px;
+        flex-shrink:0;
+        padding-left:30px;
+        padding-right: 30px;
     }
     .topBtn{
         color:white;
@@ -613,7 +627,8 @@
     export default {
         data:function() {
             return{
-                testaaa:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                topMWidth:166,
+
                 settingColor:'white',
                 opacityNum:0,
                 twoTop:false,
@@ -628,7 +643,7 @@
 //                refreshState:'',
                 fontName: '&#xe685;',
                 collectNum:0,
-                moneyNum:888.88,
+                moneyNum:8888.88,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.jpg'),
                 bgImgUrl:utils.locate('resources/images/background.jpg'),
@@ -764,6 +779,11 @@
                         _this.collectNum = data.data.favorite;
                         _this.focusNum = data.data.follow;
                         _this.moneyNum = data.data.balance;
+//                        动态控制收藏与关注的宽度
+                        let a = _this.moneyNum + '';
+                        if(utils.getLength(a) > 5){
+                            _this.topMWidth = 119;
+                        }
                     }else{
                         event.toast(data.content);
                     }

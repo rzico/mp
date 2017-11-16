@@ -665,7 +665,7 @@
 //                    modal.toast({message:sendcover,duration:3});
                     //                将封面上传服务器
                     event.upload(this.coverImage,function (data) {
-                        if(data.type == 'success' && data.data != ''){
+                        if(data.type == 'success'){
                             //这边会由于避免重复渲染而需要再次向服务器上传该图片
                             _this.serveCover = data.data;
 //                        上传段落图片
@@ -702,7 +702,7 @@
 ////                    ios是file:/ 安卓是file://
 //                    sendparaimg = sendparaimg.substring(0,1) == '/' ? sendparaimg.substring(1) : sendparaimg;
                     event.upload(_this.paraList[sendIndex].paraImage,function (data) {
-                        if(data.type == 'success' && data.data != ''){
+                        if(data.type == 'success'){
                             _this.paraList[sendIndex].paraImage = data.data;
                             //                            向后台获取缩略图
                             _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);

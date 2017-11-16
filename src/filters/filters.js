@@ -38,7 +38,7 @@ Vue.filter('timefmt', function (value) {
     let    m = date.getMonth() + 1;
     let    w = tody.getDate() - date.getDate();
     if (w<1) {
-        let    h = date.getHours();
+        let    h = date.getUTCHours() + 8;
         let    i = date.getMinutes();
         if (h < 10) {
             h = '0' + h;
@@ -161,7 +161,7 @@ Vue.filter('datetimefmt', function (value) {
     let    date = new Date(value);
     let    m = date.getMonth() + 1;
     let    d = date.getDate();
-    let    H = date.getHours();
+    let    H = date.getUTCHours() + 8;
     let    i = date.getMinutes();
     if (m < 10) {
         m = '0' + m;
@@ -190,7 +190,7 @@ Vue.filter('hitimefmt', function (value) {
     }
     // 返回处理后的值
     let    date = new Date(value);
-    let    H = date.getHours();
+    let    H = date.getUTCHours() + 8;
     let    i = date.getMinutes();
     if (H < 10) {
         H = '0' + H;
