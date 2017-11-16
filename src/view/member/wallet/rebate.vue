@@ -7,7 +7,7 @@
             </refresh>
             <cell >
                 <div class="cumulative">
-                    <text class="cumulativeMoney primary">累计赞金：{{total}}元</text>
+                    <text class="cumulativeMoney primary">累计奖励：{{total}}元</text>
                 </div>
                 <noData :ndBgColor="'#fff'"  v-if="noData()"> </noData>
             </cell>
@@ -18,11 +18,11 @@
                 <div class="panel">
                     <div class="monthFont">
                         <text class="textMonth">{{num.createDate | hitimefmt}}</text>
-                        <text class="font" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
+                        <image class="font" :src="num.logo">&#xe6ce;</image>
                     </div>
                     <div class="moneyname">
-                        <text class="money">+{{num.amount | currencyfmt}}</text>
-                        <text class="name">来自{{num.nickName}}的打赏</text>
+                        <text class="money">{{num.amount | currencyfmt}}</text>
+                        <text class="name">{{num.memo}}</text>
                     </div>
                 </div>
             </cell>
@@ -88,9 +88,10 @@
     }
 
     .font {
-        margin-left: 50px;
-        font-size: 70px;
-        color: #D9141E;
+        width:60px;
+        height:60px;
+        border-radius: 35px;
+        margin-left: 20px;
     }
 
     .moneyname {
@@ -137,7 +138,7 @@
             navbar
         },
         props: {
-            title: {default: "我的赏金"},
+            title: {default: "我的奖励"},
         },
         created() {
             utils.initIconFont();
@@ -174,7 +175,7 @@
             },
             open:function (callback) {
                 var _this = this;
-                GET('weex/member/reward/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize, function (res) {
+                GET('weex/member/rebate/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize, function (res) {
                     if (res.type == 'success') {
                         if (res.data.start==0) {
                             _this.lists = res.data.data;
@@ -222,7 +223,8 @@
             },
             summary:function () {
                 var _this = this;
-                GET('weex/member/reward/summary.jhtml', function (res) {
+                GET('weex/member/rebate/summary.jhtml', function (res) {
+                    event.toast(res);
                     if (res.type == 'success') {
                        _this.total = res.data;
                     } else {

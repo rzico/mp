@@ -15,7 +15,7 @@
                         <text class="title" >{{deposit.createDate | monthfmt}}</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">查看账单</text>
+                        <text class="sub_title"></text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
