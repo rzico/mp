@@ -5,11 +5,11 @@
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新</text>
             </refresh>
-            <div class="cumulative">
-                <text class="cumulativeMoney">累计：{{total}}元</text>
-            </div>
-            <cell v-if="noData()" >
-                <noData :ndBgColor="'#fff'"> </noData>
+            <cell >
+                <div class="cumulative">
+                    <text class="cumulativeMoney">累计：{{total}}元</text>
+                </div>
+                <noData :ndBgColor="'#fff'"  v-if="noData()"> </noData>
             </cell>
             <cell class="cell " v-for="(num,index) in lists">
                 <div class="month"  v-if="isRepeat(index)">
