@@ -262,7 +262,6 @@
                         if(data.type == 'success'){
                             if(utils.isNull(data.data.data)){
                                 if(_this.articleList.length == 0){
-                                    event.toast('该分类暂无文章');
                                 }else{
                                 }
                             }else{
