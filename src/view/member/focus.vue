@@ -160,6 +160,8 @@
             GET('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != '' ){
                     _this.userList = data.data.data;
+                }else if(data.type == 'success'){
+
                 }else{
                     event.toast(data.content);
                 }

@@ -24,7 +24,7 @@
             </div>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list  class="list" :scrollable="canScroll">
+        <list v-else  class="list" :scrollable="canScroll">
             <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新 ...</text>
             </refresh>
@@ -209,9 +209,8 @@
                 canScroll:true,
                 currentNum:0,
                 pageNum:20,
-                chatItem:'',
                 selfUserId:'',
-                pageName:'朋友',
+                pageName:'消息',
             }
         },
         components: {
@@ -269,11 +268,13 @@
             this.selfUserId = event.getUserId();
 //            读取本地缓存
             event.findList(listoption,function (data) {
-                if(data.type == 'success'){
+                if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (item) {
                         _this.messageList.push(JSON.parse(item.value));
                     })
 //                    })
+                }else if(data.type == 'success'){
+
                 }else{
                     event.toast(data.content);
                 }
@@ -324,7 +325,7 @@
                                 key:_weex.data[i].userId,
                                 value:_weex.data[i],
                                 keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
-                                sort:'0' + timestamp
+                                sort:'0,' + timestamp
                             }
                             event.save(option,function (message) {
                                 if(message.type == 'success' && message.content =='保存成功'){
@@ -355,16 +356,17 @@
                         }
 //                        本地查找是已有消息列表还是新消息列表
                         event.find(findOption,function (data) {
+                                var storageData = JSON.stringify(_weex.data);
                             if(data.type == 'success' && data.data != ''){
-                                var storageData = JSON.parse(data.data.value);
-                                storageData.createDate = _weex.data.createDate;
-                                storageData.content = _weex.data.content;
-                                storageData = JSON.stringify(storageData);
+//                                var storageData = JSON.parse(data.data.value);
+//                                storageData.createDate = _weex.data.createDate;
+//                                storageData.content = _weex.data.content;
+//                                storageData.unRead = _weex.data.unRead;
                                 let option = {
                                     type:'message',
                                     key:_weex.data.userId,
                                     value:storageData,
-                                    keyword:',' + storageData.name + ',' + storageData.nickName + ',' + _weex.data.content +',',
+                                    keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
                                     sort:'0,' + timestamp
                                 }
                                 event.save(option,function (message) {
@@ -375,10 +377,10 @@
                                             if(nowData.userId == _weex.data.userId){
 //                                        删除原来的对话
                                                 _this.messageList.splice(nowIndex,1);
-//                                                json字符串再次转换回来
-                                                 storageData = JSON.parse(storageData);
+////                                                json字符串再次转换回来
+//                                                _weex.data = JSON.parse(_weex.data);
 //                                        将新的对话push进
-                                                _this.messageList.splice(0,0,storageData);
+                                                _this.messageList.splice(0,0,_weex.data);
                                             }
                                         })
                                     }else{
@@ -390,12 +392,14 @@
                                 let option = {
                                     type:'message',
                                     key:_weex.data.userId,
-                                    value:_weex.data,
+                                    value:storageData,
                                     keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
                                     sort:'0,' + timestamp
                                 }
                                 event.save(option,function (message) {
                                     if(message.type == 'success' && message.content =='保存成功'){
+////                                                json字符串再次转换回来
+//                                        _weex.data = JSON.parse(_weex.data);
                                         _this.messageList.splice(0,0,_weex.data);
                                     }else{
                                         event.toast('网络不稳定');
@@ -445,28 +449,60 @@
 //            跳转消息列表
             jumpMessage:function(item,index){
                 var _this = this;
-                if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
+//                如果没有未读数就不更新缓存。直接跳转页面
+                if(item.unRead != 0){
                     item.unRead = 0;
-                    let timestamp = Math.round(new Date().getTime()/1000);
-                    let option = {
+                    let findOption = {
                         type:'message',
-                        key:item.userId,
-                        value:item,
-                        keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
-                        sort:'0' + timestamp
-                    }
-//                    更新缓存数据后，跳转到通知页面
-                    event.save(option,function (message) {
-//                        event.openURL('http://192.168.2.157:8081/inform.weex.js?type=' + item.userId,function () {
-                    event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
-                        });
-                    })
-
+                        key:item.userId
+                    };
+                    event.find(findOption,function (data) {
+                        if(data.type == 'success' && data.data != ''){
+                            let option = {
+                                type:'message',
+                                key:item.userId,
+                                value:item,
+                                keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
+//                            用的是原来缓存的sort。避免用户只是点击进来看一下。此时sort应该保持不变。但是unread需要置0
+                                sort:data.data.sort
+                            };
+                            event.save(option,function (message) {
+                                if(message.type == 'success'){
+                                    if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
+                                        event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
+                                        });
+                                    }else{
+                                        event.navToChat(item.userId);
+                                    };
+                                }else{
+                                    event.toast(message.content);
+                                };
+                            });
+                        };
+                    });
                 }else{
-                    this.chatItem = item;
-                    item.unRead = 0;
-                    event.navToChat(item.userId);
-                }
+                    if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
+//                    item.unRead = 0;
+//                    let timestamp = Math.round(new Date().getTime()/1000);
+//                    let option = {
+//                        type:'message',
+//                        key:item.userId,
+//                        value:item,
+//                        keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
+//                        sort:'0,' + timestamp
+//                    }
+////                    更新缓存数据后，跳转到通知页面
+//                    event.save(option,function (message) {
+                        event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
+                        });
+//                    })
+
+                    }else{
+//                    item.unRead = 0;
+                        event.navToChat(item.userId);
+                    };
+                };
+
             },
             menu:function(page){
 

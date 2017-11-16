@@ -409,7 +409,7 @@
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
-                if(data.type == 'success'){
+                if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (friend) {
                           let jsonData = JSON.parse(friend.value);
 //                          获取首字母
@@ -421,6 +421,7 @@
                         })
                     })
                     _this.friendTotal = data.data.length;
+                }else if(data.type == 'success'){
                 }else{
                     event.toast(data.content);
                 }

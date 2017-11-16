@@ -40,24 +40,24 @@
             storage.getItem('mobile', event => {
                 if (event.data!="" && event.data!="undefined") {
                     this.value = event.data
+
                 }
             })
         },
         methods: {
             onSend: function (e) {
                 var _this = this;
-                event.encrypt(this.value, function (message){
+                event.encrypt(_this.value, function (message){
                     if (message.type == "success") {
 //                        event.toast(message)
                     POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
                         function (weex) {
 //                            event.toast('weex/login/send_mobile.jhtml?mobile=' + _this.value)
                             if (weex.type == "success") {
-                                event.openURL(utils.locate('view/member/mobile/captcha.js', function () {
-
+                                event.openURL("http://192.168.2.103:8081/captcha.weex.js?mobile=" +_this.value ,function () {
+                                    event.closeURL();
                                 })
-                                )
-                                event.closeURL();
+
 
                             } else {
                                 native.showToast(weex.data.content);
@@ -70,7 +70,7 @@
             })
             },
             goBack:function(e) {
-                event.closeUrl();
+                event.closeURL();
             },
             onChange: function (e) {
                 var _this = this;

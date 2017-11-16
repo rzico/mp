@@ -165,11 +165,12 @@
 
             },
             goback: function (e) {
-                event.closeURL();
+                let backData = utils.message('success','成功','');
+                event.closeURL(backData);
             },
             profession: function () {
                 var _this = this;
-                event.openURL('http://192.168.2.147:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
+                event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=category', function (data) {
                     if(data.type == 'success' && data.data != '') {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
@@ -186,6 +187,7 @@
                         )
                     }
                 })
+                )
             },
             petname:function () {
                 let _this = this;
@@ -300,7 +302,7 @@
                 };
                 textData = JSON.stringify(textData);
                 storage.setItem('oneNumber', textData,e=>{
-                event.openURL('http://192.168.2.147:8081/autograph.weex.js?name=oneNumber', function (message) {
+                event.openURL(utils.locate('widget/autograph.js?name=oneNumber', function (message) {
                     if(message.data != ''){
                        utils.debug('weex/member/update.jhtml?autograph=' + encodeURI(message.data.text))
                         POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
@@ -316,6 +318,7 @@
                         )
                     }
                 })
+                )
                 });
             },
             updateStatus: function (attr) {
