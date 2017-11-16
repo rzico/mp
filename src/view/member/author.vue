@@ -63,7 +63,7 @@
                 <!--用户头像-->
                 <image class="testImage" :src="imageUrl" ></image>
                 <!--个性签名 用户昵称-->
-                <div style="align-items: center;" @click="goAttribute()">
+                <div style="align-items: center;padding-bottom:20px" @click="goAttribute()">
                     <!--用户昵称-->
                     <text class="userName">{{userName}}</text>
                     <!--用户签名-->
@@ -475,8 +475,7 @@
     .topBtnBox{
         flex-direction: row;
         align-items: center;
-
-        margin-top: 30px;
+        margin-top: 10px;
         width:500px;
         margin-left: 125px;
         justify-content: space-around;
@@ -734,11 +733,11 @@
             },
 //            个人信息
             goAttribute(){
-                event.openURL(utils.locate('view/member/attribute.js'),
-                    function (data) {
-                        return ;
-                    }
-                );
+//                event.openURL(utils.locate('view/member/attribute.js'),
+//                    function (data) {
+//                        return ;
+//                    }
+//                );
             },
 //            设置中心
             goManage(){

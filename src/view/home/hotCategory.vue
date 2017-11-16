@@ -133,7 +133,6 @@
                 pageSize:10,
                 screenHeight:0,
 //                articleList:[]
-
                 articleList:[
 //                    {
 //                            id:1,

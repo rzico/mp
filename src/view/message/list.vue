@@ -67,10 +67,10 @@
 <style>
 
     .rightTop{
-        height: 96px;width: 98px;align-items: center;justify-content: center;
+        height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
     }
     .nav_ico {
-        font-size: 38px;
+        font-size: 50px;
         color: #fff;
     }
     .userBox{
