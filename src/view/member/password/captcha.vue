@@ -70,7 +70,7 @@
                         POST('weex/member/password/captcha.jhtml?captcha=' + msg.data).
                         then(function (data) {
                                 if (data.type == "success") {
-                                    event(utils.locate("http://192.168.2.103:8081/update.weex.js?captcha="+msg.data),
+                                    event(utils.locate("view/member/password/update.js?captcha="+msg.data),
                                         function (resp) {
                                            event.closeURL(resp);
                                         }
