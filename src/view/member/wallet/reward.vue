@@ -7,7 +7,7 @@
             </refresh>
             <cell >
                 <div class="cumulative">
-                    <text class="cumulativeMoney">累计：{{total}}元</text>
+                    <text class="cumulativeMoney primary">累计：{{total}}元</text>
                 </div>
                 <noData :ndBgColor="'#fff'"  v-if="noData()"> </noData>
             </cell>
@@ -141,7 +141,8 @@
         },
         created() {
             utils.initIconFont();
-            this.open(0,function () {
+            this.summary();
+            this.open(function () {
 
             });
         },
@@ -185,7 +186,7 @@
                         _this.pageStart = res.data.start+res.data.data.length;
                         _this.noLoading = res.data.data.length<_this.pageSize;
                     } else {
-                        event.toast(err.content);
+                        event.toast(res.content);
                     }
                     callback();
                 }, function (err) {
@@ -198,18 +199,19 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(
-                    _this.open(_this.pageStart,function () {
+                    _this.open(function () {
                         _this.loading = false;
                     })
-                    ,1500)
+                ,1500)
             },
 //            下拉刷新
             onrefresh (event) {
                 var _this = this;
                 _this.pageStart = 0;
                 _this.refreshing = true;
+                this.summary();
                 setTimeout(
-                    _this.open(_this.pageStart,function () {
+                    _this.open(function () {
                         _this.refreshing = false;
                     })
                     ,1500)
@@ -218,13 +220,13 @@
             goback: function () {
                 event.closeURL()
             },
-            total:function () {
+            summary:function () {
                 var _this = this;
                 GET('weex/member/reward/summary.jhtml', function (res) {
                     if (res.type == 'success') {
                        _this.total = res.data;
                     } else {
-                        event.toast(err.content);
+                        event.toast(res.content);
                     }
                 }, function (err) {
                     event.toast(err.content)
