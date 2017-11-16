@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row flex-start">
+                    <div class="flex-row flex-start" @click="rebate()">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                         <text class="title ml10">我的奖励</text>
                     </div>
@@ -144,6 +144,12 @@
             reward:function () {
                 var _this = this;
                 event.openURL(utils.locate('view/member/wallet/reward.js'),function (message) {
+
+                })
+            },
+            rebate:function () {
+                var _this = this;
+                event.openURL(utils.locate('view/member/wallet/rebate.js'),function (message) {
 
                 })
             },

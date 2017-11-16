@@ -457,14 +457,14 @@
                     function (data) {
 //                        event.toast(data);
                         if(data.type == 'success'){
-                            _this.coverImage = 'file:/' + data.data[0].originalPath;
+                            _this.coverImage =  data.data[0].originalPath;
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
                                 _this.paraList.push({
                                     //原图
-                                    paraImage:'file:/' + data.data[i].originalPath,
+                                    paraImage: data.data[i].originalPath,
                                     //小缩略图
-                                    thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
+                                    thumbnailImage: data.data[i].thumbnailSmallPath,
                                     paraText:'',
                                     show:true,
                                     serveThumbnail:''
@@ -656,15 +656,15 @@
 //                    event.toast('substring后');
 
 
-                    var sendcover = frontcoverUrl == 'file:' ? this.coverImage.substring(6) : this.coverImage;
-//                    ios是file:/ 安卓是file://
-                    sendcover = sendcover.substring(0,1) == '/' ? sendcover.substring(1) : sendcover;
+//                    var sendcover = frontcoverUrl == 'file:' ? this.coverImage.substring(6) : this.coverImage;
+////                    ios是file:/ 安卓是file://
+//                    sendcover = sendcover.substring(0,1) == '/' ? sendcover.substring(1) : sendcover;
 
 
 //                    event.toast(sendcover);
 //                    modal.toast({message:sendcover,duration:3});
                     //                将封面上传服务器
-                    event.upload(sendcover,function (data) {
+                    event.upload(this.coverImage,function (data) {
                         if(data.type == 'success' && data.data != ''){
                             //这边会由于避免重复渲染而需要再次向服务器上传该图片
                             _this.serveCover = data.data;
@@ -698,10 +698,10 @@
                     }
                 }else{
 //                    let sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(7) : _this.paraList[sendIndex].paraImage;//将图片前的file://字符去掉
-                    var sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(6) :  _this.paraList[sendIndex].paraImage;
-//                    ios是file:/ 安卓是file://
-                    sendparaimg = sendparaimg.substring(0,1) == '/' ? sendparaimg.substring(1) : sendparaimg;
-                    event.upload(sendparaimg,function (data) {
+//                    var sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(6) :  _this.paraList[sendIndex].paraImage;
+////                    ios是file:/ 安卓是file://
+//                    sendparaimg = sendparaimg.substring(0,1) == '/' ? sendparaimg.substring(1) : sendparaimg;
+                    event.upload(_this.paraList[sendIndex].paraImage,function (data) {
                         if(data.type == 'success' && data.data != ''){
                             _this.paraList[sendIndex].paraImage = data.data;
                             //                            向后台获取缩略图
@@ -916,9 +916,9 @@
                             for(let i = 0;i < data.data.length;i++){
                                 let newPara = {
                                     //原图
-                                    paraImage:'file:/' + data.data[i].originalPath,
+                                    paraImage: data.data[i].originalPath,
 //                                    小缩略图
-                                    thumbnailImage:'file:/' + data.data[i].thumbnailSmallPath,
+                                    thumbnailImage: data.data[i].thumbnailSmallPath,
                                     paraText:'',
                                     show:true
                                 }
@@ -1055,8 +1055,8 @@
 //                判断是否没有图片
                 if(imgSrc == ''){
                     album.openAlbumSingle(false, function(data){
-                        _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
-                        _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
+                        _this.paraList[index].paraImage = data.data.originalPath;
+                        _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
                     })
                     return;
                 }else{
@@ -1077,10 +1077,13 @@
 //                                调用裁剪图片
                             album.openCrop(imgSrc,function (data) {
                                 if(data.type == 'success'){
-                                    _this.paraList[index].paraImage ='file:/' + data.data.originalPath;
-                                    _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
+                                    _this.paraList[index].paraImage = data.data.originalPath;
+                                    _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
                                 }else{
-                                    modal.toast({message:data.content,duration:10});
+                                    if(data.content == '用户取消'){
+                                    }else{
+                                        event.toast(data.content);
+                                    }
                                 }
                             })
 //                        }else{
