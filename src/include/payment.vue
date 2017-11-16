@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div>
-                <text class="currency">¥0.02</text>
+                <text class="currency">¥{{info.amount | currencyfmt}}</text>
             </div>
             <text class="button btn" value="确定付款" @click="comfrm()">确定付款</text>
             <div class="cell">
@@ -22,7 +22,7 @@
                     <text class="title ml10">付款详情</text>
                 </div>
                 <div class="flex-row flex-end">
-                    <text class="sub_title" style="margin-right: 20px;">钱包充值</text>
+                    <text class="sub_title" style="margin-right: 50px;">{{info.memo}}</text>
                 </div>
             </div>
             <div class="cell" style="border-bottom-width: 0px;">
@@ -32,7 +32,7 @@
         <div class="box" v-if="isPwd">
             <div class="nav">
                 <div class="flex1 flex-center">
-                    <text class="close" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
+                    <text class="close" :style="{fontFamily:'iconfont'}"  @click="close('error')">&#xe60a;</text>
                 </div>
                 <div class="flex4 flex-center">
                     <text class="caption" >支付密码</text>
@@ -99,7 +99,7 @@
         color:#999;
     }
     .close {
-        font-size: 38px;
+        font-size: 42px;
         line-height: 60px;
         color:#999;
     }
@@ -112,7 +112,7 @@
     }
 
     .help {
-        font-size: 38px;
+        font-size: 42px;
         line-height: 60px;
         color:#999;
     }
@@ -167,25 +167,37 @@
     const event = weex.requireModule('event');
     var globalEvent = weex.requireModule('globalEvent');
     var timer = null;
-    var optionIndex = 0;
-    var lastCaptchaLength = 0;
     export default {
         components: {
             dropdown
         },
+        filters:{
+            currencyfmt:function (value) {
+                // 返回处理后的值
+                if (value != null) {
+                    if(value == 0){
+                        return value;
+                    }else{
+                        var price = (Math.round(value * Math.pow(10,2)) / Math.pow(10,2)).toFixed(2);
+                        return price;
+                    }
+                }
+            }
+        },
         data:function(){
             return{
+                info:{memo:""},
                 sn:"",
-                isShow:true,
+                isShow:false,
                 isPwd:false,
                 captchaValue:'',
                 textList:['','','','','',''],
+                title: "付款方式",
+                items:[{id:0,name:"微信支付",ico:'&#xe659;',color:green},{id:2,name:"钱包余额",ico:'&#xe6ce;',color:ff5545}],
+                id: 0,
+                optionIndex:0,
+                lastCaptchaLength:0
             }
-        },
-        props: {
-            title: { default: "付款方式" },
-            items:{default:[{id:0,name:"微信支付"},{id:1,name:"支付宝"},{id:2,name:"钱包余额"}]},
-            id: {default:0}
         },
         created() {
             utils.initIconFont();
@@ -195,41 +207,62 @@
                 this.id = id;
             },
 //            当用户输入数字时触发
-            captchaInput:function (event) {
+            captchaInput:function (e) {
                 var _this = this;
+                _this.captchaValue = e.value;
 //                判断删除还是输入  '大于' --> 删除
-                if(lastCaptchaLength > event.value.length){
-                    optionIndex --;
-                    _this.textList[optionIndex] = '';
-                }else{
-                    let a = event.value;
-                    let b = a.substr(a.length-1,1)
-                    console.log(event);
-                    _this.textList[optionIndex] = b;
-                    optionIndex ++;
-                }
-                lastCaptchaLength = event.value.length;
+                if (_this.lastCaptchaLength > _this.captchaValue.length) {
+                    if (_this.optionIndex>0) {
+                        _this.optionIndex = _this.optionIndex-1;
+                        _this.textList[_this.optionIndex] = '';
+                        _this.lastCaptchaLength = _this.captchaValue.length;
+                    }
+                } else {
+                    if (_this.optionIndex<6) {
+                        let a = _this.captchaValue;
+                        let b = a.substr(a.length - 1, 1)
+                        _this.textList[_this.optionIndex] = b;
+                        _this.optionIndex = _this.optionIndex + 1;
+                        _this.lastCaptchaLength = _this.captchaValue.length;
 //                当用户输完验证码后进行系统验证
-                if(lastCaptchaLength == 6){
-                    _this.captcha = event.value;
-                    balance(_this.captcha);
+                        if (_this.lastCaptchaLength == 6) {
+                            _this.balance(_this.captchaValue);
+                        }
+                    }
                 }
             },
 //            点击验证框时使隐藏的input获取焦点；
             getFocus:function () {
                 this.$refs['captchRef'].focus();
             },
+            show (sn) {
+                var _this = this;
+                _this.sn = sn;
+                _this.isPwd = false;
+                _this.textList = ['','','','','',''];
+                _this.optionIndex = 0;
+                _this.captchaValue = '';
+                _this.lastCaptchaLength = 0;
+              GET("payment/view.jhtml?sn="+sn,function (res) {
+                  _this.info = res.data;
+                  _this.isShow = true;
+              },function (err) {
+                  event.toast(err.content);
+              })
+            },
             close (e) {
                 var _this = this;
                 if (timer!=null) {
                     clearInterval(timer);
+                    timer = null;
                 }
                 globalEvent.removeEventListener("onResume");
                 _this.$emit("notify",e);
+                _this.isShow = false;
 
             },
             comfrm () {
-                if (this.id==2) {
+                if (this.id == 2) {
                     this.isPwd = true;
                     return;
                 }
@@ -244,10 +277,35 @@
                 var _this = this;
                 event.encrypt(pwd,function (message) {
                        if (message.type=="success") {
-                           POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId=balancePlugin&enPassword="+message.content).then(
+                           POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId=balancePayPlugin&enPassword="+message.content).then(
                                function (data) {
-                                 if (data.type=="succcess") {
-                                     _this.close("success");
+                                   event.toast(data)
+                                   if (data.type=="succcess") {
+                                     if (timer!=null) {
+                                         clearInterval(timer);
+                                         timer=null;
+                                     }
+                                     timer = setInterval(1000,function () {
+                                         GET("payment/query.jhtml?sn="+this.sn).then(
+                                             function (data) {
+                                                 if (data.type=="success") {
+                                                     if (data.data=="0000") {
+
+                                                         _this.close("success");
+                                                     } else {
+                                                         if (data.data=="0001") {
+
+                                                             _this.close("error");
+                                                         }
+                                                     }
+                                                 }
+
+                                             },
+                                             function (err) {
+
+                                             }
+                                         )
+                                     });
                                  } else {
                                      _this.captchaValue = "";
                                      event.toast(data.content);
@@ -265,23 +323,27 @@
             },
             payment (plugId) {
                 var _this = this;
+                event.toast(plugId);
                 POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
                     function (data) {
+                        event.toast(data);
                         if (data.type=="success") {
                             event.wxPay(data.data.mweb_url,function (e) {
                                 globalEvent.addEventListener("onResume", function (e) {
                                     if (timer!=null) {
                                         clearInterval(timer);
+                                        timer=null;
                                     }
                                     timer = setInterval(1000,function () {
                                         GET("payment/query.jhtml?sn="+this.sn).then(
                                             function (data) {
-
                                                 if (data.type=="success") {
                                                     if (data.data=="0000") {
+
                                                         _this.close("success");
                                                     } else {
                                                         if (data.data=="0001") {
+
                                                             _this.close("error");
                                                         }
                                                     }
@@ -289,6 +351,7 @@
 
                                             },
                                             function (err) {
+
                                             }
                                         )
                                     });

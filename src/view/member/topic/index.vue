@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <scroller class="scroller" show-scrollbar="false">
-            <div class="flex-column bkg-primary">
+            <div class="flex-column bkg">
                 <image class="bg"
                        v-bind:src="topic.logo">
                 </image>
@@ -16,8 +16,8 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-panel tip" v-if="opened()">
-                <text class="sub_title">点亮VIP专栏特权（388元/年）</text>
+            <div class="sub-panel tip" v-if="opened()" @click="activate()">
+                <text class="vip">点亮VIP专栏特权（388元/年）</text>
             </div>
 
             <div class="cell-row cell-line">
@@ -41,7 +41,7 @@
                         <text class="title ml10">启用优惠券</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch"  @change="coupon"></switch>
+                        <switch class="switch"  :checked="topic.useCoupon" @change="onUseCoupon"></switch>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                         <text class="title ml10">开通会员卡</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch"></switch>
+                        <switch class="switch" :checked="topic.useCard" @change="onUseCard"></switch>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         <text class="title ml10">开通收银台</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch"></switch>
+                        <switch class="switch" :checked="topic.useCashier" @change="onUseCashier"></switch>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                 <text class="sub_title">适用于实体店收银前台使用</text>
             </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
+                <div class="cell-panel space-between cell-clear"  @click="linkman()">
                     <div class="flex-row">
                         <text class="title ml10">小程序设置</text>
                     </div>
@@ -86,10 +86,11 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">一键完成小程序部署上架，点击查看</text><text class="sub_title" style="color:blue">《操作手册》</text>
+                <text class="sub_title">一键完成小程序部署,快速上架</text>
+                <!--<text class="sub_title" style="color:blue">《操作手册》</text>-->
             </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
+                <div class="cell-panel space-between cell-clear" @click="linkman()">
                     <div class="flex-row">
                         <text class="title ml10">公众号设置</text>
                     </div>
@@ -100,31 +101,41 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">信息同步，自已也能管理，点击查看</text><text class="sub_title" style="color:blue">《操作手册》</text>
+                <text class="sub_title">信息同步至公众号,自已也能管理</text>
+                <!--<text class="sub_title" style="color:blue">《操作手册》</text>-->
             </div>
             <div class="fill"></div>
         </scroller>
+        <payment ref="payment" @notify="notify"></payment>
     </div>
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
 
+    .bkg {
+        background-color: #777;
+    }
     .bg {
         position:absolute;
         width:750px;
-        height: 325px;
+        height: 375px;
         filter: blur(10px);
-        opacity: 0.5;
+        opacity: 0.3;
         background-size: cover;
     }
 
     .topic {
         flex-direction:column;
         align-items:center;
-        margin-top: 30px;
+        margin-top: 50px;
         width:750px;
-        height: 290px;
+        height: 325px;
+    }
+
+    .vip {
+        font-size:28px;
+        color:red;
     }
 
     .tip {
@@ -171,6 +182,7 @@
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue'
+    import payment from '../../../include/payment.vue'
     import utils from '../../../assets/utils'
     import music from '../../../assets/music'
     const album = weex.requireModule('album');
@@ -179,11 +191,12 @@
     export default {
         data() {
           return {
-              topic:{logo:"",name:"",id:""},
+              sn:"",
+              topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false},
           }
         },
         components: {
-            navbar
+            navbar,payment
         },
         props: {
             title: { default: "我的专栏" }
@@ -202,29 +215,22 @@
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (data) {
-//                        event.toast(data);
-                        if(data.type == 'success') {
-                            _this.headLogo = data.data.thumbnailSmallPath;
-//                    data.data里存放的是用户选取的图片路
-                            _this.original = data.data.originalPath
-                            event.upload( _this.original,function (data) {
-                                if(data.type == 'success' && data.data != ''){
-//                            修改后访问修改专栏信息接口
-                                    POST('weex/member/topic/update.jhtml?logo=' + data.data).then(
+                    true,function (ablum) {
+                        if(ablum.type == 'success') {
+                            event.upload(ablum.data.originalPath,function (message) {
+                                if (message.type == 'success') {
+                                    POST('weex/member/topic/update.jhtml?logo=' + encodeURI(message.data) ).then(
                                         function (mes) {
                                             if (mes.type == "success") {
-//                                    event.toast(data);
+                                                _this.topic.logo = message.data;
                                             } else {
                                                 event.toast(mes.content);
                                             }
                                         }, function (err) {
-                                            event.toast('weex/member/topic/update.jhtml?logo=' + _this.headLogo)
-//                                    event.toast("网络不稳定");
+                                            event.toast(err.content);
                                         }
                                     )
-//
-                                }else{
+                                } else {
                                     event.toast(data.content);
                                 }
                             },function (data) {
@@ -242,17 +248,28 @@
                 }
                 let _this = this;
                 modal.prompt({
-                    message: '修改昵称',
+                    message: '修改专栏名称',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
-                    placeholder:'请输入昵称'
+                    default:_this.topic.name,
+                    placeholder:"请输入专栏名称",
                 }, function (value) {
                     if(value.result == '确定'){
-                        if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入昵称',duration:1})
+                        if(utils.isNull(value.data)){
+                            modal.toast({message:'请输入专栏名称',duration:1})
                         }else{
-                            _this.userName = value.data
+                            POST('weex/member/topic/update.jhtml?name=' + encodeURI(value.data)).then(
+                                function (mes) {
+                                    if (mes.type == "success") {
+                                        _this.topic.name = value.data;
+                                    } else {
+                                        event.toast(mes.content);
+                                    }
+                                }, function (err) {
+                                    event.toast(err.content);
+                                }
+                            )
                         }
                     }
                 })
@@ -290,6 +307,95 @@
             },
             opened:function () {
                 return this.topic.id>0;
+            },
+            activate:function (e) {
+                var _this = this;
+                POST('weex/member/topic/activate.jhtml').then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            if (utils.isNull(mes.data)) {
+                                _this.load();
+                            } else {
+                                _this.$refs.payment.show(mes.data);
+                            }
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content);
+                    }
+                )
+
+            },
+            onUseCard:function (e) {
+                var _this = this;
+                POST('weex/member/topic/update.jhtml?useCard=' + e.value).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            setTimeout(
+                               _this.load(), 2000);
+                        } else {
+                            setTimeout(
+                                _this.load(), 2000);
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        setTimeout(
+                            _this.load(), 2000);
+                        event.toast(err.content);
+                    }
+                )
+
+            },
+            onUseCashier:function (e) {
+                var _this = this;
+                POST('weex/member/topic/update.jhtml?useCashier=' + e.value).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            setTimeout(
+                                _this.load(), 2000);
+                        } else {
+                            setTimeout(
+                                _this.load(), 2000);
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        setTimeout(
+                            _this.load(), 2000);
+                        event.toast(err.content);
+                    }
+                )
+
+            },
+            onUseCoupon:function (e) {
+                var _this = this;
+                POST('weex/member/topic/update.jhtml?useCoupon=' + e.value).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            setTimeout(
+                                _this.load(), 2000);
+                        } else {
+                            setTimeout(
+                                _this.load(), 2000);
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        setTimeout(
+                            _this.load(), 2000);
+                        event.toast(err.content);
+                    }
+                )
+
+            },
+            linkman:function () {
+                modal.alert({
+                    message: '开通设置，请联系客服:13860431130',
+                    okTitle: '知道了'
+                })
+            },
+            //支付完成通成
+            notify:function (e) {
+                event.toast(e);
             }
         }
 

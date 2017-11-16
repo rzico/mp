@@ -7,7 +7,7 @@
             </div>
             <div class="right">
                 <text class="current-text">{{name}}</text>
-                <text class="icon-arrow" :style="{fontFamily:'iconfont' }" ref="arrow">&#xe630;</text>
+                <text class="icon-arrow" :style="{fontFamily:'iconfont'}" ref="arrow">&#xe630;</text>
             </div>
         </div>
 
@@ -15,12 +15,14 @@
         <transition-group name="paraTransition" tag="div">
         <div class="options" id="options" key="optionsBox" ref="options" v-if="showOptions">
             <div v-for="item in items" class="option-cell"  @click="onItemClick(item.id)">
-                <text class="name" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
+                <text class="ico" :style="getFontStyle(item.color)">{{getItemIco(item.ico)}}</text>
+                <text class="name ml10" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
                 <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
             </div>
             <div class="option-cell" style="border-bottom-width: 0px;"></div>
         </div>
         </transition-group>
+
     </div>
 </template>
 <style lang="less" src="../style/wx.less"/>
@@ -61,7 +63,7 @@
 
     .current-text {
         color: #bbb;
-        font-size: 28px;
+        font-size: 30px;
         flex: 1;
         margin-right: 10px;
     }
@@ -139,6 +141,12 @@
             }
         },
         methods: {
+            getItemIco: function(i) {
+                return he.decode(i)
+            },
+            getFontStyle:function (c) {
+               return "fontFamily:iconfont;color:"+c;
+            },
             switchView: function() {
                 this.showOptions = !this.showOptions;
                 this.rotate(this.$refs['arrow']);
