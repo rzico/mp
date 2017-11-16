@@ -129,6 +129,7 @@ Vue.filter('datefmt', function (value) {
         value = parseInt(value);
     }
     // 返回处理后的值
+    let date = new Date(value);
     return date.getYear()+"年"+date.getMonth()+"月"+date.getDay()+"日";
 })
 
@@ -177,6 +178,30 @@ Vue.filter('datetimefmt', function (value) {
     let t = m + '-' + d + '  ' + H + ':' + i ;
     return t;
 })
+
+//时间格式化 返回 03:07
+Vue.filter('hitimefmt', function (value) {
+    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+    value = value + '';
+    if(value.length == 10){
+        value = parseInt(value) * 1000;
+    }else{
+        value = parseInt(value);
+    }
+    // 返回处理后的值
+    let    date = new Date(value);
+    let    H = date.getHours();
+    let    i = date.getMinutes();
+    if (H < 10) {
+        H = '0' + H;
+    }
+    if (i < 10) {
+        i = '0' + i;
+    }
+    let t = H + ':' + i ;
+    return t;
+})
+
 //金额保留两位小数点
 Vue.filter('currencyfmt', function (value) {
     // 返回处理后的值
