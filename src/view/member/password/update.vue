@@ -84,12 +84,15 @@
         methods: {
             save:function () {
                 var _this = this;
-                event.wxAuth(_this.value,function (msg) {
+                event.encrypt(_this.value,function (msg) {
                     if (msg.type="success") {
                         POST('weex/member/password/update.jhtml?enPassword=' + msg.data).then(
                             function (data) {
+                                utils.debug(data)
                                 if (data.type == "success") {
                                     _this.$refs.captcha.beginTimer();
+
+                                    event.closeURL();
                                 } else {
                                     _this.$refs.captcha.endTimer();
                                     event.toast(data.content);

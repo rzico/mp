@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @click="goback"> </navbar>
-        <captcha ref="captcha" :title="caption" :mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
+        <captcha ref="captcha" :title="caption"  @onclick="onclick":mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -69,8 +69,9 @@
                     if (msg.type=="success") {
                         POST('weex/member/password/captcha.jhtml?captcha=' + msg.data).
                         then(function (data) {
+
                                 if (data.type == "success") {
-                                    event(utils.locate("view/member/password/update.js?captcha="+msg.data),
+                                    event.openURL(utils.locate("view/member/password/update.js?captcha="+msg.data),
                                         function (resp) {
                                            event.closeURL(resp);
                                         }

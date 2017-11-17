@@ -46,7 +46,7 @@
                 var _this = this;
                 event.encrypt(_this.value,function (message) {
                     if (message.type=="success") {
-                        utils.debug('weex/member/password/check_mobile.jhtml?mobile=' + message.data)
+//                        utils.debug('weex/member/password/check_mobile.jhtml?mobile=' + message.data)
                         POST('weex/member/password/check_mobile.jhtml?mobile=' + message.data).then(
                             function (data) {
                                 if (data.type == "success") {
