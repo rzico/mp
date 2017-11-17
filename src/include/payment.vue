@@ -50,6 +50,7 @@
                     <text class="inputText">{{item}}</text>
                 </div>
             </div>
+            <text class="updatePassword" @click="updatePassword()">忘记密码？点击重置密码。</text>
         </div>
 
     </div>
@@ -159,6 +160,13 @@
         bottom:50px;
     }
 
+    .updatePassword {
+        margin-top: 60px;
+        color:blue;
+        line-height: 50px;
+        height: 50px;
+    }
+
 </style>
 <script>
     import { POST, GET } from '../assets/fetch';
@@ -193,9 +201,8 @@
                 captchaValue:'',
                 textList:['','','','','',''],
                 title: "付款方式",
-                items:[{id:0,name:"微信支付",ico:'&#xe659;',color:green},{id:2,name:"钱包余额",ico:'&#xe6ce;',color:ff5545}],
+                items:[{id:0,name:"微信支付",ico:'&#xe659;',color:'green'},{id:2,name:"钱包余额",ico:'&#xe6ce;',color:'#ff5545'}],
                 id: 0,
-                optionIndex:0,
                 lastCaptchaLength:0
             }
         },
@@ -212,37 +219,33 @@
                 _this.captchaValue = e.value;
 //                判断删除还是输入  '大于' --> 删除
                 if (_this.lastCaptchaLength > _this.captchaValue.length) {
-                    if (_this.optionIndex>0) {
-                        _this.optionIndex = _this.optionIndex-1;
-                        _this.textList[_this.optionIndex] = '';
-                        _this.lastCaptchaLength = _this.captchaValue.length;
-                    }
+                    _this.textList[_this.lastCaptchaLength-1] = '';
+                    _this.lastCaptchaLength = _this.captchaValue.length;
                 } else {
-                    if (_this.optionIndex<6) {
-                        let a = _this.captchaValue;
-                        let b = a.substr(a.length - 1, 1)
-                        _this.textList[_this.optionIndex] = b;
-                        _this.optionIndex = _this.optionIndex + 1;
-                        _this.lastCaptchaLength = _this.captchaValue.length;
+                    let a = _this.captchaValue;
+                    let b = a.substr(a.length - 1, 1)
+                    _this.textList[_this.captchaValue.length-1] = b;
+                    _this.lastCaptchaLength = _this.captchaValue.length;
 //                当用户输完验证码后进行系统验证
-                        if (_this.lastCaptchaLength == 6) {
-                            _this.balance(_this.captchaValue);
-                        }
+                    if (_this.lastCaptchaLength == 6) {
+                        _this.balance(_this.captchaValue);
                     }
-                }
+                 }
             },
 //            点击验证框时使隐藏的input获取焦点；
             getFocus:function () {
                 this.$refs['captchRef'].focus();
             },
+            clearPwd() {
+                this.textList = ['','','','','',''];
+                this.captchaValue = '';
+                this.lastCaptchaLength = 0;
+            },
             show (sn) {
                 var _this = this;
                 _this.sn = sn;
                 _this.isPwd = false;
-                _this.textList = ['','','','','',''];
-                _this.optionIndex = 0;
-                _this.captchaValue = '';
-                _this.lastCaptchaLength = 0;
+                _this.clearPwd();
               GET("payment/view.jhtml?sn="+sn,function (res) {
                   _this.info = res.data;
                   _this.isShow = true;
@@ -277,25 +280,23 @@
                 var _this = this;
                 event.encrypt(pwd,function (message) {
                        if (message.type=="success") {
-                           POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId=balancePayPlugin&enPassword="+message.content).then(
+                           POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId=balancePayPlugin&enPassword="+message.data).then(
                                function (data) {
-                                   event.toast(data)
-                                   if (data.type=="succcess") {
+                                   if (data.type=="success") {
+                                     _this.clearPwd();
                                      if (timer!=null) {
                                          clearInterval(timer);
                                          timer=null;
                                      }
-                                     timer = setInterval(1000,function () {
-                                         GET("payment/query.jhtml?sn="+this.sn).then(
+                                     timer = setInterval(function () {
+                                         POST("payment/query.jhtml?sn="+_this.sn).then(
                                              function (data) {
                                                  if (data.type=="success") {
                                                      if (data.data=="0000") {
-
-                                                         _this.close("success");
+                                                         _this.close(utils.message("success","success"));
                                                      } else {
                                                          if (data.data=="0001") {
-
-                                                             _this.close("error");
+                                                             _this.close(utils.message("error","error"));
                                                          }
                                                      }
                                                  }
@@ -305,17 +306,19 @@
 
                                              }
                                          )
-                                     });
+                                     },1000);
                                  } else {
-                                     _this.captchaValue = "";
+                                     _this.clearPwd();
                                      event.toast(data.content);
                                  }
                                },
                                function (err) {
+                                   _this.clearPwd();
                                   event.toast("网络不稳定");
                                }
                            )
                        } else {
+                           _this.clearPwd();
                            event.toast(message.content);
                        }
                     }
@@ -323,10 +326,8 @@
             },
             payment (plugId) {
                 var _this = this;
-                event.toast(plugId);
                 POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
                     function (data) {
-                        event.toast(data);
                         if (data.type=="success") {
                             event.wxPay(data.data.mweb_url,function (e) {
                                 globalEvent.addEventListener("onResume", function (e) {
@@ -334,17 +335,15 @@
                                         clearInterval(timer);
                                         timer=null;
                                     }
-                                    timer = setInterval(1000,function () {
-                                        GET("payment/query.jhtml?sn="+this.sn).then(
+                                    timer = setInterval(function () {
+                                        POST("payment/query.jhtml?sn="+_this.sn).then(
                                             function (data) {
                                                 if (data.type=="success") {
                                                     if (data.data=="0000") {
-
-                                                        _this.close("success");
+                                                        _this.close(utils.message("success","success"));
                                                     } else {
                                                         if (data.data=="0001") {
-
-                                                            _this.close("error");
+                                                            _this.close(utils.message("error","error"));
                                                         }
                                                     }
                                                 }
@@ -354,7 +353,7 @@
 
                                             }
                                         )
-                                    });
+                                    },1000);
                                 });
                             })
                         } else {
@@ -364,6 +363,31 @@
                     },
                     function (err) {
                         event.toast("网络不稳定");
+                    }
+                )
+            },
+            updatePassword:function () {
+                var _this = this;
+                GET("weex/member/attribute.jhtml",
+                    function (data) {
+                        if (data.type=="success") {
+                            if (data.data.bindMobile==true) {
+                                event.openURL(utils.locate("view/member/password/captcha.js"),
+                                    function (updated) {
+                                    }
+                                )
+                            } else {
+                                event.openURL(utils.locate("view/member/password/index.js"),
+                                    function (updated) {
+                                    }
+                                )
+                            }
+                        } else {
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast("网络不稳定")
                     }
                 )
             }

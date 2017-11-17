@@ -15,7 +15,7 @@
         <transition-group name="paraTransition" tag="div">
         <div class="options" id="options" key="optionsBox" ref="options" v-if="showOptions">
             <div v-for="item in items" class="option-cell"  @click="onItemClick(item.id)">
-                <text class="ico" :style="getFontStyle(item.color)">{{getItemIco(item.ico)}}</text>
+                <text class="ico" :style="{fontFamily:'iconfont',color:getColor(item.color)}">{{getItemIco(item.ico)}}</text>
                 <text class="name ml10" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
                 <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
             </div>
@@ -144,10 +144,10 @@
             getItemIco: function(i) {
                 return he.decode(i)
             },
-            getFontStyle:function (c) {
-               return "fontFamily:iconfont;color:"+c;
+            getColor: function(c) {
+                return he.decode(c)
             },
-            switchView: function() {
+           switchView: function() {
                 this.showOptions = !this.showOptions;
                 this.rotate(this.$refs['arrow']);
             },

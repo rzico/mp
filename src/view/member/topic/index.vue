@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-panel tip" v-if="opened()" @click="activate()">
+            <div class="sub-panel tip" v-if="isActivate()" @click="activate()">
                 <text class="vip">点亮VIP专栏特权（388元/年）</text>
             </div>
 
@@ -308,6 +308,9 @@
             opened:function () {
                 return this.topic.id>0;
             },
+            isActivate:function () {
+                return this.topic.status!="success";
+            },
             activate:function (e) {
                 var _this = this;
                 POST('weex/member/topic/activate.jhtml').then(
@@ -395,7 +398,13 @@
             },
             //支付完成通成
             notify:function (e) {
-                event.toast(e);
+                if (e.type=="success") {
+                    modal.alert({
+                        message: '点亮专栏成功',
+                        okTitle: '知道了'
+                    })
+                    this.load();
+                }
             }
         }
 
