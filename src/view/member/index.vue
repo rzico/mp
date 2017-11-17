@@ -1224,10 +1224,13 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
+                    utils.debug(data)
                         if(data.type == 'success'){
-                            _this.updateUserInfo();
+                            _this.imageUrl = data.data.logo;
+                            _this.userName = data.data.nickName;
+                            _this.userSign = data.data.autograph
                         }else{
-                            return ;
+//                            return ;
                         }
                     }
                 );
@@ -1237,10 +1240,13 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
+//                    utils.debug(data)
                         if(data.type == 'success'){
-                            _this.updateUserInfo();
+                            _this.imageUrl = data.data.occupation;
+                            _this.userName = data.data.nickName;
+                            _this.userSign = data.data.autograph
                         }else{
-                            return ;
+//                            return ;
                         }
                     }
                 );
