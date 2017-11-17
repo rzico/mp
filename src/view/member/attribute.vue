@@ -165,19 +165,26 @@
 
             },
             goback: function (e) {
-                let backData = utils.message('success','成功','');
+                var E = {
+                    logo:this.logo,
+                    nickName:this.nickName,
+                    autograph:this.autograph
+
+                }
+                let backData = utils.message('success','成功',E);
+//                utils.debug(E)
                 event.closeURL(backData);
             },
             profession: function () {
                 var _this = this;
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=category', function (data) {
-                    if(data.type == 'success' && data.data != '') {
+                    if(data.type == 'success' ) {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
                         POST('weex/member/update.jhtml?occupationId=' +_this.category).then(
                             function (mes) {
                                 if (mes.type == "success") {
-                                    utils.debug(mes)
+
                                 } else {
                                     event.toast(mes.content);
                                 }
@@ -196,6 +203,7 @@
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
+                    default:_this.nickName,
                     placeholder:'请输入昵称'
                 }, function (value) {
                     if(value.result == '确定'){
@@ -240,7 +248,7 @@
 //                            上传原图
                             event.upload(data.data.originalPath,function (data) {
 //                                event.toast(data);
-                                if (data.type == 'success' && data.data != '') {
+                                if (data.type == 'success' ) {
 //                            修改后访问修改专栏信息接口
                                     POST('weex/member/update.jhtml?logo=' + data.data).then(
                                         function (mes) {
@@ -304,7 +312,7 @@
                 storage.setItem('oneNumber', textData,e=>{
                 event.openURL(utils.locate('widget/autograph.js?name=oneNumber', function (message) {
                     if(message.data != ''){
-                       utils.debug('weex/member/update.jhtml?autograph=' + encodeURI(message.data.text))
+//                       utils.debug('weex/member/update.jhtml?autograph=' + encodeURI(message.data.text))
                         POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
                             function (mes) {
                                 if (mes.type == "success") {
