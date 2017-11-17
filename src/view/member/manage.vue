@@ -166,11 +166,23 @@
                 )
             },
             goback: function (e) {
-                event.closeURL();
-            },
+                var E = {
+                    occupation:this.member.logo,
+                    nickName:this.member.nickName,
+                    autograph :this.member.autograph
+                }
+                let backData = utils.message('success','成功',E);
+//                utils.debug(E)
+                event.closeURL(backData);
+                },
             attribute:function (e) {
+                let _this = this
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
+                    utils.debug(data)
+                        _this.member.logo = data.data.logo;
+                        _this.member.nickName = data.data.nickName;
+                        _this.member.autograph = data.data.autograph;
                         return ;
                     }
                 );
