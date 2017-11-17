@@ -36,7 +36,7 @@
         created() {
             this.mobile = utils.getUrlParameter("mobile");
 //            this.onSend();
-            utils.debug(222)
+//            utils.debug(222)
         },
         methods: {
             onSend: function (e) {
