@@ -49,7 +49,7 @@
                     )
                 })
             },
-            goBack:function(e) {
+            goback:function(e) {
                 event.closeURL();
             },
             onEnd: function (val) {
