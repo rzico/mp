@@ -10,7 +10,7 @@
                             </image>
                             <div class="name">
                                 <text class="title">{{member.nickName}}</text>
-                                <text class="autograph">{{member.autograph | autograph}}</text>
+                                <text class="autograph">{{member.autograph}}</text>
                             </div>
                         </div>
                         <div class="flex-row flex-end">

@@ -84,7 +84,7 @@
                         <text class="title ml10">绑定微信号</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">{{bindMobile}}</text>
+                        <text class="sub_title">{{bindWeiXin}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -93,9 +93,12 @@
                         <text class="title ml10">绑定手机号</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">{{bindWeiXin}}</text>
+                        <text class="sub_title">{{bindMobile}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
+                </div>
+                <div class="button" @click="logout">
+                    <text class="buttonText">注销账号</text>
                 </div>
             </div>
          </scroller>
@@ -119,6 +122,21 @@
         margin:10px;
         border-radius:60px;
         overflow:hidden;
+    }
+    .button{
+        background-color:#D9141E;
+        margin-left: 20px;
+        margin-right: 40px;
+        margin-top: 48px;
+        margin-bottom: 20px;
+        height: 82px;
+        align-items:center;
+        justify-content: center;
+        border-radius:15px;
+    }
+    .buttonText{
+        font-size: 40px;
+        color:#ffffff;
     }
 </style>
 <script>
@@ -177,7 +195,8 @@
             },
             profession: function () {
                 var _this = this;
-                event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=category', function (data) {
+
+                event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=category'), function (data) {
                     if(data.type == 'success' ) {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
@@ -194,7 +213,7 @@
                         )
                     }
                 })
-                )
+
             },
             petname:function () {
                 let _this = this;
@@ -233,6 +252,17 @@
                 }, event => {
                     if (event.result === 'success') {
                         this.birthday = event.data
+                        POST('weex/member/update.jhtml?birth=' +this.birthday).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
                     }
                 })
             },
@@ -310,7 +340,7 @@
                 };
                 textData = JSON.stringify(textData);
                 storage.setItem('oneNumber', textData,e=>{
-                event.openURL(utils.locate('widget/autograph.js?name=oneNumber', function (message) {
+                event.openURL(utils.locate('widget/autograph.js?name=oneNumber'), function (message) {
                     if(message.data != ''){
 //                       utils.debug('weex/member/update.jhtml?autograph=' + encodeURI(message.data.text))
                         POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
@@ -326,7 +356,7 @@
                         )
                     }
                 })
-                )
+
                 });
             },
             updateStatus: function (attr) {
@@ -344,18 +374,18 @@
                 } else {
                     _this.birthday = "未设置";
                 }
-                if (attr.hasPassword!=null && attr.hasPassword==true) {
+                if (attr.hasPassword!=null && attr.hasPassword) {
                     _this.hasPassword = "已设置";
                 } else {
                     _this.hasPassword = "未设置";
                 }
-                if (attr.bindMobile!=null && attr.bindMobile==true) {
+                if (attr.bindMobile!=null && attr.bindMobile) {
                     _this.bindMobile = "已绑定";
                 } else {
                     _this.bindMobile = "未绑定";
                 }
 //                event.toast(_this.attribute);
-                if (attr.bindWeiXin!=null && attr.bindWeiXin==true) {
+                if (attr.bindWeiXin!=null && attr.bindWeiXin) {
                     _this.bindWeiXin = "已绑定";
                 } else {
                     _this.bindWeiXin = "未绑定";
@@ -383,13 +413,14 @@
 
 
                 } else {
-                    _this.autograph = "未设置";
+                    _this.gender = "未设置";
                 }
             },
             open:function () {
                 var _this = this;
                 GET("weex/member/attribute.jhtml",
                     function (data) {
+                    utils.debug(data)
                         if (data.type=="success") {
                             _this.attribute = data.data;
                             _this.updateStatus(_this.attribute);
@@ -404,7 +435,7 @@
             },
             updatePassword: function (e) {
                 var _this = this;
-                if (_this.attribute.bindMobile==false) {
+                if (!_this.attribute.bindMobile) {
                     event.openURL(utils.locate("view/member/password/index.js"),
                         function (updated) {
                             if (updated!=null) {
@@ -431,7 +462,7 @@
             },
             doBindMobile: function (e) {
                 var _this = this;
-                if (_this.attribute.bindMobile==true) {
+                if (_this.attribute.bindMobile) {
                     return;
                 }
                 event.openURL(utils.locate("view/member/mobile/index.js"),
@@ -448,13 +479,17 @@
             },
             doBindWeiXin: function (e) {
                 var _this = this;
-                if (_this.attribute.bindWeiXin==true) {
+                if (_this.attribute.bindWeiXin) {
                     return;
                 }
                 event.wxAuth(function (msg) {
+//                    utils.debug(msg)
+
                    if (msg.type=="success") {
-                       POST("weex/member/weixin.jhtml?code="+msg.content).then(
+//                        utils.debug("weex/member/weixin/bind.jhtml?code="+msg.content)
+                       POST("weex/member/weixin/bind.jhtml?code="+msg.data).then(
                            function (data) {
+                               utils.debug(data)
                                if (data.type="success") {
                                    _this.attribute.bindWeiXin = true;
                                    _this.updateStatus(_this.attribute);
@@ -463,7 +498,7 @@
                                }
                            },
                            function (err) {
-                               event.toast("网络不稳定");
+                               event.toast(err.content);
                            }
                        )
                    } else {
@@ -471,6 +506,19 @@
                    }
                 })
 
+            },
+            logout:function () {
+                POST('weex/login/logout.jhtml').then(
+                function (data) {
+                    if (data.type == "success") {
+                        event.closeURL(data);
+                    } else {
+                        event.toast(data.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content);
+                }
+                )
             }
         }
 
