@@ -11,7 +11,7 @@
         <div class="input-panel">
             <input class="flex5 password" type="text" placeholder="请输入新密码" v-model="value"  @change="onchange" @input="oninput"/>
             <div class="flex1 flex-column">
-                <text class="see" :style="{fontFamily:'iconfont'}">&#xe632;</text>
+                <text class="see" :style="{fontFamily:'iconfont'}">&#xe61e;</text>
             </div>
         </div>
 
@@ -90,9 +90,9 @@
                             function (data) {
                                 utils.debug(data)
                                 if (data.type == "success") {
-                                    _this.$refs.captcha.beginTimer();
-
-                                    event.closeURL();
+//                                    _this.$refs.captcha.beginTimer();
+                                    let backData = utils.message('success','成功');
+                                    event.closeURL(backData);
                                 } else {
                                     _this.$refs.captcha.endTimer();
                                     event.toast(data.content);
