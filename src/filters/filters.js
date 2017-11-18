@@ -38,7 +38,8 @@ Vue.filter('timefmt', function (value) {
     let    m = date.getMonth() + 1;
     let    w = tody.getDate() - date.getDate();
     if (w<1) {
-        let    h = date.getUTCHours() + 8;
+        var    h = date.getUTCHours() + 8;
+        h = h >= 24 ? h - 24 : h;
         let    i = date.getMinutes();
         if (h < 10) {
             h = '0' + h;
@@ -63,7 +64,7 @@ Vue.filter('timefmt', function (value) {
         d = '0' + d;
     }
     //如果是今年 就不返回年份
-    if(nowy != y){
+    if(nowy == y){
         return  m + '月' + d + '日';
     }else{
         return y + '年' + m + '月' + d+ '日';
@@ -161,7 +162,8 @@ Vue.filter('datetimefmt', function (value) {
     let    date = new Date(value);
     let    m = date.getMonth() + 1;
     let    d = date.getDate();
-    let    H = date.getUTCHours() + 8;
+    var    h = date.getUTCHours() + 8;
+    h = h >= 24 ? h - 24 : h;
     let    i = date.getMinutes();
     if (m < 10) {
         m = '0' + m;
@@ -169,16 +171,61 @@ Vue.filter('datetimefmt', function (value) {
     if (d < 10) {
         d = '0' + d;
     }
-    if (H < 10) {
-        H = '0' + H;
+    if (h < 10) {
+        h = '0' + h;
     }
     if (i < 10) {
         i = '0' + i;
     }
-    let t = m + '-' + d + '  ' + H + ':' + i ;
+    let t = m + '-' + d + '  ' + h + ':' + i ;
     return t;
 })
 
+//时间格式化 返回 09-30 03:07:56 2017-09-30 03:07:56
+Vue.filter('datemoretimefmt', function (value) {
+    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+    value = value + '';
+    if(value.length == 10){
+        value = parseInt(value) * 1000;
+    }else{
+        value = parseInt(value);
+    }
+
+    // 返回处理后的值
+    let    date = new Date(value);
+    let    y = date.getFullYear();
+    let tody = new Date();
+    let    nowy = tody.getFullYear();
+    let    m = date.getMonth() + 1;
+    let    d = date.getDate();
+    var    h = date.getUTCHours() + 8;
+    h = h >= 24 ? h - 24 : h;
+    let    i = date.getMinutes();
+    let    s = date.getSeconds();
+    if (m < 10) {
+        m = '0' + m;
+    }
+    if (d < 10) {
+        d = '0' + d;
+    }
+    if (h < 10) {
+        h = '0' + h;
+    }
+    if (i < 10) {
+        i = '0' + i;
+    }
+    if (s < 10) {
+        s = '0' + s;
+    }
+    //如果是今年 就不返回年份
+    if(nowy == y){
+        return m + '-' + d + '  ' + h + ':' + i + ':' + s;
+    }else{
+        return y + '-' + m + '-' + d + '  ' + h + ':' + i + ':' + s;
+    }
+
+
+})
 //时间格式化 返回 03:07
 Vue.filter('hitimefmt', function (value) {
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
@@ -190,15 +237,16 @@ Vue.filter('hitimefmt', function (value) {
     }
     // 返回处理后的值
     let    date = new Date(value);
-    let    H = date.getUTCHours() + 8;
+    var    h = date.getUTCHours() + 8;
+    h = h >= 24 ? h - 24 : h;
     let    i = date.getMinutes();
-    if (H < 10) {
-        H = '0' + H;
+    if (h < 10) {
+        h = '0' + h;
     }
     if (i < 10) {
         i = '0' + i;
     }
-    let t = H + ':' + i ;
+    let t = h + ':' + i ;
     return t;
 })
 

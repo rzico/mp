@@ -88,7 +88,7 @@
     .btnHtight{
         height: 100px;
     }
-    .paraTransition-enter-active, .paraTransition-leave-active {
+    .paraTransition-enter-active {
         transition: all 0.2s;
     }
     /*.paraTransition-leave-to{*/
@@ -223,7 +223,8 @@
         },
         methods:{
             goback(){
-                event.closeURL()
+                let backData = utils.message('success','成功','');
+                event.closeURL(backData);
             },
 //            添加文集
             addCorpus(){
@@ -240,7 +241,6 @@
                             modal.toast({message:'请输入文集名',duration:1})
                         }else{
                             let orders = _this.corpusList.length + 1;
-//                            event.toast(orders);
                             value.data = encodeURI(value.data);
 //                            向服务器存入文集名称
                             POST('weex/member/article_catalog/add.jhtml?name=' + value.data + '&orders=' + orders).then(

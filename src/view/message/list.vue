@@ -263,7 +263,7 @@
                 keyword:'',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
                 current:0,
-                pageSize:20,
+                pageSize:0,
             };
             this.selfUserId = event.getUserId();
 //            读取本地缓存

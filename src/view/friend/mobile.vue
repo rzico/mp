@@ -272,16 +272,22 @@
                         event.toast('没有更多联系人了!');
                     }
                     data.data.forEach(function (item,index) {
-                        let option={
-                            type:'friend',
-                            key:item.numberMd5
-                        };
+                        let option = {
+                            type:'friend',//类型
+                            keyword:item.numberMd5,//关键址
+                            orderBy:'desc',//"desc"降序 ,"asc"升序
+                            current:0,
+                            pageSize:0,
+                        }
 //                    判断用户是否是好友
-                        event.find(option,function (_weex) {
+                        event.findList(option,function (_weex) {
                             if(_weex.type == 'success' && _weex.data != ''){
-                                item = _weex.data;
+//                                将logo赋值
+                                let _weexValue = JSON.parse(_weex.data[0].value);
                                 item.status = 'adopt';
+                                item.logo = _weexValue.logo;
                             }else{
+//                                手机号列表
                                 _this.numberList = _this.numberList + item.number + ',';
                                 item.status = 'unused';
                             }

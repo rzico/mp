@@ -811,6 +811,7 @@
                             for(let i = 0; i<data.data.length;i++){
                                 _this.corpusList.splice(1 + i,0,data.data[i]);
                             }
+                            data.data = JSON.stringify(data.data);
                             storage.setItem('corpusList',data.data);
                         }
                     } else {

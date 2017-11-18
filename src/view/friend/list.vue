@@ -405,15 +405,15 @@
                 keyword:'',//关键址
                 orderBy:'desc',//"desc"降序 ,"asc"升序
                 current:0,
-                pageSize:20,
+                pageSize:0,
             }
 //            读取本地缓存
             event.findList(listoption,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (friend) {
-                          let jsonData = JSON.parse(friend.value);
+                        let jsonData = JSON.parse(friend.value);
 //                          获取首字母
-                          let firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
+                        let firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
                         _this.friendsList.forEach(function (item) {
                             if(item.letter == firstLetter){
                                 item.name.push(jsonData);
@@ -455,11 +455,8 @@
                         if(data.type == 'success' && data.data.data!=''){
                             data.data.data.forEach(function (friend) {
                                 friend.name = utils.isNull(friend.name) ? '' : friend.name;
-//                          存入md5
-//                                let option = {
-//                                    type:'friend',
-//                                    key:friend
-//                                }
+//                                判断该用户是否有手机号md5，有就存入缓存
+                                friend.md5 = utils.isNull(friend.md5) ? '' : friend.md5;
 
 
                                 _this.friendsList.forEach(function (item) {
@@ -598,7 +595,7 @@
             openPage(index){
                 switch(index){
                     case 0:
-                      event.openURL(utils.locate('view/friend/new.js?id='+ this.UId),function (message) {
+                        event.openURL(utils.locate('view/friend/new.js?id='+ this.UId),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });

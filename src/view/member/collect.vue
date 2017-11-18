@@ -10,7 +10,7 @@
                 <div class="collectBox"  v-for="item in collectList" @click="goArticle(item.id)">
                     <!--名字与日期-->
                     <div class="nameDate">
-                        <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
+                        <div class="nameImg" @click="goAuthor(item.authorId)">
                             <image resize="cover" class="authorImg" :src="item.logo"></image>
                             <text class="authorName ml10">{{item.author}}</text>
                         </div>
@@ -34,27 +34,27 @@
                     </div>
                 </div>
                 <!--<div class="collectBox">-->
-                <!--<div class="nameDate">-->
-                <!--<div style="flex-direction: row;align-items: center">-->
-                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg" resize="cover" class="authorImg"></image>-->
-                <!--<text class="authorName ml10">大马哥</text>-->
-                <!--</div>-->
-                <!--<text class="authorName">2017-11-07</text>-->
-                <!--</div>-->
-                <!--<div class="flex-row">-->
-                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg"  resize="cover" class="articleImg"></image>-->
-                <!--<div class="articleInfo">-->
-                <!--<text class="fz30 articleTitle">立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)</text>-->
-                <!--<div class="relevantInfo">-->
-                <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
-                <!--<text class="relevantText">121</text>-->
-                <!--<text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
-                <!--<text class="relevantText">233</text>-->
-                <!--<text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
-                <!--<text class="relevantText">3222</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
+                    <!--<div class="nameDate">-->
+                        <!--<div style="flex-direction: row;align-items: center">-->
+                            <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg" resize="cover" class="authorImg"></image>-->
+                            <!--<text class="authorName ml10">大马哥</text>-->
+                        <!--</div>-->
+                        <!--<text class="authorName">2017-11-07</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row">-->
+                        <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg"  resize="cover" class="articleImg"></image>-->
+                        <!--<div class="articleInfo">-->
+                            <!--<text class="fz30 articleTitle">立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)</text>-->
+                            <!--<div class="relevantInfo">-->
+                                <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                                <!--<text class="relevantText">121</text>-->
+                                <!--<text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                                <!--<text class="relevantText">233</text>-->
+                                <!--<text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                                <!--<text class="relevantText">3222</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                 <!--</div>-->
             </div>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
@@ -65,6 +65,12 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .nameImg{
+        flex-direction: row;
+        align-items: center;
+        height: 80px;
+        padding-right: 20px;
+    }
     .articleTitle{
         color: #444;
         lines:2;
@@ -111,8 +117,8 @@
     .nameDate{
         flex-direction: row;
         justify-content: space-between;
-        padding-top: 20px;
-        padding-bottom: 20px;
+        height: 80px;
+        align-items: center;
     }
     .collectBox{
         padding-bottom: 20px;
@@ -179,6 +185,7 @@
             GET('weex/favorite/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != '' ){
                     _this.collectList = data.data.data;
+                }else  if(data.type == 'success' && data.data.data == '' ){
                 }else{
                     event.toast(data.content);
                 }

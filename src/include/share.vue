@@ -7,29 +7,32 @@
             </div>
             <div>
                 <div class="bottomBorder shareLineBox" >
-                    <div  class="singleBox">
-                        <div class="imgBox">
+                    <div  class="singleBox" @click="doShare(0)">
+                        <div class="imgBox"  @click="doShare(0)">
                             <image class="shareImg" src="http://pic.qiantucdn.com/58pic/27/25/01/31n58PICz4s_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center" ></image>
+                            <!--<text class="shareImg " style="font-size: 90px;"  :style="{fontFamily:'iconfont'}">&#xe625;</text>-->
                         </div>
                         <text class="fz28 mt20 color444" >朋友圈</text>
                     </div>
-                    <div class="singleBox">
-                        <div class="imgBox">
-                            <image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>
+                    <div class="singleBox" @click="doShare(1)">
+                        <div class="imgBox" @click="doShare(1)">
+                            <!--<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>-->
+
+                            <text class="shareImg " style="font-size: 90px;color: green;"  :style="{fontFamily:'iconfont'}">&#xe659;</text>
                         </div>
                         <text class="fz28 mt20 color444">微信</text>
+                    </div>
+                    <div class="singleBox" >
+                        <div class="imgBox" >
+                            <image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510223917779&di=b003e7611dd9cdc0da2f1cc1692cca29&imgtype=0&src=http%3A%2F%2Fm.qqzhi.com%2Fupload%2Fimg_2_3089124672D1494971208_23.jpg" ></image>
+                        </div>
+                        <text class="fz28 mt20 color444">微信收藏</text>
                     </div>
                     <div class="singleBox">
                         <div class="imgBox">
                             <image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>
                         </div>
                         <text class="fz28 mt20 color444">微信小程序</text>
-                    </div>
-                    <div class="singleBox">
-                        <div class="imgBox">
-                            <image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510223917779&di=b003e7611dd9cdc0da2f1cc1692cca29&imgtype=0&src=http%3A%2F%2Fm.qqzhi.com%2Fupload%2Fimg_2_3089124672D1494971208_23.jpg" ></image>
-                        </div>
-                        <text class="fz28 mt20 color444">新浪微博</text>
                     </div>
                     <div style="align-items: center;">
                         <div class="imgBox">
@@ -125,7 +128,7 @@
 <script>
     import utils from '../assets/utils';
     const event = weex.requireModule('event');
-    import { POST, GET } from '../assets/fetch'
+    import { POST, GET } from '../assets/fetch';
     export default {
         data:function () {
             return{
@@ -135,6 +138,9 @@
         methods:{
             doCancel(){
                 this.$emit("doCancel");
+            },
+            doShare(id){
+                this.$emit("doShare",id);
             }
         }
     }

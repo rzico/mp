@@ -111,8 +111,8 @@
         </div>
         <transition name="slide-fade-share" mode="out-in">
             <div v-if="showShare"  key="share">
-                <!--<div class="mask" @touchstart="maskTouch"></div>-->
-                <share @doCancel="doCancel"></share>
+                <div class="mask" @touchstart="maskTouch"></div>
+                <share @doShare="doShare" @doCancel="doCancel"></share>
             </div>
             <!--模版内容-->
         </transition>
@@ -526,7 +526,7 @@
                 if(this.isSelf == 0){
                     this.showShare = true;
                 }else{
-                    event.openURL(utils.locate('view/member/editor/related.js?name=share' ),function (data) {
+                    event.openURL(utils.locate('view/member/editor/whoShare.js?articleId=' + this.articleId),function (data) {
                     })
                 }
             },
@@ -557,6 +557,56 @@
 //            举报
             report(){
                 event.toast('举报');
+            },
+//            分享
+            doShare(id){
+                var shareType;
+                let _this = this;
+                switch(id){
+                    case 0 :
+                         shareType = 'timeline';
+                        break;
+                    case 1 :
+                         shareType = 'appMessage';
+                        break;
+                    case 2 :
+                         shareType = 'favorite';
+                        break;
+                    default:
+                         shareType = '';
+                        break;
+                }
+                event.toast('share/article.jhtml?articleId=' + this.articleId + '&shareType=' + shareType);
+                GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=timeline'  ,function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        var option = {
+                            title:data.data.title,
+                            text:data.data.descr,
+                            imageUrl:data.data.thumbnail,
+                            url:data.data.url,
+                            type:shareType
+                        }
+                        _this.showShare = false;
+//                        if(data.data.thumbnail.substring(0,4))
+                        event.wxShare(option,function (data) {
+                            if(data.type == 'success'){
+                                POST('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType).then(
+                                    function (data) {
+                                        if(data.type == 'success'){
+                                            event.toast('分享成功');
+                                        }
+                                    },
+                                    function (err) {
+                                        event.toast(err.content);
+                                    }
+                                )
+                            }
+                        })
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+
             }
         }
     }
