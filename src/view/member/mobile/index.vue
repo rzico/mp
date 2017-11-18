@@ -69,7 +69,7 @@
                 }
             })
             },
-            goBack:function(e) {
+            goback:function(e) {
                 event.closeURL();
             },
             onChange: function (e) {
