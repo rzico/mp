@@ -517,7 +517,7 @@
                         )
                     }
                 }else{
-                    event.openURL(utils.locate('view/member/editor/related.js?name=laud'),function (data) {
+                    event.openURL(utils.locate('view/member/editor/whoLaud.js?name=laud'),function (data) {
                     })
                 }
             },
