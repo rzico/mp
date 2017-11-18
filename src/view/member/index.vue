@@ -636,7 +636,7 @@
                 corpusScrollTop:0,
                 canScroll:true,
                 userName:'刮风下雨打雷台风天',
-                userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
+                userSign:'未设置',
                 whichCorpus:0,
                 isNoArticle:false,
 //                refreshing:false,
@@ -775,6 +775,9 @@
                         }
                         if(!utils.isNull(data.data.logo)){
                             _this.imageUrl = data.data.logo;
+                        }
+                        if(!utils.isNull(data.data.autograph)){
+                            _this.userSign = data.data.autograph;
                         }
                         _this.collectNum = data.data.favorite;
                         _this.focusNum = data.data.follow;
