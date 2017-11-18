@@ -54,7 +54,7 @@
                         function (weex) {
 //                            event.toast('weex/login/send_mobile.jhtml?mobile=' + _this.value)
                             if (weex.type == "success") {
-                                event.openURL("http://192.168.2.103:8081/captcha.weex.js?mobile=" +_this.value ,function () {
+                                event.openURL(utils.locate("view/member/mobile/captcha.js?mobile=" +_this.value) ,function () {
                                     event.closeURL();
                                 })
 
