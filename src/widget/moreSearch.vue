@@ -1,17 +1,18 @@
 <template>
     <div class="wrapper">
         <!--输入栏-->
-        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
+        <searchNav :searchHint="searchHint" :keyword="keyword" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
         <!--搜索栏-->
         <!--<div class="confm" v-if="isInput()" @click="childSearch()">-->
         <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe611;</text>-->
         <!--<text class="title">搜索: {{keyword}} </text>-->
         <!--</div>-->
-        <!--无数据提示-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <!--数据显示-->
-
         <scroller v-else>
+            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">{{refreshState}}</text>
+            </refresh>
+            <div :style="{minHeight:screenHeight + 'px'}">
             <!--朋友-->
             <div  v-for="(item,index) in searchList.friend" >
                 <!--类别-->
@@ -28,15 +29,12 @@
                             <text class="title ml20">{{item.value.nickName}}</text>
                         </div>
                     </div>
-                    <div  v-if="isMoreRepeat(index)" class="borderTop " @click="goMoreSearch(item.type)">
-                        <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多{{item.type | watchType}}</text>
-                    </div>
                 </div>
             </div>
             <!--消息-->
-            <div   v-for="(item,index) in searchList.message">
+            <div v-for="(item,index) in searchList.message">
                 <!--类别-->
-                <div :class="[index == 0 ? 'mt30' : '']" v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
+                <div v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
                     <div class="typeTextBox borderBottom" >
                         <text class="sub_title fz32 pb10" >{{item.type | watchType}}</text>
                     </div>
@@ -67,16 +65,13 @@
                         </div>
                     </div>
 
-                    <div  v-if="isMoreRepeat(index)" class="borderTop " @click="goMoreSearch(item.type)">
-                        <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多{{item.type | watchType}}</text>
-                    </div>
                 </div>
             </div>
 
             <!--文章-->
             <div  v-for="(item,index) in searchList.article">
                 <!--类别-->
-                <div :class="[index == 0 ? 'mt30' : '']" v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
+                <div v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
                     <div class="typeTextBox borderBottom" >
                         <text class="sub_title fz32 pb10" >{{item.type | watchType}}</text>
                     </div>
@@ -102,11 +97,12 @@
                             </div>
                         </div>
                     </div>
-                    <div  v-if="isMoreRepeat(index)" class="borderTop " @click="goMoreSearch(item.type)">
-                        <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多{{item.type | watchType}}</text>
-                    </div>
                 </div>
             </div>
+            </div>
+            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
+            <text class="indicator">加载中...</text>
+            </loading>
         </scroller>
 
     </div>
@@ -264,10 +260,14 @@
                     message:[],
                     article:[]
                 },
-
-                currentNum:0,
-                pageNum:20,
+                screenHeight:0,
+                listCurrent:0,
+                pageSize:20,
                 friendsList:[],
+                singeType:'',
+                refreshState:'',
+                refreshing:false,
+                showLoading:false,
             }
         },
         filters:{
@@ -318,11 +318,29 @@
 
         },
         props: {
-            searchHint: { default: "输入好友名/消息内容/文章"},
+            searchHint: { default: "输入要查找的内容"},
             noDataHint: { default: "输入后查找" }
         },
         created(){
             utils.initIconFont();
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(136);
+            this.singeType = utils.getUrlParameter('type');
+            this.keyword =decodeURI(utils.getUrlParameter('keyword'));
+            switch(this.singeType){
+                case 'friend':
+                    this.searchHint = '联系人';
+                    break;
+                case 'message':
+                    this.searchHint = '聊天内容';
+                    break;
+                case 'article':
+                    this.searchHint = '文章';
+                    break;
+                default:
+                    break;
+            }
+
             event.changeWindowsBar('true');
         },
         methods: {
@@ -356,7 +374,7 @@
                 let _this = this;
                 this.keyword = val;
                 if(val.length == 0){
-                    this.noDataHint = "输入查找相关内容";
+                    this.noDataHint = "输入查找" + this.searchHint;
                     _this.searchList = {
                         friend:[],
                         message:[],
@@ -364,11 +382,11 @@
                     };
                 }else{
                     let option = {
-                        type:'',//类型
+                        type:this.singeType,//类型
                         keyword:val,//关键址
                         orderBy:'desc',//"desc"降序 ,"asc"升序
                         current:0, //当前有几页
-                        pageSize:this.currentNum //一页显示几行
+                        pageSize:this.pageSize //一页显示几行
                     }
                     event.findList(option,function (message) {
                         if (message.type == 'success' && message.data != '') {
@@ -381,36 +399,25 @@
                                 item.value = JSON.parse(item.value);
                                 switch (item.type){
                                     case 'friend':
-                                        if(_this.searchList.friend.length >= 5){
-                                        }else{
                                             _this.searchList.friend.push(item);
-                                        }
                                         break;
                                     case 'message':
-                                        if(_this.searchList.message.length >= 5){
-                                        }else{
                                             _this.searchList.message.push(item);
-                                        }
                                         break;
                                     case 'article':
-                                        if(_this.searchList.article.length >= 5){
-                                        }else{
                                             _this.searchList.article.push(item);
-                                        }
                                         break;
                                     default:
                                         break;
                                 }
                             });
-                            event.toast(_this.searchList);
                         } else {
                             _this.searchList = {
                                 friend:[],
                                 message:[],
                                 article:[]
                             };
-
-                            _this.noDataHint = "没有相关内容";
+                            this.noDataHint = "没有相关"  + this.searchHint;
                         };
                     });
                 }
@@ -437,29 +444,6 @@
                     return true;
                 }
             },
-//            判断更多时是否渲染
-            isMoreRepeat:function (index) {
-                var _this = this;
-                if(index >= 4){
-                    return true;
-                }else{
-                    return false;
-                }
-//                if(index != _this.searchList.length - 1){
-//                    if (_this.watchTypeFunc(_this.searchList[index].type) == _this.watchTypeFunc(_this.searchList[index + 1].type)) {
-////                        _this.moreNum++;
-////                        if(_this.moreNum >= 2){
-////                            _this.moreNum = 0;
-////                            return false;
-////                        }
-//                        return false;
-//                    } else {
-//                        return true;
-//                    }
-//                } else {
-//                    return true;
-//                }
-            },
 //            作者主页
             goAuthor:function (id) {
                 event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
@@ -475,13 +459,55 @@
                     function () {}
                 )
             },
-//            更多记录
-            goMoreSearch(itemType){
+            onrefresh:function () {
+                var _this = this;
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 50)
+            },
+            onloading:function () {
+                var _this = this;
+                _this.showLoading = true;
+//                _this.loadingState = "正在加载数据";
+                setTimeout(() => {
+                    this.listCurrent = this.listCurrent + this.pageSize;
+                    let option = {
+                        type:this.singeType,//类型
+                        keyword:this.keyword,//关键址
+                        orderBy:'desc',//"desc"降序 ,"asc"升序
+                        current:this.listCurrent, //当前有几页
+                        pageSize:this.pageSize //一页显示几行
+                    }
+                    event.findList(option,function (message) {
+                        if (message.type == 'success' && message.data != '') {
+                            message.data.forEach(function (item) {
+                                item.value = JSON.parse(item.value);
+                                switch (item.type){
+                                    case 'friend':
+                                        _this.searchList.friend.push(item);
+                                        break;
+                                    case 'message':
+                                        _this.searchList.message.push(item);
+                                        break;
+                                    case 'article':
+                                        _this.searchList.article.push(item);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            });
+                        } else if (message.type == 'success' && message.data == '') {
 
-                event.openURL(utils.locate('widget/moreSearch.js?type=' + itemType + '&keyword=' + encodeURI(this.keyword)),
-                    function () {}
-                )
-            }
+                        }else{
+                            event.toast(message.content);
+                        };
+                    });
+
+
+                    _this.showLoading = false;
+                }, 1500)
+            },
         }
 
     }

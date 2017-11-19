@@ -119,12 +119,12 @@
         data(){
             return{
                 userList:[],
+                refreshState:'',
                 refreshing:false,
                 showLoading:false,
                 listCurrent:0,
                 pageSize:15,
                 UId:'',
-                refreshState:'',
                 isSelf:false,
                 userName:'我',
                 screenHeight:0
@@ -216,6 +216,7 @@
                     )
                 }
             },
+//            刷新
             onrefresh:function () {
                 var _this = this;
                 this.refreshing = true
@@ -223,6 +224,7 @@
                     this.refreshing = false
                 }, 50)
             },
+//            加载
             onloading:function () {
                 var _this = this;
                 _this.showLoading = true;

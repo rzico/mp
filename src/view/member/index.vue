@@ -628,7 +628,6 @@
         data:function() {
             return{
                 topMWidth:166,
-
                 settingColor:'white',
                 opacityNum:0,
                 twoTop:false,

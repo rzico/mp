@@ -274,7 +274,7 @@
     export default {
         data:function () {
             return   {
-                searchKeyword:'搜索好友与消息',
+                searchKeyword:'搜索好友/消息/文章',
                 pageName:'朋友',
                 beforePointPoor:-1,//前一次手机按压时与移动后的字母数量
                 pressPoint:-1,//手指按压
