@@ -10,73 +10,72 @@
         <!--无数据提示-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <!--数据显示-->
-
-        <scroller v-else>
-            <!--朋友-->
-            <div  v-for="(item,index) in searchList.friend" >
-                <!--类别-->
-                <div  v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
-                    <div class="typeTextBox borderBottom" >
-                        <text class="sub_title fz32 pb10" >{{item.type | watchType}}</text>
-                    </div>
-                </div>
-                <div class="contentBox">
-                    <!--好友-->
-                    <div class="flex-row "  @click="goAuthor(item.value.id)">
-                        <image class="logo" :src="item.value.logo"></image>
-                        <div >
-                            <text class="title ml20">{{item.value.nickName}}</text>
+        <scroller v-else >
+            <div  v-if="this.searchList.friend.length != 0" class="bt30">
+                    <!--朋友-->
+                    <div  v-for="(item,index) in searchList.friend" >
+                        <!--类别-->
+                        <div  v-if="isRepeat(index)" class="pl30 pr30  bgWhite">
+                            <div class="typeTextBox borderBottom" >
+                                <text class="sub_title fz32 pb10" >{{item.type | watchType}}</text>
+                            </div>
                         </div>
-                    </div>
-                    <div  v-if="isMoreRepeat(index)" class="borderTop " @click="goMoreSearch(item.type)">
-                        <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多{{item.type | watchType}}</text>
-                    </div>
-                </div>
-            </div>
-            <!--消息-->
-            <div   v-for="(item,index) in searchList.message">
-                <!--类别-->
-                <div :class="[index == 0 ? 'mt30' : '']" v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
-                    <div class="typeTextBox borderBottom" >
-                        <text class="sub_title fz32 pb10" >{{item.type | watchType}}</text>
-                    </div>
-                </div>
-                <div class="contentBox">
-
-
-                    <!--消息-->
-                    <div class="friendsLine borderTop"  @click="goChat(item.value.userId)">
-                        <!--头像-->
-                        <div class="friendsImageBox">
-                            <image :src="item.value.logo" class="friendsImage"></image>
-                        </div>
-                        <div style="flex: 5;">
-                            <div style="flex-direction: row;flex: 1;" >
-                                <!--名字与内容-->
-                                <div class="messageText">
-                                    <text class="friendName">{{item.value | watchName}}</text>
-                                </div>
-                                <!--消息时间-->
-                                <div class="messageTimeBox">
-                                    <text class="messageTime">{{item.value.createDate | timefmt}}</text>
+                        <div class="contentBox">
+                            <!--好友-->
+                            <div class="flex-row "  @click="goAuthor(item.value.id)">
+                                <image class="logo" :src="item.value.logo"></image>
+                                <div >
+                                    <text class="title ml20">{{item.value.nickName}}</text>
                                 </div>
                             </div>
-                            <div style="flex: 2;height: 50px;justify-content: center;">
-                                <text class="friendMessage">{{item.value.content}}</text>
+                            <div  v-if="isMoreRepeat(index)" class="borderTop " @click="goMoreSearch(item.type)">
+                                <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多{{item.type | watchType}}</text>
                             </div>
                         </div>
                     </div>
-
-                    <div  v-if="isMoreRepeat(index)" class="borderTop " @click="goMoreSearch(item.type)">
-                        <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多{{item.type | watchType}}</text>
+            </div>
+            <div  class="bt30" v-if="this.searchList.message.length != 0" >
+                <!--消息-->
+                <div  v-for="(item,index) in searchList.message">
+                    <!--类别-->
+                    <div  v-if="isRepeat(index)" class="pl30 pr30  bgWhite">
+                        <div class="typeTextBox borderBottom" >
+                            <text class="sub_title fz32 pb10" >{{item.type | watchType}}</text>
+                        </div>
+                    </div>
+                    <div class="contentBox">
+                        <!--消息-->
+                        <div class="friendsLine borderTop"  @click="goChat(item.value.userId)">
+                            <!--头像-->
+                            <div class="friendsImageBox">
+                                <image :src="item.value.logo" class="friendsImage"></image>
+                            </div>
+                            <div style="flex: 5;">
+                                <div style="flex-direction: row;flex: 1;" >
+                                    <!--名字与内容-->
+                                    <div class="messageText">
+                                        <text class="friendName">{{item.value | watchName}}</text>
+                                    </div>
+                                    <!--消息时间-->
+                                    <div class="messageTimeBox">
+                                        <text class="messageTime">{{item.value.createDate | timefmt}}</text>
+                                    </div>
+                                </div>
+                                <div style="flex: 2;height: 50px;justify-content: center;">
+                                    <text class="friendMessage">{{item.value.content}}</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div  v-if="isMoreRepeat(index)" class="borderTop " @click="goMoreSearch(item.type)">
+                            <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多{{item.type | watchType}}</text>
+                        </div>
                     </div>
                 </div>
             </div>
-
             <!--文章-->
             <div  v-for="(item,index) in searchList.article">
                 <!--类别-->
-                <div :class="[index == 0 ? 'mt30' : '']" v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
+                <div  v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
                     <div class="typeTextBox borderBottom" >
                         <text class="sub_title fz32 pb10" >{{item.type | watchType}}</text>
                     </div>
@@ -366,7 +365,7 @@
                     let option = {
                         type:'',//类型
                         keyword:val,//关键址
-                        orderBy:'desc',//"desc"降序 ,"asc"升序
+                        orderBy:'asc',//"desc"降序 ,"asc"升序
                         current:0, //当前有几页
                         pageSize:this.currentNum //一页显示几行
                     }
@@ -402,7 +401,6 @@
                                         break;
                                 }
                             });
-                            event.toast(_this.searchList);
                         } else {
                             _this.searchList = {
                                 friend:[],

@@ -26,6 +26,10 @@
                     <div class="topLine " @click="openPage(0)">
                         <!--<image :src="item.lineImage" class="lineImage"></image>-->
                         <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
+                        <!--有新消息-->
+                        <div class="newMessage"  v-if="newFriendNum != '' && newFriendNum != 0 && newFriendNum != null && newFriendNum != undefined">
+                            <text class="messageTotal">{{newFriendNum}}</text>
+                        </div>
                         <text class="lineTitle">新的朋友</text>
                     </div>
                 </div>
@@ -97,6 +101,25 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .messageTotal{
+        background-color: red;
+        line-height: 38px;
+        lines:1;
+        color: #fff;
+        width:38px;
+        height:38px;
+        text-align: center;
+        border-radius: 19px;
+        font-size: 20px;
+        font-weight: 700;
+    }
+    .newMessage{
+        position: absolute;
+        left:75px;
+        top:15px;
+        width:60px;
+        align-items: center;
+    }
     .rightTop{
         height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
     }
@@ -259,7 +282,7 @@
     import {dom,event,stream} from '../../weex.js';
     import {getLetter,dictFirstLetter} from '../../assets/letter';
     import navbar from '../../include/navbar.vue'
-    import { POST, GET } from '../../assets/fetch';
+    import { POST, GET,SCAN } from '../../assets/fetch';
     import search from '../../include/search.vue';
     import utils from '../../assets/utils';
     const modal = weex.requireModule('modal');
@@ -274,7 +297,8 @@
     export default {
         data:function () {
             return   {
-                searchKeyword:'搜索好友/消息/文章',
+                newFriendNum:0,
+                searchKeyword:'搜索',
                 pageName:'朋友',
                 beforePointPoor:-1,//前一次手机按压时与移动后的字母数量
                 pressPoint:-1,//手指按压
@@ -433,9 +457,14 @@
             this.UId = event.getUId();
             _this.hadFriend();
 //            全局监听 消息
-//            globalEvent.addEventListener("onMessage", function (e) {
-//                _this.hadFriend();
-//            });
+            globalEvent.addEventListener("onMessage", function (e) {
+                event.toast('friend');
+                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10209'){
+                        _this.newFriendNum = e.data.data.unRead;
+                }else{
+
+                }
+            });
         },
         methods: {
 //            有新朋友时，
@@ -451,7 +480,6 @@
                     }else{
                         lastTimestamp = '';
                     }
-
                     GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + '' ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
@@ -493,7 +521,6 @@
                         event.toast(data.content);
                     })
                 })
-
             },
             goAddFriend:function () {
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
@@ -637,7 +664,11 @@
 //            触发自组件的二维码方法
             scan:function () {
                 event.scan(function (message) {
-                    event.toast(message);
+                    SCAN(message,function (data) {
+
+                    },function (err) {
+
+                    })
                 });
             },
         }

@@ -616,6 +616,7 @@
 <script>
     import {dom,event,storage,stream} from '../../weex.js';
     const modal = weex.requireModule('modal');
+    var globalEvent = weex.requireModule('globalEvent');
     const animation = weex.requireModule('animation');
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch';
@@ -634,7 +635,7 @@
                 isDisappear:false,
                 corpusScrollTop:0,
                 canScroll:true,
-                userName:'刮风下雨打雷台风天',
+                userName:'未设置',
                 userSign:'未设置',
                 whichCorpus:0,
                 isNoArticle:false,
@@ -642,7 +643,7 @@
 //                refreshState:'',
                 fontName: '&#xe685;',
                 collectNum:0,
-                moneyNum:8888.88,
+                moneyNum:0,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.jpg'),
                 bgImgUrl:utils.locate('resources/images/background.jpg'),
@@ -761,6 +762,7 @@
 //
 //                }
 //            })
+
         },
         methods: {
 //            更新用户信息；

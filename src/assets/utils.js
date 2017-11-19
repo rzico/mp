@@ -157,7 +157,7 @@ let utilsFunc = {
     //获取文章URL地址
     articleUrl(template,id) {
         template = template == '' ? 't1001' : template;
-        return dataURL + "website/" + template + "?id=" + id;
+        return dataURL + template + "?id=" + id;
     },
     debug(msg) {
         if (debug) {
@@ -193,6 +193,12 @@ let utilsFunc = {
     //         }
     //         return rs;
     //     }
+
+//    二维码读取内容
+    readScan(e){
+        e = e.substring(e.indexOf("q/") + 2,e.indexOf(".jhtml"));
+        return e;
+    }
 };
 
 export default utilsFunc;

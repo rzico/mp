@@ -1,6 +1,8 @@
 <template>
     <div class="search">
         <div class="search_box" @click="gosearch()">
+            <!--使搜索的字眼可以居中-->
+            <div class="scan flex-end flex1" ></div>
             <div class="flex-center flex5">
                 <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
                 <text class="sub_title">{{keyword}}</text>

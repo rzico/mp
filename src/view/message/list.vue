@@ -193,7 +193,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import { POST, GET } from '../../assets/fetch'
+    import { POST, GET ,SCAN} from '../../assets/fetch'
     import utils from '../../assets/utils'
     import {dom,event,stream} from '../../weex.js';
     import noData from '../../include/noData.vue';
@@ -206,7 +206,7 @@
     export default {
         data:function(){
             return{
-                searchKeyword:'搜索好友/消息/文章',
+                searchKeyword:'搜索',
                 messageList:[],
                 refreshing: false,
                 canScroll:true,
@@ -282,7 +282,6 @@
                     event.toast(data.content);
                 }
             })
-//            this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
                 event.toast(e);
 //                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
@@ -579,10 +578,13 @@
 //            触发自组件的二维码方法
             scan:function () {
                 event.scan(function (message) {
-                    event.toast(message);
+                    SCAN(message,function (data) {
+
+                    },function (err) {
+
+                    })
                 });
             },
-
         }
     }
 </script>

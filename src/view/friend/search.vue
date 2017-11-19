@@ -110,6 +110,7 @@
             oninput:function (val) {
               this.keyword = val;
               if(val.length == 0){
+                  this.friendsList = [];
                   this.noDataHint = "输入查找用户";
               }
             },
@@ -117,6 +118,7 @@
                 var _this = this;
                 GET('weex/member/friends/search.jhtml?keyword='+_this.keyword,function (data) {
                         if(data.type == 'success'){
+                            _this.friendsList = [];
                             data.data.forEach(function (item) {
                                 _this.friendsList.push(item);
                             })
