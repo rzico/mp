@@ -69,7 +69,8 @@
                 });
             },
             goback:function(e) {
-                event.closeURL();
+                let E = utils.message('success','成功','');
+                event.closeURL(E);
             },
             onChange: function (e) {
                 this.value = e;

@@ -122,6 +122,7 @@
     import utils from '../../../assets/utils'
     import music from '../../../assets/music'
     const event = weex.requireModule('event');
+    const audio = weex.requireModule('audio');
     const dom = weex.requireModule('dom');
     const modal = weex.requireModule('modal');
     var lastIndex = -1;
@@ -203,6 +204,7 @@
             },
 //            点击隐藏音乐文集列表(无背景音乐)
             hiddenMusic:function () {
+                audio.stop();
                 if(lastIndex != -1){
                     this.musicList[lastIndex].show = false;
                 }
@@ -216,6 +218,8 @@
                 console.log(musicId);
                 chooseMusicId = musicId;
                 chooseMusicName = musicName;
+
+                audio.play('http://yinyueshiting.baidu.com/data2/music/e01eb018f65e1499f7f5db319a9e29f5/540246705/79014250400128.mp3?xcode=7a748ba04693e44ad7984b79751f9d39');
                 if(lastTickItem == -1 || lastTickItem == item){
                     item.tickShow = true;
                 }else {

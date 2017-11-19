@@ -76,6 +76,7 @@
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
+    import search from '../../../include/search.vue';
     export default {
         data: {
             shareNum:0,
@@ -177,9 +178,9 @@
 
             onrefresh: function () {
                 var _this = this;
-                this.refreshing = true
+                this.refreshing = true;
                 setTimeout(() => {
-                    this.refreshing = false
+                    this.refreshing = false;
                 }, 50)
             },
             goAuthor(id) {

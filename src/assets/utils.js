@@ -40,9 +40,15 @@ let utilsFunc = {
         return null;
     },
     dayfmt (value) {
+        value = value + '';
+        if(value.length == 10){
+            value = parseInt(value) * 1000;
+        }else{
+            value = parseInt(value);
+        }
         let date = new Date(value);
         let tody = new Date();
-        let m = tody.getDay() - date.getDay();
+        let m = tody.getDate() - date.getDate();
         if (m<1) {
             return "今天"
         }
@@ -176,7 +182,17 @@ let utilsFunc = {
 //    将过长的字符串换成 XXX...XXX格式
     changeStr(e){
        return e.substr(0,4) + '...' + e.substr(-4);
-    }
+    },
+    //js中用正则表达式 过滤特殊字符, 校验所有输入域是否含有特殊符号 (无法过滤 \ )
+    //  searchFilter(s) {
+    //         event.toast(s);
+    //         var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）&mdash;—|{}【】‘；：”“'。，、？]");
+    //         var rs = "";
+    //         for (var i = 0; i < s.length; i++) {
+    //             rs = rs + s.substr(i, 1).replace(pattern,'');
+    //         }
+    //         return rs;
+    //     }
 };
 
 export default utilsFunc;

@@ -14,7 +14,7 @@
                 <text class="fz26fff fz45" :class="[isLaud ? 'laudActive' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                 <text class="fz26fff"  :class="[isLaud ? 'laudActive' : '']">点赞 {{laudNum}}</text>
             </div>
-            <div class="bottomBtnBox"  @click="goShare()">
+            <div class="bottomBtnBox"  @click="goShare(0)">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                 <text class="fz26fff">分享 {{shareNum}}</text>
             </div>
@@ -86,7 +86,7 @@
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
                     <text class="fz28 pl10">文章设置</text>
                 </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                     <text class="fz28 pl10">分享</text>
                 </div>
@@ -299,7 +299,7 @@
                 templateName:'热门',
                 templateSn:'1001',
                 templateChoose:false,
-                webUrl:'http://www.baidu.com',
+                webUrl:'',
                 lastImageItem:'',
                 lastTitleItem:'',
                 articleId:'',
@@ -336,7 +336,7 @@
             }
 
 //            获取该文章的模版
-            POST('weex/member/article/template.jhtml?id=' + this.articleId).then(
+            POST('weex/article/template.jhtml?id=' + this.articleId).then(
                 function (data) {
                     if(data.type == 'success'){
                         _this.templateId = 't' + data.data;
@@ -522,8 +522,8 @@
                 }
             },
 //            分享
-            goShare(){
-                if(this.isSelf == 0){
+            goShare(type){
+                if(this.isSelf == 0 && type == 1){
                     this.showShare = true;
                 }else{
                     event.openURL(utils.locate('view/member/editor/whoShare.js?articleId=' + this.articleId),function (data) {

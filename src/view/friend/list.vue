@@ -15,6 +15,7 @@
                 </div>
             </div>
         </div>
+        <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
         <!--<div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >-->
         <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
         <!--</div>-->
@@ -177,7 +178,7 @@
         position: absolute;
         right: 0px;
         width:60px;
-        top:136px;
+        top:236px;
         bottom: 0px;
         padding-bottom: 15px;
         padding-top: 20px;
@@ -259,6 +260,7 @@
     import {getLetter,dictFirstLetter} from '../../assets/letter';
     import navbar from '../../include/navbar.vue'
     import { POST, GET } from '../../assets/fetch';
+    import search from '../../include/search.vue';
     import utils from '../../assets/utils';
     const modal = weex.requireModule('modal');
     const storage = weex.requireModule('storage');
@@ -272,6 +274,7 @@
     export default {
         data:function () {
             return   {
+                searchKeyword:'搜索好友与消息',
                 pageName:'朋友',
                 beforePointPoor:-1,//前一次手机按压时与移动后的字母数量
                 pressPoint:-1,//手指按压
@@ -386,7 +389,7 @@
             title: { default: "朋友"},
         },
         components:{
-            navbar
+            navbar,search
         },
         filters:{
             watchName(value){
@@ -621,7 +624,22 @@
                     default:
                         break;
                 }
-            }
+            },
+//            触发自组件的跳转方法
+            gosearch:function () {
+                event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
+//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+                    if(message.data != ''){
+                        event.closeURL(message);
+                    }
+                });
+            },
+//            触发自组件的二维码方法
+            scan:function () {
+                event.scan(function (message) {
+                    event.toast(message);
+                });
+            },
         }
     }
 </script>

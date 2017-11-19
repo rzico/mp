@@ -23,6 +23,7 @@
                 </div>
             </div>
         </div>
+        <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list v-else  class="list" :scrollable="canScroll">
             <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -196,6 +197,7 @@
     import utils from '../../assets/utils'
     import {dom,event,stream} from '../../weex.js';
     import noData from '../../include/noData.vue';
+    import search from '../../include/search.vue';
     import filters from '../../filters/filters.js';
     var globalEvent = weex.requireModule('globalEvent');
     const animation = weex.requireModule('animation');
@@ -204,6 +206,7 @@
     export default {
         data:function(){
             return{
+                searchKeyword:'搜索好友/消息/文章',
                 messageList:[],
                 refreshing: false,
                 canScroll:true,
@@ -214,7 +217,7 @@
             }
         },
         components: {
-            noData
+            noData,search
         },
         computed:{
 //            计算属性
@@ -563,7 +566,22 @@
             },
             deleteMessage(){
                 event.toast('删除成功');
-            }
+            },
+//            触发自组件的跳转方法
+            gosearch:function () {
+                event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
+//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+                    if(message.data != ''){
+                        event.closeURL(message);
+                    }
+                });
+            },
+//            触发自组件的二维码方法
+            scan:function () {
+                event.scan(function (message) {
+                    event.toast(message);
+                });
+            },
 
         }
     }
