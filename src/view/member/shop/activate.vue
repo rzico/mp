@@ -1,8 +1,8 @@
 <template>
     <div style="background-color: #eeeeee">
-        <!--<div class="header">-->
-        <!--<navbar :title="title"  @goback="goback"  > </navbar>-->
-        <!--</div>-->
+        <div class="header">
+        <navbar :title="title"  @goback="goback"  > </navbar>
+        </div>
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
@@ -11,7 +11,7 @@
         </div>
         <div class="bind">
             <div class="iconfontDiv">
-            <text class="iconfont">&#xe64d;</text>
+                <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
             </div>
             <text class="text">激活店铺完成，请扫码绑定二维码</text>
             <text class="sweepCode">点击扫码</text>
@@ -96,3 +96,32 @@
         color: white;
     }
 </style>
+<script>
+    var event = weex.requireModule('event');
+    import navbar from '../../../include/navbar.vue';
+    import utils from '../../../assets/utils';
+    import { POST, GET } from '../../../assets/fetch'
+
+    export default {
+        data: function () {
+            return{
+
+            }
+        },
+        components: {
+            navbar
+        },
+        props: {
+            title: {default: "第三步"},
+
+        },
+        created() {
+            utils.initIconFont();
+        },
+        methods:{
+            goback:function () {
+                event.closeURL()
+            }
+        }
+    }
+</script>

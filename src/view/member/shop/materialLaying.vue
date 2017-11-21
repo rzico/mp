@@ -1,8 +1,8 @@
 <template>
     <div style="background-color: white">
-        <!--<div class="header">-->
-        <!--<navbar :title="title"  @goback="goback"  > </navbar>-->
-        <!--</div>-->
+        <div class="header">
+        <navbar :title="title"  @goback="goback"  > </navbar>
+        </div>
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
@@ -19,10 +19,10 @@
         </div>
         <div class="iconfontOne">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="logo"></image>
             </div>
-            <div class="iconfont">
-                <text class="plusSign">&#xe618;</text>
+            <div class="iconfont" >
+                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facade" >&#xe618;</text>
             </div>
         </div>
         <div class="place">
@@ -31,10 +31,10 @@
         </div>
         <div class="iconfontTwo">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="palcePhoto"></image>
             </div>
             <div class="iconfont">
-                <text class="plusSign">&#xe618;</text>
+                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="place" >&#xe618;</text>
             </div>
         </div>
         <div class="license">
@@ -43,10 +43,10 @@
         </div>
         <div class="iconfontThree">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="licensePhoto"></image>
             </div>
             <div class="iconfont">
-                <text class="plusSign">&#xe618;</text>
+                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="license">&#xe618;</text>
             </div>
         </div>
         <div class="button">
@@ -130,14 +130,15 @@
     .iconfont{
         width: 200px;
         height: 200px;
-        border-width: 5px;
-        border-radius:10px;
+        border-width: 10px;
+        border-radius:15px;
         margin-left: 30px;
         align-items: center;
         justify-content: center;
     }
     .plusSign{
-        font-size: 200px;
+        font-size: 180px;
+        margin-top: 20px;
     }
     /*经营场所*/
     .place{
@@ -195,3 +196,146 @@
         color: white;
     }
 </style>
+<script>
+    const album = weex.requireModule('album');
+    const storage = weex.requireModule('storage');
+    var event = weex.requireModule('event');
+    import navbar from '../../../include/navbar.vue';
+    import utils from '../../../assets/utils';
+    import { POST, GET } from '../../../assets/fetch'
+
+    export default {
+        data: function () {
+            return{
+                logo:'',
+                palcePhoto:'',
+                licensePhoto:''
+        }
+        },
+        components: {
+            navbar
+        },
+        props: {
+            title: {default: "第二步"},
+
+        },
+        created() {
+            utils.initIconFont();
+        },
+        methods:{
+            goback:function () {
+                event.closeURL()
+            },
+
+//            门面照上传
+            facade:function () {
+                var _this = this;
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    true,function (data) {
+                        if(data.type == 'success') {
+//                            _this.logo = data.data.thumbnailSmallPath;
+//                    data.data里存放的是用户选取的图片路
+//                            _this.original = data.data.originalPath
+//                            上传原图
+                            event.upload(data.data.originalPath,function (data) {
+//                                event.toast(data);
+                                if (data.type == 'success' ) {
+//                            修改后访问修改专栏信息接口
+//                                    utils.debug('weex/member/shop/submit.jhtml?thedoor=' + data.data)
+                                    POST('weex/member/shop/submit.jhtml?thedoor=' + data.data).then(
+                                        function (mes) {
+                                            if (mes.type == "success") {
+//                                                将服务器上的路径写入页面中
+                                                _this.logo = data.data;
+//                                              event.toast(data);
+                                            } else {
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            event.toast("网络不稳定");
+                                        }
+                                    )
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            })
+                        }
+                    })
+            },
+
+//            经营场所照片上传
+            place:function () {
+                var _this = this;
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    true,function (data) {
+                        if(data.type == 'success') {
+//                            _this.logo = data.data.thumbnailSmallPath;
+//                    data.data里存放的是用户选取的图片路
+//                            _this.original = data.data.originalPath
+//                            上传原图
+                            event.upload(data.data.originalPath,function (data) {
+//                                event.toast(data);
+                                if (data.type == 'success' ) {
+//                            修改后访问修改专栏信息接口
+//                                    utils.debug('weex/member/shop/submit.jhtml?thedoor=' + data.data)
+                                    POST('weex/member/shop/submit.jhtml?scene=' + data.data).then(
+                                        function (mes) {
+                                            if (mes.type == "success") {
+//                                                将服务器上的路径写入页面中
+                                                _this.palcePhoto = data.data;
+//                                              event.toast(data);
+                                            } else {
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            event.toast("网络不稳定");
+                                        }
+                                    )
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            })
+                        }
+                    })
+            },
+//            营业执照上传
+            license:function () {
+                var _this = this;
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    true,function (data) {
+                        if(data.type == 'success') {
+//                            _this.logo = data.data.thumbnailSmallPath;
+//                    data.data里存放的是用户选取的图片路
+//                            _this.original = data.data.originalPath
+//                            上传原图
+                            event.upload(data.data.originalPath,function (data) {
+//                                event.toast(data);
+                                if (data.type == 'success' ) {
+//                            修改后访问修改专栏信息接口
+//                                    utils.debug('weex/member/shop/submit.jhtml?thedoor=' + data.data)
+                                    POST('weex/member/shop/submit.jhtml?license=' + data.data).then(
+                                        function (mes) {
+                                            if (mes.type == "success") {
+//                                                将服务器上的路径写入页面中
+                                                _this.licensePhoto = data.data;
+//                                              event.toast(data);
+                                            } else {
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            event.toast("网络不稳定");
+                                        }
+                                    )
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            })
+                        }
+                    })
+            }
+        }
+    }
+</script>
