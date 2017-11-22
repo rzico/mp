@@ -60,7 +60,6 @@
                 listId:'',
                 dataList:[],
                 typeArr:['pro','city','country'],
-//
                 typeId:0,
                 urlType:'pro'
             }
@@ -79,6 +78,7 @@
                 this.urlType = this.typeArr[a];
                 _this.typeId = a;
             }
+//            判断是选择第几级城市。
             switch (this.urlType){
                 case 'pro':
                     this.dataList = getCity.getPro();
@@ -130,23 +130,6 @@
                             };
                             let backData = utils.message('success','成功',E);
                             event.closeURL(backData);
-
-//                            var E;
-//                            if(_this.typeId == 1){
-//                                 E = {
-//                                    isDone : 'complete',
-//                                    name:name + ' ' + data.data.name,
-//                                     chooseId:data.data.chooseId,
-//                                     chooseArea:data.data.chooseArea
-//                                }
-//                            }else{
-//                                 E = {
-//                                    isDone : 'complete',
-//                                    name:name + ' ' + data.data.name,
-//                                    chooseId:data.data.chooseId,
-//                                    chooseArea:data.data.chooseArea
-//                                }
-//                            }
                         }
 
                     })
