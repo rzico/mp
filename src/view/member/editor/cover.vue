@@ -1,14 +1,14 @@
 <template>
     <div class="wrapperBox">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
-        <div class="coverImageBox">
+        <div class="coverImageBox"  @click="clickImage()">
               <!-- 1张封面图 -->
-            <div class="oneImage" v-if="imageNumber == 1" >
-                <image :src="coverImage" resize="cover" @click="clickImage()" class="coverImage"  :style="{borderColor:coverBorder}"></image>
+            <div class="oneImage" >
+                <image :src="coverImage" resize="cover" class="coverImage"  ></image>
             </div>
         </div>
-        <div class="coverMaskImage"></div>
-        <div class="information">
+        <div class="coverMaskImage" @click="clickImage()"></div>
+        <div class="information" @click="clickImage()">
             <text class="infoText">点击图片更换封面</text>
         </div>
         <list>
@@ -22,8 +22,10 @@
                     <!--分享封面的图片-->
                     <div class="shareImageBox">
                         <!-- 1张封面图 -->
-                        <div class="oneImage" v-if="imageNumber == 1">
-                            <image :src="shareCoverImage"  class="coverImage" :style="{borderColor:coverBorder}"></image>
+                        <div class="oneImage">
+                            <!--分享到平台效果的第一张图-->
+                            <!--<image :src="shareCoverImage" resize="cover" class="coverImage" ></image>-->
+                            <image :src="coverImage" resize="cover" class="coverImage" ></image>
                         </div>
                     </div>
                     <!--分享封面的内容-->
@@ -65,7 +67,6 @@
                 </div>
             </cell>
         </list>
-
     </div>
 </template>
 
@@ -210,8 +211,6 @@
     }
     .coverImage{
         flex:1;
-        border-style: solid;
-        border-width: 1px;
     }
 </style>
 
@@ -226,7 +225,6 @@
         data:function () {
             return{
                 coverBorder:'white',
-                imageNumber:1,
                 shareCoverImage:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
                 coverImage:'https://gd3.alicdn.com/bao/uploaded/i3/TB1x6hYLXXXXXazXVXXXXXXXXXX_!!0-item_pic.jpg',
                 shareText:'   《惊喜魔篇》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里',
@@ -246,6 +244,7 @@
             utils.initIconFont();
             var cover = utils.getUrlParameter('name');
             storage.getItem(cover, e => {
+                event.toast(e);
                 let coverData =  JSON.parse(e.data);
                 _this.coverImage = coverData.cover;
                 _this.imageList = coverData.image;
@@ -265,10 +264,12 @@
                     height:300,
                     width:750
                 }
-                album.openPuzzie(options,function(data){
-//                    event.toast(data);
+                event.toast(options);
+                album.openPuzzle(options,function(data){
                     if(data.type == 'success' && data.data != ''){
                         _this.coverImage = data.data;
+//                        还缺少获取所以的合并图片中第一张图的路径
+
                     }
                 })
             },

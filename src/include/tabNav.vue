@@ -9,10 +9,10 @@
 </template>
 <style>
     .active{
-        /*color: #F0AD3C;*/
-        /*border-color: #F0AD3C;*/
-        color: #D9141E;
-        border-color: #D9141E;
+        color: #99CCFF;
+        border-color: #99CCFF;
+        /*color: #D9141E;*/
+        /*border-color: #D9141E;*/
         border-style: solid;
         border-bottom-width:4px;
     }

@@ -140,15 +140,15 @@
         justify-content: space-between;
     }
     /*顶部导航栏*/
-    .header {
-        flex-direction: row;
-        background-color: #D9141E;
-        /*background-color: #fff;*/
-        left: 0;
-        right: 0;
-        top:0;
-        height: 136px;
-    }
+    /*.header {*/
+        /*flex-direction: row;*/
+        /*background-color: #D9141E;*/
+        /*!*background-color: #fff;*!*/
+        /*left: 0;*/
+        /*right: 0;*/
+        /*top:0;*/
+        /*height: 136px;*/
+    /*}*/
     .addColor{
         color: #D9141E;
     }
@@ -665,7 +665,6 @@
             scan:function () {
                 event.scan(function (message) {
                     SCAN(message,function (data) {
-
                     },function (err) {
 
                     })

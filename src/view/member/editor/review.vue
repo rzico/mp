@@ -176,11 +176,6 @@
         },
         created(){
             let name = utils.getUrlParameter('name');
-            if(name == 'laud'){
-                this.title = '3人点赞';
-            }else if(name == 'share'){
-                this.title = '3人分享';
-            }
         },
         methods:{
             goback(){

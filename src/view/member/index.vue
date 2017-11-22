@@ -1230,7 +1230,7 @@
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
                     utils.debug(data)
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.imageUrl = data.data.logo;
                             _this.userName = data.data.nickName;
                             _this.userSign = data.data.autograph
@@ -1246,7 +1246,7 @@
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
 //                    utils.debug(data)
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.imageUrl = data.data.occupation;
                             _this.userName = data.data.nickName;
                             _this.userSign = data.data.autograph
@@ -1261,7 +1261,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
                     function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else {
                             return ;
@@ -1274,7 +1274,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
                     function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else{
                             return ;
@@ -1287,7 +1287,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/wallet/index.js'),
                     function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else{
                             return ;
