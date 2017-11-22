@@ -107,6 +107,7 @@
             checkChange:function (id,name,city) {
                 var _this = this;
                 this.listId = id;
+//                判断是否选择到区县或者该省/市没有下一级地区时，结束城市选择。
                 if(_this.typeId  == 2 || city == ''){
                     let E = {
                         isDone : 'complete',
@@ -120,6 +121,7 @@
                     let typeId = parseInt(this.typeId) + 1;
                         event.openURL(utils.locate('widget/city.js?type=' + typeId + '&listId=' + this.listId),function (data) {
                         if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                            当选择完毕后，一级一级的把名字拼凑起来返回到页面去，并记录下最后一级的id跟名字 用于传给服务器。
                             let  E = {
                                 isDone : 'complete',
                                 name:name + ' ' + data.data.name,
