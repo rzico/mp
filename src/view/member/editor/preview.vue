@@ -109,13 +109,14 @@
 
             </div>
         </div>
-        <transition name="slide-fade-share" mode="out-in">
+        <!--动画无效-->
+        <!--<transition name="slide-fade-share" mode="out-in">-->
             <div v-if="showShare"  key="share">
                 <div class="mask" @touchstart="maskTouch"></div>
                 <share @doShare="doShare" @doCancel="doCancel"></share>
             </div>
             <!--模版内容-->
-        </transition>
+        <!--</transition>-->
     </scroller>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -152,13 +153,14 @@
         font-size: 50px;
         line-height:50px;
     }
-    .slide-fade-share-enter-active {
-        transition: all .2s ease;
-    }
-    .slide-fade-share-enter{
-        transform: translateY(300px);
-        opacity: 1;
-    }
+    /*.slide-fade-share-enter-active {*/
+        /*transition: all 2s ease;*/
+    /*}*/
+    /*.slide-fade-share-enter{*/
+        /*transform: translateY(300px);*/
+        /*opacity: 1;*/
+    /*}*/
+
     /* 可以设置不同的进入和离开动画 */
     /* 设置持续时间和动画函数 */
     .slide-fade-enter-active {
@@ -540,7 +542,7 @@
             },
 //            前往评论
             goReview(){
-                event.openURL(utils.locate('view/member/editor/review.js' ),function (data) {
+                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId ),function (data) {
                 })
             },
 //            收藏文章

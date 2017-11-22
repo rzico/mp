@@ -317,15 +317,16 @@
                     let timestamp = Math.round(new Date().getTime()/1000);
 //                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
                     if(sign == 0){
-                        _weex.data = _weex.data.reverse();
+//                        _weex.data = _weex.data.reverse();
                         for(let i = 0;i<_weex.data.length  ;i++){
+                            utils.debug(_weex.data[i]);
                             _weex.data[i].name = utils.isNull(_weex.data[i].name) ? '' : _weex.data[i].name;
-
-                            _weex.data[i] = JSON.stringify(_weex.data[i]);
+//                            _weex.data[i].userId = utils.isNull(_weex.data[i].userId) ? _weex.data[i].id : _weex.data[i].userId;
+                            let strData = JSON.stringify(_weex.data[i]);
                             let option = {
                                 type:'message',
                                 key:_weex.data[i].userId,
-                                value:_weex.data[i],
+                                value:strData,
                                 keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
                                 sort:'0,' + timestamp
                             }
@@ -337,8 +338,6 @@
                                         if(nowData.userId == _weex.data[i].userId){
 //                                        删除原来的对话
                                             _this.messageList.splice(nowIndex,1);
-//                                                json字符串再次转换回来
-                                            _weex.data[i] = JSON.parse(_weex.data[i]);
 //                                        将新的对话push进
                                             _this.messageList.splice(0,0,_weex.data[i]);
                                         }

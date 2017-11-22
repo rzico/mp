@@ -121,7 +121,6 @@
                 event.openURL(utils.locate('view/login/index.js'),
                     function (data) {
                         if(data.type=='success') {
-                            event.toast(data);
                             event.closeURL();
                         }
                     })

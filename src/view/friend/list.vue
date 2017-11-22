@@ -89,7 +89,7 @@
             <div class="letterNav" v-for="(item,index) in allLetter"   @longpress="onlongpress(index)" @touchstart="ontouchstart(index)" @touchend="ontouchend()"  @touchmove="ontouchmove(index,$event)">
                 <!--<text class="letterList" v-if="index == 0">up</text>-->
                 <!--控制是否红色字体-->
-                <text class="letterList" :class="[moveLetter == index ? 'addColor' : 'noColor']">{{item}}</text>
+                <text class="letterList" :class="[moveLetter == index ? 'mianColor' : 'noColor']">{{item}}</text>
             </div>
         </div>
         <!--top:613px-->
@@ -434,7 +434,7 @@
                 current:0,
                 pageSize:0,
             }
-//            读取本地缓存
+//            读取本地朋友缓存
             event.findList(listoption,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (friend) {
@@ -453,12 +453,22 @@
                     event.toast(data.content);
                 }
             })
+//            读取本地朋友未读消息
+            let newFriend = {
+                type:'message',//类型
+                key:'gm_10209',//关键址
+            }
+            event.find(newFriend,function (data) {
+                if(data.type == 'success' && data.data != ''){
+                    let jsonData = JSON.parse(data.data.value);
+                    _this.newFriendNum = jsonData.unRead;
+                }
+            })
 //            获取用户id
             this.UId = event.getUId();
             _this.hadFriend();
 //            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
-                event.toast('friend');
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10209'){
                         _this.newFriendNum = e.data.data.unRead;
                 }else{
@@ -623,11 +633,38 @@
             },
             //功能页面点击跳转
             openPage(index){
+                //            获取当前时间戳 作为唯一标识符key
+                let timestamp = Math.round(new Date().getTime()/1000);
+                let _this = this;
                 switch(index){
                     case 0:
                         event.openURL(utils.locate('view/friend/new.js?id='+ this.UId),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
+                            //            读取本地朋友未读消息
+                            if(_this.newFriendNum != 0){
+                                let newFriend = {
+                                    type:'message',//类型
+                                    key:'gm_10209',//关键址
+                                }
+                                event.find(newFriend,function (data) {
+                                    if(data.type == 'success' && data.data != ''){
+
+                                        _this.newFriendNum = 0;
+                                        data.data.value = JSON.parse(data.data.value);
+                                        data.data.value.unRead = 0;
+                                        let saveFriend = {
+                                            type:'message',
+                                            key:data.data.key,
+                                            keyword:data.keyword,
+                                            value:JSON.stringify(data.data.value),
+                                            sort:'0,' + timestamp
+                                        }
+                                        event.save(saveFriend,function (data) {})
+                                    }
+                                })
+                            }
+
                         });
                         break;
                     case 1:

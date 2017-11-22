@@ -22,27 +22,27 @@
                         </div>
                         <text class="fz28 mt20 color444">微信</text>
                     </div>
-                    <div class="singleBox" >
-                        <div class="imgBox" >
-                            <image class="shareImg" :src="shareFriendImg" ></image>
-                        </div>
-                        <text class="fz28 mt20 color444">好友</text>
-                    </div>
                     <div class="singleBox">
                         <div class="imgBox">
                             <image class="shareImg" :src="qqSpaceImg" ></image>
                         </div>
                         <text class="fz28 mt20 color444">QQ空间</text>
                     </div>
-                    <div style="align-items: center;">
+                    <div class="singleBox">
                         <div class="imgBox">
                             <image class="shareImg" :src="qqImg" ></image>
                         </div>
                         <text class="fz28 mt20 color444">QQ</text>
                     </div>
+                    <div style="align-items: center" >
+                        <div class="imgBox" >
+                            <image class="shareImg" :src="shareFriendImg" ></image>
+                        </div>
+                        <text class="fz28 mt20 color444">好友</text>
+                    </div>
                 </div>
                 <div class="shareLineBox" >
-                    <div style="align-items: center;margin-right: 15px">
+                    <div class="singleBox">
                         <div class="imgBox">
                             <text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>
                             <!--<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>-->
@@ -63,13 +63,13 @@
                         </div>
                         <text class="fz28 mt20 color444">浏览器</text>
                     </div>
-                    <div  class="singleBox">
-                        <div class="imgBox">
-                            <text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                            <!--<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>-->
-                        </div>
-                        <text class="fz28 mt20 color444">其他</text>
-                    </div>
+                    <!--<div  class="singleBox">-->
+                        <!--<div class="imgBox">-->
+                            <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe611;</text>-->
+                            <!--&lt;!&ndash;<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--<text class="fz28 mt20 color444">其他</text>-->
+                    <!--</div>-->
                 </div>
             </div>
             <div class="cancelBox" @click="doCancel()">
@@ -116,10 +116,10 @@
     .shareBox{
         background-color:#F5F4F5;
         position: fixed;
-        bottom:0;
+        bottom:0px ;
         left: 0;
         right:0;
-        height: 650px;
+        /*height: 650px;*/
     }
     .mask{
         position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;

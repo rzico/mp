@@ -127,8 +127,8 @@
                 showLoading:false,
                 listCurrent:0,
                 pageSize:15,
-                UId:'',
                 refreshState:'',
+                UId:'',
                 isSelf:false,
                 userName:'我'
             }

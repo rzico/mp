@@ -25,6 +25,7 @@
     .nav_ico {
         font-size: 38px;
         color: #fff;
+        margin-top: 2px;
     }
     .nav {
         width:654px;

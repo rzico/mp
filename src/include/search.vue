@@ -37,6 +37,8 @@
     }
     .scan {
         padding-right: 20px;
+        height: 60px;
+        align-items: center;
     }
 
 </style>
