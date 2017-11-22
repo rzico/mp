@@ -220,7 +220,7 @@
 //                event.openURL('http://192.168.2.108:8081/city.weex.js?type=0',function (data) {
                 let _this = this;
                 event.openURL(utils.locate('widget/city.js?type=0'),function (data) {
-                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                    if(data.type == 'success' && !utils.isNull(data.data) ){
                         _this.areaName = data.data.name;
                         event.toast(data.data.chooseId + data.data.chooseArea);
                     }
