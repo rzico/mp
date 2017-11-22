@@ -13,21 +13,21 @@
             <text class="vendorName">商家名称</text>
             <input type="text" placeholder="请输入商家名称" class="input" @change="" @input="oninput"/>
         </div>
-        <div class="industry">
+        <div class="industry" @click="industry">
             <div class="left">
             <text class="belongIndustry">所属行业</text>
             </div>
             <div class="right">
-            <text class="industryName"> 1 </text>
+            <text class="industryName">{{industryName}}</text>
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="location">
+        <div class="location" @click="location">
             <div class="left">
             <text class="businessLocation">商家区位</text>
             </div>
             <div class="right">
-                <text class="generalLocation"> 1 </text>
+                <text class="generalLocation">{{addressName}}</text>
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
@@ -225,10 +225,30 @@
     export default {
         data: function () {
           return{
+//              商家名称
               vendorName:'',
+//              联系人
               contactName:'',
+//              联系电话
               contactNumber:'',
-              detailedAddress:''
+//              地址
+              detailedAddress:'',
+//              店铺id
+              shopId:'',
+//              营业执照
+              licensePhoto:'',
+//              场所照片
+              palcePhoto:'',
+//              门面照
+              logo:'',
+//              区位id
+              areaId:'',
+//              =========================================
+//              具体地址
+              addressName:'',
+              category:1,
+              industryName:''
+
           }
         },
         components: {
@@ -261,23 +281,40 @@
             goback:function () {
                 event.closeURL()
             },
+            industry:function () {
+                var _this = this;
+                event.openURL('http://192.168.2.117:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
+                    if(data.type == 'success' ) {
+                        _this.category = parseInt(data.data.listId);
+                        _this.industryName = data.data.listName;
+                    }
+                })
+            },
+            location:function () {
+                var _this = this;
+                event.openURL('http://192.168.2.117:8081/city.weex.js', function (data) {
+                    if(data.type == 'success' && data.data !='' ) {
+                        _this.addressName = data.data.name
+                        _this.areaId = data.data.chooseId
+                    }
+                })
+            },
             goComplete:function () {
-                var _this =this
-                let fourData={
-                    name:_this.vendorName,
-                    linkman:_this.contactName,
-                    telephone:_this.contactNumber,
-                    address:_this.detailedAddress
-                };
-                fourData = JSON.stringify(fourData);
-                storage.setItem('information', fourData,e=> {
-                    event.openURL('http://192.168.2.117:8081/materialLaying.weex.js?name=information', function (message) {
-                            if (message.type=="success") {
-                                event.closeURL(message);
-                            }
-                        })
-
-                });
+                POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +this.vendorName +'&areaId='+this.areaId+'&address=' +this.detailedAddress+'&license=' +this.licensePhoto+'&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +this.contactName+'&telephone=' +this.contactNumber).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            event.openURL('http://192.168.2.117:8081/materialLaying.weex.js', function (message) {
+                                if (message.type=="success") {
+                                    event.closeURL(message);
+                                }
+                            });
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
     }
         }
     }
