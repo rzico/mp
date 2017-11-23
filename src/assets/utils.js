@@ -26,21 +26,10 @@ let utilsFunc = {
         return newUrl;
     },
     //获取URL参数
-    getUrlParameter(name) {
-        let url = weex.config.bundleUrl;
-        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        let r = url.slice(url.indexOf('?')+1).match(reg);
-        if (r != null) {
-            try {
-                return decodeURIComponent(r[2]);
-            } catch (_e) {
-                return null;
-            }
+    getUrlParameter(name,url) {
+        if(url == null || url == undefined || url == '' ){
+             url = weex.config.bundleUrl;
         }
-        return null;
-    },
-    //获取data格式为URL时'?'后的参数
-    getDataUrlParameter(url,name) {
         let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         let r = url.slice(url.indexOf('?')+1).match(reg);
         if (r != null) {
