@@ -47,12 +47,13 @@
             <text class="contactNumber">联系电话</text>
             <input type="number" placeholder="请输入联系电话"  maxlength="11" class="input" @change="" @input="oninput3"/>
         </div>
-        <div class="button" @click="goComplete">
+        <div class="button bkg-primary" @click="goComplete">
             <text class="buttonText">下一步</text>
         </div>
 
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style>
     .head{
         flex-direction: row;
@@ -198,7 +199,6 @@
     }
     /*下一步*/
     .button{
-        background-color:#D9141E;
         margin-left:40px;
         margin-right:40px;
         height:82px;
@@ -300,14 +300,27 @@
                 })
             },
             goComplete:function () {
-                POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +this.vendorName +'&areaId='+this.areaId+'&address=' +this.detailedAddress+'&license=' +this.licensePhoto+'&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +this.contactName+'&telephone=' +this.contactNumber).then(
+                var _this=this;
+                POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
+                    '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            event.openURL('http://192.168.2.117:8081/materialLaying.weex.js', function (message) {
-                                if (message.type=="success") {
-                                    event.closeURL(message);
-                                }
-                            });
+                            let  sixdata = {
+                                name : _this.vendorName,
+                                areaId :_this.areaId,
+                                address:_this.detailedAddress,
+                                inkman:_this.contactName,
+                                telephone:_this.contactNumber,
+                                categoryId:_this.category
+                            };
+                            sixdata = JSON.stringify(sixdata);
+                            storage.setItem('sixnumber', sixdata,e=> {
+                                event.openURL('http://192.168.2.117:8081/materialLaying.weex.js?name=sixnumber', function (message) {
+                                    if (message.type == "success") {
+                                        event.closeURL(message);
+                                    }
+                                })
+                            })
                         } else {
                             event.toast(mes.content);
                         }

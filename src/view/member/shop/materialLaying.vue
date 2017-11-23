@@ -22,7 +22,7 @@
                 <image style="width: 200px;height: 200px;"  class="img" :src="logo"></image>
             </div>
             <div class="iconfont" >
-                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="uploadPhotos" >&#xe618;</text>
+                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facelogo" >&#xe618;</text>
             </div>
         </div>
         <div class="place">
@@ -34,7 +34,7 @@
                 <image style="width: 200px;height: 200px;"  class="img" :src="palcePhoto"></image>
             </div>
             <div class="iconfont">
-                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="uploadPhotos" >&#xe618;</text>
+                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palcelogo" >&#xe618;</text>
             </div>
         </div>
         <div class="license">
@@ -46,15 +46,16 @@
                 <image style="width: 200px;height: 200px;"  class="img" :src="licensePhoto"></image>
             </div>
             <div class="iconfont">
-                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="uploadPhotos">&#xe618;</text>
+                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
             </div>
         </div>
-        <div class="button">
+        <div class="button bkg-primary" @click="goComplete">
             <text class="buttonText">下一步</text>
         </div>
         </scroller>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style>
     .head{
         flex-direction: row;
@@ -181,7 +182,6 @@
     }
     /*下一步*/
     .button{
-        background-color:#D9141E;
         margin-left:40px;
         margin-right:40px;
         height:82px;
@@ -225,6 +225,7 @@
                 logo:'',
 //              区位id
                 areaId:'',
+                category:1,
         }
         },
         components: {
@@ -236,6 +237,20 @@
         },
         created() {
             utils.initIconFont();
+            var _this=this;
+            var six = utils.getUrlParameter('name');
+            storage.getItem(six, e => {
+//                event.toast(e);
+                let sixdata =  JSON.parse(e.data);
+//                event.toast(threedata);
+                _this.vendorName = sixdata.name;
+                _this.areaId = sixdata.areaId;
+                _this.detailedAddress = sixdata.address;
+                _this.contactName = sixdata.inkman;
+                _this.contactNumber = sixdata.telephone;
+                _this.category =sixdata.categoryId
+                storage.removeItem(six);
+            });
         },
         methods:{
             goback:function () {
@@ -243,40 +258,64 @@
             },
 
 //          拍摄照片上传
-            uploadPhotos:function () {
+            facelogo:function () {
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
                     true,function (data) {
                         if(data.type == 'success') {
-//                            _this.logo = data.data.thumbnailSmallPath;
+                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
-//                            _this.original = data.data.originalPath
-//                            上传原图
-                            event.upload(data.data.originalPath,function (data) {
-//                                event.toast(data);
-                                if (data.type == 'success' ) {
-//                            修改后访问修改专栏信息接口
-                                    POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +this.vendorName +'&areaId='+this.areaId+'&address=' +this.detailedAddress+'&license=' +this.licensePhoto+'&scene=' +this.palcePhoto+'&thedoor=' +data.data+'&linkman=' +this.contactName+'&telephone=' +this.contactNumber).then(
-                                        function (mes) {
-                                            if (mes.type == "success") {
-//                                                将服务器上的路径写入页面中
-                                                _this.logo = data.data;
-//                                              event.toast(data);
-                                            } else {
-                                                event.toast(mes.content);
-                                            }
-                                        }, function (err) {
-                                            event.toast("网络不稳定");
-                                        }
-                                    )
-                                } else {
-                                    event.toast(data.content);
-                                }
-                            })
+                            _this.originalone = data.data.originalPath
+//
                         }
                     })
             },
+            palcelogo:function () {
+                var _this = this;
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    true,function (data) {
+                        if(data.type == 'success') {
+                            _this.palcePhoto = data.data.thumbnailSmallPath;
+//                    data.data里存放的是用户选取的图片路
+                            _this.originaltwo = data.data.originalPath
+//
+                        }
+                    })
+            },
+            licenselogo:function () {
+                var _this = this;
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    true,function (data) {
+                        if(data.type == 'success') {
+                            _this.licensePhoto = data.data.thumbnailSmallPath;
+//                    data.data里存放的是用户选取的图片路
+                            _this.originalthree = data.data.originalPath
+//
+                        }
+                    })
+            },
+            goComplete:function () {
+                var _this=this
+                POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
+                    '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                                event.openURL('http://192.168.2.117:8081/activate.weex.js?shopId='+mes.data.id, function (message) {
+                                    if (message.type == "success") {
+                                        event.closeURL(message);
+                                    }
+                                })
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
+            }
 
         }
     }

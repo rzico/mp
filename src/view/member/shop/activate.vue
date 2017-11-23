@@ -14,13 +14,14 @@
                 <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
             </div>
             <text class="text">激活店铺完成，请扫码绑定二维码</text>
-            <text class="sweepCode">点击扫码</text>
+            <text class="sweepCode" @click="scan()">{{prompting}}</text>
         </div>
-        <div class="button">
+        <div class="button bkg-primary">
             <text class="buttonText">下一步</text>
         </div>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style>
     .head{
         flex-direction: row;
@@ -79,7 +80,6 @@
         font-size: 100px;
     }
     .button{
-        background-color:#D9141E;
         margin-left:40px;
         margin-right:40px;
         height:82px;
@@ -100,12 +100,13 @@
     var event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
-    import { POST, GET } from '../../../assets/fetch'
+    import { POST, GET, SCAN } from '../../../assets/fetch'
 
     export default {
         data: function () {
             return{
-
+                prompting:'点击扫码',
+                shopId:''
             }
         },
         components: {
@@ -117,10 +118,19 @@
         },
         created() {
             utils.initIconFont();
+            this.shopId = utils.getUrlParameter(shopId)
         },
         methods:{
             goback:function () {
                 event.closeURL()
+            },
+            scan:function() {
+                event.scan(function (message) {
+                    utils.debug(message)
+                    SCAN(message,function (data) {
+                    },function (err) {
+                    },this.shopId)
+                });
             }
         }
     }
