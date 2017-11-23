@@ -118,7 +118,7 @@
         },
         created() {
             utils.initIconFont();
-            this.shopId = utils.getUrlParameter(shopId)
+            this.shopId = utils.getUrlParameter('shopId')
         },
         methods:{
             goback:function () {
@@ -126,7 +126,7 @@
             },
             scan:function() {
                 event.scan(function (message) {
-                    utils.debug(message)
+
                     SCAN(message,function (data) {
                     },function (err) {
                     },this.shopId)
