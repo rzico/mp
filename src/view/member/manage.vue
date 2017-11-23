@@ -71,7 +71,38 @@
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
                     </div>
+                    <div class="cell-panel space-between cell-clear">
+                        <div class="flex-row flex-start">
+                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
+                            <text class="title ml10">我的店铺</text>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="sub_title"></text>
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                    <div class="cell-panel space-between cell-clear">
+                        <div class="flex-row flex-start">
+                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                            <text class="title ml10">我的会员卡</text>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="sub_title"></text>
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                    <div class="cell-panel space-between cell-clear">
+                        <div class="flex-row flex-start">
+                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe632;</text>
+                            <text class="title ml10">我的优惠券</text>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="sub_title"></text>
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="cell-row cell-line">
                     <div class="cell-panel space-between">
                          <div class="flex-row flex-start">
@@ -124,6 +155,9 @@
         font-size: 28px;
         color: #ccc;
         top:10px;
+    }
+    .newModule{
+        flex-direction: row;
     }
 
 </style>
