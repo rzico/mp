@@ -20,7 +20,7 @@
             <text class="textC">同意</text>
             <text class="textD">《服务协定》</text>
         </div>
-        <div class="button" @click=" goComplete">
+        <div class="button bkg-primary" @click=" goComplete">
             <text class="textE" >下一步</text>
         </div>
     </div>
@@ -80,7 +80,6 @@
         margin-top: 20px;
     }
     .button{
-        background-color:#D9141E;
         margin-left: 20px;
         margin-right: 20px;
         margin-top: 48px;

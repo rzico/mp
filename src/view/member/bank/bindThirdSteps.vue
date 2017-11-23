@@ -21,7 +21,7 @@
             </div>
         </div>
 
-        <div class="button" @click="binding()">
+        <div class="button bkg-primary" @click="binding()">
             <text class="textD" >绑定</text>
         </div>
     </div>
@@ -76,7 +76,6 @@
         padding-left:50px;
     }
     .button{
-        background-color: #D9141E;
         margin-left: 20px;
         margin-right: 20px;
         margin-top: 48px;

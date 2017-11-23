@@ -33,7 +33,7 @@
                 <text class="textA">智慧加密，保障你的用卡安全，</text>
                 <text class="textB" @click="showAlerttwo">了解安全保障</text>
             </div>
-            <div class="A4" @click="goComplete">
+            <div class="A4 bkg-primary" @click="goComplete">
                 <text class="textC">下一步</text>
             </div>
 
@@ -68,7 +68,6 @@
 
     }
     .A4{
-        background-color:#D9141E;
         margin-left:20px;
         margin-right:20px;
         height:82px;
