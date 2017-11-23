@@ -40,7 +40,7 @@ let utilsFunc = {
         return null;
     },
     //获取data格式为URL时'?'后的参数
-    getUrlParameter(url,name) {
+    getDataUrlParameter(url,name) {
         let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         let r = url.slice(url.indexOf('?')+1).match(reg);
         if (r != null) {
