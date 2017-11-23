@@ -616,6 +616,7 @@
 <script>
     import {dom,event,storage,stream} from '../../weex.js';
     const modal = weex.requireModule('modal');
+    var globalEvent = weex.requireModule('globalEvent');
     const animation = weex.requireModule('animation');
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch';
@@ -634,7 +635,7 @@
                 isDisappear:false,
                 corpusScrollTop:0,
                 canScroll:true,
-                userName:'刮风下雨打雷台风天',
+                userName:'未设置',
                 userSign:'未设置',
                 whichCorpus:0,
                 isNoArticle:false,
@@ -642,7 +643,7 @@
 //                refreshState:'',
                 fontName: '&#xe685;',
                 collectNum:0,
-                moneyNum:8888.88,
+                moneyNum:0,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.jpg'),
                 bgImgUrl:utils.locate('resources/images/background.jpg'),
@@ -761,6 +762,7 @@
 //
 //                }
 //            })
+
         },
         methods: {
 //            更新用户信息；
@@ -1228,7 +1230,7 @@
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
                     utils.debug(data)
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.imageUrl = data.data.logo;
                             _this.userName = data.data.nickName;
                             _this.userSign = data.data.autograph
@@ -1244,7 +1246,7 @@
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
 //                    utils.debug(data)
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.imageUrl = data.data.occupation;
                             _this.userName = data.data.nickName;
                             _this.userSign = data.data.autograph
@@ -1259,7 +1261,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
                     function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else {
                             return ;
@@ -1272,7 +1274,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
                     function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else{
                             return ;
@@ -1285,7 +1287,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/wallet/index.js'),
                     function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else{
                             return ;

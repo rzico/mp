@@ -11,8 +11,8 @@
                  </div>
             </div>
              <div class="cell-row cell-line">
-                 <div class="cell-panel h space-between">
-                     <div class="flex-row">
+                 <div class="cell-panel h space-between" @click="scan()">
+                     <div class="flex-row" >
                          <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe672;</text>
                          <div class="ml10">
                              <text class="title">扫一扫</text>
@@ -68,6 +68,7 @@
 <script>
     const stream = weex.requireModule('stream');
     import navbar from '../../include/navbar.vue';
+    import {SCAN } from '../../assets/fetch';
     import qrcode from '../../include/qrcode.vue';
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
@@ -113,7 +114,17 @@
                 event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
 //                    event.closeURL();
                 })
-            }
+            },
+            //            触发自组件的二维码方法
+            scan:function () {
+                event.scan(function (message) {
+                    SCAN(message,function (data) {
+
+                    },function (err) {
+
+                    })
+                });
+            },
         }
 
     }

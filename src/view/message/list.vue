@@ -87,15 +87,15 @@
         justify-content: space-between;
     }
     /*顶部导航栏*/
-    .header {
-        flex-direction: row;
-        background-color: #D9141E;
-        /*background-color: #fff;*/
-        left: 0;
-        right: 0;
-        top:0;
-        height: 136px;
-    }
+    /*.header {*/
+        /*flex-direction: row;*/
+        /*background-color: #D9141E;*/
+        /*!*background-color: #fff;*!*/
+        /*left: 0;*/
+        /*right: 0;*/
+        /*top:0;*/
+        /*height: 136px;*/
+    /*}*/
 
     .deleteText{
         font-size: 32px;color: #fff;
@@ -193,7 +193,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import { POST, GET } from '../../assets/fetch'
+    import { POST, GET ,SCAN} from '../../assets/fetch'
     import utils from '../../assets/utils'
     import {dom,event,stream} from '../../weex.js';
     import noData from '../../include/noData.vue';
@@ -206,7 +206,7 @@
     export default {
         data:function(){
             return{
-                searchKeyword:'搜索好友/消息/文章',
+                searchKeyword:'搜索',
                 messageList:[],
                 refreshing: false,
                 canScroll:true,
@@ -282,7 +282,6 @@
                     event.toast(data.content);
                 }
             })
-//            this.hadMessage();
             globalEvent.addEventListener("onMessage", function (e) {
                 event.toast(e);
 //                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
@@ -318,15 +317,16 @@
                     let timestamp = Math.round(new Date().getTime()/1000);
 //                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
                     if(sign == 0){
-                        _weex.data = _weex.data.reverse();
+//                        _weex.data = _weex.data.reverse();
                         for(let i = 0;i<_weex.data.length  ;i++){
+                            utils.debug(_weex.data[i]);
                             _weex.data[i].name = utils.isNull(_weex.data[i].name) ? '' : _weex.data[i].name;
-
-                            _weex.data[i] = JSON.stringify(_weex.data[i]);
+//                            _weex.data[i].userId = utils.isNull(_weex.data[i].userId) ? _weex.data[i].id : _weex.data[i].userId;
+                            let strData = JSON.stringify(_weex.data[i]);
                             let option = {
                                 type:'message',
                                 key:_weex.data[i].userId,
-                                value:_weex.data[i],
+                                value:strData,
                                 keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
                                 sort:'0,' + timestamp
                             }
@@ -338,8 +338,6 @@
                                         if(nowData.userId == _weex.data[i].userId){
 //                                        删除原来的对话
                                             _this.messageList.splice(nowIndex,1);
-//                                                json字符串再次转换回来
-                                            _weex.data[i] = JSON.parse(_weex.data[i]);
 //                                        将新的对话push进
                                             _this.messageList.splice(0,0,_weex.data[i]);
                                         }
@@ -579,10 +577,13 @@
 //            触发自组件的二维码方法
             scan:function () {
                 event.scan(function (message) {
-                    event.toast(message);
+                    SCAN(message,function (data) {
+
+                    },function (err) {
+
+                    })
                 });
             },
-
         }
     }
 </script>

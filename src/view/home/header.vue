@@ -57,8 +57,8 @@
         methods: {
             scan:function (e) {
                 event.scan(function (resp) {
+                    event.toast(resp);
                     if (resp.type == "success") {
-                        event.toast(resp);
                         event.openURL(resp.data,function (data) {
                         })
                     }

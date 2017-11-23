@@ -409,6 +409,7 @@
                 proportion:'',//缩略图的比例
                 serveCover:'',//用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
                 catalogId:'',
+                publish:false,
             }
         },
         filters:{
@@ -502,6 +503,7 @@
                             _this.setTitle = articleData.title;
                             _this.coverImage = articleData.thumbnail;
                             _this.musicName = articleData.music.name;
+                            _this.publish = articleData.articleOption.publish;
                             musicId = articleData.music.id;
                             let templatesData = articleData.templates;
                             for(let i = 0;i < templatesData.length;i++){
@@ -648,6 +650,7 @@
 //                event.toast(frontcoverUrl);
                 if(frontcoverUrl == 'http:'){
 //                    event.toast('1');
+                    _this.serveCover = this.coverImage;
                     _this.sendImage(0);
                 }else{
 //                    modal.toast({message:this.coverImage,duration:3});
@@ -688,6 +691,8 @@
                 let frontUrl = _this.paraList[sendIndex].paraImage.substring(0,5);
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http:'){
+//                    如果已经是http的图片 就直接将图片赋予要上传的变量；
+                    _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
                     sendIndex ++ ;
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){
@@ -805,17 +810,17 @@
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
 //                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
-                                        event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + res.data.id),function (data) {
+                                        event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 2;//总的进度
                                         _this.processWidth = 0;//进度条宽度
-                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-//                                            let E = {
-//                                                isDone : 'complete'
-//                                            }
-//                                            let backData = utils.message('success','成功',E);
-                                            event.closeURL();
-                                        }
+//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                                            let E = {
+                                                isDone : 'complete'
+                                            }
+                                            let backData = utils.message('success','成功',E);
+                                            event.closeURL(backData);
+//                                        }
                                     })
                                 }else{
                                     _this.toSendArticle = false;
@@ -1116,10 +1121,11 @@
                         path:_this.paraList[i].paraImage
                     });
                 }
-                let  coverData = {
+                var  coverData = {
                     image : imgList,
                     cover : _this.coverImage
                 }
+                coverData = JSON.stringify(coverData);
                 storage.setItem('coverImage', coverData);
                 event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
 //                event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
@@ -1151,7 +1157,6 @@
                 let _this = this;
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
-                    event.toast(message);
                     if(message.data != '') {
                         _this.voteList.push(message.data);
                     }

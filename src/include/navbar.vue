@@ -15,16 +15,17 @@
         border-bottom-width: 0px;
     }
     .nav_back {
-        margin-top: 40px;
+        margin-top: 44px;
         flex-direction: row;
-        width: 96px;
-        height: 96px;
+        width: 92px;
+        height: 92px;
         align-items: center;
         justify-content: center;
     }
     .nav_ico {
         font-size: 38px;
         color: #fff;
+        margin-top: 2px;
     }
     .nav {
         width:654px;
@@ -32,7 +33,7 @@
         flex-direction: row;
         align-items: center;
         padding-right: 30px;
-        margin-top: 40px;
+        margin-top: 44px;
     }
     .nav_Complete {
         font-family: Verdana, Geneva, sans-serif;

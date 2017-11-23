@@ -11,31 +11,34 @@
                        <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <cell v-for="(friend,index) in sortList" >
-                <!--姓氏首字母-->
-                <div class="letterBox" v-if="isRepeat(index)">
-                    <text class="nameLetter">{{friend.name | watchLetter}}</text>
-                </div>
-                <!--姓氏里每个人的名子-->
-                <div class="addFriendsBorder">
-                    <div class="friendsLine" @click="jump()">
-                        <!--判断是否有本软件图片，若没有就用默认字体图标-->
-                        <image v-if="friend.logo != '' && friend.logo != null && friend.logo != undefined " :src="friend.logo " class="friendsImage"></image>
-                        <div v-else class="friendsImage" style="background-color: #999;" >
-                            <text style="font-size: 80px;color: #fff;" :style="{fontFamily:'iconfont'}">&#xe61b;</text>
-                        </div>
-                        <div class="friendsName">
-                            <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
-                            <text class="realName">手机号:{{friend.number}}</text>
-                        </div>
+            <cell :style="{minHeight:screenHeight + 'px'}">
+                <div v-for="(friend,index) in sortList" >
+                    <!--姓氏首字母-->
+                    <div class="letterBox" v-if="isRepeat(index)">
+                        <text class="nameLetter">{{friend.name | watchLetter}}</text>
                     </div>
-                    <div class="status_panel">
-                        <text class="ask green"  v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
-                        <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
-                        <text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>
+                    <!--姓氏里每个人的名子-->
+                    <div class="addFriendsBorder">
+                        <div class="friendsLine" @click="jump()">
+                            <!--判断是否有本软件图片，若没有就用默认字体图标-->
+                            <image v-if="friend.logo != '' && friend.logo != null && friend.logo != undefined " :src="friend.logo " class="friendsImage"></image>
+                            <div v-else class="friendsImage" style="background-color: #999;" >
+                                <text style="font-size: 80px;color: #fff;" :style="{fontFamily:'iconfont'}">&#xe61b;</text>
+                            </div>
+                            <div class="friendsName">
+                                <text class="lineTitle lines-ellipsis">{{friend.name}}</text>
+                                <text class="realName">手机号:{{friend.number}}</text>
+                            </div>
+                        </div>
+                        <div class="status_panel">
+                            <text class="ask green"  v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
+                            <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
+                            <text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>
+                        </div>
                     </div>
                 </div>
             </cell>
+
             <!--<cell v-for="(friend,index) in sortList" v-else>-->
                 <!--<div v-if="findFriend()">-->
                     <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
@@ -213,6 +216,7 @@
                 dataNum:0,
                 currentNum:0,
                 pageNum:20,
+                screenHeight:0,
             }
         },
         props: {
@@ -251,6 +255,8 @@
 //            }
         },
         created() {
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(272);
             utils.initIconFont();
 //            调用通讯录
             this.mailFriend();

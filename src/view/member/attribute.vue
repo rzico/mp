@@ -50,7 +50,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between">
+                <div class="cell-panel space-between" @click="areaChoose">
                     <div class="flex-row">
                         <text class="title ml10">所在地</text>
                     </div>
@@ -214,6 +214,18 @@
                     }
                 })
 
+            },
+
+            areaChoose:function () {
+//                event.openURL('http://192.168.2.108:8081/city.weex.js?type=0',function (data) {
+                let _this = this;
+                event.openURL(utils.locate('widget/city.js?type=0'),function (data) {
+                    if(data.type == 'success' && !utils.isNull(data.data) ){
+                        _this.areaName = data.data.name;
+                        event.toast(data.data.chooseId + data.data.chooseArea);
+                    }
+
+                })
             },
             petname:function () {
                 let _this = this;

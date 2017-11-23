@@ -16,48 +16,14 @@
             </div>
         </div>
         <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
-        <!--<div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >-->
-        <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
-        <!--</div>-->
+        <div class="addFriend" @click="scan()">
+        <div class="flex-row">
+            <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe672;</text>
+            <text class="title ml20 " >扫一扫添加员工</text>
+        </div>
+        <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
         <list class="listBody">
-            <cell ref="linkref" >
-                <!--新的朋友-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(0)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
-                        <!--有新消息-->
-                        <div class="newMessage"  v-if="newFriendNum != '' && newFriendNum != 0 && newFriendNum != null && newFriendNum != undefined">
-                            <text class="messageTotal">{{newFriendNum}}</text>
-                        </div>
-                        <text class="lineTitle">新的朋友</text>
-                    </div>
-                </div>
-                <!--我关注的-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(1)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
-                        <text class="lineTitle">我关注的</text>
-                    </div>
-                </div>
-                <!--顶部功能栏-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(2)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
-                        <text class="lineTitle">我的粉丝</text>
-                    </div>
-                </div>
-                <!--我收藏的-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(3)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color:#D85C87" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
-                        <text class="lineTitle">我收藏的</text>
-                    </div>
-                </div>
-            </cell>
             <cell v-for="friend in friendsList" ref="listref" >
                 <!--姓氏首字母-->
                 <div class="letterBox" v-if="friend.name != ''">
@@ -79,8 +45,8 @@
             <cell>
                 <!--总共多少个好友-->
                 <div class="friendTotalBox">
-                    <text class="friendTotalText" v-if="friendTotal != 0">{{friendTotal}}个朋友</text>
-                    <text class="friendTotalText" v-else>暂无朋友</text>
+                    <text class="friendTotalText" v-if="friendTotal != 0">{{friendTotal}}个员工</text>
+                    <text class="friendTotalText" v-else>暂无员工</text>
                 </div>
             </cell>
         </list>
@@ -89,7 +55,7 @@
             <div class="letterNav" v-for="(item,index) in allLetter"   @longpress="onlongpress(index)" @touchstart="ontouchstart(index)" @touchend="ontouchend()"  @touchmove="ontouchmove(index,$event)">
                 <!--<text class="letterList" v-if="index == 0">up</text>-->
                 <!--控制是否红色字体-->
-                <text class="letterList" :class="[moveLetter == index ? 'mianColor' : 'noColor']">{{item}}</text>
+                <text class="letterList" :class="[moveLetter == index ? 'addColor' : 'noColor']">{{item}}</text>
             </div>
         </div>
         <!--top:613px-->
@@ -98,27 +64,23 @@
         </div>
     </div>
 </template>
-
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 <style>
-    .messageTotal{
-        background-color: red;
-        line-height: 38px;
-        lines:1;
-        color: #fff;
-        width:38px;
-        height:38px;
-        text-align: center;
-        border-radius: 19px;
-        font-size: 20px;
-        font-weight: 700;
-    }
-    .newMessage{
-        position: absolute;
-        left:75px;
-        top:15px;
-        width:60px;
+    .addFriend {
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
+        padding-left: 36px;
+        padding-right: 30px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background-color: white;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #ccc;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
     }
     .rightTop{
         height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
@@ -140,27 +102,16 @@
         justify-content: space-between;
     }
     /*顶部导航栏*/
-    /*.header {*/
-        /*flex-direction: row;*/
-        /*background-color: #D9141E;*/
-        /*!*background-color: #fff;*!*/
-        /*left: 0;*/
-        /*right: 0;*/
-        /*top:0;*/
-        /*height: 136px;*/
-    /*}*/
-    .addColor{
-        color: #D9141E;
+    .header {
+        flex-direction: row;
+        background-color: #D9141E;
+        /*background-color: #fff;*/
+        left: 0;
+        right: 0;
+        top:0;
+        height: 136px;
     }
-    .noColor{
-        color: #000;
-    }
-    .isvisible{
-        visibility: visible;
-    }
-    .novisible{
-        visibility: hidden;
-    }
+
     .toastText{
         color: #fff;
         font-size: 30px;
@@ -194,9 +145,8 @@
         font-size: 34px;
         color: #888;
     }
-    .letterOnPress{
-        background-color: #B3B2B3;
-    }
+
+
     .letterNavBox{
         position: absolute;
         right: 0px;
@@ -223,11 +173,6 @@
         padding-top: 5px;
         padding-bottom: 5px;
         background-color: #e8e8e8;
-    }
-    .addBorder{
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: rgba(153,153,153,0.5);
     }
     .nameLetter{
         color: #888;
@@ -258,20 +203,6 @@
     .listBody{
         background-color: #fff;
     }
-    .topLine{
-        flex-direction: row;
-        width:660px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        padding-left: 30px;
-        align-items: center;
-        background-color: #fff;
-    }
-    .lineImage{
-        width:80px;
-        height:80px;
-        font-size: 80px;
-    }
     .lineTitle{
         font-size: 34px;
         margin-left: 20px;
@@ -279,12 +210,12 @@
 </style>
 
 <script>
-    import {dom,event,stream} from '../../weex.js';
-    import {getLetter,dictFirstLetter} from '../../assets/letter';
-    import navbar from '../../include/navbar.vue'
-    import { POST, GET,SCAN } from '../../assets/fetch';
-    import search from '../../include/search.vue';
-    import utils from '../../assets/utils';
+    import {dom,event,stream} from '../../../weex.js';
+    import {getLetter,dictFirstLetter} from '../../../assets/letter';
+    import navbar from '../../../include/navbar.vue'
+    import { POST, GET,SCAN } from '../../../assets/fetch';
+    import search from '../../../include/search.vue';
+    import utils from '../../../assets/utils';
     const modal = weex.requireModule('modal');
     const storage = weex.requireModule('storage');
     var globalEvent = weex.requireModule('globalEvent');
@@ -299,7 +230,7 @@
             return   {
                 newFriendNum:0,
                 searchKeyword:'搜索',
-                pageName:'朋友',
+                pageName:'我的员工',
                 beforePointPoor:-1,//前一次手机按压时与移动后的字母数量
                 pressPoint:-1,//手指按压
                 pointPoor:0,//手机按压时与移动后的字母数量
@@ -410,7 +341,7 @@
             }
         },
         props: {
-            title: { default: "朋友"},
+            title: { default: "我的员工"},
         },
         components:{
             navbar,search
@@ -434,7 +365,7 @@
                 current:0,
                 pageSize:0,
             }
-//            读取本地朋友缓存
+//            读取本地缓存
             event.findList(listoption,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (friend) {
@@ -453,24 +384,14 @@
                     event.toast(data.content);
                 }
             })
-//            读取本地朋友未读消息
-            let newFriend = {
-                type:'message',//类型
-                key:'gm_10209',//关键址
-            }
-            event.find(newFriend,function (data) {
-                if(data.type == 'success' && data.data != ''){
-                    let jsonData = JSON.parse(data.data.value);
-                    _this.newFriendNum = jsonData.unRead;
-                }
-            })
 //            获取用户id
             this.UId = event.getUId();
             _this.hadFriend();
 //            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
+                event.toast('friend');
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10209'){
-                        _this.newFriendNum = e.data.data.unRead;
+                    _this.newFriendNum = e.data.data.unRead;
                 }else{
 
                 }
@@ -633,38 +554,11 @@
             },
             //功能页面点击跳转
             openPage(index){
-                //            获取当前时间戳 作为唯一标识符key
-                let timestamp = Math.round(new Date().getTime()/1000);
-                let _this = this;
                 switch(index){
                     case 0:
                         event.openURL(utils.locate('view/friend/new.js?id='+ this.UId),function (message) {
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
-                            //            读取本地朋友未读消息
-                            if(_this.newFriendNum != 0){
-                                let newFriend = {
-                                    type:'message',//类型
-                                    key:'gm_10209',//关键址
-                                }
-                                event.find(newFriend,function (data) {
-                                    if(data.type == 'success' && data.data != ''){
-
-                                        _this.newFriendNum = 0;
-                                        data.data.value = JSON.parse(data.data.value);
-                                        data.data.value.unRead = 0;
-                                        let saveFriend = {
-                                            type:'message',
-                                            key:data.data.key,
-                                            keyword:data.keyword,
-                                            value:JSON.stringify(data.data.value),
-                                            sort:'0,' + timestamp
-                                        }
-                                        event.save(saveFriend,function (data) {})
-                                    }
-                                })
-                            }
-
                         });
                         break;
                     case 1:
@@ -702,6 +596,7 @@
             scan:function () {
                 event.scan(function (message) {
                     SCAN(message,function (data) {
+
                     },function (err) {
 
                     })

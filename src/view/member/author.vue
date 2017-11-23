@@ -27,13 +27,13 @@
                     </div>
                 </div>
             </div>
-            <!--导航栏设置-->
+            <!--导航栏返回-->
             <div class="backMenu" style="left: 0px;" @click="goback()">
                 <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:38px;">&#xe669;</text>
             </div>
-            <!--导航栏设置-->
+            <!--导航栏菜单栏-->
             <div class="backMenu" style="right: 0px;" @click="goManage()">
-                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe60e;</text>
+                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe72b;</text>
             </div>
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
@@ -97,11 +97,13 @@
                     </div>
                 </scroller>
             </div>
-            <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
+            <!--<noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>-->
             <!--文章模块-->
-            <div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">
+            <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
+            <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
+
                 <!--绑定动画-->
-                <transition-group name="paraTransition" tag="div">
+                <!--<transition-group name="paraTransition" tag="div">-->
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
                     <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
@@ -130,7 +132,10 @@
                             </div>
                         </div>
                     </div>
-                </transition-group>
+                <!--<div style="height: 1300px;">-->
+
+                <!--</div>-->
+                <!--</transition-group>-->
             </div>
         </div>
         <div class="bottomBtnBox">
@@ -598,7 +603,7 @@
             var _this = this;
             this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(500) ;
+            this.screenHeight = utils.fullScreen(216)  ;
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     if(!utils.isNull(data.data.name)){
@@ -671,7 +676,7 @@
                     return;
                 }
                 _this.canScroll = false;
-                _this.twoTop = false;
+//                _this.twoTop = false;
                 _this.canScroll = true;
                 _this.articleList = [];
                 _this.corpusId = id;

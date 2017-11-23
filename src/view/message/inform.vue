@@ -30,13 +30,13 @@
             </div>
         </div>
         <!--收藏-->
-        <div class="lineBox" v-if="messageType == 'gm_10206'">
+        <div class="lineBox" v-if="messageType == 'gm_10206'" v-for="item in dataList">
             <div class="flex-row" >
-                <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                <image class="headImg" :src="item.logo"></image>
                 <div class="userInfo">
-                    <text class="fz30 nameColor" >陈星星</text>
+                    <text class="fz30 nameColor" >{{item.nickName}}</text>
                     <text  class="infoText">收藏了你的文章《想念入会想念入会》</text>
-                    <text class="sub_title">07-13</text>
+                    <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                 </div>
             </div>
             <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
@@ -195,11 +195,14 @@
     import {dom,event,storage,stream} from '../../weex.js';
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
+    import noData from '../../include/noData.vue'
+    import filters from '../../filters/filters.js'
     export default {
         data(){
             return{
                 messageType:'',
-                bgWhite:false
+                bgWhite:false,
+                dataList:[],
             }
         },
         components: {
@@ -209,6 +212,7 @@
             title:{default:'支付助手'},
         },
         created(){
+            let _this = this;
             utils.initIconFont();
             this.messageType = utils.getUrlParameter('type');
             switch(this.messageType){
@@ -240,15 +244,31 @@
                     this.title =  '收藏提醒';
                     this.bgWhite = true;
                     break;
+                case 'gm_10207':
+                    this.title =  '赞赏提醒';
+                    this.bgWhite = true;
+                    break;
+                case 'gm_10208':
+                    this.title =  '分享提醒';
+                    this.bgWhite = true;
+                    break;
+                case 'gm_10209':
+                    this.title =  '添加好友提醒';
+                    this.bgWhite = true;
+                    break;
+                case 'gm_10209':
+                    this.title =  '同意好友提醒';
+                    this.bgWhite = true;
+                    break;
                 default:
                     this.title = '消息助手';
                     this.bgWhite = false;
                     break;
             }
-            GET('weex/member/message/list.jhtml?userId=' + this.messageType ,function (weex) {
-                event.toast(weex);
-                if(weex.type == 'success'){
-
+            GET('weex/member/message/list.jhtml?userId=' + this.messageType ,function (data) {
+                event.toast(data);
+                if(data.type == 'success' && data.data.data != ''){
+                    _this.dataList =  data.data.data;
                 }
             },function (err) {
                 event.toast('网络不稳定');

@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between">
-                    <div class="flex-row flex-start" @click="deposit()">
+                <div class="cell-panel space-between" @click="deposit()">
+                    <div class="flex-row flex-start" >
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                         <text class="title ml10">我的账单</text>
                     </div>
@@ -40,8 +40,8 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between">
-                    <div class="flex-row flex-start" @click="reward()">
+                <div class="cell-panel space-between" @click="reward()">
+                    <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe698;</text>
                         <text class="title ml10">我的赏金</text>
                     </div>
@@ -49,8 +49,8 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row flex-start" @click="rebate()">
+                <div class="cell-panel space-between cell-clear" @click="rebate()">
+                    <div class="flex-row flex-start" >
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                         <text class="title ml10">我的奖励</text>
                     </div>
@@ -118,6 +118,7 @@
                 event.closeURL();
             },
             cashCard:function () {
+                utils.debug(111)
                 var _this = this;
                 if (this.wallet.binded==false) {
                     _this.bindingCard(_this.cashCard());

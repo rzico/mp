@@ -16,26 +16,29 @@
                        <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
-            <cell v-for="(friend,index) in friendsList">
-                <!--姓氏首字母-->
-                <div class="letterBox" v-if="isRepeat(index)">
-                    <text class="nameLetter">{{friend.createDate | dayfmt}}</text>
-                </div>
-                <!--姓氏里每个人的名子-->
-                <div class="addFriendsBorder">
-                    <div class="friendsLine" @click="jump()">
-                        <image :src="friend.logo" class="friendsImage"></image>
-                        <div class="friendsName">
-                            <text class="lineTitle ">{{friend.nickName}}</text>
-                            <text class="realName">真实姓名:{{friend.name | watchName}}</text>
-                        </div>
+            <cell :style="{minHeight:screenHeight + 'px'}">
+                <div v-for="(friend,index) in friendsList" >
+                    <!--姓氏首字母-->
+                    <div class="letterBox" v-if="isRepeat(index)">
+                        <text class="nameLetter">{{friend.createDate | dayfmt}}</text>
                     </div>
-                    <div class="status_panel">
-                        <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
-                        <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
+                    <!--姓氏里每个人的名子-->
+                    <div class="addFriendsBorder">
+                        <div class="friendsLine" @click="jump()">
+                            <image :src="friend.logo" class="friendsImage"></image>
+                            <div class="friendsName">
+                                <text class="lineTitle ">{{friend.nickName}}</text>
+                                <text class="realName">真实姓名:{{friend.name | watchName}}</text>
+                            </div>
+                        </div>
+                        <div class="status_panel">
+                            <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
+                            <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
+                        </div>
                     </div>
                 </div>
             </cell>
+
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
                 <!--<image class="gif" resize="cover"-->
                        <!--src="file://resources/images/loading.gif"></image>-->
@@ -54,7 +57,7 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-left: 50px;
+        padding-left: 36px;
         padding-right: 30px;
         padding-top: 30px;
         padding-bottom: 30px;
@@ -161,7 +164,8 @@
                 refreshState:"松开刷新数据",
                 showLoading:false,
                 loadingState:"松开加载更多",
-                friendsList:[]
+                friendsList:[],
+                screenHeight:0
             }
         },
         props: {
@@ -171,6 +175,9 @@
         },
         created() {
             utils.initIconFont();
+
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(404);
             var _this = this;
 //            setTimeout(() => {
             _this.onrefresh();

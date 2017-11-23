@@ -5,11 +5,11 @@
         <!--网页-->
         <web class="webView" :src="webUrl"></web>
         <!--下一步-->
-        <div class="footBox" v-if="!publish"  @click="goOption()">
+        <div class="footBox mianBgColor" v-if="!publish"  @click="goOption()">
             <text class="nextStep">下一步</text>
         </div>
         <!--点赞 评论 分享-->
-        <div class="footBox" v-if="publish" >
+        <div class="footBox mianBgColor" v-if="publish" >
             <div class="bottomBtnBox" @click="goLaud()">
                 <text class="fz26fff fz45" :class="[isLaud ? 'laudActive' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                 <text class="fz26fff"  :class="[isLaud ? 'laudActive' : '']">点赞 {{laudNum}}</text>
@@ -24,11 +24,11 @@
             </div>
         </div>
         <!--模版-->
-        <div class="templateIcon"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
+        <div class="templateIcon mianBgColor"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
             <text class="templateText" >模版</text>
         </div>
         <!--收藏-->
-        <div class="templateIcon"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
+        <div class="templateIcon mianBgColor"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
             <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
             <text class="templateText collectText" >收藏</text>
         </div>
@@ -109,13 +109,14 @@
 
             </div>
         </div>
-        <transition name="slide-fade-share" mode="out-in">
+        <!--动画无效-->
+        <!--<transition name="slide-fade-share" mode="out-in">-->
             <div v-if="showShare"  key="share">
                 <div class="mask" @touchstart="maskTouch"></div>
                 <share @doShare="doShare" @doCancel="doCancel"></share>
             </div>
             <!--模版内容-->
-        </transition>
+        <!--</transition>-->
     </scroller>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -152,13 +153,14 @@
         font-size: 50px;
         line-height:50px;
     }
-    .slide-fade-share-enter-active {
-        transition: all .2s ease;
-    }
-    .slide-fade-share-enter{
-        transform: translateY(300px);
-        opacity: 1;
-    }
+    /*.slide-fade-share-enter-active {*/
+        /*transition: all 2s ease;*/
+    /*}*/
+    /*.slide-fade-share-enter{*/
+        /*transform: translateY(300px);*/
+        /*opacity: 1;*/
+    /*}*/
+
     /* 可以设置不同的进入和离开动画 */
     /* 设置持续时间和动画函数 */
     .slide-fade-enter-active {
@@ -262,7 +264,6 @@
         right: 30px;
         width:90px;
         height:90px;
-        background-color: red;
     }
     .nextStep{
         color: #fff;
@@ -274,7 +275,7 @@
         flex-direction: row;
         width:750px;
         height:100px;
-        background-color: #D9141E;
+        /*background-color: #D9141E;*/
         position: fixed;
         bottom: 0;
     }
@@ -424,6 +425,9 @@
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
 //                    _this.updateArticle();
+                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                            event.closeURL();
+                        }
                     })
                 }else{
                     this.isOperation = true;
@@ -435,6 +439,9 @@
                 event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
 //                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
 //                    _this.updateArticle();
+                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                        event.closeURL();
+                    }
                 })
             },
 //            点击操作里的设置
@@ -523,8 +530,11 @@
             },
 //            分享
             goShare(type){
-                if(this.isSelf == 0 && type == 1){
+                if(this.isSelf == 0 || type == 1){
                     this.showShare = true;
+                    if(type == 1){
+                        this.isOperation = false;
+                    }
                 }else{
                     event.openURL(utils.locate('view/member/editor/whoShare.js?articleId=' + this.articleId),function (data) {
                     })
@@ -532,7 +542,7 @@
             },
 //            前往评论
             goReview(){
-                event.openURL(utils.locate('view/member/editor/review.js?name=share' ),function (data) {
+                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId ),function (data) {
                 })
             },
 //            收藏文章
@@ -564,19 +574,18 @@
                 let _this = this;
                 switch(id){
                     case 0 :
-                         shareType = 'timeline';
+                        shareType = 'timeline';
                         break;
                     case 1 :
-                         shareType = 'appMessage';
+                        shareType = 'appMessage';
                         break;
                     case 2 :
-                         shareType = 'favorite';
+                        shareType = 'favorite';
                         break;
                     default:
-                         shareType = '';
+                        shareType = '';
                         break;
                 }
-                event.toast('share/article.jhtml?articleId=' + this.articleId + '&shareType=' + shareType);
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=timeline'  ,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         var option = {
