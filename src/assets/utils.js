@@ -26,9 +26,12 @@ let utilsFunc = {
         return newUrl;
     },
     //获取URL参数
-    getUrlParameter(name,url) {
-        if(url == null || url == undefined || url == '' ){
-             url = weex.config.bundleUrl;
+    getUrlParameter(name,dataUrl) {
+        let url;
+        if(dataUrl == null || dataUrl == undefined || dataUrl == '' ){
+            url = weex.config.bundleUrl;
+        }else{
+            url = dataUrl;
         }
         let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         let r = url.slice(url.indexOf('?')+1).match(reg);
