@@ -1,5 +1,6 @@
 <template>
     <div class="dropdown" >
+
         <div class="select" @click="switchView">
             <div class="left">
                 <text class="ico" :style="{fontFamily:'iconfont'}">{{getIco}}</text>
