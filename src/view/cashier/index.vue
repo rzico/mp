@@ -4,7 +4,7 @@
             <div style="flex-direction: row;margin-top: 40px;height: 96px;align-items: center;flex: 1;">
                 <div class="flex-center flex3" >
                     <image class="logo" :src="cashier.logo" ></image>
-                    <text class="title">土楼雄风</text>
+                    <text class="title">{{cashier.name}}</text>
                 </div>
                 <div class="flex-end flex2">
                     <text class="scan" :style="{fontFamily:'iconfont'}"  @click="scan()">&#xe607;</text>
@@ -55,10 +55,6 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
-    .search_box {
-        flex-direction: row;
-        align-items: center;
-    }
     .title {
         font-size: 32px;
         line-height: 60px;
