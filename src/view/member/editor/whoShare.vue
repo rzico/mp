@@ -15,14 +15,14 @@
                     <image class="headImg" :src="item.logo" ></image>
                     <div class="userInfo">
                         <!--人物信息跟分享信息-->
-                        <div class="flex-row">
-                            <text class="fz32 nameColor" >{{item.nickName}}</text>
-                            <text class="fz32 nameColor " style="color: #bbb;">({{item.shareType | watchType}})</text>
+                        <div class="flex-row" >
+                            <text class="fz32 " >{{item.nickName}}</text>
+                            <text class="fz32  " style="color: #bbb;">({{item.shareType | watchType}})</text>
                         </div>
                         <!--分享的图标跟日期-->
-                        <div class="flex-row">
-                            <image style="width: 50px;height: 50px;" :src="item.shareType | watchImg" ></image>
-                            <text class="sub_title">{{item.createDate | datemoretimefmt}}</text>
+                        <div class="flex-row" >
+                            <image style="width: 26px;height: 26px;" :src="item.shareType | watchImg" ></image>
+                            <text class="sub_date" >{{item.createDate | datemoretimefmt}}</text>
                         </div>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
     .userInfo{
         margin-left: 20px;
         height: 120px;
-        justify-content: center;
+        justify-content: space-around;
     }
     .headImg{
         height: 100px;
@@ -79,7 +79,6 @@
     import search from '../../../include/search.vue';
     export default {
         data: {
-            shareNum:0,
             articleId:'',
             shareList:[],
             refreshing: false,
@@ -87,7 +86,7 @@
             listCurrent: 0,
             pageSize: 15,
             screenHeight: 0,
-            title:'',
+            title:'0人分享',
         },
         components: {
             navbar, noData
@@ -127,25 +126,28 @@
             watchImg: function (value) {
                 switch (value) {
                     case 'timeline':
-                        return 'http://pic.qiantucdn.com/58pic/27/25/01/31n58PICz4s_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center';
+                        return utils.locate('resources/images/timeLine.png');
                         break;
                     case 'appMessage':
-                        return 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg';
+                        return utils.locate('resources/images/weChat.png');
                         break;
                     case 'shareQQ':
-                        return 'http://pic.qiantucdn.com/58pic/27/25/01/31n58PICz4s_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center';
+                        return utils.locate('resources/images/qq.png');
                         break;
                     case 'shareQZone':
-                        return 'http://pic.qiantucdn.com/58pic/27/25/01/31n58PICz4s_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center';
+                        return utils.locate('resources/images/qqSpace.png');
                         break;
                     case 'appWeex':
-                        return 'http://pic.qiantucdn.com/58pic/27/25/01/31n58PICz4s_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center';
+                        return utils.locate('resources/images/shareFriend.png');
                         break;
                     case 'herf':
-                        return 'http://pic.qiantucdn.com/58pic/27/25/01/31n58PICz4s_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center';
+                        return utils.locate('resources/images/copyLink.png');
+                        break;
+                    case 'browser':
+                        return utils.locate('resources/images/browser.png');
                         break;
                     default:
-                        return 'http://pic.qiantucdn.com/58pic/27/25/01/31n58PICz4s_1024.jpg!/fw/780/watermark/url/L3dhdGVybWFyay12MS4zLnBuZw==/align/center';
+                        return utils.locate('resources/images/timeLine.png');
                         break;
                 }
             }
@@ -159,9 +161,7 @@
                 if(data.type == 'success' && data.data.data != '' ){
                     _this.title = data.data.recordsTotal + '人分享';
                     _this.shareList = data.data.data;
-                    event.toast(_this.shareList);
                 }else  if(data.type == 'success' && data.data.data == '' ){
-                    _this.shareNum = data.data.recordsTotal;
                 }else{
                     event.toast(data.content);
                 }

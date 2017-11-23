@@ -60,7 +60,7 @@
                             </div>
                             <!--图片-->
                             <div>
-                                <image class="paraImage" resize="cover" @click="editParaImage(item.paraImage,index)" :src="item.thumbnailImage"></image>
+                                <image class="paraImage" resize="cover" @click="editParaImage(item.paraImage,index)" :src="item.thumbnailImage | watchThumbImg"></image>
                             </div>
                             <!--文章内容-->
                             <div class="paraText" @click="editorText(index)">
@@ -422,11 +422,16 @@
 //                将空格 &nbsp; 替换成 。
                 let spaceText=nbspText.replace(/&nbsp;/g," ");
                 return spaceText;
-
-
-
                 //                将空格去除
 //                var onlyText=spaceText.replace(/ /g,"");
+            },
+            watchThumbImg:function (value) {
+                if(value == ''){
+                    return utils.locate('resources/images/text.png');
+                }else{
+                    return value;
+                }
+
             }
         },
         computed:{
@@ -456,7 +461,6 @@
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
-//                        event.toast(data);
                         if(data.type == 'success'){
                             _this.coverImage =  data.data[0].originalPath;
 //                    data.data里存放的是用户选取的图片路径
@@ -487,7 +491,6 @@
                         key:op[1]
                     };
                     _this.articleId = op[1];
-
                     GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
                         if(data.type == 'success' && data.data != ''){
                             _this.catalogId = data.data.articleCatalog.id;
@@ -497,7 +500,7 @@
                     })
 
                     event.find(options,function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             let articleData = JSON.parse(data.data.value);
 //                            event.toast(articleData);
                             _this.setTitle = articleData.title;
@@ -693,6 +696,16 @@
                 if(frontUrl == 'http:'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
                     _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
+                    sendIndex ++ ;
+//                        判断是否最后一张图
+                    if(sendIndex < sendLength){
+//                            回调自己自己
+                        _this.sendImage(sendIndex)
+                    }else{//进行上传文章
+                        _this.realSave();
+                    }
+                }else if(_this.paraList[sendIndex].paraImage == ''){//判断是否只有文字
+                    _this.paraList[sendIndex].serveThumbnail = '';
                     sendIndex ++ ;
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){

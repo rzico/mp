@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="cell-row cell-line">
-                    <div class="cell-panel space-between">
+                    <div class="cell-panel space-between" @click="goReviewManage()">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
                             <text class="title ml10">评价管理</text>
@@ -198,6 +198,14 @@
                 event.openURL(utils.locate('view/member/topic/index.js'),
                     function (data) {
                        return ;
+                    }
+                );
+            },
+//            评论管理
+            goReviewManage:function (e) {
+                event.openURL(utils.locate('view/member/reviewManage.js'),
+                    function (data) {
+                        return ;
                     }
                 );
             }

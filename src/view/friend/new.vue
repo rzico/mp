@@ -246,6 +246,8 @@
                 _this.refreshing = true;
                 _this.refreshState = "正在刷新数据";
                 GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
+//                    utils.debug('onrefresh:');
+//                    utils.debug(data);
                         if (data.type == "success") {
                             let page = data.data;
                             _this.friendsList = page.data;
@@ -309,6 +311,7 @@
             },
             //同意添加好友
             adopt:function (id) {
+                let _this = this;
                 POST('weex/member/friends/adopt.jhtml?friendId='+id).then(
                     function (data) {
                         if (data.type == "success") {

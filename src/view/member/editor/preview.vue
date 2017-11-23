@@ -3,7 +3,7 @@
         <!--导航栏-->
         <navbar :title="title"  @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
         <!--网页-->
-        <web class="webView" :src="webUrl"></web>
+        <web class="webView" :style="{height:screenHeight}" :src="webUrl"></web>
         <!--下一步-->
         <div class="footBox mianBgColor" v-if="!publish"  @click="goOption()">
             <text class="nextStep">下一步</text>
@@ -78,8 +78,8 @@
                     <text class="fz28 pl10">复制</text>
                 </div>
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive">
-                    <text class="fz40 mianColor" :style="{fontFamily:'iconfont'}">&#xe652;</text>
-                    <text class="fz28 pl10 mianColor">删除</text>
+                    <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe652;</text>
+                    <text class="fz28 pl10 primary">删除</text>
                 </div>
                 <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
@@ -283,7 +283,7 @@
         width:750px;
         position: absolute;
         top:136px;
-        bottom: 100px;
+        /*bottom: 100px;*/
     }
 </style>
 
@@ -315,7 +315,8 @@
                 reviewNum:0,
                 isLaud:false,
                 memberId:'',
-                showShare:false
+                showShare:false,
+                screenHeight:0,
             }
         },
         components: {
@@ -329,6 +330,7 @@
             var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
+            this.screenHeight = utils.fullScreen(237);
             var isPublish = utils.getUrlParameter('publish');
 //            如果不传就是null
             if(isPublish == null){
@@ -343,6 +345,7 @@
                         _this.templateId = 't' + data.data;
                         _this.templateSn = data.data;
                         _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
+//                        _this.webUrl = 'http://weex.1xx.me/';
                     }else{
                         event.toast(data.content);
                     }
@@ -354,12 +357,14 @@
 
 
             GET('weex/article/preview.jhtml?id=' + this.articleId,function (data) {
+
                 if( data.type=='success' && data.data != ''){
                     _this.memberId = data.data.memberId;
                     _this.reviewNum = data.data.review;
                     _this.laudNum = data.data.laud;
                     _this.isLaud = data.data.hasLaud;
                     _this.isCollect = data.data.hasFavorite;
+                    _this.shareNum = data.data.share;
                     let uId = event.getUId();
 //            判断是否作者本人
                     if(uId == _this.memberId){
@@ -390,7 +395,7 @@
                         _this.title = '文章详情';
                     }else if(_this.publish == 'true' && _this.isSelf == 0){
                         _this.publish = true;
-                        _this.complete = '· · ·';
+                        _this.complete = 'textIcon';
                         _this.title = '文章详情';
                     }
                 }

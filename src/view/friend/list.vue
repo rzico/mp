@@ -89,7 +89,7 @@
             <div class="letterNav" v-for="(item,index) in allLetter"   @longpress="onlongpress(index)" @touchstart="ontouchstart(index)" @touchend="ontouchend()"  @touchmove="ontouchmove(index,$event)">
                 <!--<text class="letterList" v-if="index == 0">up</text>-->
                 <!--控制是否红色字体-->
-                <text class="letterList" :class="[moveLetter == index ? 'mianColor' : 'noColor']">{{item}}</text>
+                <text class="letterList" :class="[moveLetter == index ? 'primary' : 'noColor']">{{item}}</text>
             </div>
         </div>
         <!--top:613px-->
@@ -701,10 +701,9 @@
 //            触发自组件的二维码方法
             scan:function () {
                 event.scan(function (message) {
-                    SCAN(message,function (data) {
-                    },function (err) {
-
-                    })
+                        SCAN(message,function (data) {
+                        },function (err) {
+                        })
                 });
             },
         }

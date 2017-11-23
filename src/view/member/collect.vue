@@ -7,54 +7,62 @@
             </refresh>
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="collectList.length == 0"></noData>
-                <div class="collectBox"  v-for="item in collectList" @click="goArticle(item.id)">
-                    <!--名字与日期-->
-                    <div class="nameDate">
-                        <div class="nameImg" @click="goAuthor(item.authorId)">
-                            <image resize="cover" class="authorImg" :src="item.logo"></image>
-                            <text class="authorName ml10">{{item.author}}</text>
-                        </div>
-                        <text class="authorName">{{item.createDate | timeDatefmt}}</text>
+                <div v-for="(item,index) in collectList" >
+                    <div class="deleteBox bkg-primary" @click="deleteMessage(item.id,index)" v-if="isSelf">
+                        <text class="deleteText">取</text>
+                        <text class="deleteText">消</text>
+                        <text class="deleteText">收</text>
+                        <text class="deleteText">藏</text>
                     </div>
-                    <div class="flex-row">
-                        <!--文章封面-->
-                        <image resize="cover" class="articleImg" :src="item.thumbnail" ></image>
-                        <!--文章相关信息。标题点赞...-->
-                        <div class="articleInfo">
-                            <text class="fz30 articleTitle">{{item.title}}</text>
-                            <div class="relevantInfo">
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.hits}}</text>
-                                <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.laud}}</text>
-                                <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.review}}</text>
+                    <div class="collectBox"  @click="goArticle(item.id)"  @swipe="onpanmove($event,index)" @touchstart="ontouchstart($event,index)">
+                        <!--名字与日期-->
+                        <div class="nameDate">
+                            <div class="nameImg" @click="goAuthor(item.authorId)">
+                                <image resize="cover" class="authorImg" :src="item.logo"></image>
+                                <text class="authorName ml10">{{item.author}}</text>
+                            </div>
+                            <text class="authorName">{{item.createDate | timeDatefmt}}</text>
+                        </div>
+                        <div class="flex-row">
+                            <!--文章封面-->
+                            <image resize="cover" class="articleImg" :src="item.thumbnail" ></image>
+                            <!--文章相关信息。标题点赞...-->
+                            <div class="articleInfo">
+                                <text class="fz30 articleTitle">{{item.title}}</text>
+                                <div class="relevantInfo">
+                                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                    <text class="relevantText">{{item.hits}}</text>
+                                    <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                    <text class="relevantText">{{item.laud}}</text>
+                                    <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                    <text class="relevantText">{{item.review}}</text>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!--<div class="collectBox">-->
-                    <!--<div class="nameDate">-->
-                        <!--<div style="flex-direction: row;align-items: center">-->
-                            <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg" resize="cover" class="authorImg"></image>-->
-                            <!--<text class="authorName ml10">大马哥</text>-->
-                        <!--</div>-->
-                        <!--<text class="authorName">2017-11-07</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row">-->
-                        <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg"  resize="cover" class="articleImg"></image>-->
-                        <!--<div class="articleInfo">-->
-                            <!--<text class="fz30 articleTitle">立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)</text>-->
-                            <!--<div class="relevantInfo">-->
-                                <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
-                                <!--<text class="relevantText">121</text>-->
-                                <!--<text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
-                                <!--<text class="relevantText">233</text>-->
-                                <!--<text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
-                                <!--<text class="relevantText">3222</text>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="nameDate">-->
+                <!--<div style="flex-direction: row;align-items: center">-->
+                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg" resize="cover" class="authorImg"></image>-->
+                <!--<text class="authorName ml10">大马哥</text>-->
+                <!--</div>-->
+                <!--<text class="authorName">2017-11-07</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg"  resize="cover" class="articleImg"></image>-->
+                <!--<div class="articleInfo">-->
+                <!--<text class="fz30 articleTitle">立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)</text>-->
+                <!--<div class="relevantInfo">-->
+                <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                <!--<text class="relevantText">121</text>-->
+                <!--<text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                <!--<text class="relevantText">233</text>-->
+                <!--<text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                <!--<text class="relevantText">3222</text>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
@@ -65,6 +73,12 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .deleteText{
+        font-size: 32px;color: #fff;
+    }
+    .deleteBox{
+        position: absolute;right: 0px;top: 0px;height: 270px;align-items: center;width: 130px;justify-content: center;;
+    }
     .nameImg{
         flex-direction: row;
         align-items: center;
@@ -128,6 +142,7 @@
         border-bottom-width: 1px;
         border-style: solid;
         border-color:#ccc;
+        background-color:#fff;
     }
 
 </style>
@@ -139,6 +154,8 @@
     import utils from '../../assets/utils';
     import filters from '../../filters/filters.js';
     import noData from '../../include/noData.vue';
+    const animation = weex.requireModule('animation');
+    var animationPara;//执行动画的消息
     export default {
         components: {
             navbar,noData
@@ -260,6 +277,91 @@
 //                        event.toast("网络不稳定");
 //                    }
 //                )
+            },
+            //            点击屏幕时
+            ontouchstart:function (e,index) {
+                var _this = this;
+                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                }else{
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
+//                获取当前点击的元素。
+                animationPara =  e.currentTarget;
+            },
+//            移动时
+            onpanmove:function (e,index) {
+//                获取当前点击的元素。
+                var _this = this;
+                if(e.direction == 'right'){
+                    _this.canScroll = false;
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }else if(e.direction == 'left'){
+                    _this.canScroll = false;
+//                  modal.toast({message:distance});
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(-130)',
+                        },
+                        duration:350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }
+            },
+//            取消收藏
+            deleteMessage(id,index){
+                let _this = this;
+                POST('weex/member/favorite/delete.jhtml?articleId=' + id).then(
+                    function(data){
+                        if(data.type == 'success'){
+//                            把动画收回来。
+                            if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                            }else{
+                                animation.transition(animationPara, {
+                                    styles: {
+                                        transform: 'translateX(0)',
+                                    },
+                                    duration: 10, //ms
+                                    timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                    needLayout:false,
+                                    delay: 0 //ms
+                                })
+                            }
+                            _this.collectList.splice(index,1);
+                            event.toast('取消收藏成功');
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    }
+                )
+                event.toast('删除成功');
             },
         }
     }

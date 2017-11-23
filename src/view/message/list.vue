@@ -31,7 +31,7 @@
             </refresh>
             <!--朋友信息-->
             <cell v-for="item in messageList" >
-                <div class="deleteBox" @click="deleteMessage()">
+                <div class="deleteBox bkg-primary" @click="deleteMessage()">
                     <text class="deleteText">删除</text>
                 </div>
                 <div class="friendsLine" @click="jumpMessage(item,index)" @swipe="onpanmove($event,index)" @touchstart="ontouchstart($event,index)">
@@ -101,7 +101,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 0px;top: 0px;height: 130px;align-items: center;width: 130px;justify-content: center;background-color: red;
+        position: absolute;right: 0px;top: 0px;height: 130px;align-items: center;width: 130px;justify-content: center;
     }
     /*.nav {*/
         /*flex:1;*/
@@ -577,11 +577,11 @@
 //            触发自组件的二维码方法
             scan:function () {
                 event.scan(function (message) {
-                    SCAN(message,function (data) {
+                        SCAN(message, function (data) {
 
-                    },function (err) {
+                        }, function (err) {
 
-                    })
+                        })
                 });
             },
         }

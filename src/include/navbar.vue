@@ -5,7 +5,11 @@
         </div>
         <div class="nav">
             <text class="nav_title">{{title}}</text>
-            <text class="nav_Complete" v-if="showComplete" @click="goComplete('/')">{{complete}}</text>
+            <div class="navRightBox"  v-if="showComplete" @click="goComplete('/')">
+                <text class="nav_Complete" v-if="complete != 'textIcon'">{{complete}}</text>
+                <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-else>&#xe72b;</text>
+            </div>
+
          </div>
     </div>
  </template>
@@ -22,6 +26,12 @@
         align-items: center;
         justify-content: center;
     }
+    .navRightBox{
+        width: 110px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+    }
     .nav_ico {
         font-size: 38px;
         color: #fff;
@@ -32,10 +42,17 @@
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
-        padding-right: 30px;
         margin-top: 44px;
     }
+    .nav_CompleteIcon{
+        padding-left: 16px;
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 44px;
+        line-height: 44px;
+        color: #FFFFFF;
+    }
     .nav_Complete {
+        padding-left: 16px;
         font-family: Verdana, Geneva, sans-serif;
         font-size: 34px;
         line-height: 34px;

@@ -148,9 +148,9 @@
         created(){
             let _this = this;
             this.UId = utils.getUrlParameter('id');
-            let selfId = event.getUId();
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);
+            let selfId = event.getUId();
             if(this.UId == selfId){
                 this.isSelf = true;
             }else{

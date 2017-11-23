@@ -22,7 +22,7 @@ Vue.filter('dayfmt', function (value) {
     }
     return "七天前"
 })
-// 时间格式化 10:30 昨天 前天 2017-09-01 09-01
+// 时间格式化 10:30 昨天 前天 2017年09月01日 09月01日
 Vue.filter('timefmt', function (value) {
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
@@ -70,6 +70,56 @@ Vue.filter('timefmt', function (value) {
         return y + '年' + m + '月' + d+ '日';
     }
 })
+
+// 时间格式化 10:30 昨天 前天 2017-09-01 09-01
+Vue.filter('timefmtOther', function (value) {
+    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+    value = value + '';
+    if(value.length == 10){
+        value = parseInt(value) * 1000;
+    }else{
+        value = parseInt(value);
+    }
+    let    date = new Date(value);
+    let    tody = new Date();
+    let    y = date.getFullYear();
+    let    nowy = tody.getFullYear();
+    let    m = date.getMonth() + 1;
+    let    w = tody.getDate() - date.getDate();
+    if (w<1) {
+        var    h = date.getUTCHours() + 8;
+        h = h >= 24 ? h - 24 : h;
+        let    i = date.getMinutes();
+        if (h < 10) {
+            h = '0' + h;
+        }
+        if (i < 10) {
+            i = '0' + i;
+        }
+        return h +":"+i ;
+        // return value;
+    }
+    if (w<2) {
+        return "昨天";
+    }
+    if (w<3) {
+        return "前天"
+    }
+    if (m < 10) {
+        m = '0' + m;
+    }
+    let    d = date.getDate();
+    if (d < 10) {
+        d = '0' + d;
+    }
+    //如果是今年 就不返回年份
+    if(nowy == y){
+        return  m + '-' + d ;
+    }else{
+        return y + '-' + m + '-' + d;
+    }
+})
+
 
 // 时间格式化  2017-09-01
 Vue.filter('timeDatefmt', function (value) {
@@ -160,6 +210,9 @@ Vue.filter('datetimefmt', function (value) {
     }
     // 返回处理后的值
     let    date = new Date(value);
+    let    y = date.getFullYear();
+    let tody = new Date();
+    let    nowy = tody.getFullYear();
     let    m = date.getMonth() + 1;
     let    d = date.getDate();
     var    h = date.getUTCHours() + 8;
@@ -177,8 +230,14 @@ Vue.filter('datetimefmt', function (value) {
     if (i < 10) {
         i = '0' + i;
     }
-    let t = m + '-' + d + '  ' + h + ':' + i ;
-    return t;
+    //如果是今年 就不返回年份
+    if(nowy == y){
+        return m + '-' + d + '  ' + h + ':' + i ;
+    }else{
+        return y + '-' + m + '-' + d + '  ' + h + ':' + i ;
+    }
+
+
 })
 
 //时间格式化 返回 09-30 03:07:56 2017-09-30 03:07:56
