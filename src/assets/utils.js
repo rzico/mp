@@ -39,6 +39,19 @@ let utilsFunc = {
         }
         return null;
     },
+    //获取data格式为URL时'?'后的参数
+    getUrlParameter(url,name) {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        let r = url.slice(url.indexOf('?')+1).match(reg);
+        if (r != null) {
+            try {
+                return decodeURIComponent(r[2]);
+            } catch (_e) {
+                return null;
+            }
+        }
+        return null;
+    },
     dayfmt (value) {
         value = value + '';
         if(value.length == 10){
@@ -181,7 +194,7 @@ let utilsFunc = {
     },
 //    将过长的字符串换成 XXX...XXX格式
     changeStr(e){
-       return e.substr(0,4) + '...' + e.substr(-4);
+        return e.substr(0,4) + '...' + e.substr(-4);
     },
     //js中用正则表达式 过滤特殊字符, 校验所有输入域是否含有特殊符号 (无法过滤 \ )
     //  searchFilter(s) {
@@ -198,7 +211,16 @@ let utilsFunc = {
     readScan(e){
         e = e.substring(e.indexOf("q/") + 2,e.indexOf(".jhtml"));
         return e;
+    },
+    //判断用户是否只输入了空格
+    isAllEmpty(str){
+        if(str.replace(/ /g,"").length == 0){
+            return true;
+        }else{
+            return false;
+        }
     }
+
 };
 
 export default utilsFunc;
