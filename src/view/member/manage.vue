@@ -40,7 +40,41 @@
                     </div>
                 </div>
 
-                <div class="cell-row cell-line">
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between ">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
+                        <text class="title ml10">店铺管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between ">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                        <text class="title ml10">会员卡管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe632;</text>
+                        <text class="title ml10">优惠券管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="cell-row cell-line">
                     <div class="cell-panel space-between" @click="goReviewManage()">
                         <div class="flex-row flex-start">
                             <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
@@ -61,48 +95,7 @@
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
                     </div>
-                    <div class="cell-panel space-between ">
-                        <div class="flex-row flex-start">
-                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                            <text class="title ml10">我的赏金</text>
-                        </div>
-                        <div class="flex-row flex-end">
-                            <text class="sub_title"></text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
-                    <div class="cell-panel space-between ">
-                        <div class="flex-row flex-start">
-                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
-                            <text class="title ml10">我的店铺</text>
-                        </div>
-                        <div class="flex-row flex-end">
-                            <text class="sub_title"></text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
-                    <div class="cell-panel space-between ">
-                        <div class="flex-row flex-start">
-                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                            <text class="title ml10">我的会员卡</text>
-                        </div>
-                        <div class="flex-row flex-end">
-                            <text class="sub_title"></text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
-                    <div class="cell-panel space-between cell-clear">
-                        <div class="flex-row flex-start">
-                            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                            <text class="title ml10">我的优惠券</text>
-                        </div>
-                        <div class="flex-row flex-end">
-                            <text class="sub_title"></text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
                 </div>
-
                 <div class="cell-row cell-line">
                     <div class="cell-panel space-between" @click="beginShare()">
                          <div class="flex-row flex-start">
@@ -283,7 +276,7 @@
                 }
                 _this.showShare = false;
                 event.wxShare(option,function (data) {
-
+                    event.toast(JSON.stringify(data));
                 })
             },
             beginShare:function () {

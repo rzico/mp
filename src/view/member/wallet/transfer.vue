@@ -35,7 +35,7 @@
             </div>
             </div>
         </div>
-        <div class="botton" @click="withdrawals">
+        <div class="botton bkg-primary" @click="withdrawals">
             <text class="bottontext">确认提现</text>
         </div>
     </div>
@@ -174,7 +174,6 @@
         margin-left: 10px;
     }
     .botton{
-        background-color:#D9141E;
         margin-left: 30px;
         margin-right: 30px;
         margin-top: 70px;
