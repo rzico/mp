@@ -54,23 +54,32 @@ export function GET (path,resolve,reject) {
 //二维码扫描
 export function SCAN (message,resolve,reject) {
     if(message.type == 'success'){
-        let scanCode = utils.readScan(message.data);
-        if(scanCode.substring(0,6) == '865380'){
-            let userId = parseInt(scanCode.substring(6,11) - 10200);
-            POST('weex/member/friends/add.jhtml?friendId='+ userId).then(
-                function (data) {
-                    if (data.type == "success") {
-                        event.toast('添加好友请求已发送,请等待对方验证');
-                    } else {
-                        event.toast(data.content);
-                    }
-                    resolve(data)
-                }, function (err) {
-                    reject(err);
-                    event.toast(data.content);
+        utils.readScan(message.data,function (data) {
+            if(data.type == 'success'){
+                if(data.data.type == '865380'){
+                    let userId = parseInt(data.data.code - 10200);
+                    POST('weex/member/friends/add.jhtml?friendId='+ userId).then(
+                        function (data) {
+                            if (data.type == "success") {
+                                event.toast('添加好友请求已发送,请等待对方验证');
+                            } else {
+                                event.toast(data.content);
+                            }
+                            resolve(data)
+                        }, function (err) {
+                            reject(err);
+                            event.toast(data.content);
+                        }
+                    )
+                }else if(data.data.type == 'webView'){
+                    event.openURL(message.data,function (data) {
+
+                    });
                 }
-            )
-        }
+            }else{
+                event.toast(data.content);
+            }
+        });
     }else{
 
     }

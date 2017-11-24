@@ -200,9 +200,42 @@ let utilsFunc = {
     //     }
 
 //    二维码读取内容
-    readScan(e){
-        e = e.substring(e.indexOf("q/") + 2,e.indexOf(".jhtml"));
-        return e;
+    readScan(e,callback){
+        let backData = {};
+        //二维码字段截取. indexOf 没找到时返回-1， 此时如果2个indexof都没找到 那么 e.substring（-1 + 3 ，-1）,e的长度会变为2
+        let subData = e.substring(e.indexOf("/q/8") + 3,e.indexOf(".jhtml"));
+        //判断是不是web  code'000000'为无效二维码 '999999'为webView；
+        if(subData.length == 2){
+            //如果没有找到q/ 和 .jhtml中的字端，就执行该段代码
+            if(e.substring(0,4) == 'http'){
+                let data = {
+                    type:'webView',
+                    code:'999999'
+                }
+                backData = this.message('success','webView',data);
+            }else{
+                let data = {
+                    type:'error',
+                    code:'000000'
+                }
+                backData = this.message('error','无效二维码',data);
+            }
+            callback(backData);
+        }else{
+            //截取11位的判断码
+            let type = subData.substring(0,6);
+            let code = subData.substring(6,11);
+            let data = {
+                type:type,
+                code:code
+            }
+            if(code == '000000'){
+                backData = this.message('error','无效二维码',data);
+            }else{
+                backData = this.message('success','扫描成功',data);
+            }
+            callback(backData);
+        }
     },
     //判断用户是否只输入了空格
     isAllEmpty(str){
