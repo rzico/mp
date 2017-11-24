@@ -2,13 +2,13 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" border="false"> </navbar>
         <scroller class="scroller">
-            <div class="wallet-panel">
+            <div class="wallet-panel bkg-primary">
                 <text class="wallet-title">钱包余额（元）</text>
                 <text class="balance">{{wallet.balance | currencyfmt}}</text>
             </div>
 
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between" @click="bindingCard">
+                <div class="cell-panel space-between" @click="bindingCard()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe64f;</text>
                         <text class="title ml10">银行卡</text>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
 
-                <div class="cell-panel space-between cell-clear" @click="cashCard">
+                <div class="cell-panel space-between cell-clear" @click="cashCard()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
                         <text class="title ml10">提现到银行卡</text>
@@ -76,7 +76,6 @@
     }
 
     .wallet-panel {
-        background-color:  #D9141E;
         height:400px;
         flex-direction: column;
         align-items:flex-start;
@@ -118,27 +117,35 @@
                 event.closeURL();
             },
             cashCard:function () {
-                utils.debug(111)
                 var _this = this;
                 if (this.wallet.binded==false) {
-                    _this.bindingCard(_this.cashCard());
+                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+                        if (message.type=='success') {
+                            _this.wallet.binded = true;
+                            _this.wallet.bankinfo = "已绑定";
+                            event.openURL(utils.locate('view/member/wallet/transfer.js', function () {
+                                    if (message.type=='success') {
+                                        _this.load();
+                                    }
+                                })
+                            )
+                        }
+                    })
+                }  else {
+                    event.openURL(utils.locate('view/member/wallet/transfer.js', function () {
+                            if (message.type=='success') {
+                                _this.load();
+                            }
+                        })
+                    )
                 }
-                event.openURL(utils.locate('view/member/wallet/transfer.js', function () {
-                    if (message.type=='success') {
-                        _this.load();
-                    }
-                 })
-                )
             },
-            bindingCard:function (fn) {
+            bindingCard:function () {
                 var _this = this;
                 event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
                     if (message.type=='success') {
-                        if (!utils.isNull(fn))  {
-                            fn();
-                        }
-                        _this.load();
-
+                        _this.wallet.binded = true;
+                        _this.wallet.bankinfo = "已绑定";
                     }
                 })
             },
