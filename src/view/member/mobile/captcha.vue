@@ -43,7 +43,7 @@
                 var _this = this;
                 event.encrypt(this.mobile,function (msg) {
                     if (msg.type ==="success"){
-                        POST('weex/login/send_mobile.jhtml?mobile=' +msg.data).then(
+                        POST('weex/member/mobile/send_mobile.jhtml?mobile=' +msg.data).then(
                             function (data) {
                                 if (data.type == "success") {
                                     _this.$refs.captcha.beginTimer();
@@ -69,7 +69,7 @@
                 this.captcha = e;
                 event.encrypt(e,function (msg) {
                     if (msg.type=="success") {
-                        POST('weex/login/captcha.jhtml?captcha=' + msg.data).
+                        POST('weex/member/mobile/captcha.jhtml?captcha=' + msg.data).
                         then(function (data) {
                                 if (data.type == "success") {
                                     let backData = utils.message('success','成功','');

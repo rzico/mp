@@ -50,7 +50,7 @@
                 event.encrypt(_this.value, function (message){
                     if (message.type == "success") {
 //                        event.toast(message)
-                    POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
+                    POST('weex/member/mobile/send_mobile.jhtml?mobile=' + message.data).then(
                         function (weex) {
 //                            event.toast('weex/login/send_mobile.jhtml?mobile=' + _this.value)
                             if (weex.type == "success") {
