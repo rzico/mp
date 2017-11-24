@@ -126,10 +126,13 @@
             },
             scan:function() {
                 event.scan(function (message) {
+                    utils.debug(message)
+                let old = utils.qr2scan(message.data)
+                    utils.readScan(old,function (n) {
+                        utils.debug('111')
 
-                    SCAN(message,function (data) {
-                    },function (err) {
-                    },this.shopId)
+                    })
+
                 });
             }
         }
