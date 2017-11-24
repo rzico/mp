@@ -200,9 +200,9 @@
     const album = weex.requireModule('album');
     const storage = weex.requireModule('storage');
     var event = weex.requireModule('event');
-    import navbar from '../../../include/navbar.vue';
-    import utils from '../../../assets/utils';
-    import { POST, GET } from '../../../assets/fetch'
+    import navbar from '../../include/navbar.vue';
+    import utils from '../../assets/utils';
+    import { POST, GET } from '../../assets/fetch'
 
     export default {
         data: function () {
