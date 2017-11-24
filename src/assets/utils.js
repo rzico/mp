@@ -211,8 +211,7 @@ let utilsFunc = {
     },
 //    二维码读取内容
     readScan(e,callback){
-        e = qr2scan(e);
-
+        e =this.qr2scan(e);
         let backData = {};
         //二维码字段截取. indexOf 没找到时返回-1， 此时如果2个indexof都没找到 那么 e.substring（-1 + 3 ，-1）,e的长度会变为2
         let subData = e.substring(e.indexOf("/q/8") + 3,e.indexOf(".jhtml"));
