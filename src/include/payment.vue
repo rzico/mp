@@ -273,7 +273,7 @@
                     this.payment("alipayH5Plugin");
                 }
                 if (this.id == 0) {
-                    this.payment("weixinH5Plugin");
+                    this.payment("weixinAppPlugin");
                 }
             },
             balance(pwd) {
@@ -329,32 +329,56 @@
                 POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
                     function (data) {
                         if (data.type=="success") {
-                            event.wxPay(data.data.mweb_url,function (e) {
-                                globalEvent.addEventListener("onResume", function (e) {
-                                    if (timer!=null) {
-                                        clearInterval(timer);
-                                        timer=null;
-                                    }
-                                    timer = setInterval(function () {
-                                        POST("payment/query.jhtml?sn="+_this.sn).then(
-                                            function (data) {
-                                                if (data.type=="success") {
-                                                    if (data.data=="0000") {
-                                                        _this.close(utils.message("success","success"));
-                                                    } else {
-                                                        if (data.data=="0001") {
-                                                            _this.close(utils.message("error","error"));
-                                                        }
-                                                    }
+                            event.wxAppPay(data.data,function (e) {
+                                if (e.type=='success') {
+                                    POST("payment/query.jhtml?sn="+_this.sn).then(
+                                        function (data) {
+                                            if (data.type=="success") {
+                                                if (data.data=="0000") {
+                                                    _this.close(utils.message("success","success"));
+                                                } else
+                                                if (data.data=="0001") {
+                                                    _this.close(utils.message("error","error"));
                                                 }
-
-                                            },
-                                            function (err) {
-
+                                                else {
+                                                    _this.close(utils.message("error","error"));
+                                                }
+                                            } else {
+                                                _this.close(utils.message("error","error"));
                                             }
-                                        )
-                                    },1000);
-                                });
+                                        },
+                                        function (err) {
+                                            _this.close(utils.message("error","error"));
+                                        }
+                                    )
+                                } else {
+                                    _this.close(utils.message("error","error"));
+                                }
+//                                globalEvent.addEventListener("onResume", function (e) {
+//                                    if (timer!=null) {
+//                                        clearInterval(timer);
+//                                        timer=null;
+//                                    }
+//                                    timer = setInterval(function () {
+//                                        POST("payment/query.jhtml?sn="+_this.sn).then(
+//                                            function (data) {
+//                                                if (data.type=="success") {
+//                                                    if (data.data=="0000") {
+//                                                        _this.close(utils.message("success","success"));
+//                                                    } else {
+//                                                        if (data.data=="0001") {
+//                                                            _this.close(utils.message("error","error"));
+//                                                        }
+//                                                    }
+//                                                }
+//
+//                                            },
+//                                            function (err) {
+//
+//                                            }
+//                                        )
+//                                    },1000);
+//                                });
                             })
                         } else {
                             event.toast(data.content);

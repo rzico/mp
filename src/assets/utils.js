@@ -199,8 +199,20 @@ let utilsFunc = {
     //         return rs;
     //     }
 
+    //老的二维码转换成新格式
+    qr2scan(e) {
+       let type = this.getUrlParameter("type",e);
+       let code = this.getUrlParameter("no",e);
+       if (type=="paybill") {
+           return dataURL+"/q/818804"+code+".jhtml";
+       } else {
+           return e;
+       }
+    },
 //    二维码读取内容
     readScan(e,callback){
+        e = qr2scan(e);
+
         let backData = {};
         //二维码字段截取. indexOf 没找到时返回-1， 此时如果2个indexof都没找到 那么 e.substring（-1 + 3 ，-1）,e的长度会变为2
         let subData = e.substring(e.indexOf("/q/8") + 3,e.indexOf(".jhtml"));

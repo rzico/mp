@@ -13,7 +13,7 @@
             </div>
         </div>
         <scroller class="scroller">
-            <div class="wallet-panel">
+            <div class="wallet-panel bkg-primary">
                 <text class="balance">{{cashier.today | currencyfmt}}</text>
                 <div class="wallet-title">
                     <text class="sub_title">今天收银（元）</text>
@@ -27,29 +27,36 @@
             <div class="buttombox">
                 <div class="btn ">
                     <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
-                    <text class="btn-text" value="支付宝" @click="weixin()">支付宝</text>
+                    <text class="btn-text" value="支付宝" @click="payment('alipayPlugIn')">支付宝</text>
                 </div>
                 <div class="btn ">
                     <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信钱包" @click="weixin()">微信钱包</text>
+                    <text class="btn-text" value="微信钱包" @click="payment('weixinPayPlugIn')">微信钱包</text>
                 </div>
             </div>
             <div class="buttombox">
                 <div class="btn ">
                     <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="btn-text" value="会员卡" @click="weixin()">会员卡</text>
+                    <text class="btn-text" value="会员卡" @click="payment('cardPayPlugIn')">会员卡</text>
                 </div>
                 <div class="btn ">
-                    <text class="ico refund" :style="{fontFamily:'iconfont'}">&#xe710;</text>
-                    <text class="btn-text" value="扫码退款" @click="weixin()">扫码退款</text>
+                    <text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>
+                    <text class="btn-text" value="芸店钱包" @click="payment('balancePayPlugIn')">芸店钱包</text>
                 </div>
             </div>
             <div class="content">
-                <text class="sub_title">1.支持微信钱包、支付宝、店内会员卡</text>
+                <text class="sub_title">1.支持微信钱包、支付宝、店内会员卡、芸店钱包</text>
                 <text class="sub_title">2.单笔收钱金额不能超过5000元</text>
                 <text class="sub_title">3.快速秒到,超过30秒没到账联系客服处理</text>
             </div>
         </scroller>
+        <div class="waiting" v-if="isShow()">
+            <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe710;</text>
+            <text class="paymenting">支付中...</text>
+            <div class="close"  @click="close()">
+                <text class="close_button" :style="{fontFamily:'iconfont' }">&#xe60a;</text>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -98,7 +105,6 @@
     }
 
     .wallet-panel {
-        background-color:  #D9141E;
         height:280px;
         flex-direction: column;
         align-items:flex-start;
@@ -176,8 +182,7 @@
         color:red;
         margin-top: 3px;
     }
-    .refund {
-        color:sandybrown;
+    .wallet {
         margin-top: 4px;
     }
 
@@ -185,12 +190,45 @@
         margin-left: 30px;
         margin-top: 50px;
     }
+    .waiting {
+        position: fixed;
+        flex-direction: column;
+        margin-left: 125px;
+        margin-top: 200px;
+        width: 500px;
+        background-color: white;
+        border: 1px;
+        border-color: #eee;
+        border-radius:10px;
+        padding-bottom: 35px;
+        padding-top: 20px;
+        justify-content: center;
+        align-items: center;
+    }
+    .paymenting {
+        justify-content: center;
+    }
+    .close {
+        position:absolute;
+        width:60px;
+        height: 60px;
+        right: 0px;
+        top : 10px;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .close_button {
+        font-size: 48px;
+        color:#ccc
+    }
 
 </style>
 <script>
     import { POST, GET } from '../../assets/fetch'
     import utils from '../../assets/utils'
     import filters from '../../filters/filters.js'
+    const modal = weex.requireModule('modal');
     const event = weex.requireModule('event');
     export default {
         data() {
@@ -198,6 +236,8 @@
                 cashier:{today:0,yesterday:0,shopId:""},
                 shopId:"",
                 amount:"",
+                timer:null,
+                time:30
             }
         },
         components: {
@@ -210,11 +250,12 @@
         },
         methods: {
             view:function () {
+                var _this = this;
                 GET("weex/member/cashier/view.jhtml",function (res) {
                    event.toast(res);
                    if (res.type=="success") {
-                       cashier = res.data;
-                       shopId = res.data.shopId;
+                       _this.cashier = res.data;
+                       _this.shopId = res.data.shopId;
                    } else {
                        event.toast(res.message);
                    }
@@ -226,7 +267,85 @@
                 event.closeURL();
             },
             deposit:function () {
+                event.openURL(utils.locate("view/cashier/deposit.js"),function (e) {});
+            },
+            isShow:function () {
+                return this.time<15;
+            },
+            clearTimer:function () {
+               if (this.timer!=null) {
+                   clearTimeout(this.timer);
+                   this.timer = null;
+               }
+               this.time = 15;
+            },
+            print:function () {
 
+            },
+            close:function () {
+               this.clearTimer();
+            },
+            beginTimer:function (sn) {
+                var _this = this;
+                if (_this.time==0) {
+                    this.clearTimer();
+                    return;
+                }
+                _this.time =  _this.time - 1;
+                POST("payment/query.jhtml?sn="+sn).then(
+                    function (res) {
+                        if (res.type=='success') {
+                            if (res.data=='0000') {
+                                _this.clearTimer();
+                                event.toast("付款成功");
+                                _this.print();
+                            } else
+                            if (res.data=='0001') {
+                                modal.alert({
+                                    message: '付款失败',
+                                    okTitle: '知道了'
+                                })
+                                _this.clearTimer();
+                            } else {
+                                _this.timer = setTimeout(_this.beginTimer(sn),1000);
+                            }
+                        } else {
+                            _this.clearTimer();
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        _this.clearTimer();
+                        event.toast(err.content);
+                    }
+                )
+            },
+            payment:function (plugId) {
+                var _this = this;
+                event.scan(function (message) {
+                    if (message.type=='success') {
+                        POST("weex/member/cashier/submit.jhtml?shopId="+_this.shopId+"&amount="+_this.amount).then(
+                            function (res) {
+                                if (res.type=='success') {
+                                    POST("payment/submit.jhtml?sn="+res.data+"&paymentPluginId="+plugId+"&safeKey="+message.data).then(
+                                        function (data) {
+                                            _this.beginTimer(res.data);
+                                        },function (err) {
+                                            event.toast(err.content);
+                                        }
+                                    )
+                                } else {
+                                    event.toast(res.content);
+                                }
+                            },
+                            function (err) {
+                                event.toast(err.content);
+                            }
+                        )
+                    } else {
+                        event.toast(message.content);
+                    }
+                });
             }
         }
 

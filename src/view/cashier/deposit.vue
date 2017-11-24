@@ -102,6 +102,20 @@
         props: {
             title: { default: "账单" }
         },
+        created() {
+//              页面创建时请求数据
+            this.open( pageNumber,res => {
+                if(res.data.message.type == 'success'){
+                    this.depositList = res.data.data;
+                    modal.toast({message:res.data.data,duration:3});
+                }else{
+                    modal.alert({
+                        message: '系统繁忙',
+                        duration: 0.3
+                    })
+                }
+            });
+        },
         methods: {
 //            是否添加底部边框
             addBorder: function (index) {
@@ -180,19 +194,5 @@
                 return m;
             }
         },
-        created:function () {
-//              页面创建时请求数据
-            this.open( pageNumber,res => {
-                if(res.data.message.type == 'success'){
-                    this.depositList = res.data.data;
-                    modal.toast({message:res.data.data,duration:3});
-                }else{
-                    modal.alert({
-                        message: '系统繁忙',
-                        duration: 0.3
-                    })
-                }
-            });
-        }
     }
 </script>
