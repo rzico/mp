@@ -210,12 +210,12 @@
 </style>
 
 <script>
-    import {dom,event,stream} from '../../weex.js';
-    import {getLetter,dictFirstLetter} from '../../assets/letter';
-    import navbar from '../../include/navbar.vue'
-    import { POST, GET,SCAN } from '../../assets/fetch';
-    import search from '../../include/search.vue';
-    import utils from '../../assets/utils';
+    import {dom,event,stream} from '../../../weex.js';
+    import {getLetter,dictFirstLetter} from '../../../assets/letter';
+    import navbar from '../../../include/navbar.vue'
+    import { POST, GET,SCAN } from '../../../assets/fetch';
+    import search from '../../../include/search.vue';
+    import utils from '../../../assets/utils';
     const modal = weex.requireModule('modal');
     const storage = weex.requireModule('storage');
     var globalEvent = weex.requireModule('globalEvent');

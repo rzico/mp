@@ -1,7 +1,7 @@
 <template>
     <div style="background-color: #eeeeee">
         <div class="header">
-            <navbar :title="title"  @goback="goback"  > </navbar>
+        <navbar :title="title"  @goback="goback"  > </navbar>
         </div>
         <div class="head">
             <text class="one">① 新增  一</text>
@@ -13,11 +13,11 @@
             <div class="iconfontDiv">
                 <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
             </div>
-            <text class="text">绑定完成，请完成交易测试</text>
+            <text class="text">激活店铺完成，请扫码绑定二维码</text>
             <text class="sweepCode" @click="scan()">{{prompting}}</text>
         </div>
-        <div class="button bkg-primary">
-            <text class="buttonText">完成</text>
+        <div class="button bkg-primary" @click="scan()">
+            <text class="buttonText">下一步</text>
         </div>
     </div>
 </template>
@@ -49,7 +49,7 @@
     .four{
         padding-left: 20px;
         font-size: 28px;
-        color:deepskyblue;
+        color: #cccccc;
     }
     .bind{
         flex-direction: column;
@@ -98,26 +98,27 @@
 </style>
 <script>
     var event = weex.requireModule('event');
-    import navbar from '../../include/navbar.vue';
-    import utils from '../../assets/utils';
-    import { POST, GET, SCAN } from '../../assets/fetch'
+    import navbar from '../../../include/navbar.vue';
+    import utils from '../../../assets/utils';
+    import { POST, GET, SCAN } from '../../../assets/fetch'
 
     export default {
         data: function () {
             return{
-                prompting:'点击测试',
+                prompting:'点击扫码',
+                shopId:''
             }
         },
         components: {
             navbar
         },
         props: {
-            title: {default: "第四步"},
+            title: {default: "第三步"},
 
         },
         created() {
             utils.initIconFont();
-            this.shopId = utils.getUrlParameter('shopIdthree')
+            this.shopId = utils.getUrlParameter('shopId')
         },
         methods:{
             goback:function () {
@@ -129,11 +130,15 @@
                     utils.readScan(message.data,function (data) {
                         _this.code = data.data.code
                         if(data.type == 'success'){
-                            POST('weex/member/shop/test.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
+                            POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
                                 function (mes) {
-                                    utils.debug(mes)
                                     if (mes.type == "success") {
-                                        event.closeURL();
+                                        utils.debug(mes)
+                                        event.openURL('http://192.168.2.117:8081/tradeTests.weex.js?shopIdthree='+_this.shopId, function (message) {
+                                            if (message.type == "success") {
+                                                event.closeURL(message);
+                                            }
+                                        })
                                     } else {
                                         event.toast(mes.content);
                                     }

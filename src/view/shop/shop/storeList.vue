@@ -88,10 +88,10 @@
     }
 </style>
 <script>
-import navbar from '../../include/navbar.vue';
-import {POST, GET} from '../../assets/fetch';
-import utils from '../../assets/utils';
-import filters from '../../filters/filters';
+import navbar from '../../../include/navbar.vue';
+import {POST, GET} from '../../../assets/fetch';
+import utils from '../../../assets/utils';
+import filters from '../../../filters/filters';
 
 var event = weex.requireModule('event');
 const modal = weex.requireModule('modal');
@@ -131,6 +131,7 @@ export default {
         },
         //            上拉加载
         onloading (event) {
+            utils.debug(111)
             var _this = this;
             _this.loading = true;
             setTimeout(
@@ -141,6 +142,7 @@ export default {
         },
 //            下拉刷新
         onrefresh (event) {
+            utils.debug(111)
             var _this = this;
             _this.refreshing = true;
             setTimeout(
