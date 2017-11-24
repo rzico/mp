@@ -42,13 +42,13 @@
                     </div>
                 </div>
                 <div class="shareLineBox" >
-                    <div class="singleBox">
-                        <div class="imgBox">
-                            <text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>
-                            <!--<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>-->
-                        </div>
-                        <text class="fz28 mt20 color444">举报</text>
-                    </div>
+                    <!--<div class="singleBox">-->
+                        <!--<div class="imgBox">-->
+                            <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
+                            <!--&lt;!&ndash;<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>&ndash;&gt;-->
+                        <!--</div>-->
+                        <!--<text class="fz28 mt20 color444">举报</text>-->
+                    <!--</div>-->
                     <div  class="singleBox">
                         <div class="imgBox">
                             <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->

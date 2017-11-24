@@ -41,7 +41,7 @@
             <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
                 <scroller scroll-direction="horizontal" class="corpusScroll">
                     <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
                 <!--<div class="corpusIconBox"  @click="goCorpus()">-->
@@ -93,7 +93,7 @@
             <div  class="corpusBox"  >
                 <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
-                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
             </div>
@@ -422,12 +422,6 @@
         font-size: 26px;
         margin-top: 240px;
         padding-bottom: 200px;
-    }
-    .active{
-        color: #F0AD3C;
-        border-color: #F0AD3C;
-        border-style: solid;
-        border-bottom-width:4px;
     }
 
     .noActive{

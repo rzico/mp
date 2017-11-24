@@ -276,6 +276,7 @@
 //                    判断data.data有没有数据
                     if(utils.isNull(data.data)){
                         event.toast('没有更多联系人了!');
+                        return;
                     }
                     data.data.forEach(function (item,index) {
                         let option = {

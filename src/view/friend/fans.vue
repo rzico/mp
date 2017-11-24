@@ -18,7 +18,7 @@
                     </div>
                     <!--关注与否-->
                     <div class="status_panel" v-if="!item.follow" @click="doFocus(item)">
-                        <text class="focus bkg-primary" >关注</text>
+                        <text class="focus bkg-primary bd-primary" >关注</text>
                     </div>
                     <div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">
                         <text class="ask ">已关注</text>
@@ -91,7 +91,6 @@
         border-radius:10px;
         width: 125px;
         color:#fff;
-        border-color: #D9141E;
         border-style: solid;
         border-width: 1px;
     }

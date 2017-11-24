@@ -38,7 +38,7 @@
             <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
                 <scroller scroll-direction="horizontal" class="corpusScroll">
                     <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
                 <div class="corpusIconBox"  @click="goCorpus()">
@@ -105,7 +105,7 @@
             <div  class="corpusBox"  >
                 <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
 
                     </div>
                 </scroller>
@@ -484,12 +484,7 @@
         margin-top: 240px;
         padding-bottom: 200px;
     }
-    .active{
-        color: #F0AD3C;
-        border-color: #F0AD3C;
-        border-style: solid;
-        border-bottom-width:4px;
-    }
+
 
     .noActive{
         border-bottom-width:0px;
@@ -535,8 +530,8 @@
         width:750px;
         top:0;
         height:420px;
-        filter: blur(4px);
-        opacity: 1;
+        /*filter: blur(4px);*/
+        /*opacity: 1;*/
         /*-moz-filter: blur(4px);*/
         /*-webkit-filter: blur(4px);*/
         /*-o-filter: blur(4px);*/
@@ -635,8 +630,8 @@
                 isDisappear:false,
                 corpusScrollTop:0,
                 canScroll:true,
-                userName:'未设置',
-                userSign:'未设置',
+                userName:'未填写',
+                userSign:'未填写',
                 whichCorpus:0,
                 isNoArticle:false,
 //                refreshing:false,
@@ -645,8 +640,8 @@
                 collectNum:0,
                 moneyNum:0,
                 focusNum:0,
-                imageUrl:utils.locate('resources/images/background.jpg'),
-                bgImgUrl:utils.locate('resources/images/background.jpg'),
+                imageUrl:utils.locate('resources/images/background.png'),
+                bgImgUrl:utils.locate('resources/images/background.png'),
 //                maskUrl:utils.locate('resources/images/frosted.png'),
 //                id:'334',
                 showLoading: 'hide',
@@ -1232,8 +1227,12 @@
                     utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
                             _this.imageUrl = data.data.logo;
-                            _this.userName = data.data.nickName;
-                            _this.userSign = data.data.autograph
+                            if(!utils.isNull(data.data.nickName)){
+                                _this.userName = data.data.nickName;
+                            }
+                            if(!utils.isNull(data.data.autograph)){
+                                _this.userSign = data.data.autograph;
+                            }
                         }else{
 //                            return ;
                         }
@@ -1248,8 +1247,12 @@
 //                    utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
                             _this.imageUrl = data.data.occupation;
-                            _this.userName = data.data.nickName;
-                            _this.userSign = data.data.autograph
+                            if(!utils.isNull(data.data.nickName)){
+                                _this.userName = data.data.nickName;
+                            }
+                            if(!utils.isNull(data.data.autograph)){
+                                _this.userSign = data.data.autograph;
+                            }
                         }else{
 //                            return ;
                         }

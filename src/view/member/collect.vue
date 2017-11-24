@@ -1,7 +1,7 @@
 <template>
     <div>
         <navbar :title="title" @goback="goback" > </navbar>
-        <scroller style="background-color: #fff">
+        <scroller style="background-color: #fff" :scrollable="canScroll">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
@@ -169,6 +169,7 @@
                 pageSize:15,
                 UId:'',
                 refreshState:'',
+                canScroll:true,
                 isSelf:false,
                 userName:'我',
                 screenHeight:0
