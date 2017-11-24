@@ -400,7 +400,7 @@
                 articleId:'',
                 refreshing: false,
                 firstPlusShow:true,
-                coverImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
+                coverImage:utils.locate('resources/images/background.png'),
                 setTitle:'点击设置标题',
                 addMusic:'添加音乐',
                 musicName:'',
@@ -1182,10 +1182,11 @@
                 storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
-                    event.toast( _this.voteList);
-                    if(message.data != '') {
+                    if(message.type=='success' && message.data != '') {
 //                        直接=无法重新渲染页面。需要push后才可以
-                        _this.voteList[index] = message.data;
+//                        _this.voteList[index] = message.data;
+                        _this.voteList.splice(index,1);
+                        _this.voteList.splice(index,0,message.data);
                     }
                 });
             }

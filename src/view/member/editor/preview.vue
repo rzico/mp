@@ -9,7 +9,7 @@
             <text class="nextStep">下一步</text>
         </div>
         <!--点赞 评论 分享-->
-        <div class="footBox mianBgColor" v-if="publish" >
+        <div class="footBox bkg-primary" v-if="publish" >
             <div class="bottomBtnBox" @click="goLaud()">
                 <text class="fz26fff fz45" :class="[isLaud ? 'laudActive' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                 <text class="fz26fff"  :class="[isLaud ? 'laudActive' : '']">点赞 {{laudNum}}</text>
@@ -24,11 +24,11 @@
             </div>
         </div>
         <!--模版-->
-        <div class="templateIcon mianBgColor"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
+        <div class="templateIcon bkg-primary"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
             <text class="templateText" >模版</text>
         </div>
         <!--收藏-->
-        <div class="templateIcon mianBgColor"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
+        <div class="templateIcon bkg-primary"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
             <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
             <text class="templateText collectText" >收藏</text>
         </div>
@@ -102,10 +102,10 @@
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                     <text class="fz28 pl10">作者主页</text>
                 </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                    <text class="fz28 pl10">举报</text>
-                </div>
+                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                    <!--<text class="fz28 pl10">举报</text>-->
+                <!--</div>-->
 
             </div>
         </div>
