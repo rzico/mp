@@ -33,8 +33,8 @@
         },
         props: {
             value: { default: "" },
-            title: { default: "登录" },
-            mbtitle: { default: "手机验证码登录" }
+            title: { default: "绑定手机" },
+            mbtitle: { default: "绑定手机号" }
         },
         created () {
             storage.getItem('mobile', event => {
@@ -49,18 +49,14 @@
                 var _this = this;
                 event.encrypt(_this.value, function (message){
                     if (message.type == "success") {
-//                        event.toast(message)
                     POST('weex/member/mobile/send_mobile.jhtml?mobile=' + message.data).then(
                         function (weex) {
-//                            event.toast('weex/login/send_mobile.jhtml?mobile=' + _this.value)
                             if (weex.type == "success") {
-                                event.openURL(utils.locate("view/member/mobile/captcha.js?mobile=" +_this.value) ,function () {
-                                    event.closeURL();
+                                event.openURL(utils.locate("view/member/mobile/captcha.js?mobile=" +_this.value) ,function (res) {
+                                    event.closeURL(res);
                                 })
-
-
                             } else {
-                                native.showToast(weex.data.content);
+                                event.toast(weex.content)
                             }
 
                         }, function (err) {
@@ -74,8 +70,6 @@
             },
             onChange: function (e) {
                 var _this = this;
-//                modal.toast({message:this.value});
-//                event.toast(e);
                 _this.value = e
             }
         }

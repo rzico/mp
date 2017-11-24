@@ -52,7 +52,7 @@
                                 if (data.type == "success") {
                                     event.openURL(utils.locate("view/member/passowrd/captcha.js?mobile=" +_this.value),
                                         function (resp) {
-//                                           event.closeURL(resp);
+                                           event.closeURL(resp);
                                         });
                                 } else {
                                     event.toast(data.content);
