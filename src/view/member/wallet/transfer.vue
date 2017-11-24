@@ -84,7 +84,7 @@
         color:#cccccc;
         lines:1;
         text-overflow: ellipsis;
-        width:300px;
+        width:200px;
     }
     .wechat{
         background-color:#ffffff;
@@ -115,7 +115,7 @@
     .wechatName{
         font-size:28px;
         color:#ccc;
-        width:300px;
+        width:200px;
         lines:1;
         text-overflow: ellipsis;
     }
