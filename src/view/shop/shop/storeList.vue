@@ -131,24 +131,22 @@ export default {
         },
         //            上拉加载
         onloading (event) {
-            utils.debug(111)
             var _this = this;
             _this.loading = true;
-            setTimeout(
-                _this.open(function () {
+            setTimeout(function () {
+                _this.open()
                     _this.loading = false
-                })
+            }
                 ,1500)
         },
 //            下拉刷新
         onrefresh (event) {
-            utils.debug(111)
             var _this = this;
             _this.refreshing = true;
-            setTimeout(
-                _this.open(function () {
+            setTimeout(function () {
+                    _this.open()
                     _this.refreshing = false;
-                })
+            }
                 ,1500)
         },
 
