@@ -90,7 +90,6 @@
                             function (data) {
                                 utils.debug(data)
                                 if (data.type == "success") {
-//                                    _this.$refs.captcha.beginTimer();
                                     let backData = utils.message('success','成功');
                                     event.closeURL(backData);
                                 } else {

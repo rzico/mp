@@ -97,8 +97,8 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="button" @click="logout">
-                    <text class="buttonText">注销账号</text>
+                <div class="button primary" @click="logout">
+                    <text class="buttonText ">注销账号</text>
                 </div>
             </div>
          </scroller>
@@ -124,7 +124,6 @@
         overflow:hidden;
     }
     .button{
-        background-color:#D9141E;
         margin-left: 20px;
         margin-right: 40px;
         margin-top: 48px;
@@ -132,7 +131,7 @@
         height: 82px;
         align-items:center;
         justify-content: center;
-        border-radius:15px;
+        border-radius:10px;
     }
     .buttonText{
         font-size: 40px;
@@ -449,23 +448,19 @@
                 var _this = this;
                 if (!_this.attribute.bindMobile) {
                     event.openURL(utils.locate("view/member/password/index.js"),
-                        function (updated) {
-                            if (updated!=null) {
-                                _this.attribute.bindMobile = updated;
-                                _this.attribute.hasPassword = updated;
-                            } else {
-                                _this.attribute.hasPassword = false;
+                        function (res) {
+                            if (res.type=='success') {
+                                _this.attribute.bindMobile = true;
+                                _this.attribute.hasPassword = true;
                             }
                             _this.updateStatus(_this.attribute);
                         }
                     )
                 } else {
                     event.openURL(utils.locate("view/member/password/captcha.js"),
-                        function (updated) {
-                            if (updated!=null) {
+                        function (res) {
+                            if (res.type=='success') {
                                 _this.attribute.hasPassword = updated;
-                            } else {
-                                _this.attribute.hasPassword = false;
                             }
                             _this.updateStatus(_this.attribute);
                         }
@@ -478,11 +473,9 @@
                     return;
                 }
                 event.openURL(utils.locate("view/member/mobile/index.js"),
-                    function (binded) {
-                        if (binded!=null) {
-                            _this.attribute.bindMobile = binded;
-                        } else {
-                            _this.attribute.bindMobile = false;
+                    function (res) {
+                        if (res.type=="success") {
+                            _this.attribute.bindMobile = true;
                         }
                         _this.updateStatus(_this.attribute);
                     }
@@ -495,13 +488,9 @@
                     return;
                 }
                 event.wxAuth(function (msg) {
-//                    utils.debug(msg)
-
                    if (msg.type=="success") {
-//                        utils.debug("weex/member/weixin/bind.jhtml?code="+msg.content)
                        POST("weex/member/weixin/bind.jhtml?code="+msg.data).then(
                            function (data) {
-                               utils.debug(data)
                                if (data.type="success") {
                                    _this.attribute.bindWeiXin = true;
                                    _this.updateStatus(_this.attribute);

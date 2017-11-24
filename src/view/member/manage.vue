@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="cell-row cell-line">
-                    <div class="cell-panel space-between">
+                    <div class="cell-panel space-between" @click="beginShare()">
                          <div class="flex-row flex-start">
                              <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
                              <text class="title ml10">推荐给好友</text>
@@ -113,7 +113,7 @@
                              <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                          </div>
                      </div>
-                    <div class="cell-panel space-between cell-clear">
+                    <div class="cell-panel space-between cell-clear" @click="gmchat()">
                          <div class="flex-row flex-start">
                              <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
                              <text class="title ml10">联系客服</text>
@@ -125,6 +125,10 @@
                  </div>
 
         </scroller>
+        <div v-if="showShare"  key="share">
+            <div class="mask" @touchstart="maskTouch"></div>
+            <share @doShare="doShare" @doCancel="doCancel"></share>
+        </div>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -166,13 +170,15 @@
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
     import navbar from '../../include/navbar.vue';
+    import share from '../../include/share.vue'
     export default {
         components: {
-            navbar
+            navbar,share
         },
         data() {
             return {
-                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通"}
+                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通"},
+                showShare:false
             }
         },
         props: {
@@ -184,6 +190,13 @@
             _this.open();
         },
         methods: {
+            maskTouch(){
+                this.showShare = false;
+            },
+//            取消分享
+            doCancel(){
+                this.showShare = false;
+            },
             open:function () {
                 var _this = this;
                 GET("weex/member/manager/view.jhtml",
@@ -242,7 +255,44 @@
                         return ;
                     }
                 );
+            },
+            doShare(id){
+                var shareType;
+                let _this = this;
+                switch(id){
+                    case 0 :
+                        shareType = 'timeline';
+                        break;
+                    case 1 :
+                        shareType = 'appMessage';
+                        break;
+                    case 2 :
+                        shareType = 'favorite';
+                        break;
+                    default:
+                        shareType = '';
+                        break;
+                }
+
+                var option = {
+                    title:"【"+_this.nickName+"】推荐给你一个好用的工具，快去看看",
+                    text:"超强图文小视频分享社区,中国版Facebook.",
+                    imageUrl:_this.logo,
+                    url:utils.remote("?xuid="+_this.id),
+                    type:shareType
+                }
+                _this.showShare = false;
+                event.wxShare(option,function (data) {
+
+                })
+            },
+            beginShare:function () {
+                this.showShare = true;
+            },
+            gmchat:function () {
+                event.navToChat("gm_10211");
             }
+
         }
     }
 </script>

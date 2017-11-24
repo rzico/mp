@@ -25,8 +25,8 @@
 
         },
         props: {
-            title: { default: "登录"},
-            cptitle: { default: "输入验证码" }
+            title: { default: "绑定手机"},
+            cptitle: { default: "输入手机验证码" }
         },
         data () {
             return {
@@ -69,11 +69,10 @@
                 this.captcha = e;
                 event.encrypt(e,function (msg) {
                     if (msg.type=="success") {
-                        POST('weex/member/mobile/captcha.jhtml?captcha=' + msg.data).
+                        POST('weex/member/mobile/submit.jhtml?captcha=' + msg.data).
                         then(function (data) {
                                 if (data.type == "success") {
-                                    let backData = utils.message('success','成功','');
-                                    event.closeURL(backData);
+                                    event.closeURL(data);
                                 } else {
                                     event.toast(data.content);
                                 }

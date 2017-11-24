@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-panel tip" v-if="isActivate()" @click="activate()">
+            <div class="sub-panel tip" v-if="isNoActivate()" @click="activate()">
                 <text class="vip">点亮VIP专栏特权（388元/年）</text>
             </div>
 
@@ -41,7 +41,7 @@
                         <text class="title ml10">启用优惠券</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch"  :checked="topic.useCoupon" @change="onUseCoupon"></switch>
+                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCoupon" @change="onUseCoupon"></switch>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                         <text class="title ml10">开通会员卡</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :checked="topic.useCard" @change="onUseCard"></switch>
+                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCard" @change="onUseCard"></switch>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         <text class="title ml10">开通收银台</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :checked="topic.useCashier" @change="onUseCashier"></switch>
+                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCashier" @change="onUseCashier"></switch>
                     </div>
                 </div>
             </div>
@@ -307,6 +307,9 @@
             },
             opened:function () {
                 return this.topic.id>0;
+            },
+            isNoActivate:function () {
+                return this.topic.status!="success" && this.opened();
             },
             isActivate:function () {
                 return this.topic.status!="success";
