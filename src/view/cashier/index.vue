@@ -44,6 +44,16 @@
                     <text class="btn-text" value="芸店钱包" @click="payment('balancePayPlugIn')">芸店钱包</text>
                 </div>
             </div>
+            <div class="buttombox">
+                <div class="btn ">
+                    <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
+                    <text class="btn-text" value="刷卡" @click="payment('balancePayPlugIn')">刷卡</text>
+                </div>
+                <div class="btn ">
+                    <text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>
+                    <text class="btn-text" value="现金" @click="payment('cardPayPlugIn')">现金</text>
+                </div>
+            </div>
             <div class="content">
                 <text class="sub_title">1.支持微信钱包、支付宝、店内会员卡、芸店钱包</text>
                 <text class="sub_title">2.单笔收钱金额不能超过5000元</text>
@@ -126,6 +136,7 @@
         margin-top: 30px;
         margin-left: 30px;
         margin-right: 30px;
+        margin-bottom: 10px;
         flex-direction: row;
         align-items:center;
         height: 120px;
@@ -142,7 +153,7 @@
     }
 
     .buttombox {
-        margin-top: 20px;
+        margin-top: 10px;
         margin-left: 30px;
         margin-right: 30px;
         flex-direction: row;
@@ -184,6 +195,16 @@
     }
     .wallet {
         margin-top: 4px;
+    }
+    .cash {
+        color:#F0AD3C;
+        margin-top: 3px;
+        margin-right: 20px;
+    }
+    .bank {
+        margin-top: 4px;
+        color:#0088fb;
+        margin-right: 10px;
     }
 
     .content {

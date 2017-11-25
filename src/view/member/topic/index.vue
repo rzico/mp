@@ -340,15 +340,18 @@
                     function (mes) {
                         if (mes.type == "success") {
                             setTimeout(
-                               _this.load(), 2000);
+                                function () {
+                               _this.load()}, 2000);
                         } else {
                             setTimeout(
-                                _this.load(), 2000);
+                                function () {
+                                    _this.load()}, 2000);
                             event.toast(mes.content);
                         }
                     }, function (err) {
                         setTimeout(
-                            _this.load(), 2000);
+                            function () {
+                                _this.load()}, 2000);
                         event.toast(err.content);
                     }
                 )
@@ -360,15 +363,18 @@
                     function (mes) {
                         if (mes.type == "success") {
                             setTimeout(
-                                _this.load(), 2000);
+                                function () {
+                                    _this.load()}, 2000);
                         } else {
                             setTimeout(
-                                _this.load(), 2000);
+                                function () {
+                                    _this.load()}, 2000);
                             event.toast(mes.content);
                         }
                     }, function (err) {
                         setTimeout(
-                            _this.load(), 2000);
+                            function () {
+                                _this.load()}, 2000);
                         event.toast(err.content);
                     }
                 )
@@ -380,15 +386,18 @@
                     function (mes) {
                         if (mes.type == "success") {
                             setTimeout(
-                                _this.load(), 2000);
+                                function () {
+                                    _this.load()}, 2000);
                         } else {
                             setTimeout(
-                                _this.load(), 2000);
+                                function () {
+                                    _this.load()}, 2000);
                             event.toast(mes.content);
                         }
                     }, function (err) {
                         setTimeout(
-                            _this.load(), 2000);
+                            function () {
+                                _this.load()}, 2000);
                         event.toast(err.content);
                     }
                 )

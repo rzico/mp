@@ -17,8 +17,8 @@
         </div>
         <image class="logo" resize="cover" :src="data.card.logo"></image>
         <div class="bbox">
-            <text class="button bw" >充值</text>
-            <text class="button bw" >退款</text>
+            <text class="button bw" @click="fill()">充值</text>
+            <text class="button bw" @click="refund()">退款</text>
         </div>
         <div class="content">
             <text class="intro" >1.{{data.prerogative}}</text>
@@ -169,6 +169,22 @@
             },
             goback: function (e) {
                 event.closeURL();
+            },
+            fill: function () {
+                var _this = this;
+                event.openURL(utils.locate("view/shop/card/fill.js?id="+this.id),function (data) {
+                    if (data.type=='success') {
+                        _this.load();
+                    }
+                })
+            },
+            refund: function () {
+                var _this = this;
+                event.openURL(utils.locate("view/shop/card/refund.js?id="+this.id),function (data) {
+                    if (data.type=='success') {
+                        _this.load();
+                    }
+                })
             },
             load:function () {
                 var _this = this;
