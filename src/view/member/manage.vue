@@ -224,11 +224,12 @@
                 let _this = this
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
-                    utils.debug(data)
+                    if(data.type == 'success' && data.data != ''){
                         _this.member.logo = data.data.logo;
                         _this.member.nickName = data.data.nickName;
                         _this.member.autograph = data.data.autograph;
                         return ;
+                        }
                     }
                 );
             },
