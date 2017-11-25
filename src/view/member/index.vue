@@ -51,7 +51,7 @@
         </div>
         <!--</transition-group>-->
         <!--顶部个人信息栏-->
-        <div class="topBox" ref='topBox'>
+        <div class="topBox bkg-primary" ref='topBox'>
             <!--背景图片-->
             <image   class="backgroundImage" :src="bgImgUrl"></image>
             <!--遮罩层-->
@@ -662,16 +662,6 @@
                 helpList:[{
                     articleSign:'样例',
                     articleTitle:'我在魔篇有了自己的专栏！',
-                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                    articleDate:'2017-10-19'
-                },{
-                    articleSign:'样例',
-                    articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
-                    articleDate:'2017-10-19'
-                },{
-                    articleSign:'样例',
-                    articleTitle:'魔篇使用帮助！',
                     articleCoverUrl:utils.locate('resources/images/column.jpg'),
                     articleDate:'2017-10-19'
                 },{
