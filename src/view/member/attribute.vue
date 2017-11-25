@@ -5,7 +5,7 @@
             <div class="cell-row cell-line">
                  <div class="cell-logo">
                     <div class="flex-row flex-start">
-                        <text class="title ml10">通用设置</text>
+                        <text class="title ml10">头像</text>
                     </div>
                     <div class="flex-row flex-end">
                         <image class="logo" resize="cover" @click="headLogo"
@@ -97,7 +97,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="button primary" @click="logout">
+                <div class="button bkg-primary" @click="logout">
                     <text class="buttonText ">注销账号</text>
                 </div>
             </div>
@@ -122,16 +122,6 @@
         margin:10px;
         border-radius:60px;
         overflow:hidden;
-    }
-    .button{
-        margin-left: 20px;
-        margin-right: 40px;
-        margin-top: 48px;
-        margin-bottom: 20px;
-        height: 82px;
-        align-items:center;
-        justify-content: center;
-        border-radius:10px;
     }
     .buttonText{
         font-size: 40px;

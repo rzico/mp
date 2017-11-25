@@ -3,7 +3,10 @@
         <navbar :title="title" @goback="goback" border="false"> </navbar>
 
         <div class="box">
-            <text class="name" >{{data.card.name}}</text>
+            <div class="flex-center">
+              <text class="name" >{{data.card.name}}</text>
+              <text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>
+            </div>
             <text class="code" >NO.{{data.card.code | codefmt}}</text>
             <text class="balance" >{{data.card.balance | currencyfmt}}</text>
             <div class="flex-center">
@@ -18,8 +21,8 @@
             <text class="button bw" >退款</text>
         </div>
         <div class="content">
-            <text class="intro" >{{data.prerogative}}</text>
-            <text class="intro" >{{data.description}}</text>
+            <text class="intro" >1.{{data.prerogative}}</text>
+            <text class="intro" >2.{{data.description}}</text>
         </div>
     </div>
 </template>
@@ -57,6 +60,21 @@
     .name {
         margin-top: 60px;
         color:#bbb
+    }
+    .vip1 {
+        margin-top: 50px;
+        margin-left: 10px;
+        color:#FFDD1F;
+    }
+    .vip2 {
+        margin-top: 50px;
+        margin-left: 10px;
+        color:#FF8800;
+    }
+    .vip3 {
+        margin-top: 50px;
+        margin-left: 10px;
+        color:#DC0000;
     }
     .content {
         margin-top: 20px;
@@ -96,9 +114,10 @@
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
-    import filters from '../../filters/filters.js';
+    import filters from '../../../filters/filters.js';
     const event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue'
+    var he = require('he');
     export default {
         components: {
             navbar
@@ -128,12 +147,33 @@
             this.load();
         },
         methods: {
+            vipClass:function (v) {
+                if (v=='vip3') {
+                    return "vip3";
+                } else
+                if (v=='vip2') {
+                    return "vip2";
+                } else {
+                    return "vip1";
+                }
+            },
+            vip:function (v) {
+               if (v=='vip3') {
+                   return he.decode('&#xe639;');
+               } else
+               if (v=='vip2') {
+                   return he.decode('&#xe638;');
+               } else {
+                   return he.decode('&#xe636;');
+               }
+            },
             goback: function (e) {
                 event.closeURL();
             },
             load:function () {
                 var _this = this;
-                GET("weex/member/card/view.jhtml?id="+_this.id,function (res) {
+                _this.id = 40;
+                GET("weex/member/card/info.jhtml?id="+_this.id,function (res) {
                     if (res.type=='success') {
                         _this.data = res.data;
                     } else {
