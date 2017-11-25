@@ -191,7 +191,7 @@
                 this.showShare = false;
             },
             store:function () {
-                event.openURL(utils.locate('view/shop/shop/newShop.js'),function () {
+                event.openURL(utils.locate('view/shop/shop/storeList.js'),function () {
 
                 })
             },
