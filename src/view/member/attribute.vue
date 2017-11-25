@@ -431,7 +431,7 @@
                 var _this = this;
                 GET("weex/member/attribute.jhtml",
                     function (data) {
-                    utils.debug(data)
+//                    utils.debug(data)
                         if (data.type=="success") {
                             _this.attribute = data.data;
                             _this.updateStatus(_this.attribute);
