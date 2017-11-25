@@ -2,20 +2,13 @@
     <div class="corpusBox"  >
         <scroller scroll-direction="horizontal" class="corpusScroll" show-scrollbar="false">
             <div class="articleClass">
-                <text @click="corpusChange(index,item.id)"class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index ? 'active' : 'noActive']">{{item.name}}</text>
+                <text @click="corpusChange(index,item.id)"class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
             </div>
         </scroller>
     </div>
 </template>
+<style lang="less" src="../style/wx.less"/>
 <style>
-    .active{
-        color: #99CCFF;
-        border-color: #99CCFF;
-        /*color: #D9141E;*/
-        /*border-color: #D9141E;*/
-        border-style: solid;
-        border-bottom-width:4px;
-    }
     .noActive{
         border-bottom-width:0px;
     }

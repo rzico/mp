@@ -149,6 +149,9 @@
             this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);
+            setTimeout(function () {
+
+            },2000)
             let selfId = event.getUId();
             if(this.UId == selfId){
                 this.isSelf = true;

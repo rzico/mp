@@ -5,10 +5,10 @@
                <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
                <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
             </div>
-            <text class="clearBuf ico_small gray" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
+            <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
         </div>
         <div class="flex-center flex1" @click="goback()" v-if="showCancel">
-            <text class="primary">取消</text>
+            <text class="primary fz32">取消</text>
         </div>
     </div>
  </template>
@@ -23,7 +23,7 @@
         justify-content: space-between;
         border-bottom-width: 1px;
         border-bottom-style: solid;
-        border-bottom-color: #999;
+        border-bottom-color: #ccc;
     }
     .search_box {
         margin-top:20px;

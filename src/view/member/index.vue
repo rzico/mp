@@ -648,7 +648,7 @@
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
 
                 corpusList:[{
-                    name:'全部文章',
+                    name:'全部',
                     id:''
                 },{
                     name:'回收站',
@@ -656,7 +656,7 @@
                 }],
                 listCurrent:0,
                 listPageSize:10,
-//                全部文章==================
+//                文章==================
                 articleList: [],
 
                 helpList:[{
@@ -790,7 +790,7 @@
 //                            event.toast(data.data);
                             _this.corpusList = '';
                             _this.corpusList =[{
-                                name:'全部文章',
+                                name:'全部',
                                 id:''
                             },{
                                 name:'回收站',

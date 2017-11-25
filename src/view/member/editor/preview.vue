@@ -9,10 +9,10 @@
             <text class="nextStep">下一步</text>
         </div>
         <!--点赞 评论 分享-->
-        <div class="footBox bkg-primary" v-if="publish" >
+        <div class="footBox " v-if="publish" >
             <div class="bottomBtnBox" @click="goLaud()">
-                <text class="fz26fff fz45" :class="[isLaud ? 'laudActive' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                <text class="fz26fff"  :class="[isLaud ? 'laudActive' : '']">点赞 {{laudNum}}</text>
+                <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                <text class="fz26fff"  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
             </div>
             <div class="bottomBtnBox"  @click="goShare(0)">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
@@ -24,11 +24,11 @@
             </div>
         </div>
         <!--模版-->
-        <div class="templateIcon bkg-primary"  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
+        <div class="templateIcon "  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
             <text class="templateText" >模版</text>
         </div>
         <!--收藏-->
-        <div class="templateIcon bkg-primary"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
+        <div class="templateIcon "  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
             <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
             <text class="templateText collectText" >收藏</text>
         </div>
@@ -151,7 +151,7 @@
     .fz26fff{
         font-size: 26px;
         line-height: 26px;
-        color: #fff;
+        color: #888;
     }
     .fz45{
         font-size: 50px;
@@ -256,7 +256,7 @@
         background-color: #333;
     }
     .templateText{
-        color: #fff;
+        color: #888;
         font-size: 28px;
     }
     .templateIcon{
@@ -268,6 +268,10 @@
         right: 30px;
         width:90px;
         height:90px;
+        background-color: #fff;
+        border-style:solid;
+        border-width: 1px;
+        border-color: #888;
     }
     .nextStep{
         color: #fff;
@@ -279,9 +283,12 @@
         flex-direction: row;
         width:750px;
         height:100px;
-        /*background-color: #D9141E;*/
+        background-color: #fff;
         position: fixed;
         bottom: 0;
+        border-style:solid;
+        border-top-width: 1px;
+        border-color: #888;
     }
     .webView{
         width:750px;

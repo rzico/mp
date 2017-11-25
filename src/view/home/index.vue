@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <headerNav></headerNav>
+        <headerNav @search="gosearch"></headerNav>
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="testRef" @corpusChange="corpusChange"></tabNav>
         <div  class="pageBox" :style="{width:pageWidth + 'px'}" ref="contentBox">
             <div v-for="(item,index) in corpusList" v-if="item.load == 1" :style="{left: index * 750 + 'px'}" class="categoryBox">
@@ -157,7 +157,19 @@
                         })
                     }
                 }
-            }
+            },
+                //            触发自组件的跳转方法
+                gosearch:function () {
+//                    event.openURL(utils.locate('view/home/search.js'),function (message) {
+////                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+//                        if(message.data != ''){
+//                            event.closeURL(message);
+//                        }
+//                    });
+                    event.openURL(utils.locate('view/home/search.js'),
+                        function () {}
+                    )
+                },
         }
     }
 </script>

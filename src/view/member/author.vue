@@ -564,15 +564,15 @@
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.jpg'),
                 bgImgUrl:utils.locate('resources/images/background.jpg'),
-//                maskUrl:utils.locate('resources/images/frosted.png'),
+//                maskUrl:utils.('resources/images/frosted.png'),
                 showLoading: 'hide',
                 corpusList:[{
-                    name:'全部文章',
+                    name:'全部',
                     id:''
                 }],
                 listCurrent:0,
                 listPageSize:10,
-//                全部文章
+//                文章
                 articleList: [],
                 isFocus:false,
                 UId:'',
