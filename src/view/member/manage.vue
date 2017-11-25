@@ -41,7 +41,7 @@
                 </div>
 
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between ">
+                <div class="cell-panel space-between " @click="store">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
                         <text class="title ml10">店铺管理</text>
@@ -189,6 +189,11 @@
 //            取消分享
             doCancel(){
                 this.showShare = false;
+            },
+            store:function () {
+                event.openURL(utils.locate('view/shop/shop/newShop.js'),function () {
+
+                })
             },
             open:function () {
                 var _this = this;
