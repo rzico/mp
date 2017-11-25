@@ -220,8 +220,18 @@
                 let _this = this;
                 event.openURL(utils.locate('widget/city.js?type=0'),function (data) {
                     if(data.type == 'success' && !utils.isNull(data.data) ){
-                        _this.areaName = data.data.name;
-                        event.toast(data.data.chooseId + data.data.chooseArea);
+                        POST('weex/member/update.jhtml?areaId=' + data.data.chooseId).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+//                                        utils.debug(mes)
+                                    _this.areaName = data.data.name;
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
                     }
 
                 })
@@ -373,7 +383,6 @@
             updateStatus: function (attr) {
                 var _this = this;
                 _this.logo = attr.logo;
-                event.toast(_this.logo);
                 _this.nickName = attr.nickName;
                 if (attr.autograph!=null && attr.autograph!="") {
                     _this.autograph = attr.autograph;
@@ -431,7 +440,7 @@
                 var _this = this;
                 GET("weex/member/attribute.jhtml",
                     function (data) {
-                    utils.debug(data)
+//                    utils.debug(data)
                         if (data.type=="success") {
                             _this.attribute = data.data;
                             _this.updateStatus(_this.attribute);

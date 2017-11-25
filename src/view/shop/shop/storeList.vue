@@ -2,9 +2,10 @@
     <div style="background-color: #eeeeee">
         <navbar :title="title" :complete="complete" @goback="goback"></navbar>
         <div class="head">
-            <text class="clickAdd">+点击添加商铺</text>
+            <text class="clickAdd" @click="add">+点击添加商铺</text>
         </div>
-        <list class="list">
+        <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
+        <list class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新</text>
             </refresh>
@@ -92,6 +93,7 @@ import navbar from '../../../include/navbar.vue';
 import {POST, GET} from '../../../assets/fetch';
 import utils from '../../../assets/utils';
 import filters from '../../../filters/filters';
+import noData from '../../../include/noData.vue';
 
 var event = weex.requireModule('event');
 const modal = weex.requireModule('modal');
@@ -105,10 +107,11 @@ export default {
         }
     },
     components: {
-        navbar
+        navbar,noData
     },
     props: {
         title: {default: "我的店铺"},
+        noDataHint: { default: "没有新朋友"},
     },
     created() {
         utils.initIconFont();
@@ -128,6 +131,12 @@ export default {
             }, function (err) {
                 event.toast(err.content)
             })
+        },
+        isNoEmpty:function() {
+            return this.lists.length!=0;
+        },
+        isEmpty:function() {
+            return this.lists.length==0;
         },
         //            上拉加载
         onloading (event) {
@@ -153,6 +162,11 @@ export default {
         goback: function () {
             event.closeURL()
         },
+        add:function () {
+            event.openURL(utils.locate('view/shop/shop/newShop.js'),function () {
+
+            })
+        }
     }
 }
 </script>

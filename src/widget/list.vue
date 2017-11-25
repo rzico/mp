@@ -38,7 +38,7 @@
             navbar
         },
         props: {
-            title: { default: "文章类别" }
+            title: { default: "选择" }
         },
         created(){
             var _this = this;
@@ -46,6 +46,9 @@
             let urlType = utils.getUrlParameter('type');
             if(urlType == 'article_category'){
                 this.title = '文章类别';
+            }
+            else if(urlType == 'category'){
+                this.title = '职业选择';
             }
             GET(urlType + '/list.jhtml',function (data) {
 //                event.toast(data);
