@@ -38,6 +38,20 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
+                        <text class="title ml10">开通收银台</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCashier" @change="onUseCashier"></switch>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-panel">
+                <text class="sub_title">适用于有实体店铺的商家,线下ERP集成</text>
+            </div>
+
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
                         <text class="title ml10">启用优惠券</text>
                     </div>
                     <div class="flex-row flex-end">
@@ -46,7 +60,7 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">营销利器，支持满折、满减</text>
+                <text class="sub_title">营销利器，支持满折、满减营销活动</text>
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
@@ -59,20 +73,7 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">电子会员卡，集成支付宝、微信</text>
-            </div>
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">开通收银台</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCashier" @change="onUseCashier"></switch>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-panel">
-                <text class="sub_title">适用于实体店收银前台使用</text>
+                <text class="sub_title">电子会员卡，集成微信卡包</text>
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear"  @click="linkman()">

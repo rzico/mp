@@ -40,8 +40,8 @@
                     </div>
                 </div>
 
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between ">
+            <div class="cell-row cell-line" v-if="member.useCashider">
+                <div class="cell-panel space-between " v-if="member.useCashider">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
                         <text class="title ml10">店铺管理</text>
@@ -51,7 +51,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between ">
+                <div class="cell-panel space-between " v-if="member.useCard">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                         <text class="title ml10">会员卡管理</text>
@@ -61,7 +61,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear">
+                <div class="cell-panel space-between cell-clear" v-if="member.useCoupon">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe632;</text>
                         <text class="title ml10">优惠券管理</text>

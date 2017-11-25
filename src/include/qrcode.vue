@@ -7,8 +7,8 @@
                                :src="logo">
                         </image>
                         <div class="name">
-                            <text class="title">{{nickName}}</text>
-                            <text class="autograph">{{autograph}}</text>
+                            <text class="title wd" >{{nickName}}</text>
+                            <text class="autograph wd">{{autograph}}</text>
                         </div>
                     </div>
             </div>
@@ -31,14 +31,6 @@
 <style lang="less" src="../style/wx.less"/>
 
 <style scoped>
-    .isvisible{
-        visibility: visible;
-        opacity: 1;
-    }
-    .novisible{
-        visibility: hidden;
-        opacity: 0;
-    }
     .card_bg {
         align-items: center;
         justify-content: center;
@@ -54,6 +46,11 @@
         border-radius:10px;
         padding-bottom: 35px;
         padding-top: 20px;
+    }
+    .wd {
+        width:400px;
+        lines:1;
+        text-overflow: ellipsis;
     }
     .card_header {
         margin-left: 20px;
@@ -119,18 +116,6 @@
 
     .button {
         margin-top: 20px;
-        /*border-bottom-width: 1px;*/
-        /*border-bottom-color: #cccccc;*/
-        /*border-bottom-style: solid;*/
-        /*border-top-width: 1px;*/
-        /*border-top-color: #cccccc;*/
-        /*border-top-style: solid;*/
-        /*border-left-width: 1px;*/
-        /*border-left-color: #cccccc;*/
-        /*border-left-style: solid;*/
-        /*border-right-width: 1px;*/
-        /*border-right-color: #cccccc;*/
-        /*border-right-style: solid;*/
         border-style: solid;
         border-color: #cccccc;
         border-width: 1px;
