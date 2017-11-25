@@ -6,7 +6,7 @@
                 <text class="indicator">下拉刷新</text>
             </refresh>
             <cell v-if="noData()" >
-                   <noData :ndBgColor="'#fff'"> </noData>
+                   <noData > </noData>
             </cell>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->

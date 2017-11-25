@@ -3,7 +3,7 @@
         <!--导航栏-->
         <navbar :title="title"  @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
         <!--网页-->
-        <web class="webView" :style="{height:screenHeight}" :src="webUrl"></web>
+        <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
         <!--下一步-->
         <div class="footBox mianBgColor" v-if="!publish"  @click="goOption()">
             <text class="nextStep">下一步</text>
@@ -82,6 +82,10 @@
                     <text class="fz28 pl10 primary">删除</text>
                 </div>
                 <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
+                    <text class="fz28 pl10">生成长图</text>
+                </div>
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
                     <text class="fz28 pl10">文章设置</text>
@@ -103,19 +107,19 @@
                     <text class="fz28 pl10">作者主页</text>
                 </div>
                 <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
-                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
-                    <!--<text class="fz28 pl10">举报</text>-->
+                <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                <!--<text class="fz28 pl10">举报</text>-->
                 <!--</div>-->
 
             </div>
         </div>
         <!--动画无效-->
         <!--<transition name="slide-fade-share" mode="out-in">-->
-            <div v-if="showShare"  key="share">
-                <div class="mask" @touchstart="maskTouch"></div>
-                <share @doShare="doShare" @doCancel="doCancel"></share>
-            </div>
-            <!--模版内容-->
+        <div v-if="showShare"  key="share">
+            <div class="mask" @touchstart="maskTouch"></div>
+            <share @doShare="doShare" @doCancel="doCancel"></share>
+        </div>
+        <!--模版内容-->
         <!--</transition>-->
     </scroller>
 </template>
@@ -154,11 +158,11 @@
         line-height:50px;
     }
     /*.slide-fade-share-enter-active {*/
-        /*transition: all 2s ease;*/
+    /*transition: all 2s ease;*/
     /*}*/
     /*.slide-fade-share-enter{*/
-        /*transform: translateY(300px);*/
-        /*opacity: 1;*/
+    /*transform: translateY(300px);*/
+    /*opacity: 1;*/
     /*}*/
 
     /* 可以设置不同的进入和离开动画 */
@@ -292,6 +296,7 @@
     import navbar from '../../../include/navbar.vue'
     import share from '../../../include/share.vue'
     import utils from '../../../assets/utils';
+    const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../../assets/fetch'
     export default {
@@ -621,6 +626,13 @@
                     event.toast(err.content);
                 })
 
+            },
+//            生成长图
+            longPic(){
+                event.toast('点击');
+                webview.getLongImage(this.$refs.webView,function(data){
+                   event.toast(data);
+                });
             }
         }
     }
