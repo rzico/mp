@@ -134,7 +134,7 @@
                                 function (mes) {
                                     if (mes.type == "success") {
                                         utils.debug(mes)
-                                        event.openURL('http://192.168.2.117:8081/tradeTests.weex.js?shopIdthree='+_this.shopId, function (message) {
+                                        event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
                                             if (message.type == "success") {
                                                 event.closeURL(message);
                                             }

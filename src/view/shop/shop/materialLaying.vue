@@ -303,7 +303,7 @@
                     '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
                         if (mes.type == "success") {
-                                event.openURL('http://192.168.2.117:8081/activate.weex.js?shopId='+mes.data.id, function (message) {
+                                event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);
                                     }

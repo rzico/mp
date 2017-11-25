@@ -283,7 +283,7 @@
             },
             industry:function () {
                 var _this = this;
-                event.openURL('http://192.168.2.117:8081/list.weex.js?listId=' + this.category + '&type=category', function (data) {
+                event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=category'), function (data) {
                     if(data.type == 'success' ) {
                         _this.category = parseInt(data.data.listId);
                         _this.industryName = data.data.listName;
@@ -292,7 +292,7 @@
             },
             location:function () {
                 var _this = this;
-                event.openURL('http://192.168.2.117:8081/city.weex.js', function (data) {
+                event.openURL(utils.locate('widget/city.js'), function (data) {
                     if(data.type == 'success' && data.data !='' ) {
                         _this.addressName = data.data.name
                         _this.areaId = data.data.chooseId
@@ -315,7 +315,7 @@
                             };
                             sixdata = JSON.stringify(sixdata);
                             storage.setItem('sixnumber', sixdata,e=> {
-                                event.openURL('http://192.168.2.117:8081/materialLaying.weex.js?name=sixnumber', function (message) {
+                                event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=sixnumber'), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);
                                     }

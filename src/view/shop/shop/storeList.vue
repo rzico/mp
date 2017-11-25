@@ -2,7 +2,7 @@
     <div style="background-color: #eeeeee">
         <navbar :title="title" :complete="complete" @goback="goback"></navbar>
         <div class="head">
-            <text class="clickAdd">+点击添加商铺</text>
+            <text class="clickAdd" @click="add">+点击添加商铺</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list class="list" v-if="isNoEmpty()">
@@ -162,6 +162,11 @@ export default {
         goback: function () {
             event.closeURL()
         },
+        add:function () {
+            event.openURL(utils.locate('view/shop/shop/newShop.js'),function () {
+
+            })
+        }
     }
 }
 </script>
