@@ -157,8 +157,10 @@
                 showLoading:false,
                 loadingState:"松开加载更多",
                 friendsList:[],
-                lists:'',
-                screenHeight:0
+                lists:[],
+                screenHeight:0,
+                pageSize:10,
+                listCurrent:0
             }
         },
         props: {
@@ -220,11 +222,12 @@
             },
             open:function () {
                 var _this = this;
-                GET('weex/member/card/list.jhtml',function (mes) {
+                GET('weex/member/card/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
 //                    utils.debug(mes)
                     if (mes.type == 'success') {
-                        _this.lists = mes.data.data;
-
+                        mes.data.data.forEach(function(item){
+                            _this.lists.push(item);
+                        })
 //                        utils.debug(_this.code)
 //                        if(_this.code.length>6){
 //                           _this.code = _this.code.substring(_this.code.length-6, _this.code.length)
@@ -262,6 +265,8 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(function () {
+                        _this.lists = []
+                        this.listCurrent = this.listCurrent + this.pageSize;
                         _this.open()
                         _this.loading = false
                     }
@@ -272,6 +277,7 @@
                 var _this = this;
                 _this.refreshing = true;
                 setTimeout(function () {
+                        _this.lists =[]
                         _this.open()
                         _this.refreshing = false;
                     }
