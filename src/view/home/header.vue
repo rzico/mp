@@ -3,7 +3,7 @@
         <div class="header" :class="[classHeader()]">
             <div class="nav" style="width:750px;">
                 <div class="flex-center flex1" >
-                    <image class="logo" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" ></image>
+                    <image class="logo" :src="'file://logo.png'" ></image>
                 </div>
                 <div class="search_box flex4" @click="search()">
                     <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
