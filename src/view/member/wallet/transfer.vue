@@ -1,8 +1,6 @@
 <template>
     <div style="background-color: #eeeeee">
-        <div class="header">
             <navbar :title="title" :complete="complete" @goback="goback" > </navbar>
-        </div>
     <div class="big">
         <div class="bankWechat">
         <div class="bank" @click="bankmessage()" v-bind:style="{borderBottomWidth:bankstyle + 'px',borderBottomColor:bankcolor}">

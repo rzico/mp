@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="header">
-            <div style="flex-direction: row;margin-top: 40px;height: 96px;align-items: center;flex: 1;">
+        <div class="header" :class="[classHeader()]">
+            <div class="nav" style="width:750px;">
                 <div class="flex-center flex1" >
                     <image class="logo" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" ></image>
                 </div>
@@ -55,6 +55,11 @@
             utils.initIconFont();
         },
         methods: {
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
             scan:function (e) {
                 event.scan(function (resp) {
                     if (resp.type == "success") {
