@@ -51,7 +51,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between " @click-="card">
+                <div class="cell-panel space-between " @click="card">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe70f;</text>
                         <text class="title ml10">会员卡管理</text>
