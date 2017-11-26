@@ -71,10 +71,10 @@
 
 </style>
 <script>
-    import navbar from '../../include/navbar.vue'
-    import filters from '../../filters/filters.js'
-    import { POST, GET } from '../../assets/fetch'
-    import utils from '../../assets/utils'
+    import navbar from '../../../include/navbar.vue'
+    import filters from '../../../filters/filters.js'
+    import { POST, GET } from '../../../assets/fetch'
+    import utils from '../../../assets/utils'
 
     var pageNumber = 1;
     export default {

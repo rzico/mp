@@ -1,5 +1,5 @@
 <template>
-    <div class="header" :class="[border==true?'' : 'cb']">
+    <div class="header" :class="[classHeader()]" >
         <div class="nav_back" @click="goback('/')">
             <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
@@ -43,6 +43,7 @@
         flex-direction: row;
         align-items: center;
         margin-top: 44px;
+        height: 92px;
     }
     .nav_CompleteIcon{
         padding-left: 16px;
@@ -69,6 +70,13 @@
             border:{default:true}
         },
         methods: {
+            classHeader:function () {
+                let dc = utils.device();
+                if (this.border==true) {
+                    dc = dc + '  cb';
+                }
+                return dc
+            },
             goback: function (e) {
                 this.$emit('goback');
             },

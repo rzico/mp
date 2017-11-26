@@ -40,11 +40,11 @@
             <div class="buttombox">
                 <div class="btn ">
                     <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
-                    <text class="btn-text" value="刷卡" @click="payment('balancePayPlugIn')">刷卡</text>
+                    <text class="btn-text" value="刷卡" @click="payment('balancePayPlugIn')">刷卡(记账)</text>
                 </div>
                 <div class="btn ">
                     <text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>
-                    <text class="btn-text" value="现金" @click="payment('cardPayPlugIn')">现金</text>
+                    <text class="btn-text" value="现金" @click="payment('cardPayPlugIn')">现金(记账)</text>
                 </div>
             </div>
         </div>
@@ -156,12 +156,10 @@
     .cash {
         color:#F0AD3C;
         margin-top: 3px;
-        margin-right: 20px;
     }
     .bank {
         margin-top: 4px;
-        color:#0088fb;
-        margin-right: 10px;
+        color: tomato;
     }
 
 </style>

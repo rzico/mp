@@ -83,9 +83,9 @@
 <script>
     const modal = weex.requireModule('modal');
     var navigator = weex.requireModule('navigator');
-    import navbar from '../../include/navbar.vue';
+    import navbar from '../../../include/navbar.vue';
     var stream = weex.requireModule('stream');
-    import filters from '../../filters/filters.js';
+    import filters from '../../../filters/filters.js';
     const event = weex.requireModule('event');
     var pageNumber = 1;
     export default {

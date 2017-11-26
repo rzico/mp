@@ -1,15 +1,12 @@
 <template>
     <div class="wrapper">
-        <div class="header cb" @click="goback()">
-            <div style="flex-direction: row;margin-top: 40px;height: 96px;align-items: center;flex: 1;">
-                <div class="flex-center flex3" >
-                    <image class="logo" :src="cashier.logo" ></image>
-                    <text class="title">{{cashier.name}}</text>
-                </div>
-                <div class="flex-end flex2">
-                    <text class="scan" :style="{fontFamily:'iconfont'}"  @click="scan()">&#xe607;</text>
-                    <text class="add" :style="{fontFamily:'iconfont'}"  @click="scan()">&#xe62a;</text>
-                </div>
+        <div class="header cb" :class="[classHeader()]" >
+            <div class="nav_back" @click="goback('/')">
+                <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+            </div>
+            <div class="nav">
+                <text class="nav_title">收银台</text>
+                <text class="nav_Complete" @click="deposit()">账单</text>
             </div>
         </div>
         <scroller class="scroller">
@@ -31,7 +28,7 @@
                 </div>
                 <div class="btn ">
                     <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信钱包" @click="payment('weixinPayPlugIn')">微信钱包</text>
+                    <text class="btn-text" value="微信钱包" @click="payment('weixinPayPlugin')">微信钱包</text>
                 </div>
             </div>
             <div class="buttombox">
@@ -47,11 +44,11 @@
             <div class="buttombox">
                 <div class="btn ">
                     <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
-                    <text class="btn-text" value="刷卡" @click="payment('balancePayPlugIn')">刷卡</text>
+                    <text class="btn-text" value="刷卡" @click="payment('balancePayPlugIn')">刷卡(记账)</text>
                 </div>
                 <div class="btn ">
                     <text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>
-                    <text class="btn-text" value="现金" @click="payment('cardPayPlugIn')">现金</text>
+                    <text class="btn-text" value="现金" @click="payment('cardPayPlugIn')">现金(记账)</text>
                 </div>
             </div>
             <div class="content">
@@ -70,7 +67,7 @@
     </div>
 
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .title {
         font-size: 32px;
@@ -101,6 +98,23 @@
 
     .cb {
         border-bottom-width: 0px!important;
+    }
+    .sub_title {
+        color:#eee;
+        font-size: 30px;
+    }
+    .nav_ico {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
+    }
+    .nav_Complete {
+        padding-left: 16px;
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 34px;
+        line-height: 34px;
+        color: #FFFFFF;
+        margin-right: 20px;
     }
 
     .wallet-title {
@@ -177,6 +191,7 @@
     }
     .btn-text {
         margin-left: 10px;
+        font-size: 32px;
     }
     .btn:active {
         background-color:#ccc;
@@ -199,12 +214,10 @@
     .cash {
         color:#F0AD3C;
         margin-top: 3px;
-        margin-right: 20px;
     }
     .bank {
         margin-top: 4px;
-        color:#0088fb;
-        margin-right: 10px;
+        color:tomato;
     }
 
     .content {
@@ -215,7 +228,7 @@
         position: fixed;
         flex-direction: column;
         margin-left: 125px;
-        margin-top: 200px;
+        margin-top: 420px;
         width: 500px;
         background-color: white;
         border: 1px;
@@ -225,6 +238,7 @@
         padding-top: 20px;
         justify-content: center;
         align-items: center;
+        height:400px;
     }
     .paymenting {
         justify-content: center;
@@ -246,14 +260,16 @@
 
 </style>
 <script>
-    import { POST, GET } from '../../assets/fetch'
-    import utils from '../../assets/utils'
-    import filters from '../../filters/filters.js'
+    import { POST, GET } from '../../../assets/fetch'
+    import utils from '../../../assets/utils'
+    import filters from '../../../filters/filters.js'
     const modal = weex.requireModule('modal');
     const event = weex.requireModule('event');
+    const printer = weex.requireModule('print');
     export default {
         data() {
             return {
+                id:0,
                 cashier:{today:0,yesterday:0,shopId:""},
                 shopId:"",
                 amount:"",
@@ -270,6 +286,9 @@
             this.view();
         },
         methods: {
+            classHeader:function () {
+                return utils.device();
+            },
             view:function () {
                 var _this = this;
                 GET("weex/member/cashier/view.jhtml",function (res) {
@@ -288,7 +307,8 @@
                 event.closeURL();
             },
             deposit:function () {
-                event.openURL(utils.locate("view/cashier/deposit.js"),function (e) {});
+                utils.device();
+//                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
             isShow:function () {
                 return this.time<15;
@@ -301,6 +321,18 @@
                this.time = 15;
             },
             print:function () {
+                GET("weex/member/payBill/print.jhtml?id="+this.id,function (mes) {
+                    if (mes.type=='success') {
+                        printer.printString(mes.data);
+                    } else {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: '知道了'
+                        })
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
 
             },
             close:function () {
@@ -312,7 +344,6 @@
                     this.clearTimer();
                     return;
                 }
-                _this.time =  _this.time - 1;
                 POST("payment/query.jhtml?sn="+sn).then(
                     function (res) {
                         if (res.type=='success') {
@@ -350,7 +381,8 @@
                                 if (res.type=='success') {
                                     POST("payment/submit.jhtml?sn="+res.data+"&paymentPluginId="+plugId+"&safeKey="+message.data).then(
                                         function (data) {
-                                            _this.beginTimer(res.data);
+                                            _this.time =  _this.time - 1;
+                                            setTimeout(_this.beginTimer(res.data),500);
                                         },function (err) {
                                             event.toast(err.content);
                                         }
