@@ -35,10 +35,45 @@
                         </div>
                     </div>
                 </div>
+                <!--评论-->
+                <div class="lineBox"  v-if="messageType == 'gm_10203'">
+                    <div class="flex-row">
+                        <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text  class="infoText">{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                    <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                </div>
+                <!--点赞-->
+                <div class="lineBox"  v-if="messageType == 'gm_10204'">
+                    <div class="flex-row">
+                        <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                    <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                </div>
+                <!--关注-->
+                <div class="lineBox"  v-if="messageType == 'gm_10205'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >关注了你</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
                 <!--收藏-->
                 <div class="lineBox" v-if="messageType == 'gm_10206'" v-for="item in dataList">
                     <div class="flex-row" >
-                        <image class="headImg" :src="item.logo"></image>
+                        <image class="headImg" :src="item.logo" @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
                             <text  class="infoText">收藏了你的文章《想念入会想念入会》</text>
@@ -47,41 +82,49 @@
                     </div>
                     <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
                 </div>
-                <!--评论-->
-                <div class="lineBox"  v-if="messageType == 'gm_10203'">
+                <!--赞赏-->
+                <div class="lineBox"  v-if="messageType == 'gm_10207'" v-for="item in dataList">
                     <div class="flex-row">
-                        <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-                        <div class="userInfo">
-                            <text class="fz30 nameColor" >陈星星</text>
-                            <text  class="infoText">很漂亮，写得很好</text>
-                            <text class="sub_title">07-13</text>
-                        </div>
-                    </div>
-                    <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-                </div>
-                <!--点赞-->
-                <div class="lineBox"  v-if="messageType == 'gm_10204'">
-                    <div class="flex-row">
-                        <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-                        <div class="userInfo">
-                            <text class="fz30 nameColor" >陈星星</text>
-                            <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="sub_title">07-13</text>
-                        </div>
-                    </div>
-                    <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-                </div>
-                <!--关注-->
-                <div class="lineBox"  v-if="messageType == 'gm_10205'" v-for="item in dataList">
-                    <div class="flex-row">
-                        <image class="headImg":src="item.logo"></image>
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text   class="infoText" >关注了你</text>
+                            <text   class="infoText" >{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
+                </div>
+                <!--分享提醒-->
+                <div class="lineBox"  v-if="messageType == 'gm_10208'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
+                <!--添加好友-->
+                <div class="lineBox"  v-if="messageType == 'gm_10209'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
+                <!--同意好友-->
+                <div class="lineBox"  v-if="messageType == 'gm_10210'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
                 </div>
             </div>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
@@ -294,6 +337,12 @@
         methods:{
             goback(){
                 event.closeURL();
+            },
+            //            作者主页
+            goAuthor:function (id) {
+                id = parseInt(id.substr(-5)) - 10200;
+                event.openURL(utils.locate("view/member/topic/author.js?id=" + id),function (message) {
+                });
             },
             onrefresh:function () {
                 var _this = this;

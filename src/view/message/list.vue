@@ -256,6 +256,9 @@
                     case 'gm_10210':
                         return '同意好友提醒';
                         break;
+                    case 'gm_10211':
+                        return '系统客服';
+                        break;
                     default:
                         return value.nickName;
                         break;

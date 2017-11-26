@@ -240,12 +240,12 @@
         methods:{
 //            前往作者专栏
             goAuthor(id){
-                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/member/topic/author.js?id=" + id),function (message) {
                 });
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
             },
             goArticle(id){
-                event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=true' ),
+                event.openURL(utils.locate('view/member/article/preview.js?articleId=' + id  + '&publish=true' ),
                     function () {}
                     )
             },
