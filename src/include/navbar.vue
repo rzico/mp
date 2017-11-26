@@ -1,5 +1,6 @@
 <template>
     <div class="header" :class="[classHeader(),border?'':'cb']" >
+        <image class="nav_bg" :src="'file://resources/images/nav_bg.png'"></image>
         <div class="nav_back" @click="goback('/')">
             <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
@@ -23,6 +24,13 @@
         height: 92px;
         align-items: center;
         justify-content: center;
+    }
+    .nav_bg {
+        width:750px;
+        height: 156px;
+        background-size: cover;
+        position: absolute;
+        top:0;
     }
     .nav_ico {
         font-size: 38px;
