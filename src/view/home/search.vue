@@ -1,61 +1,71 @@
 <template>
     <div class="wrapper">
         <!--输入栏-->
-        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search"  ref="childFind"> </searchNav><!--搜索栏-->
-        <div style="position: fixed;top: 136px;" class="confm boder-bottom bt20" v-if="isInput() && !isSearch" @click="search()">
+        <searchNav :searchHint="searchHint" @oninput="oninput" :keyword="keyword" @search="search"  ref="childFind"> </searchNav><!--搜索栏-->
+        <div  class="confm boder-bottom bt20" v-if="isInput() && !isSearch" @click="search(keyword)">
             <text class="ico " :style="{fontFamily:'iconfont'}">&#xe611;</text>
             <text class="title">搜索: {{keyword}} </text>
         </div>
-        <!--搜索历史-->
-        <div class="searchBox bt20"  v-if="historyList != '' && keyword == ''" >
-            <div class="space-between searchHead" >
-                <text class="gray fz28">搜索历史</text>
-                <text class="ico gray cleanHistory" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
-            </div>
-            <div class="searchContentBox flex-row " >
-                <div v-for="(item,index) in historyList" class="flex-row">
-                    <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
-                    <div class="searchContent " :class="[ index % 2 == 0 ? 'pl25' :'']">
-                        <text class=" searchContentText boder-bottom fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
-                        <!--,index != historyList.history.length - 2 || index != historyList.history.length-1 ? 'boder-bottom' : ''-->
+        <div v-else>
+            <div v-if="keyword == ''">
+                <!--搜索历史-->
+                <div class="searchBox bt20"  v-if="historyList != ''">
+                    <div class="space-between searchHead" >
+                        <text class="gray fz28">搜索历史</text>
+                        <text class="ico gray cleanHistory" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
+                    </div>
+                    <div class="searchContentBox flex-row " >
+                        <div v-for="(item,index) in historyList" class="flex-row">
+                            <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
+                            <div class="searchContent " :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
+                                <text class=" searchContentText boder-bottom fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
+                                <!--,index != historyList.history.length - 2 || index != historyList.history.length-1 ? 'boder-bottom' : ''-->
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!--搜索热点-->
-        <div class="searchBox " v-if="keyword == ''" v-for="item in hotList">
-            <div class="space-between searchHead" >
-                <text class="gray fz28">搜索发现</text>
-            </div>
-            <div class="searchContentBox flex-row " >
-                <div v-for="(history,index) in item" class="flex-row">
-                    <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
-                    <div class="searchContent  " :class="[ index % 2 == 0 ? 'pl25' :'']">
-                        <text class="boder-bottom searchContentText fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{history.content}}</text>
+                <!--搜索热点-->
+                <div class="searchBox " v-if="hotList != ''">
+                    <div class="space-between searchHead" >
+                        <text class="gray fz28">搜索发现</text>
+                    </div>
+                    <div class="searchContentBox flex-row " >
+                        <div v-for="(item,index) in hotList" class="flex-row">
+                            <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
+                            <div class="searchContent  " :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
+                                <text class="boder-bottom searchContentText fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div style="background-color: #fff;width: 750px;"v-if="isSearch">
-            <div class="flex-row boder-bottom pl25 pr25 " style="height: 100px;background-color: #fff;width: 750px" >
-                <div  class="flex1   centerStyle"   v-for="(item,index) in typeList" @click="typeChange(index,item.id)" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">
-                    <text class="fz32 titleColor " style="height: 100px;line-height: 100px" :class = "[whichCorpus == index ? 'primary' : '']">{{item.name}}</text>
-                </div>
-            </div>
-        </div>
 
+            </div>
+            <!--顶部分类标题-->
+            <div style="background-color: #fff;width: 750px;"v-if="isSearch">
+                <div class="flex-row boder-bottom pl25 pr25 " style="height: 80px;background-color: #fff;width: 750px" >
+                    <div  class="flex1   centerStyle"   v-for="(item,index) in typeList" @click="typeChange(index,item.id)" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">
+                        <text class="fz32 titleColor " style="height: 80px;line-height: 80px" :class = "[whichCorpus == index ? 'primary' : '']">{{item.name}}</text>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--数据显示-->
         <scroller v-if="isSearch">
+            <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<text class="indicator">{{refreshState}}</text>-->
+            <!--</refresh>-->
             <!--顶部标题分类栏-->
-            <div class="mt20">
-                <div  v-if="this.searchList.friend.length != 0" class="bt30">
+            <div class="mt20" :style="{minHeight:screenHeight + 'px'}">
+                <!--无数据提示-->
+                <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
+                <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30">
                     <!--朋友-->
-                    <div  v-for="(item,index) in searchList.friend" class="cell-line">
+                    <div  v-for="(item,index) in searchList.friend" v-if="index <= 9" class="cell-line">
                         <!--类别-->
                         <div  v-if="isRepeat(index)" class="pl30 pr30  bgWhite">
                             <div class="typeTextBox  space-between">
                                 <text class="title fz28 pb15" >相关专栏</text>
-                                <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(item.type)" >更多&#xe630;</text>
+                                <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(2)" v-if="searchList.length > 10">更多&#xe630;</text>
                             </div>
                         </div>
                         <div class="contentBox pb15">
@@ -70,6 +80,42 @@
 
                     </div>
                 </div>
+                <!--更多专栏搜索-->
+                <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 2" class="bt30">
+                    <!--朋友-->
+                    <div  v-for="(item,index) in searchList.friend" >
+                        <!--类别-->
+                        <div  v-if="isRepeat(index)" class="pl30 pr30  bgWhite">
+                            <div class="typeTextBox borderBottom" >
+                                <text class="sub_title fz32 pb10" >相关专栏</text>
+                            </div>
+                        </div>
+                        <div class="contentBox">
+                            <!--好友-->
+                            <div class="flex-row "  @click="goAuthor(item.id)">
+                                <image class="logo" :src="item.logo"></image>
+                                <div style="width: 460px;">
+                                    <text class="title ml20">{{item.nickName}}</text>
+                                    <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
+                                </div>
+                                <div style="width: 130px;">
+                                    <!--关注与否-->
+                                    <div class="status_panel" v-if="!item.follow" @click="doFocus(item)">
+                                        <text class="focus bkg-primary bd-primary" >关注</text>
+                                    </div>
+                                    <div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">
+                                        <text class="ask ">已关注</text>
+                                    </div>
+                                    <div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">
+                                        <text class="ask ">互相关注</text>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
 
                 <!--文章-->
                 <div  v-for="(item,index) in searchList.article" >
@@ -107,30 +153,66 @@
                                 </div>
                             </div>
                         </div>
-                        <div  v-if="isMoreRepeat(index)" class="borderTop " style="width: 690px" @click="goMoreSearch(item.type)">
+                        <div  v-if="isMoreRepeat(index) && whichCorpus == 0" class="borderTop moreArticle"  @click="goMoreSearch(1)">
                             <text class="fz35 pt30 pb30 nameColor" :style="{fontFamily:'iconfont'}" >&#xe611; 更多文章</text>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--无数据提示-->
-            <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
+            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
+                <text class="indicator">加载中...</text>
+            </loading>
         </scroller>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .moreArticle{
+        width: 690px;
+    }
+    .moreArticle:active{
+        background-color: #ccc;
+    }
+    .autoLimit{
+        lines:1;
+        width: 440px;
+        text-overflow: ellipsis;
+    }
+    .focus{
+        font-size: 26px;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius:10px;
+        width: 125px;
+        color:#fff;
+        border-style: solid;
+        border-width: 1px;
+    }
+    .ask {
+        font-size: 26px;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius:10px;
+        width: 125px;
+        color:#ccc;
+        border-color: #ccc;
+        border-style: solid;
+        border-width: 1px;
+    }
     .singleUserBox{
         width: 130px; align-items: center;justify-content: center;margin-right: 7px;
     }
     .noActive{
-        border-bottom-width:0px;
+        border-bottom-width:1px;
+        border-color: #fff;
     }
     .titleColor{
         color: #888;
     }
     .centerStyle{
-        height:100px;justify-content: center;align-items: center;
+        height:80px;justify-content: center;align-items: center;
     }
     .centerStyle:active{
         background-color: #ccc;
@@ -245,7 +327,7 @@
         flex-direction: row;
         padding-left: 30px;
         padding-right: 30px;
-        background-color: #ffffff;
+        background-color: #fff;
         flex-wrap: wrap;
     }
     .typeTextBox{
@@ -272,37 +354,42 @@
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
     import filters from '../../filters/filters.js';
-    const storage = weex.requireModule('storage')
+    const storage = weex.requireModule('storage');
+    const modal = weex.requireModule('modal');
     export default {
         components: {
             searchNav,noData
         },
         data() {
             return {
+                refreshing:false,
+                showLoading:false,
                 moreNum:0,
                 keyword:"",
                 searchList:{
                     friend:[],
                     article:[]
                 },
-
-                currentNum:0,
-                pageNum:20,
+                listCurrent:0,
+                pageSize:15,
                 friendsList:[],
                 historyList:[],
-                hotList:{
-                    history:[{
-                        content:'手机充值'
+                hotList:[
+                    {
+                        history:'中国最美花'
                     },{
-                        content:'红包'
+                        history:'玩转应用'
                     },{
-                        content:'寻梦环游记'
+                        history:'寻梦环游记'
                     },{
-                        content:'小吃'
+                        history:'小吃'
                     },{
-                        content:'基金'
-                    }]
-                },
+                        history:'基金'
+                    },{
+                        history:'吉普车'
+                    },{
+                        history:'红包'
+                    }],
                 isSearch:false,
                 typeList:[{
                     id:'0',
@@ -314,7 +401,8 @@
                     id:'2',
                     name:'商家'
                 }],
-                whichCorpus:0
+                whichCorpus:0,
+                screenHeight:0,
             }
         },
         filters:{
@@ -338,6 +426,8 @@
 //                event.toast(e)
 //            })
 
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(236);
             this.getHistory();
 
         },
@@ -376,45 +466,59 @@
                 this.whichCorpus = 0;
                 if(this.keyword.length == 0 ){
                     this.getHistory();
-                }
+                };
+                this.listCurrent=0;
+                this.pageSize=15;
             },
+//            读取缓存的搜索历史
             getHistory:function () {
                 let _this = this;
                 storage.getItem('searchHistory', e => {
-                    event.toast(e);
                     if(e.result == 'success'){
                         var b = JSON.parse(e.data);
                         _this.historyList = [];
                         _this.historyList = b;
-                        event.toast('List:');
-                        event.toast(_this.historyList);
                     }
                 })
             },
 //            点击搜索时触发
             search: function (keyword) {
+//                this.keyword = keyword;
                 let _this = this;
-                if(this.keyword == ''){
+                if(keyword == ''){
                     return;
                 }
-                this.isSearch = true;
+                _this.isSearch = true;
+//                进行文章搜索
                 this.articleSearch();
+//                进行用户专栏搜索
                 this.userSearch();
 //                设置搜索历史
                 storage.getItem('searchHistory', e => {
-                    event.toast(e);
                     if(e.result == 'success'){
                         var b = JSON.parse(e.data);
-                        b.splice(0,0,{
-                            history:_this.keyword
+//                        判断此次搜索有没有跟历史搜索重复,有就将原来的历史删除
+                        b.forEach(function (item,index) {
+                            if(item.history == keyword){
+                                b.splice(index,1);
+                            }
                         })
+//                        将新的搜索添加到历史里
+                        b.splice(0,0,{
+                            history:keyword
+                        })
+//                        判断历史的长度是否超过4个， 控制只留下4个记录
+                        if(b.length == 5){
+                            b.splice(4,1);
+                        }
+//                        存入缓存钱要将json转为字符串
                         b = JSON.stringify(b);
                         storage.setItem('searchHistory', b , e => {
-                            event.toast(e.result);
                         })
                     }else{
+//                        如果没有历史记录就新添加一个缓存
                         var searchHistory =  [{
-                            history:_this.keyword
+                            history:keyword
                         }];
                         searchHistory = JSON.stringify(searchHistory)
                         storage.setItem('searchHistory', searchHistory , e => {
@@ -426,7 +530,7 @@
 //            用户专栏搜索
             userSearch(){
                 let _this = this;
-                GET('weex/topic/search.jhtml.jhtml?keyword=' + encodeURI(this.keyword),function (data) {
+                GET('weex/topic/search.jhtml.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != ''){
                         _this.searchList.friend = data.data.data;
                     }else if(data.type == 'success' && data.data.data == ''){
@@ -440,7 +544,7 @@
 //            文章搜索
             articleSearch(){
                 let _this = this;
-                GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword),function (data) {
+                GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
 
                     if(data.type == 'success' && data.data.data != ''){
                         _this.searchList.article = data.data.data;
@@ -474,7 +578,7 @@
 //            判断更多时是否渲染
             isMoreRepeat:function (index) {
                 var _this = this;
-                if(index >= 19){
+                if(index >= 14){
                     return true;
                 }else{
                     return false;
@@ -511,23 +615,40 @@
             },
 //            更多记录
             goMoreSearch(itemType){
+                this.whichCorpus = itemType;
+                this.searchList = {
+                    friend:[],
+                    article:[]
+                };
+                this.listCurrent=0;
+                this.pageSize=15;
+                switch (itemType){
+                    case 1:
+                        this.articleSearch();
+                        break;
+                    case 2:
+                        this.userSearch();
+                        break;
+                    default:
+                        break;
+                }
 
-                event.openURL(utils.locate('widget/moreSearch.js?type=' + itemType + '&keyword=' + encodeURI(this.keyword)),
-                    function () {}
-                )
             },
 //            清空搜索历史
             cleanHistory(){
                 this.historyList = [];
-            storage.removeItem('searchHistory', e => {
-            })
+                storage.removeItem('searchHistory', e => {
+                })
             },
+//            修改搜索分类时触发
             typeChange(index,id){
                 this.whichCorpus = index;
                 this.searchList = {
                     friend:[],
                     article:[]
                 };
+                this.listCurrent=0;
+                this.pageSize=15;
                 switch (index){
                     case 0 :
                         this.articleSearch();
@@ -543,7 +664,103 @@
                         break;
                 }
 
-            }
+            },
+//            点击搜索历史或者热点时触发
+            helpSearch(val){
+                let _this = this;
+                this.keyword = val;
+                setTimeout(function () {
+                    _this.search(val);
+                },100)
+            },
+            //            关注
+            doFocus(item){
+                if(item.follow){
+                    modal.confirm({
+                        message: '确定要取消关注?',
+                        okTitle:'确定',
+                        cancelTitle:'取消',
+                        duration: 0.3
+                    }, function (value) {
+                        if(value == '确定'){
+                            POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
+                                function(data){
+                                    if(data.type == 'success'){
+                                        item.follow = false;
+                                    }else{
+                                        event.toast(err.content);
+                                    }
+                                },
+                                function(err){
+                                    event.toast(err.content);
+                                }
+                            )
+                        }
+                    })
+                }else{
+                    POST('weex/member/follow/add.jhtml?authorId=' + item.id).then(
+                        function(data){
+                            if(data.type == 'success'){
+                                item.follow = true;
+                            }else{
+                                event.toast(err.content);
+                            }
+                        },
+                        function(err){
+                            event.toast(err.content);
+                        }
+                    )
+                }
+            },
+//            下拉刷新
+            onrefresh:function () {
+                var _this = this;
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 50)
+            },
+//            上拉加载
+            onloading:function () {
+                var _this = this;
+                _this.showLoading = true;
+//                _this.loadingState = "正在加载数据";
+                setTimeout(() => {
+                    if(_this.whichCorpus == 0){
+
+                    }else if(_this.whichCorpus == 1){//文章的上啦加载
+                        _this.pageSize = _this.listCurrent + _this.pageSize;
+                        GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
+                            if(data.type == 'success' && data.data.data != ''){
+                                data.data.data.forEach(function (item) {
+                                    _this.searchList.article.push(item);
+                                });
+                            }else if(data.type == 'success' && data.data.data == ''){
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        });
+                    }else if(_this.whichCorpus == 2){//文章的下拉刷新
+                        _this.pageSize = _this.listCurrent + _this.pageSize;
+                        GET('weex/topic/search.jhtml.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
+                            if(data.type == 'success' && data.data.data != ''){
+                                data.data.data.forEach(function (item) {
+                                    _this.searchList.friend.push(item);
+                                });
+                            }else if(data.type == 'success' && data.data.data == ''){
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        });
+                    }
+
+                    _this.showLoading = false;
+                }, 1500)
+            },
         }
 
     }
