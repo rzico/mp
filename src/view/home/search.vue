@@ -73,7 +73,7 @@
                             <div class="singleUserBox"  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo"></image>
                                 <div >
-                                    <text class="title fz28 bt15">{{item.nickName}}</text>
+                                    <text class="title fz28 bt15">{{item.name}}</text>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                             <div class="flex-row "  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo"></image>
                                 <div style="width: 460px;">
-                                    <text class="title ml20">{{item.nickName}}</text>
+                                    <text class="title ml20">{{item.name}}</text>
                                     <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
                                 </div>
                                 <div style="width: 130px;">

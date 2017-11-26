@@ -235,7 +235,7 @@
                     this.listCurrent = this.listCurrent + this.pageSize;
                     GET('weex/fans/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.foreach(function (item) {
+                            data.data.data.forEach(function (item) {
                                 _this.userList.push(item);
                             })
                         }else if(data.type == 'success' && data.data.data == '' ){

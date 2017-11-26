@@ -1,12 +1,12 @@
 <template>
     <div>
         <navbar :title="title"@goback="goback"></navbar>
-        <scroller class="wrapper" :class="[bgWhite ? 'whiteColor' : '']">
+        <scroller  :class="[bgWhite ? 'whiteColor' : '']">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <div :style="{minHeight:screenHeight + 'px'}">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="userList.length == 0"></noData>
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
                 <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10202' || messageType == 'gm_10200'">
                     <div class="dateBox">
                         <text class="dateText">昨天17:46</text>
@@ -271,7 +271,7 @@
                     this.title =  '添加好友提醒';
                     this.bgWhite = true;
                     break;
-                case 'gm_10209':
+                case 'gm_10210':
                     this.title =  '同意好友提醒';
                     this.bgWhite = true;
                     break;
@@ -310,7 +310,7 @@
                     _this.listCurrent = _this.listCurrent + _this.pageSize;
                     GET('weex/member/message/list.jhtml?userId=' + _this.messageType +'&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.foreach(function (item) {
+                            data.data.data.forEach(function (item) {
                                 _this.dataList.push(item);
                             })
                         }else if(data.type == 'success' && data.data.data == '' ){

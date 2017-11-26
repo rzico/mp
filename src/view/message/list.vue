@@ -249,6 +249,18 @@
                     case 'gm_10206':
                         return '收藏提醒'
                         break;
+                    case 'gm_10207':
+                        return '赞赏提醒';
+                        break;
+                    case 'gm_10208':
+                        return  '分享提醒';
+                        break;
+                    case 'gm_10209':
+                        return  '添加好友提醒';
+                        break;
+                    case 'gm_10210':
+                        return '同意好友提醒';
+                        break;
                     default:
                         return value.nickName;
                         break;
