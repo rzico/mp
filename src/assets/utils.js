@@ -255,6 +255,10 @@ let utilsFunc = {
         }else{
             return false;
         }
+    },
+    //判断设备型号
+    device:function () {
+      return "V1";
     }
 
 };

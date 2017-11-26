@@ -184,7 +184,8 @@
 }
 
 .header {
-    height: 136px;
+    min-height: 136px;
+    padding-top: 44px;
     flex-direction: row;
     position:sticky;
     border-bottom-width: 1px;
@@ -192,6 +193,25 @@
     border-bottom-color: @border-gray;
     background-color: @baseColor;
 }
+
+.nav {
+    width:654px;
+    justify-content: space-between;
+    flex-direction: row;
+    height: 92px;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.nav_back {
+    margin-top: 0px;
+    flex-direction: row;
+    width: 92px;
+    height: 92px;
+    align-items: center;
+    justify-content: center;
+}
+
 .corpusActive{
     color: @baseColor;
     border-color: @baseColor;
@@ -473,4 +493,12 @@
 .lines-ellipsis {
    lines:1;
    text-overflow: ellipsis;
+}
+
+//导航适配
+.V1 {
+    padding-top: 54px;
+}
+.IPhoneX {
+    padding-top: 64px;
 }

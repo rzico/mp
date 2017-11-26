@@ -6,6 +6,16 @@
                 <text class="indicator">下拉刷新 ...</text>
             </refresh>
             <cell v-for="(deposit,index) in depositList" >
+                <!--如果月份重复就不渲染该区域-->
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
+                    <div class="flex-row flex-start">
+                        <text class="title" >{{deposit.create_date | monthfmt}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"   >查看账单</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="cell-row cell-clear" >
                     <div class="cell-panel newHeight"  :style="addBorder(index)">
                         <div class="flex1">
@@ -30,7 +40,7 @@
     </div>
 
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .newHeight{
         height: 130px;
@@ -71,11 +81,12 @@
 
 </style>
 <script>
-    import navbar from '../../include/navbar.vue'
-    import filters from '../../filters/filters.js'
-    import { POST, GET } from '../../assets/fetch'
-    import utils from '../../assets/utils'
-
+    const modal = weex.requireModule('modal');
+    var navigator = weex.requireModule('navigator');
+    import navbar from '../../../include/navbar.vue';
+    var stream = weex.requireModule('stream');
+    import filters from '../../../filters/filters.js';
+    const event = weex.requireModule('event');
     var pageNumber = 1;
     export default {
         data:function(){
@@ -91,11 +102,62 @@
         props: {
             title: { default: "账单" }
         },
+        created() {
+//              页面创建时请求数据
+            this.open( pageNumber,res => {
+                if(res.data.message.type == 'success'){
+                    this.depositList = res.data.data;
+                    modal.toast({message:res.data.data,duration:3});
+                }else{
+                    modal.alert({
+                        message: '系统繁忙',
+                        duration: 0.3
+                    })
+                }
+            });
+        },
         methods: {
+//            是否添加底部边框
+            addBorder: function (index) {
+                let listLength = this.depositList.length;
+//                判断是否最后一个元素并且是否每月的结尾
+                if(index != listLength - 1 ){
+                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index + 1].create_date)){
+                        return {
+                            borderBottomWidth:'1px'
+                        }
+                    }else{
+                        return {
+                            borderBottomWidth:'0px'
+                        }
+                    }
+                }else{
+                    return {
+                        borderBottomWidth:'0px'
+                    }
+                }
+            },
+            //判断月份是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index - 1].create_date)){
+                        return false;
+                    }
+                }
+                return true;
+            },
             goback: function (e) {
                 event.closeURL();
             },
+            setup: function (e) {
+                toPage(e);
+            },
             open (pageNumber,callback) {
+                return stream.fetch({
+                    method: 'GET',
+                    type: 'json',
+                    url: 'http://www.rzico.com/applet/member/wallet/bill.jhtml?begin_date=2017-01-01%2000:00:00&end_date=2018-01-01%2000:00:00&pageNumber=' + pageNumber +'&pageSize=10'
+                }, callback)
             },
 //            上拉加载
             onloading (event) {
@@ -128,22 +190,9 @@
 //            获取月份
             getDate: function(value) {
                 let date = new Date(value);
-                let d = date.getYear() +'-'+ date.getMonth() +'-'+ date.getDay();
-                return d;
+                let     m = date.getMonth() + 1;
+                return m;
             }
         },
-        created:function () {
-//              页面创建时请求数据
-            this.open( pageNumber,res => {
-                if(res.data.message.type == 'success'){
-                    this.depositList = res.data.data;
-                }else{
-                    modal.alert({
-                        message: '系统繁忙',
-                        duration: 0.3
-                    })
-                }
-            });
-        }
     }
 </script>
