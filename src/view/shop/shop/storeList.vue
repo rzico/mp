@@ -9,8 +9,8 @@
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新</text>
             </refresh>
-            <cell v-for="num in lists">
-        <div class="shops">
+            <cell :style="{minHeight:screenHeight + 'px'}">
+        <div class="shops" v-for="num in lists">
             <div class="shopLogo" >
                 <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor"></image>
             </div>
@@ -104,6 +104,7 @@ export default {
             loading: false,
             refreshing : false,
             lists: [],
+            screenHeight:0
         }
     },
     components: {
@@ -111,13 +112,14 @@ export default {
     },
     props: {
         title: {default: "我的店铺"},
-        noDataHint: { default: "没有新朋友"},
+        noDataHint: { default: "尚未添加店铺"},
     },
     created() {
         utils.initIconFont();
         this.open(function () {
 
         });
+        this.screenHeight = utils.fullScreen(136);
     },
     methods:{
         open:function () {
@@ -146,7 +148,7 @@ export default {
                 _this.open()
                     _this.loading = false
             }
-                ,1500)
+                ,1000)
         },
 //            下拉刷新
         onrefresh (event) {
@@ -156,7 +158,7 @@ export default {
                     _this.open()
                     _this.refreshing = false;
             }
-                ,1500)
+                ,1000)
         },
 
         goback: function () {
