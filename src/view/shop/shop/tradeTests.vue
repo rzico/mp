@@ -133,7 +133,7 @@
                                 function (mes) {
                                     utils.debug(mes)
                                     if (mes.type == "success") {
-                                        event.closeURL();
+                                        event.closeURL(mes);
                                     } else {
                                         event.toast(mes.content);
                                     }

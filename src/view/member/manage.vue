@@ -43,7 +43,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between " @click="store">
                     <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                         <text class="title ml10">店铺管理</text>
                     </div>
                     <div class="flex-row flex-end">
@@ -51,9 +51,9 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between ">
+                <div class="cell-panel space-between " @click="card">
                     <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe70f;</text>
                         <text class="title ml10">会员卡管理</text>
                     </div>
                     <div class="flex-row flex-end">
@@ -63,7 +63,7 @@
                 </div>
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe632;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe635;</text>
                         <text class="title ml10">优惠券管理</text>
                     </div>
                     <div class="flex-row flex-end">
@@ -192,6 +192,11 @@
             },
             store:function () {
                 event.openURL(utils.locate('view/shop/shop/storeList.js'),function () {
+
+                })
+            },
+            card:function () {
+                event.openURL(utils.locate('view/shop/card/cardList.js'),function () {
 
                 })
             },

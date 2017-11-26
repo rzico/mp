@@ -123,6 +123,13 @@
         border-radius:60px;
         overflow:hidden;
     }
+    .button{
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        height: 82px;
+        border-radius: 15px;
+    }
     .buttonText{
         font-size: 40px;
         color:#ffffff;

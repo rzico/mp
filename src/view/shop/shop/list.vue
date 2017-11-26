@@ -15,13 +15,7 @@
             </div>
         </div>
         <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
-        <div class="addFriend" @click="scan()">
-        <div class="flex-row">
-            <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe672;</text>
-            <text class="title ml20 " >扫一扫添加员工</text>
-        </div>
-        <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
+
         <list class="listBody">
             <cell v-for="friend in friendsList" ref="listref" >
                 <!--姓氏首字母-->
