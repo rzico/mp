@@ -31,6 +31,12 @@
 <style lang="less" src="../style/wx.less"/>
 
 <style scoped>
+    .isvisible{
+        visibility: visible;
+    }
+    .novisible{
+        visibility: hidden;
+    }
     .card_bg {
         align-items: center;
         justify-content: center;
