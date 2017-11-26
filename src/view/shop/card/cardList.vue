@@ -214,7 +214,7 @@
                 }
             },
             add:function() {
-                event.openURL("http://192.168.2.117:8081/add.weex.js",function (message) {
+                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
 //
                 })
             },
@@ -282,7 +282,7 @@
             },
 
             jump:function () {
-                event.openURL('http://192.168.2.117:8081/view.weex.js',function () {
+                event.openURL(utils.locate('view/shop/card/view.js'),function () {
 
                 })
             },
