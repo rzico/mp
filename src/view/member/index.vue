@@ -705,51 +705,52 @@
             }
         },
         created:function () {
+            let _this = this;
             utils.initIconFont();
             this.UId = event.getUId();
-            var _this = this;
 //           获取用户信息;
             this.updateUserInfo();
 //            获取文集列表
             this.getCorpus();
 
 
-            let options = {
-                type:'article',
-                keyword:'',
-                orderBy:'desc',
-                current:_this.listCurrent,
-                pageSize:_this.listPageSize,
-            }
-            event.findList(options,function (data) {
-                if( data.type == "success" && data.data != '' ) {
-                    data.data.forEach(function (item) {
-//                        event.toast(item);
-//                    将value json化
-                        item.value = JSON.parse(item.value);
-//                        把读取到的文章push进去文章列表
-                        _this.articleList.push(item);
-                    })
+            this.getAllArticle();
+
+            globalEvent.addEventListener("onArticleChange", function (e) {
+                event.toast(e);
+//                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
+                if(e.data.type == 'success'){
+                    _this.articleList = [];
+                    _this.getAllArticle();
                 }else{
-                    return;
                 }
-            })
-//            let option = {
-//                type:'arcticle',//类型
-//                keyword:'N',//关键址
-//                orderBy:'desc',//"desc"降序 ,"asc"升序
-//                current:'0', //当前有几页
-//                pageSize:'10' //一页显示几行
-//            }
-//            event.findList(option,function (message) {
-//                event.toast(message);
-//                if(message.type == 'success' && message.data != ''){
-//
-//                }
-//            })
+            });
 
         },
         methods: {
+            getAllArticle(){
+                let _this = this;
+                let options = {
+                    type:'article',
+                    keyword:'',
+                    orderBy:'desc',
+                    current:_this.listCurrent,
+                    pageSize:_this.listPageSize,
+                }
+                event.findList(options,function (data) {
+                    if( data.type == "success" && data.data != '' ) {
+                        data.data.forEach(function (item) {
+//                        event.toast(item);
+//                    将value json化
+                            item.value = JSON.parse(item.value);
+//                        把读取到的文章push进去文章列表
+                            _this.articleList.push(item);
+                        })
+                    }else{
+                        return;
+                    }
+                })
+            },
 //            更新用户信息；
             updateUserInfo(){
                 let _this = this;

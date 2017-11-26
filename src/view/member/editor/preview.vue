@@ -5,7 +5,7 @@
         <!--网页-->
         <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
         <!--下一步-->
-        <div class="footBox mianBgColor" v-if="!publish"  @click="goOption()">
+        <div class="footBox bkg-primary" v-if="!publish"  @click="goOption()">
             <text class="nextStep">下一步</text>
         </div>
         <!--点赞 评论 分享-->
@@ -48,7 +48,7 @@
                 <div>
                     <div>
                         <!--模版样图-->
-                        <scroller  class="templateImgBox" scroll-direction="horizontal" >
+                        <scroller  class="templateImgBox"  scroll-direction="horizontal" >
                             <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
                                 <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn)"></image>
                             </div>
@@ -181,6 +181,10 @@
         transform: translateY(300px);
         opacity: 1;
     }
+    .slide-fade-enter-to{
+         transform: translateY(0px);
+         opacity: 1;
+     }
     .btnTextColor{
         color:#F0AD3C;
     }
@@ -230,7 +234,9 @@
         flex-direction: row;
         padding-bottom: 10px;
         padding-top: 20px;
+        height:220px;
         background-color: #171717;
+
     }
     .templateTitleBox{
         flex-direction: row;
@@ -271,7 +277,7 @@
         background-color: #fff;
         border-style:solid;
         border-width: 1px;
-        border-color: #888;
+        border-color: #ccc;
     }
     .nextStep{
         color: #fff;
@@ -288,7 +294,7 @@
         bottom: 0;
         border-style:solid;
         border-top-width: 1px;
-        border-color: #888;
+        border-color: #ccc;
     }
     .webView{
         width:750px;
@@ -636,9 +642,14 @@
             },
 //            生成长图
             longPic(){
-                event.toast('点击');
+                let _this = this;
                 webview.getLongImage(this.$refs.webView,function(data){
-                   event.toast(data);
+                   if(data.type == 'success'){
+                       event.toast('长图已保存到相册里');
+                       _this.isOperation = false;
+                   }else{
+                       event.toast(data.content);
+                   }
                 });
             }
         }

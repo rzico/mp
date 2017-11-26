@@ -737,7 +737,6 @@
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 2;//总的进度
                             _this.processWidth = 0;//进度条宽度
-                            event.toast('2');
                             event.toast(data.content);
                         }
                     },function (data) {
@@ -822,6 +821,9 @@
                                 if(data.type == 'success'){
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
+//                                    全局监听文章变动
+                                    let listenData = utils.message('success','文章改变','')
+                                    event.sendGlobalEvent('onArticleChange',listenData);
 //                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
                                         event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度

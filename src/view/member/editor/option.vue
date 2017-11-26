@@ -351,6 +351,9 @@
                         event.save(saveData,function(data) {
                             if (data.type == 'success') {
                                 event.toast('设置成功');
+//                                全局监听 文章变动
+                                let listenData = utils.message('success','文章改变','')
+                                event.sendGlobalEvent('onArticleChange',listenData);
                                 let E = {
                                     isDone : 'complete'
                                 }
