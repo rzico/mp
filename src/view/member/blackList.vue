@@ -17,15 +17,15 @@
                         </div>
                     </div>
                     <!--关注与否-->
-                    <div class="status_panel" v-if="!item.follow" @click="doFocus(item)">
-                        <text class="focus bkg-primary bd-primary" >关注</text>
+                    <div class="status_panel" @click="doCancel(item.id,index)">
+                        <text class="focus" >解除黑名单</text>
                     </div>
-                    <div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">
-                        <text class="ask ">已关注</text>
-                    </div>
-                    <div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">
-                        <text class="ask ">互相关注</text>
-                    </div>
+                    <!--<div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">-->
+                        <!--<text class="ask ">已关注</text>-->
+                    <!--</div>-->
+                    <!--<div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">-->
+                        <!--<text class="ask ">互相关注</text>-->
+                    <!--</div>-->
                 </div>
             </div>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
@@ -48,7 +48,7 @@
         margin-left: 20px;
         lines:1;
         text-overflow: ellipsis;
-        max-width: 400px;
+        max-width: 370px;
     }
     .friendsName{
         height:110px;
@@ -75,7 +75,7 @@
         margin-left: 20px;
         lines:1;
         text-overflow: ellipsis;
-        max-width: 400px;
+        max-width: 370px;
     }
     .status_panel {
         flex-direction: column;
@@ -89,10 +89,11 @@
         padding-top: 10px;
         padding-bottom: 10px;
         border-radius:10px;
-        width: 125px;
-        color:#fff;
+        width: 155px;
+        color:red;
         border-style: solid;
         border-width: 1px;
+        border-color: red;
     }
     .ask {
         font-size: 26px;
@@ -123,9 +124,6 @@
                 showLoading:false,
                 listCurrent:0,
                 pageSize:15,
-                UId:'',
-                isSelf:false,
-                userName:'我',
                 screenHeight:0
             }
         },
@@ -133,36 +131,18 @@
             navbar,noData
         },
         props:{
-            noDataHint:{default:'暂无粉丝'},
-        },
-        computed:{
-            title:function () {
-//              如果用户名称过长，便截取拼成名字
-                if((utils.getLength(this.userName) > 20)){
-                    this.userName = utils.changeStr(this.userName);
-                }
-                return this.userName + '的粉丝';
-            }
+            noDataHint:{default:'暂无黑名单'},
+            title:{default:'黑名单'}
         },
         created(){
             let _this = this;
-            this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);
-            setTimeout(function () {
-
-            },2000)
-            let selfId = event.getUId();
-            if(this.UId == selfId){
-                this.isSelf = true;
-            }else{
-                let name = decodeURI(utils.getUrlParameter('name'));
-                this.userName = utils.isNull(name) ? '我' : name;
-            }
 //            获取粉丝列表
-            GET('weex/fans/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+            GET('weex/member/friends/list.jhtml?status=black'+ '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != '' ){
                     _this.userList = data.data.data;
+                }else if(data.type == 'success' && data.data.data == '' ){
                 }else{
                     event.toast(data.content);
                 }
@@ -179,20 +159,20 @@
                 event.openURL(utils.locate("view/member/topic/author.js?id=" + id),function (message) {
                 });
             },
-//            关注
-            doFocus(item){
-                if(item.follow){
+//            解除黑名单
+            doCancel(id,index){
+                let _this = this;
                     modal.confirm({
-                        message: '确定要取消关注?',
+                        message: '确定要解除黑名单吗?',
                         okTitle:'确定',
                         cancelTitle:'取消',
                         duration: 0.3
                     }, function (value) {
                         if(value == '确定'){
-                            POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
+                            POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
                                 function(data){
                                     if(data.type == 'success'){
-                                        item.follow = false;
+                                        _this.userList.splice(index,1);
                                     }else{
                                         event.toast(err.content);
                                     }
@@ -203,20 +183,6 @@
                             )
                         }
                     })
-                }else{
-                    POST('weex/member/follow/add.jhtml?authorId=' + item.id).then(
-                        function(data){
-                            if(data.type == 'success'){
-                                item.follow = true;
-                            }else{
-                                event.toast(err.content);
-                            }
-                        },
-                        function(err){
-                            event.toast(err.content);
-                        }
-                    )
-                }
             },
 //            刷新
             onrefresh:function () {
@@ -233,7 +199,7 @@
 //                _this.loadingState = "正在加载数据";
                 setTimeout(() => {
                     this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/fans/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                    GET('weex/member/friends/list.jhtml?status=black'+ '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != '' ){
                             data.data.data.forEach(function (item) {
                                 _this.userList.push(item);

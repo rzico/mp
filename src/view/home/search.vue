@@ -17,7 +17,7 @@
                     <div class="searchContentBox flex-row " >
                         <div v-for="(item,index) in historyList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
-                            <div class="searchContent " :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
+                            <div class="searchContent" :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
                                 <text class=" searchContentText boder-bottom fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
                                 <!--,index != historyList.history.length - 2 || index != historyList.history.length-1 ? 'boder-bottom' : ''-->
                             </div>
@@ -95,7 +95,7 @@
                             <div class="flex-row "  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo"></image>
                                 <div style="width: 460px;">
-                                    <text class="title ml20">{{item.name}}</text>
+                                    <text class="title ml20">{{item.nickName}}</text>
                                     <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
                                 </div>
                                 <div style="width: 130px;">
@@ -235,7 +235,8 @@
     .searchContentText{
         height: 90px;
         line-height: 90px;
-        width: 349.5px;
+        /*width: 349.5px;*/
+        width:349px;
         lines:1;
         text-overflow: ellipsis;
     }
@@ -249,7 +250,8 @@
     }
     .searchContent{
         justify-content: center;
-        width: 374.5px;
+        /*width: 374.5px;*/
+        width: 374px;
         height: 90px;
     }
     .confm {

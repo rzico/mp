@@ -490,7 +490,7 @@
                     }else{
                         lastTimestamp = '';
                     }
-                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + '' ,function (data) {
+                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + lastTimestamp ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -547,7 +547,7 @@
             },
 //            作者主页
             goAuthor:function (id) {
-                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/member/topic/author.js?id=" + id),function (message) {
                 });
             },
             onlongpress :function(count) {
