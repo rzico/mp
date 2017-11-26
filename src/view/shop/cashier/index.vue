@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
         <div class="header cb" :class="[classHeader()]" >
-            <div class="nav_back" @click="goback('/')">
-                <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
-            </div>
-            <div class="nav">
+            <!--<div class="nav_back" @click="goback('/')">-->
+                <!--<text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>-->
+            <!--</div>-->
+            <div class="nav" style="width:750px;">
                 <text class="nav_title">收银台</text>
                 <text class="nav_Complete" @click="deposit()">账单</text>
             </div>
@@ -290,6 +290,7 @@
             title: { default: "收银台" }
         },
         created() {
+            utils.initIconFont();
             this.view();
         },
         methods: {
