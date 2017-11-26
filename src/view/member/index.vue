@@ -717,7 +717,6 @@
             this.getAllArticle();
 
             globalEvent.addEventListener("onArticleChange", function (e) {
-                event.toast(e);
 //                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
                 if(e.data.type == 'success'){
                     _this.articleList = [];
@@ -956,7 +955,7 @@
                     })
                 }else{
 
-                    event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=' + publish ),
+                    event.openURL(utils.locate('view/member/article/preview.js?articleId=' + id  + '&publish=' + publish ),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
 //                    _this.updateArticle();
@@ -1121,10 +1120,9 @@
             },
             onloading(e) {
                 var _this = this;
-                modal.toast({message: '加载中...', duration: 1})
                 this.showLoading = 'show'
                 setTimeout(() => {
-                    _this.listCurrent = _this.listCurrent + 10;
+                    _this.listCurrent = _this.listCurrent + _this.listPageSize;
                     let options = {
                         type:'article',
                         keyword:'',
@@ -1133,6 +1131,7 @@
                         pageSize:_this.listPageSize,
                     }
                     event.findList(options,function (data) {
+                        utils.debug(data);
                         if( data.type == "success" && data.data != '' ) {
                             data.data.forEach(function (item) {
 //                        event.toast(item);
