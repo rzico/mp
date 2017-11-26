@@ -30,7 +30,7 @@
     </div>
 
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .newHeight{
         height: 130px;

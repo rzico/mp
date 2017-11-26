@@ -99,6 +99,7 @@
     .cb {
         border-bottom-width: 0px!important;
     }
+
     .sub_title {
         color:#eee;
         font-size: 30px;
@@ -192,6 +193,7 @@
     .btn-text {
         margin-left: 10px;
         font-size: 32px;
+        color:#666;
     }
     .btn:active {
         background-color:#ccc;

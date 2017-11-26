@@ -1,5 +1,5 @@
 <template>
-    <div class="header" :class="[classHeader()]" >
+    <div class="header" :class="[classHeader(),border?'':'cb']" >
         <div class="nav_back" @click="goback('/')">
             <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
@@ -18,14 +18,6 @@
     .cb {
         border-bottom-width: 0px;
     }
-    .nav_back {
-        margin-top: 44px;
-        flex-direction: row;
-        width: 92px;
-        height: 92px;
-        align-items: center;
-        justify-content: center;
-    }
     .navRightBox{
         width: 110px;
         height: 92px;
@@ -36,14 +28,6 @@
         font-size: 38px;
         color: #fff;
         margin-top: 2px;
-    }
-    .nav {
-        width:654px;
-        justify-content: space-between;
-        flex-direction: row;
-        align-items: center;
-        margin-top: 44px;
-        height: 92px;
     }
     .nav_CompleteIcon{
         padding-left: 16px;
@@ -62,6 +46,7 @@
 
 </style>
 <script>
+    import utils from '../assets/utils'
     export default {
         props: {
             title: { default: "navbar" },
@@ -72,9 +57,7 @@
         methods: {
             classHeader:function () {
                 let dc = utils.device();
-                if (this.border==true) {
-                    dc = dc + '  cb';
-                }
+
                 return dc
             },
             goback: function (e) {
