@@ -1,10 +1,10 @@
 <template>
     <div class="wrapper">
         <div class="header cb" :class="[classHeader()]" >
-            <!--<div class="nav_back" @click="goback('/')">-->
-                <!--<text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>-->
-            <!--</div>-->
-            <div class="nav" style="width:750px;">
+            <div class="nav_back">
+                <image class="logo" :src="'file://resources/logo.png'" ></image>
+            </div>
+            <div class="nav">
                 <text class="nav_title">收银台</text>
                 <text class="nav_Complete" @click="deposit()">账单</text>
             </div>
@@ -105,10 +105,10 @@
         color:#eee;
         font-size: 30px;
     }
-    .nav_ico {
-        font-size: 38px;
-        color: #fff;
-        margin-top: 2px;
+    .logo {
+        height:45px;
+        width:45px;
+        border-radius:3px;
     }
     .nav_Complete {
         padding-left: 16px;
