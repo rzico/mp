@@ -9,9 +9,9 @@
                 <!--<text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>-->
             <!--</div>-->
         <!--</div>-->
-        <div class="header">
+        <div class="header"  :class="[classHeader()]">
             <!--顶部导航-->
-            <div class="nav">
+            <div class="nav nw">
                 <div style="width: 100px;" >
                 </div>
                 <!--页面名称-->
@@ -78,13 +78,8 @@
         flex-direction: row;
         align-items: center;
     }
-    .nav{
-        margin-top: 40px;
-        flex-direction: row;
-        height: 96px;
+    .nw{
         width: 750px;
-        align-items: center;
-        justify-content: space-between;
     }
     /*顶部导航栏*/
     /*.header {*/
@@ -317,6 +312,11 @@
             });
         },
         methods:{
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
 //            判断是否有消息
             isEmpty(){
                 return this.messageList.length == 0;

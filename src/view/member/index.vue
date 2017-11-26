@@ -14,9 +14,9 @@
         <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <div>
             <!--顶部白色区域-->
-            <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
-                <div class="nav">
+                <div class="nav nw">
                     <div style="width: 50px;">
                     </div>
                     <!--导航栏名字头像-->
@@ -51,7 +51,7 @@
         </div>
         <!--</transition-group>-->
         <!--顶部个人信息栏-->
-        <div class="topBox bkg-primary" ref='topBox'>
+        <div class="topBox bkg-primary"  :class="[classHeader()]" ref='topBox'>
             <!--背景图片-->
             <image   class="backgroundImage" :src="bgImgUrl"></image>
             <!--遮罩层-->
@@ -250,13 +250,8 @@
         flex-direction: row;
         align-items: center;
     }
-    .nav{
-        margin-top: 40px;
-        flex-direction: row;
-        height: 96px;
+    .nw{
         width: 750px;
-        align-items: center;
-        justify-content: space-between;
         padding-right: 30px;
         padding-left: 30px;
     }
@@ -727,6 +722,11 @@
 
         },
         methods: {
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
             getAllArticle(){
                 let _this = this;
                 let options = {

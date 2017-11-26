@@ -1,6 +1,6 @@
 <template>
     <div class="header" :class="[classHeader(),border?'':'cb']" >
-        <image class="nav_bg" :src="'file://resources/images/nav_bg.png'"></image>
+        <!--<image class="nav_bg" :src="'file://resources/images/nav_bg.png'"></image>-->
         <div class="nav_back" @click="goback('/')">
             <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>

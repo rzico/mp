@@ -258,7 +258,16 @@ let utilsFunc = {
     },
     //判断设备型号
     device:function () {
-      return "V1";
+        let s = weex.config.env.deviceModel;
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if (s.indexOf("V1")>0) {
+                return "V1"
+            } else {
+                return s;
+            }
+        }
     }
 
 };
