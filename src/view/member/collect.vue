@@ -223,11 +223,11 @@
                 }, 50)
             },
             goAuthor(id){
-                event.openURL(utils.locate("view/member/topic/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
                 });
             },
             goArticle(id){
-                event.openURL(utils.locate('view/member/article/preview.js?articleId=' + id  + '&publish=true' ),
+                event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
                     function () {}
                 )
             },

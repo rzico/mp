@@ -460,7 +460,7 @@
             },
 //            作者主页
             goAuthor:function (id) {
-                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
                 });
             },
             //            前往聊天
@@ -469,7 +469,7 @@
             },
 //                      前往文章
             goArticle(id){
-                event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=true' ),
+                event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
                     function () {}
                 )
             },

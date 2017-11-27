@@ -230,9 +230,15 @@
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
                     if(data.type == 'success' && data.data != ''){
-                        _this.member.logo = data.data.logo;
-                        _this.member.nickName = data.data.nickName;
-                        _this.member.autograph = data.data.autograph;
+                        if(!utils.isNull(data.data.logo)){
+                            _this.member.logo = data.data.logo;
+                        }
+                        if(!utils.isNull(data.data.nickName)){
+                            _this.member.nickName = data.data.nickName;
+                        }
+                        if(!utils.isNull(data.data.autograph)){
+                            _this.member.autograph = data.data.autograph;
+                        }
                         return ;
                         }
                     }

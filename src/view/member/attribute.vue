@@ -515,17 +515,30 @@
 
             },
             logout:function () {
-                POST('weex/login/logout.jhtml').then(
-                function (data) {
-                    if (data.type == "success") {
-                        event.closeURL(data);
-                    } else {
-                        event.toast(data.content);
+//                POST('weex/login/logout.jhtml').then(
+//                function (data) {
+//                    if (data.type == "success") {
+//                        event.logout(function (e) {
+//                            if(e.type == 'success'){
+//                                event.closeURL();
+//                            }else{
+//                                event.toast(e.content);
+//                            }
+//                        })
+//                    } else {
+//                        event.toast(data.content);
+//                    }
+//                }, function (err) {
+//                    event.toast(err.content);
+//                }
+//                )
+                event.logout(function (e) {
+                    if(e.type == 'success'){
+                        event.closeURL();
+                    }else{
+                        event.toast(e.content);
                     }
-                }, function (err) {
-                    event.toast(err.content);
-                }
-                )
+                })
             }
         }
 

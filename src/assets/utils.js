@@ -268,7 +268,22 @@ let utilsFunc = {
                 return s;
             }
         }
-    }
+    },
+//    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
+    addTop:function () {
+       let a = this.device();
+        if (this.isNull(a)) {
+            return ""
+        } else {
+            if(a == 'V1'){
+                return 'addTopV1';
+            }else if(a == 'IPhoneX'){
+                return 'addTopIPhoneX';
+            }else{
+                return a;
+            }
+        }
+    },
 
 };
 

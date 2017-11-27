@@ -117,6 +117,7 @@
         padding-top: 20px;
         padding-left: 20px;
         padding-right: 20px;
+
     }
 </style>
 <script>
@@ -173,7 +174,7 @@
                                     key:item.id,
                                     value:item,
                                     sort:'0,'+ item.modifyDate +'',
-                                    keyword:',[ '+ item.articleOption.articleCatalog.id + '],' + item.title + ','
+                                    keyword:',['+ item.articleOption.articleCatalog.id + '],' + item.title + ','
                                 }
                                 event.save(saveData,function(e){
                                     _this.ctrlProcess();
@@ -205,6 +206,9 @@
             doneDown(){
                 let _this = this;
                 _this.toSendArticle = false;
+//                                    全局监听文章变动
+                let listenData = utils.message('success','文章改变','')
+                event.sendGlobalEvent('onArticleChange',listenData);
                 event.toast('同步完成');
                 _this.currentPro = 0;
                 _this.processWidth = 0;

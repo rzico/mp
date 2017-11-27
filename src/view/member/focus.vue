@@ -179,7 +179,7 @@
             },
 //            前往作者主页
             goAuthor(id){
-                event.openURL(utils.locate("view/member/topic/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
                 });
             },
 //            取消关注

@@ -33,7 +33,7 @@
                             <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
                         </div>
                         <!--添加视频-->
-                        <div class="addIconBox ">
+                        <div class="addIconBox " @click="addVideoPara(0)">
                             <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                             </div>
                             <!--图片-->
                             <div>
-                                <image class="paraImage" resize="cover" @click="editParaImage(item.paraImage,index)" :src="item.thumbnailImage | watchThumbImg"></image>
+                                <image class="paraImage" resize="cover" @click="editParaImage(item.paraImage,index,item.mediaType)" :src="item.thumbnailImage | watchThumbImg"></image>
                             </div>
                             <!--文章内容-->
                             <div class="paraText" @click="editorText(index)">
@@ -86,7 +86,7 @@
                                     <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
                                 </div>
                                 <!--添加视频-->
-                                <div class="addIconBox ">
+                                <div class="addIconBox " @click="addVideoPara(index + 1)">
                                     <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                                 </div>
                             </div>
@@ -137,7 +137,9 @@
     </div>
 </template>
 <style scoped>
-
+    .addIconBox:active{
+        background-color: #ccc;
+    }
     .processTotal{
         position: absolute;
         bottom: 40px;
@@ -470,6 +472,7 @@
                                     paraImage: data.data[i].originalPath,
                                     //小缩略图
                                     thumbnailImage: data.data[i].thumbnailSmallPath,
+                                    mediaType: "image",
                                     paraText:'',
                                     show:true,
                                     serveThumbnail:''
@@ -517,6 +520,7 @@
                                     thumbnailImage: templatesData[i].thumbnail,
                                     paraText:templatesData[i].content,
                                     show:true,
+                                    mediaType:templatesData[i].mediaType,
                                     serveThumbnail:'' //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
                                 })
                             }
@@ -597,22 +601,34 @@
                 if(title == '点击设置标题'){
                     title = '';
                 }
-                modal.prompt({
-                    message: '请输入标题',
-                    duration: 0.3,
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                    default:title,
-                }, function (value) {
-                    if(value.result == '确定'){
-                        if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入标题',duration:1})
-                        }else{
-                            _this.setTitle = value.data;
-                            modal.toast({message:'设置成功',duration:1});
+                let textData = {
+                    autograph:title
+                };
+                textData = JSON.stringify(textData);
+                storage.setItem('articleTitle', textData,e=> {
+                    event.openURL(utils.locate('widget/autograph.js?name=articleTitle'), function (message) {
+                        if (message.type == 'success' && message.data != '') {
+                            _this.setTitle = message.data.text;
                         }
-                    }
+                    })
                 })
+//                modal.prompt({
+//                    message: '请输入标题',
+//                    duration: 0.3,
+//                    okTitle:'确定',
+//                    cancelTitle:'取消',
+//                    default:title,
+//                }, function (value) {
+//                    if(value.result == '确定'){
+//                        if(value.data == '' || value.data == null ){
+//                            modal.toast({message:'请输入标题',duration:1})
+//                        }else{
+//                            _this.setTitle = value.data;
+//                            modal.toast({message:'设置成功',duration:1});
+//                        }
+//                    }
+//                })
+
             },
 //            段落里的文本编辑
             editorText(index){
@@ -634,13 +650,14 @@
                 var _this = this;
 
                 if(this.setTitle == '点击设置标题'){
-                    modal.alert({
-                        message: '请设置标题',
-                        duration: 0.3
-                    },function () {
-                        _this.articleTitle(_this.setTitle);
-                    })
-                    return;
+//                    modal.alert({
+//                        message: '请设置标题',
+//                        duration: 0.3
+//                    },function () {
+//                        _this.articleTitle(_this.setTitle);
+//                    })
+//                    return;
+                    event.toast('请设置标题');
                 }
 
                 this.toSendArticle = true;
@@ -694,8 +711,12 @@
                 let frontUrl = _this.paraList[sendIndex].paraImage.substring(0,5);
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http:'){
+                    if(_this.paraList[sendIndex].mediaType == 'image'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
-                    _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
+                        _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
+                    }else if(_this.paraList[sendIndex].mediaType == 'video'){//如果是视频就将缩略图进行缩略
+                        _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].thumbnail,155,155);
+                    }
                     sendIndex ++ ;
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){
@@ -722,8 +743,25 @@
                     event.upload(_this.paraList[sendIndex].paraImage,function (data) {
                         if(data.type == 'success'){
                             _this.paraList[sendIndex].paraImage = data.data;
-                            //                            向后台获取缩略图
-                            _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
+//                            判断是图片还是视频
+                            if(_this.paraList[sendIndex].mediaType == 'image'){
+                                //                            向后台获取缩略图
+                                _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
+                            }else if(_this.paraList[sendIndex].mediaType == 'video'){
+//                                将视频的封面上传
+                                event.upload(_this.paraList[sendIndex].thumbnail,function (e) {
+                                    if(e.type == 'success'){
+                                        //                            向后台获取缩略图
+                                        _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(e.data,155,155);
+                                    }else{//上传失败
+                                        _this.toSendArticle = false;
+                                        _this.currentPro = 0;//当前进度
+                                        _this.proTotal = 2;//总的进度
+                                        _this.processWidth = 0;//进度条宽度
+                                        event.toast(e.content);
+                                    }
+                                })
+                            }
                             sendIndex ++ ;
 //                        判断是否最后一张图
                             if(sendIndex < sendLength){
@@ -782,7 +820,7 @@
                     atticleTemplates.push({
                         thumbnail:item.serveThumbnail,
                         original:item.paraImage,
-                        mediaType: "image",
+                        mediaType: item.mediaType,
                         content:item.paraText
                     })
                 })
@@ -812,7 +850,7 @@
                                 key:res.data.id,
                                 value:resDataStr,
                                 sort:'0,'+ timestamp +'',
-                                keyword:',[ '+ _this.catalogId + '],' + _this.setTitle + ','
+                                keyword:',['+ _this.catalogId + '],' + _this.setTitle + ','
                             }
 //                            event.toast(saveData);
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
@@ -825,7 +863,7 @@
                                     let listenData = utils.message('success','文章改变','')
                                     event.sendGlobalEvent('onArticleChange',listenData);
 //                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
-                                        event.openURL(utils.locate('view/member/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
+                                        event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 2;//总的进度
                                         _this.processWidth = 0;//进度条宽度
@@ -919,6 +957,7 @@
 //                                    小缩略图
                         thumbnailImage:textImg,
                         paraText:data.data,
+                        mediaType: "image",
                         show:true
                     }
                     _this.paraList.splice(index,0,newPara)
@@ -940,7 +979,8 @@
 //                                    小缩略图
                                     thumbnailImage: data.data[i].thumbnailSmallPath,
                                     paraText:'',
-                                    show:true
+                                    show:true,
+                                    mediaType: "image",
                                 }
                                 _this.paraList.splice(index + i,0,newPara)
                                 _this.clearIconBox();
@@ -1069,8 +1109,8 @@
                     }
                 })
             },
-//            编辑段落图片
-            editParaImage(imgSrc,index){
+//            编辑段落图片或者视频
+            editParaImage(imgSrc,index,mediaType){
                 var _this = this;
 //                判断是否没有图片
                 if(imgSrc == ''){
@@ -1094,6 +1134,7 @@
 //                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
 //                            })
 //                        }else if(value == '裁剪'){
+                        if(mediaType == 'image'){
 //                                调用裁剪图片
                             album.openCrop(imgSrc,function (data) {
                                 if(data.type == 'success'){
@@ -1106,6 +1147,21 @@
                                     }
                                 }
                             })
+                        }else if(mediaType == 'video'){
+                            album.openVideo(imgSrc,function (data) {
+                                if(data.type == 'success'){
+                                    _this.paraList[index].paraImage = data.data.videoPath;
+                                    _this.paraList[index].thumbnailImage = data.data.coverImagePath;
+                                }else{
+                                    if(data.content == '用户取消'){
+                                    }else{
+                                        event.toast(data.content);
+                                    }
+                                }
+                            })
+                        }
+
+
 //                        }else{
 //                            event.toast(value);
 //                        }
@@ -1191,6 +1247,29 @@
                         _this.voteList.splice(index,0,message.data);
                     }
                 });
+            },
+//            点击加号里的添加视频
+            addVideoPara:function (index) {
+                let _this = this;
+                album.openVideo(
+                    function (data) {
+                        if(data.type == 'success'){
+//                    data.data里存放的是用户选取的图片路径
+                                let newPara = {
+                                    //原图
+//                                    paraImage: data.data[i].originalPath,
+                                    paraImage: data.data.videoPath,
+//                                    小缩略图
+//                                    thumbnailImage: data.data[i].thumbnailSmallPath,
+                                    thumbnailImage: data.data.coverImagePath,
+                                    mediaType: "video",
+                                    paraText:'',
+                                    show:true
+                                }
+                                _this.paraList.splice(index,0,newPara)
+                                _this.clearIconBox();
+                    }
+                })
             }
         }
     }
