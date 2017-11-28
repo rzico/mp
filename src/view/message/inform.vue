@@ -1,83 +1,137 @@
 <template>
-    <scroller class="wrapper" :class="[bgWhite ? 'whiteColor' : '']">
+    <div>
         <navbar :title="title"@goback="goback"></navbar>
-        <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10202' || messageType == 'gm_10200'">
-            <div class="dateBox">
-                <text class="dateText">昨天17:46</text>
+        <scroller  :class="[bgWhite ? 'whiteColor' : '']">
+            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">{{refreshState}}</text>
+            </refresh>
+            <div :style="{minHeight:screenHeight + 'px'}">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
+                <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10202' || messageType == 'gm_10200'">
+                    <div class="dateBox">
+                        <text class="dateText">昨天17:46</text>
+                    </div>
+                    <div class="contentBox">
+                        <text class="fz45">付款成功</text>
+                        <text class="sub_title mt10">10月21日</text>
+                        <div class="moneyBox">
+                            <text class="fz65">128.00</text>
+                            <text class="fz30 mt10">元</text>
+                        </div>
+                        <div class="contentLine">
+                            <text class="fz30 black">付款方式:</text>
+                            <text class="fz30 gray ml10">花呗支付</text>
+                        </div>
+                        <div class="contentLine">
+                            <text class="fz30 black">交易对象:</text>
+                            <text class="fz30 gray ml10">饿了么</text>
+                        </div>
+                        <div class="contentLine">
+                            <text class="fz30 black">商品说明:</text>
+                            <text class=" fz30 gray ml10">千尊比萨（莲花店）外卖订单</text>
+                        </div>
+                        <div class="bottomBtn">
+                            <text class="title">查看详情</text>
+                        </div>
+                    </div>
+                </div>
+                <!--评论-->
+                <div class="lineBox"  v-if="messageType == 'gm_10203'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg" :src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text  class="infoText">{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                    <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                </div>
+                <!--点赞-->
+                <div class="lineBox"  v-if="messageType == 'gm_10204'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg" :src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                    <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                </div>
+                <!--关注-->
+                <div class="lineBox"  v-if="messageType == 'gm_10205'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >关注了你</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
+                <!--收藏-->
+                <div class="lineBox" v-if="messageType == 'gm_10206'" v-for="item in dataList">
+                    <div class="flex-row" >
+                        <image class="headImg" :src="item.logo" @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text  class="infoText">收藏了你的文章《想念入会想念入会》</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                    <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
+                </div>
+                <!--赞赏-->
+                <div class="lineBox"  v-if="messageType == 'gm_10207'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
+                <!--分享提醒-->
+                <div class="lineBox"  v-if="messageType == 'gm_10208'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
+                <!--添加好友-->
+                <div class="lineBox"  v-if="messageType == 'gm_10209'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
+                <!--同意好友-->
+                <div class="lineBox"  v-if="messageType == 'gm_10210'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" >{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="contentBox">
-                <text class="fz45">付款成功</text>
-                <text class="sub_title mt10">10月21日</text>
-                <div class="moneyBox">
-                    <text class="fz65">128.00</text>
-                    <text class="fz30 mt10">元</text>
-                </div>
-                <div class="contentLine">
-                    <text class="fz30 black">付款方式:</text>
-                    <text class="fz30 gray ml10">花呗支付</text>
-                </div>
-                <div class="contentLine">
-                    <text class="fz30 black">交易对象:</text>
-                    <text class="fz30 gray ml10">饿了么</text>
-                </div>
-                <div class="contentLine">
-                    <text class="fz30 black">商品说明:</text>
-                    <text class=" fz30 gray ml10">千尊比萨（莲花店）外卖订单</text>
-                </div>
-                <div class="bottomBtn">
-                    <text class="title">查看详情</text>
-                </div>
-            </div>
-        </div>
-        <!--收藏-->
-        <div class="lineBox" v-if="messageType == 'gm_10206'" v-for="item in dataList">
-            <div class="flex-row" >
-                <image class="headImg" :src="item.logo"></image>
-                <div class="userInfo">
-                    <text class="fz30 nameColor" >{{item.nickName}}</text>
-                    <text  class="infoText">收藏了你的文章《想念入会想念入会》</text>
-                    <text class="sub_title">{{item.createDate | timefmtOther}}</text>
-                </div>
-            </div>
-            <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-        </div>
-        <!--评论-->
-        <div class="lineBox"  v-if="messageType == 'gm_10203'">
-            <div class="flex-row">
-                <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-                <div class="userInfo">
-                    <text class="fz30 nameColor" >陈星星</text>
-                    <text  class="infoText">很漂亮，写得很好</text>
-                    <text class="sub_title">07-13</text>
-                </div>
-            </div>
-            <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-        </div>
-        <!--点赞-->
-        <div class="lineBox"  v-if="messageType == 'gm_10204'">
-            <div class="flex-row">
-                <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-                <div class="userInfo">
-                    <text class="fz30 nameColor" >陈星星</text>
-                    <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="sub_title">07-13</text>
-                </div>
-            </div>
-            <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-        </div>
-        <!--关注-->
-        <div class="lineBox"  v-if="messageType == 'gm_10205'">
-            <div class="flex-row">
-                <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
-                <div class="userInfo">
-                    <text class="fz30 nameColor" >陈星星</text>
-                    <text   class="infoText" >关注了你</text>
-                    <text class="sub_title">07-13</text>
-                </div>
-            </div>
-            <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
-        </div>
-    </scroller>
+            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
+                <text class="indicator">加载中...</text>
+            </loading>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
@@ -203,6 +257,11 @@
                 messageType:'',
                 bgWhite:false,
                 dataList:[],
+                refreshing:false,
+                showLoading:false,
+                listCurrent:0,
+                pageSize:15,
+                screenHeight:0
             }
         },
         components: {
@@ -214,6 +273,8 @@
         created(){
             let _this = this;
             utils.initIconFont();
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(136);
             this.messageType = utils.getUrlParameter('type');
             switch(this.messageType){
                 case 'gm_10200':
@@ -256,7 +317,7 @@
                     this.title =  '添加好友提醒';
                     this.bgWhite = true;
                     break;
-                case 'gm_10209':
+                case 'gm_10210':
                     this.title =  '同意好友提醒';
                     this.bgWhite = true;
                     break;
@@ -265,10 +326,12 @@
                     this.bgWhite = false;
                     break;
             }
-            GET('weex/member/message/list.jhtml?userId=' + this.messageType ,function (data) {
-                event.toast(data);
+            GET('weex/member/message/list.jhtml?userId=' + this.messageType +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != ''){
                     _this.dataList =  data.data.data;
+                }else if(data.type == 'success' && data.data.data == '' ){
+                }else{
+                    event.toast(data.content);
                 }
             },function (err) {
                 event.toast('网络不稳定');
@@ -277,7 +340,41 @@
         methods:{
             goback(){
                 event.closeURL();
-            }
+            },
+            //            作者主页
+            goAuthor:function (id) {
+                id = parseInt(id.substr(-5)) - 10200;
+                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
+                });
+            },
+            onrefresh:function () {
+                var _this = this;
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 50)
+            },
+            onloading:function () {
+                var _this = this;
+                _this.showLoading = true;
+//                _this.loadingState = "正在加载数据";
+                setTimeout(() => {
+                    _this.listCurrent = _this.listCurrent + _this.pageSize;
+                    GET('weex/member/message/list.jhtml?userId=' + _this.messageType +'&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
+                        if(data.type == 'success' && data.data.data != '' ){
+                            data.data.data.forEach(function (item) {
+                                _this.dataList.push(item);
+                            })
+                        }else if(data.type == 'success' && data.data.data == '' ){
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+                    _this.showLoading = false;
+                }, 1500)
+            },
         }
 
     }

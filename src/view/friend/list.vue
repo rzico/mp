@@ -1,9 +1,9 @@
 
 <template>
     <div>
-        <div class="header">
+        <div class="header" :class="[classHeader()]">
             <!--顶部导航-->
-            <div class="nav">
+            <div class="nav nw">
                 <div style="width: 100px;" >
                 </div>
                 <!--页面名称-->
@@ -131,13 +131,8 @@
         flex-direction: row;
         align-items: center;
     }
-    .nav{
-        margin-top: 40px;
-        flex-direction: row;
-        height: 96px;
+    .nw{
         width: 750px;
-        align-items: center;
-        justify-content: space-between;
     }
     /*顶部导航栏*/
     /*.header {*/
@@ -477,6 +472,11 @@
             });
         },
         methods: {
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
 //            有新朋友时，
             hadFriend(){
                 var _this = this;
@@ -490,7 +490,7 @@
                     }else{
                         lastTimestamp = '';
                     }
-                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + '' ,function (data) {
+                    GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + lastTimestamp ,function (data) {
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -547,7 +547,7 @@
             },
 //            作者主页
             goAuthor:function (id) {
-                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
                 });
             },
             onlongpress :function(count) {

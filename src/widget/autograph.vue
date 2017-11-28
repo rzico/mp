@@ -4,7 +4,7 @@
         <navbar :title="title" :complete="complete" @goback="goback"  @goComplete="goComplete"> </navbar>
     </div>
     <div class="wrapper">
-        <textarea class="textarea" @input="oninput"   placeholder="不超过30个字" v-model="autograph"></textarea>
+        <textarea class="textarea" @input="oninput" autofocus="true"  placeholder="不超过30个字" v-model="autograph"></textarea>
     </div>
     </div>
 </template>
@@ -42,6 +42,9 @@
         created() {
             var _this = this ;
             var autotext = utils.getUrlParameter('name');
+            if(autotext == 'articleTitle'){
+                this.title = '修改标题';
+            }
             storage.getItem(autotext, e => {
 //                event.toast(e)
                 let textData = JSON.parse(e.data);
@@ -51,7 +54,7 @@
         },
         methods: {
             oninput (event) {
-                console.log('oninput:', event.value);
+//                console.log('oninput:', event.value);
                 this.text = event.value
             },
             goback: function () {

@@ -184,7 +184,7 @@
                 }, 50)
             },
             goAuthor(id) {
-                event.openURL(utils.locate("view/member/author.js?id=" + id), function (message) {
+                event.openURL(utils.locate("view/topic/author.js?id=" + id), function (message) {
                 });
             },
             onloading: function () {

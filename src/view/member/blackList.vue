@@ -7,7 +7,7 @@
             </refresh>
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="userList.length == 0"></noData>
-                <div class="addFriendsBorder" v-else v-for="(item,index) in userList" @click="goAuthor(item.id)">
+                <div class="addFriendsBorder" v-else v-for="item in userList" @click="goAuthor(item.id)">
                     <!--用户头像与昵称签名-->
                     <div class="friendsLine" >
                         <image :src="item.logo" class="friendsImage"></image>
@@ -17,14 +17,15 @@
                         </div>
                     </div>
                     <!--关注与否-->
-                    <div class="status_panel" @click="doCancel(item,index)" v-if="isSelf">
-                        <text class="ask " v-if="item.follow && !item.followed" >已关注</text>
-                        <text class="ask  "v-else>互相关注</text>
+                    <div class="status_panel" @click="doCancel(item.id,index)">
+                        <text class="focus" >解除黑名单</text>
                     </div>
-                    <div class="status_panel" @click="doCancel(item,index)" v-else="">
-                        <text class="ask " v-if="item.follow" >已关注</text>
-                        <text class="focus bkg-primary"  v-else>关注</text>
-                    </div>
+                    <!--<div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">-->
+                        <!--<text class="ask ">已关注</text>-->
+                    <!--</div>-->
+                    <!--<div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">-->
+                        <!--<text class="ask ">互相关注</text>-->
+                    <!--</div>-->
                 </div>
             </div>
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
@@ -47,7 +48,7 @@
         margin-left: 20px;
         lines:1;
         text-overflow: ellipsis;
-        max-width: 400px;
+        max-width: 370px;
     }
     .friendsName{
         height:110px;
@@ -74,7 +75,7 @@
         margin-left: 20px;
         lines:1;
         text-overflow: ellipsis;
-        max-width: 400px;
+        max-width: 370px;
     }
     .status_panel {
         flex-direction: column;
@@ -88,11 +89,11 @@
         padding-top: 10px;
         padding-bottom: 10px;
         border-radius:10px;
-        width: 125px;
-        color:#fff;
-        border-color: #fff;
+        width: 155px;
+        color:red;
         border-style: solid;
         border-width: 1px;
+        border-color: red;
     }
     .ask {
         font-size: 26px;
@@ -113,55 +114,35 @@
     const modal = weex.requireModule('modal');
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
-    import filters from '../../filters/filters.js';
     import noData from '../../include/noData.vue';
     export default {
-        components: {
-            navbar,noData
-        },
         data(){
             return{
-                screenHeight:0,
                 userList:[],
+                refreshState:'',
                 refreshing:false,
                 showLoading:false,
                 listCurrent:0,
                 pageSize:15,
-                refreshState:'',
-                UId:'',
-                isSelf:false,
-                userName:'我'
+                screenHeight:0
             }
+        },
+        components: {
+            navbar,noData
         },
         props:{
-            noDataHint:{default:'暂无关注'},
-        },
-        computed:{
-            title:function () {
-//              如果用户名称过长，便截取拼成名字
-                if((utils.getLength(this.userName) > 20)){
-                    this.userName = utils.changeStr(this.userName);
-                }
-                return this.userName + '的关注';
-            }
+            noDataHint:{default:'暂无黑名单'},
+            title:{default:'黑名单'}
         },
         created(){
-            this.UId = utils.getUrlParameter('id');
+            let _this = this;
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);
-            let selfId = event.getUId();
-            if(this.UId == selfId){
-                this.isSelf = true;
-            }else{
-                let name = decodeURI(utils.getUrlParameter('name'));
-                this.userName = utils.isNull(name) ? '我' : name;
-            }
-            let _this = this;
-            GET('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+//            获取粉丝列表
+            GET('weex/member/friends/list.jhtml?status=black'+ '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != '' ){
                     _this.userList = data.data.data;
-                }else if(data.type == 'success'){
-
+                }else if(data.type == 'success' && data.data.data == '' ){
                 }else{
                     event.toast(data.content);
                 }
@@ -171,10 +152,6 @@
         },
         methods:{
             goback(){
-//                let E = {
-//                    isChange:true,
-//                }
-//                let backData = utils.message('success','成功',E);
                 event.closeURL();
             },
 //            前往作者主页
@@ -182,20 +159,17 @@
                 event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
                 });
             },
-//            取消关注
-            doCancel(item,index){
+//            解除黑名单
+            doCancel(id,index){
                 let _this = this;
-//                判断是我的关注还是作者的关注
-                if(this.isSelf){
                     modal.confirm({
-                        message: '确定要取消关注?',
+                        message: '确定要解除黑名单吗?',
                         okTitle:'确定',
                         cancelTitle:'取消',
                         duration: 0.3
                     }, function (value) {
                         if(value == '确定'){
-                            //    将内容删掉
-                            POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
+                            POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
                                 function(data){
                                     if(data.type == 'success'){
                                         _this.userList.splice(index,1);
@@ -209,46 +183,8 @@
                             )
                         }
                     })
-                }else{
-                    if(item.follow){
-                        modal.confirm({
-                            message: '确定要取消关注?',
-                            okTitle:'确定',
-                            cancelTitle:'取消',
-                            duration: 0.3
-                        }, function (value) {
-                            if(value == '确定'){
-                                POST('weex/member/follow/delete.jhtml?authorId=' + item.id).then(
-                                    function(data){
-                                        if(data.type == 'success'){
-                                            item.follow = false;
-                                        }else{
-                                            event.toast(err.content);
-                                        }
-                                    },
-                                    function(err){
-                                        event.toast(err.content);
-                                    }
-                                )
-                            }
-                        })
-                    }else{
-                        POST('weex/member/follow/add.jhtml?authorId=' + item.id).then(
-                            function(data){
-                                if(data.type == 'success'){
-                                    item.follow = true;
-                                }else{
-                                    event.toast(err.content);
-                                }
-                            },
-                            function(err){
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                }
-
             },
+//            刷新
             onrefresh:function () {
                 var _this = this;
                 this.refreshing = true
@@ -256,13 +192,14 @@
                     this.refreshing = false
                 }, 50)
             },
+//            加载
             onloading:function () {
                 var _this = this;
                 _this.showLoading = true;
 //                _this.loadingState = "正在加载数据";
                 setTimeout(() => {
                     this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/follow/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                    GET('weex/member/friends/list.jhtml?status=black'+ '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != '' ){
                             data.data.data.forEach(function (item) {
                                 _this.userList.push(item);

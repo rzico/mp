@@ -176,7 +176,7 @@
             },
 //            前往作者主页
             goAuthor(id){
-                event.openURL(utils.locate("view/member/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
                 });
             },
 //            关注
@@ -235,7 +235,7 @@
                     this.listCurrent = this.listCurrent + this.pageSize;
                     GET('weex/fans/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.foreach(function (item) {
+                            data.data.data.forEach(function (item) {
                                 _this.userList.push(item);
                             })
                         }else if(data.type == 'success' && data.data.data == '' ){

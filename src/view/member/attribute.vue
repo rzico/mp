@@ -97,7 +97,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="button bkg-primary" @click="logout">
+                <div class="button bw bkg-primary" @click="logout">
                     <text class="buttonText ">注销账号</text>
                 </div>
             </div>
@@ -123,12 +123,11 @@
         border-radius:60px;
         overflow:hidden;
     }
-    .button{
-        align-items: center;
-        justify-content: center;
-        margin-right: 20px;
-        height: 82px;
-        border-radius: 15px;
+    .bw{
+        margin-top:30px;
+        margin-bottom: 30px;
+        margin-left: 30px;
+        width:650px;
     }
     .buttonText{
         font-size: 40px;
@@ -265,15 +264,15 @@
                 })
             },
             pickDate () {
+                var _this = this;
                 picker.pickDate({
-                    value: this.birthday
-                }, event => {
-                    if (event.result === 'success') {
-                        this.birthday = event.data
-                        POST('weex/member/update.jhtml?birth=' +this.birthday).then(
+                    value: _this.birthday
+                }, function (e) {
+                    if (e.result == 'success') {
+                        POST('weex/member/update.jhtml?birth=' +e.data).then(
                             function (mes) {
                                 if (mes.type == "success") {
-
+                                    _this.birthday = "已设置";
                                 } else {
                                     event.toast(mes.content);
                                 }
@@ -319,22 +318,23 @@
             })
             },
             pick () {
+                var _this = this;
                 picker.pick({
                     index:0,
                     items:['男','女','保密']
                 }, e => {
-                    if (e.result === 'success') {
+                    if (e.result == 'success') {
                         if (e.data == 0){
-                            this.gender = '男'
-                            this.sex = 'male'
+                            _this.gender = '男'
+                            _this.sex = 'male'
 
                         }else if(e.data == 1){
-                            this.gender = '女'
-                            this.sex = 'female'
+                            _this.gender = '女'
+                            _this.sex = 'female'
                         }
                         else{
-                            this.gender = '保密'
-                            this.sex = 'secrecy'
+                            _this.gender = '保密'
+                            _this.sex = 'secrecy'
                         }
                         POST('weex/member/update.jhtml?gender=' +this.sex).then(
                             function (mes) {
@@ -515,17 +515,30 @@
 
             },
             logout:function () {
-                POST('weex/login/logout.jhtml').then(
-                function (data) {
-                    if (data.type == "success") {
-                        event.closeURL(data);
-                    } else {
-                        event.toast(data.content);
+//                POST('weex/login/logout.jhtml').then(
+//                function (data) {
+//                    if (data.type == "success") {
+//                        event.logout(function (e) {
+//                            if(e.type == 'success'){
+//                                event.closeURL();
+//                            }else{
+//                                event.toast(e.content);
+//                            }
+//                        })
+//                    } else {
+//                        event.toast(data.content);
+//                    }
+//                }, function (err) {
+//                    event.toast(err.content);
+//                }
+//                )
+                event.logout(function (e) {
+                    if(e.type == 'success'){
+                        event.closeURL();
+                    }else{
+                        event.toast(e.content);
                     }
-                }, function (err) {
-                    event.toast(err.content);
-                }
-                )
+                })
             }
         }
 

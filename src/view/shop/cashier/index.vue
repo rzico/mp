@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper">
         <div class="header cb" :class="[classHeader()]" >
-            <div class="nav_back" @click="goback('/')">
-                <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+            <div class="nav_back">
+                <image class="logo" :src="'file://resources/logo.png'" ></image>
             </div>
             <div class="nav">
                 <text class="nav_title">收银台</text>
@@ -59,7 +59,8 @@
         </scroller>
         <div class="waiting" v-if="isShow()">
             <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe710;</text>
-            <text class="paymenting">支付中...</text>
+            <text class="paymenting">支付中</text>
+            <text class="paymenting">{{step}}</text>
             <div class="close"  @click="close()">
                 <text class="close_button" :style="{fontFamily:'iconfont' }">&#xe60a;</text>
             </div>
@@ -104,10 +105,10 @@
         color:#eee;
         font-size: 30px;
     }
-    .nav_ico {
-        font-size: 38px;
-        color: #fff;
-        margin-top: 2px;
+    .logo {
+        height:45px;
+        width:45px;
+        border-radius:3px;
     }
     .nav_Complete {
         padding-left: 16px;
@@ -227,12 +228,12 @@
         margin-top: 50px;
     }
     .waiting {
-        position: fixed;
+        position:fixed;
         flex-direction: column;
-        margin-left: 125px;
-        margin-top: 420px;
+        left: 125px;
+        top: 420px;
         width: 500px;
-        background-color: white;
+        background-color: navajowhite;
         border: 1px;
         border-color: #eee;
         border-radius:10px;
@@ -240,10 +241,12 @@
         padding-top: 20px;
         justify-content: center;
         align-items: center;
-        height:400px;
+        height:300px;
     }
     .paymenting {
         justify-content: center;
+        font-size: 32px;
+        margin-top: 10px;
     }
     .close {
         position:absolute;
@@ -272,6 +275,8 @@
         data() {
             return {
                 id:0,
+                sn:"",
+                step:"",
                 cashier:{today:0,yesterday:0,shopId:""},
                 shopId:"",
                 amount:"",
@@ -285,6 +290,7 @@
             title: { default: "收银台" }
         },
         created() {
+            utils.initIconFont();
             this.view();
         },
         methods: {
@@ -310,22 +316,23 @@
             },
             deposit:function () {
                 utils.device();
-//                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
+                //event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
             isShow:function () {
-                return this.time<15;
+                return this.time<30;
             },
             clearTimer:function () {
                if (this.timer!=null) {
                    clearTimeout(this.timer);
                    this.timer = null;
                }
-               this.time = 15;
+               this.time = 30;
+               this.step = "";
             },
             print:function () {
-                GET("weex/member/payBill/print.jhtml?id="+this.id,function (mes) {
+                GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
                     if (mes.type=='success') {
-                        printer.printString(mes.data);
+                        printer.print(mes.data);
                     } else {
                         modal.alert({
                             message: mes.content,
@@ -340,13 +347,14 @@
             close:function () {
                this.clearTimer();
             },
-            beginTimer:function (sn) {
+            beginTimer:function () {
                 var _this = this;
                 if (_this.time==0) {
-                    this.clearTimer();
+                    _this.clearTimer();
                     return;
                 }
-                POST("payment/query.jhtml?sn="+sn).then(
+                _this.step = _this.step +'..';
+                POST("payment/query.jhtml?sn="+_this.sn).then(
                     function (res) {
                         if (res.type=='success') {
                             if (res.data=='0000') {
@@ -361,7 +369,7 @@
                                 })
                                 _this.clearTimer();
                             } else {
-                                _this.timer = setTimeout(_this.beginTimer(sn),1000);
+                                _this.timer = setTimeout(function () {_this.beginTimer()},1000);
                             }
                         } else {
                             _this.clearTimer();
@@ -381,10 +389,19 @@
                         POST("weex/member/cashier/submit.jhtml?shopId="+_this.shopId+"&amount="+_this.amount).then(
                             function (res) {
                                 if (res.type=='success') {
-                                    POST("payment/submit.jhtml?sn="+res.data+"&paymentPluginId="+plugId+"&safeKey="+message.data).then(
+                                    _this.id = res.data.id;
+                                    _this.sn = res.data.sn;
+                                    POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+plugId+"&safeKey="+message.data).then(
                                         function (data) {
-                                            _this.time =  _this.time - 1;
-                                            setTimeout(_this.beginTimer(res.data),500);
+                                            if (data.type=='success') {
+                                                _this.time = 29;
+                                                _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                                            } else {
+                                                modal.alert({
+                                                    message: data.content,
+                                                    okTitle: '知道了'
+                                                })
+                                            }
                                         },function (err) {
                                             event.toast(err.content);
                                         }

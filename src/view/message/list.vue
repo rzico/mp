@@ -1,17 +1,17 @@
 <template>
     <div class="wrapper">
         <!--<div class="header">-->
-            <!--<div class="flex-center flex1"></div>-->
-            <!--<div class="nav flex4">-->
-                <!--<text class="nav_title">消息</text>-->
-            <!--</div>-->
-            <!--<div class="flex-center flex1" @click="menu()">-->
-                <!--<text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>-->
-            <!--</div>-->
+        <!--<div class="flex-center flex1"></div>-->
+        <!--<div class="nav flex4">-->
+        <!--<text class="nav_title">消息</text>-->
         <!--</div>-->
-        <div class="header">
+        <!--<div class="flex-center flex1" @click="menu()">-->
+        <!--<text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="header"  :class="[classHeader()]">
             <!--顶部导航-->
-            <div class="nav">
+            <div class="nav nw">
                 <div style="width: 100px;" >
                 </div>
                 <!--页面名称-->
@@ -78,23 +78,18 @@
         flex-direction: row;
         align-items: center;
     }
-    .nav{
-        margin-top: 40px;
-        flex-direction: row;
-        height: 96px;
+    .nw{
         width: 750px;
-        align-items: center;
-        justify-content: space-between;
     }
     /*顶部导航栏*/
     /*.header {*/
-        /*flex-direction: row;*/
-        /*background-color: #D9141E;*/
-        /*!*background-color: #fff;*!*/
-        /*left: 0;*/
-        /*right: 0;*/
-        /*top:0;*/
-        /*height: 136px;*/
+    /*flex-direction: row;*/
+    /*background-color: #D9141E;*/
+    /*!*background-color: #fff;*!*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*top:0;*/
+    /*height: 136px;*/
     /*}*/
 
     .deleteText{
@@ -104,19 +99,19 @@
         position: absolute;right: 0px;top: 0px;height: 130px;align-items: center;width: 130px;justify-content: center;
     }
     /*.nav {*/
-        /*flex:1;*/
-        /*flex-direction: row;*/
-        /*align-items: center;*/
-        /*justify-content: center;*/
-        /*margin-top: 40px;*/
+    /*flex:1;*/
+    /*flex-direction: row;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+    /*margin-top: 40px;*/
     /*}*/
     /*.menu {*/
-        /*margin-top: 40px;*/
-        /*font-size: 50px;*/
-        /*line-height: 60px;*/
-        /*height:60px;*/
-        /*width:60px;*/
-        /*color:white;*/
+    /*margin-top: 40px;*/
+    /*font-size: 50px;*/
+    /*line-height: 60px;*/
+    /*height:60px;*/
+    /*width:60px;*/
+    /*color:white;*/
     /*}*/
     .messageTotal{
         background-color: red;
@@ -249,6 +244,21 @@
                     case 'gm_10206':
                         return '收藏提醒'
                         break;
+                    case 'gm_10207':
+                        return '赞赏提醒';
+                        break;
+                    case 'gm_10208':
+                        return  '分享提醒';
+                        break;
+                    case 'gm_10209':
+                        return  '添加好友提醒';
+                        break;
+                    case 'gm_10210':
+                        return '同意好友提醒';
+                        break;
+                    case 'gm_10211':
+                        return '系统客服';
+                        break;
                     default:
                         return value.nickName;
                         break;
@@ -305,6 +315,10 @@
             });
         },
         methods:{
+            classHeader:function () {
+                let dc = utils.device();
+                return dc
+            },
 //            判断是否有消息
             isEmpty(){
                 return this.messageList.length == 0;
@@ -357,7 +371,7 @@
                         }
 //                        本地查找是已有消息列表还是新消息列表
                         event.find(findOption,function (data) {
-                                var storageData = JSON.stringify(_weex.data);
+                            var storageData = JSON.stringify(_weex.data);
                             if(data.type == 'success' && data.data != ''){
 //                                var storageData = JSON.parse(data.data.value);
 //                                storageData.createDate = _weex.data.createDate;
@@ -470,15 +484,28 @@
                             event.save(option,function (message) {
                                 if(message.type == 'success'){
                                     if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
-                                        event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
-                                        });
+                                        event.setReadMessage(item.userId,function(data) {
+                                            if (data.type == 'success') {
+                                                event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
+                                                });
+                                            } else {
+                                                event.toast(data.content);
+                                            }
+                                        })
+                                        }else{
+//                                       设置已读
+                                            event.setReadMessage(item.userId,function(data){
+                                                if(data.type == 'success'){
+                                                    event.navToChat(item.userId);
+                                                }else{
+                                                    event.toast(data.content);
+                                                }
+                                            });
+                                        };
                                     }else{
-                                        event.navToChat(item.userId);
+                                        event.toast(message.content);
                                     };
-                                }else{
-                                    event.toast(message.content);
-                                };
-                            });
+                                });
                         };
                     });
                 }else{
@@ -500,90 +527,97 @@
 
                     }else{
 //                    item.unRead = 0;
+//                        设置已读
+//                        event.setReadMessage(item.userId,function(data){
+//                            if(data.type == 'success'){
                         event.navToChat(item.userId);
-                    };
-                };
+//                            }else{
+//                                event.toast(data.content);
+//                            }
+//                    });
+    };
+    };
 
-            },
-            menu:function(page){
+    },
+    menu:function(page){
 
-            },
-//            点击屏幕时
-            ontouchstart:function (e,index) {
-                var _this = this;
-                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
-                }else{
-                    animation.transition(animationPara, {
-                        styles: {
-                            transform: 'translateX(0)',
-                        },
-                        duration: 350, //ms
-                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+    },
+    //            点击屏幕时
+    ontouchstart:function (e,index) {
+        var _this = this;
+        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+        }else{
+            animation.transition(animationPara, {
+                styles: {
+                    transform: 'translateX(0)',
+                },
+                duration: 350, //ms
+                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                        needLayout:false,
-                        delay: 0 //ms
-                    })
-                }
-//                获取当前点击的元素。
-                animationPara =  e.currentTarget;
-            },
-//            移动时
-            onpanmove:function (e,index) {
-//                获取当前点击的元素。
-                var _this = this;
-                if(e.direction == 'right'){
-                    _this.canScroll = false;
-                    animation.transition(animationPara, {
-                        styles: {
-                            transform: 'translateX(0)',
-                        },
-                        duration: 350, //ms
-                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
-//                      timingFunction: 'ease-out',
-                        needLayout:false,
-                        delay: 0 //ms
-                    },function () {
-                        _this.canScroll = true;
-                    })
-                }else if(e.direction == 'left'){
-                    _this.canScroll = false;
-//                  modal.toast({message:distance});
-                    animation.transition(animationPara, {
-                        styles: {
-                            transform: 'translateX(-130)',
-                        },
-                        duration:350, //ms
-                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
-//                      timingFunction: 'ease-out',
-                        needLayout:false,
-                        delay: 0 //ms
-                    },function () {
-                        _this.canScroll = true;
-                    })
-                }
-            },
-            deleteMessage(){
-                event.toast('删除成功');
-            },
-//            触发自组件的跳转方法
-            gosearch:function () {
-                event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
-//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
-                });
-            },
-//            触发自组件的二维码方法
-            scan:function () {
-                event.scan(function (message) {
-                        SCAN(message, function (data) {
-
-                        }, function (err) {
-
-                        })
-                });
-            },
+                needLayout:false,
+                delay: 0 //ms
+            })
         }
+//                获取当前点击的元素。
+        animationPara =  e.currentTarget;
+    },
+    //            移动时
+    onpanmove:function (e,index) {
+//                获取当前点击的元素。
+        var _this = this;
+        if(e.direction == 'right'){
+            _this.canScroll = false;
+            animation.transition(animationPara, {
+                styles: {
+                    transform: 'translateX(0)',
+                },
+                duration: 350, //ms
+                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                needLayout:false,
+                delay: 0 //ms
+            },function () {
+                _this.canScroll = true;
+            })
+        }else if(e.direction == 'left'){
+            _this.canScroll = false;
+//                  modal.toast({message:distance});
+            animation.transition(animationPara, {
+                styles: {
+                    transform: 'translateX(-130)',
+                },
+                duration:350, //ms
+                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                needLayout:false,
+                delay: 0 //ms
+            },function () {
+                _this.canScroll = true;
+            })
+        }
+    },
+    deleteMessage(){
+        event.toast('删除成功');
+    },
+    //            触发自组件的跳转方法
+    gosearch:function () {
+        event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
+//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+            if(message.data != ''){
+                event.closeURL(message);
+            }
+        });
+    },
+    //            触发自组件的二维码方法
+    scan:function () {
+        event.scan(function (message) {
+            SCAN(message, function (data) {
+
+            }, function (err) {
+
+            })
+        });
+    },
+    }
     }
 </script>

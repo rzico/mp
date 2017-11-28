@@ -12,7 +12,8 @@
 <style lang="less" src="../../style/wx.less"/>
 <style>
     .pageBox{
-        position: fixed;top: 216px;left: 0;bottom: 0;
+        position: fixed;
+        top: 216px;left: 0;bottom: 0;
     }
     .categoryBox{
         width: 750px;

@@ -332,6 +332,7 @@
                 let urlData = 'weex/member/article/publish.jhtml?id=' + this.articleId + '&isPublish=' + this.contributeSwitch + '&isReview=' + this.commentsSwitch + '&isReward='
                     + this.rewardSwitch + '&authority=' + authorityData + '&isTop=' + this.topData + '&password=' + this.password + '&articleCatalogId=' + this.corpusId
                     + '&articleCategoryId=' + this.category;
+                event.toast(urlData);
                 POST(urlData).then(function (data) {
 //                    event.toast(data);
 //                    将服务器返回回来的最新文章信息 存入缓存。
@@ -344,13 +345,16 @@
                             key:_this.articleId,
                             value:resDataStr,
                             sort:'0,'+ timestamp +'',
-                            keyword:',[ '+ _this.corpusId + '],' + data.data.title + ','
+                            keyword:',['+ _this.corpusId + '],' + data.data.title + ','
                         }
 //                        event.toast(saveData);
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
                         event.save(saveData,function(data) {
                             if (data.type == 'success') {
                                 event.toast('设置成功');
+//                                全局监听 文章变动
+                                let listenData = utils.message('success','文章改变','')
+                                event.sendGlobalEvent('onArticleChange',listenData);
                                 let E = {
                                     isDone : 'complete'
                                 }

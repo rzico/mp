@@ -13,9 +13,9 @@
         <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <div>
             <!--顶部白色区域-->
-            <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
-                <div class="nav">
+                <div class="nav nw">
                     <div style="width: 50px;">
                     </div>
                     <!--导航栏名字头像-->
@@ -28,11 +28,11 @@
                 </div>
             </div>
             <!--导航栏返回-->
-            <div class="backMenu" style="left: 0px;" @click="goback()">
+            <div class="backMenu"  :class="[classTop()]" style="left: 0px;" @click="goback()">
                 <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:38px;">&#xe669;</text>
             </div>
             <!--导航栏菜单栏-->
-            <div class="backMenu" style="right: 0px;" @click="goManage()">
+            <div class="backMenu"  :class="[classTop()]" style="right: 0px;" @click="goManage()">
                 <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe72b;</text>
             </div>
             <!--绑定动画-->
@@ -54,7 +54,7 @@
         </div>
         <!--</transition-group>-->
         <!--顶部个人信息栏-->
-        <div class="topBox" ref='topBox'>
+        <div class="topBox" :class="[classHeader()]" ref='topBox'>
             <!--背景图片-->
             <image   class="backgroundImage" :src="bgImgUrl"></image>
             <!--遮罩层-->
@@ -101,7 +101,6 @@
             <!--文章模块-->
             <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
             <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
-
                 <!--绑定动画-->
                 <!--<transition-group name="paraTransition" tag="div">-->
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
@@ -133,7 +132,6 @@
                         </div>
                     </div>
                 <!--<div style="height: 1300px;">-->
-
                 <!--</div>-->
                 <!--</transition-group>-->
             </div>
@@ -153,7 +151,27 @@
                 <text class="fz35 ml10" >私信</text>
             </div>
         </div>
+        <div v-if="isOperation ">
+            <div class="mask" @touchstart="maskTouch"></div>
+            <div class="operationBox"  style="width: 230px;">
+                <div class="arrow-up" >
+                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
+                </div>
+                <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="isBlack=='black'" @click="doBlack()">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                    <text class="fz28 pl10">解除黑名单</text>
+                </div>
+                <div class="flex-row pt25 pb25  textActive " style="width: 230px;;padding-left: 21px;padding-right: 21px" v-else @click="doBlack()">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                    <text class="fz28 pl10">加入黑名单</text>
+                </div>
+                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
+                <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                <!--<text class="fz28 pl10">举报</text>-->
+                <!--</div>-->
 
+            </div>
+        </div>
         <!--</div>-->
         <loading class="loading" @loading="onloading" :display="showLoading">
             <text class="indicator">Loading ...</text>
@@ -163,10 +181,28 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
-    .backMenu{
-        position: fixed;top: 40px;height: 96px;width: 96px;align-items: center;justify-content: center;
+    .mask{
+        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
+    }
+    .laudActive{
+        color: #888;
+    }
+    .arrow-up {
+        position: fixed;top: 145px;right:30px;
+    }
+    .operationBox{
+        position: fixed;top: 150px;right: 15px;background-color:#fff;border-radius: 20px;padding-top: 20px;padding-bottom: 20px;
     }
 
+
+    .backMenu{
+        position: fixed;
+        top: 44px;
+        height: 92px;
+        width: 92px;
+        align-items: center;
+        justify-content: center;
+    }
     .bottomBtn{
         flex:1;
         align-items: center;
@@ -229,13 +265,8 @@
         flex-direction: row;
         align-items: center;
     }
-    .nav{
-        margin-top: 40px;
-        flex-direction: row;
-        height: 96px;
+    .nw{
         width: 750px;
-        align-items: center;
-        justify-content: space-between;
         padding-right: 30px;
         padding-left: 30px;
     }
@@ -260,15 +291,14 @@
     .posRelative{
     }
     /*顶部导航栏*/
-    .header {
-        flex-direction: row;
+    .headerMore {
         position:fixed;
-        /*background-color: #D9141E;*/
         background-color: #fff;
         left: 0;
         right: 0;
         top: 0px;
         height: 136px;
+        border-bottom-width: 0px;
     }
     /*文集导航栏动画*/
     .navTransition-enter-active{
@@ -553,8 +583,8 @@
                 isDisappear:false,
                 corpusScrollTop:0,
                 canScroll:true,
-                userName:'刮风下雨打雷台风天',
-                userSign:'刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
+                userName:'未填写',
+                userSign:'未填写',
                 whichCorpus:0,
                 isNoArticle:false,
 //                refreshing:false,
@@ -568,7 +598,7 @@
                 showLoading: 'hide',
                 corpusList:[{
                     name:'全部',
-                    id:''
+                    id:'0'
                 }],
                 listCurrent:0,
                 listPageSize:10,
@@ -577,7 +607,9 @@
                 isFocus:false,
                 UId:'',
                 screenHeight:'',
-                corpusId:'',
+                corpusId:0,
+                isOperation:false,
+                isBlack:''
             }
         },
         components: {
@@ -610,6 +642,10 @@
                     _this.focusNum = data.data.follow;
                     _this.isFocus = data.data.followed;
                     _this.fansNum = data.data.fans;
+                    if(utils.isNull(data.data.friendStatus)){
+                    }else if(data.data.friendStatus == 'black'){
+                        _this.isBlack = 'black';
+                    }
 //                                将文集名循环插入数组中
                     for(let i = 0; i < data.data.catalogs.length;i++){
                         _this.corpusList.splice(1 + i,0,data.data.catalogs[i]);
@@ -626,6 +662,17 @@
             noDataHint:{default:'暂无文章'}
         },
         methods: {
+//            监听设备型号,控制导航栏设置 返回按钮
+            classTop:function () {
+                let dc = utils.addTop();
+                return dc
+            },
+//            监听设备型号,控制导航栏高度
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
 //            判断是否有消息
             isEmpty(){
                 return this.articleList.length == 0;
@@ -655,7 +702,7 @@
 //            前往文章
             goArticle(id){
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id + '&publish=true'),
+                event.openURL(utils.locate('view/article/preview.js?articleId=' + id + '&publish=true'),
                     function () {
                     })
             },
@@ -669,9 +716,9 @@
                 if(_this.whichCorpus == index){
                     return;
                 }
-                _this.canScroll = false;
+//                _this.canScroll = false;
 //                _this.twoTop = false;
-                _this.canScroll = true;
+//                _this.canScroll = true;
                 _this.articleList = [];
                 _this.corpusId = id;
                 _this.whichCorpus = index;
@@ -745,7 +792,7 @@
 //                        return ;
 //                    }
 //                );
-                event.toast('弹出菜单栏');
+                this.isOperation = true;
             },
 //            我的关注
             goFocus(){
@@ -833,6 +880,42 @@
                                 event.toast(data.content);
                             }
                         },function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }
+            },
+            //            触碰遮罩层
+            maskTouch(){
+                this.isOperation = false;
+            },
+//            拉黑
+            doBlack(){
+                let _this = this;
+//                解除
+                if(this.isBlack == 'black'){
+                    POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
+                        function(data){
+                            if(data.type == 'success'){
+                                _this.isBlack = '';
+                                event.toast('已解除黑名单');
+                            }else{
+                                event.toast(err.content);
+                            }
+                        },
+                        function(err){
+                            event.toast(err.content);
+                        }
+                    )
+                }else{
+                    POST('weex/member/friends/black.jhtml?friendId='+this.UId).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.isBlack = 'black';
+                                event.toast('已加入黑名单');
+                            }
+                        },
+                        function (err) {
                             event.toast(err.content);
                         }
                     )

@@ -14,9 +14,9 @@
         <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <div>
             <!--顶部白色区域-->
-            <div class="header" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore"  :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
-                <div class="nav">
+                <div class="nav nw" >
                     <div style="width: 50px;">
                     </div>
                     <!--导航栏名字头像-->
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <div  class="rightTop" @click="goManage()">
+            <div  class=" rightTop " :class="[classTop()]" @click="goManage()">
                 <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
             </div>
             <!--绑定动画-->
@@ -51,7 +51,7 @@
         </div>
         <!--</transition-group>-->
         <!--顶部个人信息栏-->
-        <div class="topBox bkg-primary" ref='topBox'>
+        <div class="topBox bkg-primary"  :class="[classHeader()]" ref='topBox'>
             <!--背景图片-->
             <image   class="backgroundImage" :src="bgImgUrl"></image>
             <!--遮罩层-->
@@ -121,7 +121,7 @@
                 <!--</div>-->
             </div>
             <!--文章模块-->
-            <div >
+            <div :style="{minHeight:screenHeight + 'px'}">
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
@@ -210,11 +210,11 @@
 <style scoped >
     .rightTop{
         position: fixed;
-        top: 40px;
+        top: 44px;
         right: 0;
         /*width: 110px;*/
-        width: 96px;
-        height: 96px;
+        width: 92px;
+        height: 92px;
         align-items: center;
         justify-content: center;
     }
@@ -250,13 +250,8 @@
         flex-direction: row;
         align-items: center;
     }
-    .nav{
-        margin-top: 40px;
-        flex-direction: row;
-        height: 96px;
+    .nw{
         width: 750px;
-        align-items: center;
-        justify-content: space-between;
         padding-right: 30px;
         padding-left: 30px;
     }
@@ -281,15 +276,14 @@
     .posRelative{
     }
     /*顶部导航栏*/
-    .header {
-        flex-direction: row;
+    .headerMore {
         position:fixed;
-        /*background-color: #D9141E;*/
         background-color: #fff;
         left: 0;
         right: 0;
         top: 0px;
         height: 136px;
+        border-bottom-width: 0px;
     }
     /*文集导航栏动画*/
     .navTransition-enter-active{
@@ -646,10 +640,9 @@
 //                id:'334',
                 showLoading: 'hide',
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-
                 corpusList:[{
                     name:'全部',
-                    id:''
+                    id:'0'
                 },{
                     name:'回收站',
                     id:'99'
@@ -670,7 +663,10 @@
                     articleCoverUrl:utils.locate('resources/images/help.jpg'),
                     articleDate:'2017-10-19'
                 }],
-                UId:''
+                UId:'',
+                screenHeight:'',
+//                文集id
+                corpusId:0
             }
         },
         filters:{
@@ -705,51 +701,67 @@
             }
         },
         created:function () {
+            let _this = this;
             utils.initIconFont();
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(216)  ;
             this.UId = event.getUId();
-            var _this = this;
 //           获取用户信息;
             this.updateUserInfo();
 //            获取文集列表
             this.getCorpus();
 
 
-            let options = {
-                type:'article',
-                keyword:'',
-                orderBy:'desc',
-                current:_this.listCurrent,
-                pageSize:_this.listPageSize,
-            }
-            event.findList(options,function (data) {
-                if( data.type == "success" && data.data != '' ) {
-                    data.data.forEach(function (item) {
-//                        event.toast(item);
-//                    将value json化
-                        item.value = JSON.parse(item.value);
-//                        把读取到的文章push进去文章列表
-                        _this.articleList.push(item);
-                    })
+            this.getAllArticle();
+
+            globalEvent.addEventListener("onArticleChange", function (e) {
+//                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
+                if(e.data.type == 'success'){
+                    _this.articleList = [];
+                    _this.getAllArticle();
                 }else{
-                    return;
                 }
-            })
-//            let option = {
-//                type:'arcticle',//类型
-//                keyword:'N',//关键址
-//                orderBy:'desc',//"desc"降序 ,"asc"升序
-//                current:'0', //当前有几页
-//                pageSize:'10' //一页显示几行
-//            }
-//            event.findList(option,function (message) {
-//                event.toast(message);
-//                if(message.type == 'success' && message.data != ''){
-//
-//                }
-//            })
+            });
 
         },
         methods: {
+//            监听设备型号,控制导航栏设置 返回按钮
+            classTop:function () {
+                let dc = utils.addTop();
+                return dc
+            },
+//            监听设备型号,控制导航栏高度
+            classHeader:function () {
+                let dc = utils.device();
+                return dc
+            },
+            getAllArticle(){
+                var articleClass = '';
+                if(this.corpusId != ''){
+                    articleClass = '['+this.corpusId + ']';
+                }
+                let _this = this;
+                let options = {
+                    type:'article',
+                    keyword:articleClass,
+                    orderBy:'desc',
+                    current:_this.listCurrent,
+                    pageSize:_this.listPageSize,
+                }
+                event.findList(options,function (data) {
+                    if( data.type == "success" && data.data != '' ) {
+                        data.data.forEach(function (item) {
+//                        event.toast(item);
+//                    将value json化
+                            item.value = JSON.parse(item.value);
+//                        把读取到的文章push进去文章列表
+                            _this.articleList.push(item);
+                        })
+                    }else{
+                        return;
+                    }
+                })
+            },
 //            更新用户信息；
             updateUserInfo(){
                 let _this = this;
@@ -810,66 +822,6 @@
                 },function (err) {
                     event.toast(err.content);
                 })
-
-//                return stream.fetch({
-//                    method: 'GET',
-//                    type: 'json',
-//                    url: 'weex/member/article_catalog/list.jhtml'
-//                }, function (data) {
-//                    if (data.data.type == "success") {
-//                        if(data.data == ''){
-//                        }else{
-////                            event.toast(data.data);
-//                            _this.corpusList = '';
-//                            _this.corpusList =[{
-//                                name:'全部文章',
-//                                id:''
-//                            },{
-//                                name:'回收站',
-//                                id:'99'
-//                            }];
-////                                将文集名循环插入数组中
-//                            for(let i = 0; i<data.data.data.length;i++){
-//                                _this.corpusList.splice(1 + i,0,data.data.data[i]);
-//                            }
-//                            storage.setItem('corpusList',data.data.data);
-//                        }
-//                    } else {
-//                        event.toast(data);
-//                    }
-////                    event.toast(data);
-//                },)
-
-
-
-
-//                GET('weex/member/article_catalog/list.jhtml','',
-//                    function (data) {
-//                        if (data.type == "success") {
-//                            if(data.data == ''){
-//                            }else{
-//                                _this.corpusList = '';
-//                                _this.corpusList =[{
-//                                    name:'全部文章',
-//                                    id:''
-//                                },{
-//                                    name:'回收站',
-//                                    id:'99'
-//                                }];
-////                                将文集名循环插入数组中
-//                                for(let i = 0; i<data.data.length;i++){
-//                                    _this.corpusList.splice(1 + i,0,data.data[i]);
-//                                }
-//                                storage.setItem('corpusList',data.data);
-//                            }
-//                        } else {
-//                            event.toast(data);
-//                        }
-//                    },function(err) {
-//                        event.toast("网络不稳定")
-//                    })
-
-
 
             },
             jumpEditor:function (id) {
@@ -955,7 +907,7 @@
                     })
                 }else{
 
-                    event.openURL(utils.locate('view/member/editor/preview.js?articleId=' + id  + '&publish=' + publish ),
+                    event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=' + publish ),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
 //                    _this.updateArticle();
@@ -1006,62 +958,10 @@
 //                event.toast(id);
                 var _this = this;
                 _this.whichCorpus = index;
-//                if(this.isAllArticle == true){
-//
-//                }else{
-//                    this.isAllArticle = true;
-//                    recycleScroll = scrollTop;
-//                    setTimeout(function () {
-//
-//                        if(allArticleScroll > 424){
-//                            let listHeight = allArticleScroll - 424;
-//                            let positionIndex =parseInt( listHeight / 457);
-//                            let offsetLength = - listHeight % 457;
-//                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
-//                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
-//                            dom.scrollToElement(el, {
-//                                animated:false,
-//                                offset:  -80 - offsetLength
-//
-//                            })
-//                        }
-//                    },50)
-//                }
+                _this.corpusId = id;
 
-            },
-            //废弃
-//            recycleSite:function(){
-//                var _this = this;
-//                if(this.isAllArticle == false){
-//                    modal.toast({message:"相等"})
-//                }else{
-//                    this.isAllArticle = false;
-//                    allArticleScroll = scrollTop;
-//                    setTimeout(function () {
-//
-//                        if(recycleScroll > 424){
-//                            let listHeight = recycleScroll - 424;
-//                            let positionIndex =parseInt( listHeight / 457);
-//                            let offsetLength = - listHeight % 457;
-//                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
-//                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
-//                            dom.scrollToElement(el, {
-//                                animated:false,
-//                                offset:  -80 - offsetLength
-//                            })
-//                        }
-//                    },50)
-//                }
-//
-//            },
-            swipeHappen:function(event){
-                console.log(event);
-//                console.log(event.direction);
-//                if(event.direction == 'left'){
-//                    this.isAllArticle = false;
-//                }else if(event.direction == 'right'){
-//                    this.isAllArticle = true;
-//                }
+                _this.articleList = [];
+                _this.getAllArticle();
             },
 //            点击屏幕时
             ontouchstart:function (event,index) {
@@ -1120,13 +1020,16 @@
             },
             onloading(e) {
                 var _this = this;
-                modal.toast({message: '加载中...', duration: 1})
+                var articleClass = '';
+                if(this.corpusId != ''){
+                    articleClass = '['+this.corpusId + ']';
+                }
                 this.showLoading = 'show'
                 setTimeout(() => {
-                    _this.listCurrent = _this.listCurrent + 10;
+                    _this.listCurrent = _this.listCurrent + _this.listPageSize;
                     let options = {
                         type:'article',
-                        keyword:'',
+                        keyword:articleClass,
                         orderBy:'desc',
                         current:_this.listCurrent ,
                         pageSize:_this.listPageSize,
@@ -1216,7 +1119,9 @@
                     function (data) {
                     utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
-                            _this.imageUrl = data.data.logo;
+                            if(!utils.isNull(data.data.logo)){
+                                _this.imageUrl = data.data.logo;
+                            }
                             if(!utils.isNull(data.data.nickName)){
                                 _this.userName = data.data.nickName;
                             }
@@ -1236,7 +1141,9 @@
                     function (data) {
 //                    utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
-                            _this.imageUrl = data.data.occupation;
+                            if(!utils.isNull(data.data.occupation)){
+                                _this.imageUrl = data.data.occupation;
+                            }
                             if(!utils.isNull(data.data.nickName)){
                                 _this.userName = data.data.nickName;
                             }
