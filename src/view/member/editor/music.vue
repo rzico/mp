@@ -215,11 +215,14 @@
             },
 //            点击歌名添加 "选中" 的字体图标
             ctrlTick:function (item,musicId,musicName) {
-                console.log(musicId);
                 chooseMusicId = musicId;
                 chooseMusicName = musicName;
-
-                audio.play('http://yinyueshiting.baidu.com/data2/music/e01eb018f65e1499f7f5db319a9e29f5/540246705/79014250400128.mp3?xcode=7a748ba04693e44ad7984b79751f9d39');
+                audio.play('http://dl.stream.qqmusic.qq.com/C400004USWdm0CVvBP.m4a?vkey=FA95B41644E4E370E7E8A06BECB472320DD9E566B347B8901F7D8381D56300BB1C4687C0702308155E760FAC03A99AE2DA2598012C85A602&guid=8899973000&uin=0&fromtag=66',function (data) {
+                    if(data.type == 'success'){
+                    }else{
+                        event.toast(data.content);
+                    }
+                });
                 if(lastTickItem == -1 || lastTickItem == item){
                     item.tickShow = true;
                 }else {
@@ -232,6 +235,7 @@
             },
 //            返回
             goback:function () {
+                audio.stop();
                 event.closeURL();
             },
 //            完成
@@ -240,6 +244,7 @@
                     chooseMusicId:chooseMusicId,
                     chooseMusicName:chooseMusicName
                 }
+                audio.stop();
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
             }

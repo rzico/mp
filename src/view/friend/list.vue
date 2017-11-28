@@ -19,7 +19,7 @@
         <!--<div style="height: 110px;background-color: #D9141E;justify-content: center;padding-left: 30px;padding-top: 30px" >-->
         <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
         <!--</div>-->
-        <list class="listBody">
+        <list class="listBody"  :scrollable="canScroll">
             <cell ref="linkref" >
                 <!--新的朋友-->
                 <div class="addBorder">
@@ -64,9 +64,12 @@
                     <text class="nameLetter">{{friend.letter}}</text>
                 </div>
                 <!--姓氏里每个人的名子-->
-                <div v-for="item in friend.name"  >
-                    <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="goChat(item.id)">
+                <div v-for="(item,index) in friend.name"  >
+                    <div class="deleteBox bkg-primary" @click="deleteMessage(friend.letter,item.key,index)">
+                        <text class="deleteText">删 除</text>
+                    </div>
+                    <div class="addFriendsBorder" >
+                        <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
                             <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
                             <div class="friendsName">
                                 <text class="lineTitle">{{item.nickName}}</text>
@@ -101,6 +104,13 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style>
+
+    .deleteText{
+        font-size: 32px;color: #fff;
+    }
+    .deleteBox{
+        position: absolute;right: 0px;top: 0px;padding-right: 30px;height: 120px;align-items: center;width: 190px;justify-content: center;
+    }
     .messageTotal{
         background-color: red;
         line-height: 38px;
@@ -246,7 +256,8 @@
     .friendsLine{
         padding-left: 30px;
         height:120px;
-        width:660px;
+        /*width:690px;*/
+        width:750px;
         background-color: #fff;
         flex-direction: row;
     }
@@ -283,6 +294,8 @@
     const modal = weex.requireModule('modal');
     const storage = weex.requireModule('storage');
     var globalEvent = weex.requireModule('globalEvent');
+    var animationPara;//执行动画的消息
+    const animation = weex.requireModule('animation');
     //    var pressPoint = -1;//手指按压
     //    var movePoint;//手机按压后移动
     //    var pointPoor;//手机按压时与移动后的字母数量
@@ -305,6 +318,7 @@
                 showText:'',
                 isPress:false,
                 friendTotal:0,
+                canScroll:true,
                 UId:'',
 //                topLineList:[{
 //                    lineImage:'&#xe631;',
@@ -433,7 +447,8 @@
             event.findList(listoption,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (friend) {
-                        let jsonData = JSON.parse(friend.value);
+                        var jsonData = JSON.parse(friend.value);
+                        jsonData.key = friend.key;
 //                          获取首字母
                         let firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
                         _this.friendsList.forEach(function (item) {
@@ -705,6 +720,70 @@
                         },function (err) {
                         })
                 });
+            },
+            deleteMessage(letter,key,index){
+                let _this = this;
+//                =删除好友接口
+//                this.friendsList.forEach(function (item) {
+//                    if(item.letter == letter){
+//                        item.name.splice(index,1);
+//                    }
+//                })
+                event.toast('删除还未成功');
+            },
+            //            点击屏幕时
+            onFriendtouchstart:function (e,index) {
+                var _this = this;
+                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                }else{
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
+//                获取当前点击的元素。
+                animationPara =  e.currentTarget;
+            },
+            //            移动时
+            onpanmove:function (e,index) {
+//                获取当前点击的元素。
+                var _this = this;
+                if(e.direction == 'right'){
+                    _this.canScroll = false;
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }else if(e.direction == 'left'){
+                    _this.canScroll = false;
+//                  modal.toast({message:distance});
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(-190)',
+                        },
+                        duration:350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }
             },
         }
     }

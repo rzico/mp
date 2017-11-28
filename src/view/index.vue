@@ -8,9 +8,9 @@
         </slider>
         <div class="footer footer-panel ">
             <div class="flex-row">
-                <div class="flex1 btn">
+                <div class="flex1 btn"   @click="weixin()">
                     <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信快捷登录" @click="weixin()">微信快捷登录</text>
+                    <text class="btn-text" value="微信快捷登录">微信快捷登录</text>
                 </div>
             </div>
             <div class="space-between" style="margin-top: 40px;">

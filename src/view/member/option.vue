@@ -151,7 +151,6 @@
             let _this = this;
 //            获取用户id
             this.UId = event.getUId();
-
         },
         methods: {
             goback: function (e) {
@@ -240,7 +239,6 @@
                 let option = {
                     type:['cache','tim','wxstorage']
                 }
-                event.toast('调用cache');
                 event.clearCache(option,function (data) {
                     if(data.type == 'success'){
                         event.toast('清除成功');

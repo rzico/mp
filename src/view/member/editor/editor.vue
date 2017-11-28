@@ -658,6 +658,7 @@
 //                    })
 //                    return;
                     event.toast('请设置标题');
+                    return;
                 }
 
                 this.toSendArticle = true;
