@@ -21,16 +21,22 @@
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump()">
                             <div class="image">
-                                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe635;</text>
-                            </div>
-                            <div class="friendsName">
-
-                                <text class="lineTitle ">{{num.name}}</text>
-                                <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                    <text class="realName">使用时间:{{num.beginDate | timeDatefmt}}至{{num.endDate | timeDatefmt}}</text>
-                                    <text style="font-size: 20px;color: #888">使用折扣{{num.amount}}元</text>
+                                <div class="markmoney">
+                                <text  class="mark">¥</text>
+                                <text style="font-size: 50px;color: red;font-weight: 800;margin-left: 10px">{{num.amount}}</text>
                                 </div>
-
+                                <div class="name">
+                                    <text class="scope">{{num.scope}}</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="friendsName">
+                            <div class="time">
+                                <text class="lineTitle">{{num.name}}</text>
+                                <text class="realName">{{num.beginDate | timeDatefmt}}至{{num.endDate | timeDatefmt}}</text>
+                            </div>
+                            <div class="use">
+                                <text class="usetext">立即使用</text>
                             </div>
                         </div>
                     </div>
@@ -48,6 +54,36 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .time{
+        width: 550px;
+    }
+    .usetext{
+        font-size: 25px;
+        color: red;
+
+    }
+    .use{
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        border-color: red;
+        border-width: 1px;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        position: absolute;
+        right: 40px;
+        bottom: 35px;
+    }
+    .mark{
+        font-size: 32px;
+        color: red;
+        margin-top: 20px;
+    }
+    .markmoney{
+        flex-direction: row;
+    }
     .addFriend {
         flex-direction: row;
         justify-content: space-between;
@@ -68,20 +104,19 @@
         background-color: white;
     }
 
-    .friendsName{
-        height:90px;
-        margin-top: 15px;
-        justify-content: space-between;
+    .friendsName {
+        height: 90px;
+        margin-top: 10px;
     }
     .realName{
-        color: #888;
-        font-size: 20px;
-        margin-left: 20px;
+        margin-top: 10px;
+        font-size: 25px;
+        color: #888888;
     }
     .image{
-
-        height: 80px;
-        width: 80px;
+        padding-top: 15px;
+        height: 120px;
+        width: 120px;
     }
     .addFriendsBorder{
         border-bottom-width: 1px;
@@ -94,17 +129,13 @@
     .friendsLine{
         padding-left: 30px;
         height:120px;
-        background-color: #fff;
-        flex-direction: row;
-        align-items: center;
-        flex:5;
+    }
+    .scope{
+        font-size: 20px;
+        color: #888;
     }
     .lineTitle{
-        font-size: 34px;
-        margin-left: 20px;
-        lines:1;
-        text-overflow: ellipsis;
-        max-width: 450px;
+        font-size: 32px;
     }
     .vip1 {
         /*margin-top: 50px;*/
@@ -213,9 +244,9 @@
                 }
             },
             add:function() {
-                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-
-                })
+//                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
+//
+//                })
             },
             open:function () {
                 var _this = this;
@@ -281,9 +312,9 @@
             },
 
             jump:function () {
-                event.openURL(utils.locate('view/shop/card/view.js'),function () {
-
-                })
+//                event.openURL(utils.locate('view/shop/card/view.js'),function () {
+//
+//                })
             },
 
         }
