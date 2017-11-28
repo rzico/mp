@@ -251,11 +251,9 @@
             open:function () {
                 var _this = this;
                 GET('weex/member/coupon/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
-                    utils.debug(mes)
+//                    utils.debug(mes)
                     if (mes.type == 'success') {
-                        mes.data.data.forEach(function(item){
-                            _this.lists.push(item);
-                        })
+                            _this.lists =mes.data.data
 
                     } else {
                         event.toast(mes.content);
@@ -289,9 +287,20 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(function () {
-                        _this.lists = []
-                        this.listCurrent = this.listCurrent + this.pageSize;
-                        _this.open()
+                        _this.listCurrent = _this.listCurrent + _this.pageSize;
+                        GET('weex/member/coupon/list.jhtml?pageStart='+_this.listCurrent +'&pageSize='+_this.pageSize,function (mes) {
+                               utils.debug(mes)
+                            if (mes.type == 'success') {
+                                mes.data.data.forEach(function(item){
+                                    _this.lists.push(item);
+                                })
+
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
                         _this.loading = false
                     }
                     ,1000)
@@ -301,8 +310,7 @@
                 var _this = this;
                 _this.refreshing = true;
                 setTimeout(function () {
-                        _this.lists =[]
-                        _this.open()
+
                         _this.refreshing = false;
                     }
                     ,1000)
