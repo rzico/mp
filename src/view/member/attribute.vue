@@ -534,7 +534,8 @@
 //                )
                 event.logout(function (e) {
                     if(e.type == 'success'){
-                        event.closeURL();
+                        let E = utils.message('success','关闭','')
+                        event.closeURL(E);
                     }else{
                         event.toast(e.content);
                     }

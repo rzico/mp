@@ -30,32 +30,32 @@
                 <text class="indicator">下拉刷新 ...</text>
             </refresh>
             <!--朋友信息-->
-            <cell v-for="item in messageList" >
-                <div class="deleteBox bkg-primary" @click="deleteMessage()">
+            <cell v-for="(item,index) in messageList" >
+                <div class="deleteBox bkg-primary" @click="deleteMessage(item.key,item.value.userId,index)">
                     <text class="deleteText">删除</text>
                 </div>
-                <div class="friendsLine" @click="jumpMessage(item,index)" @swipe="onpanmove($event,index)" @touchstart="ontouchstart($event,index)">
+                <div class="friendsLine" @click="jumpMessage(item.value)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">
                     <!--头像-->
                     <div class="friendsImageBox">
-                        <image :src="item.logo" class="friendsImage"></image>
+                        <image :src="item.value.logo" class="friendsImage"></image>
                     </div>
                     <!--有新消息-->
-                    <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
-                        <text class="messageTotal">{{item.unRead}}</text>
+                    <div class="newMessage" v-if="item.value.unRead != '' && item.value.unRead != 0 && item.value.unRead != null && item.value.unRead != undefined">
+                        <text class="messageTotal">{{item.value.unRead}}</text>
                     </div>
                     <div style="flex: 5;">
                         <div style="flex-direction: row;flex: 1;" >
                             <!--名字与内容-->
                             <div class="messageText">
-                                <text class="friendName">{{item | watchName}}</text>
+                                <text class="friendName">{{item.value | watchName}}</text>
                             </div>
                             <!--消息时间-->
                             <div class="messageTimeBox">
-                                <text class="messageTime">{{item.createDate | timefmt}}</text>
+                                <text class="messageTime">{{item.value.createDate | timefmt}}</text>
                             </div>
                         </div>
                         <div style="flex: 2;height: 50px;justify-content: center;">
-                            <text class="friendMessage">{{item.content}}</text>
+                            <text class="friendMessage">{{item.value.content}}</text>
                         </div>
                     </div>
                 </div>
@@ -283,7 +283,9 @@
             event.findList(listoption,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (item) {
-                        _this.messageList.push(JSON.parse(item.value));
+                        item.value = JSON.parse(item.value);
+//                        _this.messageList.push(JSON.parse(item.value));
+                        _this.messageList.push(item);
                     })
 //                    })
                 }else if(data.type == 'success'){
@@ -543,7 +545,7 @@
 
     },
     //            点击屏幕时
-    ontouchstart:function (e,index) {
+    ontouchstart:function (e) {
         var _this = this;
         if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
         }else{
@@ -562,7 +564,7 @@
         animationPara =  e.currentTarget;
     },
     //            移动时
-    onpanmove:function (e,index) {
+    onpanmove:function (e) {
 //                获取当前点击的元素。
         var _this = this;
         if(e.direction == 'right'){
@@ -596,8 +598,50 @@
             })
         }
     },
-    deleteMessage(){
-        event.toast('删除成功');
+    deleteMessage(key,userId,index){
+        let _this = this;
+//        modal.confirm({
+//            message: '删除后,将清空该？',
+//            duration: 0.3,
+//            okTitle:'删除',
+//            cancelTitle:'取消',
+//        }, function (value) {
+//            if(value == '删除'){
+//
+//            }
+//        })
+
+//         删除消息会话
+        if(event.deleteConversation(userId)){
+            let option ={
+              type : 'message',
+              key:key
+            }
+//            清除缓存
+            event.delete(option,function(data){
+                if(data.type == 'success'){
+                    //                            把动画收回来。
+                    if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                    }else{
+                        animation.transition(animationPara, {
+                            styles: {
+                                transform: 'translateX(0)',
+                            },
+                            duration: 10, //ms
+                            timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                            needLayout:false,
+                            delay: 0 //ms
+                        })
+                    }
+                    _this.messageList.splice(index,1);
+                }else{
+                    event.toast(data.content);
+                }
+            })
+        }else{
+            event.toast('系统繁忙');
+        };
     },
     //            触发自组件的跳转方法
     gosearch:function () {

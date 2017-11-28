@@ -102,7 +102,7 @@
         color: #888;
     }
     .articleCover {
-        height: 300px;
+        height: 345px;
         width:690px;
         border-radius: 5px;
         margin-top: 30px;
@@ -244,7 +244,6 @@
             utils.initIconFont();
             var cover = utils.getUrlParameter('name');
             storage.getItem(cover, e => {
-                event.toast(e);
                 let coverData =  JSON.parse(e.data);
                 _this.coverImage = coverData.cover;
                 _this.imageList = coverData.image;

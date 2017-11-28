@@ -157,7 +157,7 @@
               this.$refs.childFind.search();
             },
 //            添加好友
-            addFriend: function (userId) {
+            addFriend: function (id) {
                 var _this = this;
 //                return stream.fetch({
 //                    method: 'POST',
@@ -174,7 +174,7 @@
 //                        event.toast("网络不稳定请重试");
 //                    }
 //                })
-                POST('weex/member/friends/add.jhtml?friendId='+ userId).then(
+                POST('weex/member/friends/add.jhtml?friendId='+ id).then(
                     function (weex) {
                         if (weex.type == "success") {
                             event.toast('请求已发送,请等待对方验证');

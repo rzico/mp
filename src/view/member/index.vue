@@ -1,6 +1,6 @@
 
 <template>
-    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
+    <scroller class="pageBgColor" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
         <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
         <!--<image class="gif" resize="cover"-->
         <!--src="file://resources/image/loading.gif"></image>-->
@@ -122,6 +122,7 @@
             </div>
             <!--文章模块-->
             <div :style="{minHeight:screenHeight + 'px'}">
+                <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--绑定动画-->
                 <transition-group name="paraTransition" tag="div">
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
@@ -162,7 +163,7 @@
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                                     <text class="rightHiddenText">编辑</text>
                                 </div>
-                                <div class="rightHiddenIconBox" @click="jumpDelete()">
+                                <div class="rightHiddenIconBox" @click="jumpDelete(item)">
                                     <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
                                     <text class="rightHiddenText redColor" >删除</text>
                                 </div>
@@ -181,7 +182,7 @@
                     </div>
                 </transition-group>
                 <!--帮助使用文章-->
-                <div class="articleBox" v-for="item in helpList"  >
+                <div class="articleBox" v-for="item in helpList" v-if="corpusId == ''">
                     <div class="atricleHead">
                         <text class="articleSign">{{item.articleSign}}</text>
                         <text class="articleTitle">{{item.articleTitle}}</text>
@@ -421,7 +422,8 @@
     }
 
     .articleCover {
-        height: 300px;
+        /*height: 300px;*/
+        height: 345px;
         width:690px;
         border-radius: 5px;
         margin-top: 30px;
@@ -466,8 +468,8 @@
         text-align: center;
         line-height: 80px;
     }
-    .wrapper{
-        background-color: #f4f4f4;
+    .pageBgColor{
+        background-color: #eee;
     }
     [v-cloak] {
         display: none;
@@ -607,6 +609,7 @@
     const modal = weex.requireModule('modal');
     var globalEvent = weex.requireModule('globalEvent');
     const animation = weex.requireModule('animation');
+    import noData from '../../include/noData.vue';
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch';
     import filters from '../../filters/filters.js';
@@ -642,7 +645,7 @@
 //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 corpusList:[{
                     name:'全部',
-                    id:'0'
+                    id:''
                 },{
                     name:'回收站',
                     id:'99'
@@ -666,8 +669,14 @@
                 UId:'',
                 screenHeight:'',
 //                文集id
-                corpusId:0
+                corpusId:''
             }
+        },
+        components: {
+            noData
+        },
+        props:{
+            noDataHint:{default:'暂无文章'}
         },
         filters:{
             watchWho:function (value) {
@@ -725,6 +734,10 @@
 
         },
         methods: {
+
+            isEmpty:function () {
+                return this.articleList.length==0;
+            },
 //            监听设备型号,控制导航栏设置 返回按钮
             classTop:function () {
                 let dc = utils.addTop();
@@ -737,7 +750,7 @@
             },
             getAllArticle(){
                 var articleClass = '';
-                if(this.corpusId != ''){
+                if(!utils.isNull(this.corpusId)){
                     articleClass = '['+this.corpusId + ']';
                 }
                 let _this = this;
@@ -754,6 +767,8 @@
 //                        event.toast(item);
 //                    将value json化
                             item.value = JSON.parse(item.value);
+//                            将封面转为缩略图
+                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
 //                        把读取到的文章push进去文章列表
                             _this.articleList.push(item);
                         })
@@ -834,7 +849,8 @@
 ////                    _this.updateArticle();
 //                })
             },
-            jumpDelete:function () {
+            jumpDelete:function (item) {
+                event.toast(item);
                 event.toast('文章删除');
             },
             jumpTop:function () {
@@ -856,7 +872,7 @@
                                 key:item.key,
                                 value:resDataStr,
                                 sort:item.sort,
-                                keyword:',[ '+ data.data.corpusId + '],' + item.title + ','
+                                keyword:',['+ data.data.corpusId + '],' + item.title + ','
                             }
 //                            event.toast(saveData);
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
@@ -1021,7 +1037,7 @@
             onloading(e) {
                 var _this = this;
                 var articleClass = '';
-                if(this.corpusId != ''){
+                if(!utils.isNull(this.corpusId)){
                     articleClass = '['+this.corpusId + ']';
                 }
                 this.showLoading = 'show'

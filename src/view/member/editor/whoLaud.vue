@@ -8,9 +8,9 @@
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
                 <!--点赞-->
-                <div class="lineBox"  v-else v-for="item in dataList">
+                <div class="lineBox"  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
                     <div class="flex-row">
-                        <image class="headImg" :src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <image class="headImg" :src="item.logo" ></image>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
                             <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
@@ -121,7 +121,6 @@
             },
             //            作者主页
             goAuthor:function (id) {
-                id = parseInt(id.substr(-5)) - 10200;
                 event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
                 });
             },

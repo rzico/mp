@@ -146,9 +146,13 @@
                 <text class="fz35 ml10 gray" >已关注</text>
             </div>
             <div class="rightBorder"></div>
-            <div class="bottomBtn">
+            <div class="bottomBtn" v-if="friendStatus == 'adopt'" @click="goChat()">
                 <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62f;</text>
                 <text class="fz35 ml10" >私信</text>
+            </div>
+            <div class="bottomBtn" v-if="friendStatus == 'ask'"  @click="goAddFriend()">
+                <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
+                <text class="fz35 ml10" >添加好友</text>
             </div>
         </div>
         <div v-if="isOperation ">
@@ -157,7 +161,7 @@
                 <div class="arrow-up" >
                     <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
                 </div>
-                <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="isBlack=='black'" @click="doBlack()">
+                <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="friendStatus=='black'" @click="doBlack()">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                     <text class="fz28 pl10">解除黑名单</text>
                 </div>
@@ -399,7 +403,7 @@
     }
 
     .articleCover {
-        height: 300px;
+        height: 345px;
         width:690px;
         border-radius: 5px;
         margin-top: 30px;
@@ -569,7 +573,6 @@
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
     import filters from '../../filters/filters.js'
-    import noData from '../../include/noData.vue';
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     var recycleScroll = 0;
@@ -598,7 +601,7 @@
                 showLoading: 'hide',
                 corpusList:[{
                     name:'全部',
-                    id:'0'
+                    id:''
                 }],
                 listCurrent:0,
                 listPageSize:10,
@@ -607,13 +610,10 @@
                 isFocus:false,
                 UId:'',
                 screenHeight:'',
-                corpusId:0,
+                corpusId:'',
                 isOperation:false,
-                isBlack:''
+                friendStatus:''
             }
-        },
-        components: {
-            noData
         },
         filters:{
             watchCatetory:function (value) {
@@ -630,6 +630,7 @@
             this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(216)  ;
+            utils.debug(this.UId);
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     if(!utils.isNull(data.data.name)){
@@ -644,7 +645,7 @@
                     _this.fansNum = data.data.fans;
                     if(utils.isNull(data.data.friendStatus)){
                     }else if(data.data.friendStatus == 'black'){
-                        _this.isBlack = 'black';
+                        _this.friendStatus = data.data.friendStatus;
                     }
 //                                将文集名循环插入数组中
                     for(let i = 0; i < data.data.catalogs.length;i++){
@@ -657,9 +658,6 @@
             },function (err) {
                 event.toast(err.content);
             })
-        },
-        props:{
-            noDataHint:{default:'暂无文章'}
         },
         methods: {
 //            监听设备型号,控制导航栏设置 返回按钮
@@ -686,7 +684,7 @@
                         data.data.data.forEach(function (item) {
                             if(utils.isNull(item.thumbnail)){
                             }else{
-                                item.thumbnail = utils.thumbnail(item.thumbnail,690,300);
+                                item.thumbnail = utils.thumbnail(item.thumbnail,690,345);
                             }
                             _this.articleList.push(item);
                         });
@@ -893,11 +891,11 @@
             doBlack(){
                 let _this = this;
 //                解除
-                if(this.isBlack == 'black'){
+                if(this.friendStatus == 'black'){
                     POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
                         function(data){
                             if(data.type == 'success'){
-                                _this.isBlack = '';
+                                _this.friendStatus = 'ask';
                                 event.toast('已解除黑名单');
                             }else{
                                 event.toast(err.content);
@@ -911,7 +909,7 @@
                     POST('weex/member/friends/black.jhtml?friendId='+this.UId).then(
                         function (data) {
                             if(data.type == 'success'){
-                                _this.isBlack = 'black';
+                                _this.friendStatus = 'black';
                                 event.toast('已加入黑名单');
                             }
                         },
@@ -920,6 +918,28 @@
                         }
                     )
                 }
+            },
+//            前往聊天
+            goChat(){
+                let userId = 'u' + parseInt(10200 + this.UId);
+                event.navToChat(item.userId);
+            },
+//            添加好友
+            goAddFriend(){
+                let _this = this;
+                POST('weex/member/friends/add.jhtml?friendId='+ id).then(
+                    function (weex) {
+                        if (weex.type == "success") {
+                            event.toast('请求已发送,请等待对方验证');
+//                            let backData = utils.message('success','成功','请求已发送,请等待对方验证');
+//                            event.closeURL(backData);
+                        } else {
+                            event.toast(weex.content);
+                        }
+                    }, function (err) {
+                        event.toast("网络不稳定请重试");
+                    }
+                )
             }
         }
     }
