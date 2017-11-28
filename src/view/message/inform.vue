@@ -36,9 +36,9 @@
                     </div>
                 </div>
                 <!--评论-->
-                <div class="lineBox"  v-if="messageType == 'gm_10203'">
+                <div class="lineBox"  v-if="messageType == 'gm_10203'" v-for="item in dataList">
                     <div class="flex-row">
-                        <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"  @click="goAuthor(item.userId)"></image>
+                        <image class="headImg" :src="item.logo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
                             <text  class="infoText">{{item.content}}</text>
@@ -48,9 +48,9 @@
                     <image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>
                 </div>
                 <!--点赞-->
-                <div class="lineBox"  v-if="messageType == 'gm_10204'">
+                <div class="lineBox"  v-if="messageType == 'gm_10204'" v-for="item in dataList">
                     <div class="flex-row">
-                        <image class="headImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"  @click="goAuthor(item.userId)"></image>
+                        <image class="headImg" :src="item.logo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
                             <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
@@ -261,6 +261,7 @@
                 showLoading:false,
                 listCurrent:0,
                 pageSize:15,
+                screenHeight:0
             }
         },
         components: {
@@ -272,6 +273,8 @@
         created(){
             let _this = this;
             utils.initIconFont();
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(136);
             this.messageType = utils.getUrlParameter('type');
             switch(this.messageType){
                 case 'gm_10200':

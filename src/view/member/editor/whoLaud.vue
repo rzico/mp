@@ -89,22 +89,23 @@
                 showLoading:false,
                 listCurrent:0,
                 pageSize:15,
-                articleId:''
+                articleId:'',
+                title:'0人点赞',
+                screenHeight:0
             }
         },
         components: {
             navbar
         },
-        props:{
-            title:{default:'支付助手'},
-        },
         created(){
             let _this = this;
             utils.initIconFont();
-
+            this.screenHeight = utils.fullScreen(136);
             this.articleId = utils.getUrlParameter('articleId');
+            utils.debug('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize);
             GET('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != ''){
+                    _this.title = data.data.recordsTotal + '人点赞';
                     _this.dataList =  data.data.data;
                 }else if(data.type == 'success' && data.data.data == '' ){
                 }else{
