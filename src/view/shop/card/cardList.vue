@@ -265,8 +265,7 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(function () {
-                        _this.lists = []
-                        this.listCurrent = this.listCurrent + this.pageSize;
+                        _this.listCurrent = _this.listCurrent + _this.pageSize;
                         _this.open()
                         _this.loading = false
                     }
@@ -277,8 +276,7 @@
                 var _this = this;
                 _this.refreshing = true;
                 setTimeout(function () {
-                        _this.lists =[]
-                        _this.open()
+
                         _this.refreshing = false;
                     }
                     ,1000)
