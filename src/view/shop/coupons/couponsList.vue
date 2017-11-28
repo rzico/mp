@@ -4,8 +4,8 @@
         <search @gosearch="gosearch" @scan="scan"> </search>
         <div class="addFriend" @click="add">
             <div class="flex-row " style="align-items:center">
-                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
-                <text class="title ml20 " >领取会员卡</text>
+                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe635;</text>
+                <text class="title  " style="margin-left: 30px" >领取优惠券</text>
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
@@ -21,17 +21,22 @@
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump()">
                             <div class="image">
-                            <image :src="num.logo" class="friendsImage"></image>
-                                <text :class="[vipClass(lists.vip)]" :style="{fontFamily:'iconfont'}">{{vip(lists.vip)}}</text>
-                            </div>
-                            <div class="friendsName">
-
-                                <text class="lineTitle ">手机号:{{num.mobile}}</text>
-                                <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                <text class="realName">{{num.name}}卡号:({{num.code | watchCode}})</text>
-                                    <text style="font-size: 28px;color: #888">{{num | watchStatus}}</text>
+                                <div class="markmoney">
+                                <text  class="mark">¥</text>
+                                <text style="font-size: 50px;color: red;font-weight: 800;margin-left: 10px">{{num.amount}}</text>
                                 </div>
-
+                                <div class="name">
+                                    <text class="scope">{{num.scope}}</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="friendsName">
+                            <div class="time">
+                                <text class="lineTitle">{{num.name}}</text>
+                                <text class="realName">{{num.beginDate | timeDatefmt}}至{{num.endDate | timeDatefmt}}</text>
+                            </div>
+                            <div class="use">
+                                <text class="usetext">立即使用</text>
                             </div>
                         </div>
                     </div>
@@ -49,11 +54,41 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .time{
+        width: 550px;
+    }
+    .usetext{
+        font-size: 25px;
+        color: red;
+
+    }
+    .use{
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        border-color: red;
+        border-width: 1px;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        position: absolute;
+        right: 40px;
+        bottom: 35px;
+    }
+    .mark{
+        font-size: 32px;
+        color: red;
+        margin-top: 20px;
+    }
+    .markmoney{
+        flex-direction: row;
+    }
     .addFriend {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-left: 36px;
+        padding-left: 30px;
         padding-right: 30px;
         padding-top: 30px;
         padding-bottom: 30px;
@@ -69,24 +104,19 @@
         background-color: white;
     }
 
-    .friendsName{
-        height:90px;
-        margin-top: 15px;
-        justify-content: space-between;
+    .friendsName {
+        height: 90px;
+        margin-top: 10px;
     }
     .realName{
-        color: #888;
-        font-size: 30px;
-        margin-left: 20px;
-    }
-    .friendsImage{
-        margin-top: 20px ;
-        height: 80px;
-        width:80px;
+        margin-top: 10px;
+        font-size: 25px;
+        color: #888888;
     }
     .image{
-        height: 80px;
-        width: 80px;
+        padding-top: 15px;
+        height: 120px;
+        width: 120px;
     }
     .addFriendsBorder{
         border-bottom-width: 1px;
@@ -99,16 +129,13 @@
     .friendsLine{
         padding-left: 30px;
         height:120px;
-        background-color: #fff;
-        flex-direction: row;
-        flex:5;
+    }
+    .scope{
+        font-size: 20px;
+        color: #888;
     }
     .lineTitle{
-        font-size: 34px;
-        margin-left: 20px;
-        lines:1;
-        text-overflow: ellipsis;
-        max-width: 450px;
+        font-size: 32px;
     }
     .vip1 {
         /*margin-top: 50px;*/
@@ -141,6 +168,7 @@
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     const event = weex.requireModule('event');
+    const picker = weex.requireModule('picker')
     import navbar from '../../../include/navbar.vue';
     import search from '../../../include/search.vue';
     import noData from '../../../include/noData.vue';
@@ -159,13 +187,15 @@
                 friendsList:[],
                 lists:[],
                 screenHeight:0,
+
                 pageSize:10,
                 listCurrent:0
+
             }
         },
         props: {
-            title: { default: "会员卡"},
-            noDataHint: { default: "尚未添加会员卡"},
+            title: { default: "优惠券"},
+            noDataHint: { default: "尚未拥有优惠券"},
             complete:{ default:"设置"}
         },
         created() {
@@ -174,16 +204,14 @@
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(404);
             var _this = this;
-//            setTimeout(() => {
-//            _this.onrefresh();
-//            }, 500);
             this.open(function () {
 
             });
         },
         filters:{
+
             watchCode:function (value) {
-                 return value.substr(-6)
+                return value.substr(-6)
             },
             watchStatus:function (data) {
                 if(data.status == 'loss'){
@@ -216,22 +244,18 @@
                 }
             },
             add:function() {
-                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
+//                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
 //
-                })
+//                })
             },
             open:function () {
                 var _this = this;
-                GET('weex/member/card/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
-//                    utils.debug(mes)
+                GET('weex/member/coupon/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
+                    utils.debug(mes)
                     if (mes.type == 'success') {
                         mes.data.data.forEach(function(item){
                             _this.lists.push(item);
                         })
-//                        utils.debug(_this.code)
-//                        if(_this.code.length>6){
-//                           _this.code = _this.code.substring(_this.code.length-6, _this.code.length)
-//                        }
 
                     } else {
                         event.toast(mes.content);
@@ -288,9 +312,9 @@
             },
 
             jump:function () {
-                event.openURL(utils.locate('view/shop/card/view.js'),function () {
-
-                })
+//                event.openURL(utils.locate('view/shop/card/view.js'),function () {
+//
+//                })
             },
 
         }
