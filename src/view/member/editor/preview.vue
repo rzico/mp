@@ -547,7 +547,7 @@
                         )
                     }
                 }else{
-                    event.openURL(utils.locate('view/member/editor/whoLaud.js?name=laud'),function (data) {
+                    event.openURL(utils.locate('view/member/editor/whoLaud.js?articleId=' + this.articleId),function (data) {
                     })
                 }
             },
