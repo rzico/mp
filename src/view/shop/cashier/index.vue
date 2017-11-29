@@ -1,17 +1,12 @@
 <template>
     <div class="wrapper">
-        <div class="header cb" :class="[classHeader()]" >
-            <div class="nav_back">
-                <image class="logo" :src="'file://resources/logo.png'" ></image>
-            </div>
-            <div class="nav">
-                <text class="nav_title">收银台</text>
-                <text class="nav_Complete" @click="deposit()">账单</text>
-            </div>
-        </div>
         <scroller class="scroller">
-            <div class="wallet-panel bkg-primary">
+            <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">刷新数据</text>
+            </refresh>
+            <div class="wallet-panel">
                 <text class="balance">{{cashier.today | currencyfmt}}</text>
+                <text class="deposit" @click="deposit()">收银明细</text>
                 <div class="wallet-title">
                     <text class="sub_title">今天收银（元）</text>
                     <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
@@ -70,58 +65,15 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-    .title {
-        font-size: 32px;
-        line-height: 60px;
-        color:white;
-    }
-    .logo {
-        height:55px;
-        width:55px;
-        border-radius:6px;
-    }
-    .scan {
-        font-size: 36px;
-        line-height: 60px;
-        height:60px;
-        width:60px;
-        color:white;
-        margin-right: 30px;
-    }
-    .add {
-        font-size: 40px;
-        line-height: 60px;
-        height:60px;
-        width:60px;
-        color:white;
-        margin-right: 20px;
-    }
-
-    .cb {
-        border-bottom-width: 0px!important;
-    }
 
     .sub_title {
         color:#eee;
         font-size: 30px;
     }
-    .logo {
-        height:45px;
-        width:45px;
-        border-radius:3px;
-    }
-    .nav_Complete {
-        padding-left: 16px;
-        font-family: Verdana, Geneva, sans-serif;
-        font-size: 34px;
-        line-height: 34px;
-        color: #FFFFFF;
-        margin-right: 20px;
-    }
 
     .wallet-title {
         width: 620px;
-        margin-top: 20px;
+        margin-top: 10px;
         font-size: 32px;
         color: #fff;
         margin-left:60px;
@@ -131,9 +83,11 @@
     }
 
     .wallet-panel {
-        height:280px;
+        padding-top: 44px;
+        height:310px;
         flex-direction: column;
         align-items:flex-start;
+        background-color:#000;
     }
 
     .balance {
@@ -142,7 +96,13 @@
         color: #fff;
         margin-left:40px;
     }
-
+    .deposit {
+        position: absolute;
+        right:30px;
+        top:74px;
+        color: #cccccc;
+        font-size:32px;
+    }
     .fontInput{
         border-style: solid;
         border-width:1px;
@@ -274,6 +234,7 @@
     export default {
         data() {
             return {
+                refreshing:false,
                 id:0,
                 sn:"",
                 step:"",
@@ -297,6 +258,16 @@
             classHeader:function () {
                 return utils.device();
             },
+            onrefresh (event) {
+                var _this = this;
+                this.refreshing = true
+                setTimeout(() => {
+                    this.view();
+                    this.refreshing = false
+                }, 2000)
+            },
+            onpullingdown (event) {
+            },
             view:function () {
                 var _this = this;
                 GET("weex/member/cashier/view.jhtml",function (res) {
@@ -315,8 +286,7 @@
                 event.closeURL();
             },
             deposit:function () {
-                utils.device();
-                //event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
             isShow:function () {
                 return this.time<30;

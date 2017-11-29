@@ -8,12 +8,16 @@
         </slider>
         <div class="footer footer-panel ">
             <div class="flex-row">
-                <div class="flex1 btn"   @click="weixin()">
+                <div class="flex1 btn"  v-if="isNoPos()" @click="weixin()">
                     <text class="ico" :style="{fontFamily:'iconfont'}">&#xe659;</text>
                     <text class="btn-text" value="微信快捷登录">微信快捷登录</text>
                 </div>
+                <div class="flex1 btn mt30" v-else  @click="scan()">
+                    <text class="ico_small" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+                    <text class="btn-text" value="收钱码登录">收钱码登录</text>
+                </div>
             </div>
-            <div class="space-between" style="margin-top: 40px;">
+            <div class="space-between" style="margin-top: 40px;" v-if="isNoPos()">
                 <text class="title gray" @click="login()">其他方式登录</text>
                 <text class="title gray" @click="goback()">关闭随便看看</text>
             </div>
@@ -93,6 +97,9 @@
             event.changeWindowsBar(true);
         },
         methods: {
+            isNoPos:function () {
+                return utils.device()!="V1";
+            },
             weixin: function (e) {
                 event.wxAuth(
                     function (message) {
@@ -127,6 +134,39 @@
             },
             goback: function (e) {
                 event.closeURL();
+            },
+            scan:function () {
+                event.scan(function (message) {
+                    if (message.type == 'success') {
+                        utils.readScan(message.data,function (res) {
+                            if (res.type=='success') {
+                                if (res.data.type!='818804') {
+                                    event.toast("请扫收钱码");
+                                    return;
+                                }
+                                POST('weex/login/code_captcha.jhtml?code=' +res.data.code)
+                                    .then(
+                                        function (data) {
+                                            if (data.type == "success") {
+                                                event.closeURL();
+                                            } else {
+                                                event.toast(data.content);
+                                            }
+                                        },
+                                        function (err) {
+                                            event.toast("网络不稳定");
+                                        }
+                                    )
+                            } else {
+                                event.toast(res.content);
+                            }
+                        }
+                        )
+                    } else {
+                        event.toast(message.content);
+                    }
+                 }
+                )
             }
         }
     }
