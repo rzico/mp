@@ -21,7 +21,7 @@
                     <div style="width: 50px;">
                     </div>
                     <!--导航栏名字头像-->
-                    <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'black'" >
+                    <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'white'" >
                         <image class="headImg" :src="imageUrl"></image>
                         <text class="navText" >{{userName}}</text>
                     </div>
@@ -131,7 +131,7 @@
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                         <div class="atricleHead" >
                             <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                            <text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>
+                            <text class="articleSign">{{item.value.articleOption | watchWho}}</text>
                             <text class="articleTitle">{{item.value.title}}</text>
                         </div>
                         <!--文章封面-->
@@ -157,14 +157,14 @@
                             </div>
                         </div>
                         <!--右侧隐藏栏-->
-                        <div class="rightHidden">
+                        <div class="rightHidden" v-if="item.value.articleOption.articleCatalog.id != '99'">
                             <div class="rightHiddenSmallBox">
                                 <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                                     <text class="rightHiddenText">编辑</text>
                                 </div>
                                 <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
-                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
+                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
                                     <text class="rightHiddenText redColor" >删除</text>
                                 </div>
                             </div>
@@ -176,6 +176,21 @@
                                 <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                                     <text class="rightHiddenText">文集</text>
+                                </div>
+                            </div>
+                        </div>
+                        <!--右侧隐藏栏-->
+                        <div class="rightHidden" v-else>
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
+                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
+                                    <text class="rightHiddenText redColor" >彻底删除</text>
+                                </div>
+                            </div>
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox" @click="jumpTop()">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                    <text class="rightHiddenText">还原</text>
                                 </div>
                             </div>
                         </div>
@@ -264,7 +279,7 @@
     .navText{
         padding-left: 10px;
         font-size: 33px;
-
+        color:#fff;
     }
     .setTop{
         top:136px;
@@ -620,7 +635,7 @@
         data:function() {
             return{
                 topMWidth:166,
-                settingColor:'white',
+                settingColor:'',
                 opacityNum:0,
                 twoTop:false,
                 isDisappear:false,
@@ -679,7 +694,10 @@
         },
         filters:{
             watchWho:function (value) {
-                switch (value){
+                if(value.articleCatalog.id == '99'){
+                    return '已删除';
+                }
+                switch (value.authority){
                     case 'isPublic' ://公开
                         return '公开';
                         break;
@@ -857,24 +875,36 @@
             jumpDelete:function (item,index) {
                 event.toast(item);
                 let _this = this;
-                //            获取当前时间戳 作为唯一标识符key
-                let timestamp = Math.round(new Date().getTime()/1000);
-                item.value.articleOption.articleCatalog.id = 99;
-                item.value.articleOption.articleCatalog.name = '回收站';
-                let saveData = {
-                    type:item.type,
-                    key:item.key,
-                    value:item.value,
-                    sort:'0,' + timestamp,
-                    keyword:',[99],' + item.value.title + ','
-                }
-                event.save(saveData,function(data){
-                    if(data.type == 'success'){
-                        _this.articleList.splice(index,1);
-                    }else{
-                        event.toast(data.content);
+                POST('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(
+                    function(e){
+                        if(e.type == 'success'){
+                            //            获取当前时间戳 作为唯一标识符key
+                            let timestamp = Math.round(new Date().getTime()/1000);
+                            item.value.articleOption.articleCatalog.id = 99;
+                            item.value.articleOption.articleCatalog.name = '回收站';
+                            let saveData = {
+                                type:item.type,
+                                key:item.key,
+                                value:item.value,
+                                sort:'0,0000000000',
+                                keyword:',[99],' + item.value.title + ','
+                            }
+                            event.save(saveData,function(data){
+                                if(data.type == 'success'){
+                                    _this.articleList.splice(index,1);
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            })
+                        }else{
+                            event.toast(e.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
                     }
-                })
+                )
+
 
 
             },
@@ -1108,12 +1138,19 @@
                     opacityDegree = 1;
                 }
                 if(opacityDegree > 0.4){
-                    event.changeWindowsBar("true");
-                    this.settingColor = 'black';
-                }else{
+//                    event.changeWindowsBar("true");
                     this.settingColor = 'white';
-                    event.changeWindowsBar("false");
+                }else{
+                    this.settingColor = '';
+//                    event.changeWindowsBar("false");
                 }
+//                if(opacityDegree > 0.4){
+//                    event.changeWindowsBar("true");
+//                    this.settingColor = 'black';
+//                }else{
+//                    this.settingColor = 'white';
+//                    event.changeWindowsBar("false");
+//                }
                 this.opacityNum = opacityDegree;
 
 //                if(scrollTop >=284){
@@ -1239,7 +1276,8 @@
 //            快速滑动滚动条时， 控制顶部导航栏消失
             toponappear(){
                 this.opacityNum = 0 ;
-                this.settingColor = 'white';
+//                this.settingColor = 'white';
+                this.settingColor = '';
                 event.changeWindowsBar("false");
             },
             onrefresh:function () {

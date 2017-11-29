@@ -22,55 +22,69 @@
                         </div>
                         <text class="fz28 mt20 color444">微信</text>
                     </div>
-                    <div class="singleBox">
-                        <div class="imgBox">
-                            <image class="shareImg" :src="qqSpaceImg" ></image>
-                        </div>
-                        <text class="fz28 mt20 color444">QQ空间</text>
-                    </div>
-                    <div class="singleBox">
-                        <div class="imgBox">
-                            <image class="shareImg" :src="qqImg" ></image>
-                        </div>
-                        <text class="fz28 mt20 color444">QQ</text>
-                    </div>
-                    <div style="align-items: center" >
-                        <div class="imgBox" >
-                            <image class="shareImg" :src="shareFriendImg" ></image>
-                        </div>
-                        <text class="fz28 mt20 color444">好友</text>
-                    </div>
-                </div>
-                <div class="shareLineBox" >
-                    <!--<div class="singleBox">-->
-                        <!--<div class="imgBox">-->
-                            <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
-                            <!--&lt;!&ndash;<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>&ndash;&gt;-->
-                        <!--</div>-->
-                        <!--<text class="fz28 mt20 color444">举报</text>-->
-                    <!--</div>-->
-                    <div  class="singleBox">
-                        <div class="imgBox">
+                    <div  class="singleBox"  @click="doShare(2)">
+                        <div class="imgBox"  @click="doShare(2)">
                             <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
                             <image class="shareImg" :src="copyLinkImg" ></image>
                         </div>
                         <text class="fz28 mt20 color444">复制链接</text>
                     </div>
-                    <div  class="singleBox">
-                        <div class="imgBox">
+                    <div  class="singleBox"  @click="doShare(3)">
+                        <div class="imgBox" @click="doShare(3)">
                             <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
                             <image class="shareImg" :src="browserImg" ></image>
                         </div>
                         <text class="fz28 mt20 color444">浏览器</text>
                     </div>
-                    <!--<div  class="singleBox">-->
-                        <!--<div class="imgBox">-->
-                            <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe611;</text>-->
-                            <!--&lt;!&ndash;<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>&ndash;&gt;-->
-                        <!--</div>-->
-                        <!--<text class="fz28 mt20 color444">其他</text>-->
+                    <!--<div class="singleBox">-->
+                    <!--<div class="imgBox">-->
+                    <!--<image class="shareImg" :src="qqSpaceImg" ></image>-->
+                    <!--</div>-->
+                    <!--<text class="fz28 mt20 color444">QQ空间</text>-->
+                    <!--</div>-->
+                    <!--<div class="singleBox">-->
+                    <!--<div class="imgBox">-->
+                    <!--<image class="shareImg" :src="qqImg" ></image>-->
+                    <!--</div>-->
+                    <!--<text class="fz28 mt20 color444">QQ</text>-->
+                    <!--</div>-->
+                    <!--<div style="align-items: center" >-->
+                    <!--<div class="imgBox" >-->
+                    <!--<image class="shareImg" :src="shareFriendImg" ></image>-->
+                    <!--</div>-->
+                    <!--<text class="fz28 mt20 color444">好友</text>-->
                     <!--</div>-->
                 </div>
+                <!--<div class="shareLineBox" >-->
+                <!--<div class="singleBox">-->
+                <!--<div class="imgBox">-->
+                <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
+                <!--&lt;!&ndash;<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<text class="fz28 mt20 color444">举报</text>-->
+                <!--</div>-->
+                <!--<div  class="singleBox">-->
+                <!--<div class="imgBox">-->
+                <!--&lt;!&ndash;<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>&ndash;&gt;-->
+                <!--<image class="shareImg" :src="copyLinkImg" ></image>-->
+                <!--</div>-->
+                <!--<text class="fz28 mt20 color444">复制链接</text>-->
+                <!--</div>-->
+                <!--<div  class="singleBox">-->
+                <!--<div class="imgBox">-->
+                <!--&lt;!&ndash;<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>&ndash;&gt;-->
+                <!--<image class="shareImg" :src="browserImg" ></image>-->
+                <!--</div>-->
+                <!--<text class="fz28 mt20 color444">浏览器</text>-->
+                <!--</div>-->
+                <!--<div  class="singleBox">-->
+                <!--<div class="imgBox">-->
+                <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe611;</text>-->
+                <!--&lt;!&ndash;<image class="shareImg" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510221848070&di=be3e54d3a819bddbf6fc309643a3fa2b&imgtype=0&src=http%3A%2F%2Fpic3.16pic.com%2F00%2F00%2F17%2F16pic_17711_b.jpg" ></image>&ndash;&gt;-->
+                <!--</div>-->
+                <!--<text class="fz28 mt20 color444">其他</text>-->
+                <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="cancelBox" @click="doCancel()">
                 <text class="fz32">取消</text>

@@ -604,13 +604,17 @@
                         shareType = 'appMessage';
                         break;
                     case 2 :
-                        shareType = 'favorite';
+                        shareType = 'copyHref';
+                        break;
+                    case 3 :
+                        shareType = 'browser';
                         break;
                     default:
                         shareType = '';
                         break;
                 }
-                GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=timeline'  ,function (data) {
+                event.toast('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType );
+                GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         var option = {
                             title:data.data.title,
