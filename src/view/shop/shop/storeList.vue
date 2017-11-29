@@ -1,8 +1,8 @@
 <template>
     <div style="background-color: #eeeeee">
         <navbar :title="title" :complete="complete" @goback="goback"></navbar>
-        <div class="head">
-            <text class="clickAdd" @click="add">+点击添加商铺</text>
+        <div class="head" @click="add">
+            <text class="clickAdd" >+点击添加商铺</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list class="list" v-if="isNoEmpty()">
@@ -10,9 +10,9 @@
                 <text class="indicator">下拉刷新</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
-        <div class="shops" v-for="num in lists">
+        <div class="shops" v-for="num in lists" @click="modification(num.id)">
             <div class="shopLogo" >
-                <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor"></image>
+                <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor |thumbnail "></image>
             </div>
             <div class="shopInformation">
                 <div class="shopNameDiv">
@@ -121,7 +121,19 @@ export default {
         });
         this.screenHeight = utils.fullScreen(136);
     },
+    filters:{
+        thumbnail:function (value) {
+            return utils.thumbnail(value,250,200);
+        },
+
+    },
     methods:{
+        modification:function (id) {
+//            utils.debug('view/shop/shop/newShop.js?'+id)
+                    event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function () {
+
+                    })
+        },
         open:function () {
             var _this = this;
             GET('weex/member/shop/list.jhtml',function (mes) {

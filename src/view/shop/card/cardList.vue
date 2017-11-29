@@ -28,7 +28,7 @@
 
                                 <text class="lineTitle ">手机号:{{num.mobile}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                <text class="realName">{{num.name}}卡号:({{num.code | watchCode}})</text>
+                                <text class="realName">{{num.name}}(卡号:{{num.code | watchCode}})</text>
                                     <text style="font-size: 28px;color: #888">{{num | watchStatus}}</text>
                                 </div>
 

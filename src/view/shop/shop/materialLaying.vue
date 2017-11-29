@@ -1,8 +1,6 @@
 <template>
     <div style="background-color: white">
-        <div class="header">
         <navbar :title="title"  @goback="goback"  > </navbar>
-        </div>
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
@@ -238,18 +236,17 @@
         created() {
             utils.initIconFont();
             var _this=this;
-            var six = utils.getUrlParameter('name');
-            storage.getItem(six, e => {
-//                event.toast(e);
-                let sixdata =  JSON.parse(e.data);
-//                event.toast(threedata);
-                _this.vendorName = sixdata.name;
-                _this.areaId = sixdata.areaId;
-                _this.detailedAddress = sixdata.address;
-                _this.contactName = sixdata.inkman;
-                _this.contactNumber = sixdata.telephone;
-                _this.category =sixdata.categoryId
-                storage.removeItem(six);
+            var seven = utils.getUrlParameter('name');
+            storage.getItem(seven, e => {
+                let sevendata =  JSON.parse(e.data);
+                _this.vendorName = sevendata.name;
+                _this.areaId = sevendata.areaId;
+                _this.detailedAddress = sevendata.address;
+                _this.contactName = sevendata.inkman;
+                _this.contactNumber = sevendata.telephone;
+                _this.category =sevendata.categoryId;
+                _this.shopId = sevendata.id;
+                storage.removeItem(seven);
             });
         },
         methods:{

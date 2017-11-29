@@ -1,8 +1,6 @@
 <template>
     <div style="background-color: #eeeeee">
-        <div class="header">
         <navbar :title="title"  @goback="goback"  > </navbar>
-        </div>
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>

@@ -1,8 +1,6 @@
 <template>
     <div style="background-color: #eeeeee">
-        <div class="header">
             <navbar :title="title"  @goback="goback"  > </navbar>
-        </div>
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
@@ -11,7 +9,7 @@
         </div>
         <div class="appellation">
             <text class="vendorName">商家名称</text>
-            <input type="text" placeholder="请输入商家名称" class="input" @change="" @input="oninput"/>
+            <input type="text" placeholder="请输入商家名称" class="input" v-model="vendorName" @change="" @input="oninput"/>
         </div>
         <div class="industry" @click="industry">
             <div class="left">
@@ -27,7 +25,7 @@
             <text class="businessLocation">商家区位</text>
             </div>
             <div class="right">
-                <text class="generalLocation">{{addressName}}</text>
+                <text class="generalLocation">{{shopaddressName}}</text>
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
@@ -36,16 +34,16 @@
             <text class="detailedAddress">详细地址</text>
             </div>
             <div class="right">
-                <input type="text" placeholder="请输入详细地址" class="addressInput" @change="" @input="oninput4"/>
+                <input type="text" placeholder="请输入详细地址" class="addressInput"  v-model="detailedAddress" @change="" @input="oninput4"/>
             </div>
         </div>
         <div class="name">
             <text class="contactName">联系姓名</text>
-            <input type="text" placeholder="请输入联系姓名" class="input" @change="" @input="oninput2"/>
+            <input type="text" placeholder="请输入联系姓名" class="input" v-model="contactName" @change="" @input="oninput2"/>
         </div>
         <div class="call">
             <text class="contactNumber">联系电话</text>
-            <input type="number" placeholder="请输入联系电话"  maxlength="11" class="input" @change="" @input="oninput3"/>
+            <input type="number" placeholder="请输入联系电话"  maxlength="11" class="input" v-model="contactNumber" @change="" @input="oninput3"/>
         </div>
         <div class="button bkg-primary" @click="goComplete">
             <text class="buttonText">下一步</text>
@@ -245,9 +243,17 @@
               areaId:'',
 //              =========================================
 //              具体地址
-              addressName:'',
+              shopaddressName:'',
+
               category:1,
-              industryName:''
+              industryName:'',
+//              id:'',
+//
+//              shopName:'',
+//              shopareaName:'',
+//              shopAddress:'',
+//              shopLinkman:'',
+//              shoptel:''
 
           }
         },
@@ -260,8 +266,30 @@
         },
         created() {
             utils.initIconFont();
+            this.shopId = utils.getUrlParameter('shopId');
+            if(utils.isNull(this.shopId)) {
+                this.shopId = ''
+            }else {
+                this.modification(function () {});
+            }
+
         },
         methods:{
+            modification:function () {
+                var _this = this;
+                GET('weex/member/shop/view.jhtml?shopId='+_this.shopId,function (mes) {
+                    if (mes.type == 'success') {
+                        _this.vendorName = mes.data.name;
+                        _this.detailedAddress = mes.data.address;
+                        _this.contactName = mes.data.linkman;
+                        _this.contactNumber = mes.data.telephone
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
             oninput:function (event){
                 this.vendorName = event.value;
                 console.log('oninput', event.value);
@@ -294,7 +322,7 @@
                 var _this = this;
                 event.openURL(utils.locate('widget/city.js'), function (data) {
                     if(data.type == 'success' && data.data !='' ) {
-                        _this.addressName = data.data.name
+                        _this.shopaddressName = data.data.name
                         _this.areaId = data.data.chooseId
                     }
                 })
@@ -305,17 +333,19 @@
                     '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            let  sixdata = {
+                            _this.shopId = mes.data.id;
+                            let  sevendata = {
                                 name : _this.vendorName,
+                                id:_this.shopId,
                                 areaId :_this.areaId,
                                 address:_this.detailedAddress,
                                 inkman:_this.contactName,
                                 telephone:_this.contactNumber,
                                 categoryId:_this.category
                             };
-                            sixdata = JSON.stringify(sixdata);
-                            storage.setItem('sixnumber', sixdata,e=> {
-                                event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=sixnumber'), function (message) {
+                            sevendata = JSON.stringify(sevendata);
+                            storage.setItem('sevennumber', sevendata,e=> {
+                                event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=sevennumber'), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);
                                     }
