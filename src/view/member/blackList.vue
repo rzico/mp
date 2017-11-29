@@ -135,6 +135,7 @@
             title:{default:'黑名单'}
         },
         created(){
+            utils.initIconFont();
             let _this = this;
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);

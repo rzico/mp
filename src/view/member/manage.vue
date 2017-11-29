@@ -299,7 +299,7 @@
                     type:shareType
                 }
                 _this.showShare = false;
-                event.wxShare(option,function (data) {
+                event.share(option,function (data) {
                     event.toast(JSON.stringify(data));
                 })
             },

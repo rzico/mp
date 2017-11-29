@@ -621,7 +621,7 @@
                         }
                         _this.showShare = false;
 //                        if(data.data.thumbnail.substring(0,4))
-                        event.wxShare(option,function (data) {
+                        event.share(option,function (data) {
                             if(data.type == 'success'){
                                 POST('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType).then(
                                     function (data) {

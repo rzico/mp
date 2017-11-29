@@ -31,31 +31,31 @@
             </refresh>
             <!--朋友信息-->
             <cell v-for="(item,index) in messageList" >
-                <div class="deleteBox bkg-delete" @click="deleteMessage(item.key,item.value.userId,index)">
+                <div class="deleteBox bkg-delete" @click="deleteMessage(item.userId,index)">
                     <text class="deleteText">删除</text>
                 </div>
-                <div class="friendsLine" @click="jumpMessage(item.value)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">
+                <div class="friendsLine" @click="jumpMessage(item)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">
                     <!--头像-->
                     <div class="friendsImageBox">
-                        <image :src="item.value.logo" class="friendsImage"></image>
+                        <image :src="item.logo" class="friendsImage"></image>
                     </div>
                     <!--有新消息-->
-                    <div class="newMessage" v-if="item.value.unRead != '' && item.value.unRead != 0 && item.value.unRead != null && item.value.unRead != undefined">
-                        <text class="messageTotal">{{item.value.unRead}}</text>
+                    <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
+                        <text class="messageTotal">{{item.unRead}}</text>
                     </div>
                     <div style="flex: 5;">
                         <div style="flex-direction: row;flex: 1;" >
                             <!--名字与内容-->
                             <div class="messageText">
-                                <text class="friendName">{{item.value | watchName}}</text>
+                                <text class="friendName">{{item | watchName}}</text>
                             </div>
                             <!--消息时间-->
                             <div class="messageTimeBox">
-                                <text class="messageTime">{{item.value.createDate | timefmt}}</text>
+                                <text class="messageTime">{{item.createDate | timefmt}}</text>
                             </div>
                         </div>
                         <div style="flex: 2;height: 50px;justify-content: center;">
-                            <text class="friendMessage">{{item.value.content}}</text>
+                            <text class="friendMessage">{{item.content}}</text>
                         </div>
                     </div>
                 </div>
@@ -283,9 +283,9 @@
             event.findList(listoption,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (item) {
-                        item.value = JSON.parse(item.value);
-//                        _this.messageList.push(JSON.parse(item.value));
-                        _this.messageList.push(item);
+//                        item.value = JSON.parse(item.value);
+                        _this.messageList.push(JSON.parse(item.value));
+//                        _this.messageList.push(item);
                     })
 //                    })
                 }else if(data.type == 'success'){
@@ -598,7 +598,7 @@
             })
         }
     },
-    deleteMessage(key,userId,index){
+    deleteMessage(userId,index){
         let _this = this;
 //        modal.confirm({
 //            message: '删除后,将清空该？',
@@ -610,12 +610,11 @@
 //
 //            }
 //        })
-
 //         删除消息会话
         if(event.deleteConversation(userId)){
             let option ={
               type : 'message',
-              key:key
+              key:userId
             }
 //            清除缓存
             event.delete(option,function(data){

@@ -65,10 +65,10 @@
                 </div>
                 <!--姓氏里每个人的名子-->
                 <div v-for="(item,index) in friend.name"  >
-                    <div class="deleteBox bkg-delete" @click="deleteFriend(friend,index)">
-                        <text class="deleteText">删除</text>
-                    </div>
                     <div class="addFriendsBorder" >
+                        <div class="deleteBox bkg-delete" @click="deleteFriend(friend.letter,item.id,index)">
+                            <text class="deleteText">删除</text>
+                        </div>
                         <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
                             <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
                             <div class="friendsName">
@@ -477,6 +477,7 @@
 //            获取用户id
             this.UId = event.getUId();
             _this.hadFriend();
+//            globalEvent.removeEventListener("onMessage");
 //            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10209'){
@@ -722,22 +723,25 @@
                 });
             },
 //            删除好友    //friendList 的 friend属性 包括letter和name
-            deleteFriend(friend,index){
+            deleteFriend(letter,id,index){
                 let _this = this;
-                POST('weex/member/friends/black.jhtml?friendId=' + friend.name[0].id).then(
+                POST('weex/member/friends/black.jhtml?friendId=' + id).then(
                     function(data){
                         if(data.type == 'success'){
                             let option ={
                                 type : 'friend',
-                                key:friend.name[0].key
+                                key:'u' + (10200 + id)
                             }
                             //    清除缓存
                             event.delete(option,function(e){
                                 if(e.type == 'success'){
 //                            遍历好友列表 删除好友行
                                     _this.friendsList.forEach(function (item) {
-                                        if(item.letter == friend.letter){
+                                        if(item.letter == letter){
                                             item.name.splice(index,1);
+                                            if(_this.friendTotal != 0){
+                                                _this.friendTotal --;
+                                            }
                                         }
                                     })
                                 }else{

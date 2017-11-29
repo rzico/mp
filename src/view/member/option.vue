@@ -148,6 +148,7 @@
             title: { default: "通用设置" }
         },
         create(){
+            utils.initIconFont();
             let _this = this;
 //            获取用户id
             this.UId = event.getUId();

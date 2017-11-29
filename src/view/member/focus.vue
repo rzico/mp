@@ -146,6 +146,7 @@
             }
         },
         created(){
+            utils.initIconFont();
             this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);

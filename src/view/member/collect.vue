@@ -18,14 +18,14 @@
                         <!--名字与日期-->
                         <div class="nameDate">
                             <div class="nameImg" @click="goAuthor(item.authorId)">
-                                <image resize="cover" class="authorImg" :src="item.logo"></image>
+                                <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
                                 <text class="authorName ml10">{{item.author}}</text>
                             </div>
                             <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                         </div>
                         <div class="flex-row">
                             <!--文章封面-->
-                            <image resize="cover" class="articleImg" :src="item.thumbnail" ></image>
+                            <image resize="cover" class="articleImg" :src="item.thumbnail  | watchThumbnail" ></image>
                             <!--文章相关信息。标题点赞...-->
                             <div class="articleInfo">
                                 <text class="fz30 articleTitle">{{item.title}}</text>
@@ -175,6 +175,14 @@
                 screenHeight:0
             }
         },
+        filters:{
+            watchThumbnail:function (value) {
+                return utils.thumbnail(value,250,150);
+            },
+            watchLogo:function (value) {
+                return utils.thumbnail(value,40,40);
+            }
+        },
         props:{
             noDataHint:{default:'暂无收藏'},
         },
@@ -188,6 +196,7 @@
             }
         },
         created(){
+            utils.initIconFont();
             this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);

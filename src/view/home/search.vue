@@ -71,7 +71,7 @@
                         <div class="contentBox pb15">
                             <!--好友-->
                             <div class="singleUserBox"  @click="goAuthor(item.id)">
-                                <image class="logo" :src="item.logo"></image>
+                                <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div >
                                     <text class="title fz28 bt15">{{item.name}}</text>
                                 </div>
@@ -93,7 +93,7 @@
                         <div class="contentBox">
                             <!--好友-->
                             <div class="flex-row "  @click="goAuthor(item.id)">
-                                <image class="logo" :src="item.logo"></image>
+                                <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div style="width: 460px;">
                                     <text class="title ml20">{{item.nickName}}</text>
                                     <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
@@ -413,9 +413,10 @@
             },
             watchLogo:function (value) {
                 return utils.thumbnail(value,40,40);
+            },
+            watchFriendLogo:function (value) {
+                return utils.thumbnail(value,100,100);
             }
-
-
         },
         props: {
             searchHint: { default: "输入要搜索的内容"},

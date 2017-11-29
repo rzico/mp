@@ -126,7 +126,7 @@
         <div class="sendMask" v-if="toSendArticle">
             <!--进度条-->
             <div class="processBox">
-                <text class="processText">正在云同步,请稍后...</text>
+                <text class="processText">正在云同步,请稍候...</text>
                 <!--进度条背景-->
                 <div class="processStyle processBg"></div>
                 <!--进度条进度与颜色-->

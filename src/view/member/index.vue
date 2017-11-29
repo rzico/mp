@@ -13,8 +13,9 @@
         <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
         <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <div>
-            <!--顶部白色区域-->
-            <div class="header headerMore"  :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <!--顶部白色区域 classHeader(), -->
+            <!--<div class="header  bkg-primary" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >-->
+            <div class="header headerMore bkg-primary"  :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw" >
                     <div style="width: 50px;">
@@ -135,7 +136,7 @@
                         </div>
                         <!--文章封面-->
                         <div style="position: relative">
-                            <image :src="item.value.thumbnail" resize="cover" class="articleCover"></image>
+                            <image :src="item.value.thumbnail | watchThumbnail" resize="cover" class="articleCover"></image>
                         </div>
                         <div class="categoryBox">
                             <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
@@ -154,7 +155,6 @@
                                 <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                                 <text class="relevantText">{{item.value.review}}</text>
                             </div>
-
                         </div>
                         <!--右侧隐藏栏-->
                         <div class="rightHidden">
@@ -163,7 +163,7 @@
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
                                     <text class="rightHiddenText">编辑</text>
                                 </div>
-                                <div class="rightHiddenIconBox" @click="jumpDelete(item)">
+                                <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
                                     <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
                                     <text class="rightHiddenText redColor" >删除</text>
                                 </div>
@@ -189,7 +189,7 @@
                     </div>
                     <!--文章封面-->
                     <div>
-                        <image :src="item.articleCoverUrl" class="articleCover"></image>
+                        <image :src="item.articleCoverUrl | watchCatetory" class="articleCover"></image>
                     </div>
                     <!--文章底部-->
                     <div class="articleFoot">
@@ -279,11 +279,8 @@
     /*顶部导航栏*/
     .headerMore {
         position:fixed;
-        background-color: #fff;
-        left: 0;
-        right: 0;
+        /*background-color: #fff;*/
         top: 0px;
-        height: 136px;
         border-bottom-width: 0px;
     }
     /*文集导航栏动画*/
@@ -386,7 +383,9 @@
         top: 0;
         background-color: #f4f4f4;
         width: 330px;
-        height:457px ;
+        height:533px ;
+        /*height:457px ;*/
+        /*height:502px ;*/
         /*align-items: center;*/
         /*justify-content:space-around;*/
     }
@@ -707,7 +706,13 @@
                 }else{
                     return value;
                 }
-            }
+            },
+            filters:{
+                watchThumbnail:function (value) {
+                    return utils.thumbnail(value,690,345);
+                },
+            },
+
         },
         created:function () {
             let _this = this;
@@ -768,7 +773,7 @@
 //                    将value json化
                             item.value = JSON.parse(item.value);
 //                            将封面转为缩略图
-                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
+//                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
 //                        把读取到的文章push进去文章列表
                             _this.articleList.push(item);
                         })
@@ -849,9 +854,29 @@
 ////                    _this.updateArticle();
 //                })
             },
-            jumpDelete:function (item) {
+            jumpDelete:function (item,index) {
                 event.toast(item);
-                event.toast('文章删除');
+                let _this = this;
+                //            获取当前时间戳 作为唯一标识符key
+                let timestamp = Math.round(new Date().getTime()/1000);
+                item.value.articleOption.articleCatalog.id = 99;
+                item.value.articleOption.articleCatalog.name = '回收站';
+                let saveData = {
+                    type:item.type,
+                    key:item.key,
+                    value:item.value,
+                    sort:'0,' + timestamp,
+                    keyword:',[99],' + item.value.title + ','
+                }
+                event.save(saveData,function(data){
+                    if(data.type == 'success'){
+                        _this.articleList.splice(index,1);
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+
+
             },
             jumpTop:function () {
                 event.toast('文章置顶');
@@ -864,7 +889,7 @@
                     function (data) {
                         if(data.type == 'success'){
                             item.value.articleOption.articleCatalog.id = data.data.corpusId;
-                            item.value.articleOption.articleCatalog.name = data.data.corpusName;
+                            item.value.articleOption.articleCatalog.name = data.data.corpusName;1
                             item.value.articleOption.articleCatalog.count = data.data.count;
                             let resDataStr = JSON.stringify(item.value);
                             let saveData = {
@@ -920,14 +945,14 @@
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
 //                    _this.updateArticle();
-                    })
+                        })
                 }else{
 
                     event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=' + publish ),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
 //                    _this.updateArticle();
-                    })
+                        })
                 }
 
 //                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
@@ -1133,7 +1158,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
-                    utils.debug(data)
+                        utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.logo)){
                                 _this.imageUrl = data.data.logo;
@@ -1246,6 +1271,7 @@
         }
     }
 </script>
+
 
 
 

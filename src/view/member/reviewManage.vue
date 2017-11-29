@@ -98,6 +98,7 @@
             navbar,noData
         },
         created(){
+            utils.initIconFont();
             let _this = this;
             this.articleId = utils.getUrlParameter('articleId');
 //            获取屏幕的高度
