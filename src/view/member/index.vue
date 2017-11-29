@@ -736,7 +736,7 @@
         methods: {
 
             isEmpty:function () {
-                return this.articleList.length==0;
+                return this.articleList.length==0 && this.corpusId != '';
             },
 //            监听设备型号,控制导航栏设置 返回按钮
             classTop:function () {

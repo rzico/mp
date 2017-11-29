@@ -65,8 +65,8 @@
                 </div>
                 <!--姓氏里每个人的名子-->
                 <div v-for="(item,index) in friend.name"  >
-                    <div class="deleteBox bkg-primary" @click="deleteMessage(friend.letter,item.key,index)">
-                        <text class="deleteText">删 除</text>
+                    <div class="deleteBox bkg-delete" @click="deleteFriend(friend,index)">
+                        <text class="deleteText">删除</text>
                     </div>
                     <div class="addFriendsBorder" >
                         <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
@@ -109,7 +109,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 0px;top: 0px;padding-right: 30px;height: 120px;align-items: center;width: 190px;justify-content: center;
+        position: absolute;right: 60px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
     }
     .messageTotal{
         background-color: red;
@@ -146,13 +146,13 @@
     }
     /*顶部导航栏*/
     /*.header {*/
-        /*flex-direction: row;*/
-        /*background-color: #D9141E;*/
-        /*!*background-color: #fff;*!*/
-        /*left: 0;*/
-        /*right: 0;*/
-        /*top:0;*/
-        /*height: 136px;*/
+    /*flex-direction: row;*/
+    /*background-color: #D9141E;*/
+    /*!*background-color: #fff;*!*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*top:0;*/
+    /*height: 136px;*/
     /*}*/
     .addColor{
         color: #D9141E;
@@ -256,8 +256,8 @@
     .friendsLine{
         padding-left: 30px;
         height:120px;
-        /*width:690px;*/
-        width:750px;
+        width:690px;
+        /*width:750px;*/
         background-color: #fff;
         flex-direction: row;
     }
@@ -480,7 +480,7 @@
 //            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10209'){
-                        _this.newFriendNum = e.data.data.unRead;
+                    _this.newFriendNum = e.data.data.unRead;
                 }else{
 
                 }
@@ -716,20 +716,42 @@
 //            触发自组件的二维码方法
             scan:function () {
                 event.scan(function (message) {
-                        SCAN(message,function (data) {
-                        },function (err) {
-                        })
+                    SCAN(message,function (data) {
+                    },function (err) {
+                    })
                 });
             },
-            deleteMessage(letter,key,index){
+//            删除好友    //friendList 的 friend属性 包括letter和name
+            deleteFriend(friend,index){
                 let _this = this;
-//                =删除好友接口
-//                this.friendsList.forEach(function (item) {
-//                    if(item.letter == letter){
-//                        item.name.splice(index,1);
-//                    }
-//                })
-                event.toast('删除还未成功');
+                POST('weex/member/friends/black.jhtml?friendId=' + friend.name[0].id).then(
+                    function(data){
+                        if(data.type == 'success'){
+                            let option ={
+                                type : 'friend',
+                                key:friend.name[0].key
+                            }
+                            //    清除缓存
+                            event.delete(option,function(e){
+                                if(e.type == 'success'){
+//                            遍历好友列表 删除好友行
+                                    _this.friendsList.forEach(function (item) {
+                                        if(item.letter == friend.letter){
+                                            item.name.splice(index,1);
+                                        }
+                                    })
+                                }else{
+                                    event.toast(e.content);
+                                }
+                            })
+
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function(err){
+                        event.toast(err.content);
+                    }
+                )
             },
             //            点击屏幕时
             onFriendtouchstart:function (e,index) {

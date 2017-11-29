@@ -211,12 +211,19 @@ let utilsFunc = {
     },
 //    二维码读取内容
     readScan(e,callback){
-        e =this.qr2scan(e);
+        e = this.qr2scan(e);
         let backData = {};
         //二维码字段截取. indexOf 没找到时返回-1， 此时如果2个indexof都没找到 那么 e.substring（-1 + 3 ，-1）,e的长度会变为2
-        let subData = e.substring(e.indexOf("/q/8") + 3,e.indexOf(".jhtml"));
+        // let subData = e.substring(e.indexOf("/q/8") + 3,e.indexOf(".jhtml"));
+
+        let start = e.indexOf("/q/8");
+        let end = e.indexOf(".jhtml");
+        var code = null;
+        if (start != -1 && end != -1) {
+            code = e.substring(start + 3,end);
+        }
         //判断是不是web  code'000000'为无效二维码 '999999'为webView；
-        if(subData.length == 2){
+        if(code == null){
             //如果没有找到q/ 和 .jhtml中的字端，就执行该段代码
             if(e.substring(0,4) == 'http'){
                 let data = {

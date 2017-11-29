@@ -150,7 +150,7 @@
                 <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62f;</text>
                 <text class="fz35 ml10" >私信</text>
             </div>
-            <div class="bottomBtn" v-if="friendStatus == 'ask'"  @click="goAddFriend()">
+            <div class="bottomBtn" v-else  @click="goAddFriend()">
                 <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
                 <text class="fz35 ml10" >添加好友</text>
             </div>
@@ -630,7 +630,6 @@
             this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(216)  ;
-            utils.debug(this.UId);
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
                 if(data.type == 'success' && data.data != ''){
                     if(!utils.isNull(data.data.name)){
@@ -644,7 +643,7 @@
                     _this.isFocus = data.data.followed;
                     _this.fansNum = data.data.fans;
                     if(utils.isNull(data.data.friendStatus)){
-                    }else if(data.data.friendStatus == 'black'){
+                    }else{
                         _this.friendStatus = data.data.friendStatus;
                     }
 //                                将文集名循环插入数组中

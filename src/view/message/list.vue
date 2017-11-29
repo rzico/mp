@@ -31,7 +31,7 @@
             </refresh>
             <!--朋友信息-->
             <cell v-for="(item,index) in messageList" >
-                <div class="deleteBox bkg-primary" @click="deleteMessage(item.key,item.value.userId,index)">
+                <div class="deleteBox bkg-delete" @click="deleteMessage(item.key,item.value.userId,index)">
                     <text class="deleteText">删除</text>
                 </div>
                 <div class="friendsLine" @click="jumpMessage(item.value)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">

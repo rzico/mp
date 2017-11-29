@@ -8,7 +8,7 @@
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="collectList.length == 0"></noData>
                 <div v-for="(item,index) in collectList" >
-                    <div class="deleteBox bkg-primary" @click="deleteMessage(item.id,index)" v-if="isSelf">
+                    <div class="deleteBox bkg-delete" @click="deleteMessage(item.id,index)" v-if="isSelf">
                         <text class="deleteText">取</text>
                         <text class="deleteText">消</text>
                         <text class="deleteText">收</text>
