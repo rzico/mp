@@ -209,7 +209,9 @@
                 var _this = this;
                 GET("weex/member/manager/view.jhtml",
                     function (data) {
+                        event.toast(data);
                         if (data.type=="success") {
+                            event.toast('success里');
                             _this.member = data.data;
                         } else {
                             event.toast(data.content);

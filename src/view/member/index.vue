@@ -31,7 +31,8 @@
             </div>
             <!--导航栏设置-->
             <div  class=" rightTop " :class="[classTop()]" @click="goManage()">
-                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>
+                <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
+                <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
             </div>
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
@@ -127,7 +128,7 @@
                 <!--绑定动画-->
                 <!--<transition-group name="paraTransition" tag="div">-->
                 <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft,item.value.articleOption.articleCatalog.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
+                <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item,index)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                     <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                     <div class="atricleHead" >
                         <!--<text class="articleSign">{{item.articleSign}}</text>-->
@@ -191,7 +192,7 @@
                         <div class="rightHiddenSmallBox">
                             <div class="rightHiddenIconBox" @click="jumpRestore(item,index)">
                                 <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                                <text class="rightHiddenText">还原</text>
+                                <text class="rightHiddenText">恢复</text>
                             </div>
                         </div>
                     </div>
@@ -929,21 +930,28 @@
 //            },
 
 //            前往文章
-            goArticle(id,publish,draft,corpusId){
+            goArticle(item,index){
                 var _this = this;
-                if(corpusId == '99'){
-                    event.openURL(utils.locate('view/article/delete.js?articleId=' + id),
-                        function () {
+                if(item.value.articleOption.articleCatalog.id == '99'){
+                    event.openURL(utils.locate('view/article/delete.js?articleId=' + item.key),
+                        function (data) {
+                            if(data.type == 'success'){
+                                if(data.data == 'restore'){
+                                    _this.jumpRestore(item,index);
+                                }else if(data.data == 'delete'){
+                                    _this.deleteAfter(item,index);
+                                }
+                            }
                         })
-                }else if(draft){
-                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),
+                }else if(item.isDraft){
+                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + item.key),
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
 //                    _this.updateArticle();
                         })
                 }else{
 
-                    event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=' + publish ),
+                    event.openURL(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.publish ),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
 //                    _this.updateArticle();
@@ -1376,32 +1384,37 @@
                     cancelTitle:'取消',
                 }, function (value) {
                     if(value == '删除'){
-                        let option ={
-                            type :item.type,
-                            key:item.key
-                        }
-                        //            清除缓存
-                        event.delete(option,function(data){
-                            if(data.type == 'success'){
-                                //                            把动画收回来。
-                                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
-                                }else{
-                                    animation.transition(animationPara, {
-                                        styles: {
-                                            transform: 'translateX(0)',
-                                        },
-                                        duration: 10, //ms
-                                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+                        _this.deleteAfter(item,index);
+                    }
+                })
+            },
+//            彻底删除的删除逻辑
+            deleteAfter(item,index){
+                let _this =this;
+                let option ={
+                    type :item.type,
+                    key:item.key
+                }
+                //            清除缓存
+                event.delete(option,function(data){
+                    if(data.type == 'success'){
+                        //                            把动画收回来。
+                        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                        }else{
+                            animation.transition(animationPara, {
+                                styles: {
+                                    transform: 'translateX(0)',
+                                },
+                                duration: 10, //ms
+                                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                                        needLayout:false,
-                                        delay: 0 //ms
-                                    })
-                                }
-                                _this.articleList.splice(index,1);
-                            }else{
-                                event.toast(data.content);
-                            }
-                        })
+                                needLayout:false,
+                                delay: 0 //ms
+                            })
+                        }
+                        _this.articleList.splice(index,1);
+                    }else{
+                        event.toast(data.content);
                     }
                 })
             },

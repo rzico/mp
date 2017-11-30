@@ -500,6 +500,7 @@
                         }
                     },function (err) {
                         event.toast(err.content);
+                        return;
                     })
 
                     event.find(options,function (data) {
@@ -696,7 +697,9 @@
                             _this.sendImage(0);
                         }else{
                             _this.toSendArticle = false;
+                            utils.debug('2');
                             event.toast(data.content);
+                            return;
                         }
                     },function (data) {
                         _this.ctrlProcess(data);
@@ -708,17 +711,24 @@
             //上传图片到服务器
             sendImage (sendIndex) {
                 var _this = this;
+                var frontUrl;
                 let sendLength = _this.paraList.length;//获取图片数组总长度
-                let frontUrl = _this.paraList[sendIndex].paraImage.substring(0,5);
+                var mediaType = _this.paraList[sendIndex].mediaType;
+                if(mediaType == 'image') {
+                    frontUrl = _this.paraList[sendIndex].paraImage.substring(0, 5);
+                }else if(mediaType == 'video'){//如果是视频
+                    frontUrl = _this.paraList[sendIndex].thumbnail.substring(0, 5);
+                }
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http:'){
-                    if(_this.paraList[sendIndex].mediaType == 'image'){
+                    if(mediaType == 'image'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
                         _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
-                    }else if(_this.paraList[sendIndex].mediaType == 'video'){//如果是视频就将缩略图进行缩略
+                    }else if(mediaType == 'video'){//如果是视频就将缩略图进行缩略
                         _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].thumbnail,155,155);
                     }
                     sendIndex ++ ;
+
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){
 //                            回调自己自己
@@ -741,14 +751,19 @@
 //                    var sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(6) :  _this.paraList[sendIndex].paraImage;
 ////                    ios是file:/ 安卓是file://
 //                    sendparaimg = sendparaimg.substring(0,1) == '/' ? sendparaimg.substring(1) : sendparaimg;
+
+
+
+
+
                     event.upload(_this.paraList[sendIndex].paraImage,function (data) {
                         if(data.type == 'success'){
-                            _this.paraList[sendIndex].paraImage = data.data;
+                                _this.paraList[sendIndex].paraImage = data.data;
 //                            判断是图片还是视频
-                            if(_this.paraList[sendIndex].mediaType == 'image'){
+                            if(mediaType == 'image'){
                                 //                            向后台获取缩略图
                                 _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
-                            }else if(_this.paraList[sendIndex].mediaType == 'video'){
+                            }else if(mediaType == 'video'){
 //                                将视频的封面上传
                                 event.upload(_this.paraList[sendIndex].thumbnail,function (e) {
                                     if(e.type == 'success'){
@@ -759,7 +774,10 @@
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 2;//总的进度
                                         _this.processWidth = 0;//进度条宽度
+                                        utils.debug('2');
                                         event.toast(e.content);
+                                        return;
+//                                        这边出错 11.30
                                     }
                                 })
                             }
@@ -776,7 +794,10 @@
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 2;//总的进度
                             _this.processWidth = 0;//进度条宽度
+
+                            utils.debug('4');
                             event.toast(data.content);
+                            return;
                         }
                     },function (data) {
 //                    上传进度
@@ -864,16 +885,16 @@
                                     let listenData = utils.message('success','文章改变','')
                                     event.sendGlobalEvent('onArticleChange',listenData);
 //                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
-                                        event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
+                                    event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 2;//总的进度
                                         _this.processWidth = 0;//进度条宽度
 //                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                                            let E = {
-                                                isDone : 'complete'
-                                            }
-                                            let backData = utils.message('success','成功',E);
-                                            event.closeURL(backData);
+                                        let E = {
+                                            isDone : 'complete'
+                                        }
+                                        let backData = utils.message('success','成功',E);
+                                        event.closeURL(backData);
 //                                        }
                                     })
                                 }else{
@@ -888,6 +909,8 @@
                                 }
                             })
                         }else{
+
+                            utils.debug('5');
                             event.toast(res.content);
                             _this.toSendArticle = false;
                             _this.currentPro = 0;//当前进度
@@ -896,6 +919,8 @@
                         }
                     },
                     function (err) {
+
+                        utils.debug('6');
                         event.toast(err.content);
                         _this.toSendArticle = false;
                         _this.currentPro = 0;//当前进度
@@ -1135,32 +1160,32 @@
 //                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
 //                            })
 //                        }else if(value == '裁剪'){
-                        if(mediaType == 'image'){
+                    if(mediaType == 'image'){
 //                                调用裁剪图片
-                            album.openCrop(imgSrc,function (data) {
-                                if(data.type == 'success'){
-                                    _this.paraList[index].paraImage = data.data.originalPath;
-                                    _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+                        album.openCrop(imgSrc,function (data) {
+                            if(data.type == 'success'){
+                                _this.paraList[index].paraImage = data.data.originalPath;
+                                _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+                            }else{
+                                if(data.content == '用户取消'){
                                 }else{
-                                    if(data.content == '用户取消'){
-                                    }else{
-                                        event.toast(data.content);
-                                    }
+                                    event.toast(data.content);
                                 }
-                            })
-                        }else if(mediaType == 'video'){
-                            album.openVideo(imgSrc,function (data) {
-                                if(data.type == 'success'){
-                                    _this.paraList[index].paraImage = data.data.videoPath;
-                                    _this.paraList[index].thumbnailImage = data.data.coverImagePath;
+                            }
+                        })
+                    }else if(mediaType == 'video'){
+                        album.openVideo(imgSrc,function (data) {
+                            if(data.type == 'success'){
+                                _this.paraList[index].paraImage = data.data.videoPath;
+                                _this.paraList[index].thumbnailImage = data.data.coverImagePath;
+                            }else{
+                                if(data.content == '用户取消'){
                                 }else{
-                                    if(data.content == '用户取消'){
-                                    }else{
-                                        event.toast(data.content);
-                                    }
+                                    event.toast(data.content);
                                 }
-                            })
-                        }
+                            }
+                        })
+                    }
 
 
 //                        }else{
@@ -1254,23 +1279,24 @@
                 let _this = this;
                 album.openVideo(
                     function (data) {
+                        utils.debug(data);
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
-                                let newPara = {
-                                    //原图
+                            let newPara = {
+                                //原图
 //                                    paraImage: data.data[i].originalPath,
-                                    paraImage: data.data.videoPath,
+                                paraImage: data.data.videoPath,
 //                                    小缩略图
 //                                    thumbnailImage: data.data[i].thumbnailSmallPath,
-                                    thumbnailImage: data.data.coverImagePath,
-                                    mediaType: "video",
-                                    paraText:'',
-                                    show:true
-                                }
-                                _this.paraList.splice(index,0,newPara)
-                                _this.clearIconBox();
-                    }
-                })
+                                thumbnailImage: data.data.coverImagePath,
+                                mediaType: "video",
+                                paraText:'',
+                                show:true
+                            }
+                            _this.paraList.splice(index,0,newPara)
+                            _this.clearIconBox();
+                        }
+                    })
             }
         }
     }

@@ -7,7 +7,7 @@
             </refresh>
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
-                <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10202' || messageType == 'gm_10200'">
+                <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'">
                     <div class="dateBox">
                         <text class="dateText">昨天17:46</text>
                     </div>
@@ -34,6 +34,18 @@
                             <text class="title">查看详情</text>
                         </div>
                     </div>
+                </div>
+                <!--系统消息-->
+                <div class="lineBox"  v-if="messageType == 'gm_10202'" v-for="item in dataList">
+                    <div class="flex-row">
+                        <image class="headImg" :src="item.logo"  @click="goAuthor(item.userId)"></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text  class="infoText">{{item.content}}</text>
+                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        </div>
+                    </div>
+                    <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
                 <!--评论-->
                 <div class="lineBox"  v-if="messageType == 'gm_10203'" v-for="item in dataList">

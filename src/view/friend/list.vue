@@ -725,7 +725,7 @@
 //            删除好友    //friendList 的 friend属性 包括letter和name
             deleteFriend(letter,id,index){
                 let _this = this;
-                POST('weex/member/friends/black.jhtml?friendId=' + id).then(
+                POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
                     function(data){
                         if(data.type == 'success'){
                             let option ={

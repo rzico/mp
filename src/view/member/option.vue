@@ -33,7 +33,7 @@
                         <text class="title ml10">黑名单</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">3人 </text>
+                        <text class="sub_title">{{blackNum}}人 </text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                         <text class="title ml10">我的二维码</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">未设置 </text>
+                        <text class="sub_title">{{setQrcode}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -138,7 +138,9 @@
               processWidth:0,//进度条宽度
               UId:0,
               lastDownLoadtamp:'',
-              timestamp:''
+              timestamp:'',
+              blackNum:0,
+              setQrcode:'未设置'
           }
         },
         components: {
@@ -152,6 +154,20 @@
             let _this = this;
 //            获取用户id
             this.UId = event.getUId();
+            event.toast('created');
+            GET('weex/member/option.jhtml',function (data) {
+                event.toast(data);
+                if(data.type == 'success'){
+                    _this.blackNum = data.data.black;
+                    if(!utils.isNull(data.data.qrcode)){
+                        _this.setQrcode = '已设置';
+                    }
+                }else{
+                    event.toast(data.content)
+                }
+            },function (err) {
+                event.toast(err.content);
+            })
         },
         methods: {
             goback: function (e) {
@@ -160,8 +176,10 @@
 //            下载文章 20 20的循环
             downloadArticle(){
                 var _this = this;
+                event.toast('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize);
                     GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != ''){
+                            event.toast(data.data.data);
                             if(data.data.start == 0 ){
 //                           将本次时间戳缓存起来
                                 storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate);
@@ -207,7 +225,7 @@
                 let _this = this;
                 _this.toSendArticle = false;
 //                                    全局监听文章变动
-                let listenData = utils.message('success','文章改变','')
+                let listenData = utils.message('success','文章改变','');
                 event.sendGlobalEvent('onArticleChange',listenData);
                 event.toast('同步完成');
                 _this.currentPro = 0;
@@ -250,10 +268,41 @@
             },
 //            上传二维码
             sendQrcode(){
+                let _this = this;
                 album.openAlbumSingle(true, function(data){
+                    event.toast('1');
                     event.toast(data);
 //                    _this.paraList[index].paraImage = data.data.originalPath;
 //                    _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+                    if(data.type == 'success'){
+                        event.upload(data.data.originalPath,function (item) {
+                            if(item.type == 'success'){
+                                POST('weex/member/update.jhtml?qrcode=' + item.data).then(
+                                    function(e){
+                                        if(e.type == 'success'){
+                                            _this.setQrcode = '已设置';
+                                        }else{
+                                            event.toast('1');
+                                            event.toast(e.content);
+                                        }
+                                    },function(err){
+                                        event.toast('2');
+                                        event.toast(err.content);
+                                    }
+                                )
+                            }else{
+                                event.toast(item.content);
+                            }
+                        },function(progress){
+
+                        })
+
+                    }else{
+                        if(data.content == '用户取消'){
+                        }else{
+                            event.toast(data.content);
+                        }
+                    }
                 })
             },
 //            黑名单列表

@@ -216,9 +216,9 @@
         },
         computed:{
 //            计算属性
-            sortList:function() {
-                return this.messageList.sort(this.sortTime);
-            }
+//            sortList:function() {
+//                return this.messageList.sort(this.sortTime);
+//            }
         },
         filters:{
             watchName:function (value) {

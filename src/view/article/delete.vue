@@ -5,20 +5,23 @@
         <!--网页-->
         <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
         <div class="bottomBtnBox">
-            <div class="bottomBtn " v-if="!isFocus" @click="focus()">
-                <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
-                <text class="fz35 ml10" >关注</text>
+            <div class="bottomBtn " @click="jumpRestore()">
+                <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                <text class="fz35 ml10" >恢复</text>
             </div>
             <div class="rightBorder"></div>
-            <div class="bottomBtn" v-else  @click="goAddFriend()">
-                <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
-                <text class="fz35 ml10" >添加好友</text>
+            <div class="bottomBtn"   @click="jumpDelAll()">
+                <text class="fz35 redColor"  :style="{fontFamily:'iconfont'}">&#xe652;</text>
+                <text class="fz35 ml10 redColor" >彻底删除</text>
             </div>
         </div>
     </scroller>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .redColor{
+        color: #D9141E;
+    }
 
     .bottomBtn{
         flex:1;
@@ -63,7 +66,8 @@
     import utils from '../../assets/utils';
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
-    import { POST, GET } from '../../assets/fetch'
+    import { POST, GET } from '../../assets/fetch';
+    const modal = weex.requireModule('modal');
     export default {
         data:function () {
             return{
@@ -73,7 +77,7 @@
             }
         },
         components: {
-            navbar,share
+            navbar
         },
         props: {
             title: { default: "已删除"},
@@ -87,7 +91,8 @@
             POST('weex/article/template.jhtml?id=' + this.articleId).then(
                 function (data) {
                     if(data.type == 'success'){
-                        _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
+                        let templateId = 't' + data.data;
+                        _this.webUrl = utils.articleUrl(templateId,_this.articleId);
 //                        _this.webUrl = 'http://weex.1xx.me/';
                     }else{
                         event.toast(data.content);
@@ -106,6 +111,23 @@
             goback(){
                 event.closeURL();
             },
+            jumpRestore(){
+                let E = utils.message('success','成功','restore');
+                event.closeURL(E);
+            },
+            jumpDelAll(){
+                modal.confirm({
+                    message: '彻底删除后将无法恢复',
+                    duration: 0.3,
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if(value == '删除') {
+                        let E = utils.message('success','成功','delete');
+                        event.closeURL(E);
+                    }
+                })
+            }
         }
     }
 </script>
