@@ -25,7 +25,7 @@
             <text class="businessLocation">商家区位</text>
             </div>
             <div class="right">
-                <text class="generalLocation">{{shopaddressName}}</text>
+                <text class="generalLocation">{{addressName}}</text>
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
@@ -243,7 +243,7 @@
               areaId:'',
 //              =========================================
 //              具体地址
-              shopaddressName:'',
+              addressName:'',
 
               category:1,
               industryName:'',
@@ -279,6 +279,12 @@
                 var _this = this;
                 GET('weex/member/shop/view.jhtml?shopId='+_this.shopId,function (mes) {
                     if (mes.type == 'success') {
+                        utils.debug(mes)
+                        _this.addressName = mes.data.areaName
+                        _this.licensePhoto = mes.data.license;
+                        _this.logo = mes.data.thedoor;
+                        _this.areaId = mes.data.areaId;
+                        _this.palcePhoto = mes.data.scene;
                         _this.vendorName = mes.data.name;
                         _this.detailedAddress = mes.data.address;
                         _this.contactName = mes.data.linkman;
@@ -322,7 +328,7 @@
                 var _this = this;
                 event.openURL(utils.locate('widget/city.js'), function (data) {
                     if(data.type == 'success' && data.data !='' ) {
-                        _this.shopaddressName = data.data.name
+                        _this.addressName = data.data.name
                         _this.areaId = data.data.chooseId
                     }
                 })
@@ -334,7 +340,11 @@
                     function (mes) {
                         if (mes.type == "success") {
                             _this.shopId = mes.data.id;
-                            let  sevendata = {
+                            let  elevendata = {
+                                addressName: _this.addressName,
+                                licensePhoto: _this.licensePhoto,
+                                logo: _this.logo,
+                                palcePhoto: _this.palcePhoto,
                                 name : _this.vendorName,
                                 id:_this.shopId,
                                 areaId :_this.areaId,
@@ -343,9 +353,9 @@
                                 telephone:_this.contactNumber,
                                 categoryId:_this.category
                             };
-                            sevendata = JSON.stringify(sevendata);
-                            storage.setItem('sevennumber', sevendata,e=> {
-                                event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=sevennumber'), function (message) {
+                            elevendata = JSON.stringify(elevendata);
+                            storage.setItem('elevennumber', elevendata,e=> {
+                                event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=elevennumber'), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);
                                     }
