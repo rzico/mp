@@ -125,77 +125,78 @@
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--绑定动画-->
-                <transition-group name="paraTransition" tag="div">
-                    <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
-                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                        <div class="atricleHead" >
-                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                            <text class="articleSign">{{item.value.articleOption | watchWho}}</text>
-                            <text class="articleTitle">{{item.value.title}}</text>
+                <!--<transition-group name="paraTransition" tag="div">-->
+                <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
+                <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key,item.value.articleOption.publish,item.isDraft,item.value.articleOption.articleCatalog.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
+                    <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
+                    <div class="atricleHead" >
+                        <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                        <text class="articleSign">{{item.value.articleOption | watchWho}}</text>
+                        <text class="articleTitle">{{item.value.title}}</text>
+                    </div>
+                    <!--文章封面-->
+                    <div style="position: relative">
+                        <image :src="item.value.thumbnail | watchThumbnail" resize="cover" class="articleCover"></image>
+                    </div>
+                    <div class="categoryBox">
+                        <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
+                    </div>
+                    <!--文章底部-->
+                    <div class="articleFoot">
+                        <div>
+                            <!--<text class="articleDate">{{item.articleDate}}</text>-->
+                            <text class="articleDate"v-if="item.value.articleOption.articleCatalog.id != '99'">{{item.sort.substring(2) | timeDatefmt}}</text>
+                            <text class="articleDate" v-else>{{item.value.modifyDate | timeDatefmt}}</text>
                         </div>
-                        <!--文章封面-->
-                        <div style="position: relative">
-                            <image :src="item.value.thumbnail | watchThumbnail" resize="cover" class="articleCover"></image>
+                        <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                            <text class="relevantText">{{item.value.hits}}</text>
+                            <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                            <text class="relevantText">{{item.value.laud}}</text>
+                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                            <text class="relevantText">{{item.value.review}}</text>
                         </div>
-                        <div class="categoryBox">
-                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
-                        </div>
-                        <!--文章底部-->
-                        <div class="articleFoot">
-                            <div>
-                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
-                                <text class="articleDate">2017-09-01</text>
+                    </div>
+                    <!--右侧隐藏栏-->
+                    <div class="rightHidden" v-if="item.value.articleOption.articleCatalog.id != '99'">
+                        <div class="rightHiddenSmallBox">
+                            <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
+                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
+                                <text class="rightHiddenText">编辑</text>
                             </div>
-                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.value.hits}}</text>
-                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.value.laud}}</text>
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.value.review}}</text>
-                            </div>
-                        </div>
-                        <!--右侧隐藏栏-->
-                        <div class="rightHidden" v-if="item.value.articleOption.articleCatalog.id != '99'">
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
-                                    <text class="rightHiddenText">编辑</text>
-                                </div>
-                                <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
-                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
-                                    <text class="rightHiddenText redColor" >删除</text>
-                                </div>
-                            </div>
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpTop()">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                                    <text class="rightHiddenText">置顶</text>
-                                </div>
-                                <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                                    <text class="rightHiddenText">文集</text>
-                                </div>
+                            <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
+                                <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
+                                <text class="rightHiddenText redColor" >删除</text>
                             </div>
                         </div>
-                        <!--右侧隐藏栏-->
-                        <div class="rightHidden" v-else>
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
-                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
-                                    <text class="rightHiddenText redColor" >彻底删除</text>
-                                </div>
+                        <div class="rightHiddenSmallBox">
+                            <div class="rightHiddenIconBox" @click="jumpTop()">
+                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                <text class="rightHiddenText">置顶</text>
                             </div>
-                            <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox" @click="jumpTop()">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                                    <text class="rightHiddenText">还原</text>
-                                </div>
+                            <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
+                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                                <text class="rightHiddenText">文集</text>
                             </div>
                         </div>
                     </div>
-                </transition-group>
+                    <!--右侧隐藏栏-->
+                    <div class="rightHidden" v-else>
+                        <div class="rightHiddenSmallBox">
+                            <div class="rightHiddenIconBox" @click="jumpDelAll(item,index)">
+                                <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
+                                <text class="rightHiddenText redColor" >彻底删除</text>
+                            </div>
+                        </div>
+                        <div class="rightHiddenSmallBox">
+                            <div class="rightHiddenIconBox" @click="jumpRestore(item,index)">
+                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                <text class="rightHiddenText">还原</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--</transition-group>-->
                 <!--帮助使用文章-->
                 <div class="articleBox" v-for="item in helpList" v-if="corpusId == ''">
                     <div class="atricleHead">
@@ -319,24 +320,24 @@
     }
 
     /*文章段落动画*/
-    .paraTransition-enter-active{
-        transition: all 0.2s;
-    }
-    .paraTransition-leave-active {
-        transition: all 0.2s;
-    }
-    .paraTransition-leave-to{
-        transform: translateX(0px);
-        opacity: 0;
-    }
-    .paraTransition-enter-to{
-        transform: translateX(0px);
-        opacity: 1;
-    }
-    .paraTransition-enter{
-        transform: translateX(0px);
-        opacity: 0;
-    }
+    /*.paraTransition-enter-active{*/
+    /*transition: all 0.2s;*/
+    /*}*/
+    /*.paraTransition-leave-active {*/
+    /*transition: all 0.2s;*/
+    /*}*/
+    /*.paraTransition-leave-to{*/
+    /*transform: translateX(0px);*/
+    /*opacity: 0;*/
+    /*}*/
+    /*.paraTransition-enter-to{*/
+    /*transform: translateX(0px);*/
+    /*opacity: 1;*/
+    /*}*/
+    /*.paraTransition-enter{*/
+    /*transform: translateX(0px);*/
+    /*opacity: 0;*/
+    /*}*/
     .rightBlur{
         right: 100px;
         width:20px;
@@ -462,7 +463,7 @@
     }
 
     .articleTitle {
-        font-size: 32px;
+        font-size: 36px;
         margin-left: 10px;
     }
 
@@ -470,7 +471,7 @@
         border-radius: 10px;
         padding: 5px;
         color: #888;
-        font-size: 26px;
+        font-size: 24px;
         border-width: 1px;
         border-style: solid;
         border-color: gainsboro;
@@ -725,12 +726,10 @@
                     return value;
                 }
             },
-            filters:{
-                watchThumbnail:function (value) {
-                    return utils.thumbnail(value,690,345);
-                },
+            watchThumbnail:function (value) {
+//                    没过滤前是原图
+                return utils.thumbnail(value,690,345);
             },
-
         },
         created:function () {
             let _this = this;
@@ -760,6 +759,7 @@
 
             isEmpty:function () {
                 return this.articleList.length==0 && this.corpusId != '';
+//                return this.articleList.length==0 ;
             },
 //            监听设备型号,控制导航栏设置 返回按钮
             classTop:function () {
@@ -872,45 +872,6 @@
 ////                    _this.updateArticle();
 //                })
             },
-            jumpDelete:function (item,index) {
-                event.toast(item);
-                let _this = this;
-                POST('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(
-                    function(e){
-                        if(e.type == 'success'){
-                            //            获取当前时间戳 作为唯一标识符key
-                            let timestamp = Math.round(new Date().getTime()/1000);
-                            item.value.articleOption.articleCatalog.id = 99;
-                            item.value.articleOption.articleCatalog.name = '回收站';
-                            let saveData = {
-                                type:item.type,
-                                key:item.key,
-                                value:item.value,
-                                sort:'0,0000000000',
-                                keyword:',[99],' + item.value.title + ','
-                            }
-                            event.save(saveData,function(data){
-                                if(data.type == 'success'){
-                                    _this.articleList.splice(index,1);
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            })
-                        }else{
-                            event.toast(e.content);
-                        }
-                    },
-                    function (err) {
-                        event.toast(err.content);
-                    }
-                )
-
-
-
-            },
-            jumpTop:function () {
-                event.toast('文章置顶');
-            },
 //            右侧隐藏栏里跳转文集
             jumpCorpus:function (item) {
                 var _this = this;
@@ -968,9 +929,13 @@
 //            },
 
 //            前往文章
-            goArticle(id,publish,draft){
+            goArticle(id,publish,draft,corpusId){
                 var _this = this;
-                if(draft){
+                if(corpusId == '99'){
+                    event.openURL(utils.locate('view/article/delete.js?articleId=' + id),
+                        function () {
+                        })
+                }else if(draft){
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
@@ -1022,12 +987,12 @@
 //                    event.showToast(data.color);
 //                });
 //            },
-            jump:function (vueName) {
-                event.toast('will jump');
-            },
             corpusChange:function(index,id){
 //                event.toast(id);
                 var _this = this;
+                if(_this.whichCorpus == index){
+                    return;
+                }
                 _this.whichCorpus = index;
                 _this.corpusId = id;
 
@@ -1305,6 +1270,143 @@
                         event.toast("网络不稳定");
                     }
                 )
+            },
+//            还原
+            jumpRestore(item,index){
+                let _this = this;
+                POST('weex/member/article/revert.jhtml?articleId=' + item.value.id).then(
+                    function(e){
+                        if(e.type == 'success'){
+                            //            获取当前时间戳 作为唯一标识符key
+                            let timestamp = Math.round(new Date().getTime()/1000);
+                            item.value.articleOption.articleCatalog.id = null;
+                            item.value.articleOption.articleCatalog.name = null;
+                            let saveData = {
+                                type:item.type,
+                                key:item.key,
+                                value:item.value,
+                                sort:'0,' + timestamp,
+                                keyword:',[],' + item.value.title + ','
+                            }
+                            event.save(saveData,function(data){
+                                if(data.type == 'success'){
+                                    if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                                    }else{
+                                        animation.transition(animationPara, {
+                                            styles: {
+                                                transform: 'translateX(0)',
+                                            },
+                                            duration: 10, //ms
+                                            timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                            needLayout:false,
+                                            delay: 0 //ms
+                                        })
+                                    }
+                                    _this.articleList.splice(index,1);
+//                                    如果是在全部的文章里，就要立即把文章重新显示；(直接将数据插入而不是重新读取的 会少一个缓存的id字段。不过在该页面没有关系)
+                                    if(_this.whichCorpus == 0){
+                                        _this.articleList.splice(0,0,saveData);
+                                    }
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            })
+                        }else{
+                            event.toast(e.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    }
+                )
+            },
+//            删除文章
+            jumpDelete:function (item,index) {
+                let _this = this;
+                POST('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(
+                    function(e){
+                        if(e.type == 'success'){
+                            item.value.articleOption.articleCatalog.id = 99;
+                            item.value.articleOption.articleCatalog.name = '回收站';
+                            let saveData = {
+                                type:item.type,
+                                key:item.key,
+                                value:item.value,
+                                sort:'0,0000000000',
+                                keyword:',[99],' + item.value.title + ','
+                            }
+                            event.save(saveData,function(data){
+                                if(data.type == 'success'){
+                                    if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                                    }else{
+                                        animation.transition(animationPara, {
+                                            styles: {
+                                                transform: 'translateX(0)',
+                                            },
+                                            duration: 10, //ms
+                                            timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                            needLayout:false,
+                                            delay: 0 //ms
+                                        })
+                                    }
+                                    _this.articleList.splice(index,1);
+
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            })
+                        }else{
+                            event.toast(e.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    }
+                )
+            },
+//            彻底删除
+            jumpDelAll:function(item,index){
+                let _this = this;
+                modal.confirm({
+                    message: '彻底删除后将无法恢复',
+                    duration: 0.3,
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if(value == '删除'){
+                        let option ={
+                            type :item.type,
+                            key:item.key
+                        }
+                        //            清除缓存
+                        event.delete(option,function(data){
+                            if(data.type == 'success'){
+                                //                            把动画收回来。
+                                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                                }else{
+                                    animation.transition(animationPara, {
+                                        styles: {
+                                            transform: 'translateX(0)',
+                                        },
+                                        duration: 10, //ms
+                                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                        needLayout:false,
+                                        delay: 0 //ms
+                                    })
+                                }
+                                _this.articleList.splice(index,1);
+                            }else{
+                                event.toast(data.content);
+                            }
+                        })
+                    }
+                })
+            },
+            jumpTop:function () {
+                event.toast('文章置顶');
             },
         }
     }
