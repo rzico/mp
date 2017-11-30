@@ -191,6 +191,7 @@
 </style>
 <script>
     const event = weex.requireModule('event');
+    const phone = weex.requireModule('phone');
     import navbar from '../../include/navbar.vue';
     import { POST, GET } from '../../assets/fetch';
     import searchNav from '../../include/searchNav.vue';
@@ -545,7 +546,8 @@
 
             },
             invite(number){
-                event.toast('已向该联系人发送邀请短信' + number);
+                phone.sms(number,'邀请您加入图文分享软件 魔篇。魔篇能帮助您更快的分享文章，让您轻松记录生活。 ',function (data) {
+                })
             }
         }
     }

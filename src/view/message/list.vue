@@ -31,34 +31,37 @@
             </refresh>
             <!--朋友信息-->
             <cell v-for="(item,index) in messageList" >
-                <div class="deleteBox bkg-delete" @click="deleteMessage(item.userId,index)">
-                    <text class="deleteText">删除</text>
-                </div>
-                <div class="friendsLine" @click="jumpMessage(item)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">
-                    <!--头像-->
-                    <div class="friendsImageBox">
-                        <image :src="item.logo" class="friendsImage"></image>
+                <!--左滑删除时如果是直接在cell下 而没有多一个div包住的话 第一次要点删除的文字才能触发。-->
+                <!--<div>-->
+                    <div class="deleteBox bkg-delete" @click="deleteMessage(item.userId,index)">
+                        <text class="deleteText">删除</text>
                     </div>
-                    <!--有新消息-->
-                    <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
-                        <text class="messageTotal">{{item.unRead}}</text>
-                    </div>
-                    <div style="flex: 5;">
-                        <div style="flex-direction: row;flex: 1;" >
-                            <!--名字与内容-->
-                            <div class="messageText">
-                                <text class="friendName">{{item | watchName}}</text>
+                    <div class="friendsLine" @click="jumpMessage(item)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">
+                        <!--头像-->
+                        <div class="friendsImageBox">
+                            <image :src="item.logo" class="friendsImage"></image>
+                        </div>
+                        <!--有新消息-->
+                        <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
+                            <text class="messageTotal">{{item.unRead}}</text>
+                        </div>
+                        <div style="flex: 5;">
+                            <div style="flex-direction: row;flex: 1;" >
+                                <!--名字与内容-->
+                                <div class="messageText">
+                                    <text class="friendName">{{item | watchName}}</text>
+                                </div>
+                                <!--消息时间-->
+                                <div class="messageTimeBox">
+                                    <text class="messageTime">{{item.createDate | timefmt}}</text>
+                                </div>
                             </div>
-                            <!--消息时间-->
-                            <div class="messageTimeBox">
-                                <text class="messageTime">{{item.createDate | timefmt}}</text>
+                            <div style="flex: 2;height: 50px;justify-content: center;">
+                                <text class="friendMessage">{{item.content}}</text>
                             </div>
                         </div>
-                        <div style="flex: 2;height: 50px;justify-content: center;">
-                            <text class="friendMessage">{{item.content}}</text>
-                        </div>
                     </div>
-                </div>
+                <!--</div>-->
             </cell>
         </list>
     </div>
@@ -296,24 +299,9 @@
             })
             globalEvent.addEventListener("onMessage", function (e) {
                 event.toast(e);
-//                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
-                if(!utils.isNull(e.data.data.id) && e.data.data.id.substring(0,1) == 'g'){
-                    _this.hadMessage();
-                }else{
 //                    用户消息没有userId。只有id。
-                    e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
-//                  判断是否是本人发送所触发的onmessage
-//                    if(_this.selfUserId == e.data.data.userId){
-//                        _this.chatItem.createDate = e.data.data.createDate;
-//                        _this.chatItem.content = e.data.data.content;
-//                        e.data = _this.chatItem;
-//                        e.type = 'success';
-//                        _this.addMessage(e,1);
-////                        event.toast(e.data);
-//                    }else{
-                    _this.addMessage(e.data,1);
-//                    }
-                }
+                e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
+                _this.addMessage(e.data);
             });
         },
         methods:{
@@ -332,120 +320,68 @@
                     //            获取当前时间戳 作为唯一标识符key
                     let timestamp = Math.round(new Date().getTime()/1000);
 //                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
-                    if(sign == 0){
-//                        _weex.data = _weex.data.reverse();
-                        for(let i = 0;i<_weex.data.length  ;i++){
-                            utils.debug(_weex.data[i]);
-                            _weex.data[i].name = utils.isNull(_weex.data[i].name) ? '' : _weex.data[i].name;
-//                            _weex.data[i].userId = utils.isNull(_weex.data[i].userId) ? _weex.data[i].id : _weex.data[i].userId;
-                            let strData = JSON.stringify(_weex.data[i]);
+                    _weex.data.name = utils.isNull(_weex.data.name) ? '' : _weex.data.name;
+                    _weex.data.userId = utils.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
+                    let findOption = {
+                        type:'message',
+                        key:_weex.data.userId
+                    }
+//                        本地查找是已有消息列表还是新消息列表
+                    event.find(findOption,function (data) {
+                        var storageData = JSON.stringify(_weex.data);
+                        if(data.type == 'success' && data.data != ''){
                             let option = {
                                 type:'message',
-                                key:_weex.data[i].userId,
-                                value:strData,
-                                keyword:',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content +',',
+                                key:_weex.data.userId,
+                                value:storageData,
+                                keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
                                 sort:'0,' + timestamp
                             }
                             event.save(option,function (message) {
-                                if(message.type == 'success' && message.content =='保存成功'){
-                                    _this.messageList.splice(0,0,_weex.data[i]);
-                                }else if(message.type == 'success' && message.content =='更新成功'){
+                                if(message.type == 'success' && message.content =='更新成功'){
                                     _this.messageList.forEach(function (nowData,nowIndex) {
-                                        if(nowData.userId == _weex.data[i].userId){
+//                                            存入缓存里的userId 会消失掉
+                                        nowData.userId = utils.isNull(nowData.userId) ? 'u' + parseInt(10200 + nowData.id) : nowData.userId;
+                                        if(nowData.userId == _weex.data.userId){
 //                                        删除原来的对话
                                             _this.messageList.splice(nowIndex,1);
+////                                                json字符串再次转换回来
+//                                                _weex.data = JSON.parse(_weex.data);
 //                                        将新的对话push进
-                                            _this.messageList.splice(0,0,_weex.data[i]);
+                                            _this.messageList.splice(0,0,_weex.data);
                                         }
                                     })
                                 }else{
                                     event.toast('网络不稳定');
                                 }
                             })
-                        }
 
-                    }else{
-                        _weex.data.name = utils.isNull(_weex.data.name) ? '' : _weex.data.name;
-                        _weex.data.userId = utils.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
-                        let findOption = {
-                            type:'message',
-                            key:_weex.data.userId
-                        }
-//                        本地查找是已有消息列表还是新消息列表
-                        event.find(findOption,function (data) {
-                            var storageData = JSON.stringify(_weex.data);
-                            if(data.type == 'success' && data.data != ''){
-//                                var storageData = JSON.parse(data.data.value);
-//                                storageData.createDate = _weex.data.createDate;
-//                                storageData.content = _weex.data.content;
-//                                storageData.unRead = _weex.data.unRead;
-                                let option = {
-                                    type:'message',
-                                    key:_weex.data.userId,
-                                    value:storageData,
-                                    keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
-                                    sort:'0,' + timestamp
-                                }
-                                event.save(option,function (message) {
-                                    if(message.type == 'success' && message.content =='更新成功'){
-                                        _this.messageList.forEach(function (nowData,nowIndex) {
-//                                            存入缓存里的userId 会消失掉
-                                            nowData.userId = utils.isNull(nowData.userId) ? 'u' + parseInt(10200 + nowData.id) : nowData.userId;
-                                            if(nowData.userId == _weex.data.userId){
-//                                        删除原来的对话
-                                                _this.messageList.splice(nowIndex,1);
-////                                                json字符串再次转换回来
-//                                                _weex.data = JSON.parse(_weex.data);
-//                                        将新的对话push进
-                                                _this.messageList.splice(0,0,_weex.data);
-                                            }
-                                        })
-                                    }else{
-                                        event.toast('网络不稳定');
-                                    }
-                                })
-
-                            }else{
-                                let option = {
-                                    type:'message',
-                                    key:_weex.data.userId,
-                                    value:storageData,
-                                    keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
-                                    sort:'0,' + timestamp
-                                }
-                                event.save(option,function (message) {
-                                    if(message.type == 'success' && message.content =='保存成功'){
+                        }else{//新消息
+                            let option = {
+                                type:'message',
+                                key:_weex.data.userId,
+                                value:storageData,
+                                keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
+                                sort:'0,' + timestamp
+                            }
+                            event.save(option,function (message) {
+                                if(message.type == 'success' && message.content =='保存成功'){
 ////                                                json字符串再次转换回来
 //                                        _weex.data = JSON.parse(_weex.data);
-                                        _this.messageList.splice(0,0,_weex.data);
-                                    }else{
-                                        event.toast('网络不稳定');
-                                    }
-                                })
-                            }
-                        })
+                                    _this.messageList.splice(0,0,_weex.data);
+                                }else{
+                                    event.toast('网络不稳定');
+                                }
+                            })
+                        }
+                    })
 
-
-
-
-                    }
 
 
                 }else{
                     event.toast(_weex.content);
                 }
 
-            },
-//          获取服务器新数据
-            hadMessage(){
-                var _this = this;
-                GET('weex/member/message/dialogue.jhtml',function (_weex) {
-//            向消息列表填入新的消息数据并存入缓存
-//                     读取服务器上的数据；
-                    _this.addMessage(_weex,0);
-                },function (err) {
-                    event.toast("网络不稳定");
-                })
             },
 //            根据时间排序
             sortTime:function (a,b) {
@@ -494,20 +430,20 @@
                                                 event.toast(data.content);
                                             }
                                         })
-                                        }else{
-//                                       设置已读
-                                            event.setReadMessage(item.userId,function(data){
-                                                if(data.type == 'success'){
-                                                    event.navToChat(item.userId);
-                                                }else{
-                                                    event.toast(data.content);
-                                                }
-                                            });
-                                        };
                                     }else{
-                                        event.toast(message.content);
+//                                       设置已读
+                                        event.setReadMessage(item.userId,function(data){
+                                            if(data.type == 'success'){
+                                                event.navToChat(item.userId);
+                                            }else{
+                                                event.toast(data.content);
+                                            }
+                                        });
                                     };
-                                });
+                                }else{
+                                    event.toast(message.content);
+                                };
+                            });
                         };
                     });
                 }else{
@@ -537,69 +473,70 @@
 //                                event.toast(data.content);
 //                            }
 //                    });
-    };
-    };
+                    };
+                };
 
-    },
-    menu:function(page){
+            },
+            menu:function(page){
 
-    },
-    //            点击屏幕时
-    ontouchstart:function (e) {
-        var _this = this;
-        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
-        }else{
-            animation.transition(animationPara, {
-                styles: {
-                    transform: 'translateX(0)',
-                },
-                duration: 350, //ms
-                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+            },
+            //            点击屏幕时
+            ontouchstart:function (e) {
+                var _this = this;
+                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                }else{
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                needLayout:false,
-                delay: 0 //ms
-            })
-        }
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
 //                获取当前点击的元素。
-        animationPara =  e.currentTarget;
-    },
-    //            移动时
-    onpanmove:function (e) {
+                animationPara =  e.currentTarget;
+            },
+            //            移动时
+            onpanmove:function (e) {
 //                获取当前点击的元素。
-        var _this = this;
-        if(e.direction == 'right'){
-            _this.canScroll = false;
-            animation.transition(animationPara, {
-                styles: {
-                    transform: 'translateX(0)',
-                },
-                duration: 350, //ms
-                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+                var _this = this;
+                if(e.direction == 'right'){
+                    _this.canScroll = false;
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                needLayout:false,
-                delay: 0 //ms
-            },function () {
-                _this.canScroll = true;
-            })
-        }else if(e.direction == 'left'){
-            _this.canScroll = false;
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }else if(e.direction == 'left'){
+                    _this.canScroll = false;
 //                  modal.toast({message:distance});
-            animation.transition(animationPara, {
-                styles: {
-                    transform: 'translateX(-130)',
-                },
-                duration:350, //ms
-                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(-130)',
+                        },
+                        duration:350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                needLayout:false,
-                delay: 0 //ms
-            },function () {
-                _this.canScroll = true;
-            })
-        }
-    },
-    deleteMessage(userId,index){
-        let _this = this;
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }
+            },
+            deleteMessage(userId,index){
+                event.toast('1');
+                let _this = this;
 //        modal.confirm({
 //            message: '删除后,将清空该？',
 //            duration: 0.3,
@@ -611,56 +548,56 @@
 //            }
 //        })
 //         删除消息会话
-        if(event.deleteConversation(userId)){
-            let option ={
-              type : 'message',
-              key:userId
-            }
-//            清除缓存
-            event.delete(option,function(data){
-                if(data.type == 'success'){
-                    //                            把动画收回来。
-                    if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
-                    }else{
-                        animation.transition(animationPara, {
-                            styles: {
-                                transform: 'translateX(0)',
-                            },
-                            duration: 10, //ms
-                            timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
-//                      timingFunction: 'ease-out',
-                            needLayout:false,
-                            delay: 0 //ms
-                        })
+                if(event.deleteConversation(userId)){
+                    let option ={
+                        type : 'message',
+                        key:userId
                     }
-                    _this.messageList.splice(index,1);
+//            清除缓存
+                    event.delete(option,function(data){
+                        if(data.type == 'success'){
+                            //                            把动画收回来。
+                            if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                            }else{
+                                animation.transition(animationPara, {
+                                    styles: {
+                                        transform: 'translateX(0)',
+                                    },
+                                    duration: 10, //ms
+                                    timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                    needLayout:false,
+                                    delay: 0 //ms
+                                })
+                            }
+                            _this.messageList.splice(index,1);
+                        }else{
+                            event.toast(data.content);
+                        }
+                    })
                 }else{
-                    event.toast(data.content);
-                }
-            })
-        }else{
-            event.toast('系统繁忙');
-        };
-    },
-    //            触发自组件的跳转方法
-    gosearch:function () {
-        event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
+                    event.toast('系统繁忙');
+                };
+            },
+            //            触发自组件的跳转方法
+            gosearch:function () {
+                event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
 //                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-            if(message.data != ''){
-                event.closeURL(message);
-            }
-        });
-    },
-    //            触发自组件的二维码方法
-    scan:function () {
-        event.scan(function (message) {
-            SCAN(message, function (data) {
+                    if(message.data != ''){
+                        event.closeURL(message);
+                    }
+                });
+            },
+            //            触发自组件的二维码方法
+            scan:function () {
+                event.scan(function (message) {
+                    SCAN(message, function (data) {
 
-            }, function (err) {
+                    }, function (err) {
 
-            })
-        });
-    },
-    }
+                    })
+                });
+            },
+        }
     }
 </script>

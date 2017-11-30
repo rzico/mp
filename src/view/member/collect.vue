@@ -371,7 +371,6 @@
                         event.toast(err.content);
                     }
                 )
-                event.toast('删除成功');
             },
         }
     }

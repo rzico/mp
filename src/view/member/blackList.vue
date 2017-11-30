@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div @viewdisappear="viewdisappear()">
         <navbar :title="title" @goback="goback" > </navbar>
         <scroller style="background-color: #fff">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -152,8 +152,13 @@
             })
         },
         methods:{
+//            在页面销毁时触发，可用来捕捉安卓的回退
+            viewdisappear(){
+              this.goback();
+            },
             goback(){
-                event.closeURL();
+                let E = utils.message('success','成功',this.userList.length);
+                event.closeURL(E);
             },
 //            前往作者主页
             goAuthor(id){

@@ -22,7 +22,7 @@
                         <text class="title ml10">清除缓存</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">23.3MB  </text>
+                        <text class="sub_title">{{storageNum}}  </text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -140,7 +140,8 @@
               lastDownLoadtamp:'',
               timestamp:'',
               blackNum:0,
-              setQrcode:'未设置'
+              setQrcode:'未设置',
+              storageNum:'0M'
           }
         },
         components: {
@@ -149,14 +150,15 @@
         props: {
             title: { default: "通用设置" }
         },
-        create(){
+        created(){
             utils.initIconFont();
             let _this = this;
 //            获取用户id
             this.UId = event.getUId();
-            event.toast('created');
+            event.getCacheSize(function (data) {
+                _this.storageNum = data.data.total;
+            })
             GET('weex/member/option.jhtml',function (data) {
-                event.toast(data);
                 if(data.type == 'success'){
                     _this.blackNum = data.data.black;
                     if(!utils.isNull(data.data.qrcode)){
@@ -255,11 +257,13 @@
             },
 //            清除缓存
             clearCache(){
+                let _this = this;
                 let option = {
                     type:['cache','tim','wxstorage']
                 }
                 event.clearCache(option,function (data) {
                     if(data.type == 'success'){
+                        _this.storageNum = '0M';
                         event.toast('清除成功');
                     }else{
                         event.toast(data.content);
@@ -269,24 +273,24 @@
 //            上传二维码
             sendQrcode(){
                 let _this = this;
+//                调用单选
                 album.openAlbumSingle(true, function(data){
-                    event.toast('1');
-                    event.toast(data);
 //                    _this.paraList[index].paraImage = data.data.originalPath;
 //                    _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
                     if(data.type == 'success'){
+//                        图片上传
                         event.upload(data.data.originalPath,function (item) {
                             if(item.type == 'success'){
-                                POST('weex/member/update.jhtml?qrcode=' + item.data).then(
+                                let qrcodeURL = encodeURI(item.data);
+                                POST('weex/member/update.jhtml?qrcode=' + qrcodeURL).then(
                                     function(e){
                                         if(e.type == 'success'){
                                             _this.setQrcode = '已设置';
+                                            event.toast('设置成功')
                                         }else{
-                                            event.toast('1');
                                             event.toast(e.content);
                                         }
                                     },function(err){
-                                        event.toast('2');
                                         event.toast(err.content);
                                     }
                                 )
@@ -294,9 +298,7 @@
                                 event.toast(item.content);
                             }
                         },function(progress){
-
                         })
-
                     }else{
                         if(data.content == '用户取消'){
                         }else{
@@ -307,7 +309,11 @@
             },
 //            黑名单列表
             goBlackList(){
+                let _this = this;
                 event.openURL(utils.locate('view/member/blackList.js'),function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        _this.blackNum = data.data;
+                    }
                 });
             }
         }
