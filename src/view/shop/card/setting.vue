@@ -1,9 +1,6 @@
 <template>
-    <div style="background-color: #eeeeee;align-items: center">
-        <navbar :title="title"  @goback="goback"  > </navbar>
-    <div class="sign" @click="add" >
-        <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
-    </div>
+    <div style="background-color: #eeeeee">
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete=""  > </navbar>
         <list>
             <cell>
     <div class="setting" v-for="num in div">
@@ -22,6 +19,11 @@
             <input type="text" placeholder="设置等级" class="input"  @change="" @input="oninput"/>
         </div>
     </div>
+                <div style="align-items: center">
+                <div class="sign" @click="add" >
+                    <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                </div>
+                </div>
             </cell>
         </list>
     </div>
@@ -29,9 +31,9 @@
 <style>
     .sign{
         height: 80px;
-        width: 200px;
+        width: 100px;
         background-color:#cccccc;
-        margin-top: 80px;
+        margin-top: 20px;
         border-top-right-radius: 40px;
         border-bottom-right-radius: 40px;
         border-bottom-left-radius: 40px;
@@ -40,21 +42,23 @@
         align-items: center;
     }
     .plusSign{
-        margin-top: 10px;
-        font-size: 80px;
+
+        font-size: 40px;
         color: white;
         font-weight: 700;
     }
     .setting{
         background-color: white;
-        width: 700px;
-        margin-top: 50px;
-        border-radius: 40px;
+        margin-left: 25px;
+        margin-right: 25px;
+        margin-top: 25px;
+        border-radius: 15px;
     }
     .titile{
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
         padding-left: 30px;
-        border-top-width: 1px;
-        border-color: #cccccc;
+        background-color: #ccc;
         flex-direction: row;
         align-items: center;
         height: 100px;
@@ -70,7 +74,6 @@
     }
     .vip{
         padding-left: 30px;
-        border-bottom-width: 1px;
         border-color: #cccccc;
         flex-direction: row;
         align-items: center;
@@ -113,7 +116,7 @@
         },
         props: {
             title: {default: "设置"},
-
+            complete:{ default:"完成"}
         },
         methods: {
             add:function () {
