@@ -224,6 +224,7 @@
 //              区位id
                 areaId:'',
                 category:1,
+                addressName:'',
         }
         },
         components: {
@@ -236,18 +237,23 @@
         created() {
             utils.initIconFont();
             var _this=this;
-            var seven = utils.getUrlParameter('name');
-            storage.getItem(seven, e => {
-                let sevendata =  JSON.parse(e.data);
-                _this.vendorName = sevendata.name;
-                _this.areaId = sevendata.areaId;
-                _this.detailedAddress = sevendata.address;
-                _this.contactName = sevendata.inkman;
-                _this.contactNumber = sevendata.telephone;
-                _this.category =sevendata.categoryId;
-                _this.shopId = sevendata.id;
-                storage.removeItem(seven);
+            var eleven = utils.getUrlParameter('name');
+            storage.getItem(eleven, e => {
+                let elevendata =  JSON.parse(e.data);
+                _this.addressName =elevendata.addressName;
+                _this.licensePhoto =elevendata.licensePhoto;
+                _this.logo = elevendata.logo;
+                _this.palcePhoto =elevendata.palcePhoto;
+                _this.vendorName = elevendata.name;
+                _this.areaId = elevendata.areaId;
+                _this.detailedAddress = elevendata.address;
+                _this.contactName = elevendata.inkman;
+                _this.contactNumber = elevendata.telephone;
+                _this.category =elevendata.categoryId;
+                _this.shopId = elevendata.id;
+                storage.removeItem(eleven);
             });
+            utils.debug(eleven)
         },
         methods:{
             goback:function () {
