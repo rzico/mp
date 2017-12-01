@@ -291,7 +291,15 @@ let utilsFunc = {
             }
         }
     },
-
+//判断设备系统是不是ios
+    isIosSystem:function () {
+        let s = weex.config.env.osName;
+        if(s == 'iOS'){
+            return true;
+        }else{
+            return false;
+        }
+    },
 };
 
 export default utilsFunc;

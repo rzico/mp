@@ -534,8 +534,8 @@
                     })
                 }
             },
+//            删除会话消息；
             deleteMessage(userId,index){
-                event.toast('1');
                 let _this = this;
 //        modal.confirm({
 //            message: '删除后,将清空该？',

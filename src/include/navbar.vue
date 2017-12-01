@@ -2,12 +2,12 @@
     <div class="header" :class="[classHeader(),border==true?'':'cb']" >
         <!--<image class="nav_bg" :src="'file://resources/images/nav_bg.png'"></image>-->
         <div class="nav_back" @click="goback('/')">
-            <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+            <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
         <div class="nav">
             <text class="nav_title">{{title}}</text>
             <div class="navRightBox"  v-if="showComplete" @click="goComplete('/')">
-                <text class="nav_Complete" v-if="complete != 'textIcon'">{{complete}}</text>
+                <text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>
                 <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-else>&#xe72b;</text>
             </div>
 
@@ -20,7 +20,7 @@
         border-bottom-width: 0px;
     }
     .navRightBox{
-        width: 110px;
+        min-width: 92px;
         height: 92px;
         align-items: center;
         justify-content: center;
@@ -38,18 +38,18 @@
         margin-top: 2px;
     }
     .nav_CompleteIcon{
-        padding-left: 16px;
+        /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
+        padding-left: 27px;
+        padding-right: 27px;
         font-family: Verdana, Geneva, sans-serif;
         font-size: 44px;
         line-height: 44px;
         color: #FFFFFF;
     }
     .nav_Complete {
-        padding-left: 16px;
+        padding-left: 27px;
+        padding-right: 27px;
         font-family: Verdana, Geneva, sans-serif;
-        font-size: 34px;
-        line-height: 34px;
-        color: #FFFFFF;
     }
 
 </style>

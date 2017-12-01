@@ -1,9 +1,9 @@
 <template>
-    <div class="header search" :class="[classHeader()]">
+    <div class="search" :style="{paddingTop: ptNum + 'px',height: hNum + 'px'}">
         <div class="search_box flex5" >
             <div class="flex-start">
-               <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-               <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
+                <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
             </div>
             <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
         </div>
@@ -11,13 +11,19 @@
             <text class="primary fz32">取消</text>
         </div>
     </div>
- </template>
+</template>
 <style lang="less" src="../style/wx.less"/>
 
 <style scoped>
     .search {
         position:sticky;
         background:#eee;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
     }
     .search_box {
         margin-top:20px;
@@ -51,7 +57,6 @@
 
 </style>
 <script>
-    import utils from '../assets/utils'
     const event = weex.requireModule('event');
     export default {
         data() {
@@ -63,13 +68,10 @@
             keyword:{default:''},
             searchHint:{default:'搜索'},
             showCancel:{default:true},
+            ptNum:{default:40},
+            hNum:{default:136}
         },
         methods: {
-            classHeader:function () {
-                let dc = utils.device();
-
-                return dc
-            },
             goback:function (e) {
                 event.closeURL();
             },

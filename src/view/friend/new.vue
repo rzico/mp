@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper"  @viewdisappear="viewdisappear()">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
         <search @gosearch="gosearch" @scan="scan"> </search>
         <div class="addFriend" @click="goMobile()">
@@ -24,7 +24,7 @@
                     </div>
                     <!--姓氏里每个人的名子-->
                     <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="jump()">
+                        <div class="friendsLine" @click="goAuthor(friend.id)">
                             <image :src="friend.logo" class="friendsImage"></image>
                             <div class="friendsName">
                                 <text class="lineTitle ">{{friend.nickName}}</text>
@@ -165,7 +165,8 @@
                 showLoading:false,
                 loadingState:"松开加载更多",
                 friendsList:[],
-                screenHeight:0
+                screenHeight:0,
+                hadNew:0
             }
         },
         props: {
@@ -193,6 +194,11 @@
             }
         },
         methods: {
+//            作者主页
+            goAuthor:function (id) {
+                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
+                });
+            },
             goComplete:function () {
              event.openURL(utils.locate("view/friend/add.js"),function (message) {
 //                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
@@ -224,8 +230,15 @@
             isEmpty:function() {
                 return this.friendsList.length==0;
             },
+//            在页面销毁时触发，可用来捕捉安卓的回退
+            viewdisappear(){
+                if(!utils.isIosSystem()){
+                    this.goback();
+                }
+            },
             goback:function () {
-                event.closeURL();
+                let E = utils.message('success','有新朋友',this.hadNew);
+                event.closeURL(E);
             },
             isAsk:function (value) {
                 if (value=="ask") {
@@ -316,6 +329,7 @@
                     function (data) {
                         if (data.type == "success") {
                             event.toast(data.content);
+                            _this.hadNew = 1;
                             _this.onrefresh();
                         } else {
                             event.toast(data.content);

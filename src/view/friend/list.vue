@@ -482,6 +482,9 @@
             globalEvent.addEventListener("onMessage", function (e) {
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10209'){
                     _this.newFriendNum = e.data.data.unRead;
+                }else if((!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10210')){
+                    event.toast('123');
+                    _this.hadFriend();
                 }else{
 
                 }
@@ -679,6 +682,9 @@
                                         event.save(saveFriend,function (data) {})
                                     }
                                 })
+                            }
+                            if(message.type == 'success' && message.data == '1'){
+                                _this.hadFriend();
                             }
 
                         });
