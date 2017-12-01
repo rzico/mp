@@ -121,7 +121,7 @@
             },
             //            作者主页
             goAuthor:function (id) {
-                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
                 });
             },
             onrefresh:function () {

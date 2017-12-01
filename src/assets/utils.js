@@ -275,6 +275,8 @@ let utilsFunc = {
         } else {
             if (s.indexOf("V1")>0) {
                 return "V1"
+            }else if(s.indexOf("10,3")>0 || s.indexOf("10,6")>0){
+              return 'IPhoneX'
             } else {
                 return s;
             }
@@ -282,58 +284,58 @@ let utilsFunc = {
     },
 //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addTop:function () {
-       let a = this.device();
-        if (this.isNull(a)) {
+       let s = this.device();
+        if (this.isNull(s)) {
             return ""
         } else {
-            if(a == 'V1'){
+            if(s == 'V1'){
                 return 'addTopV1';
-            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+            }else if(s == 'IPhoneX'){
                 return 'addTopIPhoneX';
             }else{
-                return a;
+                return s;
             }
         }
     },
     //   会员首页 作者专栏 顶部信息栏
     addInfo:function () {
-        let a = this.device();
-        if (this.isNull(a)) {
+        let s = this.device();
+        if (this.isNull(s)) {
             return ""
         } else {
-            if(a == 'V1'){
+            if(s == 'V1'){
                 return 'addInfoV1';
-            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+            }else if(s == 'IPhoneX'){
                 return 'addInfoIPhoneX';
             }else{
-                return a;
+                return s;
             }
         }
     },
     //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addBgImg:function () {
-        let a = this.device();
-        if (this.isNull(a)) {
+        let s = this.device();
+        if (this.isNull(s)) {
             return ""
         } else {
-            if(a == 'V1'){
+            if(s == 'V1'){
                 return 'addBgImgV1';
-            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+            }else if(s == 'IPhoneX'){
                 return 'addBgImgIPhoneX';
             }else{
-                return a;
+                return s;
             }
         }
     },
     //    控制滑动时文集box的显示
     addDistance:function () {
-        let a = this.device();
-        if (this.isNull(a)) {
+        let s = this.device();
+        if (this.isNull(s)) {
             return ""
         } else {
-            if(a == 'V1'){
+            if(s == 'V1'){
                 return 294;
-            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+            }else if(s == 'IPhoneX'){
                 return 304;
             }else{
                 return 284;
@@ -342,19 +344,35 @@ let utilsFunc = {
     },
     //    控制滑动时文集box的显示
     hideCorpus:function () {
-        let a = this.device();
-        if (this.isNull(a)) {
+        let s = this.device();
+        if (this.isNull(s)) {
             return ""
         } else {
-            if(a == 'V1'){
+            if(s == 'V1'){
                 return 'hideCorpusV1';
-            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+            }else if(s == 'IPhoneX'){
                 return 'hideCorpusIPhoneX';
             }else{
-                return a;
+                return s;
             }
         }
     },
+    //    控制滑动时文集box的显示
+    pageTop:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'pageTopV1';
+            }else if(s == 'IPhoneX'){
+                return 'pageTopIPhoneX';
+            }else{
+                return s;
+            }
+        }
+    },
+
 //判断设备系统是不是ios
     isIosSystem:function () {
         let s = weex.config.env.osName;

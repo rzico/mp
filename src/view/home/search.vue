@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <!--输入栏-->
-        <searchNav :searchHint="searchHint" @oninput="oninput" :keyword="keyword" @search="search"  ref="childFind"> </searchNav><!--搜索栏-->
+        <searchNav  :searchHint="searchHint" @oninput="oninput" :keyword="keyword" @search="search"  ref="childFind"> </searchNav><!--搜索栏-->
         <div  class="confm boder-bottom bt20" v-if="isInput() && !isSearch" @click="search(keyword)">
             <text class="ico " :style="{fontFamily:'iconfont'}">&#xe611;</text>
             <text class="title">搜索: {{keyword}} </text>
@@ -424,7 +424,7 @@
         },
         created(){
             utils.initIconFont();
-            event.changeWindowsBar('true');
+//            event.changeWindowsBar('true');
 //            storage.removeItem('searchHistory', e => {
 //                event.toast(e)
 //            })

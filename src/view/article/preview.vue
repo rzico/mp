@@ -584,7 +584,7 @@
 //            作者主页
             goAuthor(){
                 let _this = this;
-                event.openURL(utils.locate("view/topic/author.js?id=" + this.memberId),function (message) {
+                event.openURL(utils.locate("view/topic/index.js?id=" + this.memberId),function (message) {
                     _this.isOperation = false;
                 });
             },

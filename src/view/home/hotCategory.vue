@@ -240,7 +240,7 @@
         methods:{
 //            前往作者专栏
             goAuthor(id){
-                event.openURL(utils.locate("view/topic/author.js?id=" + id),function (message) {
+                event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
                 });
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
             },

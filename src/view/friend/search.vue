@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper ">
         <!--输入栏-->
         <searchNav :searchHint="searchHint" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
         <!--搜索栏-->
@@ -95,7 +95,7 @@
         },
         created(){
             utils.initIconFont();
-            event.changeWindowsBar('true');
+//            event.changeWindowsBar('true');
         },
         methods: {
             isEmpty:function () {
