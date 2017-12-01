@@ -10,9 +10,9 @@
             <text class="code" >NO.{{data.card.code | codefmt}}</text>
             <text class="balance" >{{data.card.balance | currencyfmt}}</text>
             <div class="flex-center">
-                <text class="label" >消费记录</text>
+                <text class="label" @click="deposit()">消费记录</text>
                 <text class="label" >|</text>
-                <text class="label" >设置等级</text>
+                <text class="label" @click="vipsetup()" >设置等级</text>
             </div>
         </div>
         <image class="logo" resize="cover" :src="data.card.logo"></image>
@@ -58,7 +58,7 @@
         z-index: 100;
     }
     .name {
-        margin-left: 50px;
+        margin-left: 48px;
         margin-top: 60px;
         color:#bbb;
         font-size: 30px;
@@ -116,6 +116,7 @@
         margin-left: 10px;
         margin-right: 10px;
         color:#999;
+        height:60px;
         font-size: 32px;
     }
 
@@ -178,6 +179,15 @@
             },
             goback: function (e) {
                 event.closeURL();
+            },
+            deposit:function () {
+                var _this = this;
+                event.openURL(utils.locate("view/shop/card/deposit.js?id="+this.id),function (data) {
+
+                })
+            },
+            vipsetup:function () {
+
             },
             fill: function () {
                 var _this = this;
