@@ -926,7 +926,7 @@
 //            添加好友
             goAddFriend(){
                 let _this = this;
-                POST('weex/member/friends/add.jhtml?friendId='+ id).then(
+                POST('weex/member/friends/add.jhtml?friendId='+  this.UId).then(
                     function (weex) {
                         if (weex.type == "success") {
                             event.toast('请求已发送,请等待对方验证');

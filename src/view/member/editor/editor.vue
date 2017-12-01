@@ -59,8 +59,11 @@
                                 <text class="arrowSize" :style="{fontFamily:'iconfont'}" >&#xe601;</text>
                             </div>
                             <!--图片-->
-                            <div>
-                                <image class="paraImage" resize="cover" @click="editParaImage(item.paraImage,index,item.mediaType)" :src="item.thumbnailImage | watchThumbImg"></image>
+                            <div @click="editParaImage(item.paraImage,index,item.mediaType)">
+                                <image class="paraImage" resize="cover"  :src="item.thumbnailImage | watchThumbImg"></image>
+                                <div class="videoIconBox" v-if="item.mediaType == 'video'">
+                                    <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe644;</text>
+                                </div>
                             </div>
                             <!--文章内容-->
                             <div class="paraText" @click="editorText(index)">
@@ -137,6 +140,21 @@
     </div>
 </template>
 <style scoped>
+    .videoIconBox{
+        position: absolute;
+        left: 0;
+        top:0;
+        width: 155px;
+        height: 155px;
+        background-color: rgba(136,136,136,0.3);
+    }
+    .videoIcon{
+        color: #fff;
+        font-size: 70px;
+        position:absolute;
+        top:42.5px;
+        left:42.5px;
+    }
     .addIconBox:active{
         background-color: #ccc;
     }
@@ -473,7 +491,7 @@
                                     //小缩略图
                                     thumbnailImage: data.data[i].thumbnailSmallPath,
                                     mediaType: "image",
-                                    paraText:data.data[i].originalPath + '事实上' + data.data[i].thumbnailSmallPath,
+                                    paraText:'',
                                     show:true,
                                     serveThumbnail:''
                                 }) ;
@@ -697,7 +715,6 @@
                             _this.sendImage(0);
                         }else{
                             _this.toSendArticle = false;
-                            utils.debug('21');
                             event.toast(data.content);
                             return;
                         }
@@ -710,29 +727,26 @@
             },
             //上传图片到服务器
             sendImage (sendIndex) {
-                modal.toast({message:sendIndex,duration:1});
                 var _this = this;
-                var frontUrl;
+//                var frontUrl;
                 let sendLength = _this.paraList.length;//获取图片数组总长度
                 var mediaType = _this.paraList[sendIndex].mediaType;
-                if(mediaType == 'image') {
-                    frontUrl = _this.paraList[sendIndex].paraImage.substring(0,5);
-
-                    modal.toast({message:frontUrl,duration:1});
-                }else if(mediaType == 'video'){//如果是视频
-                    frontUrl = _this.paraList[sendIndex].thumbnail.substring(0,5);
-
-                    modal.toast({message:frontUrl,duration:1});
-                }
+                let frontUrl = _this.paraList[sendIndex].paraImage.substring(0,5);
+//                if(mediaType == 'image') {
+//                    modal.toast({message:frontUrl,duration:1});
+//                }else if(mediaType == 'video'){//如果是视频
+//                    frontUrl = _this.paraList[sendIndex].thumbnailImage.substring(0,5);
+//
+//                    modal.toast({message:frontUrl,duration:1});
+//                }
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http:'){
 
-                    modal.toast({message:'http',duration:1});
                     if(mediaType == 'image'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
                         _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
                     }else if(mediaType == 'video'){//如果是视频就将缩略图进行缩略
-                        _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].thumbnail,155,155);
+//                        _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].thumbnailImage,155,155);
                     }
                     sendIndex ++ ;
 
@@ -744,7 +758,6 @@
                         _this.realSave();
                     }
                 }else if(_this.paraList[sendIndex].paraImage == ''){//判断是否只有文字
-                    modal.toast({message:'paraImage为空',duration:1});
                     _this.paraList[sendIndex].serveThumbnail = '';
                     sendIndex ++ ;
 //                        判断是否最后一张图
@@ -759,51 +772,55 @@
 //                    var sendparaimg = frontUrl == 'file:' ? _this.paraList[sendIndex].paraImage.substring(6) :  _this.paraList[sendIndex].paraImage;
 ////                    ios是file:/ 安卓是file://
 //                    sendparaimg = sendparaimg.substring(0,1) == '/' ? sendparaimg.substring(1) : sendparaimg;
-
-
-
-
-                    modal.toast({message:_this.paraList[sendIndex].paraImage,duration:1});
                     event.upload(_this.paraList[sendIndex].paraImage,function (data) {
                         if(data.type == 'success'){
-                                _this.paraList[sendIndex].paraImage = data.data;
+                            _this.paraList[sendIndex].paraImage = data.data;
 //                            判断是图片还是视频
                             if(mediaType == 'image'){
                                 //                            向后台获取缩略图
                                 _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
+//                                    因为异步操作,所以要分别在if elseif里写下列代码
+                                sendIndex ++ ;
+//                        判断是否最后一张图
+                                if(sendIndex < sendLength){
+//                            回调自己自己
+                                    _this.sendImage(sendIndex);
+                                }else{//进行上传文章
+                                    _this.realSave();
+                                }
                             }else if(mediaType == 'video'){
 //                                将视频的封面上传
-                                event.upload(_this.paraList[sendIndex].thumbnail,function (e) {
+                                event.upload(_this.paraList[sendIndex].thumbnailImage,function (e) {
                                     if(e.type == 'success'){
-                                        //                            向后台获取缩略图
-                                        _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(e.data,155,155);
+                                        //                            向后台获取缩略图 (视频不需要获取缩略图)
+                                        _this.paraList[sendIndex].serveThumbnail = e.data;
+//                                        event.toast(_this.paraList[sendIndex].serveThumbnail);
                                     }else{//上传失败
                                         _this.toSendArticle = false;
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 2;//总的进度
                                         _this.processWidth = 0;//进度条宽度
-                                        utils.debug('9');
                                         event.toast(e.content);
                                         return;
 //                                        这边出错 11.30
                                     }
-                                })
-                            }
-                            sendIndex ++ ;
+//                                    因为异步操作,所以要分别在if elseif里写下列代码
+                                    sendIndex ++ ;
 //                        判断是否最后一张图
-                            if(sendIndex < sendLength){
+                                    if(sendIndex < sendLength){
 //                            回调自己自己
-                                _this.sendImage(sendIndex);
-                            }else{//进行上传文章
-                                _this.realSave();
+                                        _this.sendImage(sendIndex);
+                                    }else{//进行上传文章
+                                        _this.realSave();
+                                    }
+                                },function (data) {
+                                })
                             }
                         }else{//上传失败
                             _this.toSendArticle = false;
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 2;//总的进度
                             _this.processWidth = 0;//进度条宽度
-
-                            utils.debug('4');
                             event.toast(data.content);
                             return;
                         }
@@ -918,7 +935,6 @@
                             })
                         }else{
 
-                            utils.debug('5');
                             event.toast(res.content);
                             _this.toSendArticle = false;
                             _this.currentPro = 0;//当前进度
@@ -928,7 +944,6 @@
                     },
                     function (err) {
 
-                        utils.debug('6');
                         event.toast(err.content);
                         _this.toSendArticle = false;
                         _this.currentPro = 0;//当前进度
@@ -1088,10 +1103,13 @@
 //         方法2
                 let a = this.paraList[index].thumbnailImage;
                 let b = this.paraList[index].paraText;
+                let c = this.paraList[index].mediaType;
+                this.paraList[index].mediaType = this.paraList[index - 1].mediaType;
                 this.paraList[index].thumbnailImage = this.paraList[index - 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index - 1].paraText;
                 this.paraList[index - 1].thumbnailImage = a;
                 this.paraList[index - 1].paraText = b;
+                this.paraList[index - 1].mediaType = c;
             },
 //            下箭头
             moveBottom:function (index) {
@@ -1103,10 +1121,13 @@
 //         方法2
                 let a = this.paraList[index].thumbnailImage;
                 let b = this.paraList[index].paraText;
+                let c = this.paraList[index].mediaType;
+                this.paraList[index].mediaType = this.paraList[index + 1].mediaType;
                 this.paraList[index].thumbnailImage = this.paraList[index + 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index + 1].paraText;
                 this.paraList[index + 1].thumbnailImage = a;
                 this.paraList[index + 1].paraText = b;
+                this.paraList[index + 1].mediaType = c;
             },
 //            用户执行删除时触发询问。
             showConfirm :function(index) {
@@ -1182,7 +1203,7 @@
                             }
                         })
                     }else if(mediaType == 'video'){
-                        album.openVideo(imgSrc,function (data) {
+                        album.openVideo(function (data) {
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.videoPath;
                                 _this.paraList[index].thumbnailImage = data.data.coverImagePath;
@@ -1285,26 +1306,25 @@
 //            点击加号里的添加视频
             addVideoPara:function (index) {
                 let _this = this;
-                album.openVideo(
-                    function (data) {
-                        utils.debug(data);
-                        if(data.type == 'success'){
+                album.openVideo(function (data) {
+                    if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
-                            let newPara = {
-                                //原图
+                        let newPara = {
+                            //原图
 //                                    paraImage: data.data[i].originalPath,
-                                paraImage: data.data.videoPath,
+                            paraImage: data.data.videoPath,
 //                                    小缩略图
 //                                    thumbnailImage: data.data[i].thumbnailSmallPath,
-                                thumbnailImage: data.data.coverImagePath,
-                                mediaType: "video",
-                                paraText:data.data.videoPath  + '是是是' + data.data.coverImagePath,
-                                show:true
-                            }
-                            _this.paraList.splice(index,0,newPara)
-                            _this.clearIconBox();
+                            thumbnailImage: data.data.coverImagePath,
+                            mediaType: "video",
+                            paraText:'',
+                            show:true,
+//                                serveThumbnail:''
                         }
-                    })
+                        _this.paraList.splice(index,0,newPara)
+                        _this.clearIconBox();
+                    }
+                })
             }
         }
     }

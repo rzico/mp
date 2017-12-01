@@ -37,7 +37,7 @@
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
             <!--只能多写一个顶部栏。否则无法适应-->
-            <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
+            <div  class="corpusBox hideCorpus"     :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
                 <scroller scroll-direction="horizontal" class="corpusScroll">
                     <div class="articleClass">
                         <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
@@ -53,9 +53,9 @@
         </div>
         <!--</transition-group>-->
         <!--顶部个人信息栏-->
-        <div class="topBox bkg-primary"  :class="[classHeader()]" ref='topBox'>
+        <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
             <!--背景图片-->
-            <image   class="backgroundImage" :src="bgImgUrl"></image>
+            <image   class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
             <!--遮罩层-->
             <!--<image class="backgroundMask" :src="maskUrl"></image>-->
             <div  class="topHead" >
@@ -91,8 +91,7 @@
                 </div>
             </div>
         </div>
-        <div >
-
+        <div>
             <!--<div v-if="isAllArticle" v-cloak >-->
             <!--<div>-->
             <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
@@ -226,6 +225,9 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .hideCorpus{
+        top: 136px;position: fixed;
+    }
     .rightTop{
         position: fixed;
         top: 44px;
@@ -559,7 +561,6 @@
     .topBtnBox{
         flex-direction: row;
         align-items: center;
-
         margin-top: 10px;
         width:500px;
         margin-left: 125px;
@@ -631,8 +632,6 @@
     import filters from '../../filters/filters.js';
     var animationPara;//执行动画的文章
     var scrollTop = 0;
-    var recycleScroll = 0;
-    var allArticleScroll = 0;
     export default {
         data:function() {
             return{
@@ -762,15 +761,30 @@
                 return this.articleList.length==0 && this.corpusId != '';
 //                return this.articleList.length==0 ;
             },
+//            监听设备型号,控制隐藏的文集高度
+            hideCorpus:function () {
+                let dc = utils.hideCorpus();
+                return dc;
+            },
+//            监听设备型号,控制顶部人物信息栏背景图大小
+            headerBgImg:function () {
+                let dc = utils.addBgImg();
+                return dc;
+            },
+//            监听设备型号,控制顶部人物信息栏
+            headerInfo:function () {
+                let dc = utils.addInfo();
+                return dc;
+            },
 //            监听设备型号,控制导航栏设置 返回按钮
             classTop:function () {
                 let dc = utils.addTop();
-                return dc
+                return dc;
             },
 //            监听设备型号,控制导航栏高度
             classHeader:function () {
                 let dc = utils.device();
-                return dc
+                return dc;
             },
             getAllArticle(){
                 var articleClass = '';
@@ -1127,7 +1141,9 @@
                 this.opacityNum = opacityDegree;
 
 //                if(scrollTop >=284){
-                if(scrollTop >=284){
+                let distance = utils.addDistance();
+                event.toast(distance);
+                if(scrollTop >= 284){
                     this.twoTop = true;
 //                    this.corpusScrollTop = 136;
 
@@ -1138,10 +1154,6 @@
 //                     _this.corpusScrollTop = 420 -  scrollTop
 //                    this.corpusPosition = 'relative';
 //                    modal.toast({message:this.corpusScrollTop,duration:1})
-                }
-                if(scrollTop < 424){
-                    recycleScroll = 0;
-                    allArticleScroll = 0;
                 }
             },
 //            ondisappear(){

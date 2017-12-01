@@ -304,6 +304,12 @@
                 _this.addMessage(e.data);
             });
         },
+        beforeMount(){
+            if(event.getUId() != 0){
+//            读取未读消息
+                event.getUnReadMessage();
+            };
+        },
         methods:{
             classHeader:function () {
                 let dc = utils.device();
@@ -326,7 +332,7 @@
                         type:'message',
                         key:_weex.data.userId
                     }
-//                        本地查找是已有消息列表还是新消息列表
+//                        本地查找是已有消息列表还是新消息列表~
                     event.find(findOption,function (data) {
                         var storageData = JSON.stringify(_weex.data);
                         if(data.type == 'success' && data.data != ''){
