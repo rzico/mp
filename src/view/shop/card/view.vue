@@ -48,7 +48,7 @@
     .logo {
         /*margin-top: -40px;*/
         position: absolute;
-        top: 196px;
+        top: 203px;
         left:335px;
         width:80px;
         height:80px;
