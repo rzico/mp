@@ -58,7 +58,7 @@
         z-index: 100;
     }
     .name {
-        margin-left: 48px;
+        margin-left: 45px;
         margin-top: 60px;
         color:#bbb;
         font-size: 30px;
@@ -201,7 +201,7 @@
                         }else if(e.data == 1){
                            vp = 'vip2';
                         }
-                        else{vip
+                        else{
                            vp = 'vip3';
                         }
                         POST('weex/member/card/update.jhtml?id='+_this.id+'&vip=' +vp).then(

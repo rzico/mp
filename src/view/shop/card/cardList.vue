@@ -22,7 +22,7 @@
                         <div class="friendsLine" @click="jump()">
                             <div class="image">
                             <image :src="num.logo" class="friendsImage"></image>
-                                <text :class="[vipClass(lists.vip)]" :style="{fontFamily:'iconfont'}">{{vip(lists.vip)}}</text>
+                                <text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>
                             </div>
                             <div class="friendsName">
 
@@ -85,8 +85,8 @@
         width:80px;
     }
     .image{
-        height: 80px;
-        width: 80px;
+        height: 100px;
+        width: 100px;
     }
     .addFriendsBorder{
         border-bottom-width: 1px;
@@ -117,6 +117,7 @@
         top: 20px;
         left: 60px;
         color:#FFDD1F;
+        font-size: 30px;
     }
     .vip2 {
         /*margin-top: 50px;*/
@@ -125,6 +126,7 @@
         top: 20px;
         left: 60px;
         color:#FF8800;
+        font-size: 30px;
     }
     .vip3 {
         /*margin-top: 50px;*/
@@ -133,6 +135,7 @@
         top: 20px;
         left: 60px;
         color:#DC0000;
+        font-size: 30px;
     }
 </style>
 
