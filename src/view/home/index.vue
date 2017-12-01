@@ -2,7 +2,7 @@
     <div class="wrapper">
         <headerNav @search="gosearch"></headerNav>
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="testRef" @corpusChange="corpusChange"></tabNav>
-        <div  class="pageBox" :style="{width:pageWidth + 'px'}" ref="contentBox">
+        <div  class="pageBox"  :class="[pageTop()]"   :style="{width:pageWidth + 'px'}" ref="contentBox">
             <div v-for="(item,index) in corpusList" v-if="item.load == 1" :style="{left: index * 750 + 'px'}" class="categoryBox">
                 <hotCategory  @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></hotCategory>
             </div>
@@ -75,6 +75,11 @@
 
         },
         methods: {
+            //            监听设备型号,控制导航栏高度
+            pageTop:function () {
+                let dc = utils.pageTop();
+                return dc;
+            },
             data:function () {
             },
             back: function () {

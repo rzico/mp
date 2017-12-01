@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" > </navbar>
         <!--输入栏-->
-        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search" :showCancel="showCancel"  :hNum="hNum" :ptNum="ptNum" ref="childFind"> </searchNav>
+        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search" :showCancel="showCancel"  style="height: 96px;padding-top:0px;background-color:#eee" ref="childFind"> </searchNav>
         <!--无数据提示-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list class="list" v-if="isNoEmpty()">
