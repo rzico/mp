@@ -247,7 +247,7 @@
 
               category:1,
               industryName:'',
-              code:''
+              code:0
 //              id:'',
 //
 //              shopName:'',
@@ -292,6 +292,8 @@
                         _this.category = mes.data.categoryId
                         _this.industryName = mes.data.categoryName
                         _this.code = mes.data.code
+                        utils.debug(_this.code)
+
                     } else {
                         event.toast(res.content);
                     }
@@ -357,9 +359,8 @@
                                 telephone:_this.contactNumber,
                                 categoryId:_this.category,
                                 categoryName:_this.industryName,
-                                code:_this.code
+                                code: _this.code
                             };
-                            utils.debug(_this.code)
                             elevendata = JSON.stringify(elevendata);
                             storage.setItem('elevennumber', elevendata,e=> {
                                 event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=elevennumber'), function (message) {

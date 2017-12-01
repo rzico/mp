@@ -14,7 +14,7 @@
             <text class="text">激活店铺完成，请扫码绑定二维码</text>
             <text class="sweepCode" @click="scan()">{{prompting}}</text>
         </div>
-        <div class="button bkg-primary" @click="scan()">
+        <div class="button bkg-primary" @click="select">
             <text class="buttonText">下一步</text>
         </div>
     </div>
@@ -118,11 +118,19 @@
         created() {
             utils.initIconFont();
             this.shopId = utils.getUrlParameter('shopId');
-            this.code = utils.getUrlParameter('code');
+            this.code = utils.getUrlParameter('code')+'';
+            utils.debug(this.code)
         },
         methods:{
             goback:function () {
                 event.closeURL()
+            },
+            select:function () {
+                if(utils.isNull(this.code)) {
+                    this.scan()
+                }else {
+                    event.closeURL()
+                }
             },
             scan:function() {
                 var _this=this
@@ -137,7 +145,9 @@
                                     if (mes.type == "success") {
                                         utils.debug(mes)
                                         event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
+                                          utils.debug(message)
                                             if (message.type == "success") {
+
                                                 event.closeURL(message);
                                             }
                                         })

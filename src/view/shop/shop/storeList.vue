@@ -131,8 +131,11 @@ export default {
     methods:{
         modification:function (id) {
 //            utils.debug('view/shop/shop/newShop.js?'+id)
-                    event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function () {
-
+            let _this =this;
+                    event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
+                        if(message == 'success'){
+                            _this.onrefresh()
+                        }
                     })
         },
         open:function () {
@@ -178,8 +181,11 @@ export default {
             event.closeURL()
         },
         add:function () {
-            event.openURL(utils.locate('view/shop/shop/newShop.js'),function () {
-
+            var _this= this
+            event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
+                if(message == 'success'){
+                    _this.open()
+                }
             })
         }
     }

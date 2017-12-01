@@ -122,7 +122,8 @@
                 event.closeURL()
             },
             complete:function () {
-                event.closeURL()
+                let message = utils.message('success','成功','');
+                event.closeURL(message);
             },
             scan:function() {
                 var _this=this
