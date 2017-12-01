@@ -1,4 +1,38 @@
 
+//时间格式化 今天 昨天 前天  年月日
+Vue.filter('daydayfmt', function (value) {
+    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+    value = value + '';
+    if(value.length == 10){
+        value = parseInt(value) * 1000;
+    }else{
+        value = parseInt(value);
+    }
+    let date = new Date(value);
+    let tody = new Date();
+    let m = tody.getDate() - date.getDate();
+    if (m<1) {
+        return "今天"
+    } else
+    if (m<2) {
+        return "昨天"
+    } else
+    if (m<3) {
+        return "前天"
+    } else {
+        let    y = date.getFullYear();
+        let    d = date.getDate();
+        let    m = date.getMonth();
+        if (m < 10) {
+            m = '0' + m;
+        }
+        if (d < 10) {
+            d = '0' + d;
+        }
+        return y + '年' + m + '月' + d+ '日';
+    }
+})
+
 //时间格式化 今天 近三天 近七天  七天前
 Vue.filter('dayfmt', function (value) {
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时

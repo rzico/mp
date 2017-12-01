@@ -17,33 +17,33 @@
                 <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" v-model="amount" />
             </div>
             <div class="buttombox">
-                <div class="btn ">
+                <div class="btn "  @click="payment('aliPayPlugIn')">
                     <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
-                    <text class="btn-text" value="支付宝" @click="payment('alipayPlugIn')">支付宝</text>
+                    <text class="btn-text" value="支付宝">支付宝</text>
                 </div>
-                <div class="btn ">
+                <div class="btn "  @click="payment('weixinPayPlugin')">
                     <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信钱包" @click="payment('weixinPayPlugin')">微信钱包</text>
+                    <text class="btn-text" value="微信钱包">微信钱包</text>
                 </div>
             </div>
             <div class="buttombox">
-                <div class="btn ">
+                <div class="btn "  @click="payment('cardPayPlugin')">
                     <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="btn-text" value="会员卡" @click="payment('cardPayPlugIn')">会员卡</text>
+                    <text class="btn-text" value="会员卡">会员卡</text>
                 </div>
-                <div class="btn ">
+                <div class="btn "  @click="payment('balancePayPlugin')">
                     <text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>
-                    <text class="btn-text" value="芸店钱包" @click="payment('balancePayPlugIn')">芸店钱包</text>
+                    <text class="btn-text" value="芸店钱包">芸店钱包</text>
                 </div>
             </div>
             <div class="buttombox">
-                <div class="btn ">
+                <div class="btn " @click="offline('bankPayPlugin')">
                     <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
-                    <text class="btn-text" value="刷卡" @click="payment('balancePayPlugIn')">刷卡(记账)</text>
+                    <text class="btn-text" value="刷卡">刷卡(记账)</text>
                 </div>
-                <div class="btn ">
+                <div class="btn " @click="offline('cashPayPlugin')">
                     <text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>
-                    <text class="btn-text" value="现金" @click="payment('cardPayPlugIn')">现金(记账)</text>
+                    <text class="btn-text" value="现金">现金(记账)</text>
                 </div>
             </div>
             <div class="content">
@@ -242,7 +242,10 @@
                 shopId:"",
                 amount:"",
                 timer:null,
-                time:30
+                time:30,
+                isScan:false,
+                isSubmit:false,
+                plugId:""
             }
         },
         components: {
@@ -260,10 +263,10 @@
             },
             onrefresh (event) {
                 var _this = this;
-                this.refreshing = true
+                _this.refreshing = true
                 setTimeout(() => {
-                    this.view();
-                    this.refreshing = false
+                    _this.view();
+                    _this.refreshing = false
                 }, 2000)
             },
             onpullingdown (event) {
@@ -271,7 +274,6 @@
             view:function () {
                 var _this = this;
                 GET("weex/member/cashier/view.jhtml",function (res) {
-                   event.toast(res);
                    if (res.type=="success") {
                        _this.cashier = res.data;
                        _this.shopId = res.data.shopId;
@@ -298,6 +300,9 @@
                }
                this.time = 30;
                this.step = "";
+               this.amount = "";
+               this.isScan = false;
+               this.isSubmit = false;
             },
             print:function () {
                 GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
@@ -352,40 +357,70 @@
                     }
                 )
             },
+            offline:function (pid) {
+              this.plugId = pid;
+              this.submit("");
+            },
+            submit:function (safeKey) {
+                var _this = this;
+                if (_this.isSubmit==true) {
+                    return;
+                }
+                _this.isSubmit = true;
+                if (utils.isNull(_this.amount)) {
+                    _this.isSubmit = false;
+                    modal.alert({
+                        message: "请输入消费金额",
+                        okTitle: '知道了'
+                    });
+                    return;
+                }
+                POST("weex/member/cashier/submit.jhtml?shopId="+_this.shopId+"&amount="+_this.amount).then(
+                    function (res) {
+                        if (res.type=='success') {
+                            _this.id = res.data.id;
+                            _this.sn = res.data.sn;
+                            POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+_this.plugId+"&safeKey="+safeKey).then(
+                                function (data) {
+                                    if (data.type=='success') {
+                                        _this.time = 29;
+                                        _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                                    } else {
+                                        _this.isSubmit = false;
+                                        modal.alert({
+                                            message: data.content,
+                                            okTitle: '知道了'
+                                        })
+                                    }
+                                },function (err) {
+                                    _this.isSubmit = false;
+                                    event.toast(err.content);
+                                }
+                            )
+                        } else {
+                            _this.isSubmit = false;
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        _this.isSubmit = false;
+                        event.toast(err.content);
+                    }
+                )
+            },
             payment:function (plugId) {
                 var _this = this;
+                if (_this.isScan==true) {
+                    return;
+                }
+                _this.isScan = true;
+                _this.plugId = plugId;
                 event.scan(function (message) {
                     if (message.type=='success') {
-                        POST("weex/member/cashier/submit.jhtml?shopId="+_this.shopId+"&amount="+_this.amount).then(
-                            function (res) {
-                                if (res.type=='success') {
-                                    _this.id = res.data.id;
-                                    _this.sn = res.data.sn;
-                                    POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+plugId+"&safeKey="+message.data).then(
-                                        function (data) {
-                                            if (data.type=='success') {
-                                                _this.time = 29;
-                                                _this.timer = setTimeout(function () {_this.beginTimer()},500);
-                                            } else {
-                                                modal.alert({
-                                                    message: data.content,
-                                                    okTitle: '知道了'
-                                                })
-                                            }
-                                        },function (err) {
-                                            event.toast(err.content);
-                                        }
-                                    )
-                                } else {
-                                    event.toast(res.content);
-                                }
-                            },
-                            function (err) {
-                                event.toast(err.content);
-                            }
-                        )
+                        _this.isScan = false;
+                        _this.submit(message.data);
                     } else {
-                        event.toast(message.content);
+                        _this.isScan = false;
                     }
                 });
             }

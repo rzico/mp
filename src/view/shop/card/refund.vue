@@ -1,12 +1,12 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback()" > </navbar>
+        <navbar :title="title" @goback="goback()" :complete="'账单'" @goComplete="deposit"> </navbar>
         <div class="big">
             <div class="money">
                 <text class="maxQuota">{{message}}</text>
                 <div class="fontInput">
                     <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
-                    <input class="input" type="number" placeholder="" maxlength="7" :autofocus="true" value="" @input="onmoney"  />
+                    <input class="input" type="number" placeholder="" maxlength="7" :autofocus="true" v-model="quota" @input="onmoney"  />
                 </div>
                 <div class="maxQuotaServicefee">
                     <div class="servicefeeText" v-bind:style="{visibility:hide}">
@@ -18,33 +18,13 @@
                 </div>
             </div>
             <div class="buttombox">
-                <div class="btn ">
-                    <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
-                    <text class="btn-text" value="支付宝" @click="payment('alipayPlugIn')">支付宝</text>
-                </div>
-                <div class="btn ">
-                    <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信钱包" @click="payment('weixinPayPlugIn')">微信钱包</text>
-                </div>
-            </div>
-            <div class="buttombox">
-                <div class="btn ">
-                    <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="btn-text" value="会员卡" @click="payment('cardPayPlugIn')">会员卡</text>
-                </div>
-                <div class="btn ">
-                    <text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>
-                    <text class="btn-text" value="芸店钱包" @click="payment('balancePayPlugIn')">芸店钱包</text>
-                </div>
-            </div>
-            <div class="buttombox">
-                <div class="btn ">
+                <div class="btn " @click="offline('bankPayPlugin')">
                     <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
-                    <text class="btn-text" value="刷卡" @click="payment('balancePayPlugIn')">刷卡</text>
+                    <text class="btn-text" value="刷卡">刷卡(记账)</text>
                 </div>
-                <div class="btn ">
+                <div class="btn " @click="offline('cashPayPlugin')">
                     <text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>
-                    <text class="btn-text" value="现金" @click="payment('cardPayPlugIn')">现金</text>
+                    <text class="btn-text" value="现金">现金(记账)</text>
                 </div>
             </div>
         </div>
@@ -78,7 +58,7 @@
     .input{
         width: 500px;
         height: 120px;
-       font-size:100px;
+        font-size:60px;
     }
     .maxQuotaServicefee{
         flex-direction: row;
@@ -115,7 +95,6 @@
         flex-direction: row;
         width: 690px;
     }
-
     .btn {
         margin-left: 20px;
         margin-right: 20px;
@@ -133,11 +112,12 @@
     }
     .btn-text {
         margin-left: 10px;
+        font-size: 32px;
+        color:#666;
     }
     .btn:active {
         background-color:#ccc;
     }
-
     .weixin {
         color:limegreen;
         margin-top: 4px;
@@ -156,19 +136,19 @@
     .cash {
         color:#F0AD3C;
         margin-top: 3px;
-        margin-right: 20px;
     }
     .bank {
         margin-top: 4px;
-        color:#0088fb;
-        margin-right: 10px;
+        color:tomato;
     }
+
 
 </style>
 
 <script>
-    var event = weex.requireModule('event');
-    var modal = weex.requireModule('modal');
+    const modal = weex.requireModule('modal');
+    const event = weex.requireModule('event');
+    const printer = weex.requireModule('print');
     import navbar from '../../../include/navbar.vue';
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
@@ -176,22 +156,27 @@
         data() {
             return {
                 id:"",
-                quota:'0',
-                message:'请输入充值金额（元）',
+                cardId:"",
+                quota:'',
+                message:'请输入退款金额（元）',
                 service:'0',
                 hide:'hidden',
-                timer:null
+                timer:null,
+                time:30,
+                isScan:false,
+                isSubmit:false,
+                plugId:""
             }
         },
         components: {
             navbar
         },
         props: {
-            title: { default: "会员卡充值" },
+            title: { default: "退款" },
         },
         computed:{
             creditedAmount:function() {
-                if (this.quota==0) {
+                if (utils.isNull(this.quota)) {
                     return 0;
                 } else {
                     return Number(this.quota) - Number(this.service)
@@ -200,13 +185,13 @@
         },
         created() {
             utils.initIconFont();
-            this.id = utils.getUrlParameter("id");
+            this.cardId = utils.getUrlParameter("id");
             this.load();
         },
         methods: {
             onmoney:function (e){
                 if (e.value=='') {
-                    this.quota = 0;
+                    this.quota = "";
                 } else {
                     this.quota = e.value;
                 }
@@ -220,57 +205,141 @@
                 },1000)
                 _this.hide= 'visible';
             },
-            fill:function () {
-                var _this = this;
-                POST('weex/member/card/fill.jhtml?id='+ this.id +'&amount=' +this.quota).then(
-                    function (data) {
-                        if (data.type == "success") {
-                            modal.alert({
-                                message: '充值成功了',
-                                okTitle: '知道了'
-                            })
-                            event.closeURL(data);
-                        } else {
-                            event.toast(data.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content);
-                    }
-                )
+            deposit:function () {
+                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
             serviceCharge:function(){
                 var _this = this;
                 _this.service = 0;
-//                if (this.quota==0) {
-//                    _this.service = 0;
-//                } else {
-//                    POST('weex/member/transfer/calculate.jhtml?amount=' +this.quota ).then(
-//                        function (data) {
-//                            if (data.type == "success") {
-//                                _this.service = data.data;
-//                            } else {
-//                                event.toast(data.content);
-//                            }
-//                        }, function (err) {
-//                        }
-//                    )
-//                }
             },
             goback: function () {
                 event.closeURL()
             },
             load:function () {
                 var _this = this;
-//                GET("weex/member/transfer/view.jhtml",function (res) {
-//                    if (res.type=='success') {
-//                        _this.wdata = res.data;
-//                    } else {
-//                        event.toast(res.content);
-//                    }
-//                },function (err) {
-//                    event.toast(err.content);
-//                })
-            }
+            },
+            isShow:function () {
+                return this.time<30;
+            },
+            clearTimer:function () {
+                if (this.timer!=null) {
+                    clearTimeout(this.timer);
+                    this.timer = null;
+                }
+                this.time = 30;
+                this.step = "";
+                this.quota = "";
+                this.isScan = false;
+                this.isSubmit = false;
+            },
+            print:function () {
+                GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
+                    if (mes.type=='success') {
+                        printer.print(mes.data);
+                    } else {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: '知道了'
+                        })
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+
+            },
+            close:function () {
+                this.clearTimer();
+            },
+            beginTimer:function () {
+                var _this = this;
+                if (_this.time==0) {
+                    _this.clearTimer();
+                    return;
+                }
+                _this.step = _this.step +'..';
+                POST("refunds/query.jhtml?sn="+_this.sn).then(
+                    function (res) {
+                        if (res.type=='success') {
+                            if (res.data=='0000') {
+                                _this.clearTimer();
+                                _this.print();
+                                modal.alert({
+                                    message: "退款成功",
+                                    okTitle: '知道了'
+                                })
+                            } else
+                            if (res.data=='0001') {
+                                modal.alert({
+                                    message: '退款失败',
+                                    okTitle: '知道了'
+                                })
+                                _this.clearTimer();
+                            } else {
+                                _this.timer = setTimeout(function () {_this.beginTimer()},1000);
+                            }
+                        } else {
+                            _this.clearTimer();
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        _this.clearTimer();
+                        event.toast(err.content);
+                    }
+                )
+            },
+            offline:function (pid) {
+                this.plugId = pid;
+                this.submit("");
+            },
+            submit:function (safeKey) {
+                var _this = this;
+                if (_this.isSubmit==true) {
+                    return;
+                }
+                _this.isSubmit = true;
+                if (utils.isNull(_this.quota)) {
+                    _this.isSubmit = false;
+                    modal.alert({
+                        message: "请输入退款金额",
+                        okTitle: '知道了'
+                    });
+                    return;
+                }
+                POST("weex/member/card/refund.jhtml?id="+_this.cardId+"&amount="+_this.quota).then(
+                    function (res) {
+                        if (res.type=='success') {
+                            _this.id = res.data.id;
+                            _this.sn = res.data.sn;
+                            POST("refunds/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+_this.plugId+"&safeKey="+safeKey).then(
+                                function (data) {
+                                    if (data.type=='success') {
+                                        _this.time = 29;
+                                        _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                                    } else {
+                                        _this.isSubmit = false;
+                                        modal.alert({
+                                            message: data.content,
+                                            okTitle: '知道了'
+                                        })
+                                    }
+                                },function (err) {
+                                    _this.isSubmit = false;
+                                    event.toast(err.content);
+                                }
+                            )
+                        } else {
+                            _this.isSubmit = false;
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        _this.isSubmit = false;
+                        event.toast(err.content);
+                    }
+                )
+            },
+
         }
     }
 </script>

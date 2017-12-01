@@ -43,6 +43,7 @@
         font-size: 44px;
         line-height: 44px;
         color: #FFFFFF;
+        margin-right: 20px;
     }
     .nav_Complete {
         padding-left: 16px;
@@ -50,6 +51,7 @@
         font-size: 34px;
         line-height: 34px;
         color: #FFFFFF;
+        margin-right: 20px;
     }
 
 </style>

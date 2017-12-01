@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
+        <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <list class="list">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新</text>
@@ -12,7 +12,7 @@
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
                     <div class="flex-row flex-start">
-                        <text class="title" >{{deposit.createDate | monthfmt}}</text>
+                        <text class="title" >{{deposit.createDate | daydayfmt}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -25,12 +25,15 @@
                             <image class="logo" resize="cover"
                                    :src="deposit.logo">
                             </image>
+                            <text class="title">消费</text>
                         </div>
                         <div class="content flex5">
-                            <text class="title lines-ellipsis">{{deposit.memo}}</text>
                             <div class="flex-row space-between align-bottom">
-                                <text class="datetime">{{deposit.createDate | datetimefmt}}</text>
+                                <text class="title lines-ellipsis">{{deposit.memo}}</text>
                                 <text class="money">{{deposit.amount | currencyfmt}}</text>
+                            </div>
+                            <div class="flex-row space-between align-bottom">
+                                <text class="datetime">{{deposit.createDate | hitimefmt}}</text>
                             </div>
                         </div>
                     </div>
@@ -60,10 +63,11 @@
     }
 
     .logo {
-        height:100px;
-        width:100px;
-        border-radius:50px;
+        height:80px;
+        width:80px;
+        border-radius:40px;
         overflow:hidden;
+        margin: 10px;
     }
 
     .align-bottom {
@@ -111,7 +115,7 @@
             navbar,noData
         },
         props: {
-            title: { default: "账单" }
+            title: { default: "消费记录" }
         },
         methods: {
             noData:function () {
@@ -157,14 +161,14 @@
                        if (res.data.start==0) {
                           _this.depositList = res.data.data;
                        } else {
-                           data.data.data.forEach(function (item) {
+                           res.data.data.forEach(function (item) {
                                _this.depositList.push(item);
                            })
                        }
                        _this.pageStart = res.data.start+res.data.data.length;
                        _this.noLoading = res.data.data.length<_this.pageSize;
                    } else {
-                       event.toast(err.content);
+                       event.toast(res.content);
                    }
                     callback();
                  }, function (err) {
@@ -201,21 +205,29 @@
                 }else{
                     value = parseInt(value);
                 }
-                // 返回处理后的值
                 let date = new Date(value);
                 let tody = new Date();
-                let m = tody.getMonth() - date.getMonth();
-                let y = tody.getYear() - date.getYear();
+                let m = tody.getDate() - date.getDate();
                 if (m<1) {
-                    return "本月"
-                }
+                    return "今天"
+                } else
                 if (m<2) {
-                    return "上月"
+                    return "昨天"
+                } else
+                if (m<3) {
+                    return "前天"
+                } else {
+                    let    y = date.getFullYear();
+                    let    d = date.getDate();
+                    let    m = date.getMonth();
+                    if (m < 10) {
+                        m = '0' + m;
+                    }
+                    if (d < 10) {
+                        d = '0' + d;
+                    }
+                    return y + '年' + m + '月' + d+ '日';
                 }
-                if (y<1) {
-                    return date.getMonth()+"月"
-                }
-                return date.getYear()+"年"+date.getMonth()+"月";
             }
         },
         created () {

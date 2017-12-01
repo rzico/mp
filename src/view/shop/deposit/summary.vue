@@ -1,30 +1,41 @@
 <template>
     <div class="wrapper">
-        <!--<navbar :title="title" @goback="goback"> </navbar>-->
+        <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <list class="list">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新 ...</text>
+                <text class="indicator">下拉刷新</text>
             </refresh>
+            <cell v-if="noData()" >
+                <noData > </noData>
+            </cell>
             <cell v-for="(deposit,index) in depositList" >
+                <!--如果月份重复就不渲染该区域-->
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
+                    <div class="flex-row flex-start">
+                        <text class="title" >{{deposit.name}}</text>
+                    </div>
+                </div>
                 <div class="cell-row cell-clear" >
                     <div class="cell-panel newHeight"  :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
-                                   src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
+                                   :src="deposit.logo">
                             </image>
                         </div>
                         <div class="content flex5">
-                            <text class="title lines-ellipsis">{{deposit.memo}}</text>
                             <div class="flex-row space-between align-bottom">
-                                <text class="datetime">{{deposit.create_date | datetimefmt}}</text>
+                                <text class="title lines-ellipsis">{{deposit.memo}}</text>
                                 <text class="money">{{deposit.amount | currencyfmt}}</text>
                             </div>
                         </div>
                     </div>
                 </div>
             </cell>
-            <loading class="loading" @loading="onloading" :display="showLoading">
-                <text class="indicator">Loading ...</text>
+            <cell v-if="noLoading">
+                <div class="noLoading"></div>
+            </cell>
+            <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
+                <text class="indicator">加载中..</text>
             </loading>
         </list>
     </div>
@@ -33,10 +44,10 @@
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .newHeight{
-        height: 130px;
+        height: 90px;
     }
     .cell-row {
-        min-height: 120px;
+        min-height: 90px;
         flex-direction: column;
         background-color: #ffffff;
         padding-left: 20px;
@@ -44,10 +55,11 @@
     }
 
     .logo {
-        height:100px;
-        width:100px;
-        border-radius:50px;
+        height:50px;
+        width:50px;
+        border-radius:40px;
         overflow:hidden;
+        margin: 20px;
     }
 
     .align-bottom {
@@ -63,6 +75,7 @@
     .datetime {
         color:#ccc;
         font-size: 28px;
+        margin-top: 5px;
     }
     .money {
         font-weight: 700;
@@ -71,10 +84,12 @@
 
 </style>
 <script>
-    import navbar from '../../../include/navbar.vue'
-    import filters from '../../../filters/filters.js'
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
+    var event = weex.requireModule('event')
+    import navbar from '../../../include/navbar.vue'
+    import noData from '../../../include/noData.vue'
+    import filters from '../../../filters/filters.js'
 
     var pageNumber = 1;
     export default {
@@ -82,67 +97,136 @@
             return{
                 depositList:[],
                 refreshing: false,
-                showLoading: 'hide',
+                loading: 'hide',
+                pageStart:0,
+                pageSize:20,
+                noLoading:true
             }
         },
         components: {
-            navbar
+            navbar,noData
         },
         props: {
-            title: { default: "账单" }
+            title: { default: "消费统计" }
         },
         methods: {
+            noData:function () {
+                return this.depositList.length==0;
+            },
+//            是否添加底部边框
+            addBorder: function (index) {
+                let listLength = this.depositList.length;
+//                判断是否最后一个元素并且是否每月的结尾
+                if(index != listLength - 1 ){
+                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index + 1].create_date)){
+                        return {
+                            borderBottomWidth:'1px'
+                        }
+                    }else{
+                        return {
+                            borderBottomWidth:'0px'
+                        }
+                    }
+                }else{
+                    return {
+                        borderBottomWidth:'0px'
+                    }
+                }
+            },
+            //判断月份是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index - 1].create_date)){
+                        return false;
+                    }
+                }
+                return true;
+            },
             goback: function (e) {
                 event.closeURL();
             },
-            open (pageNumber,callback) {
+            open (pageStart,callback) {
+                this.pageStart = pageStart;
+                var _this = this;
+                GET('weex/member/paybill/list.jhtml?pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                    if (res.type=="success") {
+                        if (res.data.start==0) {
+                            _this.depositList = res.data.data;
+                        } else {
+                            res.data.data.forEach(function (item) {
+                                _this.depositList.push(item);
+                            })
+                        }
+                        _this.pageStart = res.data.start+res.data.data.length;
+                        _this.noLoading = res.data.data.length<_this.pageSize;
+                    } else {
+                        event.toast(res.content);
+                    }
+                    callback();
+                }, function (err) {
+                    callback();
+                    event.toast(err.content);
+                })
             },
 //            上拉加载
             onloading (event) {
-                pageNumber ++ ;
-                modal.toast({ message: '加载中...', duration: 0.5 })
-                this.showLoading = 'show'
-                this.open(pageNumber, res => {
-                    if(res.data.message.type == 'success'){
-                        this.depositList = this.depositList.concat(res.data.data);
-                    }else{
-                        modal.toast({ message: '系统繁忙', duration: 1 })
-                    }
-                    this.showLoading = 'hide'
-                })
+                var _this = this;
+                _this.loading = true;
+                setTimeout(
+                    _this.open(_this.pageStart,function () {
+                        _this.loading = false;
+                    })
+                    ,1500)
             },
 //            下拉刷新
             onrefresh (event) {
-                pageNumber = 1;
-                modal.toast({ message: '加载中...', duration: 1 })
-                this.refreshing = true
-                this.open(pageNumber, res => {
-                    if(res.data.message.type == 'success'){
-                        this.depositList = res.data.data;
-                    }else{
-                        modal.toast({ message: '系统繁忙', duration: 1 })
-                    }
-                    this.refreshing = false
-                })
+                var _this = this;
+                _this.pageStart = 0;
+                _this.refreshing = true;
+                setTimeout(
+                    _this.open(_this.pageStart,function () {
+                        _this.refreshing = false;
+                    })
+                    ,1500)
             },
 //            获取月份
             getDate: function(value) {
+                value = value + '';
+                if(value.length == 10){
+                    value = parseInt(value) * 1000;
+                }else{
+                    value = parseInt(value);
+                }
                 let date = new Date(value);
-                let d = date.getYear() +'-'+ date.getMonth() +'-'+ date.getDay();
-                return d;
+                let tody = new Date();
+                let m = tody.getDate() - date.getDate();
+                if (m<1) {
+                    return "今天"
+                } else
+                if (m<2) {
+                    return "昨天"
+                } else
+                if (m<3) {
+                    return "前天"
+                } else {
+                    let    y = date.getFullYear();
+                    let    d = date.getDate();
+                    let    m = date.getMonth();
+                    if (m < 10) {
+                        m = '0' + m;
+                    }
+                    if (d < 10) {
+                        d = '0' + d;
+                    }
+                    return y + '年' + m + '月' + d+ '日';
+                }
             }
         },
-        created:function () {
+        created () {
 //              页面创建时请求数据
-            this.open( pageNumber,res => {
-                if(res.data.message.type == 'success'){
-                    this.depositList = res.data.data;
-                }else{
-                    modal.alert({
-                        message: '系统繁忙',
-                        duration: 0.3
-                    })
-                }
+            utils.initIconFont();
+            this.open(0,function () {
+
             });
         }
     }
