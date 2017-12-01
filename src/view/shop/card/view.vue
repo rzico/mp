@@ -58,22 +58,26 @@
         z-index: 100;
     }
     .name {
+        margin-left: 50px;
         margin-top: 60px;
         color:#bbb
     }
     .vip1 {
         margin-top: 50px;
         margin-left: 10px;
+        font-size: 28px;
         color:#FFDD1F;
     }
     .vip2 {
         margin-top: 50px;
         margin-left: 10px;
+        font-size: 28px;
         color:#FF8800;
     }
     .vip3 {
         margin-top: 50px;
         margin-left: 10px;
+        font-size: 28px;
         color:#DC0000;
     }
     .content {
