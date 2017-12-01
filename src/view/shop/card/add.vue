@@ -41,7 +41,7 @@
     .name {
         margin-top: 60px;
         color:#bbb;
-        font-size: 28px;
+        font-size: 30px;
     }
     .content {
         margin-top: 40px;
@@ -53,7 +53,7 @@
         width:630px;
         color:#999;
         margin-top: 20px;
-        font-size: 24px;
+        font-size: 28px;
     }
     .qrcode {
         margin-top: 20px;

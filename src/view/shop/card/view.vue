@@ -60,7 +60,8 @@
     .name {
         margin-left: 50px;
         margin-top: 60px;
-        color:#bbb
+        color:#bbb;
+        font-size: 30px;
     }
     .vip1 {
         margin-top: 50px;
@@ -81,7 +82,7 @@
         color:#DC0000;
     }
     .content {
-        margin-top: 20px;
+        margin-top: 40px;
         width:650px;
         margin-left: 50px;
     }
@@ -90,6 +91,7 @@
         width:630px;
         color:#999;
         margin-top: 20px;
+        font-size: 28px;
     }
     .bw {
         width:200px;
@@ -97,10 +99,12 @@
         color:#999;
         margin-left: 10px;
         margin-right: 10px;
+        font-size: 32px;
     }
     .code {
         margin-top: 40px;
         color:#999;
+        font-size: 30px;
     }
     .balance {
         margin-top: 50px;
@@ -112,6 +116,7 @@
         margin-left: 10px;
         margin-right: 10px;
         color:#999;
+        font-size: 32px;
     }
 
 </style>
