@@ -1,7 +1,9 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" > </navbar>
-        <search @gosearch="gosearch" @scan="scan"> </search>
+        <div class="code" @click="scan">
+            <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+        </div>
         <div class="addFriend" @click="add">
             <div class="flex-row " style="align-items:center">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
@@ -49,6 +51,20 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .code{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        height: 60px;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-width: 1px;
+        border-color: #cccccc;
+        border-radius: 10px;
+    }
     .addFriend {
         flex-direction: row;
         justify-content: space-between;
@@ -176,7 +192,6 @@
 
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(404);
-            var _this = this;
 //            setTimeout(() => {
 //            _this.onrefresh();
 //            }, 500);
@@ -238,15 +253,6 @@
                 }, function (err) {
                     event.toast(err.content)
                 })
-            },
-//            触发自组件的跳转方法
-            gosearch:function () {
-                event.openURL(utils.locate('view/friend/search.js'),function (message) {
-//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
-                });
             },
 //            触发自组件的二维码方法
             scan:function () {
