@@ -227,7 +227,7 @@ let utilsFunc = {
             subData = e.substring(start + 3,end);
         }
         //判断是不是web  code'000000'为无效二维码 '999999'为webView；
-        if(code == null){
+        if(subData == null){
             //如果没有找到q/ 和 .jhtml中的字端，就执行该段代码
             if(e.substring(0,4) == 'http'){
                 let data = {
