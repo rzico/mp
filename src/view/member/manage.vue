@@ -294,10 +294,10 @@
                 }
 
                 var option = {
-                    title:"【"+_this.nickName+"】推荐给你一个好用的工具，快去看看",
+                    title:"【"+_this.member.nickName+"】推荐给你一个好用的工具，快去看看",
                     text:"超强图文小视频分享社区,中国版Facebook.",
-                    imageUrl:_this.logo,
-                    url:utils.remote("?xuid="+_this.id),
+                    imageUrl:_this.member.logo,
+                    url:utils.website("?xuid="+_this.member.id),
                     type:shareType
                 }
                 _this.showShare = false;
