@@ -222,9 +222,9 @@ let utilsFunc = {
 
         let start = e.indexOf("/q/8");
         let end = e.indexOf(".jhtml");
-        var code = null;
+        var subData = null;
         if (start != -1 && end != -1) {
-            code = e.substring(start + 3,end);
+            subData = e.substring(start + 3,end);
         }
         //判断是不是web  code'000000'为无效二维码 '999999'为webView；
         if(code == null){
@@ -288,8 +288,68 @@ let utilsFunc = {
         } else {
             if(a == 'V1'){
                 return 'addTopV1';
-            }else if(a == 'IPhoneX'){
+            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
                 return 'addTopIPhoneX';
+            }else{
+                return a;
+            }
+        }
+    },
+    //   会员首页 作者专栏 顶部信息栏
+    addInfo:function () {
+        let a = this.device();
+        if (this.isNull(a)) {
+            return ""
+        } else {
+            if(a == 'V1'){
+                return 'addInfoV1';
+            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+                return 'addInfoIPhoneX';
+            }else{
+                return a;
+            }
+        }
+    },
+    //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
+    addBgImg:function () {
+        let a = this.device();
+        if (this.isNull(a)) {
+            return ""
+        } else {
+            if(a == 'V1'){
+                return 'addBgImgV1';
+            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+                return 'addBgImgIPhoneX';
+            }else{
+                return a;
+            }
+        }
+    },
+    //    控制滑动时文集box的显示
+    addDistance:function () {
+        let a = this.device();
+        if (this.isNull(a)) {
+            return ""
+        } else {
+            if(a == 'V1'){
+                return 294;
+            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+                return 304;
+            }else{
+                return 284;
+            }
+        }
+    },
+    //    控制滑动时文集box的显示
+    hideCorpus:function () {
+        let a = this.device();
+        if (this.isNull(a)) {
+            return ""
+        } else {
+            if(a == 'V1'){
+                return 'hideCorpusV1';
+            }else if(a.indexOf("10,3")>0 || a.indexOf("10,6")>0){
+                return 'hideCorpusIPhoneX';
             }else{
                 return a;
             }
