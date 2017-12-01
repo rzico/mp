@@ -14,7 +14,7 @@
             <text class="text">绑定完成，请完成交易测试</text>
             <text class="sweepCode" @click="scan()">{{prompting}}</text>
         </div>
-        <div class="button bkg-primary">
+        <div class="button bkg-primary" @click="complete">
             <text class="buttonText">完成</text>
         </div>
     </div>
@@ -119,6 +119,9 @@
         },
         methods:{
             goback:function () {
+                event.closeURL()
+            },
+            complete:function () {
                 event.closeURL()
             },
             scan:function() {

@@ -47,10 +47,11 @@
                 <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
             </div>
         </div>
+        </scroller>
         <div class="button bkg-primary" @click="goComplete">
             <text class="buttonText">下一步</text>
         </div>
-        </scroller>
+
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -223,8 +224,9 @@
                 logo:'',
 //              区位id
                 areaId:'',
-                category:1,
+                category:'',
                 addressName:'',
+                code:''
         }
         },
         components: {
@@ -251,9 +253,11 @@
                 _this.contactNumber = elevendata.telephone;
                 _this.category =elevendata.categoryId;
                 _this.shopId = elevendata.id;
+                _this.industryName = elevendata.categoryName;
+                _this.code = elevendata.code
                 storage.removeItem(eleven);
             });
-            utils.debug(eleven)
+            utils.debug(_this.code)
         },
         methods:{
             goback:function () {
@@ -302,13 +306,13 @@
             },
             goComplete:function () {
                 var _this=this
-                utils.debug('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
-                    '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category)
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
                     '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
                         if (mes.type == "success") {
-                                event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id), function (message) {
+                            var _this =this
+                            utils.debug('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+_this.code)
+                                event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+_this.code), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);
                                     }

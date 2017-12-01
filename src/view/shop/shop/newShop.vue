@@ -247,6 +247,7 @@
 
               category:1,
               industryName:'',
+              code:''
 //              id:'',
 //
 //              shopName:'',
@@ -270,9 +271,8 @@
             if(utils.isNull(this.shopId)) {
                 this.shopId = ''
             }else {
-                this.modification(function () {});
+                this.modification();
             }
-
         },
         methods:{
             modification:function () {
@@ -289,6 +289,9 @@
                         _this.detailedAddress = mes.data.address;
                         _this.contactName = mes.data.linkman;
                         _this.contactNumber = mes.data.telephone
+                        _this.category = mes.data.categoryId
+                        _this.industryName = mes.data.categoryName
+                        _this.code = mes.data.code
                     } else {
                         event.toast(res.content);
                     }
@@ -340,6 +343,7 @@
                     function (mes) {
                         if (mes.type == "success") {
                             _this.shopId = mes.data.id;
+
                             let  elevendata = {
                                 addressName: _this.addressName,
                                 licensePhoto: _this.licensePhoto,
@@ -351,8 +355,11 @@
                                 address:_this.detailedAddress,
                                 inkman:_this.contactName,
                                 telephone:_this.contactNumber,
-                                categoryId:_this.category
+                                categoryId:_this.category,
+                                categoryName:_this.industryName,
+                                code:_this.code
                             };
+                            utils.debug(_this.code)
                             elevendata = JSON.stringify(elevendata);
                             storage.setItem('elevennumber', elevendata,e=> {
                                 event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=elevennumber'), function (message) {

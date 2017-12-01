@@ -104,7 +104,8 @@
         data: function () {
             return{
                 prompting:'点击扫码',
-                shopId:''
+                shopId:'',
+                code:''
             }
         },
         components: {
@@ -116,7 +117,8 @@
         },
         created() {
             utils.initIconFont();
-            this.shopId = utils.getUrlParameter('shopId')
+            this.shopId = utils.getUrlParameter('shopId');
+            this.code = utils.getUrlParameter('code');
         },
         methods:{
             goback:function () {
@@ -125,7 +127,9 @@
             scan:function() {
                 var _this=this
                 event.scan(function (message) {
+
                     utils.readScan(message.data,function (data) {
+
                         _this.code = data.data.code
                         if(data.type == 'success'){
                             POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
