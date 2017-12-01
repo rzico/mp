@@ -6,6 +6,9 @@
                 <text class="wallet-title">钱包余额（元）</text>
                 <text class="balance">{{wallet.balance | currencyfmt}}</text>
             </div>
+            <div class="cashierBox" v-if="hasCashier">
+                <div class="cashier bkg-primary">收银台</div>
+            </div>
 
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between" @click="bindingCard()">
@@ -87,6 +90,22 @@
         font-size: 120px;
         color: #fff;
         margin-left:40px;
+    }
+
+    .cashierBox {
+        height:100px;
+        width:150px;
+        border-radius: 15px;
+        background-color: #fff;
+        font-size: 32px;
+    }
+    .cashier {
+        height:100px;
+        width:150px;
+        border-width: 1px;
+        border-radius: 15px;
+        font-size: 32px;
+        color:#fff
     }
 
 </style>
