@@ -215,11 +215,7 @@
                     return he.decode('&#xe636;');
                 }
             },
-            add:function() {
-                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-//
-                })
-            },
+
             open:function () {
                 var _this = this;
                 GET('weex/member/card/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
@@ -290,6 +286,16 @@
 
                 })
             },
+            add:function() {
+                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
+//
+                })
+            },
+            setting:function () {
+                event.openURL(utils.locate('view/shop/card/setting.js'),function () {
+
+                })
+    }
 
         }
     }
