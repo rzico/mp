@@ -166,7 +166,7 @@ let utilsFunc = {
     //获取文章URL地址
     articleUrl(template,id) {
         template = template == '' ? 't1001' : template;
-        return dataURL + template + "?id=" + id;
+        return websiteURL + template + "?id=" + id;
     },
     debug(msg) {
         if (debug) {
@@ -208,7 +208,7 @@ let utilsFunc = {
        let type = this.getUrlParameter("type",e);
        let code = this.getUrlParameter("no",e);
        if (type=="paybill") {
-           return dataURL+"/q/818804"+code+".jhtml";
+           return websiteURL + "/q/818804"+code+".jhtml";
        } else {
            return e;
        }
