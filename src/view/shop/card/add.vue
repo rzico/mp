@@ -8,8 +8,8 @@
         </div>
         <image class="logo" resize="cover" :src="data.logo"></image>
         <div class="content">
-            <text class="intro" >{{data.prerogative}}</text>
-            <text class="intro" >{{data.description}}</text>
+            <text class="intro" >1.{{data.prerogative}}</text>
+            <text class="intro" >2.{{data.description}}</text>
         </div>
     </div>
 </template>
@@ -29,7 +29,7 @@
     .logo {
         /*margin-top: -40px;*/
         position: absolute;
-        top: 196px;
+        top: 202px;
         left:335px;
         width:80px;
         height:80px;
@@ -40,10 +40,11 @@
     }
     .name {
         margin-top: 60px;
-        color:#bbb
+        color:#bbb;
+        font-size: 30px;
     }
     .content {
-        margin-top: 20px;
+        margin-top: 40px;
         width:650px;
         margin-left: 50px;
     }
@@ -51,7 +52,8 @@
         margin-left: 10px;
         width:630px;
         color:#999;
-        margin-top: 10px;
+        margin-top: 20px;
+        font-size: 28px;
     }
     .qrcode {
         margin-top: 20px;
@@ -91,7 +93,7 @@
                 GET("weex/member/card/qrcode.jhtml",function (res) {
                     if (res.type=='success') {
                         _this.data = res.data;
-                        _this.qrcode = "http://pan.baidu.com/share/qrcode?w=400&h=400&url="+encodeURI(data.qrcode);
+                        _this.qrcode = "http://pan.baidu.com/share/qrcode?w=400&h=400&url="+encodeURI(_this.data.qrcode);
                     } else {
                         event.toast(res.content);
                     }

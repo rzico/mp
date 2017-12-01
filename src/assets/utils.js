@@ -3,8 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-// const dataURL = 'http://weex.rzico.com:8088/';
-const dataURL = 'http://weex.1xx.me/';
+const websiteURL = 'http://weex.1xx.me';
 const event = weex.requireModule('event');
 const debug = true;
 let utilsFunc = {
@@ -23,6 +22,11 @@ let utilsFunc = {
     //获取远程资源
     remote(url) {
         const newUrl = resRemoteURL + url;
+        return newUrl;
+    },
+    //获取网站资源
+    website(url) {
+        const newUrl = websiteURL + url;
         return newUrl;
     },
     //获取URL参数

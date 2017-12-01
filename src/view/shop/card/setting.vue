@@ -1,6 +1,6 @@
 <template>
     <div style="background-color: #eeeeee">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete=""  > </navbar>
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"  > </navbar>
         <list>
             <cell>
     <div class="setting" v-for="num in div">
@@ -9,14 +9,14 @@
         </div>
         <div class="money">
             <text class="monyeTexttwo">充</text>
-            <input type="text" placeholder="设置金额" class="input"  @change="" @input="oninput"/>
+            <input type="text" placeholder="设置金额" class="input" v-model="num.amount" @change="" @input=""/>
             <text class="monyeTextthree">送</text>
-            <input type="text" placeholder="设置金额" class="input"  @change="" @input="oninput"/>
+            <input type="text" placeholder="设置金额" class="input" v-model="num.present" @change="" @input=""/>
         </div>
         <div class="vip">
             <text class="vipText">会员等级</text>
             <text class="vipTexttwo">升级至</text>
-            <input type="text" placeholder="设置等级" class="input"  @change="" @input="oninput"/>
+            <input type="text" placeholder="最高升至vip3" class="input2" v-model="num.vip" @change="" @input=""/>
         </div>
     </div>
                 <div style="align-items: center">
@@ -95,6 +95,12 @@
         font-size: 28px;
         height: 32px;
     }
+    .input2{
+        padding-left: 20px;
+        width: 200px;
+        font-size: 28px;
+        height: 32px;
+    }
 </style>
 <script>
     var event = weex.requireModule('event');
@@ -104,12 +110,12 @@
     export default {
         data: function () {
             return{
-                plusShow:true,
                 div:[]
             }
         },
         created: function () {
             utils.initIconFont();
+            this.open()
         },
         components: {
             navbar
@@ -120,7 +126,49 @@
         },
         methods: {
             add:function () {
-                this.div.push('')
+                this.div.push({amount:'',present:'',vip:''})
+            },
+            goback:function () {
+                event.closeURL()
+            },
+            open:function () {
+                var _this = this;
+                GET('weex/member/topiccard/activity.jhtml',function (mes) {
+                    if (mes.type == 'success') {
+                        utils.debug(mes)
+                        mes.data.forEach(function (item) {
+                            _this.div.push(item)
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            goComplete:function () {
+                var threedata = [];
+                this.div.forEach(function(item,index){
+                    threedata.push({
+                        id:index,
+                        amount:item.amount,
+                        present: item.present,
+                        vip:item.vip
+                    })
+                })
+                 threedata = JSON.stringify(threedata);
+//                utils.debug(threedata)
+                POST('weex/member/topiccard/activity.jhtml',threedata).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            utils.debug(mes)
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
             }
         }
     }

@@ -287,6 +287,7 @@
                                     message: "充值成功",
                                     okTitle: '知道了'
                                 })
+                                event.closeURL(res);
                             } else
                             if (res.data=='0001') {
                                 modal.alert({

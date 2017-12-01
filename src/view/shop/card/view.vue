@@ -10,9 +10,9 @@
             <text class="code" >NO.{{data.card.code | codefmt}}</text>
             <text class="balance" >{{data.card.balance | currencyfmt}}</text>
             <div class="flex-center">
-                <text class="label" >消费记录</text>
+                <text class="label" @click="deposit()">消费记录</text>
                 <text class="label" >|</text>
-                <text class="label" >设置等级</text>
+                <text class="label" @click="vipsetup()" >设置等级</text>
             </div>
         </div>
         <image class="logo" resize="cover" :src="data.card.logo"></image>
@@ -48,7 +48,7 @@
     .logo {
         /*margin-top: -40px;*/
         position: absolute;
-        top: 196px;
+        top: 203px;
         left:335px;
         width:80px;
         height:80px;
@@ -58,26 +58,31 @@
         z-index: 100;
     }
     .name {
+        margin-left: 48px;
         margin-top: 60px;
-        color:#bbb
+        color:#bbb;
+        font-size: 30px;
     }
     .vip1 {
         margin-top: 50px;
         margin-left: 10px;
+        font-size: 28px;
         color:#FFDD1F;
     }
     .vip2 {
         margin-top: 50px;
         margin-left: 10px;
+        font-size: 28px;
         color:#FF8800;
     }
     .vip3 {
         margin-top: 50px;
         margin-left: 10px;
+        font-size: 28px;
         color:#DC0000;
     }
     .content {
-        margin-top: 20px;
+        margin-top: 40px;
         width:650px;
         margin-left: 50px;
     }
@@ -86,6 +91,7 @@
         width:630px;
         color:#999;
         margin-top: 20px;
+        font-size: 28px;
     }
     .bw {
         width:200px;
@@ -93,10 +99,12 @@
         color:#999;
         margin-left: 10px;
         margin-right: 10px;
+        font-size: 32px;
     }
     .code {
         margin-top: 40px;
         color:#999;
+        font-size: 30px;
     }
     .balance {
         margin-top: 50px;
@@ -108,6 +116,8 @@
         margin-left: 10px;
         margin-right: 10px;
         color:#999;
+        height:60px;
+        font-size: 32px;
     }
 
 </style>
@@ -117,6 +127,7 @@
     import filters from '../../../filters/filters.js';
     const event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue'
+    const picker = weex.requireModule('picker')
     var he = require('he');
     export default {
         components: {
@@ -169,6 +180,43 @@
             },
             goback: function (e) {
                 event.closeURL();
+            },
+            deposit:function () {
+                var _this = this;
+                event.openURL(utils.locate("view/shop/card/deposit.js?id="+this.id),function (data) {
+
+                })
+            },
+            vipsetup:function () {
+                var _this = this;
+                picker.pick({
+                    index:0,
+                    items:['VIP1','VIP2','VIP3']
+                }, e => {
+                    if (e.result == 'success') {
+                        let vp = 'vip1';
+                        if (e.data == 0){
+                           vp = 'vip1';
+
+                        }else if(e.data == 1){
+                           vp = 'vip2';
+                        }
+                        else{vip
+                           vp = 'vip3';
+                        }
+                        POST('weex/member/card/update.jhtml?id='+_this.id+'&vip=' +vp).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+                                    _this.data.card.vip = vp;
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
+                    }
+                })
             },
             fill: function () {
                 var _this = this;
