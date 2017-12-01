@@ -127,6 +127,7 @@
     import filters from '../../../filters/filters.js';
     const event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue'
+    const picker = weex.requireModule('picker')
     var he = require('he');
     export default {
         components: {
@@ -187,7 +188,35 @@
                 })
             },
             vipsetup:function () {
+                var _this = this;
+                picker.pick({
+                    index:0,
+                    items:['VIP1','VIP2','VIP3']
+                }, e => {
+                    if (e.result == 'success') {
+                        let vp = 'vip1';
+                        if (e.data == 0){
+                           vp = 'vip1';
 
+                        }else if(e.data == 1){
+                           vp = 'vip2';
+                        }
+                        else{vip
+                           vp = 'vip3';
+                        }
+                        POST('weex/member/card/update.jhtml?id='+_this.id+'&vip=' +vp).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+                                    _this.data.card.vip = vp;
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
+                    }
+                })
             },
             fill: function () {
                 var _this = this;
