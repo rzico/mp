@@ -168,7 +168,6 @@
                     }
                 });
                  threedata = JSON.stringify(threedata);
-//                utils.debug(threedata)
                 POST('weex/member/topiccard/activity.jhtml',threedata).then(
                     function (mes) {
                         if (mes.type == "success") {
