@@ -1,13 +1,22 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" > </navbar>
-        <search @gosearch="gosearch" @scan="scan"> </search>
-        <div class="addFriend" @click="add">
-            <div class="flex-row " style="align-items:center">
-                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
-                <text class="title ml20 " >领取会员卡</text>
+        <div class="header" :class="[classHeader()]">
+            <!--顶部导航-->
+            <div class="nav nw">
+                <div style="width: 100px;" >
+                </div>
+                <!--页面名称-->
+                <div class="userBox" >
+                    <text class=" nav_title">会员</text>
+                </div>
+                <div class="rightTop" @click="add()" >
+                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
+                </div>
             </div>
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
+        <div class="code" @click="scan">
+            <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+            <text class="headText" style="font-size: 28px;color: #cccccc">搜索会员卡</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()">
@@ -19,7 +28,7 @@
             <cell :style="{minHeight:screenHeight + 'px'}">
                 <div v-for="num in lists" >
                     <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="jump()">
+                        <div class="friendsLine" @click="jump(num.id)">
                             <div class="image">
                             <image :src="num.logo" class="friendsImage"></image>
                                 <text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>
@@ -28,7 +37,7 @@
 
                                 <text class="lineTitle ">手机号:{{num.mobile}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                <text class="realName">{{num.name}}卡号:({{num.code | watchCode}})</text>
+                                <text class="realName">{{num.name}}(卡号:{{num.code | watchCode}})</text>
                                     <text style="font-size: 28px;color: #888">{{num | watchStatus}}</text>
                                 </div>
 
@@ -37,10 +46,7 @@
                     </div>
                 </div>
             </cell>
-
             <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{loadingState}}</text>
             </loading>
         </list>
@@ -49,21 +55,38 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
-    .addFriend {
+    .iconfont{
+        color: #cccccc;
+        margin-top: 5px;
+        margin-right: 20px;
+    }
+    .code{
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        padding-left: 36px;
-        padding-right: 30px;
-        padding-top: 30px;
-        padding-bottom: 30px;
         background-color: white;
-        border-top-width: 1px;
-        border-top-style: solid;
-        border-top-color: #ccc;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
+        height: 60px;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-width: 1px;
+        border-color: #cccccc;
+        border-radius: 10px;
+    }
+    .rightTop{
+        height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
+    }
+    .nav_ico {
+        font-size: 50px;
+        color: #fff;
+    }
+    .userBox{
+        flex-direction: row;
+        align-items: center;
+    }
+    .nw{
+        width: 750px;
     }
     .list {
         background-color: white;
@@ -163,7 +186,9 @@
                 lists:[],
                 screenHeight:0,
                 pageSize:10,
-                listCurrent:0
+                listCurrent:0,
+                code:'',
+                id:''
             }
         },
         props: {
@@ -176,7 +201,6 @@
 
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(404);
-            var _this = this;
 //            setTimeout(() => {
 //            _this.onrefresh();
 //            }, 500);
@@ -198,6 +222,11 @@
             }
         },
         methods: {
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
             vipClass:function (v) {
                 if (v=='vip3') {
                     return "vip3";
@@ -218,11 +247,7 @@
                     return he.decode('&#xe636;');
                 }
             },
-            add:function() {
-                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-//
-                })
-            },
+
             open:function () {
                 var _this = this;
                 GET('weex/member/card/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
@@ -243,19 +268,29 @@
                     event.toast(err.content)
                 })
             },
-//            触发自组件的跳转方法
-            gosearch:function () {
-                event.openURL(utils.locate('view/friend/search.js'),function (message) {
-//                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
-                });
-            },
 //            触发自组件的二维码方法
             scan:function () {
+                let _this=this
                 event.scan(function (message) {
-                    event.toast(message);
+                    utils.readScan(message.data,function (data) {
+                        if(data.data.type == '818801'){
+                            _this.code =data.data.code
+                            GET('weex/member/card/infobycode.jhtml?code='+_this.code,function (mes) {
+                                if (mes.type == 'success') {
+                                   _this.id = mes.data.card.id;
+//                                   utils.debug(_this.id)
+                                    event.openURL(utils.locate('view/shop/card/view.js?id='+_this.id),function (message) {
+
+                                    })
+                                } else {
+                                    event.toast(res.content);
+                                }
+                            }, function (err) {
+                                event.toast(err.content)
+                            })
+                        }
+                    })
+
                 });
             },
             isNoEmpty:function() {
@@ -288,11 +323,21 @@
                 event.closeURL();
             },
 
-            jump:function () {
-                event.openURL(utils.locate('view/shop/card/view.js'),function () {
+            jump:function (id) {
+                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
 
                 })
             },
+            add:function() {
+                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
+//
+                })
+            },
+            setting:function () {
+                event.openURL(utils.locate('view/shop/card/setting.js'),function () {
+
+                })
+    }
 
         }
     }

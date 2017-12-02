@@ -1,53 +1,53 @@
 <template>
-    <div style="background-color: #eeeeee">
-            <navbar :title="title"  @goback="goback"  > </navbar>
+    <div class="wrapper">
+        <navbar :title="title"  @goback="goback"  > </navbar>
         <div style="background-color: white">
-    <div class="titleOne">
-        <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
-    </div>
-    <div class="name">
-        <text class="nameText" style="font-size: 32px">优惠券类型</text>
-        <text class="nameText" style="font-size: 32px;padding-left: 70px" @click="typesetting">{{type}}</text>
-    </div>
-    <div class="scope">
-        <text class="scopeText" style="font-size: 32px">适用范围</text>
-        <text class="scopeText" style="font-size: 32px;padding-left: 100px" @click="scopesetting">{{address}}</text>
-    </div>
-    <div class="money">
-        <text class="moneyText" style="font-size: 32px">满减面额</text>
-        <input type="number" placeholder="请输入满减面额" class="inputMoney" v-model="money" @change="" @input=""/>
-        <text class="conditionsText" style="font-size: 32px">元/折</text>
-    </div>
-    <div class="conditions">
-        <text class="conditionsText" style="font-size: 32px">使用条件</text>
-        <text class="man" style="padding-left: 100px;font-size: 32px">满</text>
-        <input type="number" placeholder="0为无门槛" class="inputconditions" v-model="conditions" @change="" @input=""/>
-        <text class="conditionsText" style="font-size: 32px">元使用</text>
-    </div>
-    <div class="time" >
-        <text class="textTime" style="font-size: 32px">使用时间</text>
-        <div  style="padding-left: 100px"@click="date" >
-        <text class="begindate" >{{beginDate}}</text>
+            <div class="titleOne">
+                <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
+            </div>
+            <div class="name">
+                <text class="nameText" style="font-size: 32px">优惠券类型</text>
+                <text class="nameText" style="font-size: 32px;padding-left: 70px" @click="typesetting">{{type}}</text>
+            </div>
+            <div class="scope">
+                <text class="scopeText" style="font-size: 32px">适用范围</text>
+                <text class="scopeText" style="font-size: 32px;padding-left: 100px" @click="scopesetting">{{address}}</text>
+            </div>
+            <div class="money">
+                <text class="moneyText" style="font-size: 32px">满减面额</text>
+                <input type="number" placeholder="请输入满减面额" class="inputMoney" v-model="money" @change="" @input=""/>
+                <text class="conditionsText" style="font-size: 32px">元/折</text>
+            </div>
+            <div class="conditions">
+                <text class="conditionsText" style="font-size: 32px">使用条件</text>
+                <text class="man" style="padding-left: 100px;font-size: 32px">满</text>
+                <input type="number" placeholder="0为无门槛" class="inputconditions" v-model="conditions" @change="" @input=""/>
+                <text class="conditionsText" style="font-size: 32px">元使用</text>
+            </div>
+            <div class="time" >
+                <text class="textTime" style="font-size: 32px">使用时间</text>
+                <div  style="padding-left: 100px"@click="date" >
+                    <text class="begindate" >{{beginDate}}</text>
+                </div>
+                <text class="textTime" style="font-size: 32px">一</text>
+                <div  style="padding-left: 10px"@click="dateTwo" >
+                    <text class="enddate" >{{endDate}}</text>
+                </div>
+            </div>
+            <div class="introduced">
+                <text class="introducedText" style="font-size: 32px">规则介绍</text>
+                <input type="text" placeholder="使用规则介绍" class="input" v-model="rule" @change="" @input=""/>
+            </div>
         </div>
-        <text class="textTime" style="font-size: 32px">一</text>
-        <div  style="padding-left: 10px"@click="dateTwo" >
-            <text class="enddate" >{{endDate}}</text>
+        <div class="button" @click="complete">
+            <text class="bottonText">完成</text>
         </div>
-    </div>
-    <div class="introduced">
-        <text class="introducedText" style="font-size: 32px">规则介绍</text>
-        <input type="text" placeholder="使用规则介绍" class="input" v-model="rule" @change="" @input=""/>
-    </div>
-        </div>
-    <div class="button" @click="complete">
-        <text class="bottonText">完成</text>
-    </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
     .titleOne{
-        height: 80px;
+        height: 50px;
         border-left-width: 5px;
         flex-direction: row;
         align-items: center;
@@ -156,14 +156,14 @@
             return{
                 beginDate:'点击设置',
                 endDate:'点击设置',
-                type:'未设置',
                 scope:'',
                 money:'',
                 conditions:'',
                 rule:'',
-                codeName:'',
-                address:'未设置',
-                scene:'',
+                type:'满减',
+                codeName:'fullcut',
+                address:'全场',
+                scene:'all',
             }
         },
         components: {
@@ -177,6 +177,9 @@
             utils.initIconFont();
         },
         methods: {
+            goback:function () {
+                event.closeURL();
+            },
 //            适用范围选择
             scopesetting:function () {
                 var _this = this;
@@ -205,7 +208,7 @@
                 var _this = this;
                 picker.pick({
                     index:0,
-                    items:['满减','满折','红包']
+                    items:['满减','满折']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -215,10 +218,6 @@
                         }else if(e.data == 1){
                             _this.type = '满折'
                             _this.codeName = 'discount'
-                        }
-                        else{
-                            _this.type = '红包'
-                            _this.codeName = 'redbag'
                         }
                     }
                 })

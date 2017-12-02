@@ -201,7 +201,7 @@
                 })
             },
             coupons:function () {
-                event.openURL(utils.locate('view/shop/coupons/couponsList.js'),function () {
+                event.openURL(utils.locate('view/shop/coupon/list.js'),function () {
 
                 })
             },
