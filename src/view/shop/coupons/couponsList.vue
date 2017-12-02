@@ -263,8 +263,10 @@
                 }
             },
             add:function() {
-                event.openURL(utils.locate("view/shop/coupons/add.js"),function (message) {
-                    this.open()
+                let _this = this
+                event.openURL(utils.locate("view/shop/coupons/add.js"),function (mes) {
+                    if(mes.type == 'success')
+                    _this.open()
                 })
             },
             open:function () {
