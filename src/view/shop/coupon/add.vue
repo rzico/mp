@@ -6,12 +6,12 @@
                 <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
             </div>
             <div class="name">
-                <text class="nameText" style="font-size: 32px">优惠券类型</text>
-                <text class="nameText" style="font-size: 32px;padding-left: 70px" @click="typesetting">{{type}}</text>
+                <text class="nameText flex1" style="font-size: 32px">优惠券类型</text>
+                <text class="nameText flex3" style="font-size: 32px;padding-left: 70px" @click="typesetting">{{type}}</text>
             </div>
             <div class="scope">
-                <text class="scopeText" style="font-size: 32px">适用范围</text>
-                <text class="scopeText" style="font-size: 32px;padding-left: 100px" @click="scopesetting">{{address}}</text>
+                <text class="scopeText flex1" style="font-size: 32px">适用范围</text>
+                <text class="scopeText flex3" style="font-size: 32px;padding-left: 100px" @click="scopesetting">{{address}}</text>
             </div>
             <div class="money">
                 <text class="moneyText" style="font-size: 32px">满减面额</text>
@@ -84,10 +84,12 @@
     .inputconditions{
         font-size: 28px;
         height: 32px;
+        line-height: 60px;
         margin-left: 20px;
         width: 150px;
     }
     .inputMoney{
+        line-height: 60px;
         font-size: 28px;
         height: 32px;
         margin-left: 100px;
