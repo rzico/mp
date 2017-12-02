@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper bkg-white">
-        <navbar :title="title" @click="goback"> </navbar>
+        <navbar :title="title" @goback="goback"> </navbar>
         <captcha ref="captcha" :title="caption"  @onclick="onclick":mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
     </div>
 </template>
