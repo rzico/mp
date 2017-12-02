@@ -78,7 +78,7 @@ let utilsFunc = {
     },
     //判空
     isNull (value) {
-        if (value == null || value == undefined || value == '' ) {
+        if (value == null || value == undefined || value == ''  || value == 'undefined') {
             return true
         } else {
             return false
@@ -324,21 +324,6 @@ let utilsFunc = {
                 return 'addBgImgIPhoneX';
             }else{
                 return s;
-            }
-        }
-    },
-    //    控制滑动时文集box的显示
-    addDistance:function () {
-        let s = this.device();
-        if (this.isNull(s)) {
-            return ""
-        } else {
-            if(s == 'V1'){
-                return 294;
-            }else if(s == 'IPhoneX'){
-                return 304;
-            }else{
-                return 284;
             }
         }
     },

@@ -13,7 +13,7 @@
         <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
         <div>
             <!--顶部白色区域-->
-            <div class="header headerMore" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw">
                     <div style="width: 50px;">
@@ -38,7 +38,7 @@
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
             <!--只能多写一个顶部栏。否则无法适应-->
-            <div  class="corpusBox "   style="top: 136px;position: fixed"  :class="[twoTop ? 'isvisible' : 'novisible']">
+            <div  class="corpusBox hideCorpus"   :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
                 <scroller scroll-direction="horizontal" class="corpusScroll">
                     <div class="articleClass">
                         <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
@@ -54,9 +54,9 @@
         </div>
         <!--</transition-group>-->
         <!--顶部个人信息栏-->
-        <div class="topBox" :class="[classHeader()]" ref='topBox'>
+        <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
             <!--背景图片-->
-            <image   class="backgroundImage" :src="bgImgUrl"></image>
+            <image   class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
             <!--遮罩层-->
             <!--<image class="backgroundMask" :src="maskUrl"></image>-->
             <div  class="topHead">
@@ -185,6 +185,9 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .hideCorpus{
+        top: 136px;position: fixed;
+    }
     .mask{
         position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
     }
@@ -297,12 +300,13 @@
     /*顶部导航栏*/
     .headerMore {
         position:fixed;
-        background-color: #fff;
-        left: 0;
-        right: 0;
         top: 0px;
-        height: 136px;
         border-bottom-width: 0px;
+        /*left: 0;*/
+        /*right: 0;*/
+        /*top: 0px;*/
+        /*height: 136px;*/
+        /*border-bottom-width: 0px;*/
     }
     /*文集导航栏动画*/
     .navTransition-enter-active{
@@ -595,8 +599,8 @@
                 collectNum:0,
                 fansNum:0,
                 focusNum:0,
-                imageUrl:utils.locate('resources/images/background.jpg'),
-                bgImgUrl:utils.locate('resources/images/background.jpg'),
+                imageUrl:utils.locate('resources/images/background.png'),
+                bgImgUrl:utils.locate('resources/images/background.png'),
 //                maskUrl:utils.('resources/images/frosted.png'),
                 showLoading: 'hide',
                 corpusList:[{
@@ -659,16 +663,56 @@
             })
         },
         methods: {
+            //            监听设备型号,控制隐藏的文集高度
+//            hideCorpus:function () {
+//                let dc = utils.hideCorpus();
+//                return dc;
+//            },
+////            监听设备型号,控制顶部人物信息栏背景图大小
+//            headerBgImg:function () {
+//                let dc = utils.addBgImg();
+//                return dc;
+//            },
+////            监听设备型号,控制顶部人物信息栏
+//            headerInfo:function () {
+//                let dc = utils.addInfo();
+//                return dc;
+//            },
+////            监听设备型号,控制导航栏设置 返回按钮
+//            classTop:function () {
+//                let dc = utils.addTop();
+//                return dc;
+//            },
+////            监听设备型号,控制导航栏高度
+//            classHeader:function () {
+//                let dc = utils.device();
+//                return dc;
+//            },
+
+// /            监听设备型号,控制隐藏的文集高度
+            hideCorpus:function () {
+                let dc = utils.hideCorpus();
+                return 'hideCorpusIPhoneX';
+            },
+//            监听设备型号,控制顶部人物信息栏背景图大小
+            headerBgImg:function () {
+                let dc = utils.addBgImg();
+                return 'addBgImgIPhoneX';
+            },
+//            监听设备型号,控制顶部人物信息栏
+            headerInfo:function () {
+                let dc = utils.addInfo();
+                return 'addInfoIPhoneX';
+            },
 //            监听设备型号,控制导航栏设置 返回按钮
             classTop:function () {
                 let dc = utils.addTop();
-                return dc
+                return 'addTopIPhoneX';
             },
 //            监听设备型号,控制导航栏高度
             classHeader:function () {
                 let dc = utils.device();
-
-                return dc
+                return 'IPhoneX';
             },
 //            判断是否有消息
             isEmpty(){

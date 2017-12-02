@@ -1,22 +1,21 @@
 <template>
     <scroller class="bkg-gray" >
         <navbar :title="title"  @goback="goback" ></navbar>
-        <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="addCorpus()">
+        <div class="bgWhite addCorpus "  @click="addCorpus()">
+            <div class="lineStyle pr30" >
                 <text class="lineText">添加文集</text>
                 <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
             </div>
         </div>
         <!--文集行背景-->
-        <div class="bgWhite" @click="chooseCorpus(0,'全部文章')">
+        <div class="bgWhite">
             <!--文集行内容-->
             <div class="lineStyle bottomBorder">
                 <!--左侧文集名称-->
                 <div class="flex-row">
                     <text class="lineText">全部文章</text>
-                    <text class="lineText">({{allTotal}})</text>
                 </div>
-                <div v-if="corpusId == 0" >
+                <div v-if="corpusId == 0 || corpusId == 'undefined'" >
                     <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                 </div>
             </div>
@@ -24,7 +23,7 @@
         <!--绑定动画-->
         <transition-group name="paraTransition" tag="div">
             <!--文集行背景-->
-            <div class="bgWhite " v-for="(item,index) in corpusList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
+            <div class="bgWhite changeCorpus" v-for="(item,index) in corpusList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
                 <!--文集行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧文集名称-->
@@ -42,6 +41,12 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .addCorpus:active{
+        background-color: #ccc;
+    }
+    .changeCorpus:active{
+        background-color: #ccc;
+    }
     .limitWidth{
         text-overflow: ellipsis;
         max-width: 400px;
@@ -99,7 +104,8 @@
                 allTotal:69,
                 corpusList:[],
                 corpusId:0,
-                corpusName:'全部文章'
+                corpusName:'全部文章',
+                articleId:''
             }
         },
         components: {
@@ -112,6 +118,7 @@
             var _this = this;
             utils.initIconFont();
             this.getCorpus();
+            this.articleId = utils.getUrlParameter('articleId');
              let urlId = utils.getUrlParameter('corpusId');
             if(utils.isNull(urlId)){
 
@@ -121,18 +128,18 @@
         },
         methods:{
             goback(){
-                var _this = this;
-                this.corpusList.forEach(function (item) {
-                    if(item.corpusId == _this.corpusId){
-                        _this.corpusName = item.name;
-                    }
-                })
-                let E = {
-                    corpusId : this.corpusId,
-                    corpusName : this.corpusName
-                }
-                let backData = utils.message('success','成功',E);
-                event.closeURL(backData);
+//                var _this = this;
+//                this.corpusList.forEach(function (item) {
+//                    if(item.corpusId == _this.corpusId){
+//                        _this.corpusName = item.name;
+//                    }
+//                })
+//                let E = {
+//                    corpusId : this.corpusId,
+//                    corpusName : this.corpusName
+//                }
+//                let backData = utils.message('success','成功',E);
+                event.closeURL();
             },
 //            添加文集
             addCorpus(){
@@ -194,15 +201,30 @@
             },
 //            更改文集后
             chooseCorpus:function (id,name,itemCount) {
-                this.corpusId = id;
-                this.corpusName = name;
-                let E = {
-                    corpusId : this.corpusId,
-                    corpusName : this.corpusName,
-                    count:itemCount
-                }
-                let backData = utils.message('success','成功',E);
-                event.closeURL(backData);
+
+                let _this = this;
+                if(_this.corpusId == id){
+                    return;
+                };
+                POST('weex/member/article/update.jhtml?id=' + this.articleId + '&articleCatalogId=' + id).then(
+                    function (data) {
+                        if(data.type == 'success'){
+                            _this.corpusId = id;
+                            _this.corpusName = name;
+                            let E = {
+                                corpusId : _this.corpusId,
+                                corpusName : _this.corpusName,
+                                count:parseInt(itemCount) + 1
+                            }
+                            let backData = utils.message('success','成功',E);
+                            event.closeURL(backData);
+                        }else {
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    }
+                )
             }
         }
     }

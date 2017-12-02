@@ -273,7 +273,7 @@
 //            跳转至选择文集
             goChooseCorpus:function () {
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + this.corpusId),
+                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + this.corpusId  + '&articleId=' +  this.articleId),
 //                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + _this.corpusId,
                     function (data) {
                         if(data.type == 'success' && data.data != ''){

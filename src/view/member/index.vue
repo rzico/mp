@@ -37,8 +37,8 @@
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
             <!--只能多写一个顶部栏。否则无法适应-->
-            <div  class="corpusBox hideCorpus"     :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
-                <scroller scroll-direction="horizontal" class="corpusScroll">
+            <div  class="corpusBox hideCorpus" :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
+                <scroller scroll-direction="horizontal" class="corpusScroll boder-bottom">
                     <div class="articleClass">
                         <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
@@ -103,7 +103,7 @@
             <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
             <!--</div>-->
             <!--<div  class="corpusBox"  :class = "[isTop  ? 'posFixed' : 'posRelative']">-->
-            <div  class="corpusBox"  >
+            <div  class="corpusBox" >
                 <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
                         <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
@@ -161,7 +161,7 @@
                     <div class="rightHidden" v-if="item.value.articleOption.articleCatalog.id != '99'">
                         <div class="rightHiddenSmallBox">
                             <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
-                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
+                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                                 <text class="rightHiddenText">编辑</text>
                             </div>
                             <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
@@ -171,7 +171,7 @@
                         </div>
                         <div class="rightHiddenSmallBox">
                             <div class="rightHiddenIconBox" @click="jumpTop()">
-                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>
                                 <text class="rightHiddenText">置顶</text>
                             </div>
                             <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
@@ -301,6 +301,7 @@
         /*background-color: #fff;*/
         top: 0px;
         border-bottom-width: 0px;
+
     }
     /*文集导航栏动画*/
     .navTransition-enter-active{
@@ -506,9 +507,9 @@
     .articleClass{
         flex-direction: row;
         padding-left: 10px;
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
+        /*border-bottom-width: 1px;*/
+        /*border-style: solid;*/
+        /*border-color: gainsboro;*/
         height:80px;
         background-color: #fff;
     }
@@ -761,7 +762,32 @@
                 return this.articleList.length==0 && this.corpusId != '';
 //                return this.articleList.length==0 ;
             },
-//            监听设备型号,控制隐藏的文集高度
+// /            监听设备型号,控制隐藏的文集高度
+//            hideCorpus:function () {
+//                let dc = utils.hideCorpus();
+//                return 'hideCorpusIPhoneX';
+//            },
+////            监听设备型号,控制顶部人物信息栏背景图大小
+//            headerBgImg:function () {
+//                let dc = utils.addBgImg();
+//                return 'addBgImgIPhoneX';
+//            },
+////            监听设备型号,控制顶部人物信息栏
+//            headerInfo:function () {
+//                let dc = utils.addInfo();
+//                return 'addInfoIPhoneX';
+//            },
+////            监听设备型号,控制导航栏设置 返回按钮
+//            classTop:function () {
+//                let dc = utils.addTop();
+//                return 'addTopIPhoneX';
+//            },
+////            监听设备型号,控制导航栏高度
+//            classHeader:function () {
+//                let dc = utils.device();
+//                return 'IPhoneX';
+//            },
+            //            监听设备型号,控制隐藏的文集高度
             hideCorpus:function () {
                 let dc = utils.hideCorpus();
                 return dc;
@@ -786,6 +812,8 @@
                 let dc = utils.device();
                 return dc;
             },
+
+
             getAllArticle(){
                 var articleClass = '';
                 if(!utils.isNull(this.corpusId)){
@@ -890,10 +918,10 @@
 //            右侧隐藏栏里跳转文集
             jumpCorpus:function (item) {
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id),
+                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id + '&articleId=' + item.key),
 //                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
                     function (data) {
-                        if(data.type == 'success'){
+                        if(data.type == 'success' && data.data != ''){
                             item.value.articleOption.articleCatalog.id = data.data.corpusId;
                             item.value.articleOption.articleCatalog.name = data.data.corpusName;1
                             item.value.articleOption.articleCatalog.count = data.data.count;
@@ -1131,6 +1159,7 @@
                     this.settingColor = '';
 //                    event.changeWindowsBar("false");
                 }
+                this.opacityNum = opacityDegree;
 //                if(opacityDegree > 0.4){
 //                    event.changeWindowsBar("true");
 //                    this.settingColor = 'black';
@@ -1138,11 +1167,8 @@
 //                    this.settingColor = 'white';
 //                    event.changeWindowsBar("false");
 //                }
-                this.opacityNum = opacityDegree;
 
 //                if(scrollTop >=284){
-                let distance = utils.addDistance();
-                event.toast(distance);
                 if(scrollTop >= 284){
                     this.twoTop = true;
 //                    this.corpusScrollTop = 136;
