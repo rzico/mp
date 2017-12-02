@@ -264,7 +264,7 @@
             },
             add:function() {
                 let _this = this
-                event.openURL(utils.locate("view/shop/coupons/add.js"),function (mes) {
+                event.openURL(utils.locate("view/shop/coupon/add.js"),function (mes) {
                     if(mes.type == 'success')
                     _this.open()
                 })
