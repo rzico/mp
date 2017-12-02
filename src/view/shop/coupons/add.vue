@@ -3,41 +3,43 @@
             <navbar :title="title"  @goback="goback"  > </navbar>
         <div style="background-color: white">
     <div class="titleOne">
-        <text class="titleText">填写优惠券信息:</text>
+        <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
     </div>
     <div class="name">
-        <text class="nameText">优惠券类型</text>
-        <input type="text" placeholder="请输入优惠券类型" class="inputone" @change="" @input="oninput"/>
+        <text class="nameText" style="font-size: 32px">优惠券类型</text>
+        <text class="nameText" style="font-size: 32px;padding-left: 70px" @click="typesetting">{{type}}</text>
     </div>
     <div class="scope">
-        <text class="scopeText">适用范围</text>
-        <input type="text" placeholder="请输入优惠券适用范围" class="input" @change="" @input="oninput"/>
+        <text class="scopeText" style="font-size: 32px">适用范围</text>
+        <text class="scopeText" style="font-size: 32px;padding-left: 100px" @click="scopesetting">{{address}}</text>
     </div>
     <div class="money">
-        <text class="moneyText">满减面额</text>
-        <input type="text" placeholder="请输入满减面额" class="input" @change="" @input="oninput"/>
-        <text class="conditionsText">元</text>
+        <text class="moneyText" style="font-size: 32px">满减面额</text>
+        <input type="number" placeholder="请输入满减面额" class="inputMoney" v-model="money" @change="" @input=""/>
+        <text class="conditionsText" style="font-size: 32px">元/折</text>
     </div>
     <div class="conditions">
-        <text class="conditionsText">使用条件</text>
-        <text class="man" style="padding-left: 100px">满</text>
-        <input type="text" placeholder="0为无门槛" class="inputconditions" @change="" @input="oninput"/>
-        <text class="conditionsText">元使用</text>
+        <text class="conditionsText" style="font-size: 32px">使用条件</text>
+        <text class="man" style="padding-left: 100px;font-size: 32px">满</text>
+        <input type="number" placeholder="0为无门槛" class="inputconditions" v-model="conditions" @change="" @input=""/>
+        <text class="conditionsText" style="font-size: 32px">元使用</text>
     </div>
     <div class="time" >
-        <text class="textTime">使用时间</text>
-        <div style="background-color: red" @click="Date">
-        <text class="begindate" >{{beginDate}}2222</text>
+        <text class="textTime" style="font-size: 32px">使用时间</text>
+        <div  style="padding-left: 100px"@click="date" >
+        <text class="begindate" >{{beginDate}}</text>
         </div>
-        <text class="textTime">一</text>
-        <input type="text" placeholder="" class="inputtime" @change="" @input="oninput"/>
+        <text class="textTime" style="font-size: 32px">一</text>
+        <div  style="padding-left: 10px"@click="dateTwo" >
+            <text class="enddate" >{{endDate}}</text>
+        </div>
     </div>
     <div class="introduced">
-        <text class="introducedText">规则介绍</text>
-        <input type="text" placeholder="使用规则介绍" class="input" @change="" @input="oninputeight"/>
+        <text class="introducedText" style="font-size: 32px">规则介绍</text>
+        <input type="text" placeholder="使用规则介绍" class="input" v-model="rule" @change="" @input=""/>
     </div>
         </div>
-    <div class="button">
+    <div class="button" @click="complete">
         <text class="bottonText">完成</text>
     </div>
     </div>
@@ -55,11 +57,13 @@
         margin-bottom: 20px;
         margin-top: 20px;
     }
-    .titleText{
-
-    }
     .begindate{
-        width:300px;
+        color: #888;
+        width:190px;
+    }
+    .enddate{
+        color: #888;
+        width:190px;
     }
     .name{
         flex-direction: row;
@@ -77,22 +81,16 @@
         height: 32px;
         width: 500px;
     }
-    .inputone{
-        padding-left: 70px;
-        font-size: 28px;
-        height: 32px;
-        width: 300px;
-    }
     .inputconditions{
         font-size: 28px;
         height: 32px;
         margin-left: 20px;
-        width: 100px;
+        width: 150px;
     }
-    .inputtime{
+    .inputMoney{
         font-size: 28px;
         height: 32px;
-        margin-left: 20px;
+        margin-left: 100px;
         width: 200px;
     }
     .scope{
@@ -105,15 +103,6 @@
         padding-left: 20px;
     }
     .money{
-        flex-direction: row;
-        align-items: center;
-        border-bottom-width: 1px;
-        border-bottom-color: #cccccc;
-        background-color: white;
-        height: 100px;
-        padding-left: 20px;
-    }
-    .discount{
         flex-direction: row;
         align-items: center;
         border-bottom-width: 1px;
@@ -165,7 +154,16 @@
     export default {
         data:function () {
             return{
-                beginDate:'未设置',
+                beginDate:'点击设置',
+                endDate:'点击设置',
+                type:'未设置',
+                scope:'',
+                money:'',
+                conditions:'',
+                rule:'',
+                codeName:'',
+                address:'未设置',
+                scene:'',
             }
         },
         components: {
@@ -179,12 +177,53 @@
             utils.initIconFont();
         },
         methods: {
-            oninput: function (event) {
-                this.vendorName = event.value;
-                console.log('oninput', event.value);
+//            适用范围选择
+            scopesetting:function () {
+                var _this = this;
+                picker.pick({
+                    index:0,
+                    items:['全场','店内','商城']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.address = '全场'
+                            _this.scene = 'all'
+
+                        }else if(e.data == 1){
+                            _this.address = '店内'
+                            _this.scene = 'shop'
+                        }
+                        else{
+                            _this.address = '商城'
+                            _this.scene = 'mall'
+                        }
+                    }
+                })
             },
-            Date:function () {
-                utils.debug(111)
+//            优惠券类型选择
+            typesetting:function () {
+                var _this = this;
+                picker.pick({
+                    index:0,
+                    items:['满减','满折','红包']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.type = '满减'
+                            _this.codeName = 'fullcut'
+
+                        }else if(e.data == 1){
+                            _this.type = '满折'
+                            _this.codeName = 'discount'
+                        }
+                        else{
+                            _this.type = '红包'
+                            _this.codeName = 'redbag'
+                        }
+                    }
+                })
+            },
+            date:function () {
                 var _this = this;
                 picker.pickDate({
                     value: _this.beginDate
@@ -193,7 +232,31 @@
                         _this.beginDate = event.data
                     }
                 })
-
+            },
+            dateTwo:function () {
+                var _this = this;
+                picker.pickDate({
+                    value: _this.endDate
+                }, event => {
+                    if (event.result === 'success') {
+                        _this.endDate = event.data
+                    }
+                })
+            },
+            complete:function () {
+                let _this = this;
+                POST('weex/member/coupon/submit.jhtml?type='+_this.codeName+'&scope='+_this.scene+'&beginDate='+_this.beginDate
+                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            event.closeURL(mes)
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content);
+                    }
+                )
             }
         }
     }

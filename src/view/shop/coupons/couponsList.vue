@@ -1,11 +1,14 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" > </navbar>
-        <search @gosearch="gosearch" @scan="scan"> </search>
+        <navbar :title="title" @goback="goback" @goComplete="setting" > </navbar>
+        <div class="code" @click="scan">
+            <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+            <text class="headText" style="font-size: 28px;color: #cccccc">核销优惠券</text>
+        </div>
         <div class="addFriend" @click="add">
             <div class="flex-row " style="align-items:center">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe635;</text>
-                <text class="title  " style="margin-left: 30px" >领取优惠券</text>
+                <text class="title  " style="margin-left: 30px" >新增优惠券</text>
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
@@ -26,7 +29,7 @@
                                 <text style="font-size: 50px;color: red;font-weight: 800;margin-left: 10px">{{num.amount}}</text>
                                 </div>
                                 <div class="name">
-                                    <text class="scope">{{num.scope}}</text>
+                                    <text class="scope">{{num | judgment}}</text>
                                 </div>
                             </div>
                         </div>
@@ -54,6 +57,25 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .iconfont{
+        color: #cccccc;
+        margin-top: 5px;
+        margin-right: 20px;
+    }
+    .code{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        height: 60px;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-width: 1px;
+        border-color: #cccccc;
+        border-radius: 10px;
+    }
     .time{
         width: 550px;
     }
@@ -196,7 +218,6 @@
         props: {
             title: { default: "优惠券"},
             noDataHint: { default: "尚未拥有优惠券"},
-            complete:{ default:"设置"}
         },
         created() {
             utils.initIconFont();
@@ -209,15 +230,13 @@
             });
         },
         filters:{
-
-            watchCode:function (value) {
-                return value.substr(-6)
-            },
-            watchStatus:function (data) {
-                if(data.status == 'loss'){
-                    return '挂失中'
-                }else {
-                    return ''
+            judgment:function (data) {
+                if(data.scope == 'all'){
+                    return '全场'
+                }if(data.scope == 'shop'){
+                    return '店内'
+                } else {
+                    return '商城'
                 }
 
             }
@@ -244,17 +263,15 @@
                 }
             },
             add:function() {
-//                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-//
-//                })
+                event.openURL(utils.locate("view/shop/coupons/add.js"),function (message) {
+                    this.open()
+                })
             },
             open:function () {
                 var _this = this;
                 GET('weex/member/coupon/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
-//                    utils.debug(mes)
                     if (mes.type == 'success') {
                             _this.lists =mes.data.data
-
                     } else {
                         event.toast(mes.content);
                     }
