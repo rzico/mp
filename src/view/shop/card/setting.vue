@@ -3,9 +3,10 @@
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"  > </navbar>
         <list>
             <cell>
-    <div class="setting" v-for="num in div">
+    <div class="setting" v-for="(num,index) in div">
         <div class="titile">
             <text class="tiele">活动设置</text>
+            <text class="tiele" @click="del">删除</text>
         </div>
         <div class="money">
             <text class="monyeTexttwo">充</text>
@@ -58,8 +59,10 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
         padding-left: 30px;
+        padding-right: 30px;
         background-color: #ccc;
         flex-direction: row;
+        justify-content: space-between;
         align-items: center;
         height: 100px;
     }
@@ -125,8 +128,12 @@
             complete:{ default:"完成"}
         },
         methods: {
+            del:function (index) {
+                let _this = this;
+                _this.div.splice(index,1);
+            },
             add:function () {
-                this.div.push({amount:'',present:'',vip:''})
+                this.div.push({amount:'',present:'0',vip:'vip1'})
             },
             goback:function () {
                 event.closeURL()
@@ -149,13 +156,17 @@
             goComplete:function () {
                 var threedata = [];
                 this.div.forEach(function(item,index){
-                    threedata.push({
-                        id:index,
-                        amount:item.amount,
-                        present: item.present,
-                        vip:item.vip
-                    })
-                })
+                    if(item.amount != '' && item.amount != '0') {
+                        threedata.push({
+                            id: index,
+                            amount: item.amount,
+                            present: item.present,
+                            vip: item.vip
+                        })
+                    }else {
+                        event.toast('金额不能为空')
+                    }
+                });
                  threedata = JSON.stringify(threedata);
 //                utils.debug(threedata)
                 POST('weex/member/topiccard/activity.jhtml',threedata).then(

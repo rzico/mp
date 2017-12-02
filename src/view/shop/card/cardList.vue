@@ -3,6 +3,7 @@
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" > </navbar>
         <div class="code" @click="scan">
             <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+            <text class="headText" style="font-size: 28px;color: #cccccc">搜索会员卡</text>
         </div>
         <div class="addFriend" @click="add">
             <div class="flex-row " style="align-items:center">
@@ -21,7 +22,7 @@
             <cell :style="{minHeight:screenHeight + 'px'}">
                 <div v-for="num in lists" >
                     <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="jump()">
+                        <div class="friendsLine" @click="jump(num.id)">
                             <div class="image">
                             <image :src="num.logo" class="friendsImage"></image>
                                 <text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>
@@ -51,6 +52,11 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .iconfont{
+        color: #cccccc;
+        margin-top: 5px;
+        margin-right: 20px;
+    }
     .code{
         flex-direction: row;
         justify-content: center;
@@ -179,7 +185,9 @@
                 lists:[],
                 screenHeight:0,
                 pageSize:10,
-                listCurrent:0
+                listCurrent:0,
+                code:'',
+                id:''
             }
         },
         props: {
@@ -256,8 +264,27 @@
             },
 //            触发自组件的二维码方法
             scan:function () {
+                let _this=this
                 event.scan(function (message) {
-                    event.toast(message);
+                    utils.readScan(message.data,function (data) {
+                        if(data.data.type == '818801'){
+                            _this.code =data.data.code
+                            GET('weex/member/card/infobycode.jhtml?code='+_this.code,function (mes) {
+                                if (mes.type == 'success') {
+                                   _this.id = mes.data.card.id;
+//                                   utils.debug(_this.id)
+                                    event.openURL(utils.locate('view/shop/card/view.js?id='+_this.id),function (message) {
+
+                                    })
+                                } else {
+                                    event.toast(res.content);
+                                }
+                            }, function (err) {
+                                event.toast(err.content)
+                            })
+                        }
+                    })
+
                 });
             },
             isNoEmpty:function() {
