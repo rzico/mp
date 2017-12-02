@@ -125,6 +125,7 @@
             goback:function () {
                 event.closeURL()
             },
+//            判断code是否有值，无值弹开扫一扫，有值回到列表
             select:function () {
                 if(utils.isNull(this.code)) {
                     this.scan()
@@ -136,9 +137,7 @@
             scan:function() {
                 var _this=this
                 event.scan(function (message) {
-
                     utils.readScan(message.data,function (data) {
-
                         _this.code = data.data.code
                         if(data.type == 'success'){
                             POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(

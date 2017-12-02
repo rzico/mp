@@ -144,7 +144,6 @@
     /*详细地址*/
     .address{
         flex-direction: row;
-        justify-content: space-between;
         align-items: center;
         background-color: white;
         border-bottom-color: #ccc;
@@ -180,8 +179,8 @@
     .addressInput{
         font-size: 28px;
         height: 32px;
-        width: 200px;
-        margin-right: 48px;
+        width: 500px;
+        padding-left: 100px;
         color: #999;
     }
     /*联系电话*/

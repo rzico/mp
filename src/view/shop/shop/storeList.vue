@@ -10,7 +10,11 @@
                 <text class="indicator">下拉刷新</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
-        <div class="shops" v-for="num in lists" @click="modification(num.id)">
+        <div class="shops" v-for="(num,index) in lists" >
+            <div class="deleteBox bkg-delete" @click="del(num.id,index)">
+                <text class="deleteText">删除</text>
+            </div>
+            <div  class="message" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
             <div class="shopLogo" >
                 <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor |thumbnail "></image>
             </div>
@@ -24,6 +28,7 @@
                 <text class="concretely">{{num.address}}</text>
                 </div>
             </div>
+            </div>
         </div>
             </cell>
             <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
@@ -32,7 +37,20 @@
         </list>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style>
+    .message{
+        flex-direction: row;
+        align-items: center;
+        width: 750px;
+        background-color: white;
+    }
+    .deleteText{
+        font-size: 32px;color: #fff;
+    }
+    .deleteBox{
+        position: absolute;right: 0px;top: 0px;height: 230px;align-items: center;width: 130px;justify-content: center;
+    }
     .head {
         background-color: white;
         border-width: 0px;
@@ -97,6 +115,8 @@ import noData from '../../../include/noData.vue';
 
 var event = weex.requireModule('event');
 const modal = weex.requireModule('modal');
+var animationPara;//执行动画的消息
+const animation = weex.requireModule('animation');
 
 export default {
     data() {
@@ -130,15 +150,16 @@ export default {
     methods:{
         modification:function (id) {
 //            utils.debug('view/shop/shop/newShop.js?'+id)
-            let _this =this;
+                    let _this =this;
                     event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
-                        if(message == 'success'){
+                        utils.debug(message)
+                        if(message.type == 'success'){
                             _this.onrefresh()
                         }
                     })
         },
         open:function () {
-            var _this = this;
+            let _this = this;
             GET('weex/member/shop/list.jhtml',function (mes) {
                 if (mes.type == 'success') {
                     _this.lists = mes.data.data
@@ -179,13 +200,98 @@ export default {
         goback: function () {
             event.closeURL()
         },
+
         add:function () {
-            var _this= this
+            let _this= this;
             event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
-                if(message == 'success'){
-                    _this.open()
+                utils.debug(message)
+                if(message.type == 'success'){
+                    _this.onrefresh()
                 }
             })
+        },
+        onpanmove:function (e,index) {
+//                获取当前点击的元素。
+            var _this = this;
+            if(e.direction == 'right'){
+                _this.canScroll = false;
+                animation.transition(animationPara, {
+                    styles: {
+                        transform: 'translateX(0)',
+                    },
+                    duration: 350, //ms
+                    timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                    needLayout:false,
+                    delay: 0 //ms
+                },function () {
+                    _this.canScroll = true;
+                })
+            }else if(e.direction == 'left'){
+                _this.canScroll = false;
+//                  modal.toast({message:distance});
+                animation.transition(animationPara, {
+                    styles: {
+                        transform: 'translateX(-190)',
+                    },
+                    duration:350, //ms
+                    timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                    needLayout:false,
+                    delay: 0 //ms
+                },function () {
+                    _this.canScroll = true;
+                })
+            }
+        },
+        //            点击屏幕时
+        onFriendtouchstart:function (e,index) {
+            var _this = this;
+            if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+            }else{
+                animation.transition(animationPara, {
+                    styles: {
+                        transform: 'translateX(0)',
+                    },
+                    duration: 350, //ms
+                    timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+            }
+//                获取当前点击的元素。
+            animationPara =  e.currentTarget;
+        },
+//        删除
+        del:function (id,index) {
+            let _this =this
+            utils.debug('weex/member/shop/delete.jhtml?shopId='+id)
+            POST('weex/member/shop/delete.jhtml?shopId='+id).then(
+                function (mes) {
+                    if (mes.type == "success") {
+                        //                            把动画收回来。
+                        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                        }else{
+                            animation.transition(animationPara, {
+                                styles: {
+                                    transform: 'translateX(0)',
+                                },
+                                duration: 10, //ms
+                                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                needLayout:false,
+                                delay: 0 //ms
+                            })
+                        }
+                        _this.lists.splice(index,1);
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast("网络不稳定");
+                }
+            )
         }
     }
 }
