@@ -123,15 +123,14 @@
             </div>
             <!--文章模块-->
             <div :style="{minHeight:screenHeight + 'px'}">
-                <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--绑定动画-->
-                <!--<transition-group name="paraTransition" tag="div">-->
+                <transition-group name="paraTransition" tag="div">
                 <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item,index)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
+                <div class="articleBox"  v-for="(item,index) in articleList" :key="index" @click="goArticle(item,index)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                     <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
                     <div class="atricleHead" >
                         <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                        <text class="articleSign">{{item.value.articleOption | watchWho}}</text>
+                        <text class="articleSign" :class="[item.sort.substring(0,1) == '1' ? 'bd-primary' : ' ',item.sort.substring(0,1) == '1' ? 'primary' : ' ']">{{item | watchWho}}</text>
                         <text class="articleTitle">{{item.value.title}}</text>
                     </div>
                     <!--文章封面-->
@@ -170,10 +169,15 @@
                             </div>
                         </div>
                         <div class="rightHiddenSmallBox">
-                            <div class="rightHiddenIconBox" @click="jumpTop()">
+                            <div class="rightHiddenIconBox"  @click="jumpTop(item,index)">
                                 <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>
-                                <text class="rightHiddenText">置顶</text>
+                                <text class="rightHiddenText" v-if="item.sort.substring(0,1) != '1'">置顶</text>
+                                <text class="rightHiddenText" v-else>取消置顶</text>
                             </div>
+                            <!--<div class="rightHiddenIconBox" v-else @click="jumpTop(item,index)">-->
+                                <!--<text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>-->
+                                <!--<text class="rightHiddenText">取消置顶</text>-->
+                            <!--</div>-->
                             <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
                                 <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                                 <text class="rightHiddenText">文集</text>
@@ -196,7 +200,9 @@
                         </div>
                     </div>
                 </div>
-                <!--</transition-group>-->
+                </transition-group>
+
+                <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--帮助使用文章-->
                 <div class="articleBox" v-for="item in helpList" v-if="corpusId == ''">
                     <div class="atricleHead">
@@ -214,6 +220,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <!--</div>-->
@@ -324,24 +331,24 @@
     }
 
     /*文章段落动画*/
-    /*.paraTransition-enter-active{*/
-    /*transition: all 0.2s;*/
-    /*}*/
-    /*.paraTransition-leave-active {*/
-    /*transition: all 0.2s;*/
-    /*}*/
-    /*.paraTransition-leave-to{*/
-    /*transform: translateX(0px);*/
-    /*opacity: 0;*/
-    /*}*/
-    /*.paraTransition-enter-to{*/
-    /*transform: translateX(0px);*/
-    /*opacity: 1;*/
-    /*}*/
-    /*.paraTransition-enter{*/
-    /*transform: translateX(0px);*/
-    /*opacity: 0;*/
-    /*}*/
+    .paraTransition-enter-active{
+    transition: all 0.2s;
+    }
+    .paraTransition-leave-active {
+    transition: all 0.2s;
+    }
+    .paraTransition-leave-to{
+    transform: translateX(0px);
+    opacity: 0;
+    }
+    .paraTransition-enter-to{
+    transform: translateX(0px);
+    opacity: 1;
+    }
+    .paraTransition-enter{
+    transform: translateX(0px);
+    opacity: 0;
+    }
     .rightBlur{
         right: 100px;
         width:20px;
@@ -386,6 +393,9 @@
         font-size: 24px;
         color: #999;
     }
+    /*.rightHiddenIcon:active{*/
+        /*background-color: #ccc;*/
+    /*}*/
     .rightHiddenIcon{
         text-align: center;
         line-height: 90px;
@@ -480,7 +490,6 @@
         border-style: solid;
         border-color: gainsboro;
     }
-
     .indicator{
         width:750px;
         height: 80px;
@@ -696,10 +705,13 @@
         },
         filters:{
             watchWho:function (value) {
-                if(value.articleCatalog.id == '99'){
+                if(value.sort.substring(0,1) == '1'){
+                    return '置顶';
+                }
+                if(value.value.articleOption.articleCatalog.id == '99'){
                     return '已删除';
                 }
-                switch (value.authority){
+                switch (value.value.articleOption.authority){
                     case 'isPublic' ://公开
                         return '公开';
                         break;
@@ -1456,8 +1468,80 @@
                     }
                 })
             },
-            jumpTop:function () {
-                event.toast('文章置顶');
+//            置顶
+            jumpTop:function (item,index) {
+                var saveSort;
+                if(item.sort.substring(0,1) == '0'){
+                    saveSort = '1,'+ item.sort.substring(2);
+
+
+
+
+
+
+
+
+
+
+
+
+                }else{
+                    saveSort = '0,'+ item.sort.substring(2);
+                }
+
+
+                let _this = this;
+                let saveData = {
+                    type:item.type,
+                    key:item.key,
+                    value:item.value,
+                    sort:saveSort,
+                    keyword:',['+ item.value.articleOption.articleCatalog.id +'],' + item.value.title + ','
+                }
+                event.save(saveData,function(data){
+                    if(data.type == 'success'){
+
+                            let option = {
+                                type:item.type,
+                                key:item.key
+                            }
+                            event.find(option,function (e) {
+                                if(e.type == 'success'){
+//                                    把动画收回来
+                                    if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                                    }else{
+                                        animation.transition(animationPara, {
+                                            styles: {
+                                                transform: 'translateX(0)',
+                                            },
+                                            duration: 10, //ms
+                                            timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                            needLayout:false,
+                                            delay: 0 //ms
+                                        })
+                                    }
+                                    e.data.value = JSON.parse(e.data.value);
+                                    if(item.sort.substring(0,1) == '0'){
+                                        _this.articleList.splice(index,1);
+                                        _this.articleList.splice(0,0,e.data);
+                                        event.toast('置顶成功');
+                                    }else{
+//                                        _this.articleList.splice(index,1);
+//                                        _this.articleList.splice(index,0,e.data);
+
+                                        _this.articleList = [];
+                                        _this.getAllArticle();
+                                        event.toast('取消成功');
+                                    }
+
+                                }
+                            })
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+//                event.toast('文章置顶');
             },
         }
     }

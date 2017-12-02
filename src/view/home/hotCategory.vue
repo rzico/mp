@@ -1,6 +1,10 @@
 <template>
     <scroller show-scrollbar="false"  >
+        <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+            <text class="indicator">下拉松开刷新</text>
+        </refresh>
         <div :style="{minHeight:screenHeight + 'px'}"@swipe="onpanmove($event)">
+
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"></noData>
             <div class="articleBox" v-for="(item,index) in articleList" v-else :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
                 <div class="atricleHead">
@@ -11,7 +15,7 @@
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
-                    <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
+                    <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
@@ -128,6 +132,8 @@
     export default {
         data(){
             return{
+                refreshState:'下拉松开刷新',
+                refreshing:false,
                 showLoading: 'hide',
                 listCurrent:0,
                 pageSize:10,
@@ -218,6 +224,15 @@
             noDataHint:{default:'暂无文章'},
             articleCategoryId:{default:'0'}
         },
+        filters:{
+            watchThumbnail:function (value) {
+//                    没过滤前是原图
+                return utils.thumbnail(value,750,375);
+            },
+            watchlogo:function (value) {
+               return utils.thumbnail(value,60,60);
+            },
+        },
         created(){
             utils.initIconFont();
             var _this = this;
@@ -225,12 +240,12 @@
             this.screenHeight = utils.fullScreen(216);
             GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize ,function (data) {
                 if(data.type == 'success'){
-                    data.data.data.forEach(function (item) {
-                        if(utils.isNull(item.thumbnail)){
-                        }else{
-                            item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                        }
-                    });
+                            data.data.data.forEach(function (item) {
+                                if(utils.isNull(item.thumbnail)){
+                                }else{
+                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                                }
+                            });
                     _this.articleList = data.data.data;
                 }
             },function (err) {
@@ -265,6 +280,10 @@
                                 }
                             }else{
                                 data.data.data.forEach(function (item) {
+                                    if(utils.isNull(item.thumbnail)){
+                                    }else{
+                                        item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                                    }
                                     _this.articleList.push(item);
                                 })
                             }
@@ -274,7 +293,30 @@
                     })
                     this.showLoading = 'hide';
                 }, 1500)
-            }
+            },
+//            刷新
+            onrefresh:function () {
+                var _this = this;
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                    this.listCurrent = 0;
+                    GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize ,function (data) {
+                        if(data.type == 'success'){
+                            data.data.data.forEach(function (item) {
+                                if(utils.isNull(item.thumbnail)){
+                                }else{
+                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                                }
+                            });
+                            _this.articleList = [];
+                            _this.articleList = data.data.data;
+                        }
+                    },function (err) {
+                        event.toast(err.content)
+                    })
+                }, 1500)
+            },
         }
     }
 </script>
