@@ -314,8 +314,8 @@
                 event.closeURL();
             },
 
-            jump:function () {
-                event.openURL(utils.locate('view/shop/card/view.js'),function () {
+            jump:function (id) {
+                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
 
                 })
             },

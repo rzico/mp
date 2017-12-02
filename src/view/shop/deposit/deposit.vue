@@ -1,3 +1,4 @@
+
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
@@ -26,8 +27,8 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row cell-clear" @click="popup(deposit.id)">
-                    <div class="cell-panel newHeight"  :style="addBorder(index)">
+                <div class="cell-row cell-clear" :style="rowBk(deposit.id)" @click="popup(deposit.id)">
+                    <div class="cell-panel newHeight" :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
                                    :src="deposit.logo">
@@ -36,11 +37,11 @@
                         <div class="content flex5">
                             <div class="flex-row space-between align-bottom">
                                 <text class="title lines-ellipsis">{{deposit.memo}}</text>
-                                <text class="money">{{deposit.amount | currencyfmt}}</text>
+                                <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
                             </div>
                             <div class="flex-row space-between align-bottom">
-                                <text class="datetime">{{deposit.createDate | hitimefmt}}</text>
-                                <text class="sub_title pr25">{{deposit.status=='none'?'待付款':'已完成'}}</text>
+                                <text class="datetime">{{deposit.createDate | hitimefmt}} (流水号:{{deposit.id+10200}})</text>
+                                <text class="status pr25">{{deposit.status | statusFilter}}</text>
                             </div>
                         </div>
                     </div>
@@ -138,6 +139,12 @@
     .datetime {
         color:#ccc;
         font-size: 28px;
+        margin-top: 8px;
+    }
+    .status {
+        margin-top: 5px;
+        color:#ccc;
+        font-size: 24px;
         margin-top: 5px;
     }
     .money {
@@ -194,8 +201,6 @@
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
-
-    var pageNumber = 1;
     export default {
         data:function(){
             return{
@@ -216,7 +221,39 @@
         props: {
             title: { default: "消费记录" }
         },
+        filters: {
+            statusFilter:function (val) {
+                if (val=='none') {
+                    return '待处理'
+                } else
+                if (val=='success') {
+                    return '已完成'
+                } else
+                if (val=='refund_waiting') {
+                    return '退款中'
+                } else
+                if (val=='refund_success') {
+                    return '已退款'
+                } else {
+                    return '失败'
+                }
+            }
+        },
         methods: {
+            rowBk:function (id) {
+               if (id==this.currentId) {
+                   return {backgroundColor:'#ddd'}
+               } else {
+                   return {backgroundColor:'#fff'}
+               }
+            },
+            moneyColor:function (amount) {
+               if (amount<0) {
+                   return {color:'red'}
+               }  else {
+                   return {color:'#000'}
+               }
+            },
             doCancel:function () {
                 this.isPopup = false;
             },
@@ -261,41 +298,78 @@
                     if (mes.type=='success') {
                         _this.depositList.forEach(function (item) {
                             if (item.id==_this.currentId) {
-                                item.status = "success";
+                                if (item.status=='none') {
+                                    item.status = "success";
+                                }
                             }
                          });
                         if (utils.device()=='V1') {
+                            _this.isPopup = false;
                             printer.print(mes.data);
                         } else {
+                            _this.isPopup = false;
                             modal.alert({
                                 message: '请使用收款机',
                                 okTitle: '知道了'
                             })
                         }
                     } else {
+                        _this.isPopup = false;
                         modal.alert({
                             message: mes.content,
                             okTitle: '知道了'
                         })
                     }
                 },function (err) {
+                    _this.isPopup = false;
+                    event.toast(err.content);
+                })
+            },
+            refunds:function (sn) {
+                var _this = this;
+                event.toast(sn);
+                POST("refunds/submit.jhtml?sn="+sn).then(function (mes) {
+                    if (mes.type=='success') {
+                        _this.depositList.forEach(function (item) {
+                            if (item.id==_this.currentId) {
+                                if (item.status=='none') {
+                                    item.status = "refund_waiting";
+                                }
+                            }
+                        });
+                        modal.alert({
+                            message: "退款已提交",
+                            okTitle: '知道了'
+                        })
+                        _this.print();
+                    } else {
+                        _this.isPopup = false;
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: '知道了'
+                        })
+                    }
+                },function (err) {
+                    _this.isPopup = false;
                     event.toast(err.content);
                 })
             },
             doRefunds:function () {
                 var _this = this;
-                POST("weex/member/paybill/refund.jhtml?id="+_this.currentId,function (mes) {
+                POST("weex/member/paybill/refund.jhtml?id="+_this.currentId).then(function (mes) {
                     if (mes.type=='success') {
-                        _this.list.splice(0,0,mes.data);
-                        _this.currentId = mes.data.id;
-                        _this.doPrint();
+                        _this.depositList.splice(0,0,mes.data.data);
+                        _this.currentId = mes.data.data.id;
+                        _this.refunds(mes.data.sn);
                     } else {
+                        _this.isPopup = false;
                         modal.alert({
                             message: mes.content,
-                            okTitle: '知道了'
+                            okTitle: '知道1了'
                         })
                     }
                 },function (err) {
+                    _this.isPopup = false;
                     event.toast(err.content);
                 })
             },
@@ -313,7 +387,7 @@
                         event.toast(err.message);
                     });
                 }
-                GET('weex/member/paybill/list.jhtml?pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                GET('weex/member/paybill/list.jhtml?pageStart=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
                           _this.depositList = res.data.data;
@@ -355,8 +429,10 @@
                 ,1500)
             },
             popup:function (id) {
-                this.currentId = id;
-                this.isPopup = true;
+                if (this.isPopup==false) {
+                   this.currentId = id;
+                   this.isPopup = true;
+                }
             },
 //            获取月份
             getDate: function(value) {

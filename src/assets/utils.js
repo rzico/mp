@@ -3,7 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weex.1xx.me/';
+const websiteURL = 'http://weex.1xx.me';
 const event = weex.requireModule('event');
 const debug = true;
 let utilsFunc = {
@@ -166,7 +166,7 @@ let utilsFunc = {
     //获取文章URL地址
     articleUrl(template,id) {
         template = template == '' ? 't1001' : template;
-        return websiteURL + template + "?id=" + id;
+        return websiteURL + "/" + template + "?id=" + id;
     },
     debug(msg) {
         if (debug) {
@@ -209,6 +209,9 @@ let utilsFunc = {
        let code = this.getUrlParameter("no",e);
        if (type=="paybill") {
            return websiteURL + "/q/818804"+code+".jhtml";
+       } else
+       if (type=="card_active") {
+           return websiteURL + "/q/818801"+code+".jhtml";
        } else {
            return e;
        }

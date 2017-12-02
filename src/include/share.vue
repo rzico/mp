@@ -135,9 +135,6 @@
         right:0;
         /*height: 650px;*/
     }
-    .mask{
-        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
-    }
 </style>
 <script>
     import utils from '../assets/utils';
