@@ -119,7 +119,6 @@ export default {
         this.open(function () {
 
         });
-        this.onrefresh()
         this.screenHeight = utils.fullScreen(136);
     },
     filters:{
