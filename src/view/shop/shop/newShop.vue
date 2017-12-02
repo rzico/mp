@@ -247,7 +247,6 @@
 
               category:1,
               industryName:'',
-              code:0
 //              id:'',
 //
 //              shopName:'',
@@ -291,8 +290,6 @@
                         _this.contactNumber = mes.data.telephone
                         _this.category = mes.data.categoryId
                         _this.industryName = mes.data.categoryName
-                        _this.code = mes.data.code
-                        utils.debug(_this.code)
 
                     } else {
                         event.toast(res.content);
@@ -359,7 +356,6 @@
                                 telephone:_this.contactNumber,
                                 categoryId:_this.category,
                                 categoryName:_this.industryName,
-                                code: _this.code
                             };
                             elevendata = JSON.stringify(elevendata);
                             storage.setItem('elevennumber', elevendata,e=> {

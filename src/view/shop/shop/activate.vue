@@ -129,7 +129,8 @@
                 if(utils.isNull(this.code)) {
                     this.scan()
                 }else {
-                    event.closeURL()
+                    let message = utils.message('success','成功','');
+                    event.closeURL(message)
                 }
             },
             scan:function() {
