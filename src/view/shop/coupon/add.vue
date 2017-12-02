@@ -39,7 +39,7 @@
                 <input type="text" placeholder="使用规则介绍" class="input" v-model="rule" @change="" @input=""/>
             </div>
         </div>
-        <div class="button" @click="complete">
+        <div class="button bw" @click="complete">
             <text class="bottonText">完成</text>
         </div>
     </div>
@@ -138,6 +138,11 @@
         background-color: white;
         height: 100px;
         padding-left: 20px;
+    }
+    .bw {
+        width:650px;
+        margin-left:50px;
+        margin-top: 30px;
     }
     .bottonText{
         font-size: 40px;

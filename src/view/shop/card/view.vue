@@ -236,7 +236,6 @@
             },
             load:function () {
                 var _this = this;
-                _this.id = 40;
                 GET("weex/member/card/info.jhtml?id="+_this.id,function (res) {
                     if (res.type=='success') {
                         _this.data = res.data;
