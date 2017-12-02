@@ -246,7 +246,7 @@ let utilsFunc = {
         }else{
             //截取11位的判断码
             let type = subData.substring(0,6);
-            let code = subData.substring(6,11);
+            let code = subData.substring(6);
             let data = {
                 type:type,
                 code:code

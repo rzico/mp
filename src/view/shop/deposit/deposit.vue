@@ -1,7 +1,14 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
-        <list class="list">
+        <div class="cell-header total">
+                <text class="balance">{{cashier.today | currencyfmt}}</text>
+                <div class="wallet-title">
+                    <text class="sub_title">今天收银（元）</text>
+                    <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
+                </div>
+        </div>
+        <list class="list mt20">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新</text>
             </refresh>
@@ -19,13 +26,12 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-row cell-clear" >
+                <div class="cell-row cell-clear" @click="popup(deposit.id)">
                     <div class="cell-panel newHeight"  :style="addBorder(index)">
                         <div class="flex1">
                             <image class="logo" resize="cover"
                                    :src="deposit.logo">
                             </image>
-                            <text class="title">消费</text>
                         </div>
                         <div class="content flex5">
                             <div class="flex-row space-between align-bottom">
@@ -34,6 +40,7 @@
                             </div>
                             <div class="flex-row space-between align-bottom">
                                 <text class="datetime">{{deposit.createDate | hitimefmt}}</text>
+                                <text class="sub_title pr25">{{deposit.status=='none'?'待付款':'已完成'}}</text>
                             </div>
                         </div>
                     </div>
@@ -46,11 +53,59 @@
                 <text class="indicator">加载中..</text>
             </loading>
         </list>
+        <div class="shareBox" v-if="isPopup">
+            <div style="width: 750px;align-items: center">
+                <text class="fz30 pt30 " style="color: #444">操作</text>
+            </div>
+            <div>
+                <div class="bottomBorder shareLineBox" >
+                    <div  class="singleBox" @click="doRefunds()">
+                        <div class="imgBox"  @click="doRefunds()">
+                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe710;</text>
+                        </div>
+                        <text class="fz28 mt20 color444 " >退款</text>
+                    </div>
+                    <div class="singleBox" @click="doPrint()">
+                        <div class="imgBox" @click="doPrint()">
+                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe699;</text>
+                        </div>
+                        <text class="fz28 mt20 color444">补打</text>
+                    </div>
+                </div>
+            </div>
+            <div class="cancelBox" @click="doCancel()">
+                <text class="fz32">取消</text>
+            </div>
+        </div>
     </div>
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .sub_title {
+        color:#444;
+        font-size: 30px;
+    }
+    .total {
+        width:750px;
+        height:150px;
+        flex-direction: column;
+    }
+    .wallet-title {
+        margin-top: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-right: 30px;
+        padding-left: 20px;
+    }
+
+    .balance {
+        margin-top: 10px;
+        font-size: 60px;
+        color: red;
+        margin-left:20px;
+    }
+
     .newHeight{
         height: 130px;
     }
@@ -89,12 +144,53 @@
         font-weight: 700;
         margin-right: 20px;
     }
+    .singleBox{
+        align-items: center;margin-right: 15px;
+    }
+    .shareLineBox{
+        width: 730px;margin-left: 20px;padding-right: 20px;flex-direction: row;padding-top: 30px;padding-bottom: 30px;
+    }
+    .bottomBorder{
+        border-style: solid;border-color: gainsboro;border-bottom-width: 1px;
+    }
+    .cancelBox{
+        width: 750px;align-items: center;height:100px;background-color: #fff;justify-content: center;
+    }
+    .cancelBox:active{
+        background-color: #999;
+    }
+    .imgBox:active{
+        background-color: #999;
+    }
+    .color444{
+       color:#444;
+    }
+    .popupImg {
+        font-size: 78px;
+    }
+    .imgBox{
+        background-color: #fff;
+        padding-left: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-right: 20px;
+        border-radius: 30px;
+    }
+    .shareBox{
+        background-color:#F5F4F5;
+        position: fixed;
+        bottom:0px ;
+        left: 0;
+        right:0;
+    }
 
 </style>
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
+    const modal = weex.requireModule('modal');
     var event = weex.requireModule('event')
+    const printer = weex.requireModule('print');
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
@@ -103,6 +199,9 @@
     export default {
         data:function(){
             return{
+                cashier:{today:0,yesterday:0,shopId:""},
+                currentId:0,
+                isPopup:false,
                 depositList:[],
                 refreshing: false,
                 loading: 'hide',
@@ -118,6 +217,9 @@
             title: { default: "消费记录" }
         },
         methods: {
+            doCancel:function () {
+                this.isPopup = false;
+            },
             noData:function () {
                 return this.depositList.length==0;
             },
@@ -153,9 +255,64 @@
             goback: function (e) {
                 event.closeURL();
             },
+            doPrint:function () {
+                var _this = this;
+                GET("weex/member/paybill/print.jhtml?id="+_this.currentId,function (mes) {
+                    if (mes.type=='success') {
+                        _this.depositList.forEach(function (item) {
+                            if (item.id==_this.currentId) {
+                                item.status = "success";
+                            }
+                         });
+                        if (utils.device()=='V1') {
+                            printer.print(mes.data);
+                        } else {
+                            modal.alert({
+                                message: '请使用收款机',
+                                okTitle: '知道了'
+                            })
+                        }
+                    } else {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: '知道了'
+                        })
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+            doRefunds:function () {
+                var _this = this;
+                POST("weex/member/paybill/refund.jhtml?id="+_this.currentId,function (mes) {
+                    if (mes.type=='success') {
+                        _this.list.splice(0,0,mes.data);
+                        _this.currentId = mes.data.id;
+                        _this.doPrint();
+                    } else {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: '知道了'
+                        })
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
             open (pageStart,callback) {
                 this.pageStart = pageStart;
                 var _this = this;
+                if (pageStart==0) {
+                    GET("weex/member/paybill/view.jhtml",function (res) {
+                        if (res.type=="success") {
+                            _this.cashier = res.data;
+                        } else {
+                            event.toast(res.message);
+                        }
+                    },function (err) {
+                        event.toast(err.message);
+                    });
+                }
                 GET('weex/member/paybill/list.jhtml?pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
@@ -196,6 +353,10 @@
                      _this.refreshing = false;
                   })
                 ,1500)
+            },
+            popup:function (id) {
+                this.currentId = id;
+                this.isPopup = true;
             },
 //            获取月份
             getDate: function(value) {

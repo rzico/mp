@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback()" :complete="'账单'" @goComplete="deposit"> </navbar>
+        <navbar :title="title" @goback="goback()"> </navbar>
         <div class="big">
             <div class="money">
                 <text class="maxQuota">{{message}}</text>
@@ -28,6 +28,7 @@
                 </div>
             </div>
         </div>
+        <div class="footer" @click="deposit()"><text class="sub_title">点击查看账单</text></div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -140,6 +141,16 @@
     .bank {
         margin-top: 4px;
         color:tomato;
+    }
+
+    .footer {
+        width:750px;
+        height:120px;
+        line-height: 120px;
+        position: fixed;
+        bottom:5px;
+        align-items: center;
+        justify-content: center;
     }
 
 
