@@ -1,8 +1,8 @@
 <template>
     <div style="background-color:#eeeeee">
-        <div class="header">
+
             <navbar :title="title" :complete="complete" @goback="goback" > </navbar>
-        </div>
+
     <div class="big">
         <div class="inputA">
             <text class="textA">卡类型</text>

@@ -1,8 +1,6 @@
 <template>
     <div style="background-color: #eeeeee">
-        <div class="header">
             <navbar :title="title" :complete="complete" @goback="goback"> </navbar>
-        </div>
     <div class="big">
         <div class="text">
             <text class="textA">本次操作需要短信确认，请输入</text>
