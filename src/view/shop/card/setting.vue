@@ -14,10 +14,10 @@
             <text class="monyeTextthree">送</text>
             <input type="text" placeholder="设置金额" class="input" v-model="num.present" @change="" @input=""/>
         </div>
-        <div class="vip">
+        <div class="vip" @click="select(num)">
             <text class="vipText">会员等级</text>
             <text class="vipTexttwo">升级至</text>
-            <input type="text" placeholder="最高升至vip3" class="input2" v-model="num.vip" @change="" @input=""/>
+            <text class="member" >{{num.vip}}</text>
         </div>
     </div>
                 <div style="align-items: center">
@@ -96,16 +96,11 @@
         padding-left: 20px;
         width: 150px;
         font-size: 28px;
-        height: 32px;
-    }
-    .input2{
-        padding-left: 20px;
-        width: 200px;
-        font-size: 28px;
-        height: 32px;
+        height: 100px;
     }
 </style>
 <script>
+    const picker = weex.requireModule('picker');
     var event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
@@ -131,6 +126,26 @@
             del:function (index) {
                 let _this = this;
                 _this.div.splice(index,1);
+            },
+//            设置会员等级
+            select:function (num,index) {
+                var _this = this;
+                picker.pick({
+                    index:0,
+                    items:['vip1','vip2','vip3']
+                },e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            num.vip = 'vip1'
+                        }else if(e.data == 1){
+                            num.vip = 'vip2'
+                        }
+                        else{
+                            num.vip = 'vip3'
+
+                        }
+                    }
+                })
             },
             add:function () {
                 this.div.push({amount:'',present:'0',vip:'vip1'})
