@@ -12,23 +12,22 @@
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
                     <div class="flex-row flex-start">
+                        <image class="logo" resize="cover"
+                               :src="deposit.logo">
+                        </image>
                         <text class="title" >{{deposit.name}}</text>
                     </div>
                 </div>
-                <div class="cell-row cell-clear" >
-                    <div class="cell-panel newHeight"  :style="addBorder(index)">
-                        <div class="flex1">
-                            <image class="logo" resize="cover"
-                                   :src="deposit.logo">
-                            </image>
+                <div class="panel" >
+                        <div class="monthFont">
+                            <text class="textMonth flex1">{{deposit.type | typefmt}}</text>
+                            <text class="ico_big flex1 mt10" :style="{fontFamily:'iconfont'}">{{deposit.type | typeico}}</text>
                         </div>
-                        <div class="content flex5">
-                            <div class="flex-row space-between align-bottom">
-                                <text class="title lines-ellipsis">{{deposit.memo}}</text>
-                                <text class="money">{{deposit.amount | currencyfmt}}</text>
-                            </div>
+                        <div class="moneyname">
+                            <text class="name">{{deposit.method}}</text>
+                            <text class="money">{{deposit.amount | currencyfmt}}</text>
                         </div>
-                    </div>
+
                 </div>
             </cell>
         </list>
@@ -37,43 +36,54 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-    .newHeight{
-        height: 90px;
-    }
-    .cell-row {
-        min-height: 90px;
-        flex-direction: column;
-        background-color: #ffffff;
-        padding-left: 20px;
-        margin-top: 20px;
+    .panel {
+        width: auto;
+        height: 120px;
+        align-items: center;
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: #ccc;
+        background-color: #fff;
     }
 
+
     .logo {
-        height:50px;
-        width:50px;
-        border-radius:40px;
+        height:40px;
+        width:40px;
+        border-radius:20px;
         overflow:hidden;
         margin: 20px;
     }
 
-    .align-bottom {
-        align-items: flex-end;
-        width:615px;
+    .textMonth {
+        font-size: 32px;
+        margin-left: 20px;
+        color: #444;
     }
 
-    .content {
-        margin-left: 10px;
-        flex-direction: column;
-        align-items: flex-start;
+    .monthFont {
+        flex-direction: row;
+        align-items: center;
+        flex:2;
     }
-    .datetime {
-        color:#ccc;
-        font-size: 28px;
-        margin-top: 5px;
+
+    .moneyname {
+        flex-direction: row;
+        margin-left: 50px;
+        flex:6;
+        justify-content: space-between;
     }
+
     .money {
-        font-weight: 700;
+        font-size: 32px;
+        font-weight: bold;
         margin-right: 20px;
+    }
+
+    .name {
+        font-size: 28px;
+        color: #ccc;
     }
 
 </style>
@@ -81,6 +91,7 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     var event = weex.requireModule('event')
+    var he = require('he');
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
@@ -100,6 +111,36 @@
         props: {
             title: { default: "消费统计" }
         },
+        filters: {
+            typefmt:function (val) {
+                if (val == 'cashier') {
+                    return '消费'
+                } else if (val == 'cashierRefunds') {
+                    return '退款'
+                } else if (val == 'card') {
+                    return '充值'
+                } else if (val == 'cardRefunds') {
+                    return '退卡'
+                } else {
+                    return '未知'
+                }
+            },
+
+            typeico:function (val) {
+                if (val == 'cashier') {
+                    return he.decode("&#xe622;");
+                } else if (val == 'cashierRefunds') {
+                    return he.decode("&#xe710;");
+                } else if (val == 'card') {
+                    return he.decode("&#xe622;");
+                } else if (val == 'cardRefunds') {
+                    return he.decode("&#xe710;");
+                } else {
+                    return he.decode("&#xe622;");
+                }
+            }
+
+        },
         methods: {
             noData:function () {
                 return this.depositList.length==0;
@@ -109,7 +150,7 @@
                 let listLength = this.depositList.length;
 //                判断是否最后一个元素并且是否每月的结尾
                 if(index != listLength - 1 ){
-                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index + 1].create_date)){
+                    if(this.depositList[index].shopId == this.depositList[index + 1].shopId){
                         return {
                             borderBottomWidth:'1px'
                         }
@@ -127,7 +168,7 @@
             //判断月份是否重复
             isRepeat(index){
                 if(index != 0){
-                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index - 1].create_date)){
+                    if(this.depositList[index].shopId== this.depositList[index - 1].shopId){
                         return false;
                     }
                 }
@@ -156,42 +197,12 @@
                     _this.open()
                     ,1500)
             },
-//            获取月份
-            getDate: function(value) {
-                value = value + '';
-                if(value.length == 10){
-                    value = parseInt(value) * 1000;
-                }else{
-                    value = parseInt(value);
-                }
-                let date = new Date(value);
-                let tody = new Date();
-                let m = tody.getDate() - date.getDate();
-                if (m<1) {
-                    return "今天"
-                } else
-                if (m<2) {
-                    return "昨天"
-                } else
-                if (m<3) {
-                    return "前天"
-                } else {
-                    let    y = date.getFullYear();
-                    let    d = date.getDate();
-                    let    m = date.getMonth();
-                    if (m < 10) {
-                        m = '0' + m;
-                    }
-                    if (d < 10) {
-                        d = '0' + d;
-                    }
-                    return y + '年' + m + '月' + d+ '日';
-                }
-            }
         },
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
+            this.shopId = utils.getUrlParameter("shopId");
+            this.billDate = utils.getUrlParameter("billDate");
             this.open(0,function () {
 
             });

@@ -18,12 +18,12 @@
             </cell>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
-                <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
                     <div class="flex-row flex-start">
                         <text class="title" >{{deposit.createDate | daydayfmt}}</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
+                        <text class="sub_title">查看统计</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -433,6 +433,12 @@
                    this.currentId = id;
                    this.isPopup = true;
                 }
+            },
+            summary:function (timestamp) {
+                event.toast(timestamp);
+                event.openURL(utils.locate("view/shop/deposit/summary.js?shopId="+_this.shopId+"&billDate="+utils.timeChange(timestamp)),
+                 function () {}
+                )
             },
 //            获取月份
             getDate: function(value) {
