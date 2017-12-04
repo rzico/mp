@@ -20,8 +20,11 @@
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
-                <div v-for="num in lists" >
-                    <div class="addFriendsBorder">
+                <div v-for="(num,index) in lists" >
+                    <div class="deleteBox bkg-delete" @click="del(num.id,index)">
+                        <text class="deleteText">删除</text>
+                    </div>
+                    <div class="addFriendsBorder" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
                         <div class="friendsLine" @click="jump()">
                             <div class="image">
                                 <div class="markmoney">
@@ -57,6 +60,12 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .deleteText{
+        font-size: 32px;color: #fff;
+    }
+    .deleteBox{
+        position: absolute;right: 0px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
+    }
     .iconfont{
         color: #cccccc;
         margin-top: 5px;
@@ -141,6 +150,7 @@
         width: 120px;
     }
     .addFriendsBorder{
+        background-color: white;
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.2);
@@ -186,6 +196,8 @@
 </style>
 
 <script>
+    var modal = weex.requireModule('modal')
+    var prompting =''
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
@@ -195,6 +207,8 @@
     import search from '../../../include/search.vue';
     import noData from '../../../include/noData.vue';
     var he = require('he');
+    var animationPara;//执行动画的消息
+    const animation = weex.requireModule('animation');
     export default {
         components: {
             navbar,search,noData
@@ -211,8 +225,9 @@
                 screenHeight:0,
 
                 pageSize:10,
-                listCurrent:0
+                listCurrent:0,
 
+                id:'',
             }
         },
         props: {
@@ -290,10 +305,40 @@
                     }
                 });
             },
+//            弹窗
+            showAlert (event) {
+                let _this =this
+                console.log('will show alert')
+                modal.alert({
+                    message:prompting,
+                    duration: 0.3
+                }, function (value) {
+                    console.log('alert callback', value)
+                })
+            },
 //            触发自组件的二维码方法
             scan:function () {
+                let _this=this
                 event.scan(function (message) {
-                    event.toast(message);
+                    utils.readScan(message.data,function (data) {
+                        if(data.data.type == '818803'){
+                            _this.code =data.data.code
+                            utils.debug('weex/member/couponCode/use.jhtml?code='+_this.code)
+                            GET('weex/member/couponCode/use.jhtml?code='+_this.code,function (mes) {
+                                utils.debug(mes)
+                                if (mes.type == 'success') {
+                                    prompting = mes.content
+                                    _this.showAlert()
+                                } else {
+                                    prompting = mes.content
+                                    _this.showAlert()
+                                }
+                            }, function (err) {
+                                event.toast(err.content)
+                            })
+                        }
+                    })
+
                 });
             },
             isNoEmpty:function() {
@@ -333,6 +378,97 @@
                         _this.refreshing = false;
                     }
                     ,1000)
+            },
+            onpanmove:function (e,index) {
+//                获取当前点击的元素。
+                var _this = this;
+                if(e.direction == 'right'){
+                    _this.canScroll = false;
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }else if(e.direction == 'left'){
+                    _this.canScroll = false;
+//                  modal.toast({message:distance});
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(-190)',
+                        },
+                        duration:350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }
+            },
+            //            点击屏幕时
+            onFriendtouchstart:function (e,index) {
+                var _this = this;
+                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                }else{
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
+//                获取当前点击的元素。
+                animationPara =  e.currentTarget;
+            },
+            del:function (id,index) {
+                let _this =this
+                utils.debug('weex/member/coupon/delete.jhtml?id='+id)
+                POST('weex/member/coupon/delete.jhtml?id='+id).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            //                            把动画收回来。
+                            if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                            }else{
+                                animation.transition(animationPara, {
+                                    styles: {
+                                        transform: 'translateX(0)',
+                                    },
+                                    duration: 10, //ms
+                                    timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                    needLayout:false,
+                                    delay: 0 //ms
+                                })
+                            }
+                            _this.lists.splice(index,1);
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
+            },
+            modification:function (id) {
+                let _this =this;
+                event.openURL(utils.locate('view/shop/coupon/add.js?id='+id),function (message) {
+                    utils.debug(message)
+                    if(message.type == 'success'){
+                        _this.open()
+                    }
+                })
             },
             goback:function () {
                 event.closeURL();

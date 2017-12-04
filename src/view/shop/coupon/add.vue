@@ -7,15 +7,15 @@
             </div>
             <div class="name">
                 <text class="nameText flex1" style="font-size: 32px">优惠券类型</text>
-                <text class="nameText flex3" style="font-size: 32px;padding-left: 70px" @click="typesetting">{{type}}</text>
+                <text class="nameText flex3" style="font-size: 32px;padding-left: 60px;color: #999999" @click="typesetting">{{codeName | strainer}}</text>
             </div>
             <div class="scope">
                 <text class="scopeText flex1" style="font-size: 32px">适用范围</text>
-                <text class="scopeText flex3" style="font-size: 32px;padding-left: 100px" @click="scopesetting">{{address}}</text>
+                <text class="scopeText flex3" style="font-size: 32px;padding-left: 60px;color: #999999" @click="scopesetting">{{scene | judgment}}</text>
             </div>
             <div class="money">
                 <text class="moneyText" style="font-size: 32px">满减面额</text>
-                <input type="number" placeholder="请输入满减面额" class="inputMoney" v-model="money" @change="" @input=""/>
+                <input type="number" placeholder="请输入0-10之间数字" class="inputMoney" v-model="money" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">元/折</text>
             </div>
             <div class="conditions">
@@ -78,20 +78,20 @@
     .input{
         padding-left: 100px;
         font-size: 28px;
-        height: 32px;
+        height: 60px;
         width: 500px;
     }
     .inputconditions{
         font-size: 28px;
-        height: 32px;
-        line-height: 60px;
+        color: red;
+        height: 60px;
         margin-left: 20px;
         width: 150px;
     }
     .inputMoney{
-        line-height: 60px;
         font-size: 28px;
-        height: 32px;
+        color: red;
+        height: 50px;
         margin-left: 100px;
         width: 200px;
     }
@@ -157,6 +157,7 @@
     var event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
+    import filters from '../../../filters/filters'
     import { POST, GET } from '../../../assets/fetch'
     export default {
         data:function () {
@@ -171,6 +172,7 @@
                 codeName:'fullcut',
                 address:'全场',
                 scene:'all',
+                id:''
             }
         },
         components: {
@@ -182,8 +184,80 @@
         },
         created() {
             utils.initIconFont();
+            this.id = utils.getUrlParameter('id');
+            if(utils.isNull(this.id)) {
+                this.id = ''
+            }else {
+                this.modification();
+            }
+        },
+        filters:{
+
+            strainer:function (data) {
+                if(data == 'fullcut'){
+                    return '满减'
+                }if(data == 'discount'){
+                    return '满折'
+                } else {
+                    return '满减'
+                }
+            },
+            judgment:function (data) {
+                if(data == 'all'){
+                    return '全场'
+                }if(data == 'shop'){
+                    return '店内'
+                } else {
+                    return '商城'
+                }
+            }
         },
         methods: {
+            // 时间格式化  2017-09-01
+            timeDatefmt:function (value) {
+            if(value == '' || value == null || value == undefined){
+                return value;
+            }
+            //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+            value = value + '';
+            if(value.length == 10){
+                value = parseInt(value) * 1000;
+            }else{
+                value = parseInt(value);
+            }
+            let    date = new Date(value);
+            let    tody = new Date();
+            let    y = date.getFullYear();
+            let    m = date.getMonth() + 1;
+            let    d = date.getDate();
+            if (m < 10) {
+                m = '0' + m;
+            }
+            if (d < 10) {
+                d = '0' + d;
+            }
+            return y + '-' + m + '-' + d;
+        },
+            modification:function () {
+                var _this = this;
+                GET('weex/member/coupon/view.jhtml?id='+_this.id,function (mes) {
+                    if (mes.type == 'success') {
+                        utils.debug(mes)
+                        _this.money = mes.data.amount;
+                        _this.rule = mes.data.introduction;
+                        _this.endDate = _this.timeDatefmt(mes.data.endDate);
+                        _this.beginDate = _this.timeDatefmt(mes.data.beginDate);
+                        _this.codeName = mes.data.type;
+                        _this.scene = mes.data.scope;
+                        _this.conditions =mes.data.minimumPrice
+
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
             goback:function () {
                 event.closeURL();
             },
@@ -233,9 +307,9 @@
                 var _this = this;
                 picker.pickDate({
                     value: _this.beginDate
-                }, event => {
-                    if (event.result === 'success') {
-                        _this.beginDate = event.data
+                }, e => {
+                    if (e.result === 'success') {
+                        _this.beginDate = e.data
                     }
                 })
             },
@@ -243,16 +317,17 @@
                 var _this = this;
                 picker.pickDate({
                     value: _this.endDate
-                }, event => {
-                    if (event.result === 'success') {
-                        _this.endDate = event.data
+                }, e => {
+                    if (e.result === 'success') {
+                        _this.endDate = e.data
+
                     }
                 })
             },
             complete:function () {
                 let _this = this;
                 POST('weex/member/coupon/submit.jhtml?type='+_this.codeName+'&scope='+_this.scene+'&beginDate='+_this.beginDate
-                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)).then(
+                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id).then(
                     function (mes) {
                         if (mes.type == "success") {
                             event.closeURL(mes)
