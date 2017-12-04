@@ -490,7 +490,7 @@
                 //判断是否第一次编辑该文章
                 var findDelete = {
                     type:'articleDraft',
-                    key:0
+                    key:'0'
                 }
                 event.find(findDelete,function (delData) {
                     if(delData.type == 'success' && delData.data != ''){
@@ -650,6 +650,7 @@
                         articleCategory:{},
                         authority:'draft',
                         pitch:false,
+                        publish:false,
                         top:false,
                     },
                     hits:0,
@@ -668,7 +669,7 @@
                 allPageData = JSON.stringify(allPageData);
                 let draftOptions = {
                     type:"articleDraft",
-                    key:0,
+                    key:'0',
                     value:allPageData,
                     sort:_this.sortStatus + _this.timestamp,
                     keyword:',['+ _this.catalogId + '],' + _this.setTitle + ','
@@ -678,7 +679,7 @@
 //                                    全局监听文章变动
 //                        let listenData = utils.message('success','文章改变','')
 //                        event.sendGlobalEvent('onArticleChange',listenData);
-
+//                    event.toast(data);
                     }else{
 
                     }
@@ -776,14 +777,14 @@
 //                                    判断是否第一次编辑该文章
                 let findDel = {
                     type:'articleDraft',
-                    key:0
+                    key:'0'
                 }
                 event.find(findDel,function (delData) {
                     if(delData.type == 'success' && delData.data != ''){
                         //  将临时缓存删除;
                         let delOption = {
                             type:'articleDraft',
-                            key:0
+                            key:'0'
                         }
                         event.delete(delOption,function (data) {});
                     };
