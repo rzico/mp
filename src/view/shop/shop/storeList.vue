@@ -266,7 +266,6 @@ export default {
 //        删除
         del:function (id,index) {
             let _this =this
-            utils.debug('weex/member/shop/delete.jhtml?shopId='+id)
             POST('weex/member/shop/delete.jhtml?shopId='+id).then(
                 function (mes) {
                     if (mes.type == "success") {
