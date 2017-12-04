@@ -31,12 +31,6 @@
                     </div>
                 </div>
             </cell>
-            <cell v-if="noLoading">
-                <div class="noLoading"></div>
-            </cell>
-            <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
-                <text class="indicator">加载中..</text>
-            </loading>
         </list>
     </div>
 
@@ -91,16 +85,13 @@
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
 
-    var pageNumber = 1;
     export default {
         data:function(){
             return{
                 depositList:[],
                 refreshing: false,
-                loading: 'hide',
-                pageStart:0,
-                pageSize:20,
-                noLoading:true
+                shopId:"",
+                billDate:""
             }
         },
         components: {
@@ -145,48 +136,24 @@
             goback: function (e) {
                 event.closeURL();
             },
-            open (pageStart,callback) {
-                this.pageStart = pageStart;
+            open () {
                 var _this = this;
-                GET('weex/member/paybill/list.jhtml?pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                GET('weex/member/paybill/summary.jhtml?shopId='+_this.shopId+"&billDate="+_this.billDate,function (res) {
                     if (res.type=="success") {
-                        if (res.data.start==0) {
-                            _this.depositList = res.data.data;
-                        } else {
-                            res.data.data.forEach(function (item) {
-                                _this.depositList.push(item);
-                            })
-                        }
-                        _this.pageStart = res.data.start+res.data.data.length;
-                        _this.noLoading = res.data.data.length<_this.pageSize;
-                    } else {
+                        _this.depositList = res.data;
+                     } else {
                         event.toast(res.content);
                     }
-                    callback();
                 }, function (err) {
-                    callback();
                     event.toast(err.content);
                 })
-            },
-//            上拉加载
-            onloading (event) {
-                var _this = this;
-                _this.loading = true;
-                setTimeout(
-                    _this.open(_this.pageStart,function () {
-                        _this.loading = false;
-                    })
-                    ,1500)
             },
 //            下拉刷新
             onrefresh (event) {
                 var _this = this;
-                _this.pageStart = 0;
                 _this.refreshing = true;
                 setTimeout(
-                    _this.open(_this.pageStart,function () {
-                        _this.refreshing = false;
-                    })
+                    _this.open()
                     ,1500)
             },
 //            获取月份
