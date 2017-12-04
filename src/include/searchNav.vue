@@ -18,7 +18,7 @@
     .search {
         position:sticky;
         background:#eee;
-        height: 100px;
+        /*height: 100px;*/
     }
     .search_box {
         margin-top:20px;

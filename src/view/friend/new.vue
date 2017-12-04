@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper"  @viewdisappear="viewdisappear()">
+    <div class="wrapper"  >
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
         <search @gosearch="gosearch" @scan="scan"> </search>
         <div class="addFriend" @click="goMobile()">
@@ -230,12 +230,12 @@
             isEmpty:function() {
                 return this.friendsList.length==0;
             },
-//            在页面销毁时触发，可用来捕捉安卓的回退
-            viewdisappear(){
-                if(!utils.isIosSystem()){
-                    this.goback();
-                }
-            },
+//            在页面销毁时触发，可用来捕捉安卓的回退 @viewdisappear="viewdisappear()"
+//            viewdisappear(){
+//                if(!utils.isIosSystem()){
+//                    this.goback();
+//                }
+//            },
             goback:function () {
                 let E = utils.message('success','有新朋友',this.hadNew);
                 event.closeURL(E);

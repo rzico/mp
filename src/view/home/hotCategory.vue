@@ -10,6 +10,8 @@
                 <div class="atricleHead">
                     <text class="articleTitle">{{item.title}}</text>
                 </div>
+
+
                 <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
                     <text class="articleContent">{{item.htmlTag}}</text>
                 </div>

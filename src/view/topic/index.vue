@@ -965,7 +965,7 @@
 //            前往聊天
             goChat(){
                 let userId = 'u' + parseInt(10200 + this.UId);
-                event.navToChat(item.userId);
+                event.navToChat(userId);
             },
 //            添加好友
             goAddFriend(){
