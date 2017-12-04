@@ -435,6 +435,7 @@
                 articleTemplates:[],//文章段落数组
                 musicData:'',//音乐数据
                 voteData:[],//投票的数组
+                hadChange:0,
             }
         },
         filters:{
@@ -482,36 +483,53 @@
             var getVal = bundleUrl.split('?')[1];
 //          创建文章编辑（首次）
             if(getVal == '' || getVal == null || getVal == 'undefined'){
+
                 //       多选图片
                 //      调用安卓的相册
                 var _this = this;
-                album.openAlbumMuti(
-                    //选完图片后触发回调函数
-                    function (data) {
-                        if(data.type == 'success'){
-                            _this.coverImage =  data.data[0].originalPath;
+                //判断是否第一次编辑该文章
+                var findDelete = {
+                    type:'articleDraft',
+                    key:0
+                }
+                event.find(findDelete,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        //从缓存读取数据 写入界面
+                        _this.readData(findDelete);
+                    }else{
+                        album.openAlbumMuti(
+                            //选完图片后触发回调函数
+                            function (data) {
+                                if(data.type == 'success'){
+                                    _this.coverImage =  data.data[0].originalPath;
 //                    data.data里存放的是用户选取的图片路径
-                            for(let i = 0;i < data.data.length;i++){
-                                _this.paraList.push({
-                                    //原图
-                                    paraImage: data.data[i].originalPath,
-                                    //小缩略图
-                                    thumbnailImage: data.data[i].thumbnailSmallPath,
-                                    mediaType: "image",
-                                    paraText:'',
-                                    show:true,
-                                    serveThumbnail:''
-                                }) ;
-//                                event.toast(data.data[i].originalPath);
-//                                event.toast('缩略图路径');
-//                                event.toast(data.data[i].thumbnailSmallPath);
+                                    for(let i = 0;i < data.data.length;i++){
+                                        _this.paraList.push({
+                                            //原图
+                                            paraImage: data.data[i].originalPath,
+                                            //小缩略图
+                                            thumbnailImage: data.data[i].thumbnailSmallPath,
+                                            mediaType: "image",
+                                            paraText:'',
+                                            show:true,
+                                            serveThumbnail:''
+                                        }) ;
+                                        _this.saveDraft();
+                                    }
+                                }else{
+                                    event.closeURL();
+                                }
                             }
-                        }else{
-                            event.closeURL();
-                        }
+                        )
                     }
-                )
+                });
+
+
+
+
             }else{//再次文章编辑
+
+                _this.deleteDraft();
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
                     let options = {
@@ -526,100 +544,106 @@
                     },function (err) {
                         event.toast(err.content);
                         return;
-                    })
-
-                    event.find(options,function (data) {
-                        if(data.type == 'success' && data.data != ''){
-                            let articleData = JSON.parse(data.data.value);
-//                            保存置顶状态。
-                            _this.sortStatus = data.data.sort.substring(0,2);
-//                            event.toast(articleData);
-                            _this.setTitle = articleData.title;
-                            _this.coverImage = articleData.thumbnail;
-                            _this.musicName = articleData.music.name;
-                            _this.publish = articleData.articleOption.publish;
-                            musicId = articleData.music.id;
-                            let templatesData = articleData.templates;
-                            for(let i = 0;i < templatesData.length;i++){
-                                _this.paraList.push({
-                                    //原图
-                                    paraImage:templatesData[i].original,
-                                    //小缩略图
-                                    thumbnailImage: templatesData[i].thumbnail,
-                                    paraText:templatesData[i].content,
-                                    show:true,
-                                    mediaType:templatesData[i].mediaType,
-                                    serveThumbnail:'' //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
-                                })
-                            }
-//                            投票
-                            if(!utils.isNull(articleData.votes)){
-                                articleData.votes.forEach(function (item) {
-                                    let startDate = '';
-                                    let startTime = '';
-//                                    event.toast('投票时间');
-//                                    event.toast(item.expire);
-                                    if(utils.isNull(item.expire)){
-                                        startDate = '无截止时间'
-                                    }else{
-                                        let time =  utils.timeChange(item.expire);
-                                        startDate = time.substring(0,10);
-                                        startTime = time.substring(11,19);
-                                    }
-                                    let optionIndex = 0;
-                                    switch(item.voteType){
-                                        case 'radiobox':
-                                            optionIndex = 0;
-                                            break;
-                                        case 'checkbox':
-                                            optionIndex = 1;
-                                            break;
-                                        case 'nolimit':
-                                            optionIndex = 2;
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    //选项
-                                    let optionBox = [];
-                                    item.options.forEach(function (value) {
-                                        optionBox.push({
-                                            textAreaMessage:value,
-                                            textHeight:'48',
-                                            rowsNum:'1',
-                                            editSign:-1,
-                                        })
-                                    })
-
-                                    _this.voteList.push({
-                                        chooseDate:startDate,
-                                        chooseTime:startTime,
-                                        optionsIndex:optionIndex,
-                                        textAreaTitle:item.title,
-                                        pageBox:optionBox
-                                    })
-                                })
-                            }
-
-                        }else{
-                            modal.alert({
-                                message:'系统繁忙，请稍后重试',
-                                duration: 0.3
-                            },function () {
-                                event.closeURL();
-                            });
-                        };
                     });
+                    //从缓存读取数据 写入界面
+                    _this.readData(options);
+
                 };
             };
 
         },
         methods:{
+            //从缓存读取数据 写入界面
+            readData(options){
+                let _this =this;
+                event.find(options,function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        let articleData = JSON.parse(data.data.value);
+//                            保存置顶状态。
+                        _this.sortStatus = data.data.sort.substring(0,2);
+//                            event.toast(articleData);
+                        _this.setTitle = articleData.title;
+                        _this.coverImage = articleData.thumbnail;
+                        _this.musicName = articleData.music.name;
+                        _this.publish = articleData.articleOption.publish;
+                        musicId = articleData.music.id;
+                        let templatesData = articleData.templates;
+                        for(let i = 0;i < templatesData.length;i++){
+                            _this.paraList.push({
+                                //原图
+                                paraImage:templatesData[i].original,
+                                //小缩略图
+                                thumbnailImage: templatesData[i].thumbnail,
+                                paraText:templatesData[i].content,
+                                show:true,
+                                mediaType:templatesData[i].mediaType,
+                                serveThumbnail:'' //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                            })
+                        }
+//                            投票
+                        if(!utils.isNull(articleData.votes)){
+                            articleData.votes.forEach(function (item) {
+                                let startDate = '';
+                                let startTime = '';
+//                                    event.toast('投票时间');
+//                                    event.toast(item.expire);
+                                if(utils.isNull(item.expire)){
+                                    startDate = '无截止时间'
+                                }else{
+                                    let time =  utils.timeChange(item.expire);
+                                    startDate = time.substring(0,10);
+                                    startTime = time.substring(11,19);
+                                }
+                                let optionIndex = 0;
+                                switch(item.voteType){
+                                    case 'radiobox':
+                                        optionIndex = 0;
+                                        break;
+                                    case 'checkbox':
+                                        optionIndex = 1;
+                                        break;
+                                    case 'nolimit':
+                                        optionIndex = 2;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                //选项
+                                let optionBox = [];
+                                item.options.forEach(function (value) {
+                                    optionBox.push({
+                                        textAreaMessage:value,
+                                        textHeight:'48',
+                                        rowsNum:'1',
+                                        editSign:-1,
+                                    })
+                                })
+
+                                _this.voteList.push({
+                                    chooseDate:startDate,
+                                    chooseTime:startTime,
+                                    optionsIndex:optionIndex,
+                                    textAreaTitle:item.title,
+                                    pageBox:optionBox
+                                })
+                            })
+                        }
+
+                    }else{
+                        modal.alert({
+                            message:'系统繁忙，请稍后重试',
+                            duration: 0.3
+                        },function () {
+                            event.closeURL();
+                        });
+                    };
+                });
+            },
 //            保存临时草稿
             saveDraft(){
+                let _this = this;
 //                将数据保存到变量里
                 this.savePage();
-
                 var allPageData = {
                     articleOption:{
                         articleCatalog:{count:0},
@@ -643,7 +667,7 @@
                 }
                 allPageData = JSON.stringify(allPageData);
                 let draftOptions = {
-                    type:"article",
+                    type:"articleDraft",
                     key:0,
                     value:allPageData,
                     sort:_this.sortStatus + _this.timestamp,
@@ -684,6 +708,11 @@
                     event.openURL(utils.locate('widget/autograph.js?name=articleTitle'), function (message) {
                         if (message.type == 'success' && message.data != '') {
                             _this.setTitle = message.data.text;
+                            _this.hadChange = 1;
+                            if(_this.articleId == ''){
+//                        临时保存到缓存
+                                _this.saveDraft();
+                            }
                         }
                     })
                 })
@@ -696,12 +725,69 @@
                     if(data.data != '') {
 //                    将返回回来的html数据赋值进去
                         _this.paraList[index].paraText = data.data;
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     }
                 })
             },
 //            返回
             goBack:function () {
-                event.closeURL();
+                let _this = this;
+//                判断是草稿还是已经发布文章
+                if(this.articleId == ''){
+                    modal.confirm({
+                        message: '是否保存该文章?',
+                        duration: 0.3,
+                        okTitle:'保存',
+                        cancelTitle:'取消',
+                    }, function (value) {
+                        if(value == '保存'){
+                            _this.goComplete();
+                        }else if(value == '取消'){
+                            _this.deleteDraft();
+                            event.closeURL();
+                        }
+                    })
+                }else{
+//                    判断是否有修改过
+                    if(this.hadChange == 1){
+                        modal.confirm({
+                            message: '是否保存所修改的内容?',
+                            duration: 0.3,
+                            okTitle:'保存',
+                            cancelTitle:'取消',
+                        }, function (value) {
+                            if(value == '保存'){
+                                _this.goComplete();
+                            }else if(value == '取消'){
+                                event.closeURL();
+                            }
+                        })
+                    }else{
+                        event.closeURL();
+                    }
+                }
+            },
+//            删除临时缓存
+            deleteDraft(){
+//                                    判断是否第一次编辑该文章
+                let findDel = {
+                    type:'articleDraft',
+                    key:0
+                }
+                event.find(findDel,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        //  将临时缓存删除;
+                        let delOption = {
+                            type:'articleDraft',
+                            key:0
+                        }
+                        event.delete(delOption,function (data) {});
+                    };
+                });
             },
 //            完成
             goComplete:function () {
@@ -857,6 +943,12 @@
             },
 //            将页面上的数据存储起来
             savePage(){
+
+//                每次保存前 将下列3个变量重新置空;
+                this.articleTemplates=[];//文章段落数组
+                this.musicData='';//音乐数据
+                this.voteData=[];//投票的数组
+
                 let _this = this;
                 this.musicData = {
                     name:_this.musicName,
@@ -888,7 +980,7 @@
 //                var articleTemplates = [];
                 this.paraList.forEach(function(item){
                     _this.articleTemplates.push({
-                        thumbnail:item.serveThumbnail,
+                        thumbnail:item.thumbnailImage,
                         original:item.paraImage,
                         mediaType: item.mediaType,
                         content:item.paraText
@@ -911,13 +1003,11 @@
                     votes:_this.voteData,
                     isDraft:false,
                 };
-
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
                 POST('weex/member/article/submit.jhtml',articleData).then(
                     function (res) {
-                        event.toast(res.data);
                         if(res.data != '' && res.type == 'success'){
                             _this.articleId = res.data.id;
                             let resDataStr = JSON.stringify(res.data);
@@ -936,6 +1026,13 @@
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','')
                                     event.sendGlobalEvent('onArticleChange',listenData);
+//                                    event.find(){
+//
+//                                    }
+
+                                    _this.deleteDraft();
+
+
 //                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
                                     event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
@@ -994,6 +1091,13 @@
                         show:true
                     };
                     _this.paraList.splice(index,0,newPara);
+
+//                    添加修改标志
+                    _this.hadChange = 1;
+                    if(_this.articleId == ''){
+//                        临时保存到缓存
+                        _this.saveDraft();
+                    }
 //                    modal.toast({message:_this.paraList[index].paraText,duration:3});
                 });
             },
@@ -1017,6 +1121,14 @@
                                 }
                                 _this.paraList.splice(index + i,0,newPara)
                                 _this.clearIconBox();
+
+
+//                    添加修改标志
+                                _this.hadChange = 1;
+                                if(_this.articleId == ''){
+//                        临时保存到缓存
+                                    _this.saveDraft();
+                                }
                             }
                         }
                     }
@@ -1102,6 +1214,13 @@
                     this.paraList[index].serveThumbnail = this.paraList[index - 1].serveThumbnail;
                     this.paraList[index - 1].paraImage = e;
                 }
+
+//                    添加修改标志
+                _this.hadChange = 1;
+                if(this.articleId == ''){
+//                        临时保存到缓存
+                    this.saveDraft();
+                }
             },
 //            下箭头
             moveBottom:function (index) {
@@ -1128,12 +1247,18 @@
                     this.paraList[index].serveThumbnail = this.paraList[index + 1].serveThumbnail;
                     this.paraList[index + 1].paraImage = e;
                 }
+//                    添加修改标志
+                _this.hadChange = 1;
+                if(this.articleId == ''){
+//                        临时保存到缓存
+                    this.saveDraft();
+                }
             },
 //            用户执行删除时触发询问。
             showConfirm :function(index) {
                 var _this = this;
                 if(this.paraList.length == 1){
-                    modal.toast({message: '至少要保留一张图片', duration: 0.5})
+                    modal.toast({message: '至少要保留一张图片或视频', duration: 0.5})
                 }else{
                     modal.confirm({
                         message: '确定删除该段?',
@@ -1144,6 +1269,12 @@
                         if(value == '确定'){
                             //    将内容删掉
                             _this.paraList.splice(index,1);
+//                    添加修改标志
+                            _this.hadChange = 1;
+                            if(_this.articleId == ''){
+//                        临时保存到缓存
+                                _this.saveDraft();
+                            }
                         }
                     })
                 }
@@ -1161,6 +1292,12 @@
                     if(value == '删除'){
                         //                将内容删掉
                         _this.voteList.splice(index,1);
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     }
                 })
             },
@@ -1172,6 +1309,12 @@
                     album.openAlbumSingle(false, function(data){
                         _this.paraList[index].paraImage = data.data.originalPath;
                         _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     })
                     return;
                 }else{
@@ -1195,6 +1338,12 @@
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.originalPath;
                                 _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+//                    添加修改标志
+                                _this.hadChange = 1;
+                                if(_this.articleId == ''){
+//                        临时保存到缓存
+                                    _this.saveDraft();
+                                }
                             }else{
                                 if(data.content == '用户取消'){
                                 }else{
@@ -1207,6 +1356,12 @@
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.videoPath;
                                 _this.paraList[index].thumbnailImage = data.data.coverImagePath;
+//                    添加修改标志
+                                _this.hadChange = 1;
+                                if(_this.articleId == ''){
+//                        临时保存到缓存
+                                    _this.saveDraft();
+                                }
                             }else{
                                 if(data.content == '用户取消'){
                                 }else{
@@ -1259,6 +1414,12 @@
 //                    modal.toast({message:message,duration:1});
                     if(message.type == 'success' && message.data != ''){
                         _this.coverImage = message.data;
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     }
                 });
             },
@@ -1275,6 +1436,12 @@
                     if(message.data != ''){
                         _this.musicName = message.data.chooseMusicName;
                         musicId = message.data.chooseMusicId;
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     }
                 });
             },
@@ -1285,6 +1452,12 @@
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
                     if(message.data != '') {
                         _this.voteList.push(message.data);
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     }
                 });
             },
@@ -1300,6 +1473,12 @@
 //                        _this.voteList[index] = message.data;
                         _this.voteList.splice(index,1);
                         _this.voteList.splice(index,0,message.data);
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     }
                 });
             },
@@ -1323,6 +1502,13 @@
                         }
                         _this.paraList.splice(index,0,newPara);
                         _this.clearIconBox();
+
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
                     }
                 })
             }
