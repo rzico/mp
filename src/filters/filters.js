@@ -1,6 +1,9 @@
 
 //时间格式化 今天 昨天 前天  年月日
 Vue.filter('daydayfmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -35,6 +38,9 @@ Vue.filter('daydayfmt', function (value) {
 
 //时间格式化 今天 近三天 近七天  七天前
 Vue.filter('dayfmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -58,6 +64,9 @@ Vue.filter('dayfmt', function (value) {
 })
 // 时间格式化 10:30 昨天 前天 2017年09月01日 09月01日
 Vue.filter('timefmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -107,6 +116,9 @@ Vue.filter('timefmt', function (value) {
 
 // 时间格式化 10:30 昨天 前天 2017-09-01 09-01
 Vue.filter('timefmtOther', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -157,6 +169,9 @@ Vue.filter('timefmtOther', function (value) {
 
 // 时间格式化  2017-09-01
 Vue.filter('timeDatefmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -180,6 +195,9 @@ Vue.filter('timeDatefmt', function (value) {
 
 //月份格式化 本月 上月 2..12月  2016年1月..
 Vue.filter('monthfmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -206,6 +224,9 @@ Vue.filter('monthfmt', function (value) {
 
 //2017-01-01
 Vue.filter('datefmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -220,6 +241,9 @@ Vue.filter('datefmt', function (value) {
 
 //返回月份 7 8 9 单数字
 Vue.filter('detailMonth', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -235,6 +259,9 @@ Vue.filter('detailMonth', function (value) {
 
 //时间格式化 返回 09-30 03:07
 Vue.filter('datetimefmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -276,6 +303,9 @@ Vue.filter('datetimefmt', function (value) {
 
 //时间格式化 返回 09-30 03:07:56 2017-09-30 03:07:56
 Vue.filter('datemoretimefmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -321,6 +351,9 @@ Vue.filter('datemoretimefmt', function (value) {
 })
 //时间格式化 返回 03:07
 Vue.filter('hitimefmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
     if(value.length == 10){
@@ -345,6 +378,9 @@ Vue.filter('hitimefmt', function (value) {
 
 //金额保留两位小数点
 Vue.filter('currencyfmt', function (value) {
+    if(value == '' || value == null || value == undefined){
+        return value;
+    }
     // 返回处理后的值
     if (value != null) {
         if(value == 0){
