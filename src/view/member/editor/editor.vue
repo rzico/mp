@@ -557,6 +557,7 @@
             readData(options){
                 let _this =this;
                 event.find(options,function (data) {
+                    event.toast(data);
                     if(data.type == 'success' && data.data != ''){
                         let articleData = JSON.parse(data.data.value);
 //                            保存置顶状态。
@@ -981,7 +982,7 @@
 //                var articleTemplates = [];
                 this.paraList.forEach(function(item){
                     _this.articleTemplates.push({
-                        thumbnail:item.thumbnailImage,
+                        thumbnail:item.serveThumbnail,
                         original:item.paraImage,
                         mediaType: item.mediaType,
                         content:item.paraText

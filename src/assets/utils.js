@@ -84,27 +84,6 @@ let utilsFunc = {
             return false
         }
     },
-    //本地缓存查找多条数据。
-    findList(value,start,size,callback){
-        const partevent = weex.requireModule('event'); //在ios无法识别出该语句，考虑弃用该方法
-        partevent.findList({
-            type:'article',
-            keyword:value,
-            orderBy:'desc',
-            current:start,
-            pageSize:size
-        },callback)
-    },
-    save(datatype,datakey,datavalue,datasort,datakeyword,callback){
-        const partevent = weex.requireModule('event');
-        partevent.save({
-            type:datatype,
-            key:datakey,
-            value:datavalue,
-            sort:datasort,
-            keyword:datakeyword
-        },callback)
-    },
     //时间戳
     timeChange(value) {
         if(value.toString().length == 10){
@@ -205,16 +184,16 @@ let utilsFunc = {
 
     //老的二维码转换成新格式
     qr2scan(e) {
-       let type = this.getUrlParameter("type",e);
-       let code = this.getUrlParameter("no",e);
-       if (type=="paybill") {
-           return websiteURL + "/q/818804"+code+".jhtml";
-       } else
-       if (type=="card_active") {
-           return websiteURL + "/q/818801"+code+".jhtml";
-       } else {
-           return e;
-       }
+        let type = this.getUrlParameter("type",e);
+        let code = this.getUrlParameter("no",e);
+        if (type=="paybill") {
+            return websiteURL + "/q/818804"+code+".jhtml";
+        } else
+        if (type=="card_active") {
+            return websiteURL + "/q/818801"+code+".jhtml";
+        } else {
+            return e;
+        }
     },
 //    二维码读取内容
     readScan(e,callback){
@@ -279,7 +258,7 @@ let utilsFunc = {
             if (s.indexOf("V1")>0) {
                 return "V1"
             }else if(s.indexOf("10,3")>0 || s.indexOf("10,6")>0){
-              return 'IPhoneX'
+                return 'IPhoneX'
             } else {
                 return s;
             }
@@ -287,7 +266,7 @@ let utilsFunc = {
     },
 //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addTop:function () {
-       let s = this.device();
+        let s = this.device();
         if (this.isNull(s)) {
             return ""
         } else {
@@ -370,6 +349,79 @@ let utilsFunc = {
             return false;
         }
     },
+
+    resolvetimefmt:function (value) {
+//value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+        if(value.toString().length == 10){
+            value = value * 1000;
+        }
+// 返回处理后的值
+        let    date = new Date(value);
+        let    y = date.getFullYear();
+        let    m = date.getMonth() + 1;
+        var    d = date.getDate();
+        var    h = date.getUTCHours() + 8;
+        h = h >= 24 ? h - 24 : h;
+        d = h >= 24 ? d + 1 : d;
+        let    i = date.getMinutes();
+        let    s = date.getSeconds();
+        if (m < 10) {
+            m = '0' + m;
+        }
+        if (d < 10) {
+            d = '0' + d;
+        }
+        if (h < 10) {
+            h = '0' + h;
+        }
+        if (i < 10) {
+            i = '0' + i;
+        }
+        if (s < 10) {
+            s = '0' + s;
+        }
+        let timeObj = {
+            y:y,
+            m:m,
+            d:d,
+            h:h,
+            i:i,
+            s:s
+        }
+        return timeObj;
+    },
+    //返回格式 2017-09-01
+    ymdtimefmt:function(value){
+        if(value == '' || value == null || value == undefined){
+            return value;
+        }
+        let timeObj = this.resolvetimefmt(value);
+        return y + '-' + m + '-' + d
+    },
+    //返回格式 2017-09-01 06:35:59
+    ymdhistimefmt:function(value){
+        if(value == '' || value == null || value == undefined){
+            return value;
+        }
+        let timeObj = this.resolvetimefmt(value);
+
+        return y + '-' + m + '-' + d + ' ' + h + ':' + i + ':' + 's';
+    },
+    //返回格式 06:35:59
+    histimefmt:function(value){
+        if(value == '' || value == null || value == undefined){
+            return value;
+        }
+        let timeObj = this.resolvetimefmt(value);
+        return h + ':' + i + ':' + 's';
+    },
+
+
+
+
+
+
+
 };
 
 export default utilsFunc;

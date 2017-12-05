@@ -218,7 +218,7 @@
                 chooseMusicId = musicId;
                 chooseMusicName = musicName;
 //                播放音乐
-                audio.play('http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/music/0101.mp3');
+                audio.play(utils.remote('resources/music/'+ musicId +'.mp3'));
                 if(lastTickItem == -1 || lastTickItem == item){
                     item.tickShow = true;
                 }else {
