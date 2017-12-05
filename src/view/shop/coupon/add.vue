@@ -14,9 +14,12 @@
                 <text class="scopeText flex3" style="font-size: 32px;padding-left: 60px;color: #999999" @click="scopesetting">{{scene | judgment}}</text>
             </div>
             <div class="money">
-                <text class="moneyText" style="font-size: 32px">满减面额</text>
-                <input type="number" placeholder="请输入0-10之间数字" class="inputMoney" v-model="money" @change="" @input=""/>
-                <text class="conditionsText" style="font-size: 32px">元/折</text>
+                <text class="moneyText" style="font-size: 32px">优惠面额</text>
+                <input type="number" placeholder="" class="inputMoney" v-model="money" @change="" @input=""/>
+                <text class="conditionsText" style="font-size: 32px">{{transform}}</text>
+            </div>
+            <div class="inputPrompt">
+                <text class="inputPromptText" style="font-size: 28px;color:#888">优惠面额请输入 0-10 之间的的数字</text>
             </div>
             <div class="conditions">
                 <text class="conditionsText" style="font-size: 32px">使用条件</text>
@@ -36,16 +39,27 @@
             </div>
             <div class="introduced">
                 <text class="introducedText" style="font-size: 32px">规则介绍</text>
-                <input type="text" placeholder="使用规则介绍" class="input" v-model="rule" @change="" @input=""/>
+                <textarea rows="2" maxlength="80" placeholder="请输入使用规则(不超过80个汉字)" class="input" v-model="rule" @change="" @input=""/>
             </div>
         </div>
-        <div class="button bw" @click="complete">
+        <div class="button bw bottom" @click="complete">
             <text class="bottonText">完成</text>
         </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .bottom{
+        position: absolute;
+        bottom: 20px;
+    }
+    .inputPrompt{
+        height: 50px;
+        background-color:#eeeeee;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 20px;
+    }
     .titleOne{
         height: 50px;
         border-left-width: 5px;
@@ -78,8 +92,8 @@
     .input{
         padding-left: 100px;
         font-size: 28px;
-        height: 60px;
-        width: 500px;
+        height: 80px;
+        width: 550px;
     }
     .inputconditions{
         font-size: 28px;
@@ -138,7 +152,7 @@
         border-bottom-width: 1px;
         border-color: #cccccc;
         background-color: white;
-        height: 100px;
+        height: 120px;
         padding-left: 20px;
     }
     .bw {
@@ -172,7 +186,8 @@
                 codeName:'fullcut',
                 address:'全场',
                 scene:'all',
-                id:''
+                id:'',
+                transform:'元'
             }
         },
         components: {
@@ -295,10 +310,11 @@
                         if (e.data == 0){
                             _this.type = '满减'
                             _this.codeName = 'fullcut'
-
+                            _this.transform ='元'
                         }else if(e.data == 1){
                             _this.type = '满折'
                             _this.codeName = 'discount'
+                            _this.transform = '折'
                         }
                     }
                 })
@@ -324,8 +340,29 @@
                     }
                 })
             },
+
             complete:function () {
                 let _this = this;
+                if(_this.beginDate=='点击设置'){
+                    event.toast("开始时间未设置")
+                    return
+                }
+                if(_this.endDate=='点击设置'){
+                    event.toast('结束时间未设置')
+                    return
+                }
+                if(_this.money==''){
+                    event.toast('优惠面额未设置')
+                    return
+                }
+                if(_this.conditions==''){
+                    event.toast('使用条件未设置')
+                    return
+                }
+                if(_this.rule==''){
+                    event.toast('规则介绍未设置')
+                    return
+                }
                 POST('weex/member/coupon/submit.jhtml?type='+_this.codeName+'&scope='+_this.scene+'&beginDate='+_this.beginDate
                     +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id).then(
                     function (mes) {
