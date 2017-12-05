@@ -327,7 +327,6 @@
             },
             refunds:function (sn) {
                 var _this = this;
-                event.toast(sn);
                 POST("refunds/submit.jhtml?sn="+sn).then(function (mes) {
                     if (mes.type=='success') {
                         _this.depositList.forEach(function (item) {
@@ -435,10 +434,10 @@
                 }
             },
             summary:function (timestamp) {
-                event.toast(timestamp);
-                event.openURL(utils.locate("view/shop/deposit/summary.js?shopId="+_this.shopId+"&billDate="+utils.timeChange(timestamp)),
-                 function () {}
-                )
+                event.toast(utils.timeChange(timestamp));
+                event.openURL(utils.locate('view/shop/deposit/summary.js?billDate='+encodeURIComponent(utils.timeChange(timestamp))),function () {
+
+                })
             },
 //            获取月份
             getDate: function(value) {

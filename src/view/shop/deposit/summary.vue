@@ -177,9 +177,9 @@
             goback: function (e) {
                 event.closeURL();
             },
-            open () {
+            open:function () {
                 var _this = this;
-                GET('weex/member/paybill/summary.jhtml?shopId='+_this.shopId+"&billDate="+_this.billDate,function (res) {
+                GET('weex/member/paybill/summary.jhtml?shopId='+_this.shopId+"&billDate="+encodeURIComponent(_this.billDate),function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
                      } else {
@@ -202,10 +202,11 @@
 //              页面创建时请求数据
             utils.initIconFont();
             this.shopId = utils.getUrlParameter("shopId");
+            if (this.shopId==null) {
+                this.shopId = "";
+            }
             this.billDate = utils.getUrlParameter("billDate");
-            this.open(0,function () {
-
-            });
+            this.open();
         }
     }
 </script>
