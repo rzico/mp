@@ -71,8 +71,8 @@ Vue.filter('timefmt', function (value) {
     let    nowy = tody.getFullYear();
     let    m = date.getMonth() + 1;
     let    w = tody.getDate() - date.getDate();
+    var    h = date.getUTCHours() + 8;
     if (w<1) {
-        var    h = date.getUTCHours() + 8;
         h = h >= 24 ? h - 24 : h;
         let    i = date.getMinutes();
         if (h < 10) {
@@ -93,7 +93,8 @@ Vue.filter('timefmt', function (value) {
     if (m < 10) {
         m = '0' + m;
     }
-    let    d = date.getDate();
+    var    d = date.getDate();
+    d = h >= 24 ? d + 1 : d;
     if (d < 10) {
         d = '0' + d;
     }
@@ -121,8 +122,8 @@ Vue.filter('timefmtOther', function (value) {
     let    nowy = tody.getFullYear();
     let    m = date.getMonth() + 1;
     let    w = tody.getDate() - date.getDate();
+    var    h = date.getUTCHours() + 8;
     if (w<1) {
-        var    h = date.getUTCHours() + 8;
         h = h >= 24 ? h - 24 : h;
         let    i = date.getMinutes();
         if (h < 10) {
@@ -144,6 +145,7 @@ Vue.filter('timefmtOther', function (value) {
         m = '0' + m;
     }
     let    d = date.getDate();
+    d = h >= 24 ? d + 1 : d;
     if (d < 10) {
         d = '0' + d;
     }
@@ -294,6 +296,7 @@ Vue.filter('datemoretimefmt', function (value) {
     let    d = date.getDate();
     var    h = date.getUTCHours() + 8;
     h = h >= 24 ? h - 24 : h;
+    d = h >= 24 ? d + 1 : d;
     let    i = date.getMinutes();
     let    s = date.getSeconds();
     if (m < 10) {
@@ -333,6 +336,7 @@ Vue.filter('hitimefmt', function (value) {
     let    date = new Date(value);
     var    h = date.getUTCHours() + 8;
     h = h >= 24 ? h - 24 : h;
+    // d = h >= 24 ? d + 1 : d;
     let    i = date.getMinutes();
     if (h < 10) {
         h = '0' + h;
