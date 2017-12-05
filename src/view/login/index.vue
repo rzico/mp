@@ -48,7 +48,6 @@
                 var _this = this;
                 event.toast(this.value);
                 event.encrypt(_this.value,function (message) {
-                    event.toast(message);
                     if (message.type=="success") {
                         POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
                             function (data) {
