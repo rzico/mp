@@ -119,6 +119,7 @@
             title: { default: "消费统计" }
         },
         filters: {
+
             typefmt:function (val) {
                 if (val == 'cashier') {
                     return '消费'

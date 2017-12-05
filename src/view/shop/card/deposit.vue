@@ -96,7 +96,6 @@
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
-    const picker = weex.requireModule('picker')
     var event = weex.requireModule('event')
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
@@ -153,17 +152,6 @@
                     }
                 }
                 return true;
-            },
-            pickDate () {
-                var _this = this;
-                picker.pickDate({
-                    value: _this.billDate
-                }, function (e) {
-                    if (e.result == 'success') {
-                        _this.billDate = e.data;
-                        _this.refresh();
-                    }
-                })
             },
             goback: function (e) {
                 event.closeURL();
