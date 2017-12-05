@@ -51,7 +51,7 @@
     .intro {
         margin-left: 10px;
         width:630px;
-        color:#999;
+        color:#eee;
         margin-top: 20px;
         font-size: 28px;
     }

@@ -31,6 +31,12 @@
                 </div>
             </cell>
         </list>
+        <div class="panel" >
+            <div class="moneyname">
+                <text class="name">合计</text>
+                <text class="money">{{deposit.total | currencyfmt}}</text>
+            </div>
+        </div>
     </div>
 
 </template>
@@ -102,7 +108,8 @@
                 depositList:[],
                 refreshing: false,
                 shopId:"",
-                billDate:""
+                billDate:"",
+                total:0
             }
         },
         components: {
@@ -112,6 +119,7 @@
             title: { default: "消费统计" }
         },
         filters: {
+
             typefmt:function (val) {
                 if (val == 'cashier') {
                     return '消费'
@@ -182,6 +190,9 @@
                 GET('weex/member/paybill/summary.jhtml?shopId='+_this.shopId+"&billDate="+encodeURIComponent(_this.billDate),function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
+                        _this.depositList.forEach(function (item) {
+                            _this.total = _this.total + item.amount;
+                        })
                      } else {
                         event.toast(res.content);
                     }
@@ -206,6 +217,7 @@
                 this.shopId = "";
             }
             this.billDate = utils.getUrlParameter("billDate");
+            this.title = "消费统计("+this.billDate.substring(0,10)+")"
             this.open();
         }
     }

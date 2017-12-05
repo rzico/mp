@@ -50,23 +50,23 @@
             <div class="menubox">
                 <div class="menu" @click="shop()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
-                    <text class="btn-text" value="刷卡">店铺</text>
+                    <text class="menuBtn" value="刷卡">店铺</text>
                 </div>
                 <div class="menu" @click="employee()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
-                    <text class="btn-text" value="刷卡">员工</text>
+                    <text class="menuBtn" value="刷卡">员工</text>
                 </div>
                 <div class="menu" @click="deposit()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="btn-text" value="刷卡">账单</text>
+                    <text class="menuBtn" value="刷卡">账单</text>
                 </div>
                 <div class="menu" @click="gocard()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="btn-text" value="刷卡">会员卡</text>
+                    <text class="menuBtn" value="刷卡">会员卡</text>
                 </div>
                 <div class="menu" @click="gocoupon()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="btn-text" value="刷卡">优惠券</text>
+                    <text class="menuBtn" value="刷卡">优惠券</text>
                 </div>
                 <div class="content">
                     <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
@@ -153,9 +153,6 @@
         font-size:50px;
     }
 
-    .clear {
-
-    }
     .buttombox {
         margin-top: 10px;
         margin-left: 30px;
@@ -184,6 +181,12 @@
         font-size: 32px;
         color:#666;
     }
+
+    .menuBtn {
+        font-size: 32px;
+        color:#666;
+    }
+
     .btn:active {
         background-color:#ccc;
     }
@@ -256,7 +259,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         width:690px;
-        margin-left: 30px;
+        margin-left: 33px;
         border:1px;
         border-top-left-radius: 10px;
         border-top-right-radius:10px;
@@ -267,7 +270,7 @@
     .menu {
         flex-direction: column;
         align-items: center;
-        width:230px;
+        width:229px;
         padding:40px;
     }
 
@@ -306,6 +309,15 @@
             this.view();
         },
         methods: {
+            shop:function () {
+                event.openURL(utils.locate("view/shop/shop/storeList.js"),function (e) {});
+            },
+            gocard:function () {
+                event.openURL(utils.locate("view/shop/card/cardList.js"),function (e) {});
+            },
+            gocoupon:function () {
+                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});
+            },
             objHeader:function () {
                 if (utils.device()=='V1') {
                     return {backgroundColor:'#fff'}

@@ -159,7 +159,7 @@
             open (pageStart,callback) {
                 this.pageStart = pageStart;
                 var _this = this;
-                GET('weex/member/card/bill.jhtml?id='+this.id+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                GET('weex/member/card/bill.jhtml?id='+this.id+'&billDate='+this.billDate+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
                           _this.depositList = res.data.data;

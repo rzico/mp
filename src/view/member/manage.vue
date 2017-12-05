@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between" @click="option()">
+                <div class="cell-panel space-between" :class="[member.hasTopic?'cell-clear':'']" @click="option()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
                         <text class="title ml10">通用设置</text>
@@ -28,7 +28,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" v-if="member.hasTopic">
+                <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">
                     <div class="flex-row">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
                         <text class="title ml10">我的专栏</text>
@@ -65,7 +65,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between">
+                <div class="cell-panel space-between  cell-clear">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
                         <text class="title ml10">投票管理</text>
@@ -179,9 +179,7 @@
                 var _this = this;
                 GET("weex/member/manager/view.jhtml",
                     function (data) {
-                        event.toast(data);
                         if (data.type=="success") {
-                            event.toast('success里');
                             _this.member = data.data;
                         } else {
                             event.toast(data.content);

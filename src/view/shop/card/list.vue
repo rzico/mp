@@ -59,6 +59,7 @@
         color: #cccccc;
         margin-top: 5px;
         margin-right: 20px;
+        font-size: 28px;
     }
     .code{
         flex-direction: row;
