@@ -157,7 +157,6 @@
                 var _this = this;
                 GET('weex/member/topiccard/activity.jhtml',function (mes) {
                     if (mes.type == 'success') {
-                        utils.debug(mes)
                         mes.data.forEach(function (item) {
                             _this.div.push(item)
                         })
@@ -183,10 +182,11 @@
                     }
                 });
                  threedata = JSON.stringify(threedata);
+
                 POST('weex/member/topiccard/activity.jhtml',threedata).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            utils.debug(mes)
+                            event.toast('保存成功')
                         } else {
                             event.toast(mes.content);
                         }
