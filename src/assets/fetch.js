@@ -24,9 +24,15 @@ export function POST (path,body) {
 }
 
 export function GET (path,resolve,reject) {
-    event.find({type:"httpCache",key:path},function (cache) {
-       if (cache.type=='success' && !utils.isNull(cache.data)) {
-           resolve(JSON.parse(cache.data));
+    let cacheParams = {
+        type:'httpCache',//类型
+        key:`${baseURL}${path}`,//关键址
+    }
+    event.find(cacheParams,function (cache) {
+       if (cache.type=='success') {
+           if (cache.data != '') {
+               resolve(JSON.parse(cache.data.value));
+           }
        }
     })
     stream.fetch({

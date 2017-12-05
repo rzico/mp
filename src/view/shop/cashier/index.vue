@@ -1,12 +1,12 @@
 <template>
     <div class="wrapper">
         <scroller class="scroller">
-            <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
+            <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">刷新数据</text>
             </refresh>
             <div class="wallet-panel" :style="objHeader()">
                 <text class="balance">{{cashier.today | currencyfmt}}</text>
-                <text class="ico exit" :style="{fontFamily:'iconfont'}" @click="goback()">&#xe60a;</text>
+                <text class="ico exit" :style="{fontFamily:'iconfont'}" @click="goback()" v-if="isNoPos()">&#xe60a;</text>
                 <div class="wallet-title">
                     <text class="sub_title">今天收银（元）</text>
                     <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
@@ -259,7 +259,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         width:690px;
-        margin-left: 33px;
+        margin-left: 30px;
         border:1px;
         border-top-left-radius: 10px;
         border-top-right-radius:10px;
@@ -340,8 +340,6 @@
                     _this.refreshing = false
                 }, 2000)
             },
-            onpullingdown (event) {
-            },
             view:function () {
                 var _this = this;
                 GET("weex/member/cashier/view.jhtml",function (res) {
@@ -349,10 +347,10 @@
                        _this.cashier = res.data;
                        _this.shopId = res.data.shopId;
                    } else {
-                       event.toast(res.message);
+                       event.toast(res.content);
                    }
                 },function (err) {
-                   event.toast(err.message);
+                   event.toast(err.content);
                 });
             },
             goback: function (e) {
@@ -363,6 +361,9 @@
             },
             isShow:function () {
                 return this.time<30;
+            },
+            isNoPos:function () {
+                return utils.device()!='V1';
             },
             clearTimer:function () {
                if (this.timer!=null) {
@@ -378,7 +379,14 @@
             print:function () {
                 GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
                     if (mes.type=='success') {
-                        printer.print(mes.data);
+                        if (utils.device()=='V1') {
+                            printer.print(mes.data);
+                        } else {
+                            modal.alert({
+                                message: "官方指定机器才能打印",
+                                okTitle: '知道了'
+                            })
+                        }
                     } else {
                         modal.alert({
                             message: mes.content,
@@ -405,8 +413,13 @@
                         if (res.type=='success') {
                             if (res.data=='0000') {
                                 _this.clearTimer();
-                                event.toast("付款成功");
-                                _this.print();
+                                _this.view();
+                                if (utils.device()=='V1') {
+                                    event.toast("付款成功");
+                                    _this.print();
+                                } else {
+
+                                }
                             } else
                             if (res.data=='0001') {
                                 modal.alert({
