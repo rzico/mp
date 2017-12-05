@@ -306,6 +306,15 @@
             this.view();
         },
         methods: {
+            shop:function () {
+                event.openURL(utils.locate("view/shop/shop/storeList.js"),function (e) {});
+            },
+            gocard:function () {
+                event.openURL(utils.locate("view/shop/card/cardList.js"),function (e) {});
+            },
+            gocoupon:function () {
+                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});
+            },
             objHeader:function () {
                 if (utils.device()=='V1') {
                     return {backgroundColor:'#fff'}
