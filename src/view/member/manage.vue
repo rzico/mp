@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between" :class="[member.hasTopic?'cell-clear':'']" @click="option()">
+                <div class="cell-panel space-between" :class="[member.hasTopic?'':'cell-clear']" @click="option()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
                         <text class="title ml10">通用设置</text>
