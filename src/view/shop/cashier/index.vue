@@ -4,9 +4,9 @@
             <refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown" :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">刷新数据</text>
             </refresh>
-            <div class="wallet-panel">
+            <div class="wallet-panel" :style="objHeader()">
                 <text class="balance">{{cashier.today | currencyfmt}}</text>
-                <text class="deposit" @click="deposit()">收银明细</text>
+                <text class="ico exit" :style="{fontFamily:'iconfont'}" @click="goback()">&#xe60a;</text>
                 <div class="wallet-title">
                     <text class="sub_title">今天收银（元）</text>
                     <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
@@ -15,8 +15,9 @@
             <div class="fontInput">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
                 <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" v-model="amount" />
+                <text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>
             </div>
-            <div class="buttombox">
+            <div class="buttombox"  v-if="hasInput()">
                 <div class="btn "  @click="payment('aliPayPlugIn')">
                     <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
                     <text class="btn-text" value="支付宝">支付宝</text>
@@ -26,7 +27,7 @@
                     <text class="btn-text" value="微信钱包">微信钱包</text>
                 </div>
             </div>
-            <div class="buttombox">
+            <div class="buttombox"  v-if="hasInput()">
                 <div class="btn "  @click="payment('cardPayPlugin')">
                     <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                     <text class="btn-text" value="会员卡">会员卡</text>
@@ -36,7 +37,7 @@
                     <text class="btn-text" value="芸店钱包">芸店钱包</text>
                 </div>
             </div>
-            <div class="buttombox">
+            <div class="buttombox"  v-if="hasInput()">
                 <div class="btn " @click="offline('bankPayPlugin')">
                     <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
                     <text class="btn-text" value="刷卡">刷卡(记账)</text>
@@ -46,10 +47,32 @@
                     <text class="btn-text" value="现金">现金(记账)</text>
                 </div>
             </div>
-            <div class="content">
-                <text class="sub_title">1.支持微信钱包、支付宝、店内会员卡、芸店钱包</text>
-                <text class="sub_title">2.单笔收钱金额不能超过5000元</text>
-                <text class="sub_title">3.快速秒到,超过30秒没到账联系客服处理</text>
+            <div class="menubox">
+                <div class="menu" @click="shop()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
+                    <text class="btn-text" value="刷卡">店铺</text>
+                </div>
+                <div class="menu" @click="employee()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
+                    <text class="btn-text" value="刷卡">员工</text>
+                </div>
+                <div class="menu" @click="deposit()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
+                    <text class="btn-text" value="刷卡">账单</text>
+                </div>
+                <div class="menu" @click="gocard()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                    <text class="btn-text" value="刷卡">会员卡</text>
+                </div>
+                <div class="menu" @click="gocoupon()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
+                    <text class="btn-text" value="刷卡">优惠券</text>
+                </div>
+                <div class="content">
+                    <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
+                    <text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>
+                    <text class="sub_title mt10">3.快速秒到,超过30秒没到账联系客服处理</text>
+                </div>
             </div>
         </scroller>
         <div class="waiting" v-if="isShow()">
@@ -67,7 +90,7 @@
 <style scoped>
 
     .sub_title {
-        color:#eee;
+        color:#ccc;
         font-size: 30px;
     }
 
@@ -87,7 +110,6 @@
         height:310px;
         flex-direction: column;
         align-items:flex-start;
-        background-color:#000;
     }
 
     .balance {
@@ -96,12 +118,15 @@
         color: #fff;
         margin-left:40px;
     }
-    .deposit {
+    .exit {
         position: absolute;
-        right:30px;
-        top:74px;
-        color: #cccccc;
-        font-size:32px;
+        right:0px;
+        top:44px;
+        color: #fff;
+        font-size:48px;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
     }
     .fontInput{
         border-style: solid;
@@ -123,11 +148,14 @@
     }
     .input{
         margin-left:10px;
-        width: 600px;
+        width: 500px;
         height: 100px;
         font-size:50px;
     }
 
+    .clear {
+
+    }
     .buttombox {
         margin-top: 10px;
         margin-left: 30px;
@@ -223,6 +251,26 @@
         color:#ccc
     }
 
+    .menubox {
+        margin-top: 40px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width:690px;
+        margin-left: 30px;
+        border:1px;
+        border-top-left-radius: 10px;
+        border-top-right-radius:10px;
+        background-color: #fff;
+        min-height: 900px;
+    }
+
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        width:230px;
+        padding:40px;
+    }
+
 </style>
 <script>
     import { POST, GET } from '../../../assets/fetch'
@@ -258,6 +306,17 @@
             this.view();
         },
         methods: {
+            objHeader:function () {
+                if (utils.device()=='V1') {
+                    return {backgroundColor:'#fff'}
+                } else {
+                    return {backgroundColor:'#EB4E40'}
+                }
+            },
+            hasInput:function () {
+                return utils.isNull(this.amount)==false;
+
+            },
             classHeader:function () {
                 return utils.device();
             },

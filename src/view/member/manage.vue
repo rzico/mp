@@ -28,7 +28,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="topic()">
+                <div class="cell-panel space-between cell-clear" v-if="member.hasTopic">
                     <div class="flex-row">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
                         <text class="title ml10">我的专栏</text>
@@ -40,31 +40,11 @@
                 </div>
             </div>
 
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between " @click="store">
+            <div class="cell-row cell-line"  v-if="member.useCashier">
+                <div class="cell-panel space-between cell-clear" @click="store">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                         <text class="title ml10">店铺管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between " @click="card">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe70f;</text>
-                        <text class="title ml10">会员卡管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between cell-clear" @click="coupons">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe635;</text>
-                        <text class="title ml10">优惠券管理</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -170,7 +150,7 @@
         },
         data() {
             return {
-                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通"},
+                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false},
                 showShare:false
             }
         },
@@ -191,17 +171,7 @@
                 this.showShare = false;
             },
             store:function () {
-                event.openURL(utils.locate('view/shop/shop/storeList.js'),function () {
-
-                })
-            },
-            card:function () {
-                event.openURL(utils.locate('view/shop/card/cardList.js'),function () {
-
-                })
-            },
-            coupons:function () {
-                event.openURL(utils.locate('view/shop/coupon/list.js'),function () {
+                event.openURL(utils.locate('view/shop/cashier/index.js'),function () {
 
                 })
             },

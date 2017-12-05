@@ -1,4 +1,3 @@
-
 <template>
     <div class="captcha">
         <div class="mobile-header">

@@ -38,6 +38,20 @@
                     </div>
                 </div>
             </div>
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title ml10">开通专栏</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <switch class="switch" :checked="hasTopic" @change="create()"></switch>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-panel">
+                <text class="sub_title">适用于有实体店铺的商家,线下ERP集成</text>
+            </div>
+
             <div class="cell-row cell-line" @click="sendQrcode()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -141,7 +155,8 @@
               timestamp:'',
               blackNum:0,
               setQrcode:'未设置',
-              storageNum:'0M'
+              storageNum:'0M',
+              hasTopic:false
           }
         },
         components: {
@@ -164,6 +179,7 @@
                     if(!utils.isNull(data.data.qrcode)){
                         _this.setQrcode = '已设置';
                     }
+                    _this.hasTopic = data.data.hasTopic;
                 }else{
                     event.toast(data.content)
                 }
@@ -306,6 +322,21 @@
                         }
                     }
                 })
+            },
+//             开通专栏
+            create:function () {
+                var _this = this;
+                POST('weex/member/topic/submit.jhtml').then(
+                    function (data) {
+                        if (data.type == 'success') {
+                            _this.hasTopic = true;
+                            event.toast("开通专栏成功");
+                        } else {
+                            event.toast(err.content)
+                        }
+                    },function (err) {
+                        event.toast(err.content)
+                    })
             },
 //            黑名单列表
             goBlackList(){
