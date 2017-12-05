@@ -96,6 +96,7 @@
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
+    const picker = weex.requireModule('picker')
     var event = weex.requireModule('event')
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
@@ -153,13 +154,24 @@
                 }
                 return true;
             },
+            pickDate () {
+                var _this = this;
+                picker.pickDate({
+                    value: _this.billDate
+                }, function (e) {
+                    if (e.result == 'success') {
+                        _this.billDate = e.data;
+                        _this.refresh();
+                    }
+                })
+            },
             goback: function (e) {
                 event.closeURL();
             },
             open (pageStart,callback) {
                 this.pageStart = pageStart;
                 var _this = this;
-                GET('weex/member/card/bill.jhtml?id='+this.id+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                GET('weex/member/card/bill.jhtml?id='+this.id+'&billDate='+this.billDate+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
                           _this.depositList = res.data.data;

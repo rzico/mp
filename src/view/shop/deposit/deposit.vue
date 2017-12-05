@@ -5,9 +5,10 @@
         <div class="cell-header total">
                 <text class="balance">{{cashier.today | currencyfmt}}</text>
                 <div class="wallet-title">
-                    <text class="sub_title">今天收银（元）</text>
+                    <text class="sub_title">今天收银（元）     </text>
                     <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
                 </div>
+                <text class="day" :style="{fontFamily:'iconfont'}">&#xe63c;</text>
         </div>
         <list class="list mt20">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -95,7 +96,6 @@
     .wallet-title {
         margin-top: 10px;
         flex-direction: row;
-        justify-content: space-between;
         padding-right: 30px;
         padding-left: 20px;
     }
@@ -116,6 +116,17 @@
         background-color: #ffffff;
         padding-left: 20px;
         margin-top: 20px;
+    }
+
+    .day {
+        position: absolute;
+        top:20px;
+        right: 20px;
+        width:60px;
+        height:60px;
+        font-size: 48px;
+        line-height: 60px;
+        color:#EB4E40;
     }
 
     .logo {
@@ -174,6 +185,8 @@
     }
     .popupImg {
         font-size: 78px;
+        width:80px;
+        height:80px;
     }
     .imgBox{
         background-color: #fff;
@@ -212,7 +225,8 @@
                 loading: 'hide',
                 pageStart:0,
                 pageSize:20,
-                noLoading:true
+                noLoading:true,
+                billDate:''
             }
         },
         components: {

@@ -10,10 +10,10 @@
                 </div>
                 <div class="maxQuotaServicefee">
                     <div class="servicefeeText" v-bind:style="{visibility:hide}">
-                        <text class="servicefee">手续费 {{service}}元</text>
+                        <text class="servicefee"></text>
                     </div>
                     <div class="serviceArrival">
-                        <text class="arrival">实际到账 {{creditedAmount}}元</text>
+                        <text class="arrival">卡实际扣款 {{creditedAmount}}元</text>
                     </div>
                 </div>
             </div>
