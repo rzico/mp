@@ -51,7 +51,7 @@
 <style>
     .bottom{
         position: absolute;
-        bottom: 20px;
+        bottom: 40px;
     }
     .inputPrompt{
         height: 50px;
@@ -90,7 +90,7 @@
         padding-left: 20px;
     }
     .input{
-        padding-left: 100px;
+        padding-left: 90px;
         font-size: 28px;
         height: 80px;
         width: 550px;
