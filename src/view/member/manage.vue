@@ -254,10 +254,10 @@
                         shareType = 'appMessage';
                         break;
                     case 2 :
-                        shareType = 'favorite';
+                        shareType = 'copyHref';
                         break;
                     default:
-                        shareType = '';
+                        shareType = 'browser';
                         break;
                 }
 
@@ -270,7 +270,7 @@
                 }
                 _this.showShare = false;
                 event.share(option,function (data) {
-                    event.toast(JSON.stringify(data));
+                    event.toast(data.content);
                 })
             },
             beginShare:function () {
