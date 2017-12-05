@@ -964,7 +964,7 @@
             },
 //            前往聊天
             goChat(){
-                let userId = 'u' + parseInt(10200 + this.UId);
+                let userId = 'u' + (10200 + parseInt(this.UId));
                 event.navToChat(userId);
             },
 //            添加好友

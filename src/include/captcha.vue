@@ -93,6 +93,7 @@
     var lastCaptchaLength = 0;
     var timer = null;
     import utils from '../assets/utils';
+    const event = weex.requireModule('event');
     export default {
         data:function(){
             return{
@@ -153,25 +154,28 @@
             clear:function () {
                 this.captcha = "";
                 this.textList = ['','','','','',''];
+                lastCaptchaLength = 0;
+                optionIndex = 0;
             },
 //            当用户输入数字时触发
-            captchaInput:function (event) {
+            captchaInput:function (e) {
                 var _this = this;
 //                判断删除还是输入  '大于' --> 删除
-                if(lastCaptchaLength > event.value.length){
+                if(lastCaptchaLength > e.value.length){
                     optionIndex --;
                     _this.textList[optionIndex] = '';
                 }else{
-                    let a = event.value;
+                    let a = e.value;
                     let b = a.substr(a.length-1,1)
-                    console.log(event);
                     _this.textList[optionIndex] = b;
-                    optionIndex ++;
+                    if(_this.textList[0] != ''){
+                        optionIndex ++;
+                    }
                 }
-                lastCaptchaLength = event.value.length;
+                lastCaptchaLength = e.value.length;
 //                当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
-                    _this.captcha = event.value;
+                    _this.captcha = e.value;
 //                    _this.beginTimer();
                     _this.$emit("onEnd",this.captcha);
                 }

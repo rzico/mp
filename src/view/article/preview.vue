@@ -180,9 +180,9 @@
         opacity: 1;
     }
     .slide-fade-enter-to{
-         transform: translateY(0px);
-         opacity: 1;
-     }
+        transform: translateY(0px);
+        opacity: 1;
+    }
     .btnTextColor{
         color:#F0AD3C;
     }
@@ -613,7 +613,7 @@
                         shareType = '';
                         break;
                 }
-                event.toast('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType );
+
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         var option = {
@@ -624,9 +624,9 @@
                             type:shareType
                         }
                         _this.showShare = false;
-//                        if(data.data.thumbnail.substring(0,4))
                         event.share(option,function (data) {
                             if(data.type == 'success'){
+                                event.toast('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType);
                                 POST('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType).then(
                                     function (data) {
                                         if(data.type == 'success'){
@@ -643,18 +643,17 @@
                 },function (err) {
                     event.toast(err.content);
                 })
-
             },
 //            生成长图
             longPic(){
                 let _this = this;
                 webview.getLongImage(this.$refs.webView,function(data){
-                   if(data.type == 'success'){
-                       event.toast('长图已保存到相册里');
-                       _this.isOperation = false;
-                   }else{
-                       event.toast(data.content);
-                   }
+                    if(data.type == 'success'){
+                        event.toast('长图已保存到相册里');
+                        _this.isOperation = false;
+                    }else{
+                        event.toast(data.content);
+                    }
                 });
             }
         }

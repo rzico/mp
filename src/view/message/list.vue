@@ -347,7 +347,7 @@
                                 if(message.type == 'success' && message.content =='更新成功'){
                                     _this.messageList.forEach(function (nowData,nowIndex) {
 //                                            存入缓存里的userId 会消失掉
-                                        nowData.userId = utils.isNull(nowData.userId) ? 'u' + parseInt(10200 + nowData.id) : nowData.userId;
+                                        nowData.userId = utils.isNull(nowData.userId) ? 'u' + (10200 + parseInt(nowData.id)) : nowData.userId;
                                         if(nowData.userId == _weex.data.userId){
 //                                        删除原来的对话
                                             _this.messageList.splice(nowIndex,1);

@@ -217,12 +217,8 @@
             ctrlTick:function (item,musicId,musicName) {
                 chooseMusicId = musicId;
                 chooseMusicName = musicName;
-                audio.play('http://dl.stream.qqmusic.qq.com/C400004USWdm0CVvBP.m4a?vkey=FA95B41644E4E370E7E8A06BECB472320DD9E566B347B8901F7D8381D56300BB1C4687C0702308155E760FAC03A99AE2DA2598012C85A602&guid=8899973000&uin=0&fromtag=66',function (data) {
-                    if(data.type == 'success'){
-                    }else{
-                        event.toast(data.content);
-                    }
-                });
+//                播放音乐
+                audio.play('http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/music/0101.mp3');
                 if(lastTickItem == -1 || lastTickItem == item){
                     item.tickShow = true;
                 }else {

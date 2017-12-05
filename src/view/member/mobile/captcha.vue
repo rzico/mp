@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
-        <captcha :title="cptitle" @onclick="onclick" :mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
+        <captcha :title="cptitle" @onclick="onclick" ref="captcha"  :mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -66,6 +66,7 @@
                 event.closeURL()
             },
             onEnd: function (e) {
+                let _this = this;
                 this.captcha = e;
                 event.encrypt(e,function (msg) {
                     if (msg.type=="success") {
@@ -74,13 +75,16 @@
                                 if (data.type == "success") {
                                     event.closeURL(data);
                                 } else {
+                                    _this.$refs.captcha.clear();
                                     event.toast(data.content);
                                 }
                             },function () {
+                            _this.$refs.captcha.clear();
                                 event.toast("网络不稳定请重试");
                             }
                         )
                     } else {
+                        _this.$refs.captcha.clear();
                         event.toast(data.content);
                     }
                 })

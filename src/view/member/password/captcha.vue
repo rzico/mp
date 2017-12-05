@@ -77,13 +77,16 @@
                                         }
                                     )
                                 } else {
+                                    _this.$refs.captcha.clear();
                                     event.toast(data.content);
                                 }
                             },function () {
+                            _this.$refs.captcha.clear();
                                 event.toast("网络不稳定请重试");
                             }
                         )
                     } else {
+                        _this.$refs.captcha.clear();
                         event.toast(data.content);
                     }
                 })

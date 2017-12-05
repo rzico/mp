@@ -2,9 +2,9 @@
     <div>
         <navbar :title="title" @goback="goback" > </navbar>
         <scroller style="background-color: #fff" :scrollable="canScroll">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
-            </refresh>
+            <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<text class="indicator">{{refreshState}}</text>-->
+            <!--</refresh>-->
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="collectList.length == 0"></noData>
                 <div v-for="(item,index) in collectList" >
@@ -166,7 +166,7 @@
                 refreshing:false,
                 showLoading:false,
                 listCurrent:0,
-                pageSize:15,
+                pageSize:2,
                 UId:'',
                 refreshState:'',
                 canScroll:true,
@@ -207,20 +207,26 @@
                 let name = decodeURI(utils.getUrlParameter('name'));
                 this.userName = utils.isNull(name) ? '我' : name;
             }
-            let _this = this;
-//            获取收藏列表
-            GET('weex/favorite/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                if(data.type == 'success' && data.data.data != '' ){
-                    _this.collectList = data.data.data;
-                }else  if(data.type == 'success' && data.data.data == '' ){
-                }else{
-                    event.toast(data.content);
-                }
-            },function (err) {
-                event.toast(err.content);
-            })
+            this.getAllCollect();
         },
         methods:{
+//            获取收藏列表
+            getAllCollect(){
+                let _this = this;
+                GET('weex/favorite/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                    event.toast(data);
+                    if(data.type == 'success' && data.data.data != '' ){
+                        data.data.data.forEach(function (item) {
+                            _this.collectList.push(item);
+                        })
+                    }else  if(data.type == 'success' && data.data.data == '' ){
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
             goback(){
                 event.closeURL();
             },
@@ -245,19 +251,9 @@
                 _this.showLoading = true;
 //                _this.loadingState = "正在加载数据";
                 setTimeout(() => {
-                    this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/favorite/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                        if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.foreach(function (item) {
-                                _this.collectList.push(item);
-                            })
-                        }else if(data.type == 'success' && data.data.data == '' ){
-                        }else{
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        event.toast(err.content);
-                    })
+                    _this.listCurrent = _this.listCurrent + _this.pageSize;
+//            获取收藏列表
+                    _this.getAllCollect();
                     _this.showLoading = false;
                 }, 1500)
 

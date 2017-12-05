@@ -5,11 +5,8 @@ Vue.filter('daydayfmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     let date = new Date(value);
     let tody = new Date();
@@ -42,11 +39,8 @@ Vue.filter('dayfmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     let date = new Date(value);
     let tody = new Date();
@@ -68,11 +62,8 @@ Vue.filter('timefmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     let    date = new Date(value);
     let    tody = new Date();
@@ -121,10 +112,8 @@ Vue.filter('timefmtOther', function (value) {
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
     value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     let    date = new Date(value);
     let    tody = new Date();
@@ -173,11 +162,8 @@ Vue.filter('timeDatefmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     let    date = new Date(value);
     let    tody = new Date();
@@ -199,11 +185,8 @@ Vue.filter('monthfmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     // 返回处理后的值
     let date = new Date(value);
@@ -228,11 +211,8 @@ Vue.filter('datefmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     // 返回处理后的值
     let date = new Date(value);
@@ -245,11 +225,8 @@ Vue.filter('detailMonth', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     // 返回处理后的值
     let date = new Date(value);
@@ -263,11 +240,8 @@ Vue.filter('datetimefmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     // 返回处理后的值
     let    date = new Date(value);
@@ -307,11 +281,8 @@ Vue.filter('datemoretimefmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
 
     // 返回处理后的值
@@ -355,11 +326,8 @@ Vue.filter('hitimefmt', function (value) {
         return value;
     }
     //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-    value = value + '';
-    if(value.length == 10){
-        value = parseInt(value) * 1000;
-    }else{
-        value = parseInt(value);
+    if(value.toString().length == 10){
+        value = value * 1000;
     }
     // 返回处理后的值
     let    date = new Date(value);

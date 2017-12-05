@@ -11,7 +11,7 @@
 
         <div class="mobile-row">
             <text class="flex1 title">+86</text>
-            <input class="flex5" type="tel" style="height:45px;" v-model="vm" @input="onInput" autofocus="true" placeholder="请输入手机号"/>
+            <input class="flex5" type="tel" style="height:45px;" v-model="vm" maxlength="11" @input="onInput" autofocus="true" placeholder="请输入手机号"/>
         </div>
 
         <div class="mobile-row clear">

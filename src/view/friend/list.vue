@@ -561,7 +561,7 @@
             },
 //            前往聊天
             goChat:function (id) {
-                let userId = 'u' + parseInt(10200 + id);
+                let userId = 'u' + (10200 + parseInt(id));
                 event.navToChat(userId);
             },
 //            作者主页
