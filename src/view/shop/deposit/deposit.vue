@@ -8,7 +8,7 @@
                     <text class="sub_title">今天收银（元）     </text>
                     <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
                 </div>
-                <text class="day" :style="{fontFamily:'iconfont'}">&#xe63c;</text>
+                <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
         </div>
         <list class="list mt20">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -210,6 +210,7 @@
     import utils from '../../../assets/utils'
     const modal = weex.requireModule('modal');
     var event = weex.requireModule('event')
+    const picker = weex.requireModule('picker')
     const printer = weex.requireModule('print');
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
@@ -267,6 +268,18 @@
                }  else {
                    return {color:'#000'}
                }
+            },
+            pickDate () {
+                var _this = this;
+                picker.pickDate({
+                    value: _this.billDate
+                }, function (e) {
+                    if (e.result == 'success') {
+                        event.toast(e);
+                        _this.billDate = e.data;
+                        _this.refresh();
+                    }
+                })
             },
             doCancel:function () {
                 this.isPopup = false;
@@ -448,7 +461,6 @@
                 }
             },
             summary:function (timestamp) {
-                event.toast(utils.timeChange(timestamp));
                 event.openURL(utils.locate('view/shop/deposit/summary.js?billDate='+encodeURIComponent(utils.timeChange(timestamp))),function () {
 
                 })
