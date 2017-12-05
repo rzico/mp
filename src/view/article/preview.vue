@@ -73,11 +73,11 @@
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                     <text class="fz28 pl10">编辑</text>
                 </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                    <text class="fz28 pl10">复制</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive">
+                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                    <!--<text class="fz28 pl10">复制</text>-->
+                <!--</div>-->
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="deleteArticle()">
                     <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe652;</text>
                     <text class="fz28 pl10 primary">删除</text>
                 </div>
@@ -149,7 +149,7 @@
     .fz26fff{
         font-size: 26px;
         line-height: 26px;
-        color: #888;
+        color: #444;
     }
     .fz45{
         font-size: 50px;
@@ -260,7 +260,7 @@
         background-color: #333;
     }
     .templateText{
-        color: #888;
+        color: #444;
         font-size: 28px;
     }
     .templateIcon{

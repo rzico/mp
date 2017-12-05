@@ -557,7 +557,6 @@
             readData(options){
                 let _this =this;
                 event.find(options,function (data) {
-                    event.toast(data);
                     if(data.type == 'success' && data.data != ''){
                         let articleData = JSON.parse(data.data.value);
 //                            保存置顶状态。
@@ -808,7 +807,7 @@
                 };
 //                判断段落图片是否已上传
                 this.paraList.forEach(function (item) {
-                    if(item.paraImage.substring(0,4) != 'http'){
+                    if(item.paraImage.substring(0,4) != 'http' && item.paraImage != ''){
                         _this.proTotal ++;
                     }
                 });
@@ -1026,7 +1025,7 @@
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
 //                                    全局监听文章变动
-                                    let listenData = utils.message('success','文章改变','')
+                        let listenData = utils.message('success','文章改变','')
                                     event.sendGlobalEvent('onArticleChange',listenData);
 //                                    event.find(){
 //

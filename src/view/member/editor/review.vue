@@ -3,7 +3,7 @@
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="inputBox">
             <input type="text" placeholder="写下你的评论..." v-model="reviewWord" autofocus="true" class="reviewInput"  />
-            <div class="sendBox mianBgColor" @click="sendReview">
+            <div class="sendBox bkg-primary" @click="sendReview">
                 <text class="sendText">发送</text>
             </div>
         </div>

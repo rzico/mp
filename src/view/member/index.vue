@@ -757,14 +757,9 @@
 
 
             this.getAllArticle();
-
             globalEvent.addEventListener("onArticleChange", function (e) {
-//                判断是系统消息还是用户消息  系统消息给返回的是id:gm_10200 没有userid字段。
-                if(e.data.type == 'success'){
                     _this.articleList = [];
                     _this.getAllArticle();
-                }else{
-                }
             });
 
         },

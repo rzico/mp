@@ -194,10 +194,8 @@
 //            下载文章 20 20的循环
             downloadArticle(){
                 var _this = this;
-                event.toast('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize);
                     GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != ''){
-                            event.toast(data.data.data);
                             if(data.data.start == 0 ){
 //                           将本次时间戳缓存起来
                                 storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate);
