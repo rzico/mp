@@ -1,7 +1,7 @@
 <template>
     <scroller show-scrollbar="false"  >
         <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-            <text class="indicator">下拉松开刷新</text>
+            <text class="indicator">下拉松开刷新 ...</text>
         </refresh>
         <div :style="{minHeight:screenHeight + 'px'}"@swipe="onpanmove($event)">
 
@@ -42,6 +42,9 @@
     </scroller>
 </template>
 <style>
+    .indicator{
+        font-size: 28px;
+    }
     .loading{
         width: 750px;
         align-items: center;
