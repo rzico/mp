@@ -979,14 +979,28 @@
 //                    event.toast(voteData);
                 });
 //                var articleTemplates = [];
-                this.paraList.forEach(function(item){
-                    _this.articleTemplates.push({
-                        thumbnail:item.serveThumbnail,
-                        original:item.paraImage,
-                        mediaType: item.mediaType,
-                        content:item.paraText
+
+                if(this.articleId != ''){
+                    this.paraList.forEach(function(item){
+                        _this.articleTemplates.push({
+                            thumbnail:item.serveThumbnail,
+                            original:item.paraImage,
+                            mediaType: item.mediaType,
+                            content:item.paraText
+                        })
                     })
-                })
+                }else{
+//                    如果是初次编辑 是没有上传过的本地图片； thumbnail:item.thumbnailImage,
+                    this.paraList.forEach(function(item){
+                        _this.articleTemplates.push({
+                            thumbnail:item.thumbnailImage,
+                            original:item.paraImage,
+                            mediaType: item.mediaType,
+                            content:item.paraText
+                        })
+                    })
+                }
+
             },
 //            图片上传后，正式将文章数据上传服务器
             realSave(){

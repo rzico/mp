@@ -769,31 +769,6 @@
                 return this.articleList.length==0 && this.corpusId != '';
 //                return this.articleList.length==0 ;
             },
-// /            监听设备型号,控制隐藏的文集高度
-//            hideCorpus:function () {
-//                let dc = utils.hideCorpus();
-//                return 'hideCorpusIPhoneX';
-//            },
-////            监听设备型号,控制顶部人物信息栏背景图大小
-//            headerBgImg:function () {
-//                let dc = utils.addBgImg();
-//                return 'addBgImgIPhoneX';
-//            },
-////            监听设备型号,控制顶部人物信息栏
-//            headerInfo:function () {
-//                let dc = utils.addInfo();
-//                return 'addInfoIPhoneX';
-//            },
-////            监听设备型号,控制导航栏设置 返回按钮
-//            classTop:function () {
-//                let dc = utils.addTop();
-//                return 'addTopIPhoneX';
-//            },
-////            监听设备型号,控制导航栏高度
-//            classHeader:function () {
-//                let dc = utils.device();
-//                return 'IPhoneX';
-//            },
             //            监听设备型号,控制隐藏的文集高度
             hideCorpus:function () {
                 let dc = utils.hideCorpus();
@@ -1337,7 +1312,7 @@
                             let saveData = {
                                 type:item.type,
                                 key:item.key,
-                                value:item.value,
+                                value:JSON.stringify(item.value),
                                 sort:'0,' + timestamp,
                                 keyword:',[],' + item.value.title + ','
                             }
@@ -1468,18 +1443,6 @@
                 var saveSort;
                 if(item.sort.substring(0,1) == '0'){
                     saveSort = '1,'+ item.sort.substring(2);
-
-
-
-
-
-
-
-
-
-
-
-
                 }else{
                     saveSort = '0,'+ item.sort.substring(2);
                 }
@@ -1489,7 +1452,7 @@
                 let saveData = {
                     type:item.type,
                     key:item.key,
-                    value:item.value,
+                    value:JSON.stringify(item.value),
                     sort:saveSort,
                     keyword:',['+ item.value.articleOption.articleCatalog.id +'],' + item.value.title + ','
                 }
