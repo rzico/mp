@@ -1111,6 +1111,7 @@
 //                        把读取到的文章push进去文章列表
                                 _this.articleList.push(item);
                             })
+                        }else if( data.type == "success" && data.data == '' ){
                         }else{
                             event.toast(data.content);
                         }

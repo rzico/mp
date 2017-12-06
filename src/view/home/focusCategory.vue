@@ -180,7 +180,6 @@
         },
         methods:{
             goArticle(){
-                event.toast('跳转文章');
             },
             onpanmove(e){
                 this.$emit('onpanmove',e.direction);
