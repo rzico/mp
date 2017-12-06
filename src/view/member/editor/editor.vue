@@ -1231,7 +1231,7 @@
                 }
 
 //                    添加修改标志
-                _this.hadChange = 1;
+                this.hadChange = 1;
                 if(this.articleId == ''){
 //                        临时保存到缓存
                     this.saveDraft();
@@ -1263,7 +1263,7 @@
                     this.paraList[index + 1].paraImage = e;
                 }
 //                    添加修改标志
-                _this.hadChange = 1;
+                this.hadChange = 1;
                 if(this.articleId == ''){
 //                        临时保存到缓存
                     this.saveDraft();
