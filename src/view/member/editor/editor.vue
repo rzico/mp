@@ -1410,12 +1410,24 @@
 //                event.openURL('file://assets/member/editor/cover.js');
                 var _this = this;
                 let paraLength =  _this.paraList.length;
-                let listLength = paraLength >= 6 ? 6 : paraLength;
+                var uploadLength = 0;
                 let imgList = [];
-                for(let i = 0;i < listLength; i++){
-                    imgList.push({
-                        path:_this.paraList[i].paraImage
-                    });
+//                控制最多只传6张图
+                for(let i = 0;i < paraLength; i++){
+                    if(uploadLength < 6){
+//                        区分字体 图像 视频
+                        if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'image'){
+                            imgList.push({
+                                path:_this.paraList[i].paraImage
+                            });
+                            uploadLength ++ ;
+                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video'){
+                            imgList.push({
+                                path:_this.paraList[i].thumbnailImage
+                            });
+                            uploadLength ++ ;
+                        }
+                    }
                 }
                 var  coverData = {
                     image : imgList,
