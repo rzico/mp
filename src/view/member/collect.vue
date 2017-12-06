@@ -77,7 +77,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 0px;top: 0px;height: 270px;align-items: center;width: 130px;justify-content: center;;
+        position: absolute;right: 0px;top: 0px;height: 270px;align-items: center;width: 130px;justify-content: center;
     }
     .nameImg{
         flex-direction: row;
@@ -166,7 +166,7 @@
                 refreshing:false,
                 showLoading:false,
                 listCurrent:0,
-                pageSize:5,
+                pageSize:10,
                 UId:'',
                 refreshState:'',
                 canScroll:true,
@@ -215,7 +215,6 @@
             getAllCollect(){
                 let _this = this;
                 GET('weex/favorite/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                    event.toast(data);
                     if(data.type == 'success' && data.data.data != '' ){
                         data.data.data.forEach(function (item) {
                             _this.collectList.push(item);
@@ -252,9 +251,9 @@
                 _this.showLoading = true;
 //                _this.loadingState = "正在加载数据";
                 setTimeout(() => {
-                    _this.listCurrent = _this.listCurrent + _this.pageSize;
-//            获取收藏列表
-                    _this.getAllCollect();
+//                    _this.listCurrent = _this.listCurrent + _this.pageSize;
+////            获取收藏列表
+//                    _this.getAllCollect();
                     _this.showLoading = false;
                 }, 1500)
 

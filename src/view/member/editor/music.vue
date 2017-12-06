@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
+    <div  @viewdisappear="viewdisappear()">
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
         <list class="wrapperBox" >
             <cell>
                 <!--无背景音乐-->
@@ -174,6 +174,10 @@
             }
         },
         methods:{
+            //            在页面销毁时触发，可用来捕捉安卓的回退
+            viewdisappear: function viewdisappear() {
+                audio.stop();
+            },
 //            点击显示音乐文集列表
             showMusic:function(index){
                 if(lastIndex == -1 || lastIndex == index){

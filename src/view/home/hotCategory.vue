@@ -46,6 +46,10 @@
         width: 750px;
         align-items: center;
     }
+    .refresh{
+        width: 750px;
+        align-items: center;
+    }
     .mt20{
         margin-top: 20px;
     }
@@ -282,7 +286,7 @@
                                 }
                             }else{
                                 data.data.data.forEach(function (item) {
-                                    if(utils.isNull(item.thumbnail)){
+                                    if(utils.isNull(item.thumbnail)){9
                                     }else{
                                         item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
                                     }

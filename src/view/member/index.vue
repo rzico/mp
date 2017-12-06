@@ -204,7 +204,7 @@
 
                 <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--帮助使用文章-->
-                <div class="articleBox" v-for="item in helpList" v-if="corpusId == ''">
+                <div class="articleBox" v-for="item in helpList" v-if="corpusId == '' && articleList.length < 10">
                     <div class="atricleHead">
                         <text class="articleSign">{{item.articleSign}}</text>
                         <text class="articleTitle">{{item.articleTitle}}</text>

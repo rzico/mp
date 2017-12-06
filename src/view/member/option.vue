@@ -191,6 +191,18 @@
             goback: function (e) {
                 event.closeURL()
             },
+//            执行下载代码
+            doDownLoad(){
+                let _this = this;
+                storage.getItem('lastDownLoadtamp' + _this.UId, e => {
+                    if(e.result == 'success' && !utils.isNull(e.data)){
+                        _this.lastDownLoadtamp = e.data;
+                    }else{
+                        _this.lastDownLoadtamp = '';
+                    }
+                    this.downloadArticle();
+                })
+            },
 //            下载文章 20 20的循环
             downloadArticle(){
                 var _this = this;
@@ -247,18 +259,6 @@
                 _this.currentPro = 0;
                 _this.processWidth = 0;
                 this.listCurrent = 0;
-            },
-//            执行下载代码
-            doDownLoad(){
-                let _this = this;
-                storage.getItem('lastDownLoadtamp' + _this.UId, e => {
-                    if(e.result == 'success' && !utils.isNull(e.data)){
-                        _this.lastDownLoadtamp = e.data;
-                    }else{
-                        _this.lastDownLoadtamp = '';
-                    }
-                    this.downloadArticle();
-                })
             },
             //            控制进度条
             ctrlProcess(data){

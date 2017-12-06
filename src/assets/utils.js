@@ -3,7 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weex.rzico.com';
+const websiteURL = 'http://weex.1xx.me';
 const event = weex.requireModule('event');
 const debug = false;
 let utilsFunc = {
@@ -49,8 +49,7 @@ let utilsFunc = {
         return null;
     },
     dayfmt (value) {
-        value = value + '';
-        if(value.length == 10){
+        if(value.toString().length == 10){
             value = parseInt(value) * 1000;
         }else{
             value = parseInt(value);
@@ -87,7 +86,9 @@ let utilsFunc = {
     //时间戳
     timeChange(value) {
         if(value.toString().length == 10){
-            value = value * 1000;
+            value = parseInt(value) * 1000;
+        }else{
+            value = parseInt(value);
         }
         let date = new Date(value);
         let   Y = date.getFullYear();
@@ -353,7 +354,9 @@ let utilsFunc = {
     resolvetimefmt:function (value) {
 //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
         if(value.toString().length == 10){
-            value = value * 1000;
+            value = parseInt(value) * 1000;
+        }else{
+            value = parseInt(value);
         }
 // 返回处理后的值
         let    date = new Date(value);
