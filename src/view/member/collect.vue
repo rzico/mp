@@ -166,7 +166,7 @@
                 refreshing:false,
                 showLoading:false,
                 listCurrent:0,
-                pageSize:2,
+                pageSize:5,
                 UId:'',
                 refreshState:'',
                 canScroll:true,
@@ -196,6 +196,7 @@
             }
         },
         created(){
+            let _this = this;
             utils.initIconFont();
             this.UId = utils.getUrlParameter('id');
 //            获取屏幕的高度

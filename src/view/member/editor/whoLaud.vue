@@ -102,7 +102,6 @@
             utils.initIconFont();
             this.screenHeight = utils.fullScreen(136);
             this.articleId = utils.getUrlParameter('articleId');
-            utils.debug('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize);
             GET('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                 if(data.type == 'success' && data.data.data != ''){
                     _this.title = data.data.recordsTotal + '人点赞';

@@ -626,7 +626,6 @@
                         _this.showShare = false;
                         event.share(option,function (data) {
                             if(data.type == 'success'){
-                                event.toast('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType);
                                 POST('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType).then(
                                     function (data) {
                                         if(data.type == 'success'){

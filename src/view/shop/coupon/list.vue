@@ -323,7 +323,6 @@
                     utils.readScan(message.data,function (data) {
                         if(data.data.type == '818803'){
                             _this.code =data.data.code
-                            utils.debug('weex/member/couponCode/use.jhtml?code='+_this.code)
                             GET('weex/member/couponCode/use.jhtml?code='+_this.code,function (mes) {
                                 utils.debug(mes)
                                 if (mes.type == 'success') {
@@ -434,7 +433,6 @@
             },
             del:function (id,index) {
                 let _this =this
-                utils.debug('weex/member/coupon/delete.jhtml?id='+id)
                 POST('weex/member/coupon/delete.jhtml?id='+id).then(
                     function (mes) {
                         if (mes.type == "success") {

@@ -6,8 +6,8 @@
                     <image class="logo" :src="'file://resources/logo.png'" ></image>
                 </div>
                 <div class="search_box flex4" @click="search()">
-                    <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                    <text class="sub_title">搜索用户和文章</text>
+                    <text class="ico_small gray mr5" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                    <text class="sub_title ml5">搜索用户和文章</text>
                 </div>
                 <div class="flex-center flex1" @click="scan()">
                     <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
@@ -19,12 +19,13 @@
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .search_box {
-        padding-left: 20px;
-        height: 60px;
+        /*padding-left: 20px;*/
+        height: 66px;
         border-width: 1px;
         border-color: #ccc;
         border-style: solid;
-        border-radius:8px;
+        /*border-radius:8px;*/
+        border-radius:10px;
         flex-direction: row;
         justify-content: center;
         align-items: center;

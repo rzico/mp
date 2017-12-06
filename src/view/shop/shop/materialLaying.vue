@@ -306,10 +306,8 @@
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
                     '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
-                        utils.debug(mes)
                         if (mes.type == "success") {
                             var _this =this
-                            utils.debug('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code)
                                 event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);

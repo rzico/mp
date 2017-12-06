@@ -119,7 +119,6 @@
             utils.initIconFont();
             this.shopId = utils.getUrlParameter('shopId');
             this.code = utils.getUrlParameter('code')+'';
-            utils.debug(this.code)
         },
         methods:{
             goback:function () {

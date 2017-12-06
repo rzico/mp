@@ -747,9 +747,6 @@
                     function () {
                     })
             },
-            jump:function (vueName) {
-                event.toast('will jump');
-            },
             corpusChange:function(index,id){
 
 //                event.toast(id);
