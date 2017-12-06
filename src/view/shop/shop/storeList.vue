@@ -10,7 +10,7 @@
                 <text class="indicator">下拉刷新</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
-        <div class="shops" v-for="(num,index) in lists" >
+        <div class="shops" v-for="(num,index) in lists" v-if="!isOwner">
             <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                 <text class="deleteText">删除</text>
             </div>
@@ -30,6 +30,26 @@
             </div>
             </div>
         </div>
+                <div  class="shops" v-for="(num,index) in div" v-if="isOwner">
+                    <div class="deleteBox bkg-delete" @click="del()">
+                        <text class="deleteText">删除</text>
+                    </div>
+                    <div  class="message"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                        <div class="shopLogo" >
+                            <image style="width: 250px;height: 200px;"  class="img" :src="num.logo |thumbnail "></image>
+                        </div>
+                        <div class="shopInformation">
+                            <div class="shopNameDiv">
+                                <text class="shopName">店铺名：</text>
+                                <text class="fullName">{{num.shopName}}</text>
+                            </div>
+                            <div class="shopAddressDiv">
+                                <text class="shopAddress">姓名：</text>
+                                <text class="concretely">{{num.name}}</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </cell>
             <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
                 <text class="indicator">加载中..</text>
@@ -124,7 +144,9 @@ export default {
             loading: false,
             refreshing : false,
             lists: [],
-            screenHeight:0
+            screenHeight:0,
+            div:[],
+            isOwner:''
         }
     },
     components: {
@@ -136,9 +158,8 @@ export default {
     },
     created() {
         utils.initIconFont();
-        this.open(function () {
-
-        });
+        this.open(function () {});
+        this.openTwo(function () {});
         this.screenHeight = utils.fullScreen(136);
     },
     filters:{
@@ -152,7 +173,6 @@ export default {
 //            utils.debug('view/shop/shop/newShop.js?'+id)
                     let _this =this;
                     event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
-                        utils.debug(message)
                         if(message.type == 'success'){
                             _this.onrefresh()
                         }
@@ -163,6 +183,20 @@ export default {
             GET('weex/member/shop/list.jhtml',function (mes) {
                 if (mes.type == 'success') {
                     _this.lists = mes.data.data
+                } else {
+                    event.toast(res.content);
+                }
+            }, function (err) {
+                event.toast(err.content)
+            })
+        },
+        openTwo:function () {
+            let _this = this;
+            GET('weex/member/enterprise/view.jhtml',function (mes) {
+                if (mes.type == 'success') {
+                    _this.isOwner = mes.data.isOwner;
+                    _this.div = mes.data
+                    utils.debug(_this.div)
                 } else {
                     event.toast(res.content);
                 }
