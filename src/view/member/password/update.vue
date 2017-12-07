@@ -1,5 +1,6 @@
 <template>
     <div class="captcha">
+        <navbar :title="title" @goback="goback"> </navbar>
         <div class="password-header">
             <text class="password-title">{{title}}</text>
         </div>
@@ -9,7 +10,7 @@
         </div>
 
         <div class="input-panel">
-            <input class="flex5 password" type="text" placeholder="请输入新密码" v-model="value"  @change="onchange" @input="oninput"/>
+            <input class="flex5 password passwordadd" type="number" placeholder="请输入新密码" v-model="value"  @change="onchange" @input="oninput"/>
             <div class="flex1 flex-column">
                 <text class="see" :style="{fontFamily:'iconfont'}">&#xe61e;</text>
             </div>
@@ -61,7 +62,9 @@
         margin-right: 40px;
         margin-top: 60px;
     }
-
+    .passwordadd{
+        height: 60px;
+    }
 </style>
 <script>
     import { POST, GET } from '../../../assets/fetch';
@@ -73,6 +76,9 @@
                 value:this.value,
                 captcha:""
             }
+        },
+        components: {
+            navbar,mobile
         },
         props: {
             value: { default: "" },
