@@ -307,6 +307,7 @@
                 var _this = this;
                 POST('weex/member/topic/activate.jhtml').then(
                     function (mes) {
+                        event.toast(mes);
                         if (mes.type == "success") {
                             if (utils.isNull(mes.data)) {
                                 _this.load();

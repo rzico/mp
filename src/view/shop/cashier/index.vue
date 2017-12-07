@@ -12,7 +12,7 @@
                     <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
                 </div>
             </div>
-            <div class="fontInput">
+            <div class="fontInput" v-if="hasShop()">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
                 <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" v-model="amount" />
                 <text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>
@@ -329,6 +329,9 @@
                 } else {
                     return {backgroundColor:'#EB4E40'}
                 }
+            },
+            hasShop:function () {
+                return (this.shopId>0 && shopId!="");
             },
             hasInput:function () {
                 return utils.isNull(this.amount)==false;
