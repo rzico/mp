@@ -205,7 +205,7 @@ Vue.filter('monthfmt', function (value) {
     let date = new Date(value);
     let tody = new Date();
     let m = tody.getMonth() - date.getMonth();
-    let y = tody.getYear() - date.getYear();
+    let y = tody.getFullYear() - date.getFullYear();
     if (m<1) {
         return "本月"
     }
@@ -215,7 +215,7 @@ Vue.filter('monthfmt', function (value) {
     if (y<1) {
         return date.getMonth()+"月"
     }
-    return date.getYear()+"年"+date.getMonth()+"月";
+    return date.getFullYear()+"年"+date.getMonth()+"月";
 })
 
 //2017-01-01
@@ -231,7 +231,7 @@ Vue.filter('datefmt', function (value) {
     }
     // 返回处理后的值
     let date = new Date(value);
-    return date.getYear()+"年"+date.getMonth()+"月"+date.getDay()+"日";
+    return date.getFullYear()+"年"+date.getMonth()+"月"+date.getDay()+"日";
 })
 
 //返回月份 7 8 9 单数字
