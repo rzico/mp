@@ -707,7 +707,7 @@
                 textData = JSON.stringify(textData);
                 storage.setItem('articleTitle', textData,e=> {
                     event.openURL(utils.locate('widget/autograph.js?name=articleTitle'), function (message) {
-                        if (message.type == 'success' && message.data != '' && !message.data  && message.data.text != '') {
+                        if (message.type == 'success' && message.data != ''   && message.data.text != '') {
                             _this.setTitle = message.data.text;
                             _this.hadChange = 1;
                             if(_this.articleId == ''){

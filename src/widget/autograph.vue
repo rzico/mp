@@ -55,14 +55,14 @@
         methods: {
             oninput (event) {
 //                console.log('oninput:', event.value);
-                this.text = event.value
+                this.autograph = event.value
             },
             goback: function () {
                 event.closeURL()
             },
             goComplete:function (e) {
                 var E = {
-                  text:this.text
+                  text:this.autograph
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
