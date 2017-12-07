@@ -467,6 +467,7 @@
             },
 //            获取月份
             getDate: function(value) {
+                utils.
                 value = value + '';
                 if(value.length == 10){
                     value = parseInt(value) * 1000;
