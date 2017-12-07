@@ -272,7 +272,6 @@
             open:function () {
                 var _this = this;
                 GET('weex/member/admin/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
-                    utils.debug(mes)
                     if (mes.type == 'success') {
                         mes.data.data.forEach(function(item){
                             _this.lists.push(item);

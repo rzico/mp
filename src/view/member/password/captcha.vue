@@ -78,7 +78,7 @@
                                     )
                                 } else {
                                     _this.$refs.captcha.clear();
-                                    event.toast(data.content);
+                                    event.toast('输入错误');
                                 }
                             },function () {
                             _this.$refs.captcha.clear();

@@ -263,7 +263,6 @@
                     height:300,
                     width:750
                 }
-                event.toast(options);
                 album.openPuzzle(options,function(data){
                     if(data.type == 'success' && data.data != ''){
                         _this.coverImage = data.data;

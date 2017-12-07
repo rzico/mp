@@ -18,8 +18,8 @@
                 </div>
             </div>
             <div class="space-between" style="margin-top: 40px;" v-if="isNoPos()">
-                <text class="title gray" @click="login()">其他方式登录</text>
-                <text class="title gray" @click="goback()">关闭随便看看</text>
+                <text class="title gray bw" @click="login()">其他方式登录</text>
+                <text class="title gray bw" @click="goback()">关闭随便看看</text>
             </div>
         </div>
     </div>
@@ -75,6 +75,10 @@
         margin-left: 20px;
         color : white;
         font-size: 34px;
+    }
+    .bw {
+        height:60px;
+        line-height: 60px;
     }
 </style>
 <script>

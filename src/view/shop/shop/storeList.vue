@@ -1,7 +1,28 @@
 <template>
     <div style="background-color: #eeeeee">
         <navbar :title="title" :complete="complete" @goback="goback"></navbar>
-        <div class="head" @click="add">
+        <div class="shopstwo">
+            <div class="deleteBoxTwo bkg-delete" @click="out()">
+                <text class="deleteText">离职</text>
+            </div>
+            <div  class="messageTwo"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                <div class="shopLogo" >
+                    <image style="width: 250px;height: 200px;"  class="img" :src="logo"></image>
+                </div>
+                <div class="shopInformation">
+                    <div class="shopNameDiv">
+                        <text class="shopName">店铺名：</text>
+                        <text class="fullName">{{shopName}}</text>
+                    </div>
+                    <div class="shopAddressDiv">
+                        <text class="shopAddress">姓名：</text>
+                        <text class="concretely">{{name}}</text>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="head" @click="add" v-if="isOwner">
             <text class="clickAdd" >+点击添加商铺</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
@@ -10,13 +31,13 @@
                 <text class="indicator">下拉刷新</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
-        <div class="shops" v-for="(num,index) in lists" >
+        <div class="shops" v-for="(num,index) in lists" v-if="isOwner">
             <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                 <text class="deleteText">删除</text>
             </div>
             <div  class="message" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
             <div class="shopLogo" >
-                <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor |thumbnail "></image>
+                <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor "></image>
             </div>
             <div class="shopInformation">
                 <div class="shopNameDiv">
@@ -35,7 +56,8 @@
                 <text class="indicator">加载中..</text>
             </loading>
         </list>
-    </div>
+        </div>
+
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
@@ -45,11 +67,22 @@
         width: 750px;
         background-color: white;
     }
+    .messageTwo{
+        flex-direction: row;
+        align-items: center;
+        width: 730px;
+        border-radius: 10px;
+        background-color: white;
+    }
     .deleteText{
         font-size: 32px;color: #fff;
     }
     .deleteBox{
         position: absolute;right: 0px;top: 0px;height: 230px;align-items: center;width: 130px;justify-content: center;
+    }
+    .deleteBoxTwo{
+        position: absolute;right: 0px;top: 0px;height: 230px;align-items: center;width: 130px;justify-content: center;border-bottom-right-radius: 10px
+    ;border-top-right-radius: 10px;
     }
     .head {
         background-color: white;
@@ -70,7 +103,16 @@
         align-items: center;
         margin-bottom: 10px;
         height: 230px;
+    }
+    .shopstwo{
         background-color: white;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 10px;
+        border-radius: 10px;
+        height: 230px;
     }
     .shopLogo{
         margin-left: 20px;
@@ -124,7 +166,12 @@ export default {
             loading: false,
             refreshing : false,
             lists: [],
-            screenHeight:0
+            screenHeight:0,
+            run:[],
+            isOwner:true,
+            name:'',
+            shopName:'',
+            logo:''
         }
     },
     components: {
@@ -136,14 +183,13 @@ export default {
     },
     created() {
         utils.initIconFont();
-        this.open(function () {
-
-        });
-        this.screenHeight = utils.fullScreen(136);
+        this.open(function () {});
+        this.openTwo(function () {});
+        this.screenHeight = utils.fullScreen(376);
     },
     filters:{
-        thumbnail:function (value) {
-            return utils.thumbnail(value,250,200);
+        filterHead:function (value) {
+            return utils.filterHead(value,250,200);
         },
 
     },
@@ -152,7 +198,6 @@ export default {
 //            utils.debug('view/shop/shop/newShop.js?'+id)
                     let _this =this;
                     event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
-                        utils.debug(message)
                         if(message.type == 'success'){
                             _this.onrefresh()
                         }
@@ -163,6 +208,22 @@ export default {
             GET('weex/member/shop/list.jhtml',function (mes) {
                 if (mes.type == 'success') {
                     _this.lists = mes.data.data
+                } else {
+                    event.toast(res.content);
+                }
+            }, function (err) {
+                event.toast(err.content)
+            })
+        },
+        openTwo:function () {
+            let _this = this;
+            GET('weex/member/enterprise/view.jhtml',function (mes) {
+                utils.debug(mes)
+                if (mes.type == 'success') {
+                    _this.isOwner = mes.data.isOwner;
+                    _this.logo = mes.data.logo;
+                    _this.shopName =mes.data.shopName;
+                    _this.name = mes.data.name;
                 } else {
                     event.toast(res.content);
                 }
@@ -284,6 +345,35 @@ export default {
                             })
                         }
                         _this.lists.splice(index,1);
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast("网络不稳定");
+                }
+            )
+        },
+        //        退出
+        out:function (id,index) {
+            let _this =this
+            POST('weex/member/enterprise/delete.jhtml').then(
+                function (mes) {
+                    if (mes.type == "success") {
+                        //                            把动画收回来。
+                        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                        }else{
+                            animation.transition(animationPara, {
+                                styles: {
+                                    transform: 'translateX(0)',
+                                },
+                                duration: 10, //ms
+                                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                needLayout:false,
+                                delay: 0 //ms
+                            })
+                        }
+                        event.closeURL(mes)
                     } else {
                         event.toast(mes.content);
                     }
