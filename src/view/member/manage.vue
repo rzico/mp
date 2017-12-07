@@ -171,8 +171,8 @@
                 this.showShare = false;
             },
             store:function () {
-                event.openURL(utils.locate('view/shop/cashier/index.js'),function () {
-
+                event.openURL(utils.locate('view/shop/cashier/index.js'),function (mes) {
+                    this.member.useCashier=false
                 })
             },
             open:function () {
