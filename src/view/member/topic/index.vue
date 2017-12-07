@@ -2,14 +2,13 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <scroller class="scroller" show-scrollbar="false">
-            <div class="flex-column bkg">
-                <image class="bg"
-                       v-bind:src="topic.logo">
-                </image>
+            <div class="flex-row ">
                 <div class="topic">
+                    <div>
                     <image class="logo" @click="changeLogo"
                            v-bind:src="topic.logo">
                     </image>
+                    </div>
                     <div class="topic_footer">
                         <text class="name" @click="petname">{{topic.name}}</text>
                         <text class="autograph" @click="petname">{{opened()?'点击修改专栏':'点击开通专栏'}}</text>
@@ -114,24 +113,13 @@
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
 
-    .bkg {
-        background-color: #777;
-    }
-    .bg {
-        position:absolute;
-        width:750px;
-        height: 375px;
-        filter: blur(10px);
-        opacity: 0.3;
-        background-size: cover;
-    }
-
     .topic {
-        flex-direction:column;
+        flex-direction:row;
         align-items:center;
-        margin-top: 50px;
         width:750px;
-        height: 325px;
+        height: 150px;
+        padding-top: 20px;
+        padding-left: 30px;
     }
 
     .vip {
@@ -168,12 +156,12 @@
     }
     .name {
         font-size: 34px;
-        color: white;
+        margin-left: 40px;
     }
     .autograph {
         margin-top: 10px;
         font-size: 28px;
-        color: #eee;
+        color: #999;
     }
     .switch {
         margin-right: 20px;
