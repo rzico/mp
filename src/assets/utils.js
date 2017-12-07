@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weex.rzico.com';
 const event = weex.requireModule('event');
-const debug = false;
+const debug = true;
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -82,39 +82,6 @@ let utilsFunc = {
         } else {
             return false
         }
-    },
-    //时间戳
-    timeChange(value) {
-        if(value.toString().length == 10){
-            value = parseInt(value) * 1000;
-        }else{
-            value = parseInt(value);
-        }
-        let date = new Date(value);
-        let   Y = date.getFullYear();
-        let    m = date.getMonth() + 1;
-        let    d = date.getDate();
-        let    H = date.getHours();
-        let    i = date.getMinutes();
-        let   s = date.getSeconds();
-        if (m < 10) {
-            m = '0' + m;
-        }
-        if (d < 10) {
-            d = '0' + d;
-        }
-        if (H < 10) {
-            H = '0' + H;
-        }
-        if (i < 10) {
-            i = '0' + i;
-        }
-        if (s < 10) {
-            s = '0' + s;
-        }
-        var t = Y+'-'+m+'-'+d+' '+H+':'+i+':'+s;
-        // var t = Y + '-' + m + '-' + d;
-        return t;
     },
     //获取缩略图
     thumbnail(url,w,h) {
@@ -359,15 +326,15 @@ let utilsFunc = {
             value = parseInt(value);
         }
 // 返回处理后的值
-        let    date = new Date(value);
-        let    y = date.getFullYear();
-        let    m = date.getMonth() + 1;
+        var    date = new Date(value);
+        var    y = date.getFullYear();
+        var    m = date.getMonth() + 1;
         var    d = date.getDate();
         var    h = date.getUTCHours() + 8;
         h = h >= 24 ? h - 24 : h;
         d = h >= 24 ? d + 1 : d;
-        let    i = date.getMinutes();
-        let    s = date.getSeconds();
+        var    i = date.getMinutes();
+        var    s = date.getSeconds();
         if (m < 10) {
             m = '0' + m;
         }
@@ -399,7 +366,7 @@ let utilsFunc = {
             return value;
         }
         let timeObj = this.resolvetimefmt(value);
-        return y + '-' + m + '-' + d
+        return timeObj.y + '-' + timeObj.m + '-' + timeObj.d
     },
     //返回格式 2017-09-01 06:35:59
     ymdhistimefmt:function(value){
@@ -408,7 +375,7 @@ let utilsFunc = {
         }
         let timeObj = this.resolvetimefmt(value);
 
-        return y + '-' + m + '-' + d + ' ' + h + ':' + i + ':' + 's';
+        return timeObj.y + '-' + timeObj.m + '-' + timeObj.d + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
     },
     //返回格式 06:35:59
     histimefmt:function(value){
@@ -416,7 +383,7 @@ let utilsFunc = {
             return value;
         }
         let timeObj = this.resolvetimefmt(value);
-        return h + ':' + i + ':' + 's';
+        return timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
     },
 
 

@@ -292,7 +292,7 @@
                 let listLength = this.depositList.length;
 //                判断是否最后一个元素并且是否每月的结尾
                 if(index != listLength - 1 ){
-                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index + 1].create_date)){
+                    if(this.getDate(this.depositList[index].createDate) == this.getDate(this.depositList[index + 1].createDate)){
                         return {
                             borderBottomWidth:'1px'
                         }
@@ -310,7 +310,7 @@
             //判断月份是否重复
             isRepeat(index){
                 if(index != 0){
-                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index - 1].create_date)){
+                    if(this.getDate(this.depositList[index].createDate) == this.getDate(this.depositList[index - 1].createDate)){
                         return false;
                     }
                 }
@@ -407,13 +407,13 @@
                         if (res.type=="success") {
                             _this.cashier = res.data;
                         } else {
-                            event.toast(res.message);
+                            event.toast(res.content);
                         }
                     },function (err) {
-                        event.toast(err.message);
+                        event.toast(err.content);
                     });
                 }
-                GET('weex/member/paybill/list.jhtml?pageStart=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                GET('weex/member/paybill/list.jhtml?shopId=129&pageStart=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
                           _this.depositList = res.data.data;
@@ -461,34 +461,28 @@
                 }
             },
             summary:function (timestamp) {
-                event.openURL(utils.locate('view/shop/deposit/summary.js?billDate='+encodeURIComponent(utils.timeChange(timestamp))),function () {
+                let v =  utils.ymdtimefmt(timestamp);
+                event.openURL(utils.locate('view/shop/deposit/summary.js?billDate='+encodeURIComponent(v)),function () {
 
                 })
             },
 //            获取月份
             getDate: function(value) {
-                utils.
-                value = value + '';
-                if(value.length == 10){
-                    value = parseInt(value) * 1000;
-                }else{
-                    value = parseInt(value);
-                }
-                let date = new Date(value);
-                let tody = new Date();
-                let m = tody.getDate() - date.getDate();
-                if (m<1) {
+                let res = utils.resolvetimefmt(value);
+                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+                var w = tds.d - res.d;
+                if (w<1) {
                     return "今天"
                 } else
-                if (m<2) {
+                if (w<2) {
                     return "昨天"
                 } else
-                if (m<3) {
+                if (w<3) {
                     return "前天"
                 } else {
-                    let    y = date.getFullYear();
-                    let    d = date.getDate();
-                    let    m = date.getMonth();
+                    var    y = res.y;
+                    var    d = res.d;
+                    var    m = res.m;
                     if (m < 10) {
                         m = '0' + m;
                     }
@@ -497,6 +491,7 @@
                     }
                     return y + '年' + m + '月' + d+ '日';
                 }
+
             }
         },
         created () {

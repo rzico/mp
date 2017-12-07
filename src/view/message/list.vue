@@ -392,8 +392,8 @@
 //            根据时间排序
             sortTime:function (a,b) {
 //                将时间戳变成日期格式 "2017-05-05 09:55:56"
-                let first = utils.timeChange(a.createDate);
-                let second = utils.timeChange(b.createDate);
+                let first = utils.ymdhistimefmt(a.createDate);
+                let second = utils.ymdhistimefmt(b.createDate);
 //               '>'号时间越近在前面 倒序    '-'号的话是时间越久的在前面
                 return ((new Date(first.replace(/-/g, "\/"))) > (new Date(second.replace(/-/g, "\/"))));
             },

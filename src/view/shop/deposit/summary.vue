@@ -21,7 +21,6 @@
                 <div class="panel" >
                         <div class="monthFont">
                             <text class="textMonth flex1">{{deposit.type | typefmt}}</text>
-                            <text class="ico_big flex1 mt10" :style="{fontFamily:'iconfont'}">{{deposit.type | typeico}}</text>
                         </div>
                         <div class="moneyname">
                             <text class="name">{{deposit.method}}</text>
@@ -149,6 +148,19 @@
             }
 
         },
+        created() {
+//              页面创建时请求数据
+            utils.initIconFont();
+            this.shopId = utils.getUrlParameter("shopId");
+            if (this.shopId==null) {
+                this.shopId = "";
+            }
+            this.billDate = utils.getUrlParameter("billDate");
+            if (utils.isNull(this.billDate)==false) {
+                this.title = "消费统计("+this.billDate+")";
+            }
+            this.open();
+        },
         methods: {
             noData:function () {
                 return this.depositList.length==0;
@@ -187,7 +199,8 @@
             },
             open:function () {
                 var _this = this;
-                GET('weex/member/paybill/summary.jhtml?shopId='+_this.shopId+"&billDate="+encodeURIComponent(_this.billDate),function (res) {
+                var addr = 'weex/member/paybill/summary.jhtml?shopId='+_this.shopId+'&billDate='+encodeURIComponent(_this.billDate);
+                GET(addr, function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
                         _this.depositList.forEach(function (item) {
@@ -209,16 +222,5 @@
                     ,1500)
             },
         },
-        created () {
-//              页面创建时请求数据
-            utils.initIconFont();
-            this.shopId = utils.getUrlParameter("shopId");
-            if (this.shopId==null) {
-                this.shopId = "";
-            }
-            this.billDate = utils.getUrlParameter("billDate");
-            this.title = "消费统计("+this.billDate.substring(0,10)+")"
-            this.open();
-        }
     }
 </script>
