@@ -268,10 +268,12 @@
                     //选完图片后触发回调函数
                     true,function (data) {
                         if(data.type == 'success') {
-                            _this.logo = data.data.thumbnailSmallPath;
-//                    data.data里存放的是用户选取的图片路
-                            _this.originalone = data.data.originalPath
-//
+                            event.upload(data.data.originalPath,function (data) {
+                                utils.debug(data)
+                            })
+//                            _this.logo = data.data.thumbnailSmallPath;
+////                    data.data里存放的是用户选取的图片路
+//                            _this.originalone = data.data.originalPath
                         }
                     })
             },

@@ -5,13 +5,13 @@
             <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
             <text class="headText" style="font-size: 28px;color: #cccccc">扫码添加员工</text>
         </div>
-        <div class="addFriend" @click="add">
-            <div class="flex-row " style="align-items:center">
-                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
-                <text class="title ml20 " >领取会员卡</text>
-            </div>
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
+        <!--<div class="addFriend" @click="add">-->
+            <!--<div class="flex-row " style="align-items:center">-->
+                <!--<text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>-->
+                <!--<text class="title ml20 " >领取会员卡</text>-->
+            <!--</div>-->
+            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+        <!--</div>-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -33,7 +33,7 @@
 
                                 <text class="lineTitle ">手机号:{{num.mobile}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                    <text class="realName">{{num.name}}(所在店铺:{{num.shopName}})</text>
+                                    <text class="realName">{{num.name}}(店铺:{{num.shopName}})</text>
                                 </div>
 
                             </div>
@@ -172,7 +172,7 @@
             }
         },
         props: {
-            title: { default: "会员卡"},
+            title: { default: "员工"},
             noDataHint: { default: "尚未添加员工"},
         },
         created() {

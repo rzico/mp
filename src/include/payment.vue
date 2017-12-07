@@ -193,7 +193,7 @@
             }
         },
         data:function(){
-            return{
+            return {
                 info:{memo:""},
                 sn:"",
                 isShow:false,
@@ -242,16 +242,18 @@
                 this.lastCaptchaLength = 0;
             },
             show (sn) {
+                event.toast('2222');
                 var _this = this;
                 _this.sn = sn;
                 _this.isPwd = false;
                 _this.clearPwd();
-              GET("payment/view.jhtml?sn="+sn,function (res) {
-                  _this.info = res.data;
-                  _this.isShow = true;
-              },function (err) {
-                  event.toast(err.content);
-              })
+                event.toast('1111');
+                GET("payment/view.jhtml?sn="+sn,function (res) {
+                    _this.info = res.data;
+                    _this.isShow = true;
+                },function (err) {
+                    event.toast(err.content);
+                })
             },
             close (e) {
                 var _this = this;
@@ -259,10 +261,9 @@
                     clearInterval(timer);
                     timer = null;
                 }
-                globalEvent.removeEventListener("onResume");
+                //globalEvent.removeEventListener("onResume");
                 _this.$emit("notify",e);
                 _this.isShow = false;
-
             },
             comfrm () {
                 if (this.id == 2) {

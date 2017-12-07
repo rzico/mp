@@ -41,7 +41,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
-                        <text class="title ml10">开通专栏</text>
+                        <text class="title ml10">免费开通专栏</text>
                     </div>
                     <div class="flex-row flex-end">
                         <switch class="switch" :checked="hasTopic" @change="create()"></switch>
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">适用于有实体店铺的商家,线下ERP集成</text>
+                <text class="sub_title">你有了自已的专栏,</text>
             </div>
 
             <div class="cell-row cell-line" @click="sendQrcode()">
@@ -127,6 +127,9 @@
         justify-content: center;
     }
 
+    .switch {
+        margin-right: 20px;
+    }
     .sub-panel {
         padding-top: 20px;
         padding-left: 20px;

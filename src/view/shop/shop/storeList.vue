@@ -11,7 +11,7 @@
                 </div>
                 <div class="shopInformation">
                     <div class="shopNameDiv">
-                        <text class="shopName">店铺名：</text>
+                        <text class="shopName">店铺：</text>
                         <text class="fullName">{{shopName}}</text>
                     </div>
                     <div class="shopAddressDiv">
