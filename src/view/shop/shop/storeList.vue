@@ -2,8 +2,8 @@
     <div style="background-color: #eeeeee">
         <navbar :title="title" :complete="complete" @goback="goback"></navbar>
         <div class="shopstwo">
-            <div class="deleteBoxTwo bkg-delete" @click="del()">
-                <text class="deleteText">删除</text>
+            <div class="deleteBoxTwo bkg-delete" @click="out()">
+                <text class="deleteText">离职</text>
             </div>
             <div  class="messageTwo"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
                 <div class="shopLogo" >
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="head" @click="add" >
+        <div class="head" @click="add" v-if="isOwner">
             <text class="clickAdd" >+点击添加商铺</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
@@ -31,7 +31,7 @@
                 <text class="indicator">下拉刷新</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
-        <div class="shops" v-for="(num,index) in lists">
+        <div class="shops" v-for="(num,index) in lists" v-if="isOwner">
             <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                 <text class="deleteText">删除</text>
             </div>
@@ -185,7 +185,7 @@ export default {
         utils.initIconFont();
         this.open(function () {});
         this.openTwo(function () {});
-        this.screenHeight = utils.fullScreen(136);
+        this.screenHeight = utils.fullScreen(376);
     },
     filters:{
         filterHead:function (value) {
@@ -206,7 +206,6 @@ export default {
         open:function () {
             let _this = this;
             GET('weex/member/shop/list.jhtml',function (mes) {
-                utils.debug(mes)
                 if (mes.type == 'success') {
                     _this.lists = mes.data.data
                 } else {
@@ -346,6 +345,35 @@ export default {
                             })
                         }
                         _this.lists.splice(index,1);
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast("网络不稳定");
+                }
+            )
+        },
+        //        退出
+        out:function (id,index) {
+            let _this =this
+            POST('weex/member/enterprise/delete.jhtml').then(
+                function (mes) {
+                    if (mes.type == "success") {
+                        //                            把动画收回来。
+                        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                        }else{
+                            animation.transition(animationPara, {
+                                styles: {
+                                    transform: 'translateX(0)',
+                                },
+                                duration: 10, //ms
+                                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                needLayout:false,
+                                delay: 0 //ms
+                            })
+                        }
+                        event.closeURL(mes)
                     } else {
                         event.toast(mes.content);
                     }
