@@ -191,7 +191,7 @@
             profession: function () {
                 var _this = this;
 
-                event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=category'), function (data) {
+                event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=occupation'), function (data) {
                     if(data.type == 'success' ) {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
@@ -352,7 +352,7 @@
             },
             goAutograph:function () {
                 let _this = this;
-                let senfData = this.autograph == '未填写' ? '' : this.autograph;
+                let senfData = this.autograph;
                 let textData = {
                     autograph:senfData
                 };
