@@ -313,7 +313,9 @@
                 event.openURL(utils.locate("view/shop/employee/list.js"),function (e) {});
             },
             shop:function () {
-                event.openURL(utils.locate("view/shop/shop/storeList.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
+                    event.closeURL(mes)
+                });
             },
             gocard:function () {
                 event.openURL(utils.locate("view/shop/card/cardList.js"),function (e) {});
