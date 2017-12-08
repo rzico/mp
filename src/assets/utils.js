@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weex.1xx.me';
 const event = weex.requireModule('event');
-const debug = true;
+const debug = false;
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -90,6 +90,9 @@ let utilsFunc = {
 //                获取缩略图的宽高
         w = parseInt(w * proportion);
         h = parseInt(h * proportion);
+        if (url.substring(0,11) == "http://cdnx") {
+            return url+"?x-oss-process=image/resize,w_"+w+",h_"+h+"";
+        } else
         if (url.substring(0,10) == "http://cdn") {
             return url+"@"+w+"w_"+h+"h_1e_1c_100Q";
         } else {

@@ -250,7 +250,6 @@
             open:function () {
                 var _this = this;
                 var addr = 'weex/member/deposit/summary.jhtml?billDate='+ encodeURIComponent(_this.billDate);
-                event.toast(addr);
                 GET(addr, function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
