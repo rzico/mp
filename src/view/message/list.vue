@@ -299,9 +299,10 @@
                 }
             })
             globalEvent.addEventListener("onMessage", function (e) {
-                event.toast(e);
+//                event.toast(e);
 //                    用户消息没有userId。只有id。
                 e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
+
                 _this.addMessage(e.data);
             });
         },
@@ -321,7 +322,7 @@
                 return this.messageList.length == 0;
             },
 //            向消息列表填入新的消息数据并存入缓存
-            addMessage(_weex,sign){
+            addMessage(_weex){
                 var _this = this;
                 if(_weex.type == 'success'){
                     //            获取当前时间戳 作为唯一标识符key
@@ -336,17 +337,18 @@
 //                    event.toast(_weex);
 //                        本地查找是已有消息列表还是新消息列表~
                     event.find(findOption,function (data) {
-//                        判断是否无法获取到头像跟昵称
-                        let JSONData = JSON.parse(data.data.value);
-                        if(utils.isNull(_weex.data.logo)){
-                            _weex.data.logo = JSONData.logo;
-                        }
-                        if(utils.isNull(_weex.data.nickName)){
-                            _weex.data.nickName = JSONData.nickName;
-                        }
                         var storageData = JSON.stringify(_weex.data);
                         if(data.type == 'success' && data.data != ''){
-
+                            if(!utils.isNull(data.data.value)){
+//                        判断是否无法获取到头像跟昵称
+                                let JSONData = JSON.parse(data.data.value);
+                                if(!utils.isNull(_weex.data.logo)){
+                                    _weex.data.logo = JSONData.logo;
+                                }
+                                if(!utils.isNull(_weex.data.nickName)){
+                                    _weex.data.nickName = JSONData.nickName;
+                                }
+                            }
                             let option = {
                                 type:'message',
                                 key:_weex.data.userId,
