@@ -64,29 +64,30 @@
                 event.closeURL()
             },
             onEnd: function (val) {
+                var _this = this;
                 this.captcha = val;
                 event.encrypt(val,function (msg) {
                     if (msg.type=="success") {
                         POST('weex/member/password/captcha.jhtml?captcha=' + msg.data).
                         then(function (data) {
-
                                 if (data.type == "success") {
+                                    _this.$refs.captcha.endTimer();
                                     event.openURL(utils.locate("view/member/password/update.js?captcha="+msg.data),
                                         function (resp) {
                                            event.closeURL(resp);
                                         }
                                     )
                                 } else {
-                                    _this.$refs.captcha.clear();
+                                    _this.$refs.captcha.endTimer();
                                     event.toast('输入错误');
                                 }
                             },function () {
-                            _this.$refs.captcha.clear();
+                            _this.$refs.captcha.endTimer();
                                 event.toast("网络不稳定请重试");
                             }
                         )
                     } else {
-                        _this.$refs.captcha.clear();
+                        _this.$refs.captcha.endTimer();
                         event.toast(data.content);
                     }
                 })

@@ -99,12 +99,10 @@
                                     let backData = utils.message('success','成功');
                                     event.closeURL(backData);
                                 } else {
-                                    _this.$refs.captcha.endTimer();
                                     event.toast(data.content);
                                 }
                             },
                             function (err) {
-                                _this.$refs.captcha.endTimer();
                                 event.toast("网络不稳定")
 
                             }
