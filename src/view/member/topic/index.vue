@@ -18,8 +18,8 @@
             <div class="sub-panel tip" v-if="isNoActivate()" @click="activate()">
                 <text class="vip">点亮VIP专栏特权（388元/年）</text>
             </div>
-            <div class="sub-panel tip" style="justify-content: center" v-if="isActivate()&&noJob" @click="getShop()">
-                <text class="vip">申请开店</text>
+            <div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">
+                <text class="vip">开通店铺，体验众卖新营销模式</text>
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
@@ -35,7 +35,7 @@
             <div class="sub-panel">
                 <text class="sub_title">点亮专栏，更多精美模板选择</text>
             </div>
-            <div v-if="isOwner">
+            <div v-if="judgmenttwo()">
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -200,6 +200,18 @@
             this.load();
         },
         methods: {
+//            判断激活状态并且没工作
+            judgmentone:function () {
+                let _this =this;
+                if(_this.noJob == true && _this.isActivate())
+                return true
+            },
+//            判断是否商家
+            judgmenttwo:function () {
+                let _this = this;
+                if(_this.isOwner == true)
+                    return true
+            },
 //            修改头像
             changeLogo: function () {
                 var _this = this;
@@ -264,7 +276,6 @@
             load:function () {
                 var _this = this;
                 GET('weex/member/topic/view.jhtml', function (data) {
-                    utils.debug(data)
                     if (data.type == 'success') {
                         _this.noJob = data.data.noJob;
                         _this.isOwner =data.data.isOwner;
@@ -291,8 +302,8 @@
                     event.toast(err.content)
                 })
             },
-            goback: function (e) {
-                event.closeURL();
+            goback: function () {
+                event.closeURL()
             },
 
             isNoActivate:function () {
@@ -323,11 +334,12 @@
             },
 //            申请开店
             getShop:function (e) {
-                var _this = this;
+                let _this = this;
                 POST('weex/member/topic/create_enterprise.jhtml').then(
                     function (mes) {
+                        utils.debug(mes)
                         if (mes.type == "success") {
-                            utils.debug(mes)
+                            _this.load();
                         } else {
                             event.toast(mes.content);
                         }
