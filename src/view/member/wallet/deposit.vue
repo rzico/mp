@@ -1,7 +1,15 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
-        <list class="list">
+        <div class="cell-header total">
+            <text class="balance">{{cashier.thisMonth | currencyfmt}}</text>
+            <div class="wallet-title">
+                <text class="sub_title">本月（元）     </text>
+                <text class="sub_title">上月:{{cashier.lastMonth | currencyfmt}}</text>
+            </div>
+            <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
+        </div>
+        <list class="list mt20">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">下拉刷新</text>
             </refresh>
@@ -53,6 +61,39 @@
     .newHeight{
         height: 130px;
     }
+    .sub_title {
+        color:#444;
+        font-size: 30px;
+    }
+    .total {
+        width:750px;
+        height:150px;
+        flex-direction: column;
+    }
+    .wallet-title {
+        margin-top: 10px;
+        flex-direction: row;
+        padding-right: 30px;
+        padding-left: 20px;
+    }
+
+    .balance {
+        margin-top: 10px;
+        font-size: 60px;
+        color: red;
+        margin-left:20px;
+    }
+
+    .day {
+        position: absolute;
+        top:20px;
+        right: 20px;
+        width:60px;
+        height:60px;
+        font-size: 48px;
+        line-height: 60px;
+        color:#EB4E40;
+    }
     .cell-row {
         min-height: 120px;
         flex-direction: column;
@@ -93,6 +134,7 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     var event = weex.requireModule('event')
+    const picker = weex.requireModule('picker')
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
@@ -101,6 +143,7 @@
     export default {
         data:function(){
             return{
+                cashier:{today:0,yesterday:0,shopId:""},
                 depositList:[],
                 refreshing: false,
                 loading: 'hide',
@@ -155,13 +198,38 @@
                 }
                 return true;
             },
+            pickDate () {
+                var _this = this;
+                picker.pickDate({
+                    value: _this.billDate
+                }, function (e) {
+                    if (e.result == 'success') {
+                        _this.billDate = e.data;
+                        _this.title = "账单("+_this.billDate+")";
+                        _this.open(0,function () {
+
+                        });
+                    }
+                })
+            },
             goback: function (e) {
                 event.closeURL();
             },
             open (pageStart,callback) {
                 this.pageStart = pageStart;
                 var _this = this;
-                GET('weex/member/deposit/list.jhtml?pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                if (pageStart==0) {
+                    GET("weex/member/deposit/view.jhtml",function (res) {
+                        if (res.type=="success") {
+                            _this.cashier = res.data;
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    });
+                }
+                GET('weex/member/deposit/list.jhtml?billDate='+_this.billDate+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
                           _this.depositList = res.data.data;
@@ -183,7 +251,7 @@
             },
             summary:function (m) {
                 let v =  utils.ymdtimefmt(m);
-                event.openURL(utils.locate('view/member/wallet/deposit.js?billDate='+encodeURIComponent(v)),function () {
+                event.openURL(utils.locate('view/member/wallet/summary.js?billDate='+encodeURIComponent(v)),function () {
 
                 })
             },

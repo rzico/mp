@@ -370,10 +370,7 @@
                     event.toast(err.content);
                 }
             )
-
-
             GET('weex/article/preview.jhtml?id=' + this.articleId,function (data) {
-
                 if( data.type=='success' && data.data != ''){
                     _this.memberId = data.data.memberId;
                     _this.reviewNum = data.data.review;
@@ -418,7 +415,6 @@
             },function (err) {
                 event.toast(err.content);
             })
-
         },
         methods:{
 //            点击 图片 更换模版的触发
@@ -629,7 +625,12 @@
                                 POST('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType).then(
                                     function (data) {
                                         if(data.type == 'success'){
-                                            event.toast('分享成功');
+                                            if(shareType == 'copyHref'){
+                                                event.toast('复制成功');
+                                            }else{
+                                                event.toast('分享成功');
+                                            }
+
                                         }
                                     },
                                     function (err) {
