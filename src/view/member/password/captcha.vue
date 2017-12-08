@@ -71,24 +71,25 @@
                         POST('weex/member/password/captcha.jhtml?captcha=' + msg.data).
                         then(function (data) {
                                 if (data.type == "success") {
-                                    _this.$refs.captcha.endTimer();
+                                    utils.debug(data);
                                     event.openURL(utils.locate("view/member/password/update.js?captcha="+msg.data),
                                         function (resp) {
                                            event.closeURL(resp);
                                         }
                                     )
+                                    _this.$refs.captcha.endTimer();
                                 } else {
                                     _this.$refs.captcha.endTimer();
-                                    event.toast('输入错误');
+                                    event.toast(data.content);
                                 }
-                            },function () {
+                            },function (err) {
                             _this.$refs.captcha.endTimer();
-                                event.toast("网络不稳定请重试");
+                                event.toast(err.content);
                             }
                         )
                     } else {
                         _this.$refs.captcha.endTimer();
-                        event.toast(data.content);
+                        event.toast(msg.content);
                     }
                 })
             }

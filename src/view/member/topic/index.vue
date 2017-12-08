@@ -159,9 +159,10 @@
     }
     .name {
         font-size: 34px;
-        margin-left: 40px;
+        margin-left: 20px;
     }
     .autograph {
+        margin-left: 20px;
         margin-top: 10px;
         font-size: 28px;
         color: #999;

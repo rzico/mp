@@ -10,7 +10,7 @@
         </div>
 
         <div class="input-panel">
-            <input class="flex5 password passwordadd" type="number" placeholder="请输入新密码" v-model="value"  @change="onchange" @input="oninput"/>
+            <input class="flex5 password passwordadd" type="tel" maxlength="6" placeholder="请输入6位数字串" v-model="value"/>
             <div class="flex1 flex-column">
                 <text class="see" :style="{fontFamily:'iconfont'}">&#xe61e;</text>
             </div>
@@ -69,30 +69,34 @@
 <script>
     import { POST, GET } from '../../../assets/fetch';
     import utils from '../../../assets/utils';
+    import navbar from '../../../include/navbar.vue'
     const event = weex.requireModule('event');
     export default {
         data() {
             return {
-                value:this.value,
+                value:"",
                 captcha:""
             }
         },
         components: {
-            navbar,mobile
+            navbar
         },
         props: {
-            value: { default: "" },
             title: { default: "设置密码" }
         },
         created(){
             utils.initIconFont();
+            this.captcha = utils.getUrlParameter("captcha");
         },
         methods: {
+            goback:function () {
+                event.closeURL();
+            },
             save:function () {
                 var _this = this;
                 event.encrypt(_this.value,function (msg) {
-                    if (msg.type="success") {
-                        POST('weex/member/password/update.jhtml?enPassword=' + msg.data).then(
+                    if (msg.type=="success") {
+                        POST('weex/member/password/update.jhtml?enPassword=' + msg.data+"&captcha="+_this.captcha).then(
                             function (data) {
                                 utils.debug(data)
                                 if (data.type == "success") {
