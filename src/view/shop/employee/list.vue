@@ -25,7 +25,7 @@
                         <text class="deleteText">删除</text>
                     </div>
                     <div class="addFriendsBorder" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                        <div class="friendsLine" @click="jump(num.id)">
+                        <div class="friendsLine" @click="popup(num.id)">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
                             </div>
@@ -45,11 +45,90 @@
                 <text class="indicator">{{loadingState}}</text>
             </loading>
         </list>
+        <div class="shareBox" v-if="isPopup">
+            <div style="width: 750px;align-items: center;justify-content: center;height: 70px">
+                <text class="fz30 " style="color: #444">店铺列表</text>
+            </div>
+            <list>
+                <cell>
+                <div  class="message" v-for="num in shops" @click="allotment(num.id)">
+                    <div class="shopLogo" >
+                        <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor "></image>
+                    </div>
+                    <div class="shopInformation">
+                        <div class="shopNameDiv">
+                            <text class="shopName">店铺名：</text>
+                            <text class="fullName">{{num.name}}</text>
+                        </div>
+                        <div class="shopAddressDiv">
+                            <text class="shopAddress">地址：</text>
+                            <text class="concretely">{{num.address}}</text>
+                        </div>
+                    </div>
+                </div>
+                </cell>
+            </list>
+            <div class="cancelBox" @click="doCancel()">
+                <text class="fz32">取消</text>
+            </div>
+        </div>
     </div>
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .cancelBox{
+        width: 730px;align-items: center;height:100px;background-color: #eee;justify-content: center;
+    }
+    .shareBox{
+        height:750px;
+        border-top-right-radius: 15px;
+        border-top-left-radius: 15px;
+        border-width: 1px;
+        border-color: #cccccc;
+        background-color:#F5F4F5;
+        position: fixed;
+        bottom:0px ;
+        left: 10px;
+        right:10px
+    }
+    .shopInformation{
+        /*justify-content: space-between;*/
+        height: 230px;
+        margin-left: 20px;
+    }
+    .shopNameDiv{
+        flex-direction: row;
+        margin-top: 20px;
+    }
+    .shopAddressDiv{
+        flex-direction: row;
+        margin-top: 30px;
+    }
+    .shopName{
+        font-weight: bold;
+        font-size: 32px;
+    }
+    .fullName{
+        font-size: 32px;
+    }
+    .shopAddress{
+        font-weight: bold;
+        font-size: 32px;
+    }
+    .concretely{
+        font-size: 32px;
+    }
+    .message{
+        flex-direction: row;
+        align-items: center;
+        width: 750px;
+        background-color: white;
+        margin-bottom: 10px;
+    }
+    .shopLogo{
+        margin-left: 20px;
+    }
     .deleteText{
         font-size: 32px;color: #fff;
     }
@@ -75,22 +154,6 @@
         border-width: 1px;
         border-color: #cccccc;
         border-radius: 10px;
-    }
-    .addFriend {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding-left: 36px;
-        padding-right: 30px;
-        padding-top: 30px;
-        padding-bottom: 30px;
-        background-color: white;
-        border-top-width: 1px;
-        border-top-style: solid;
-        border-top-color: #ccc;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
     }
     .list {
         background-color: white;
@@ -164,11 +227,15 @@
                 loadingState:"松开加载更多",
                 friendsList:[],
                 lists:[],
+                shops:[],
                 screenHeight:0,
                 pageSize:10,
                 listCurrent:0,
                 code:'',
-                id:''
+                id:'',
+                isPopup:false,
+//                点击弹窗获取的员工id存入此变量
+                memberId:''
             }
         },
         props: {
@@ -179,15 +246,31 @@
             utils.initIconFont();
 
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(404);
-            this.open(function () {
-
-            });
+            this.screenHeight = utils.fullScreen(236);
+            this.open();
+            this.openTwo()
         },
         filters:{
 
         },
         methods: {
+//            分配店铺
+            allotment:function (id) {
+                let _this =this
+                POST('weex/member/admin/update.jhtml?id='+_this.memberId+'&shopId='+id).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            _this.openThree();
+                            _this.isPopup =false;
+                            event.toast('分配成功')
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
+            },
             onpanmove:function (e,index) {
 //                获取当前点击的元素。
                 var _this = this;
@@ -282,6 +365,42 @@
                 }, function (err) {
                     event.toast(err.content)
                 })
+            },
+//            店铺列表
+            openTwo:function () {
+                let _this = this;
+                GET('weex/member/shop/list.jhtml',function (mes) {
+                    if (mes.type == 'success') {
+                        _this.shops = mes.data.data
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            openThree:function () {
+                var _this = this;
+                GET('weex/member/admin/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
+                    if (mes.type == 'success') {
+                            _this.lists = mes.data.data
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+//            触发店铺列表
+            popup:function (id) {
+                this.memberId = id;
+                if (this.isPopup==false) {
+                    this.isPopup = true;
+                }
+            },
+//            关闭店铺列表
+            doCancel:function () {
+                this.isPopup = false;
             },
 //            触发自组件的二维码方法
             scan:function () {

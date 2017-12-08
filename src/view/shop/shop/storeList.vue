@@ -374,7 +374,7 @@ export default {
                             })
                         }
                         event.closeURL(mes)
-                    } else {
+                        } else {
                         event.toast(mes.content);
                     }
                 }, function (err) {

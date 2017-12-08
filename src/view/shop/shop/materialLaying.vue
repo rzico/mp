@@ -226,6 +226,9 @@
                 areaId:'',
                 category:'',
                 addressName:'',
+                originalone:'',
+                originaltwo:'',
+                originalthree:''
         }
         },
         components: {
@@ -269,11 +272,10 @@
                     true,function (data) {
                         if(data.type == 'success') {
                             event.upload(data.data.originalPath,function (data) {
-                                utils.debug(data)
-                            })
-//                            _this.logo = data.data.thumbnailSmallPath;
-////                    data.data里存放的是用户选取的图片路
-//                            _this.originalone = data.data.originalPath
+                                _this.originalone =data.data
+                            });
+                            _this.logo = data.data.thumbnailSmallPath;
+
                         }
                     })
             },
@@ -283,10 +285,11 @@
                     //选完图片后触发回调函数
                     true,function (data) {
                         if(data.type == 'success') {
+                            event.upload(data.data.originalPath,function (data) {
+                                _this.originaltwo =data.data
+                            });
                             _this.palcePhoto = data.data.thumbnailSmallPath;
-//                    data.data里存放的是用户选取的图片路
-                            _this.originaltwo = data.data.originalPath
-//
+
                         }
                     })
             },
@@ -296,17 +299,17 @@
                     //选完图片后触发回调函数
                     true,function (data) {
                         if(data.type == 'success') {
+                            event.upload(data.data.originalPath,function (data) {
+                                _this.originalthree =data.data
+                            });
                             _this.licensePhoto = data.data.thumbnailSmallPath;
-//                    data.data里存放的是用户选取的图片路
-                            _this.originalthree = data.data.originalPath
-//
                         }
                     })
             },
             goComplete:function () {
                 var _this=this
-                POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
-                    '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
+                POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
+                    '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
                         if (mes.type == "success") {
                             var _this =this

@@ -13,13 +13,18 @@
                 <text class="scopeText flex1" style="font-size: 32px">适用范围</text>
                 <text class="scopeText flex3" style="font-size: 32px;padding-left: 60px;color: #999999" @click="scopesetting">{{scene | judgment}}</text>
             </div>
+            <div class="scope">
+                <text class="scopeText" style="font-size: 32px">剩余张数</text>
+                <input type="number" placeholder="" class="inputMoney" v-model="number" @change="" @input=""/>
+                <text class="conditionsText" style="font-size: 32px">张</text>
+            </div>
             <div class="money">
-                <text class="moneyText" style="font-size: 32px">优惠面额</text>
+                <text class="moneyText" style="font-size: 32px">{{frontTransfrom}}</text>
                 <input type="number" placeholder="" class="inputMoney" v-model="money" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">{{transform}}</text>
             </div>
             <div class="inputPrompt">
-                <text class="inputPromptText" style="font-size: 28px;color:#888">优惠面额请输入 0-10 之间的的数字</text>
+                <text class="inputPromptText" style="font-size: 28px;color:#888">{{bottomTransform}}</text>
             </div>
             <div class="conditions">
                 <text class="conditionsText" style="font-size: 32px">使用条件</text>
@@ -180,6 +185,7 @@
                 endDate:'点击设置',
                 scope:'',
                 money:'',
+                number:'',
                 conditions:'',
                 rule:'',
                 type:'满减',
@@ -187,7 +193,9 @@
                 address:'全场',
                 scene:'all',
                 id:'',
-                transform:'元'
+                transform:'元',
+                frontTransfrom:'优惠面额',
+                bottomTransform:'请输入优惠金额'
             }
         },
         components: {
@@ -257,7 +265,7 @@
                 var _this = this;
                 GET('weex/member/coupon/view.jhtml?id='+_this.id,function (mes) {
                     if (mes.type == 'success') {
-                        utils.debug(mes)
+                        _this.number = mes.data.stock;
                         _this.money = mes.data.amount;
                         _this.rule = mes.data.introduction;
                         _this.endDate = _this.timeDatefmt(mes.data.endDate);
@@ -308,13 +316,17 @@
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.type = '满减'
-                            _this.codeName = 'fullcut'
-                            _this.transform ='元'
+                            _this.type = '满减';
+                            _this.codeName = 'fullcut';
+                            _this.transform ='元';
+                            _this.frontTransfrom = '优惠面额';
+                            _this.bottomTransform = '请输入优惠金额'
                         }else if(e.data == 1){
-                            _this.type = '满折'
-                            _this.codeName = 'discount'
-                            _this.transform = '折'
+                            _this.type = '满折';
+                            _this.codeName = 'discount';
+                            _this.transform = '折';
+                            _this.frontTransfrom = '优惠折扣';
+                            _this.bottomTransform = '请输入优惠折扣(输入0-10之间自然数)'
                         }
                     }
                 })
@@ -363,8 +375,12 @@
                     event.toast('规则介绍未设置')
                     return
                 }
+                if(_this.number==''){
+                    event.toast('新增数量未设置')
+                    return
+                }
                 POST('weex/member/coupon/submit.jhtml?type='+_this.codeName+'&scope='+_this.scene+'&beginDate='+_this.beginDate
-                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id).then(
+                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id+'&stock='+_this.number).then(
                     function (mes) {
                         if (mes.type == "success") {
                             event.closeURL(mes)

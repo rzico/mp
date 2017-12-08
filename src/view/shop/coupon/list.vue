@@ -42,7 +42,7 @@
                                 <text class="realName">{{num.beginDate | timeDatefmt}}至{{num.endDate | timeDatefmt}}</text>
                             </div>
                             <div class="use">
-                                <text class="usetext">立即使用</text>
+                                <text class="usetext">剩余数:{{num.stock}}</text>
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,8 @@
     .use{
         align-items: center;
         justify-content: center;
-        width: 120px;
+        padding-left: 10px;
+        padding-right: 10px;
         border-color: red;
         border-width: 1px;
         border-top-left-radius: 25px;
@@ -287,6 +288,7 @@
             open:function () {
                 var _this = this;
                 GET('weex/member/coupon/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
+                    utils.debug(mes)
                     if (mes.type == 'success') {
                             _this.lists =mes.data.data
                     } else {

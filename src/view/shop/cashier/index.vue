@@ -314,7 +314,10 @@
             },
             shop:function () {
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
-                    event.closeURL(mes)
+                    if(mes.type =='success'&&mes.data==''){
+                        event.closeURL(mes)
+                    }
+
                 });
             },
             gocard:function () {
