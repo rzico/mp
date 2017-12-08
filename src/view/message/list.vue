@@ -272,6 +272,7 @@
             noDataHint: { default: "没有消息，快去聊天吧" },
         },
         created() {
+//            创建前
             var _this = this;
             utils.initIconFont();
             let listoption = {
@@ -298,7 +299,7 @@
                 }
             })
             globalEvent.addEventListener("onMessage", function (e) {
-//                event.toast(e);
+                event.toast(e);
 //                    用户消息没有userId。只有id。
                 e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
                 _this.addMessage(e.data);

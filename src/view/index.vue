@@ -129,12 +129,11 @@
                 );
             },
             login: function (e) {
-                event.openURL(utils.locate('view/login/index.js'),
-                    function (data) {
-                        if(data.type=='success') {
-                            event.closeURL();
-                        }
-                    })
+                event.openURL(utils.locate('view/login/index.js'),function (data) {
+                    if(data.type=='success') {
+                        event.closeURL();
+                    }
+                });
             },
             goback: function (e) {
                 event.closeURL();

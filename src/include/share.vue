@@ -34,7 +34,7 @@
                             <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
                             <image class="shareImg" :src="browserImg" ></image>
                         </div>
-                        <text class="fz28 mt20 color444">浏览器</text>
+                        <text class="fz28 mt20 color444">浏览器打开</text>
                     </div>
                     <!--<div class="singleBox">-->
                     <!--<div class="imgBox">-->

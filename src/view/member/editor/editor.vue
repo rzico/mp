@@ -457,7 +457,6 @@
                 }else{
                     return value;
                 }
-
             }
         },
         computed:{
@@ -523,12 +522,7 @@
                         )
                     }
                 });
-
-
-
-
             }else{//再次文章编辑
-
                 _this.deleteDraft();
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
@@ -547,10 +541,8 @@
                     });
                     //从缓存读取数据 写入界面
                     _this.readData(options);
-
                 };
             };
-
         },
         methods:{
             //从缓存读取数据 写入界面
@@ -561,7 +553,6 @@
                         let articleData = JSON.parse(data.data.value);
 //                            保存置顶状态。
                         _this.sortStatus = data.data.sort.substring(0,2);
-//                            event.toast(articleData);
                         _this.setTitle = articleData.title;
                         _this.coverImage = articleData.thumbnail;
                         _this.musicName = articleData.music.name;
@@ -630,12 +621,37 @@
                         }
 
                     }else{
-                        modal.alert({
-                            message:'系统繁忙，请稍后重试',
-                            duration: 0.3
-                        },function () {
-                            event.closeURL();
-                        });
+
+                        GET('weex/member/article/view.jhtml?id=' + _this.articleId,function (res) {
+                            if (res.data != '' && res.type == 'success') {
+//                                   将服务器的缩略图换成原图的缩略图
+//                                    res.data.templates.forEach(function (item) {
+//                                        item.thumbnail = utils.thumbnail(item.original,155,155);
+//                                    })
+                                let resDataStr = JSON.stringify(res.data);
+                                let saveData = {
+                                    type: "article",
+                                    key: res.data.id,
+                                    value:resDataStr,
+                                    sort: '0,' + res.data.modifyDate,
+                                    keyword: ',[' + _this.catalogId + '],' + _this.setTitle + ','
+                                };
+                                event.save(saveData, function (data) {
+                                    if (data.type == 'success') {
+                                        let options = {
+                                            type:'article',
+                                            key:_this.articleId
+                                        };
+                                        //从缓存读取数据 写入界面
+                                        _this.readData(options);
+                                    } else {
+                                        event.toast(data.content);
+                                    }
+                                })
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        })
                     };
                 });
             },
@@ -797,10 +813,25 @@
                     event.toast('请设置标题');
                     return;
                 }
-
+//                判断封面是否有值。
+                if(this.coverImage == utils.locate('resources/images/background.png')){
+                    event.toast('请设置封面');
+                    return;
+                }
+                var imageNum = 0;
+//                上传时判断至少要有一张图;
+                _this.paraList.forEach(function (item) {
+                    if(item.mediaType == 'image' && item.paraImage != ''){
+                        imageNum ++;
+                    }
+                })
+                if(imageNum == 0){
+//                        modal.toast({message: '至少要保留一张图片', duration: 0.5});
+                    event.toast('至少要有一张图片');
+                    return;
+                }
                 this.toSendArticle = true;
                 this.proTotal = 0;
-
 //                判断封面图片是否已上传过
                 if(this.coverImage.substring(0,4) != 'http'){
                     this.proTotal ++;
@@ -822,14 +853,6 @@
                     _this.serveCover = this.coverImage;
                     _this.sendImage(0);
                 }else{
-                    if(this.coverImage == utils.locate('resources/images/background.png')){
-                        for(let i = 0;i<this.paraList.length;i++){
-
-
-                        }
-                    }
-
-
                     //                将封面上传服务器
                     event.upload(this.coverImage,function (data) {
                         if(data.type == 'success'){
@@ -998,10 +1021,16 @@
                         })
                     })
                 }else{
-//                    如果是初次编辑 是没有上传过的本地图片； thumbnail:item.thumbnailImage,
+                    var uploadThumbnail ;
+//                    如果是临时缓存 是没有上传过的本地图片； thumbnail:item.thumbnailImage,
                     this.paraList.forEach(function(item){
+                        if(item.paraImage.substring(0,4) == 'http'){
+                            uploadThumbnail = item.serveThumbnail;
+                        }else{
+                            uploadThumbnail = item.thumbnailImage;
+                        }
                         _this.articleTemplates.push({
-                            thumbnail:item.thumbnailImage,
+                            thumbnail:uploadThumbnail,
                             original:item.paraImage,
                             mediaType: item.mediaType,
                             content:item.paraText
@@ -1049,14 +1078,7 @@
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','')
                                     event.sendGlobalEvent('onArticleChange',listenData);
-//                                    event.find(){
-//
-//                                    }
-
                                     _this.deleteDraft();
-
-
-//                                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + res.data.id,function (data) {
                                     event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 0;//总的进度
@@ -1074,10 +1096,7 @@
                                     _this.currentPro = 0;//当前进度
                                     _this.proTotal = 0;//总的进度
                                     _this.processWidth = 0;//进度条宽度
-                                    modal.alert({
-                                        message: data.content,
-                                        duration: 0.3
-                                    })
+                                    event.toast(data.content);
                                 };
                             });
                         }else{
@@ -1097,18 +1116,32 @@
                     }
                 )
             },
+
+            //匹配中文 数字 字母 下划线 某些字符
+            checkInput (str) {
+                var pattern  = /^[@|&，"'。\]\[`^%?（）？/\<\>;()#!~+-/$·* \w\u4e00-\u9fa5]+$/gi;
+                var rs = "";
+//                一个一个去判断是否匹配
+                for (var i = 0; i < str.length; i++) {
+                    if(pattern.test(str.substr(i,1)))
+                    {
+                        rs = rs + str.substr(i,1);
+                    }
+                }
+                return rs;
+            },
 //            点击"+"号里的文本时
             addTextPara:function(index){
                 var _this = this;
                 event.openEditor('',function (data) {
                     let textImg = utils.locate('resources/images/text.png');
-//                    event.toast(data);
 //                    将返回回来的html数据赋值进去
                     let newPara = {
                         //原图
                         paraImage:'',
 //                                    小缩略图
                         thumbnailImage:textImg,
+//                        paraText:_this.checkInput(data.data),
                         paraText:data.data,
                         mediaType: "image",
                         show:true
@@ -1311,46 +1344,46 @@
                         }
                     }
                 });
-        },
+            },
 //            删除投票
-        closeVote:function (index) {
-            var _this = this;
-            modal.confirm({
-                message: '确定删除投票?',
-                okTitle:'删除',
-                cancelTitle:'取消',
-                duration: 0.3
-            }, function (value) {
-                console.log(value);
-                if(value == '删除'){
-                    //                将内容删掉
-                    _this.voteList.splice(index,1);
+            closeVote:function (index) {
+                var _this = this;
+                modal.confirm({
+                    message: '确定删除投票?',
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                    duration: 0.3
+                }, function (value) {
+                    console.log(value);
+                    if(value == '删除'){
+                        //                将内容删掉
+                        _this.voteList.splice(index,1);
 //                    添加修改标志
-                    _this.hadChange = 1;
-                    if(_this.articleId == ''){
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
 //                        临时保存到缓存
-                        _this.saveDraft();
-                    }
-                }
-            })
-        },
-//            编辑段落图片或者视频
-        editParaImage(imgSrc,index,mediaType){
-            var _this = this;
-//                判断是否没有图片
-            if(imgSrc == ''){
-                album.openAlbumSingle(false, function(data){
-                    _this.paraList[index].paraImage = data.data.originalPath;
-                    _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
-//                    添加修改标志
-                    _this.hadChange = 1;
-                    if(_this.articleId == ''){
-//                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
+                        }
                     }
                 })
-                return;
-            }else{
+            },
+//            编辑段落图片或者视频
+            editParaImage(imgSrc,index,mediaType){
+                var _this = this;
+//                判断是否没有图片
+                if(imgSrc == ''){
+                    album.openAlbumSingle(false, function(data){
+                        _this.paraList[index].paraImage = data.data.originalPath;
+                        _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+//                    添加修改标志
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }
+                    })
+                    return;
+                }else{
 //                    modal.confirm({
 //                        message: '请选择裁剪或者更换图片',
 //                        duration: 0.3,
@@ -1365,199 +1398,199 @@
 //                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
 //                            })
 //                        }else if(value == '裁剪'){
-                if(mediaType == 'image'){
+                    if(mediaType == 'image'){
 //                                调用裁剪图片
-                    album.openCrop(imgSrc,function (data) {
-                        if(data.type == 'success'){
-                            _this.paraList[index].paraImage = data.data.originalPath;
-                            _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+                        album.openCrop(imgSrc,function (data) {
+                            if(data.type == 'success'){
+                                _this.paraList[index].paraImage = data.data.originalPath;
+                                _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
-                            _this.hadChange = 1;
-                            if(_this.articleId == ''){
+                                _this.hadChange = 1;
+                                if(_this.articleId == ''){
 //                        临时保存到缓存
-                                _this.saveDraft();
-                            }
-                        }else{
-                            if(data.content == '用户取消'){
+                                    _this.saveDraft();
+                                }
                             }else{
-                                event.toast(data.content);
+                                if(data.content == '用户取消'){
+                                }else{
+                                    event.toast(data.content);
+                                }
                             }
-                        }
-                    })
-                }else if(mediaType == 'video'){
-                    album.openVideo(function (data) {
-                        if(data.type == 'success'){
-                            _this.paraList[index].paraImage = data.data.videoPath;
-                            _this.paraList[index].thumbnailImage = data.data.coverImagePath;
+                        })
+                    }else if(mediaType == 'video'){
+                        album.openVideo(function (data) {
+                            if(data.type == 'success'){
+                                _this.paraList[index].paraImage = data.data.videoPath;
+                                _this.paraList[index].thumbnailImage = data.data.coverImagePath;
 //                    添加修改标志
-                            _this.hadChange = 1;
-                            if(_this.articleId == ''){
+                                _this.hadChange = 1;
+                                if(_this.articleId == ''){
 //                        临时保存到缓存
-                                _this.saveDraft();
-                            }
-                        }else{
-                            if(data.content == '用户取消'){
+                                    _this.saveDraft();
+                                }
                             }else{
-                                event.toast(data.content);
+                                if(data.content == '用户取消'){
+                                }else{
+                                    event.toast(data.content);
+                                }
                             }
-                        }
-                    })
-                }
+                        })
+                    }
 
 
 //                        }else{
 //                            event.toast(value);
 //                        }
 //                    })
-            }
-        },
+                }
+            },
 //            下拉刷新
-        onrefresh (event) {
-            console.log('is refreshing')
-            this.refreshing = true
-            setTimeout(() => {
-                this.refreshing = false
-            }, 10)
-        },
+            onrefresh (event) {
+                console.log('is refreshing')
+                this.refreshing = true
+                setTimeout(() => {
+                    this.refreshing = false
+                }, 10)
+            },
 //            正在下拉
-        onpullingdown (event) {
-            console.log('is onpulling down')
-        },
+            onpullingdown (event) {
+                console.log('is onpulling down')
+            },
 //            跳转封面页面
-        goCover:function () {
+            goCover:function () {
 //                event.openURL('file://assets/member/editor/cover.js');
-            var _this = this;
-            let paraLength =  _this.paraList.length;
-            var uploadLength = 0;
-            let imgList = [];
+                var _this = this;
+                let paraLength =  _this.paraList.length;
+                var uploadLength = 0;
+                let imgList = [];
 //                控制最多只传6张图
-            for(let i = 0;i < paraLength; i++){
-                if(uploadLength < 6){
+                for(let i = 0;i < paraLength; i++){
+                    if(uploadLength < 6){
 //                        区分字体 图像 视频
-                    if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'image'){
-                        imgList.push({
-                            path:_this.paraList[i].paraImage
-                        });
-                        uploadLength ++ ;
-                    }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video'){
-                        imgList.push({
-                            path:_this.paraList[i].thumbnailImage
-                        });
-                        uploadLength ++ ;
+                        if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'image'){
+                            imgList.push({
+                                path:_this.paraList[i].paraImage
+                            });
+                            uploadLength ++ ;
+                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video'){
+                            imgList.push({
+                                path:_this.paraList[i].thumbnailImage
+                            });
+                            uploadLength ++ ;
+                        }
                     }
                 }
-            }
-            var  coverData = {
-                image : imgList,
-                cover : _this.coverImage
-            }
-            coverData = JSON.stringify(coverData);
-            storage.setItem('coverImage', coverData);
-            event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
+                var  coverData = {
+                    image : imgList,
+                    cover : _this.coverImage
+                }
+                coverData = JSON.stringify(coverData);
+                storage.setItem('coverImage', coverData);
+                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
 //                event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
-                if(message.type == 'success' && message.data != ''){
-                    _this.coverImage = message.data;
+                    if(message.type == 'success' && message.data != ''){
+                        _this.coverImage = message.data;
 //                    添加修改标志
-                    _this.hadChange = 1;
-                    if(_this.articleId == ''){
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
+                        }
                     }
-                }
-            });
-        },
+                });
+            },
 //            跳转音乐页面
-        goMusic:function () {
+            goMusic:function () {
 //                event.openURL('file://assets/member/editor/music.js');
-            let _this = this;
+                let _this = this;
 //                event.toast(musicId);
-            event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
+                event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
 //                event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
 //                    event.toast(message);
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
-                if(message.data != ''){
-                    _this.musicName = message.data.chooseMusicName;
-                    musicId = message.data.chooseMusicId;
+                    if(message.data != ''){
+                        _this.musicName = message.data.chooseMusicName;
+                        musicId = message.data.chooseMusicId;
 //                    添加修改标志
-                    _this.hadChange = 1;
-                    if(_this.articleId == ''){
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
+                        }
                     }
-                }
-            });
-        },
+                });
+            },
 //            跳转投票页面
-        goVote:function () {
-            let _this = this;
+            goVote:function () {
+                let _this = this;
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
-            event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
-                if(message.data != '') {
-                    _this.voteList.push(message.data);
+                event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
+                    if(message.data != '') {
+                        _this.voteList.push(message.data);
 //                    添加修改标志
-                    _this.hadChange = 1;
-                    if(_this.articleId == ''){
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
+                        }
                     }
-                }
-            });
-        },
+                });
+            },
 //            编辑投票
-        editVote:function (index) {
-            let _this = this;
-            let voteData = JSON.stringify(_this.voteList[index]);
-            storage.setItem('voteData', voteData);
+            editVote:function (index) {
+                let _this = this;
+                let voteData = JSON.stringify(_this.voteList[index]);
+                storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
-            event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
-                if(message.type=='success' && message.data != '') {
+                event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
+                    if(message.type=='success' && message.data != '') {
 //                        直接=无法重新渲染页面。需要push后才可以
 //                        _this.voteList[index] = message.data;
-                    _this.voteList.splice(index,1);
-                    _this.voteList.splice(index,0,message.data);
+                        _this.voteList.splice(index,1);
+                        _this.voteList.splice(index,0,message.data);
 //                    添加修改标志
-                    _this.hadChange = 1;
-                    if(_this.articleId == ''){
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
+                        }
                     }
-                }
-            });
-        },
+                });
+            },
 //            点击加号里的添加视频
-        addVideoPara:function (index) {
-            let _this = this;
-            album.openVideo(function (data) {
-                if(data.type == 'success'){
+            addVideoPara:function (index) {
+                let _this = this;
+                album.openVideo(function (data) {
+                    if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
-                    let newPara = {
-                        //原图
+                        let newPara = {
+                            //原图
 //                                    paraImage: data.data[i].originalPath,
-                        paraImage: data.data.videoPath,
+                            paraImage: data.data.videoPath,
 //                                    小缩略图
 //                                    thumbnailImage: data.data[i].thumbnailSmallPath,
-                        thumbnailImage: data.data.coverImagePath,
-                        mediaType: "video",
-                        paraText:'',
-                        show:true,
+                            thumbnailImage: data.data.coverImagePath,
+                            mediaType: "video",
+                            paraText:'',
+                            show:true,
 //                          serveThumbnail:''
-                    }
-                    _this.paraList.splice(index,0,newPara);
-                    _this.clearIconBox();
+                        }
+                        _this.paraList.splice(index,0,newPara);
+                        _this.clearIconBox();
 
 //                    添加修改标志
-                    _this.hadChange = 1;
-                    if(_this.articleId == ''){
+                        _this.hadChange = 1;
+                        if(_this.articleId == ''){
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
+                        }
                     }
-                }
-            })
+                })
+            }
         }
-    }
     }
 </script>
 
