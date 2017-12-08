@@ -141,6 +141,7 @@
                     _this.time = 59;
                     timer = null;
                 }
+                this.clear();
                 this.retry = true;
             },
             statusStyle:function() {
