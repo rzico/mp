@@ -182,7 +182,7 @@
                 })
             },
             summary:function (m) {
-                let v =  utils.ymdtimefmt(timestamp);
+                let v =  utils.ymdtimefmt(m);
                 event.openURL(utils.locate('view/member/wallet/deposit.js?billDate='+encodeURIComponent(v)),function () {
 
                 })

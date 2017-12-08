@@ -11,14 +11,14 @@
                     </div>
                     <div class="topic_footer">
                         <text class="name" @click="petname">{{topic.name}}</text>
-                        <text class="autograph" @click="petname">{{opened()?'点击修改专栏':'点击开通专栏'}}</text>
+                        <text class="autograph" @click="petname">点击修改专栏</text>
                     </div>
                 </div>
             </div>
             <div class="sub-panel tip" v-if="isNoActivate()" @click="activate()">
                 <text class="vip">点亮VIP专栏特权（388元/年）</text>
             </div>
-            <div class="sub-panel tip" style="justify-content: center" v-if="isNoActivate()&&noJob" @click="getShop()">
+            <div class="sub-panel tip" style="justify-content: center" v-if="isActivate()&&noJob" @click="getShop()">
                 <text class="vip">申请开店</text>
             </div>
             <div class="cell-row cell-line">
@@ -202,10 +202,6 @@
         methods: {
 //            修改头像
             changeLogo: function () {
-                if (!this.opened()) {
-                    this.create();
-                    return;
-                }
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
@@ -236,10 +232,6 @@
             },
 //            修改昵称
             petname:function () {
-                if (!this.opened()) {
-                    this.create();
-                    return;
-                }
                 let _this = this;
                 modal.prompt({
                     message: '修改专栏名称',
@@ -302,14 +294,12 @@
             goback: function (e) {
                 event.closeURL();
             },
-            opened:function () {
-                return this.topic.id>0;
-            },
+
             isNoActivate:function () {
-                return this.topic.status!="success" && this.opened();
+                return this.topic.status!="success";
             },
             isActivate:function () {
-                return this.topic.status!="success";
+                return this.topic.status=="success";
             },
             activate:function (e) {
                 var _this = this;
