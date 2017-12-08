@@ -18,7 +18,6 @@ let utilsFunc = {
     locate(url) {
         const newUrl = resLocateURL + url;
         return newUrl;
-    },
     //获取远程资源
     remote(url) {
         const newUrl = resRemoteURL + url;

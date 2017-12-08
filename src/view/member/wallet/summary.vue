@@ -120,44 +120,67 @@
         filters: {
 
             typefmt:function (val) {
-                if (val == 'cashier') {
-                    return '消费'
-                } else if (val == 'cashierRefunds') {
-                    return '退款'
-                } else if (val == 'card') {
-                    return '充值'
-                } else if (val == 'cardRefunds') {
-                    return '退卡'
-                } else {
-                    return '未知'
+                if ((type=='recharge') ||
+                    (type=='refunds') ||
+                    (type=='product') ||
+                    (type=='reward') ||
+                    (type=='rebate') ||
+                    (type=='cashier') ||
+                    (type=='card'))
+                {
+                    return "收入";
+                } else
+                {
+                    return "支出";
                 }
             },
 
             typeico:function (val) {
-                if (val == 'cashier') {
-                    return he.decode("&#xe622;");
-                } else if (val == 'cashierRefunds') {
-                    return he.decode("&#xe710;");
-                } else if (val == 'card') {
-                    return he.decode("&#xe622;");
-                } else if (val == 'cardRefunds') {
-                    return he.decode("&#xe710;");
-                } else {
-                    return he.decode("&#xe622;");
+                if ((type=='recharge') ||
+                    (type=='refunds') ||
+                    (type=='product') ||
+                    (type=='reward') ||
+                    (type=='rebate') ||
+                    (type=='cashier') ||
+                    (type=='card'))
+                {
+                    return  he.decode("&#xe63e;");
+                } else
+                {
+                    return  he.decode("&#xe80a;");
                 }
             },
 
             typememo:function (val) {
-                if (val == 'cashier') {
-                    return he.decode("&#xe622;");
-                } else if (val == 'cashierRefunds') {
-                    return he.decode("&#xe710;");
-                } else if (val == 'card') {
-                    return he.decode("&#xe622;");
-                } else if (val == 'cardRefunds') {
-                    return he.decode("&#xe710;");
+                if (type=='recharge') {
+                    return "充值"
+                } else
+                if
+                (type=='refunds') {
+                    return "退款"
+                } else
+                if (type=='product') {
+                    return "货款"
+                } else
+                if (type=='reward') {
+                    return "赞赏"
+                } else
+                if (type=='rebate') {
+                    return "奖励金"
+                } else
+                if (type=='cashier') {
+                    return "收款"
+                } else if
+                (type=='card') {
+                    return '会员卡充值'
+                } else
+                if (type=='payment') {
+                    return "付款"
+                } else
+                if (type=='transfer') {
+                    return '提现'
                 } else {
-                    return he.decode("&#xe622;");
+                    return '其他'
                 }
             }
 
@@ -167,11 +190,28 @@
             utils.initIconFont();
             this.billDate = utils.getUrlParameter("billDate");
             if (utils.isNull(this.billDate)==false) {
-                this.title = "消费统计("+this.billDate.substring(0,7)+")";
+                this.title = "账单统计("+this.billDate.substring(0,7)+")";
             }
             this.open();
         },
         methods: {
+            readType:function(type) {
+               if ((type=='recharge') ||
+                   (type=='refunds') ||
+                   (type=='product') ||
+                   (type=='reward') ||
+                   (type=='rebate') ||
+                   (type=='cashier') ||
+                   (type=='card'))
+               {
+                   return 0;
+               } else
+               {
+                   return 1;
+               }
+
+
+            },
             noData:function () {
                 return this.depositList.length==0;
             },
