@@ -185,6 +185,7 @@
                         if (message.type == "success") {
                             POST('weex/member/bankcard/submit.jhtml?captcha=' +_this.verification,message.data).then(
                                 function (data) {
+                                    utils.debug(data)
                                     if (data.type == "success") {
                                         event.closeURL(data);
                                     } else {

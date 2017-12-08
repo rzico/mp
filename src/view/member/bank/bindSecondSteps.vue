@@ -214,7 +214,7 @@
             goback: function () {
                 event.closeURL()
             },
-           goComplete: function (e) {
+           goComplete: function () {
                 var _this=this;
                 let  threedata = {
                     cardNo : this.txtInput,
@@ -232,12 +232,12 @@
                 };
                 threedata = JSON.stringify(threedata);
                 storage.setItem('threenumber', threedata,e=>{
-                    event.openURL (utils.locate('view/member/bank/bindThirdSteps.js?name=threenumber', function (message) {
-                        if (message.type=="success") {
-                            event.closeURL(message);
+                    event.openURL (utils.locate('view/member/bank/bindThirdSteps.js?name=threenumber'), function (mes) {
+                        utils.debug(mes)
+                        if (mes.type=="success") {
+                            event.closeURL(mes);
                         }
                     })
-                    )
                 });
 
             }
