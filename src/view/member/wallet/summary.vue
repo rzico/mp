@@ -115,18 +115,18 @@
             navbar,noData
         },
         props: {
-            title: { default: "账单统计" }
+            title: { default: "统计" }
         },
         filters: {
 
             typefmt:function (val) {
-                if ((type=='recharge') ||
-                    (type=='refunds') ||
-                    (type=='product') ||
-                    (type=='reward') ||
-                    (type=='rebate') ||
-                    (type=='cashier') ||
-                    (type=='card'))
+                if ((val=='recharge') ||
+                    (val=='refunds') ||
+                    (val=='product') ||
+                    (val=='reward') ||
+                    (val=='rebate') ||
+                    (val=='cashier') ||
+                    (val=='card'))
                 {
                     return "收入";
                 } else
@@ -136,13 +136,13 @@
             },
 
             typeico:function (val) {
-                if ((type=='recharge') ||
-                    (type=='refunds') ||
-                    (type=='product') ||
-                    (type=='reward') ||
-                    (type=='rebate') ||
-                    (type=='cashier') ||
-                    (type=='card'))
+                if ((val=='recharge') ||
+                    (val=='refunds') ||
+                    (val=='product') ||
+                    (val=='reward') ||
+                    (val=='rebate') ||
+                    (val=='cashier') ||
+                    (val=='card'))
                 {
                     return  he.decode("&#xe63e;");
                 } else
@@ -152,32 +152,32 @@
             },
 
             typememo:function (val) {
-                if (type=='recharge') {
+                if (val=='recharge') {
                     return "充值"
                 } else
                 if
-                (type=='refunds') {
+                (val=='refunds') {
                     return "退款"
                 } else
-                if (type=='product') {
+                if (val=='product') {
                     return "货款"
                 } else
-                if (type=='reward') {
+                if (val=='reward') {
                     return "赞赏"
                 } else
-                if (type=='rebate') {
+                if (val=='rebate') {
                     return "奖励金"
                 } else
-                if (type=='cashier') {
+                if (val=='cashier') {
                     return "收款"
-                } else if
-                (type=='card') {
+                } else
+                if (val=='card') {
                     return '会员卡充值'
                 } else
-                if (type=='payment') {
+                if (val=='payment') {
                     return "付款"
                 } else
-                if (type=='transfer') {
+                if (val=='transfer') {
                     return '提现'
                 } else {
                     return '其他'
@@ -190,7 +190,7 @@
             utils.initIconFont();
             this.billDate = utils.getUrlParameter("billDate");
             if (utils.isNull(this.billDate)==false) {
-                this.title = "账单统计("+this.billDate.substring(0,7)+")";
+                this.title = "统计("+this.billDate.substring(0,7)+")";
             }
             this.open();
         },
@@ -250,6 +250,7 @@
             open:function () {
                 var _this = this;
                 var addr = 'weex/member/deposit/summary.jhtml?billDate='+ encodeURIComponent(_this.billDate);
+                event.toast(addr);
                 GET(addr, function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
