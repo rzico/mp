@@ -204,7 +204,7 @@
 
                 <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--帮助使用文章-->
-                <div class="articleBox" v-for="item in helpList" v-if="corpusId == '' && articleList.length < 10">
+                <div class="articleBox" v-for="item in helpList" v-if="corpusId == '' && articleList.length < 10" @click="goHelpArticle(item.key)">
                     <div class="atricleHead">
                         <text class="articleSign">{{item.articleSign}}</text>
                         <text class="articleTitle">{{item.articleTitle}}</text>
@@ -681,11 +681,13 @@
                 articleList: [],
 
                 helpList:[{
+                    key:2,
                     articleSign:'样例',
                     articleTitle:'我在魔篇有了自己的专栏！',
                     articleCoverUrl:utils.locate('resources/images/column.jpg'),
                     articleDate:'2017-10-19'
                 },{
+                    key:1,
                     articleSign:'样例',
                     articleTitle:'魔篇使用帮助！',
                     articleCoverUrl:utils.locate('resources/images/help.jpg'),
@@ -981,44 +983,15 @@
 //                    _this.updateArticle();
                         })
                 }
-
-//                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
-////                    _this.updateArticle();
-//                });
             },
-//            updateArticle(){
-//                var _this = this;
-////            获取文章缓存。
-//                event.findList(1,'articleListTest1','desc',function (data) {
-////                    modal.toast({message:data.data});
-//                    if(data.type == 'success'){
-//                        for(let i = 0;i < data.data.length;i++){
-//                            let articleData = JSON.parse(data.data[i].value);
-//                            _this.articleList.splice(0,0,{
-//                                articleSign: '草稿',
-//                                articleTitle:   articleData[0].title,
-//                                articleCoverUrl:  articleData[0].thumbnail,
-//                                articleDate: '2017-09-23',
-//                                browse: 0,
-//                                praise: 0,
-//                                comments: 0,
-//                                id:articleData[0].id,
-//                            })
-//                        }
-//                    }else{
-//                        modal.alert({
-//                            message: data.content,
-//                            duration: 0.3
-//                        })
-//                    }
-//                })
-//            },
-//            toPage: function(url){
-////                event.pageTo(url, false);
-//                event.wxConfig(function (data) {
-//                    event.showToast(data.color);
-//                });
-//            },
+//            跳转帮助文章
+            goHelpArticle(key){
+                event.openURL(utils.locate('view/article/preview.js?articleId=' + key  + '&publish=true'),
+//                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
+                    function () {
+//                    _this.updateArticle();
+                    })
+            },
             corpusChange:function(index,id){
 //                event.toast(id);
                 var _this = this;
@@ -1179,7 +1152,6 @@
 //            文集
             goCorpus(){
                 var _this = this;
-//                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
                 event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
                     _this.getCorpus();
                 });
@@ -1189,7 +1161,6 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
-                        utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.logo)){
                                 _this.imageUrl = data.data.logo;
@@ -1380,6 +1351,7 @@
                                             delay: 0 //ms
                                         })
                                     }
+                                    event.toast('删除成功');
                                     _this.articleList.splice(index,1);
 
                                 }else{
