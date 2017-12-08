@@ -21,6 +21,7 @@
                 <div class="panel" >
                         <div class="monthFont">
                             <text class="textMonth flex1">{{deposit.type | typefmt}}</text>
+                            <text class="ico flex1 mt10" :style="{fontFamily:'iconfont'}">{{deposit.type | typeico}}</text>
                         </div>
                         <div class="moneyname">
                             <text class="name">{{deposit.method}}</text>
@@ -32,8 +33,8 @@
         </list>
         <div class="panel" >
             <div class="moneyname">
-                <text class="name">合计</text>
-                <text class="money">{{deposit.total | currencyfmt}}</text>
+                <text class="name" style="margin-left:20px">合计</text>
+                <text class="money" style="color:red">{{total | currencyfmt}}</text>
             </div>
         </div>
     </div>
@@ -75,7 +76,6 @@
 
     .moneyname {
         flex-direction: row;
-        margin-left: 50px;
         flex:6;
         justify-content: space-between;
     }
@@ -199,10 +199,11 @@
             },
             open:function () {
                 var _this = this;
-                var addr = 'weex/member/paybill/summary.jhtml?shopId='+_this.shopId+'&billDate='+encodeURIComponent(_this.billDate);
+                var addr = 'weex/member/paybill/summary.jhtml?shopId='+_this.shopId+'&billDate='+ encodeURIComponent(_this.billDate);
                 GET(addr, function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
+                        _this.total = 0;
                         _this.depositList.forEach(function (item) {
                             _this.total = _this.total + item.amount;
                         })

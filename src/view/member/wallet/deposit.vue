@@ -6,11 +6,11 @@
                 <text class="indicator">下拉刷新</text>
             </refresh>
             <cell v-if="noData()" >
-                   <noData > </noData>
+                <noData > </noData>
             </cell>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
-                <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
                     <div class="flex-row flex-start">
                         <text class="title" >{{deposit.createDate | monthfmt}}</text>
                     </div>
@@ -27,10 +27,12 @@
                             </image>
                         </div>
                         <div class="content flex5">
-                            <text class="title lines-ellipsis">{{deposit.memo}}</text>
+                            <div class="flex-row space-between align-bottom">
+                                <text class="title lines-ellipsis">{{deposit.memo}}</text>
+                                <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
+                            </div>
                             <div class="flex-row space-between align-bottom">
                                 <text class="datetime">{{deposit.createDate | datetimefmt}}</text>
-                                <text class="money">{{deposit.amount | currencyfmt}}</text>
                             </div>
                         </div>
                     </div>
@@ -60,9 +62,9 @@
     }
 
     .logo {
-        height:100px;
-        width:100px;
-        border-radius:50px;
+        height:80px;
+        width:80px;
+        border-radius:40px;
         overflow:hidden;
     }
 
@@ -117,12 +119,19 @@
             noData:function () {
                 return this.depositList.length==0;
             },
+            moneyColor:function (amount) {
+                if (amount<0) {
+                    return {color:'red'}
+                }  else {
+                    return {color:'#000'}
+                }
+            },
 //            是否添加底部边框
             addBorder: function (index) {
                 let listLength = this.depositList.length;
 //                判断是否最后一个元素并且是否每月的结尾
                 if(index != listLength - 1 ){
-                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index + 1].create_date)){
+                    if(this.getDate(this.depositList[index].createDate) == this.getDate(this.depositList[index + 1].createDate)){
                         return {
                             borderBottomWidth:'1px'
                         }
@@ -140,7 +149,7 @@
             //判断月份是否重复
             isRepeat(index){
                 if(index != 0){
-                    if(this.getDate(this.depositList[index].create_date) == this.getDate(this.depositList[index - 1].create_date)){
+                    if(this.getDate(this.depositList[index].createDate) == this.getDate(this.depositList[index - 1].createDate)){
                         return false;
                     }
                 }
@@ -172,6 +181,12 @@
                     event.toast(err.content);
                 })
             },
+            summary:function (m) {
+                let v =  utils.ymdtimefmt(m);
+                event.openURL(utils.locate('view/member/wallet/deposit.js?billDate='+encodeURIComponent(v)),function () {
+
+                })
+            },
 //            上拉加载
             onloading (event) {
                 var _this = this;
@@ -195,27 +210,21 @@
             },
 //            获取月份
             getDate: function(value) {
-                value = value + '';
-                if(value.length == 10){
-                    value = parseInt(value) * 1000;
-                }else{
-                    value = parseInt(value);
-                }
+                let res = utils.resolvetimefmt(value);
+                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
                 // 返回处理后的值
-                let date = new Date(value);
-                let tody = new Date();
-                let m = tody.getMonth() - date.getMonth();
-                let y = tody.getYear() - date.getYear();
-                if (m<1) {
+                let m = tds.m - res.m;
+                let y = tds.y - res.y;
+                if (m < 1) {
                     return "本月"
                 }
-                if (m<2) {
+                if (m < 2) {
                     return "上月"
                 }
-                if (y<1) {
-                    return date.getMonth()+"月"
+                if (y < 1) {
+                    return res.m + "月"
                 }
-                return date.getYear()+"年"+date.getMonth()+"月";
+                return res.y + "年" + res.m + "月";
             }
         },
         created () {
