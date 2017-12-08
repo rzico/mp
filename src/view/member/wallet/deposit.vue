@@ -206,7 +206,9 @@
                     if (e.result == 'success') {
                         _this.billDate = e.data;
                         _this.title = "账单("+_this.billDate+")";
-                        _this.refresh();
+                        _this.open(0,function () {
+
+                        });
                     }
                 })
             },
@@ -249,7 +251,7 @@
             },
             summary:function (m) {
                 let v =  utils.ymdtimefmt(m);
-                event.openURL(utils.locate('view/member/wallet/deposit.js?billDate='+encodeURIComponent(v)),function () {
+                event.openURL(utils.locate('view/member/wallet/summary.js?billDate='+encodeURIComponent(v)),function () {
 
                 })
             },
