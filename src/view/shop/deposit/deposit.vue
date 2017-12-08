@@ -275,7 +275,6 @@
                     value: _this.billDate
                 }, function (e) {
                     if (e.result == 'success') {
-                        event.toast(e);
                         _this.billDate = e.data;
                         _this.refresh();
                     }

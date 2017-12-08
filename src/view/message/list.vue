@@ -332,10 +332,20 @@
                         type:'message',
                         key:_weex.data.userId
                     }
+//                    event.toast(_weex);
 //                        本地查找是已有消息列表还是新消息列表~
                     event.find(findOption,function (data) {
+//                        判断是否无法获取到头像跟昵称
+                        let JSONData = JSON.parse(data.data.value);
+                        if(utils.isNull(_weex.data.logo)){
+                            _weex.data.logo = JSONData.logo;
+                        }
+                        if(utils.isNull(_weex.data.nickName)){
+                            _weex.data.nickName = JSONData.nickName;
+                        }
                         var storageData = JSON.stringify(_weex.data);
                         if(data.type == 'success' && data.data != ''){
+
                             let option = {
                                 type:'message',
                                 key:_weex.data.userId,
@@ -361,7 +371,6 @@
                                     event.toast('网络不稳定');
                                 }
                             })
-
                         }else{//新消息
                             let option = {
                                 type:'message',
@@ -381,13 +390,9 @@
                             })
                         }
                     })
-
-
-
                 }else{
                     event.toast(_weex.content);
                 }
-
             },
 //            根据时间排序
             sortTime:function (a,b) {

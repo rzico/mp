@@ -47,7 +47,7 @@ export function GET (path,resolve,reject) {
         //请求 type= error 网络正常，但服务器返回错误，有缓存，也需要给数据，并提示出错了  statusText=服务器返回的 content
         //网络异常，有缓存，需要给出缓存数据，并且   statusText 固定为 "网络不稳定"
         if (response.status == 304) {
-            //resolve(response.data)
+            // resolve(response.data)
             reject({
                 type:"error",
                 content:response.statusText
