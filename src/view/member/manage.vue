@@ -171,8 +171,12 @@
                 this.showShare = false;
             },
             store:function () {
+                let _this = this;
                 event.openURL(utils.locate('view/shop/cashier/index.js'),function (mes) {
-                    this.member.useCashier=false
+                    if(mes.type == 'success') {
+                        _this.member.useCashier = false;
+                        _this.open();
+                    }
                 })
             },
             open:function () {
@@ -229,8 +233,9 @@
                 );
             },
             topic: function (e) {
-                event.openURL(utils.locate('view/member/topic/index.js'),
-                    function (data) {
+                let _this = this
+                event.openURL(utils.locate('view/member/topic/index.js'), function (mes) {
+                    _this.open()
                         return ;
                     }
                 );
