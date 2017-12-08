@@ -642,6 +642,9 @@
                     if(!utils.isNull(data.data.logo)){
                         _this.imageUrl = data.data.logo;
                     };
+                    if(!utils.isNull(data.data.autograph)){
+                        _this.userSign = data.data.autograph;
+                    }
                     _this.collectNum = data.data.favorite;
                     _this.focusNum = data.data.follow;
                     _this.isFocus = data.data.followed;
