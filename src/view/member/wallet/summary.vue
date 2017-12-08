@@ -1,134 +1,237 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
+        <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <list class="list">
-            <cell>
-                <div class="cell-header clear-row">
-                    <div class="left">
-                             <text class="title">8月份</text>
-                    </div>
-                    <div class="last">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
-                    </div>
-                </div>
-
-                <div class="cell-row clear-row">
-                    <div class="left">
-                        <image class="logo" resize="cover"
-                               src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-                        </image>
-                        <div style="flex-direction: column;">
-                            <text class="title">张三给你转账</text>
-                            <text class="datetime">08-21 10：24</text>
-                        </div>
-                    </div>
-                    <div class="">
-                        <text class="money">+84,356.00</text>
-                    </div>
-                </div>
-                <div class="cell-row clear-one">
-                    <div class="left">
-                        <image class="logo" resize="cover"
-                               src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-                        </image>
-                        <div style="flex-direction: column;">
-                            <text class="title">购买定制台卡</text>
-                            <text class="datetime">08-21 10：24</text>
-                        </div>
-                    </div>
-                    <div class="">
-                        <text class="money">-84,356.00</text>
-                    </div>
-                </div>
-                <div class="cell-row clear-one">
-                    <div class="left">
-                        <image class="logo" resize="cover"
-                               src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-                        </image>
-                        <div style="flex-direction: column;">
-                            <text class="title">购买定制台卡</text>
-                            <text class="datetime">08-21 10：24</text>
-                        </div>
-                    </div>
-                    <div class="">
-                        <text class="money">-84,356.00</text>
-                    </div>
-                </div>
+            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <text class="indicator">下拉刷新</text>
+            </refresh>
+            <cell v-if="noData()" >
+                <noData > </noData>
             </cell>
-            <cell>
-                <div class="cell-header clear-row">
-                    <div class="left">
-                        <text class="title">17年8月</text>
-                    </div>
-                    <div class="last">
-                        <text class="sub_title">查看账单</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-row clear-one">
-                    <div class="left">
-                        <image class="logo" resize="cover"
-                               src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg">
-                        </image>
-                        <div style="flex-direction: column;">
-                            <text class="title">购买定制台卡</text>
-                            <text class="datetime">08-21 10：24</text>
+            <cell v-for="(deposit,index) in depositList" >
+                <!--&lt;!&ndash;如果月份重复就不渲染该区域&ndash;&gt;-->
+                <!--<div class="cell-header cell-line space-between" v-if="isRepeat(index)">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--&lt;!&ndash;<image class="logo" resize="cover"&ndash;&gt;-->
+                               <!--&lt;!&ndash;:src="deposit.logo">&ndash;&gt;-->
+                        <!--&lt;!&ndash;</image>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<text class="title" >{{deposit.name}}</text>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="panel" >
+                        <div class="monthFont">
+                            <text class="textMonth flex1">{{deposit.type | typefmt}}</text>
+                            <text class="ico flex1 mt10" :style="{fontFamily:'iconfont'}">{{deposit.type | typeico}}</text>
                         </div>
-                    </div>
-                    <div class="">
-                        <text class="money">-84,356.00</text>
-                    </div>
+                        <div class="moneyname">
+                            <text class="name">{{deposit.type | typememo}}</text>
+                            <text class="money">{{deposit.amount | currencyfmt}}</text>
+                        </div>
+
                 </div>
             </cell>
         </list>
+        <div class="panel" >
+            <div class="moneyname">
+                <text class="name" style="margin-left:20px">合计</text>
+                <text class="money" style="color:red">{{total | currencyfmt}}</text>
+            </div>
+        </div>
     </div>
+
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .panel {
+        width: auto;
+        height: 120px;
+        align-items: center;
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: #ccc;
+        background-color: #fff;
+    }
+
 
     .logo {
-        height:100px;
-        width:100px;
-        margin:20px;
-        border-radius:50px;
+        height:40px;
+        width:40px;
+        border-radius:20px;
         overflow:hidden;
+        margin: 20px;
     }
 
-    .datetime {
-        color:#ccc;
-        font-size: 28px;
-        margin-top:15px;
-        margin-left:10px;
+    .textMonth {
+        font-size: 32px;
+        margin-left: 20px;
+        color: #444;
     }
+
+    .monthFont {
+        flex-direction: row;
+        align-items: center;
+        flex:2;
+    }
+
+    .moneyname {
+        flex-direction: row;
+        flex:6;
+        justify-content: space-between;
+    }
+
     .money {
-        margin-top:25px;
-        font-weight: 700;
+        font-size: 32px;
+        font-weight: bold;
+        margin-right: 20px;
+    }
+
+    .name {
+        font-size: 28px;
+        color: #ccc;
     }
 
 </style>
 <script>
-    var navigator = weex.requireModule('navigator');
-    import navbar from '../../../include/navbar.vue';
-    const event = weex.requireModule('event');
+    import { POST, GET } from '../../../assets/fetch'
+    import utils from '../../../assets/utils'
+    var event = weex.requireModule('event')
+    var he = require('he');
+    import navbar from '../../../include/navbar.vue'
+    import noData from '../../../include/noData.vue'
+    import filters from '../../../filters/filters.js'
+
     export default {
+        data:function(){
+            return{
+                depositList:[],
+                refreshing: false,
+                shopId:"",
+                billDate:"",
+                total:0
+            }
+        },
         components: {
-            navbar
+            navbar,noData
         },
         props: {
-            title: { default: "账单" }
+            title: { default: "账单统计" }
+        },
+        filters: {
+
+            typefmt:function (val) {
+                if (val == 'cashier') {
+                    return '消费'
+                } else if (val == 'cashierRefunds') {
+                    return '退款'
+                } else if (val == 'card') {
+                    return '充值'
+                } else if (val == 'cardRefunds') {
+                    return '退卡'
+                } else {
+                    return '未知'
+                }
+            },
+
+            typeico:function (val) {
+                if (val == 'cashier') {
+                    return he.decode("&#xe622;");
+                } else if (val == 'cashierRefunds') {
+                    return he.decode("&#xe710;");
+                } else if (val == 'card') {
+                    return he.decode("&#xe622;");
+                } else if (val == 'cardRefunds') {
+                    return he.decode("&#xe710;");
+                } else {
+                    return he.decode("&#xe622;");
+                }
+            },
+
+            typememo:function (val) {
+                if (val == 'cashier') {
+                    return he.decode("&#xe622;");
+                } else if (val == 'cashierRefunds') {
+                    return he.decode("&#xe710;");
+                } else if (val == 'card') {
+                    return he.decode("&#xe622;");
+                } else if (val == 'cardRefunds') {
+                    return he.decode("&#xe710;");
+                } else {
+                    return he.decode("&#xe622;");
+                }
+            }
+
+        },
+        created() {
+//              页面创建时请求数据
+            utils.initIconFont();
+            this.billDate = utils.getUrlParameter("billDate");
+            if (utils.isNull(this.billDate)==false) {
+                this.title = "消费统计("+this.billDate.substring(0,7)+")";
+            }
+            this.open();
         },
         methods: {
+            noData:function () {
+                return this.depositList.length==0;
+            },
+//            是否添加底部边框
+            addBorder: function (index) {
+                let listLength = this.depositList.length;
+//                判断是否最后一个元素并且是否每月的结尾
+                if(index != listLength - 1 ){
+                    if(this.depositList[index].shopId == this.depositList[index + 1].shopId){
+                        return {
+                            borderBottomWidth:'1px'
+                        }
+                    }else{
+                        return {
+                            borderBottomWidth:'0px'
+                        }
+                    }
+                }else{
+                    return {
+                        borderBottomWidth:'0px'
+                    }
+                }
+            },
+            //判断月份是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if (this.depositList[index].shopId== this.depositList[index - 1].shopId){
+                        return false;
+                    }
+                }
+                return true;
+            },
             goback: function (e) {
-//                navigator.pop({
-//                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-//                    animated: "true"
-//                })
                 event.closeURL();
             },
-            setup: function (e) {
-
-            }
-        }
-
+            open:function () {
+                var _this = this;
+                var addr = 'weex/member/deposit/summary.jhtml?billDate='+ encodeURIComponent(_this.billDate);
+                GET(addr, function (res) {
+                    if (res.type=="success") {
+                        _this.depositList = res.data;
+                        _this.total = 0;
+                        _this.depositList.forEach(function (item) {
+                            _this.total = _this.total + item.amount;
+                        })
+                     } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content);
+                })
+            },
+//            下拉刷新
+            onrefresh (event) {
+                var _this = this;
+                _this.refreshing = true;
+                setTimeout(
+                    _this.open()
+                    ,1500)
+            },
+        },
     }
 </script>
