@@ -245,13 +245,14 @@
                 GET('weex/member/card/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
 //                    utils.debug(mes)
                     if (mes.type == 'success') {
-                        mes.data.data.forEach(function(item){
-                            _this.lists.push(item);
-                        })
-//                        utils.debug(_this.code)
-//                        if(_this.code.length>6){
-//                           _this.code = _this.code.substring(_this.code.length-6, _this.code.length)
-//                        }
+                        if (_this.listCurrent==0) {
+                            _this.lists = mes.data.data;
+                        } else {
+                            mes.data.data.forEach(function(item){
+                                _this.lists.push(item);
+                            })
+                        }
+                        _this.listCurrent = mes.data.start+mes.data.data.length;
 
                     } else {
                         event.toast(mes.content);
@@ -295,8 +296,7 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(function () {
-                        _this.listCurrent = _this.listCurrent + _this.pageSize;
-                        _this.open()
+                        _this.open();
                         _this.loading = false
                     }
                     ,1000)
@@ -305,8 +305,9 @@
             onrefresh (event) {
                 var _this = this;
                 _this.refreshing = true;
+                _this.listCurrent = 0;
                 setTimeout(function () {
-
+                    _this.open();
                         _this.refreshing = false;
                     }
                     ,1000)
@@ -316,13 +317,13 @@
             },
 
             jump:function (id) {
+                let _this =this
                 event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
-
+                    _this.onrefresh()
                 })
             },
             add:function() {
                 event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-//
                 })
             },
             setting:function () {
