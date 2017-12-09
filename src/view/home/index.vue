@@ -13,11 +13,11 @@
                 <div class="arrowUp" >
                     <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                 </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAddFriend()">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
                     <text class="fz28 pl10">添加好友</text>
                 </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="scan()">
                 <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe607;</text>
                 <text class="fz28 pl10">扫一扫</text>
                 </div>
@@ -48,7 +48,7 @@
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
     const animation = weex.requireModule('animation');
-    import { POST, GET } from '../../assets/fetch';
+    import { POST, GET ,SCAN} from '../../assets/fetch';
     export default {
         data:function () {
             return{
@@ -203,6 +203,23 @@
             maskTouch(){
                 this.showMenu = false;
             },
+//            前往添加好友
+            goAddFriend(){
+                this.showMenu = false;
+                event.openURL(utils.locate("view/friend/add.js"),function (message) {
+                })
+
+            },
+//            触发自组件的二维码方法
+            scan:function () {
+                this.showMenu = false;
+                event.scan(function (message) {
+                    SCAN(message,function (data) {
+                    },function (err) {
+                    })
+                });
+            },
+
         }
     }
 </script>

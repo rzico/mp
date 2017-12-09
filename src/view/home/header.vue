@@ -2,14 +2,17 @@
     <div>
         <div class="header" :class="[classHeader()]">
             <div class="nav" style="width:750px;">
-                <div class="flex-center flex1" >
-                    <image class="logo" :src="'file://resources/logoWhite.png'" ></image>
-                </div>
-                <div class="search_box flex4" @click="search()">
+                <!--<div class="flex-center flex1" >-->
+                    <!--<image class="logo" :src="'file://resources/logoWhite.png'" ></image>-->
+                <!--</div>-->
+                <div class="search_box flex6" @click="search()">
                     <text class="ico_small gray mr5" :style="{fontFamily:'iconfont'}">&#xe611;</text>
                     <text class="sub_title ml5">搜索用户和文章</text>
                 </div>
-                <div class="flex-center flex1" @click="menu()">
+                <div class="flex-center flex1 ml10"  style="justify-content: flex-end" @click="scan()">
+                    <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                </div>
+                <div class="flex-center flex1" style="justify-content: flex-end" @click="menu()">
                     <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe72b;</text>
                 </div>
             </div>
@@ -19,16 +22,17 @@
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .search_box {
-        /*padding-left: 20px;*/
-        /*margin-left: 20px;*/
-        height: 66px;
+        padding-left: 30px;
+        margin-left: 20px;
+        /*height: 66px;*/
+        height: 50px;
         border-width: 1px;
         border-color: #ccc;
         border-style: solid;
         /*border-radius:8px;*/
         border-radius:10px;
         flex-direction: row;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         background-color: white;
     }
@@ -43,8 +47,9 @@
         font-size: 40px;
         line-height: 60px;
         height:60px;
-        width:60px;
+        width:63px;
         color:white;
+
     }
 </style>
 <script>
@@ -53,6 +58,7 @@
     const event = weex.requireModule('event');
     const dom=weex.requireModule("dom");
     import utils from '../../assets/utils';
+    import { SCAN} from '../../assets/fetch';
     export default {
         created() {
         },
@@ -63,18 +69,19 @@
                 return dc
             },
             menu:function (e) {
-//                event.scan(function (resp) {
-//                    if (resp.type == "success") {
-//                        event.openURL(resp.data,function (data) {
-//                        })
-//                    }
-//
-//                })
                 this.$emit('menu');
             },
             search:function(w){
                 this.$emit('search',this.keyword);
-            }
+            },
+//            触发自组件的二维码方法
+            scan:function () {
+                event.scan(function (message) {
+                    SCAN(message,function (data) {
+                    },function (err) {
+                    })
+                });
+            },
         }
     }
 </script>
