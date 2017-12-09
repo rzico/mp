@@ -64,7 +64,7 @@
                         <text class="title ml10">个性签名</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">{{autograph}}</text>
+                        <text class="sub_title" style="width:300px;lines:1;text-overflow:ellipsis;">{{autograph}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
