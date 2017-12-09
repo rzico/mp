@@ -658,35 +658,45 @@
             },
 //            删除文章
             deleteArticle(){
-                let findData = {
-                    type:'article',
-                    key:this.articleId
-                }
-                event.find(findData,function (item) {
-                    if(item.type == 'success' && item.data!=''){
-                        item.data.value = JSON.parse(item.data.value);
-                        item.data.value.articleOption.articleCatalog.id = 99;
-                        item.data.value.articleOption.articleCatalog.name = '回收站';
-                        let saveData = {
-                            type:item.data.type,
-                            key:item.data.key,
-                            value:JSON.stringify(item.data.value),
-                            sort:'0,0000000000',
-                            keyword:',[99],' + item.data.value.title + ','
+                let _this = this;
+                modal.confirm({
+                    message: '删除后文章将放入回收站,确认删除?',
+                    duration: 0.3,
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if(value == '删除'){
+                        let findData = {
+                            type:'article',
+                            key:_this.articleId
                         }
-                        event.save(saveData,function(data){
-                            if(data.type == 'success'){
-                                event.toast('删除成功');
+                        event.find(findData,function (item) {
+                            if(item.type == 'success' && item.data!=''){
+                                item.data.value = JSON.parse(item.data.value);
+                                item.data.value.articleOption.articleCatalog.id = 99;
+                                item.data.value.articleOption.articleCatalog.name = '回收站';
+                                let saveData = {
+                                    type:item.data.type,
+                                    key:item.data.key,
+                                    value:JSON.stringify(item.data.value),
+                                    sort:'0,0000000000',
+                                    keyword:',[99],' + item.data.value.title + ','
+                                }
+                                event.save(saveData,function(data){
+                                    if(data.type == 'success'){
+                                        event.toast('删除成功');
 //                                    全局监听文章变动
-                                let listenData = utils.message('success','文章改变','')
-                                event.sendGlobalEvent('onArticleChange',listenData);
-                                event.closeURL();
-                            }else{
-                                event.toast(data.content);
-                            }
-                        })
-                    }
-                })
+                                        let listenData = utils.message('success','文章改变','')
+                                        event.sendGlobalEvent('onArticleChange',listenData);
+                                        event.closeURL();
+                                    }else{
+                                        event.toast(data.content);
+                                    };
+                                });
+                            };
+                        });
+                    };
+                });
             },
         }
     }
