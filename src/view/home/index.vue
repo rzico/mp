@@ -1,10 +1,27 @@
 <template>
     <div class="wrapper">
-        <headerNav @search="gosearch"></headerNav>
+        <headerNav @search="gosearch" @menu="menu"></headerNav>
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="testRef" @corpusChange="corpusChange"></tabNav>
         <div  class="pageBox"  :class="[pageTop()]"   :style="{width:pageWidth + 'px'}" ref="contentBox">
             <div v-for="(item,index) in corpusList" v-if="item.load == 1" :style="{left: index * 750 + 'px'}" class="categoryBox">
                 <hotCategory  @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></hotCategory>
+            </div>
+        </div>
+        <div v-if="showMenu" >
+            <div class="maskLayer" @touchstart="maskTouch"></div>
+            <div class="showBox"  style="width: 230px;">
+                <div class="arrowUp" >
+                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
+                    <text class="fz28 pl10">添加好友</text>
+                </div>
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">
+                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+                <text class="fz28 pl10">扫一扫</text>
+                </div>
+
             </div>
         </div>
     </div>
@@ -42,6 +59,7 @@
                 listPageSize:10,
                 canScroll:true,
                 pageWidth:750,
+                showMenu:false,
             }
         },
         components: {
@@ -56,6 +74,7 @@
         },
 
         created(){
+            utils.initIconFont();
             var _this = this;
             GET('article_category/list.jhtml',function (data) {
                 if(data.type == 'success' && data.data != ''){
@@ -176,6 +195,14 @@
                         function () {}
                     )
                 },
+//            点击右上角菜单
+            menu:function () {
+              this.showMenu = true;
+            },
+//            触碰遮罩层
+            maskTouch(){
+                this.showMenu = false;
+            },
         }
     }
 </script>

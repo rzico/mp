@@ -764,6 +764,19 @@
                     _this.showLoading = false;
                 }, 1500)
             },
+//            跳转文章
+            goArticle(id){
+                event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true'),
+                    function () {
+                    })
+            },
+
+//            作者主页
+            goAuthor:function (id) {
+                event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                });
+            },
+
         }
 
     }

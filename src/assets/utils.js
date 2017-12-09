@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weex.1xx.me';
 const event = weex.requireModule('event');
-const debug = false;
+const debug = true;
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');

@@ -28,7 +28,7 @@
             <!--文集行内容-->
             <div class="lineStyle bottomBorder">
                 <!--左侧文集名称-->
-                <div class="flex-row" style="width: 450px;" >
+                <div class="flex-row" style="width: 450px;">
                     <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
                     <text class="lineText" :class = "[item.bgChange ? 'active' : 'noActive']">({{item.total}})</text>
                 </div>

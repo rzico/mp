@@ -126,7 +126,7 @@
             <cell><div class="emptyBox"></div></cell>
         </list>
         <!--遮罩-->
-        <div class="sendMask" v-if="toSendArticle">
+        <div class="sendMask" @click="maskClick()" v-if="toSendArticle">
             <!--进度条-->
             <div class="processBox">
                 <text class="processText">正在云同步,请稍候...</text>
@@ -512,7 +512,7 @@
                                             paraText:'',
                                             show:true,
                                             serveThumbnail:''
-                                        }) ;
+                                        });
                                         _this.saveDraft();
                                     }
                                 }else{
@@ -892,8 +892,8 @@
                     if(mediaType == 'image'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
                         _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
-                    }else if(mediaType == 'video'){//如果是视频就将缩略图进行缩略
-//                        _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].thumbnailImage,155,155);
+                    }else if(mediaType == 'video'){//如果是视频就将缩略图进行赋值
+                        _this.paraList[sendIndex].serveThumbnail = _this.paraList[sendIndex].thumbnailImage;
                     }
                     sendIndex ++ ;
 
@@ -1037,7 +1037,6 @@
                         })
                     })
                 }
-
             },
 //            图片上传后，正式将文章数据上传服务器
             realSave(){
@@ -1117,19 +1116,6 @@
                 )
             },
 
-            //匹配中文 数字 字母 下划线 某些字符
-            checkInput (str) {
-                var pattern  = /^[@|&，"'。\]\[`^%?（）？/\<\>;()#!~+-/$·* \w\u4e00-\u9fa5]+$/gi;
-                var rs = "";
-//                一个一个去判断是否匹配
-                for (var i = 0; i < str.length; i++) {
-                    if(pattern.test(str.substr(i,1)))
-                    {
-                        rs = rs + str.substr(i,1);
-                    }
-                }
-                return rs;
-            },
 //            点击"+"号里的文本时
             addTextPara:function(index){
                 var _this = this;
@@ -1589,7 +1575,10 @@
                         }
                     }
                 })
-            }
+            },
+            maskClick(){
+                return;
+            },
         }
     }
 </script>

@@ -12,7 +12,7 @@
                         <text class="dateText">昨天17:46</text>
                     </div>
                     <div class="contentBox">
-                        <text class="fz45">付款成功</text>
+                        <text class="fz45">{{item.title}}</text>
                         <text class="sub_title mt10">10月21日</text>
                         <div class="moneyBox">
                             <text class="fz65">128.00</text>
@@ -20,7 +20,7 @@
                         </div>
                         <div class="contentLine">
                             <text class="fz30 black">付款方式:</text>
-                            <text class="fz30 gray ml10">花呗支付</text>
+                            <text class="fz30 gray ml10">{{item.memo}}</text>
                         </div>
                         <div class="contentLine">
                             <text class="fz30 black">交易对象:</text>
@@ -305,7 +305,7 @@
                     this.title =  '评论回复';
                     this.bgWhite = true;
                     break;
-                case 'gm_1024':
+                case 'gm_10204':
                     this.title =  '点赞提醒';
                     this.bgWhite = true;
                     break;
@@ -339,6 +339,7 @@
                     break;
             }
             GET('weex/member/message/list.jhtml?userId=' + this.messageType +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                event.toast(data);
                 if(data.type == 'success' && data.data.data != ''){
                     _this.dataList =  data.data.data;
                 }else if(data.type == 'success' && data.data.data == '' ){

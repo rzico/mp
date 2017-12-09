@@ -3,14 +3,14 @@
         <div class="header" :class="[classHeader()]">
             <div class="nav" style="width:750px;">
                 <div class="flex-center flex1" >
-                    <image class="logo" :src="'file://resources/logo.png'" ></image>
+                    <image class="logo" :src="'file://resources/logoWhite.png'" ></image>
                 </div>
                 <div class="search_box flex4" @click="search()">
                     <text class="ico_small gray mr5" :style="{fontFamily:'iconfont'}">&#xe611;</text>
                     <text class="sub_title ml5">搜索用户和文章</text>
                 </div>
-                <div class="flex-center flex1" @click="scan()">
-                    <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                <div class="flex-center flex1" @click="menu()">
+                    <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe72b;</text>
                 </div>
             </div>
         </div>
@@ -20,6 +20,7 @@
 <style scoped>
     .search_box {
         /*padding-left: 20px;*/
+        /*margin-left: 20px;*/
         height: 66px;
         border-width: 1px;
         border-color: #ccc;
@@ -32,8 +33,10 @@
         background-color: white;
     }
     .logo {
-        height:55px;
-        width:55px;
+        /*height:55px;*/
+        /*width:55px;*/
+        height:66px;
+        width:66px;
         border-radius:6px;
     }
     .scan {
@@ -52,8 +55,6 @@
     import utils from '../../assets/utils';
     export default {
         created() {
-
-            utils.initIconFont();
         },
         methods: {
             classHeader:function () {
@@ -61,14 +62,15 @@
 
                 return dc
             },
-            scan:function (e) {
-                event.scan(function (resp) {
-                    if (resp.type == "success") {
-                        event.openURL(resp.data,function (data) {
-                        })
-                    }
-
-                })
+            menu:function (e) {
+//                event.scan(function (resp) {
+//                    if (resp.type == "success") {
+//                        event.openURL(resp.data,function (data) {
+//                        })
+//                    }
+//
+//                })
+                this.$emit('menu');
             },
             search:function(w){
                 this.$emit('search',this.keyword);

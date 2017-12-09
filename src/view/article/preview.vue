@@ -67,7 +67,7 @@
             <div class="mask" @touchstart="maskTouch"></div>
             <div class="operationBox"  style="width: 230px;">
                 <div class="arrow-up" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
+                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                 </div>
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
@@ -100,7 +100,7 @@
             <div class="mask" @touchstart="maskTouch"></div>
             <div class="operationBox"  style="width: 230px;">
                 <div class="arrow-up" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
+                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                 </div>
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
@@ -138,7 +138,7 @@
         color: #888;
     }
     .arrow-up {
-        position: fixed;top: 145px;right:30px;
+        position: fixed;top: 146px;right:30px;
     }
     .operationBox{
         position: fixed;top: 150px;right: 15px;background-color:#fff;border-radius: 20px;padding-top: 20px;padding-bottom: 20px;

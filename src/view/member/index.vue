@@ -696,7 +696,8 @@
                 UId:'',
                 screenHeight:'',
 //                文集id
-                corpusId:''
+                corpusId:'',
+                showMenu:false,
             }
         },
         components: {
@@ -1473,6 +1474,11 @@
                     }
                 })
 //                event.toast('文章置顶');
+            },
+
+//            触碰遮罩层
+            maskTouch(){
+                this.showMenu = false;
             },
         }
     }
