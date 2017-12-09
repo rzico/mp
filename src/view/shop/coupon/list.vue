@@ -15,8 +15,6 @@
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
@@ -25,7 +23,7 @@
                         <text class="deleteText">删除</text>
                     </div>
                     <div class="addFriendsBorder" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                        <div class="friendsLine" @click="jump()">
+                        <div class="friendsLine" >
                             <div class="image">
                                 <div class="markmoney">
                                 <text style="font-size: 50px;color: red;font-weight: 800;">{{num.amount}}</text>
@@ -145,9 +143,10 @@
         color: #888888;
     }
     .image{
-        padding-top: 15px;
+        justify-content: center;
+        align-items: center;
         height: 120px;
-        width: 120px;
+        width: 200px;
     }
     .addFriendsBorder{
         background-color: white;
@@ -159,7 +158,6 @@
         align-items: center;
     }
     .friendsLine{
-        padding-left: 30px;
         height:120px;
     }
     .scope{
