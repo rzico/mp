@@ -59,12 +59,20 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="goAutograph">
+                <div class="cell-panel space-between " @click="goAutograph">
                     <div class="flex-row">
                         <text class="title ml10">个性签名</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title">{{autograph}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="showQrcode()">
+                    <div class="flex-row">
+                        <text class="title ml10">我的二维码</text>
+                    </div>
+                    <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -97,11 +105,12 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="button bw bkg-primary" @click="logout">
-                    <text class="buttonText ">注销账号</text>
-                </div>
             </div>
          </scroller>
+        <div class="button bw bkg-primary" @click="logout">
+            <text class="buttonText ">注销账号</text>
+        </div>
+        <qrcode ref="qrcode" ></qrcode>
     </div>
 
 </template>
@@ -124,10 +133,10 @@
         overflow:hidden;
     }
     .bw{
-        margin-top:30px;
-        margin-bottom: 30px;
+        margin-top:20px;
         margin-left: 30px;
-        width:650px;
+        margin-right: 30px;
+        margin-bottom: 20px;
     }
     .buttonText{
         font-size: 40px;
@@ -139,13 +148,14 @@
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
-    const picker = weex.requireModule('picker')
+    const picker = weex.requireModule('picker');
+    import qrcode from '../../include/qrcode.vue';
     import navbar from '../../include/navbar.vue'
     const storage = weex.requireModule('storage');
     var modal = weex.requireModule('modal');
     export default {
         components: {
-            navbar
+            navbar,qrcode
         },
         data() {
             return {
@@ -174,8 +184,8 @@
 //            event.toast(this.logo)
         },
         methods: {
-            potting:function () {
-
+            showQrcode: function (e) {
+                this.$refs.qrcode.show();
             },
             goback: function (e) {
                 var E = {
