@@ -15,8 +15,6 @@
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()">
             <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                <!--src="file://resources/images/loading.gif"></image>-->
                 <text class="indicator">{{refreshState}}</text>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}">
@@ -25,11 +23,10 @@
                         <text class="deleteText">删除</text>
                     </div>
                     <div class="addFriendsBorder" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                        <div class="friendsLine" @click="jump()">
+                        <div class="friendsLine" >
                             <div class="image">
                                 <div class="markmoney">
-                                <text  class="mark">¥</text>
-                                <text style="font-size: 50px;color: red;font-weight: 800;margin-left: 10px">{{num.amount}}</text>
+                                <text style="font-size: 50px;color: red;font-weight: 800;">{{num.amount}}</text>
                                 </div>
                                 <div class="name">
                                     <text class="scope">{{num | judgment}}</text>
@@ -146,9 +143,10 @@
         color: #888888;
     }
     .image{
-        padding-top: 15px;
+        justify-content: center;
+        align-items: center;
         height: 120px;
-        width: 120px;
+        width: 200px;
     }
     .addFriendsBorder{
         background-color: white;
@@ -160,7 +158,6 @@
         align-items: center;
     }
     .friendsLine{
-        padding-left: 30px;
         height:120px;
     }
     .scope{
@@ -240,7 +237,6 @@
 
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(404);
-            var _this = this;
             this.open(function () {
 
             });
@@ -282,15 +278,21 @@
                 let _this = this
                 event.openURL(utils.locate("view/shop/coupon/add.js"),function (mes) {
                     if(mes.type == 'success')
-                    _this.open()
+                        _this.lists.splice(0,0,mes.data);
                 })
             },
             open:function () {
                 var _this = this;
                 GET('weex/member/coupon/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
-                    utils.debug(mes)
                     if (mes.type == 'success') {
-                            _this.lists =mes.data.data
+                        if (_this.listCurrent==0) {
+                            _this.lists = mes.data.data;
+                        } else {
+                            mes.data.data.forEach(function(item){
+                                _this.lists.push(item);
+                            })
+                        }
+                        _this.listCurrent = mes.data.start+mes.data.data.length;
                     } else {
                         event.toast(mes.content);
                     }
@@ -326,7 +328,6 @@
                         if(data.data.type == '818803'){
                             _this.code =data.data.code
                             GET('weex/member/couponCode/use.jhtml?code='+_this.code,function (mes) {
-                                utils.debug(mes)
                                 if (mes.type == 'success') {
                                     prompting = mes.content
                                     _this.showAlert()
@@ -352,20 +353,7 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(function () {
-                        _this.listCurrent = _this.listCurrent + _this.pageSize;
-                        GET('weex/member/coupon/list.jhtml?pageStart='+_this.listCurrent +'&pageSize='+_this.pageSize,function (mes) {
-                               utils.debug(mes)
-                            if (mes.type == 'success') {
-                                mes.data.data.forEach(function(item){
-                                    _this.lists.push(item);
-                                })
-
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
-                        })
+                        _this.open();
                         _this.loading = false
                     }
                     ,1000)
@@ -374,8 +362,9 @@
             onrefresh (event) {
                 var _this = this;
                 _this.refreshing = true;
+                _this.listCurrent = 0;
                 setTimeout(function () {
-
+                    _this.open();
                         _this.refreshing = false;
                     }
                     ,1000)
@@ -464,9 +453,8 @@
             modification:function (id) {
                 let _this =this;
                 event.openURL(utils.locate('view/shop/coupon/add.js?id='+id),function (message) {
-                    utils.debug(message)
                     if(message.type == 'success'){
-                        _this.open()
+                        _this.onrefresh()
                     }
                 })
             },

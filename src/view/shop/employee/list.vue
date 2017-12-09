@@ -441,7 +441,7 @@
             onrefresh (event) {
                 var _this = this;
                 _this.refreshing = true;
-                this.listCurrent = 0;
+                _this.listCurrent = 0;
                 setTimeout(function () {
                         _this.open();
                         _this.refreshing = false;
