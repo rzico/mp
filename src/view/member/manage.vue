@@ -282,7 +282,7 @@
                 this.showShare = true;
             },
             gmchat:function () {
-                event.navToChat("gm_10211");
+                event.navToChat("u10201");
             }
 
         }

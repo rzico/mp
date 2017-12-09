@@ -334,7 +334,7 @@
                 }
             },
             hasShop:function () {
-                return (this.shopId>0 && shopId!="");
+                return (this.shopId>0 && this.shopId!="");
             },
             hasInput:function () {
                 return utils.isNull(this.amount)==false;

@@ -260,7 +260,12 @@
                 POST('weex/member/admin/update.jhtml?id='+_this.memberId+'&shopId='+id).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            _this.openThree();
+                            _this.lists.forEach(function(item){
+                                if (item.id==mes.data.id) {
+                                    item.shopName  = mes.data.shopName;
+                                }
+
+                            })
                             _this.isPopup =false;
                             event.toast('分配成功')
                         } else {
@@ -356,9 +361,14 @@
                 var _this = this;
                 GET('weex/member/admin/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
                     if (mes.type == 'success') {
-                        mes.data.data.forEach(function(item){
-                            _this.lists.push(item);
-                        })
+                        if (_this.listCurrent==0) {
+                            _this.lists = mes.data.data;
+                        } else {
+                            mes.data.data.forEach(function(item){
+                                _this.lists.push(item);
+                            })
+                        }
+                        _this.listCurrent = mes.data.start+mes.data.data.length;
                     } else {
                         event.toast(mes.content);
                     }
@@ -369,23 +379,11 @@
 //            店铺列表
             openTwo:function () {
                 let _this = this;
-                GET('weex/member/shop/list.jhtml',function (mes) {
+                GET('weex/member/shop/list.jhtml?pageStart=0&pageSize=500',function (mes) {
                     if (mes.type == 'success') {
                         _this.shops = mes.data.data
                     } else {
                         event.toast(res.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content)
-                })
-            },
-            openThree:function () {
-                var _this = this;
-                GET('weex/member/admin/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
-                    if (mes.type == 'success') {
-                            _this.lists = mes.data.data
-                    } else {
-                        event.toast(mes.content);
                     }
                 }, function (err) {
                     event.toast(err.content)
@@ -412,7 +410,7 @@
                             POST('weex/member/admin/add.jhtml?code='+_this.code).then(
                                 function (mes) {
                                 if (mes.type == 'success') {
-                                    _this.open()
+                                    _this.lists.splice(0,0,mes.data);
                                 } else {
                                     event.toast(res.content);
                                 }
@@ -434,9 +432,8 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(function () {
-                        _this.listCurrent = _this.listCurrent + _this.pageSize;
-                        _this.open()
-                        _this.loading = false
+                        _this.open();
+                        _this.loading = false;
                     }
                     ,1000)
             },
@@ -444,8 +441,9 @@
             onrefresh (event) {
                 var _this = this;
                 _this.refreshing = true;
+                this.listCurrent = 0;
                 setTimeout(function () {
-
+                        _this.open();
                         _this.refreshing = false;
                     }
                     ,1000)
@@ -461,7 +459,7 @@
 //            },
 //            add:function() {
 //                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-////
+//
 //                })
 //            },
 //            setting:function () {
