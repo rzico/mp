@@ -3,7 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weex.rzico.com';
+const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
 const debug = false;
 let utilsFunc = {
@@ -388,13 +388,6 @@ let utilsFunc = {
         let timeObj = this.resolvetimefmt(value);
         return timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
     },
-
-
-
-
-
-
-
 };
 
 export default utilsFunc;
