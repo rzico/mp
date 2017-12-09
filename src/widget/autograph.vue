@@ -4,7 +4,7 @@
         <navbar :title="title" :complete="complete" @goback="goback"  @goComplete="goComplete"> </navbar>
     </div>
     <div class="wrapper">
-        <textarea class="textarea" @input="oninput" autofocus="true"  placeholder="不超过30个字" v-model="autograph"></textarea>
+        <textarea class="textarea" @input="oninput" autofocus="true" maxlength="30" placeholder="不超过30个字" v-model="autograph"></textarea>
     </div>
     </div>
 </template>
