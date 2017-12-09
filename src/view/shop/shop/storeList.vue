@@ -195,7 +195,6 @@ export default {
     },
     methods:{
         modification:function (id) {
-//            utils.debug('view/shop/shop/newShop.js?'+id)
                     let _this =this;
                     event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
                         if(message.type == 'success'){
@@ -205,7 +204,7 @@ export default {
         },
         open:function () {
             let _this = this;
-            GET('weex/member/shop/list.jhtml',function (mes) {
+            GET('weex/member/shop/list.jhtml?pageStart=0&pageSize=500',function (mes) {
                 if (mes.type == 'success') {
                     _this.lists = mes.data.data
                 } else {
@@ -218,7 +217,6 @@ export default {
         openTwo:function () {
             let _this = this;
             GET('weex/member/enterprise/view.jhtml',function (mes) {
-                utils.debug(mes)
                 if (mes.type == 'success') {
                     _this.isOwner = mes.data.isOwner;
                     _this.logo = mes.data.logo;
@@ -265,7 +263,7 @@ export default {
         add:function () {
             let _this= this;
             event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
-                utils.debug(message)
+
                 if(message.type == 'success'){
                     _this.onrefresh()
                 }
