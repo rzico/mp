@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="buttombox">
-                <div class="btn "  @click="payment('aliPayPlugIn')">
+                <div class="btn "  @click="payment('aliPayPlugin')">
                     <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
                     <text class="btn-text" value="支付宝">支付宝</text>
                 </div>
