@@ -136,7 +136,7 @@
                 <!--</transition-group>-->
             </div>
         </div>
-        <div class="bottomBtnBox" v-if="authorId == UId">
+        <div class="bottomBtnBox" v-if="authorId != UId">
             <div class="bottomBtn " v-if="!isFocus" @click="focus()">
                 <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
                 <text class="fz35 ml10" >关注</text>
@@ -638,7 +638,6 @@
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(216)  ;
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
-                utils.debug(data);
                 if(data.type == 'success' && data.data != ''){
                     if(!utils.isNull(data.data.name)){
                         _this.userName = data.data.name;
@@ -657,10 +656,10 @@
                     }else{
                         _this.friendStatus = data.data.friendStatus;
                     }
+                    let cataLength = data.data.catalogs.length;
 //                                将文集名循环插入数组中
-                    for(let i = 0; i < data.data.catalogs.length;i++){
+                    for(let i = 0; i < 4;i++){
                         _this.corpusList.splice(1 + i,0,data.data.catalogs[i]);
-                        utils.debug(_this.corpusList);
                     }
                     _this.addArticle();
                 }else{

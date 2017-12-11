@@ -20,7 +20,7 @@
                         </div>
                         <div class="contentLine">
                             <text class="fz30 black">付款方式:</text>
-                            <text class="fz30 gray ml10">{{item.ext.memo}}</text>
+                            <text class="fz30 gray ml10">{{item.ext.method}}</text>
                         </div>
                         <div class="contentLine">
                             <text class="fz30 black">交易对象:</text>
@@ -36,31 +36,31 @@
                     </div>
                 </div>
                 <!--系统消息-->
-                <div class="lineBox"  v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
                     <div class="flex-row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text  class="infoText">{{item.content}}</text>
+                            <text  class="infoText mt10 bt10">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
                     <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
                 <!--评论-->
-                <div class="lineBox"  v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
-                    <div class="flex-row">
+                <div class="lineBox pt20 pb20" v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
+                    <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
-                        <div class="userInfo">
+                        <div class="commentsInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text  class="infoText">{{item.content}}</text>
+                            <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
                     <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail" ></image>
                 </div>
                 <!--点赞-->
-                <div class="lineBox"  v-if="messageType == 'gm_10204'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10204'" v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="flex-row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -72,7 +72,7 @@
                     <image class="coverImg"  :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
                 <!--关注-->
-                <div class="lineBox"  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="flex-row">
                         <image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <!--收藏--> <!--分享提醒--><!--赞赏-->
-                <div class="lineBox" v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight" v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="flex-row" >
                         <image class="headImg" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -159,12 +159,23 @@
         lines:1;
         text-overflow: ellipsis;
     }
+    .commentsText{
+        font-size: 32px;color: #444;
+        width: 480px;
+        text-overflow: ellipsis;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
     .nameColor{
         color: steelblue;
     }
     .userInfo{
         margin-left: 20px;
         height: 120px;
+        justify-content: space-between;
+    }
+    .commentsInfo{
+        margin-left: 20px;
         justify-content: space-between;
     }
     .coverImg{
@@ -179,8 +190,6 @@
     }
     .lineBox{
         flex-direction: row;
-        align-items: center;
-        height: 150px;
         padding-right: 20px;
         justify-content: space-between;
         width: 725px;
@@ -189,6 +198,10 @@
         border-color: gainsboro;
         border-style: solid;
         border-bottom-width:1px;
+    }
+    .lineBoxHeight{
+        height: 150px;
+        align-items: center;
     }
     .bottomBtn{
         width: 670px;
@@ -353,7 +366,7 @@
                     this.bgWhite = false;
                     break;
             }
-            POST('weex/member/message/list.jhtml?userId=' + this.messageType +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize).then(
+            GET('weex/member/message/list.jhtml?userId=' + this.messageType +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,
                 function (data) {
                     if(data.type == 'success' && data.data.data != ''){
                         data.data.data.forEach(function(item){
@@ -413,7 +426,7 @@
             },
 //            前往链接
             goLink(id){
-                GET('weex/member/message/go.jhtml?id='+ id,function(data){
+                POST('weex/member/message/go.jhtml?id='+ id).then(function(data){
                     if(data.type == 'success'){
                         event.openURL(data.data,function(){
 

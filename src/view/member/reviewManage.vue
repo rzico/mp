@@ -18,6 +18,10 @@
                                 <text class="sub_date mt20 pb15">{{item.createDate | timefmtOther}}</text>
                                 <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" >删除</text>
                             </div>
+                            <div style='flex-direction: row;width: 615px;' >
+                                <text   style="margin-top: 2px;font-size: 26px" :style="{fontFamily:'iconfont'}">&#xe62e;</text>
+                                <text class="sub_date pb15 articleTitle pr30  ml10">{{item.title}}</text>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -30,6 +34,10 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .articleTitle{
+        flex-direction: row;width: 569px;lines:1;
+        text-overflow: ellipsis;
+    }
     .delDate{
         flex-direction: row;justify-content: space-between;width: 615px;
     }
