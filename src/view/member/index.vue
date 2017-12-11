@@ -477,6 +477,7 @@
     }
 
     .articleTitle {
+        width:600px;
         font-size: 36px;
         margin-left: 10px;
     }
