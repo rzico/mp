@@ -766,6 +766,10 @@
                     _this.articleList = [];
                     _this.getAllArticle();
             });
+            globalEvent.addEventListener("onBalanceChange", function (e) {
+                _this.articleList = [];
+                _this.updateUserInfo();
+            });
 
         },
         methods: {

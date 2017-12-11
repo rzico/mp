@@ -321,7 +321,7 @@
                 });
             },
             gocard:function () {
-                event.openURL(utils.locate("view/shop/card/cardList.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {});
             },
             gocoupon:function () {
                 event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});

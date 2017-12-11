@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">你有了自已的专栏,</text>
+                <text class="sub_title">你有了自已的微信、小程序专栏</text>
             </div>
 
             <div class="cell-row cell-line" @click="sendQrcode()">
@@ -66,6 +66,7 @@
             <div class="sub-panel">
                 <text class="sub_title">分享后文章自动加上二维码，有助于打造个人品牌</text>
             </div>
+
         </scroller>
 
         <!--遮罩-->
