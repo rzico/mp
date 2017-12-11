@@ -54,6 +54,36 @@ Vue.filter('timefmt', function (value) {
     }
 })
 
+// 时间格式化  2017年09月01日 09月01日
+Vue.filter('ymdtimefmt', function (value) {
+    let res = utils.resolvetimefmt(value);
+    let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+    if(res.y == tds.y){
+        return  res.m + '月' + res.d + '日';
+    }else{
+        return res.y + '年' + res.m + '月' + res.d+ '日';
+    }
+})
+
+// 时间格式化 10:30 昨天10:30  2017年09月01日10:30 09月01日10:30
+Vue.filter('timefmtMore', function (value) {
+    let res = utils.resolvetimefmt(value);
+    let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+    let daySub = tds.d - res.d;
+    if (daySub<1) {
+        return res.h +":"+ res.i ;
+    }
+    if (daySub<2) {
+        return "昨天"+ ' ' + res.h +":"+ res.i;
+    }
+    if(res.y == tds.y){
+        return  res.m + '月' + res.d + '日'+ ' ' + res.h +":"+ res.i;
+    }else{
+        return res.y + '年' + res.m + '月' + res.d+ '日'+ ' ' + res.h +":"+ res.i;
+    }
+})
+
+
 // 时间格式化 10:30 昨天 前天 2017-09-01 09-01
 Vue.filter('timefmtOther', function (value) {
     let res = utils.resolvetimefmt(value);

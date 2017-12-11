@@ -124,7 +124,7 @@
             <!--文章模块-->
             <div :style="{minHeight:screenHeight + 'px'}">
                 <!--绑定动画-->
-                <transition-group name="paraTransition" tag="div">
+                <!--<transition-group name="paraTransition" tag="div">-->
                 <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
                 <div class="articleBox"  v-for="(item,index) in articleList" :key="index" @click="goArticle(item,index)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                     <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
@@ -200,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-                </transition-group>
+                <!--</transition-group>-->
 
                 <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--帮助使用文章-->
@@ -713,7 +713,7 @@
                 if(value.value.articleOption.articleCatalog.id == '99'){
                     return '已删除';
                 }
-                if(value.value.articleOption.publish=='false'){
+                if(value.value.articleOption.publish == 'false' || !value.value.articleOption.publish){
                     return '私密';
                 }
                 switch (value.value.articleOption.authority){

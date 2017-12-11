@@ -429,7 +429,6 @@
 //            点击 标题 更换模版类型的触发
             tickTitle(name){
                 this.templateName= name;
-
             },
 //            点击模版按钮时
             chooseTemplate(){
