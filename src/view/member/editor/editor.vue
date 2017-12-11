@@ -576,8 +576,6 @@
                             articleData.votes.forEach(function (item) {
                                 let startDate = '';
                                 let startTime = '';
-//                                    event.toast('投票时间');
-//                                    event.toast(item.expire);
                                 if(utils.isNull(item.expire)){
                                     startDate = '无截止时间'
                                 }else{

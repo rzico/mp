@@ -475,13 +475,11 @@
         flex-direction: row;
         align-items: center;
     }
-
     .articleTitle {
         width:600px;
         font-size: 36px;
         margin-left: 10px;
     }
-
     .articleSign {
         border-radius: 10px;
         padding: 5px;
@@ -715,6 +713,9 @@
                 if(value.value.articleOption.articleCatalog.id == '99'){
                     return '已删除';
                 }
+                if(value.value.articleOption.publish=='false'){
+                    return '私密';
+                }
                 switch (value.value.articleOption.authority){
                     case 'isPublic' ://公开
                         return '公开';
@@ -816,7 +817,6 @@
                 event.findList(options,function (data) {
                     if( data.type == "success" && data.data != '' ) {
                         data.data.forEach(function (item) {
-//                        event.toast(item);
 //                    将value json化
                             item.value = JSON.parse(item.value);
 //                            将封面转为缩略图
