@@ -132,6 +132,8 @@
         font-size: 28px;
         color: #ccc;
         top:10px;
+        lines:1;
+        text-overflow:ellipsis;
     }
     .newModule{
         flex-direction: row;
