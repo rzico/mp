@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div class="header" :class="[classHeader()]" v-if="isPos">
+        <div class="header" :class="[classHeader()]" v-if="isPos()">
             <!--顶部导航-->
             <div class="nav nw">
                 <div style="width: 100px;" >
@@ -257,8 +257,8 @@
             },
             isPos:function () {
                 let dc = utils.device();
-
                 return dc=='V1';
+
             },
             vipClass:function (v) {
                 if (v=='vip3') {
