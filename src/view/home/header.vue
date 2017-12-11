@@ -10,7 +10,7 @@
                     <text class="sub_title ml5">搜索用户和文章</text>
                 </div>
                 <div class="flex-center flex1 ml10"  style="justify-content: flex-end;" @click="scan()" >
-                    <text class="scan fz40 flex-row" style="width: 63px;" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                    <text class="scan fz40 flex-row" style="width: 59px;" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
                 </div>
                 <!--750/8=93.75-->
                 <div class="flex-center flex1" style="justify-content: flex-end;" @click="menu()" >
@@ -24,7 +24,7 @@
 <style scoped>
     .search_box {
         /*padding-left: 30px;*/
-        margin-left: 30px;
+        margin-left: 32px;
         /*height: 66px;*/
         height: 50px;
         border-width: 1px;
