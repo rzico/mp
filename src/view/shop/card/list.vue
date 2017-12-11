@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div class="header" :class="[classHeader()]">
+        <div class="header" :class="[classHeader()]" v-if="isPos">
             <!--顶部导航-->
             <div class="nav nw">
                 <div style="width: 100px;" >
@@ -14,9 +14,17 @@
                 </div>
             </div>
         </div>
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" v-else> </navbar>
         <div class="code" @click="scan">
             <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
             <text class="headText" style="font-size: 28px;color: #cccccc">搜索会员卡</text>
+        </div>
+        <div class="addFriend" @click="add">
+            <div class="flex-row " style="align-items:center">
+                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
+                <text class="title ml20 " >领取会员卡</text>
+            </div>
+            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()">
@@ -30,14 +38,14 @@
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump(num.id)">
                             <div class="image">
-                            <image :src="num.logo" class="friendsImage"></image>
+                                <image :src="num.logo" class="friendsImage"></image>
                                 <text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>
                             </div>
                             <div class="friendsName">
 
                                 <text class="lineTitle ">手机号:{{num.mobile}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                <text class="realName">{{num.name}}(卡号:{{num.code | watchCode}})</text>
+                                    <text class="realName">{{num.name}}(卡号:{{num.code | watchCode}})</text>
                                     <text style="font-size: 28px;color: #888">{{num | watchStatus}}</text>
                                 </div>
 
@@ -55,6 +63,23 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+
+
+    .rightTop{
+        height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
+    }
+    .nav_ico {
+        font-size: 50px;
+        color: #fff;
+    }
+    .userBox{
+        flex-direction: row;
+        align-items: center;
+    }
+    .nw{
+        width: 750px;
+    }
+
     .iconfont{
         color: #cccccc;
         margin-top: 5px;
@@ -75,19 +100,21 @@
         border-color: #cccccc;
         border-radius: 10px;
     }
-    .rightTop{
-        height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
-    }
-    .nav_ico {
-        font-size: 50px;
-        color: #fff;
-    }
-    .userBox{
+    .addFriend {
         flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-    }
-    .nw{
-        width: 750px;
+        padding-left: 36px;
+        padding-right: 30px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background-color: white;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #ccc;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
     }
     .list {
         background-color: white;
@@ -211,7 +238,7 @@
         },
         filters:{
             watchCode:function (value) {
-                 return value.substr(-6)
+                return value.substr(-6)
             },
             watchStatus:function (data) {
                 if(data.status == 'loss'){
@@ -227,6 +254,11 @@
                 let dc = utils.device();
 
                 return dc
+            },
+            isPos:function () {
+                let dc = utils.device();
+
+                return dc=='V1';
             },
             vipClass:function (v) {
                 if (v=='vip3') {
@@ -254,13 +286,14 @@
                 GET('weex/member/card/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
 //                    utils.debug(mes)
                     if (mes.type == 'success') {
-                        mes.data.data.forEach(function(item){
-                            _this.lists.push(item);
-                        })
-//                        utils.debug(_this.code)
-//                        if(_this.code.length>6){
-//                           _this.code = _this.code.substring(_this.code.length-6, _this.code.length)
-//                        }
+                        if (_this.listCurrent==0) {
+                            _this.lists = mes.data.data;
+                        } else {
+                            mes.data.data.forEach(function(item){
+                                _this.lists.push(item);
+                            })
+                        }
+                        _this.listCurrent = mes.data.start+mes.data.data.length;
 
                     } else {
                         event.toast(mes.content);
@@ -278,7 +311,7 @@
                             _this.code =data.data.code
                             GET('weex/member/card/infobycode.jhtml?code='+_this.code,function (mes) {
                                 if (mes.type == 'success') {
-                                   _this.id = mes.data.card.id;
+                                    _this.id = mes.data.card.id;
 //                                   utils.debug(_this.id)
                                     event.openURL(utils.locate('view/shop/card/view.js?id='+_this.id),function (message) {
 
@@ -304,8 +337,7 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(function () {
-                        _this.listCurrent = _this.listCurrent + _this.pageSize;
-                        _this.open()
+                        _this.open();
                         _this.loading = false
                     }
                     ,1000)
@@ -314,8 +346,9 @@
             onrefresh (event) {
                 var _this = this;
                 _this.refreshing = true;
+                _this.listCurrent = 0;
                 setTimeout(function () {
-
+                        _this.open();
                         _this.refreshing = false;
                     }
                     ,1000)
@@ -325,20 +358,20 @@
             },
 
             jump:function (id) {
+                let _this =this
                 event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
-
+                    _this.onrefresh()
                 })
             },
             add:function() {
                 event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-//
                 })
             },
             setting:function () {
                 event.openURL(utils.locate('view/shop/card/setting.js'),function () {
 
                 })
-    }
+            }
 
         }
     }
