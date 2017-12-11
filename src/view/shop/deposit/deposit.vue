@@ -276,7 +276,7 @@
                 }, function (e) {
                     if (e.result == 'success') {
                         _this.billDate = e.data;
-                        _this.refresh();
+                        _this.onrefresh();
                     }
                 })
             },
@@ -383,14 +383,23 @@
                 var _this = this;
                 POST("weex/member/paybill/refund.jhtml?id="+_this.currentId).then(function (mes) {
                     if (mes.type=='success') {
-                        _this.depositList.splice(0,0,mes.data.data);
+                        var finded = false;
+                        _this.depositList.forEach(function (item) {
+                            if (item.id==mes.data.data.id) {
+                                item = mes.data.data;
+                                finded = true
+                            }
+                        });
+                        if (finded==false) {
+                            _this.depositList.splice(0, 0, mes.data.data);
+                        }
                         _this.currentId = mes.data.data.id;
                         _this.refunds(mes.data.sn);
                     } else {
                         _this.isPopup = false;
                         modal.alert({
                             message: mes.content,
-                            okTitle: '知道1了'
+                            okTitle: '知道了'
                         })
                     }
                 },function (err) {
@@ -412,7 +421,7 @@
                         event.toast(err.content);
                     });
                 }
-                GET('weex/member/paybill/list.jhtml?shopId=129&pageStart=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                GET('weex/member/paybill/list.jhtml?billDate='+this.billDate+'&pageStart=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
                           _this.depositList = res.data.data;

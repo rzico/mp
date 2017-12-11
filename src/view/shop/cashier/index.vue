@@ -18,7 +18,7 @@
                 <text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>
             </div>
             <div class="buttombox"  v-if="hasInput()">
-                <div class="btn "  @click="payment('aliPayPlugIn')">
+                <div class="btn "  @click="payment('aliPayPlugin')">
                     <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
                     <text class="btn-text" value="支付宝">支付宝</text>
                 </div>
