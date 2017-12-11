@@ -339,7 +339,6 @@
                     break;
             }
             GET('weex/member/message/list.jhtml?userId=' + this.messageType +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                event.toast(data);
                 if(data.type == 'success' && data.data.data != ''){
                     _this.dataList =  data.data.data;
                 }else if(data.type == 'success' && data.data.data == '' ){
