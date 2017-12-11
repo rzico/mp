@@ -17,7 +17,8 @@
             <cell v-if="noData()" >
                    <noData > </noData>
             </cell>
-            <cell v-for="(deposit,index) in depositList" >
+            <cell :style="{minHeight:screenHeight + 'px'}">
+            <div v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
                     <div class="flex-row flex-start">
@@ -47,13 +48,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
             </cell>
-            <cell v-if="noLoading">
-                <div class="noLoading"></div>
-            </cell>
+            <!--<cell v-if="noLoading">-->
+                <!--<div class="noLoading"></div>-->
+            <!--</cell>-->
             <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
                 <text class="indicator">加载中..</text>
             </loading>
+
         </list>
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center">
@@ -223,11 +226,12 @@
                 isPopup:false,
                 depositList:[],
                 refreshing: false,
-                loading: 'hide',
+                loading: false,
                 pageStart:0,
                 pageSize:20,
                 noLoading:true,
-                billDate:''
+                billDate:'',
+                screenHeight:0
             }
         },
         components: {
@@ -392,7 +396,7 @@
                             }
                         });
                         if (finded==false) {
-                            _this.depositList.splice(0, 0, mes.data.data);
+                            _this.depositList.splice(0, 0, mes.data.data);``
                         }
                         _this.currentId = mes.data.data.id;
                         _this.refunds(mes.data.sn);
@@ -408,10 +412,9 @@
                     event.toast(err.content);
                 })
             },
-            open (pageStart,callback) {
-                this.pageStart = pageStart;
+            open:function() {
                 var _this = this;
-                if (pageStart==0) {
+                if (_this.pageStart==0) {
                     GET("weex/member/paybill/view.jhtml",function (res) {
                         if (res.type=="success") {
                             _this.cashier = res.data;
@@ -436,9 +439,7 @@
                    } else {
                        event.toast(res.content);
                    }
-                    callback();
                  }, function (err) {
-                    callback();
                     event.toast(err.content);
                 })
             },
@@ -447,10 +448,11 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(
-                  _this.open(_this.pageStart,function () {
-                     _this.loading = false;
-                  })
-                ,1500)
+                    function () {
+                       _this.open();
+                       _this.loading = false;
+                    }
+                ,1000)
             },
 //            下拉刷新
             onrefresh (event) {
@@ -458,10 +460,11 @@
                 _this.pageStart = 0;
                 _this.refreshing = true;
                 setTimeout(
-                   _this.open(_this.pageStart,function () {
-                     _this.refreshing = false;
-                  })
-                ,1500)
+                    function () {
+                        _this.open();
+                        _this.refreshing = false;
+                    }
+                ,1000)
             },
             popup:function (id) {
                 if (this.isPopup==false) {
@@ -506,9 +509,8 @@
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
-            this.open(0,function () {
-                
-            });
+            this.screenHeight = utils.fullScreen(0);
+            this.open();
         }
     }
 </script>
