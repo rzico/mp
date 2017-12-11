@@ -259,7 +259,7 @@
         height:90px;
         flex-direction: row;
         align-items: center;
-        padding-left: 20px;
+        padding-left: 40px;
     }
     /*<!--收藏-->*/
     .nameImg{
