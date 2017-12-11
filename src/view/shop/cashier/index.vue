@@ -442,7 +442,10 @@
                                     event.toast("付款成功");
                                     _this.print();
                                 } else {
-
+                                    modal.alert({
+                                        message: '付款成功',
+                                        okTitle: '知道了'
+                                    })
                                 }
                             } else
                             if (res.data=='0001') {

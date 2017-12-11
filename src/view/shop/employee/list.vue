@@ -207,6 +207,7 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
+    const modal = weex.requireModule('modal');
     const event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue';
     import search from '../../../include/search.vue';
@@ -267,7 +268,10 @@
 
                             })
                             _this.isPopup =false;
-                            event.toast('分配成功')
+                            modal.alert({
+                                message: mes.content,
+                                okTitle: '知道了'
+                            })
                         } else {
                             event.toast(mes.content);
                         }
@@ -411,6 +415,10 @@
                                 function (mes) {
                                 if (mes.type == 'success') {
                                     _this.lists.splice(0,0,mes.data);
+                                    modal.alert({
+                                        message: mes.content,
+                                        okTitle: '知道了'
+                                    })
                                 } else {
                                     event.toast(res.content);
                                 }
