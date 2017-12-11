@@ -151,7 +151,7 @@
                         }
                     })
                 }  else {
-                    event.openURL(utils.locate('view/member/wallet/transfer.js', function () {
+                    event.openURL(utils.locate('view/member/wallet/transfer.js', function (message) {
                             if (message.type=='success') {
                                 _this.load();
                             }

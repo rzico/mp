@@ -3,7 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weex.1xx.me';
+const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
 const debug = false;
 let utilsFunc = {
