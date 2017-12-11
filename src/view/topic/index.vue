@@ -118,7 +118,7 @@
                         <!--文章底部-->
                         <div class="articleFoot">
                             <div>
-                                <text class="articleDate">2017-09-01</text>
+                                <text class="articleDate">{{item.createDate | timeDatefmt}}</text>
                                 <!--<text class="articleDate">{{item.createDate}}</text>-->
                             </div>
                             <div class="relevantInfo">
@@ -136,7 +136,7 @@
                 <!--</transition-group>-->
             </div>
         </div>
-        <div class="bottomBtnBox">
+        <div class="bottomBtnBox" v-if="authorId == UId">
             <div class="bottomBtn " v-if="!isFocus" @click="focus()">
                 <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
                 <text class="fz35 ml10" >关注</text>
@@ -431,6 +431,7 @@
     .articleTitle {
         font-size: 32px;
         margin-left: 10px;
+        width: 670px;
     }
 
     .articleSign {
@@ -616,7 +617,8 @@
                 screenHeight:'',
                 corpusId:'',
                 isOperation:false,
-                friendStatus:''
+                friendStatus:'',
+                authorId:0
             }
         },
         filters:{
@@ -632,9 +634,11 @@
             utils.initIconFont();
             var _this = this;
             this.UId = utils.getUrlParameter('id');
+            this.authorId = event.getUId();
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(216)  ;
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
+                utils.debug(data);
                 if(data.type == 'success' && data.data != ''){
                     if(!utils.isNull(data.data.name)){
                         _this.userName = data.data.name;
@@ -656,6 +660,7 @@
 //                                将文集名循环插入数组中
                     for(let i = 0; i < data.data.catalogs.length;i++){
                         _this.corpusList.splice(1 + i,0,data.data.catalogs[i]);
+                        utils.debug(_this.corpusList);
                     }
                     _this.addArticle();
                 }else{
@@ -666,31 +671,6 @@
             })
         },
         methods: {
-            //            监听设备型号,控制隐藏的文集高度
-//            hideCorpus:function () {
-//                let dc = utils.hideCorpus();
-//                return dc;
-//            },
-////            监听设备型号,控制顶部人物信息栏背景图大小
-//            headerBgImg:function () {
-//                let dc = utils.addBgImg();
-//                return dc;
-//            },
-////            监听设备型号,控制顶部人物信息栏
-//            headerInfo:function () {
-//                let dc = utils.addInfo();
-//                return dc;
-//            },
-////            监听设备型号,控制导航栏设置 返回按钮
-//            classTop:function () {
-//                let dc = utils.addTop();
-//                return dc;
-//            },
-////            监听设备型号,控制导航栏高度
-//            classHeader:function () {
-//                let dc = utils.device();
-//                return dc;
-//            },
 
 // /            监听设备型号,控制隐藏的文集高度
             hideCorpus:function () {
