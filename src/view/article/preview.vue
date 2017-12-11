@@ -40,7 +40,7 @@
                     <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
                     <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
                     <!--</div>-->
-                    <div class="btnTextBox"  @click="chooseTemplate()">
+                    <div class="btnTextBox"  @click="chooseComplete()">
                         <text class="btnTextSize btnTextColor" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                         <text class="btnTextSize btnTextColor" style="padding-left: 10px">完成</text>
                     </div>
@@ -315,6 +315,7 @@
             return{
                 templateName:'热门',
                 templateSn:'1001',
+                initTemplateSn:'1001',
                 templateChoose:false,
                 webUrl:'',
                 lastImageItem:'',
@@ -433,7 +434,27 @@
 //            点击模版按钮时
             chooseTemplate(){
                 this.templateChoose = !this.templateChoose;
+            },
+//            点击模版完成按钮时
+            chooseComplete(){
+                let _this = this;
+                this.chooseTemplate();
+                if(this.initTemplateSn != this.templateSn){
+//                    上传文章模版
+                    POST('weex/member/article/update.jhtml?id='+this.articleId + '&templateId=' + this.templateSn).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.initTemplateSn = _this.templateSn;
 
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },
+                        function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }
             },
 //            点击编辑
             goComplete(){

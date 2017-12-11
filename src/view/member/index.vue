@@ -862,9 +862,9 @@
             getCorpus:function () {
                 var _this = this;
                 GET('weex/member/article_catalog/list.jhtml',function (data) {
-                    if (data.type == "success") {
-                        if(data.data == ''){
-                        }else{
+                            if (data.type == "success") {
+                                if(data.data == ''){
+                                }else{
 //                            event.toast(data.data);
                             _this.corpusList = '';
                             _this.corpusList =[{
@@ -881,7 +881,7 @@
                             data.data = JSON.stringify(data.data);
                             storage.setItem('corpusList',data.data);
                         }
-                    } else {
+                    }else {
 //                        event.toast('文集');
                         event.toast(data.content);
                     }
