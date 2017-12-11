@@ -228,8 +228,10 @@
                 );
             },
             option: function (e) {
+                let _this = this
                 event.openURL(utils.locate('view/member/option.js'),
                     function (data) {
+                        _this.open();
                         return ;
                     }
                 );
@@ -237,7 +239,7 @@
             topic: function (e) {
                 let _this = this
                 event.openURL(utils.locate('view/member/topic/index.js'), function (mes) {
-                    _this.open()
+                        _this.open();
                         return ;
                     }
                 );
