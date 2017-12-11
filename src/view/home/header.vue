@@ -9,10 +9,11 @@
                     <text class="ico_small gray mr5" :style="{fontFamily:'iconfont'}">&#xe611;</text>
                     <text class="sub_title ml5">搜索用户和文章</text>
                 </div>
-                <div class="flex-center flex1 ml10"  style="justify-content: flex-end" @click="scan()">
-                    <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                <div class="flex-center flex1 ml10"  style="justify-content: flex-end;" @click="scan()" >
+                    <text class="scan fz40 flex-row" style="width: 63px;" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
                 </div>
-                <div class="flex-center flex1" style="justify-content: flex-end" @click="menu()">
+                <!--750/8=93.75-->
+                <div class="flex-center flex1" style="justify-content: flex-end;" @click="menu()" >
                     <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe72b;</text>
                 </div>
             </div>
@@ -22,8 +23,8 @@
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .search_box {
-        padding-left: 30px;
-        margin-left: 20px;
+        /*padding-left: 30px;*/
+        margin-left: 30px;
         /*height: 66px;*/
         height: 50px;
         border-width: 1px;
@@ -32,7 +33,7 @@
         /*border-radius:8px;*/
         border-radius:10px;
         flex-direction: row;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         background-color: white;
     }
@@ -44,12 +45,11 @@
         border-radius:6px;
     }
     .scan {
-        font-size: 40px;
+        font-size: 50px;
         line-height: 60px;
         height:60px;
-        width:63px;
+        width:73px;
         color:white;
-
     }
 </style>
 <script>
