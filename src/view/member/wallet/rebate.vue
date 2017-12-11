@@ -224,7 +224,6 @@
             summary:function () {
                 var _this = this;
                 GET('weex/member/rebate/summary.jhtml?type=rebate', function (res) {
-                    event.toast(res);
                     if (res.type == 'success') {
                        _this.total = res.data;
                     } else {

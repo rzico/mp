@@ -100,7 +100,7 @@
         margin-top: 10px;
         font-size: 32px;
         color: #fff;
-        margin-left:60px;
+        margin-left:40px;
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
@@ -379,6 +379,13 @@
             deposit:function () {
                 event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
+            goIndex:function () {
+
+                event.openURL(utils.locate("view/topic/index.js?id=" +event.getUId()),
+                    function (e) {}
+                    );
+
+            },
             isShow:function () {
                 return this.time<30;
             },
@@ -435,7 +442,10 @@
                                     event.toast("付款成功");
                                     _this.print();
                                 } else {
-
+                                    modal.alert({
+                                        message: '付款成功',
+                                        okTitle: '知道了'
+                                    })
                                 }
                             } else
                             if (res.data=='0001') {
