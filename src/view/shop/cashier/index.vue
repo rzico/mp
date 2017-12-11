@@ -1,17 +1,18 @@
 <template>
     <div class="wrapper">
+        <div class="wallet-panel" :style="objHeader()">
+            <text class="balance">{{cashier.today | currencyfmt}}</text>
+            <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goIndex()" v-if="isIndex">&#xe628;</text>
+            <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()" v-else>&#xe60a;</text>
+            <div class="wallet-title">
+                <text class="sub_title">今天收银（元）</text>
+                <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
+            </div>
+        </div>
         <scroller class="scroller">
             <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
                 <text class="indicator">刷新数据</text>
             </refresh>
-            <div class="wallet-panel" :style="objHeader()">
-                <text class="balance">{{cashier.today | currencyfmt}}</text>
-                <text class="ico exit" :style="{fontFamily:'iconfont'}" @click="goback()" v-if="isNoPos()">&#xe60a;</text>
-                <div class="wallet-title">
-                    <text class="sub_title">今天收银（元）</text>
-                    <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
-                </div>
-            </div>
             <div class="fontInput" v-if="hasShop()">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
                 <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" v-model="amount" />
@@ -239,6 +240,7 @@
         font-size: 32px;
         margin-top: 10px;
     }
+
     .close {
         position:absolute;
         width:60px;
@@ -282,9 +284,11 @@
     const modal = weex.requireModule('modal');
     const event = weex.requireModule('event');
     const printer = weex.requireModule('print');
+    var globalEvent = weex.requireModule('globalEvent');
     export default {
         data() {
             return {
+                isIndex:false,
                 refreshing:false,
                 id:0,
                 sn:"",
@@ -305,8 +309,13 @@
             title: { default: "收银台" }
         },
         created() {
+            var _this = this;
             utils.initIconFont();
+            this.isIndex = (utils.getUrlParameter("index")=='true');
             this.view();
+            globalEvent.addEventListener("onCashierChange", function (e) {
+                _this.view();
+            });
         },
         methods: {
             employee:function () {
@@ -372,9 +381,6 @@
             },
             isShow:function () {
                 return this.time<30;
-            },
-            isNoPos:function () {
-                return utils.device()!='V1';
             },
             clearTimer:function () {
                if (this.timer!=null) {

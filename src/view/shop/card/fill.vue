@@ -299,6 +299,7 @@
                                     okTitle: '知道了'
                                 })
                                 event.closeURL(res);
+                                event.sendGlobalEvent('onCashierChange',res);
                             } else
                             if (res.data=='0001') {
                                 modal.alert({
