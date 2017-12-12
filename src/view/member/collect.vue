@@ -186,10 +186,12 @@
         },
 //        dom呈现完执行滚动一下
         updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
             if(this.hadUpdate){
                return;
             }
             this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
             if(!utils.isIosSystem()){
                 const el = this.$refs.adoptPull//跳转到相应的cell
                 dom.scrollToElement(el, {
