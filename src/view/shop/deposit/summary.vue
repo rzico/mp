@@ -131,12 +131,12 @@
             typefmt:function (val) {
                 if (val == 'cashier') {
                     return '消费'
-                } else if (val == 'cashierRefunds') {
+                } else if (val == 'cashierRefund') {
                     return '退款'
                 } else if (val == 'card') {
                     return '充值'
-                } else if (val == 'cardRefunds') {
-                    return '退卡'
+                } else if (val == 'cardRefund') {
+                    return '卡退款'
                 } else {
                     return '未知'
                 }
@@ -145,11 +145,11 @@
             typeico:function (val) {
                 if (val == 'cashier') {
                     return he.decode("&#xe622;");
-                } else if (val == 'cashierRefunds') {
+                } else if (val == 'cashierRefund') {
                     return he.decode("&#xe710;");
                 } else if (val == 'card') {
                     return he.decode("&#xe622;");
-                } else if (val == 'cardRefunds') {
+                } else if (val == 'cardRefund') {
                     return he.decode("&#xe710;");
                 } else {
                     return he.decode("&#xe622;");
