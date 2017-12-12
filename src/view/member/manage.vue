@@ -132,6 +132,7 @@
         font-size: 28px;
         color: #ccc;
         top:10px;
+        width: 400px;
         lines:1;
         text-overflow:ellipsis;
     }

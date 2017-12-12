@@ -17,7 +17,7 @@
         </div>
         <div class="iconfontOne">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="originalone"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="logo"></image>
             </div>
             <div class="iconfont" >
                 <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facelogo" >&#xe618;</text>
@@ -29,7 +29,7 @@
         </div>
         <div class="iconfontTwo">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="originaltwo"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="palcePhoto"></image>
             </div>
             <div class="iconfont">
                 <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palcelogo" >&#xe618;</text>
@@ -41,7 +41,7 @@
         </div>
         <div class="iconfontThree">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="originalthree"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="licensePhoto"></image>
             </div>
             <div class="iconfont">
                 <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
@@ -246,8 +246,11 @@
                 let elevendata =  JSON.parse(e.data);
                 _this.addressName =elevendata.addressName;
                 _this.licensePhoto =elevendata.licensePhoto;
+                _this.originalthree =elevendata.licensePhoto;
                 _this.logo = elevendata.logo;
+                _this.originalone =elevendata.logo;
                 _this.palcePhoto =elevendata.palcePhoto;
+                _this.originaltwo =elevendata.palcePhoto;
                 _this.vendorName = elevendata.name;
                 _this.areaId = elevendata.areaId;
                 _this.detailedAddress = elevendata.address;
@@ -258,6 +261,7 @@
                 _this.industryName = elevendata.categoryName;
                 storage.removeItem(eleven);
             });
+
         },
         methods:{
             goback:function () {
@@ -269,14 +273,14 @@
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (data) {
-                        if(data.type == 'success') {
-                            event.upload(data.data.originalPath,function (data) {
+                    true,function (mes) {
+                        if(mes.type == 'success') {
+                            event.upload(mes.data.originalPath,function (data) {
                                 _this.originalone =data.data
                             },function () {
                                 
                             });
-                            _this.logo = data.data.thumbnailSmallPath;
+                            _this.logo = mes.data.thumbnailSmallPath;
 
                         }
                     })
@@ -285,14 +289,13 @@
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (data) {
-                        if(data.type == 'success') {
-                            event.upload(data.data.originalPath,function (data) {
+                    true,function (mes) {
+                        if(mes.type == 'success') {
+                            event.upload(mes.data.originalPath,function (data) {
                                 _this.originaltwo =data.data
+                                _this.palcePhoto = mes.data.thumbnailSmallPath;
                             },function () {
-                                
                             });
-                            _this.palcePhoto = data.data.thumbnailSmallPath;
 
                         }
                     })
@@ -301,21 +304,19 @@
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (data) {
-                        if(data.type == 'success') {
-                            event.upload(data.data.originalPath,function (data) {
+                    true,function (mes) {
+                        if(mes.type == 'success') {
+                            event.upload(mes.data.originalPath,function (data) {
                                 _this.originalthree =data.data
                             },function () {
 
                             });
-                            _this.licensePhoto = data.data.thumbnailSmallPath;
+                            _this.licensePhoto = mes.data.thumbnailSmallPath;
                         }
                     })
             },
             goComplete:function () {
                 var _this=this
-                utils.debug('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
-                    '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category)
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
                     '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {

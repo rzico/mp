@@ -12,7 +12,8 @@
                 <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
             </div>
             <text class="text">激活店铺完成，请扫码绑定二维码</text>
-            <text class="sweepCode" @click="scan()">{{prompting}}</text>
+            <text class="sweepCode">{{code}}</text>
+            <text class="sweepCodetwo" @click="scan()">{{prompting}}</text>
         </div>
         <div class="button bkg-primary" @click="select">
             <text class="buttonText">下一步</text>
@@ -68,9 +69,14 @@
         margin-top: 40px;
     }
     .sweepCode{
+         font-size: 28px;
+         color: #cccccc;
+         margin-top: 20px;
+         margin-bottom: 20px;
+     }
+    .sweepCodetwo{
         font-size: 28px;
         color: #cccccc;
-        margin-top: 40px;
         margin-bottom: 40px;
     }
     .iconfont{
@@ -119,6 +125,11 @@
             utils.initIconFont();
             this.shopId = utils.getUrlParameter('shopId');
             this.code = utils.getUrlParameter('code')+'';
+            if(utils.isNull(this.code)){
+                this.prompting='点击扫码'
+            }else {
+                this.prompting='点击修改二维码'
+            }
         },
         methods:{
             goback:function () {
@@ -129,7 +140,6 @@
                 if(utils.isNull(this.code)) {
                     this.scan()
                 }else {
-                    event.toast('已绑定二维码，如需修改请点击扫一扫')
                     let message = utils.message('success','成功','');
                     event.closeURL(message)
                 }

@@ -5,49 +5,35 @@
             <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
             <text class="headText" style="font-size: 28px;color: #cccccc">扫码添加员工</text>
         </div>
-        <!--<div class="addFriend" @click="add">-->
-            <!--<div class="flex-row " style="align-items:center">-->
-                <!--<text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>-->
-                <!--<text class="title ml20 " >领取会员卡</text>-->
-            <!--</div>-->
-            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-        <!--</div>-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list  class="list" v-if="isNoEmpty()">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                <!--src="file://resources/images/loading.gif"></image>-->
-                <text class="indicator">{{refreshState}}</text>
+        <list  class="list" v-if="isNoEmpty()" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}">
+            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
                 <div v-for="(num,index) in lists" >
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
-                    <div class="addFriendsBorder" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                        <div class="friendsLine" @click="popup(num.id)">
+                    <div class="addFriendsBorder" @click="popup(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                        <div class="friendsLine">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
                             </div>
                             <div class="friendsName">
-
                                 <text class="lineTitle ">手机号:{{num.mobile}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
                                     <text class="realName">{{num.name}}(店铺:{{num.shopName}})</text>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
             </cell>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">{{loadingState}}</text>
-            </loading>
         </list>
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center;justify-content: center;height: 70px">
-                <text class="fz30 " style="color: #444">店铺列表</text>
+                <text class="fz30 " style="color: #444">分配所属门店</text>
             </div>
             <list>
                 <cell>
@@ -63,6 +49,10 @@
                         <div class="shopAddressDiv">
                             <text class="shopAddress">地址：</text>
                             <text class="concretely">{{num.address}}</text>
+                        </div>
+                        <div class="shopAddressDiv">
+                            <text class="shopAddress">负责人：</text>
+                            <text class="concretely">{{num.linkman}}</text>
                         </div>
                     </div>
                 </div>
@@ -208,13 +198,12 @@
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     const modal = weex.requireModule('modal');
-    const event = weex.requireModule('event');
+    import {dom,event,animation} from '../../../weex.js';
     import navbar from '../../../include/navbar.vue';
     import search from '../../../include/search.vue';
     import noData from '../../../include/noData.vue';
     var he = require('he');
     var animationPara;//执行动画的消息
-    const animation = weex.requireModule('animation');
     export default {
         components: {
             navbar,search,noData
@@ -223,20 +212,21 @@
             return   {
                 start:0,
                 refreshing:false,
-                refreshState:"松开刷新数据",
                 showLoading:false,
-                loadingState:"松开加载更多",
                 friendsList:[],
                 lists:[],
                 shops:[],
                 screenHeight:0,
                 pageSize:10,
-                listCurrent:0,
+                pageStart:0,
                 code:'',
                 id:'',
                 isPopup:false,
 //                点击弹窗获取的员工id存入此变量
-                memberId:''
+                memberId:'',
+                canScroll:true,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         props: {
@@ -251,6 +241,22 @@
             this.open();
             this.openTwo()
         },
+        //        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
+        },
+
         filters:{
 
         },
@@ -363,16 +369,24 @@
             },
             open:function () {
                 var _this = this;
-                GET('weex/member/admin/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
+                GET('weex/member/admin/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
                     if (mes.type == 'success') {
-                        if (_this.listCurrent==0) {
+                        if (_this.pageStart==0) {
+                            mes.data.data.forEach(function(item){
+                                if(item.shopName == '未分配'){
+                                    item.shopName ='点击分配店铺'
+                                }
+                            });
                             _this.lists = mes.data.data;
                         } else {
                             mes.data.data.forEach(function(item){
+                                if(item.shopName == '未分配'){
+                                    item.shopName ='点击分配店铺'
+                                }
                                 _this.lists.push(item);
                             })
                         }
-                        _this.listCurrent = mes.data.start+mes.data.data.length;
+                        _this.pageStart = mes.data.start+mes.data.data.length;
                     } else {
                         event.toast(mes.content);
                     }
@@ -437,24 +451,35 @@
                 return this.lists.length==0;
             },
             onloading (event) {
-                var _this = this;
-                _this.loading = true;
-                setTimeout(function () {
-                        _this.open();
-                        _this.loading = false;
-                    }
-                    ,1000)
+                this.open();
             },
 //            下拉刷新
             onrefresh (event) {
                 var _this = this;
-                _this.refreshing = true;
-                _this.listCurrent = 0;
-                setTimeout(function () {
-                        _this.open();
-                        _this.refreshing = false;
-                    }
-                    ,1000)
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.open();
+                }, 1000)
             },
             goback:function () {
                 event.closeURL();
