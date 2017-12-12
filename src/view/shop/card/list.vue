@@ -27,13 +27,11 @@
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list  class="list" v-if="isNoEmpty()">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                <!--src="file://resources/images/loading.gif"></image>-->
-                <text class="indicator">{{refreshState}}</text>
+        <list  class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}">
+            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
                 <div v-for="num in lists" >
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump(num.id)">
@@ -54,9 +52,6 @@
                     </div>
                 </div>
             </cell>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">{{loadingState}}</text>
-            </loading>
         </list>
     </div>
 </template>
@@ -194,7 +189,7 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
-    const event = weex.requireModule('event');
+    import {dom,event,animation} from '../../../weex.js';
     import navbar from '../../../include/navbar.vue';
     import search from '../../../include/search.vue';
     import noData from '../../../include/noData.vue';
@@ -207,16 +202,16 @@
             return   {
                 start:0,
                 refreshing:false,
-                refreshState:"松开刷新数据",
                 showLoading:false,
-                loadingState:"松开加载更多",
                 friendsList:[],
                 lists:[],
                 screenHeight:0,
                 pageSize:10,
-                listCurrent:0,
+                pageStart:0,
                 code:'',
-                id:''
+                id:'',
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         props: {
@@ -235,6 +230,21 @@
             this.open(function () {
 
             });
+        },
+        //        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         filters:{
             watchCode:function (value) {
@@ -283,17 +293,17 @@
 
             open:function () {
                 var _this = this;
-                GET('weex/member/card/list.jhtml?pageStart='+this.listCurrent +'&pageSize='+this.pageSize,function (mes) {
+                GET('weex/member/card/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
 //                    utils.debug(mes)
                     if (mes.type == 'success') {
-                        if (_this.listCurrent==0) {
+                        if (_this.pageStart==0) {
                             _this.lists = mes.data.data;
                         } else {
                             mes.data.data.forEach(function(item){
                                 _this.lists.push(item);
                             })
                         }
-                        _this.listCurrent = mes.data.start+mes.data.data.length;
+                        _this.pageStart = mes.data.start+mes.data.data.length;
 
                     } else {
                         event.toast(mes.content);
@@ -334,24 +344,35 @@
                 return this.lists.length==0;
             },
             onloading (event) {
-                var _this = this;
-                _this.loading = true;
-                setTimeout(function () {
-                        _this.open();
-                        _this.loading = false
-                    }
-                    ,1000)
+                this.open();
             },
 //            下拉刷新
             onrefresh (event) {
                 var _this = this;
-                _this.refreshing = true;
-                _this.listCurrent = 0;
-                setTimeout(function () {
-                        _this.open();
-                        _this.refreshing = false;
-                    }
-                    ,1000)
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.open();
+                }, 1000)
             },
             goback:function () {
                 event.closeURL();
