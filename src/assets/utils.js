@@ -3,9 +3,9 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weixin.rzico.com';
+const websiteURL = 'http://weex.1xx.me';
 const event = weex.requireModule('event');
-const debug = false;
+const debug = true;
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -182,7 +182,7 @@ let utilsFunc = {
         //判断是不是web  code'000000'为无效二维码 '999999'为webView；
         if(subData == null){
             //如果没有找到q/ 和 .jhtml中的字端，就执行该段代码
-            if(e.substring(0,4) == 'http'){
+            if(e.substring(0,4) == 'http' && debug){
                 let data = {
                     type:'webView',
                     code:'999999'
@@ -332,6 +332,7 @@ let utilsFunc = {
         var    date = new Date(value);
         var    y = date.getFullYear();
         var    m = date.getMonth() + 1;
+        // var    m = date.getMonth() ;
         var    d = date.getDate();
         var    h = date.getUTCHours() + 8;
         h = h >= 24 ? h - 24 : h;
