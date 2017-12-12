@@ -679,19 +679,7 @@
 //                文章==================
                 articleList: [],
 
-                helpList:[{
-                    key:2,
-                    articleSign:'样例',
-                    articleTitle:'我在魔篇有了自己的专栏！',
-                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                    articleDate:'2017-10-19'
-                },{
-                    key:1,
-                    articleSign:'样例',
-                    articleTitle:'魔篇使用帮助！',
-                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
-                    articleDate:'2017-10-19'
-                }],
+                helpList:[],
                 UId:'',
                 screenHeight:'',
 //                文集id
@@ -816,7 +804,7 @@
                     orderBy:'desc',
                     current:_this.listCurrent,
                     pageSize:_this.listPageSize,
-                }
+                };
                 event.findList(options,function (data) {
                     if( data.type == "success" && data.data != '' ) {
                         data.data.forEach(function (item) {
@@ -827,7 +815,40 @@
 //                        把读取到的文章push进去文章列表
                             _this.articleList.push(item);
                         })
+//                        当选择全部文章并且全部文章低于10篇时 显示帮助文档。写在这边可以避免渲染小闪屏问题。写死在data里每次切换会先闪一下帮助List再变成文章List
+                        if(utils.isNull(_this.corpusId) && data.data.length < 10){
+                            _this.helpList = [];//在push前要清空list
+                            _this.helpList.push({
+                                key:2,
+                                articleSign:'样例',
+                                articleTitle:'我在魔篇有了自己的专栏！',
+                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
+                                articleDate:'2017-10-19'
+                            },{
+                                key:1,
+                                articleSign:'样例',
+                                articleTitle:'魔篇使用帮助！',
+                                articleCoverUrl:utils.locate('resources/images/help.jpg'),
+                                articleDate:'2017-10-19'
+                            })
+                        }
                     }else{
+                        if(utils.isNull(_this.corpusId)){
+                            _this.helpList = [];
+                            _this.helpList.push({
+                                key:2,
+                                articleSign:'样例',
+                                articleTitle:'我在魔篇有了自己的专栏！',
+                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
+                                articleDate:'2017-10-19'
+                            },{
+                                key:1,
+                                articleSign:'样例',
+                                articleTitle:'魔篇使用帮助！',
+                                articleCoverUrl:utils.locate('resources/images/help.jpg'),
+                                articleDate:'2017-10-19'
+                            })
+                        }
                         return;
                     }
                 })

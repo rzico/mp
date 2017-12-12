@@ -1,9 +1,9 @@
 <template>
-    <scroller show-scrollbar="false"  >
-        <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-            <text class="indicator">下拉松开刷新 ...</text>
+    <scroller show-scrollbar="false"  @loadmore="onloading" loadmoreoffset="50" >
+        <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+            <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <div :style="{minHeight:screenHeight + 'px'}"@swipe="onpanmove($event)">
+        <div :style="{minHeight:screenHeight + 'px'}" @swipe="onpanmove($event)"  ref="adoptPull">
 
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"></noData>
             <div class="articleBox" v-for="(item,index) in articleList" v-else :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
@@ -36,23 +36,10 @@
                 </div>
             </div>
         </div>
-        <loading class="loading" @loading="onloading" :display="showLoading">
-            <text class="indicator">加载中 ...</text>
-        </loading>
     </scroller>
 </template>
+<style lang="less" src="../../style/wx.less"/>
 <style>
-    .indicator{
-        font-size: 28px;
-    }
-    .loading{
-        width: 750px;
-        align-items: center;
-    }
-    .refresh{
-        width: 750px;
-        align-items: center;
-    }
     .mt20{
         margin-top: 20px;
     }
@@ -135,94 +122,20 @@
 </style>
 <script>
     import utils from '../../assets/utils';
-    const event = weex.requireModule('event');
+    import {dom,event,animation} from '../../weex.js';
     import { POST, GET } from '../../assets/fetch';
     import noData from '../../include/noData.vue';
     export default {
         data(){
             return{
-                refreshState:'下拉松开刷新',
                 refreshing:false,
                 showLoading: 'hide',
-                listCurrent:0,
+                pageStart:0,
                 pageSize:10,
                 screenHeight:0,
-//                articleList:[]
-                articleList:[
-//                    {
-//                            id:1,
-//                            title:'疆之南,帕米尔高原!',
-//                            thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510034474615&di=f2ba9e212ffbcfa644b28772226e453d&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Ff%2F5408127f8221d.jpg',
-//                            content:'南疆的秋意，在秋风的轻拂下，透过蓝天上的秋阳，从胡杨的荒野里晕染开去，演绎开去，竟是愈来愈漂亮啊',
-//                            author:'YuDie',
-//                            logo:'',
-//                            hits:666,
-//                            review:256,
-//                            laud:432
-//                        },{
-//                        value:{
-//                            key:1,
-//                            title:'微笑，是一个人最美好的样子',
-//                            thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510034474614&di=994c5c48c49cd647333e8500d32d3a73&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2%2F5108bcac48e3b.jpg',
-//                            content:'微笑，是一个人最美好的样子。其实每一个微笑都是绽放在我们脸上最美的花朵。法国作家雨果曾说:"微笑，最美好!"',
-//                            author:'淘气包',
-//                            hits:351,
-//                            review:231,
-//                            laud:229
-//                        }},{
-//                        value:{
-//                            key:1,
-//                            title:'海边的惬意',
-//                            thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510034474617&di=78c23715f2816f13a99a2e12eafd9e32&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F32fa828ba61ea8d35e5c44059d0a304e251f58b0.jpg',
-//                            content:'南疆的秋意，在秋风的轻拂下，透过蓝天上的秋阳，从胡杨的荒野里晕染开去，演绎开去，竟是愈来愈漂亮啊',
-//                            author:'独舟视角',
-//                            hits:0,
-//                            review:0,
-//                            laud:0
-//                        }} ,{
-//                        value:{
-//                            key:1,
-//                            title:'鸟瞰图',
-//                            thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510034474616&di=13fcb5f3799afc96e11ee5543b45b474&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F1%2F56f5023bbcb03.jpg',
-//                            content:'南疆的秋意，在秋风的轻拂下，透过蓝天上的秋阳，从胡杨的荒野里晕染开去，演绎开去，竟是愈来愈漂亮啊',
-//                            author:'独舟视角',
-//                            hits:0,
-//                            review:0,
-//                            laud:0
-//                        }},
-//                    {
-//                        value:{
-//                            key:1,
-//                            title:'你好的',
-//                            thumbnail:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-//                            content:'南疆的秋意，在秋风的轻拂下，透过蓝天上的秋阳，从胡杨的荒野里晕染开去，演绎开去，竟是愈来愈漂亮啊',
-//                            author:'kuqi',
-//                            hits:0,
-//                            review:0,
-//                            laud:0
-//                        }},{
-//                        value:{
-//                            key:1,
-//                            title:'你好啊',
-//                            thumbnail:'https://gd2.alicdn.com/bao/uploaded/i2/T14H1LFwBcXXXXXXXX_!!0-item_pic.jpg',
-//                            content:'南疆的秋意，在秋风的轻拂下，透过蓝天上的秋阳，从胡杨的荒野里晕染开去，演绎开去，竟是愈来愈漂亮啊',
-//                            author:'无界艺术',
-//                            hits:0,
-//                            review:0,
-//                            laud:0
-//                        }},{
-//                        value:{
-//                            key:1,
-//                            title:'你好a',
-//                            thumbnail:'https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg',
-//                            content:'南疆的秋意，在秋风的轻拂下，透过蓝天上的秋阳，从胡杨的荒野里晕染开去，演绎开去，竟是愈来愈漂亮啊',
-//                            author:'独舟视角',
-//                            hits:0,
-//                            review:0,
-//                            laud:0
-//                        }
-//                    }
-                ]
+                articleList:[],
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         components: {
@@ -247,21 +160,52 @@
             var _this = this;
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(216);
-            GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize ,function (data) {
-                if(data.type == 'success'){
-                            data.data.data.forEach(function (item) {
-                                if(utils.isNull(item.thumbnail)){
-                                }else{
-                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                                }
-                            });
-                    _this.articleList = data.data.data;
-                }
-            },function (err) {
-                event.toast(err.content)
-            })
+            this.getAllArticle();
+        },
+//        dom呈现完执行滚动一下
+        updated(){
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         methods:{
+
+//            获取文章列表
+            getAllArticle(){
+                let _this = this;
+                GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success' && data.data.data != '' ){
+                        if (_this.pageStart == 0) {
+                            data.data.data.forEach(function (item) {
+                                if(!utils.isNull(item.thumbnail)){
+                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                                }
+                            })
+                            _this.articleList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                if(!utils.isNull(item.thumbnail)){
+                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                                }
+                                _this.articleList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else  if(data.type == 'success' && data.data.data == '' ){
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
 //            前往作者专栏
             goAuthor(id){
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
@@ -276,55 +220,38 @@
             onpanmove(e){
                 this.$emit('onpanmove',e.direction);
             },
-            onloading (e) {
-                var _this = this;
-                this.showLoading = 'show'
-                setTimeout(() => {
-                    this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                        if(data.type == 'success'){
-                            if(utils.isNull(data.data.data)){
-                                if(_this.articleList.length == 0){
-                                }else{
-                                }
-                            }else{
-                                data.data.data.forEach(function (item) {
-                                    if(utils.isNull(item.thumbnail)){9
-                                    }else{
-                                        item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                                    }
-                                    _this.articleList.push(item);
-                                })
-                            }
-                        }
-                    },function (err) {
-                        event.toast(err.content);
-                    })
-                    this.showLoading = 'hide';
-                }, 1500)
+
+            onloading:function () {
+////            获取文章列表
+                this.getAllArticle();
             },
-//            刷新
             onrefresh:function () {
                 var _this = this;
-                this.refreshing = true
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
                 setTimeout(() => {
-                    this.refreshing = false
-                    this.listCurrent = 0;
-                    GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize ,function (data) {
-                        if(data.type == 'success'){
-                            data.data.data.forEach(function (item) {
-                                if(utils.isNull(item.thumbnail)){
-                                }else{
-                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                                }
-                            });
-                            _this.articleList = [];
-                            _this.articleList = data.data.data;
-                        }
-                    },function (err) {
-                        event.toast(err.content)
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
                     })
-                }, 1500)
+                    this.refreshing = false
+                    _this.getAllArticle();
+                }, 1000)
             },
         }
     }

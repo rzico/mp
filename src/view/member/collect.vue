@@ -1,14 +1,14 @@
 <template>
     <div>
         <navbar :title="title" @goback="goback" > </navbar>
-        <scroller style="background-color: #fff" :scrollable="canScroll">
-            <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-                <!--<text class="indicator">{{refreshState}}</text>-->
-            <!--</refresh>-->
-            <div :style="{minHeight:screenHeight + 'px'}">
+        <scroller style="background-color: #fff;" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50" >
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
+            </refresh>
+            <div :style="{minHeight:screenHeight + 'px'}"  ref="adoptPull">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="collectList.length == 0"></noData>
-                <div v-for="(item,index) in collectList" >
-                    <div class="deleteBox bkg-delete" @click="deleteMessage(item.id,index)" v-if="isSelf">
+                <div v-for="(item,index) in collectList"  >
+                    <div class="deleteBox bkg-delete" @click="deleteMessage(item.id,index)" v-if="isSelf" >
                         <text class="deleteText">取</text>
                         <text class="deleteText">消</text>
                         <text class="deleteText">收</text>
@@ -25,7 +25,7 @@
                         </div>
                         <div class="flex-row">
                             <!--文章封面-->
-                            <image resize="cover" class="articleImg" :src="item.thumbnail  | watchThumbnail" ></image>
+                            <image resize="cover" class="articleImg" :src="item.thumbnail  " ></image>
                             <!--文章相关信息。标题点赞...-->
                             <div class="articleInfo">
                                 <text class="fz30 articleTitle">{{item.title}}</text>
@@ -41,33 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="collectBox">-->
-                <!--<div class="nameDate">-->
-                <!--<div style="flex-direction: row;align-items: center">-->
-                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323202682&di=b6fdee68edcf56c0aaab3cba73e441dc&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2F3801213fb80e7beca9004ec5252eb9389b506b38.jpg" resize="cover" class="authorImg"></image>-->
-                <!--<text class="authorName ml10">大马哥</text>-->
-                <!--</div>-->
-                <!--<text class="authorName">2017-11-07</text>-->
-                <!--</div>-->
-                <!--<div class="flex-row">-->
-                <!--<image src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1510323330650&di=fccf178eef10385316c8ab3602f76520&imgtype=0&src=http%3A%2F%2Fpic66.nipic.com%2Ffile%2F20150504%2F5624330_144129291000_2.jpg"  resize="cover" class="articleImg"></image>-->
-                <!--<div class="articleInfo">-->
-                <!--<text class="fz30 articleTitle">立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)立冬(一组几年钱拍的九篇)</text>-->
-                <!--<div class="relevantInfo">-->
-                <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
-                <!--<text class="relevantText">121</text>-->
-                <!--<text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
-                <!--<text class="relevantText">233</text>-->
-                <!--<text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
-                <!--<text class="relevantText">3222</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
     </div>
 </template>
@@ -148,13 +122,12 @@
 </style>
 <script>
     import navbar from '../../include/navbar.vue';
-    const event = weex.requireModule('event');
     const modal = weex.requireModule('modal');
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
     import filters from '../../filters/filters.js';
     import noData from '../../include/noData.vue';
-    const animation = weex.requireModule('animation');
+    import {dom,event,animation} from '../../weex.js';
     var animationPara;//执行动画的消息
     export default {
         components: {
@@ -165,14 +138,15 @@
                 collectList:[],
                 refreshing:false,
                 showLoading:false,
-                listCurrent:0,
+                pageStart:0,
                 pageSize:10,
                 UId:'',
-                refreshState:'',
                 canScroll:true,
                 isSelf:false,
                 userName:'我',
-                screenHeight:0
+                screenHeight:0,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         filters:{
@@ -210,15 +184,41 @@
             }
             this.getAllCollect();
         },
+//        dom呈现完执行滚动一下
+        updated(){
+            if(this.hadUpdate){
+               return;
+            }
+            this.hadUpdate = true;
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
+        },
         methods:{
 //            获取收藏列表
             getAllCollect(){
                 let _this = this;
-                GET('weex/favorite/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/favorite/list.jhtml?id=' + this.UId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
-                        data.data.data.forEach(function (item) {
-                            _this.collectList.push(item);
-                        })
+                        if (_this.pageStart == 0) {
+                            data.data.data.forEach(function (item) {
+                                if(!utils.isNull(item.thumbnail)){
+                                    item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
+                                }
+                            })
+                            _this.collectList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                if(!utils.isNull(item.thumbnail)){
+                                    item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
+                                }
+                                _this.collectList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
                     }else  if(data.type == 'success' && data.data.data == '' ){
                     }else{
                         event.toast(data.content);
@@ -227,15 +227,41 @@
                     event.toast(err.content);
                 })
             },
-            goback(){
-                event.closeURL();
+            onloading:function () {
+////            获取收藏列表
+                this.getAllCollect();
             },
             onrefresh:function () {
                 var _this = this;
-                this.refreshing = true
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
                 setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
                     this.refreshing = false
-                }, 50)
+                    _this.getAllCollect();
+                }, 1000)
+            },
+            goback(){
+
+                event.closeURL();
             },
             goAuthor(id){
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
@@ -245,44 +271,6 @@
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
                     function () {}
                 )
-            },
-            onloading:function () {
-                var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
-                setTimeout(() => {
-//                    _this.listCurrent = _this.listCurrent + _this.pageSize;
-////            获取收藏列表
-//                    _this.getAllCollect();
-                    _this.showLoading = false;
-                }, 1500)
-
-//                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart='+_this.start,
-//                    function (data) {
-//                        if (data.type == "success") {
-//                            let page = data.data;
-//                            if (page.data.length>0) {
-//                                _this.friendsList.push(page.data);
-//                                _this.start = page.start+page.data.length;
-//                                _this.loadingState = "加载"+page.data.length+"条数据";
-//                            } else {
-//                                _this.loadingState = "亲，没有数据了";
-//                            }
-//                            setTimeout(() => {
-//                                _this.showLoading = false;
-//                                _this.loadingState = "松开加载更多";
-//                            }, 500);
-//                        } else {
-//                            _this.showLoading = false;
-//                            _this.loadingState = "松开加载更多";
-//                            event.toast(weex.data.content);
-//                        }
-//                    },function (err) {
-//                        _this.showLoading = false;
-//                        _this.loadingState = "松开加载更多";
-//                        event.toast("网络不稳定");
-//                    }
-//                )
             },
             //            点击屏幕时
             ontouchstart:function (e,index) {

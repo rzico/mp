@@ -622,13 +622,10 @@
                 this.showMenu = false;
                 event.scan(function (message) {
                     SCAN(message, function (data) {
-
                     }, function (err) {
-
                     })
                 });
             },
-
 //            点击右上角菜单
             menu:function () {
                 this.showMenu = true;
