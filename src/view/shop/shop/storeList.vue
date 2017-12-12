@@ -15,25 +15,25 @@
                         <text style="font-size: 32px">{{name}}</text>
                     </div>
                     <div class="shopNameDivone">
-                        <text style="font-size: 32px">所属店铺：</text>
+                        <text style="font-size: 32px">所在店铺：</text>
                         <text style="font-size: 32px">{{shopName}}</text>
                     </div>
                     <div class="shopNameDivtwo">
                         <text style="font-size: 32px">职位：</text>
-                        <text style="font-size: 32px">店长</text>
+                        <text style="font-size: 32px">{{roleName}}</text>
                     </div>
                 </div>
             </div>
             </div>
         </div>
 
-        <div class="head" @click="add" v-if="isOwner">
+        <div class="head" @click="add" v-if="!isOwner">
             <text class="clickAdd" >+点击添加商铺</text>
         </div>
-        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="!isOwner">
+        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="isOwner">
             <text style="font-size: 32px;color:#ffffff;">点我离职</text>
         </div>
-        <div style="background-color: #eeeeee" v-if="isOwner">
+        <div style="background-color: #eeeeee" v-if="!isOwner">
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list class="list" v-if="isNoEmpty()" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -209,6 +209,7 @@ export default {
             name:'',
             shopName:'',
             logo:'',
+            roleName:'',
             canScroll:true,
             refreshImg:utils.locate('resources/images/loading.png'),
             hadUpdate:false,
@@ -276,6 +277,7 @@ export default {
                     _this.logo = mes.data.logo;
                     _this.shopName =mes.data.shopName;
                     _this.name = mes.data.name;
+                    _this.roleName =mes.data.roleName
                 } else {
                     event.toast(res.content);
                 }
