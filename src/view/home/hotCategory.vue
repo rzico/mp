@@ -178,7 +178,6 @@
             }
         },
         methods:{
-
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
@@ -229,7 +228,6 @@
             },
             onrefresh:function () {
                 var _this = this;
-
                 _this.pageStart = 0;
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
