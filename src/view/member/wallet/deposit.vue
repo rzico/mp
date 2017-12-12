@@ -215,8 +215,7 @@
             goback: function (e) {
                 event.closeURL();
             },
-            open (pageStart,callback) {
-                this.pageStart = pageStart;
+            open:function () {
                 var _this = this;
                 if (pageStart==0) {
                     GET("weex/member/deposit/view.jhtml",function (res) {
@@ -243,9 +242,7 @@
                    } else {
                        event.toast(err.content);
                    }
-                    callback();
-                 }, function (err) {
-                    callback();
+                }, function (err) {
                     event.toast(err.content);
                 })
             },
@@ -260,10 +257,12 @@
                 var _this = this;
                 _this.loading = true;
                 setTimeout(
-                  _this.open(_this.pageStart,function () {
-                     _this.loading = false;
-                  })
-                ,1500)
+                    function () {
+                        _this.open();
+                        _this.loading = false;
+                    }
+
+                ,1000)
             },
 //            下拉刷新
             onrefresh (event) {
@@ -271,10 +270,11 @@
                 _this.pageStart = 0;
                 _this.refreshing = true;
                 setTimeout(
-                   _this.open(_this.pageStart,function () {
-                     _this.refreshing = false;
-                  })
-                ,1500)
+                    function () {
+                        _this.open();
+                        _this.refreshing = false;
+                    }
+                ,1000)
             },
 //            获取月份
             getDate: function(value) {
@@ -298,9 +298,7 @@
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
-            this.open(0,function () {
-                
-            });
+            this.open();
         }
     }
 </script>
