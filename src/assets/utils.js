@@ -330,15 +330,17 @@ let utilsFunc = {
         }
 // 返回处理后的值
         var    date = new Date(value);
-        var    y = date.getFullYear();
-        var    m = date.getMonth() + 1;
-        // var    m = date.getMonth() ;
-        var    d = date.getDate();
-        var    h = date.getUTCHours() + 8;
-        h = h >= 24 ? h - 24 : h;
-        d = h >= 24 ? d + 1 : d;
-        var    i = date.getMinutes();
-        var    s = date.getSeconds();
+
+        var    d2 = Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate(),date.getUTCHours(),date.getUTCMinutes(),date.getUTCSeconds());
+
+        date = new Date(d2+28800000);
+
+        var    y = date.getUTCFullYear();
+        var    m = date.getUTCMonth() + 1;
+        var    d = date.getUTCDate();
+        var    h = date.getUTCHours();
+        var    i = date.getUTCMinutes();
+        var    s = date.getUTCSeconds();
         if (m < 10) {
             m = '0' + m;
         }

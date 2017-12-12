@@ -217,7 +217,7 @@
             },
             open:function () {
                 var _this = this;
-                if (pageStart==0) {
+                if (_this.pageStart==0) {
                     GET("weex/member/deposit/view.jhtml",function (res) {
                         if (res.type=="success") {
                             _this.cashier = res.data;
