@@ -1,37 +1,46 @@
 <template>
-    <div style="background-color: #eeeeee">
-        <navbar :title="title" :complete="complete" @goback="goback"></navbar>
-        <div class="shopstwo">
+    <div  class="bkg-primary">
+        <navbar :title="title" :complete="complete" @goback="goback" border=false></navbar>
+        <div class="shopstwo bkg-primary">
+            <div>
             <div class="deleteBoxTwo bkg-delete" @click="out()">
                 <text class="deleteText">离职</text>
             </div>
-            <div  class="messageTwo"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                <div class="shopLogo" >
-                    <image style="width: 250px;height: 200px;"  class="img" :src="logo"></image>
+            <div  class="messageTwo "  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                <div class="shopLogotwo" >
+                    <image style="width: 100px;height: 100px;border-radius: 100px"  class="img" :src="logo"></image>
                 </div>
-                <div class="shopInformation">
-                    <div class="shopNameDiv">
-                        <text class="shopName">店铺：</text>
-                        <text class="fullName">{{shopName}}</text>
+                <div  style="flex-direction: column;align-items: center">
+                    <div class="shopNameDivthree">
+                        <text style="font-size: 32px">{{name}}</text>
                     </div>
-                    <div class="shopAddressDiv">
-                        <text class="shopAddress">姓名：</text>
-                        <text class="concretely">{{name}}</text>
+                    <div class="shopNameDivone">
+                        <text style="font-size: 32px">所属店铺：</text>
+                        <text style="font-size: 32px">{{shopName}}</text>
+                    </div>
+                    <div class="shopNameDivtwo">
+                        <text style="font-size: 32px">职位：</text>
+                        <text style="font-size: 32px">店长</text>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 
         <div class="head" @click="add" v-if="isOwner">
             <text class="clickAdd" >+点击添加商铺</text>
         </div>
+        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="!isOwner">
+            <text style="font-size: 32px;color:#ffffff;">点我离职</text>
+        </div>
+        <div style="background-color: #eeeeee" v-if="isOwner">
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list class="list" v-if="isNoEmpty()">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新</text>
+        <list class="list" v-if="isNoEmpty()" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}">
-        <div class="shops" v-for="(num,index) in lists" v-if="isOwner">
+            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
+        <div class="shops" v-for="(num,index) in lists" >
             <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                 <text class="deleteText">删除</text>
             </div>
@@ -48,14 +57,16 @@
                 <text class="shopAddress">地址：</text>
                 <text class="concretely">{{num.address}}</text>
                 </div>
+                <div class="shopAddressDiv">
+                    <text class="shopAddress">负责人：</text>
+                    <text class="concretely">{{num.linkman}}</text>
+                </div>
             </div>
             </div>
         </div>
             </cell>
-            <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
-                <text class="indicator">加载中..</text>
-            </loading>
         </list>
+        </div>
         </div>
 
 </template>
@@ -68,11 +79,12 @@
         background-color: white;
     }
     .messageTwo{
-        flex-direction: row;
-        align-items: center;
-        width: 730px;
-        border-radius: 10px;
         background-color: white;
+        width: 710px;
+        height: 375px;
+        margin-left: 20px;
+        margin-right: 20px;
+        border-radius: 10px;
     }
     .deleteText{
         font-size: 32px;color: #fff;
@@ -81,14 +93,26 @@
         position: absolute;right: 0px;top: 0px;height: 230px;align-items: center;width: 130px;justify-content: center;
     }
     .deleteBoxTwo{
-        position: absolute;right: 0px;top: 0px;height: 230px;align-items: center;width: 130px;justify-content: center;border-bottom-right-radius: 10px
+        position: absolute;right: 20px;top: 0px;height: 300px;align-items: center;width: 190px;justify-content: center;border-bottom-right-radius: 10px
     ;border-top-right-radius: 10px;
     }
     .head {
         background-color: white;
         border-width: 0px;
+        border-radius: 10px;
         margin-bottom: 20px;
         margin-top: 20px;
+        margin-right: 20px;
+        margin-left: 20px;
+        height: 80px;
+        align-items: center;
+        justify-content: center;
+
+    }
+    .headtwo {
+        background-color: white;
+        border-width: 0px;
+        border-radius: 10px;
         height: 80px;
         align-items: center;
         justify-content: center;
@@ -105,17 +129,20 @@
         height: 230px;
     }
     .shopstwo{
-        background-color: white;
         flex-direction: row;
         align-items: center;
-        margin-top: 10px;
-        margin-right: 10px;
-        margin-left: 10px;
-        border-radius: 10px;
-        height: 230px;
+        height: 500px;
     }
     .shopLogo{
         margin-left: 20px;
+    }
+    .shopLogotwo{
+        height: 100px;
+        width: 100px;
+        border-radius: 50px;
+        position: absolute;
+        top: -50px;
+        left: 315px;
     }
     .shopInformation{
         /*justify-content: space-between;*/
@@ -140,6 +167,18 @@
         flex-direction: row;
         margin-top: 20px;
     }
+    .shopNameDivthree{
+        flex-direction: row;
+        margin-top: 80px;
+    }
+    .shopNameDivone{
+        flex-direction: row;
+        margin-top: 40px;
+    }
+    .shopNameDivtwo{
+        flex-direction: row;
+        margin-top: 40px;
+    }
     .shopAddressDiv{
         flex-direction: row;
         margin-top: 30px;
@@ -154,11 +193,9 @@ import {POST, GET} from '../../../assets/fetch';
 import utils from '../../../assets/utils';
 import filters from '../../../filters/filters';
 import noData from '../../../include/noData.vue';
-
-var event = weex.requireModule('event');
+import {dom,event,animation} from '../../../weex.js';
 const modal = weex.requireModule('modal');
 var animationPara;//执行动画的消息
-const animation = weex.requireModule('animation');
 
 export default {
     data() {
@@ -171,7 +208,10 @@ export default {
             isOwner:true,
             name:'',
             shopName:'',
-            logo:''
+            logo:'',
+            canScroll:true,
+            refreshImg:utils.locate('resources/images/loading.png'),
+            hadUpdate:false,
         }
     },
     components: {
@@ -186,6 +226,20 @@ export default {
         this.open(function () {});
         this.openTwo(function () {});
         this.screenHeight = utils.fullScreen(376);
+    },
+    updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+        if(this.hadUpdate){
+            return;
+        }
+        this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+        if(!utils.isIosSystem()){
+            const el = this.$refs.adoptPull//跳转到相应的cell
+            dom.scrollToElement(el, {
+                offset: -119
+            })
+        }
     },
     filters:{
         filterHead:function (value) {
@@ -237,23 +291,34 @@ export default {
         },
         //            上拉加载
         onloading (event) {
-            var _this = this;
-            _this.loading = true;
-            setTimeout(function () {
-                _this.open()
-                    _this.loading = false
-            }
-                ,1000)
+            this.open()
         },
 //            下拉刷新
         onrefresh (event) {
             var _this = this;
-            _this.refreshing = true;
-            setTimeout(function () {
-                    _this.open()
-                    _this.refreshing = false;
-            }
-                ,1000)
+            this.refreshing = true;
+            animation.transition(_this.$refs.refreshImg, {
+                styles: {
+                    transform: 'rotate(360deg)',
+                },
+                duration: 1000, //ms
+                timingFunction: 'linear',//350 duration配合这个效果目前较好
+                needLayout:false,
+                delay: 0 //ms
+            })
+            setTimeout(() => {
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(0)',
+                    },
+                    duration: 10, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                this.refreshing = false
+                _this.open();
+            }, 1000)
         },
 
         goback: function () {
@@ -379,6 +444,31 @@ export default {
                     event.toast("网络不稳定");
                 }
             )
+        },
+        outtwo:function (id,index) {
+            let _this =this
+            modal.confirm({
+                message: '确认离职?',
+                okTitle:'确认',
+                cancelTitle:'取消',
+                duration: 0.3
+            }, function (value) {
+                console.log(value);
+                if(value == '确认'){
+                    POST('weex/member/enterprise/delete.jhtml').then(
+                        function (mes) {
+                            if (mes.type == "success") {
+                                event.toast('离职成功');
+                                event.closeURL(mes)
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast("网络不稳定");
+                        }
+                    )
+                }
+            })
         }
     }
 }

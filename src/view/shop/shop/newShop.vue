@@ -277,7 +277,6 @@
                 var _this = this;
                 GET('weex/member/shop/view.jhtml?shopId='+_this.shopId,function (mes) {
                     if (mes.type == 'success') {
-                        utils.debug(mes)
                         _this.addressName = mes.data.areaName
                         _this.licensePhoto = mes.data.license;
                         _this.logo = mes.data.thedoor;
@@ -341,7 +340,6 @@
                     function (mes) {
                         if (mes.type == "success") {
                             _this.shopId = mes.data.id;
-
                             let  elevendata = {
                                 addressName: _this.addressName,
                                 licensePhoto: _this.licensePhoto,
