@@ -1,11 +1,11 @@
 <template>
     <div>
         <navbar :title="title" @goback="goback" > </navbar>
-        <scroller style="background-color: #fff">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
+        <scroller show-scrollbar="false" style="background-color: #ffffff"  @loadmore="onloading" loadmoreoffset="50" >
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <div :style="{minHeight:screenHeight + 'px'}"   ref="adoptPull">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="userList.length == 0"></noData>
                 <div class="addFriendsBorder" v-else v-for="(item,index) in userList" @click="goAuthor(item.id)">
                     <!--用户头像与昵称签名-->
@@ -109,12 +109,12 @@
 </style>
 <script>
     import navbar from '../../include/navbar.vue';
-    const event = weex.requireModule('event');
     const modal = weex.requireModule('modal');
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
     import filters from '../../filters/filters.js';
     import noData from '../../include/noData.vue';
+    import {dom,event,animation} from '../../weex.js';
     export default {
         components: {
             navbar,noData
@@ -125,12 +125,14 @@
                 userList:[],
                 refreshing:false,
                 showLoading:false,
-                listCurrent:0,
+                pageStart:0,
                 pageSize:15,
                 refreshState:'',
                 UId:'',
                 isSelf:false,
-                userName:'我'
+                userName:'我',
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         props:{
@@ -157,25 +159,55 @@
                 let name = decodeURI(utils.getUrlParameter('name'));
                 this.userName = utils.isNull(name) ? '我' : name;
             }
-            let _this = this;
-            GET('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                if(data.type == 'success' && data.data.data != '' ){
-                    _this.userList = data.data.data;
-                }else if(data.type == 'success'){
-
-                }else{
-                    event.toast(data.content);
-                }
-            },function (err) {
-                event.toast(err.content);
-            })
+            this.getAllFocus();
+        },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         methods:{
+//            获取所有关注列表
+            getAllFocus(){
+                let _this = this;
+//            获取粉丝列表
+                GET('weex/follow/list.jhtml?id=' + this.UId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success' && data.data.data != '' ){
+                        if (_this.pageStart == 0) {
+                            data.data.data.forEach(function (item) {
+                                if(!utils.isNull(item.logo)){
+                                    item.logo = utils.thumbnail(item.logo,250,150);
+                                }
+                            })
+                            _this.userList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                if(!utils.isNull(item.logo)){
+                                    item.logo = utils.thumbnail(item.logo,250,150);
+                                }
+                                _this.userList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else if(data.type == 'success' && data.data.data == '' ){
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
             goback(){
-//                let E = {
-//                    isChange:true,
-//                }
-//                let backData = utils.message('success','成功',E);
                 event.closeURL();
             },
 //            前往作者主页
@@ -250,35 +282,38 @@
                 }
 
             },
+            onloading:function () {
+////            获取关注列表
+                this.getAllFocus();
+            },
             onrefresh:function () {
                 var _this = this;
-                this.refreshing = true
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
                 setTimeout(() => {
-                    this.refreshing = false
-                }, 50)
-            },
-            onloading:function () {
-                var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
-                setTimeout(() => {
-                    this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/follow/list.jhtml?id=' + this.UId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                        if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.forEach(function (item) {
-                                _this.userList.push(item);
-                            })
-                        }else if(data.type == 'success' && data.data.data == '' ){
-                        }else{
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        event.toast(err.content);
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
                     })
-
-
-                    _this.showLoading = false;
-                }, 1500)
+                    this.refreshing = false;
+////            获取关注列表
+                    _this.getAllFocus();
+                }, 1000)
             },
 
         }

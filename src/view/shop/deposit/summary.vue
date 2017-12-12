@@ -33,8 +33,16 @@
         </list>
         <div class="panel" >
             <div class="moneyname">
-                <text class="name" style="margin-left:20px">合计</text>
+                <text class="name" style="margin-left:20px">营业额</text>
                 <text class="money" style="color:red">{{total | currencyfmt}}</text>
+            </div>
+            <div class="moneyname">
+                <text class="name" style="margin-left:20px">手续费</text>
+                <text class="money" style="color:red">{{fee | currencyfmt}}</text>
+            </div>
+            <div class="moneyname">
+                <text class="name" style="margin-left:20px">结算额</text>
+                <text class="money" style="color:red">{{account | currencyfmt}}</text>
             </div>
         </div>
     </div>
@@ -108,7 +116,9 @@
                 refreshing: false,
                 shopId:"",
                 billDate:"",
-                total:0
+                total:0,
+                fee:0,
+                account:0
             }
         },
         components: {
@@ -118,7 +128,6 @@
             title: { default: "消费统计" }
         },
         filters: {
-
             typefmt:function (val) {
                 if (val == 'cashier') {
                     return '消费'
@@ -204,8 +213,12 @@
                     if (res.type=="success") {
                         _this.depositList = res.data;
                         _this.total = 0;
+                        _this.fee = 0;
+                        _this.account = 0;
                         _this.depositList.forEach(function (item) {
                             _this.total = _this.total + item.amount;
+                            _this.fee = _this.fee + item.fee;
+                            _this.account = _this.account + item.account;
                         })
                      } else {
                         event.toast(res.content);

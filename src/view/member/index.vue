@@ -1,21 +1,15 @@
 
 <template>
-    <scroller class="pageBgColor" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
-        <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-        <!--<image class="gif" resize="cover"-->
-        <!--src="file://resources/image/loading.gif"></image>-->
-        <!--<text class="indicator">{{refreshState}}</text>-->
-        <!--<loading-indicator>...</loading-indicator>-->
-        <!--</refresh>-->
-        <!--<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">-->
-        <!--<text class="indicator">Refreshing ...</text>-->
+    <scroller class="pageBgColor" show-scrollbar="false"  offset-accuracy="0"   @loadmore="onloading" loadmoreoffset="50" @scroll="scrollHandler" :scrollable="canScroll">
+        <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >-->
+            <!--<image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>-->
         <!--</refresh>-->
         <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-        <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
-        <div>
+        <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear" ></div>
+        <div  >
             <!--顶部白色区域 classHeader(), -->
             <!--<div class="header  bkg-primary" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >-->
-            <div class="header headerMore bkg-primary"  :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw" >
                     <div style="width: 50px;">
@@ -122,7 +116,7 @@
                 <!--</div>-->
             </div>
             <!--文章模块-->
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <div :style="{minHeight:screenHeight + 'px'}" >
                 <!--绑定动画-->
                 <!--<transition-group name="paraTransition" tag="div">-->
                 <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
@@ -224,9 +218,9 @@
             </div>
         </div>
         <!--</div>-->
-        <loading class="loading" @loading="onloading"  :display="showLoading">
-            <text class="indicator">Loading ...</text>
-        </loading>
+        <!--<loading class="loading" @loading="onloading"  :display="showLoading">-->
+            <!--<text class="indicator">Loading ...</text>-->
+        <!--</loading>-->
     </scroller>
 </template>
 
@@ -631,10 +625,9 @@
 </style>
 
 <script>
-    import {dom,event,storage,stream} from '../../weex.js';
+    import {dom,event,storage,stream,animation} from '../../weex.js';
     const modal = weex.requireModule('modal');
     var globalEvent = weex.requireModule('globalEvent');
-    const animation = weex.requireModule('animation');
     import noData from '../../include/noData.vue';
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch';
@@ -685,6 +678,8 @@
 //                文集id
                 corpusId:'',
                 showMenu:false,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         components: {
@@ -751,7 +746,6 @@
 
             this.getAllArticle();
             globalEvent.addEventListener("onArticleChange", function (e) {
-                    _this.articleList = [];
                     _this.getAllArticle();
             });
             globalEvent.addEventListener("onBalanceChange", function (e) {
@@ -759,6 +753,22 @@
             });
 
         },
+
+////        dom呈现完执行滚动一下
+//        updated(){
+////            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+//            if(this.hadUpdate){
+//                return;
+//            }
+//            this.hadUpdate = true;
+////            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+//            if(!utils.isIosSystem()){
+//                const el = this.$refs.topBox//跳转到相应的cell
+//                dom.scrollToElement(el, {
+//                    offset: -119
+//                })
+//            }
+//        },
         methods: {
 
             isEmpty:function () {
@@ -793,6 +803,7 @@
 
 
             getAllArticle(){
+                this.articleList = [];
                 var articleClass = '';
                 if(!utils.isNull(this.corpusId)){
                     articleClass = '['+this.corpusId + ']';
@@ -802,7 +813,7 @@
                     type:'article',
                     keyword:articleClass,
                     orderBy:'desc',
-                    current:_this.listCurrent,
+                    current:0,
                     pageSize:_this.listPageSize,
                 };
                 event.findList(options,function (data) {
@@ -957,29 +968,6 @@
                     }
                 );
             },
-//            open (callback) {
-//                return stream.fetch({
-//                    method: 'GET',
-//                    type: 'json',
-//                    url: 'weex/member/article/list.jhtml'
-//                }, callback)
-//            },
-//            switchArticle:function (item) {
-//                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
-//                    return true;
-//                }else{
-//                    return false;
-//                }
-//                if(this.isAllArticle == false){
-//                    if(item.articleSign == '已删除'){
-//                        return true;
-//                    }else{
-//                        return false;
-//                    }
-//                }else{
-//                    return true;
-//                }
-//            },
 
 //            前往文章
             goArticle(item,index){
@@ -1027,7 +1015,6 @@
                 _this.whichCorpus = index;
                 _this.corpusId = id;
 
-                _this.articleList = [];
                 _this.getAllArticle();
             },
 //            点击屏幕时
@@ -1164,17 +1151,6 @@
 //                    modal.toast({message:this.corpusScrollTop,duration:1})
                 }
             },
-//            ondisappear(){
-//              modal.toast({message:'消失',duration:1});
-////                    this.corpusScrollTop = 0;
-//                    this.corpusPosition = 'fixed';
-//                    this.isDisappear = true;
-//            },
-//            onappear(){
-//                modal.toast({message:'显示',duration:1});
-//                this.isDisappear = false;
-//                this.corpusPosition = 'relative';
-//            },
 //            文集
             goCorpus(){
                 var _this = this;
@@ -1271,32 +1247,32 @@
                 this.settingColor = '';
                 event.changeWindowsBar("false");
             },
-            onrefresh:function () {
-                var _this = this;
-                _this.refreshing = true;
-                _this.refreshState = "正在刷新数据";
-                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
-                        if (data.type == "success") {
-                            let page = data.data;
-                            _this.friendsList = page.data;
-                            _this.start = page.start+page.data.length;
-                            _this.refreshState = "数据刷新完成";
-                            setTimeout(() => {
-                                _this.refreshing = false;
-                                _this.refreshState = "松开刷新数据";
-                            }, 500);
-                        } else {
-                            _this.refreshing = false;
-                            _this.refreshState = "松开刷新数据";
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        _this.refreshing = false;
-                        _this.refreshState = "松开刷新数据";
-                        event.toast("网络不稳定");
-                    }
-                )
-            },
+//            onrefresh:function () {
+//                var _this = this;
+//                _this.refreshing = true;
+//                animation.transition(_this.$refs.refreshImg, {
+//                    styles: {
+//                        transform: 'rotate(360deg)',
+//                    },
+//                    duration: 1000, //ms
+//                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+//                    needLayout:false,
+//                    delay: 0 //ms
+//                });
+//                setTimeout(() => {
+//                    animation.transition(_this.$refs.refreshImg, {
+//                        styles: {
+//                            transform: 'rotate(0)',
+//                        },
+//                        duration: 10, //ms
+//                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+//                        needLayout:false,
+//                        delay: 0 //ms
+//                    })
+//                    _this.refreshing = false
+//                    _this.getAllArticle();
+//                }, 1000);
+//            },
 //            还原
             jumpRestore(item,index){
                 let _this = this;
@@ -1487,7 +1463,6 @@
 //                                        _this.articleList.splice(index,1);
 //                                        _this.articleList.splice(index,0,e.data);
 
-                                        _this.articleList = [];
                                         _this.getAllArticle();
                                         event.toast('取消成功');
                                     }
