@@ -17,7 +17,7 @@
         </div>
         <div class="iconfontOne">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="logo"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="originalone"></image>
             </div>
             <div class="iconfont" >
                 <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facelogo" >&#xe618;</text>
@@ -29,7 +29,7 @@
         </div>
         <div class="iconfontTwo">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="palcePhoto"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="originaltwo"></image>
             </div>
             <div class="iconfont">
                 <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palcelogo" >&#xe618;</text>
@@ -41,7 +41,7 @@
         </div>
         <div class="iconfontThree">
             <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="licensePhoto"></image>
+                <image style="width: 200px;height: 200px;"  class="img" :src="originalthree"></image>
             </div>
             <div class="iconfont">
                 <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
@@ -273,6 +273,8 @@
                         if(data.type == 'success') {
                             event.upload(data.data.originalPath,function (data) {
                                 _this.originalone =data.data
+                            },function () {
+                                
                             });
                             _this.logo = data.data.thumbnailSmallPath;
 
@@ -287,6 +289,8 @@
                         if(data.type == 'success') {
                             event.upload(data.data.originalPath,function (data) {
                                 _this.originaltwo =data.data
+                            },function () {
+                                
                             });
                             _this.palcePhoto = data.data.thumbnailSmallPath;
 
@@ -301,6 +305,8 @@
                         if(data.type == 'success') {
                             event.upload(data.data.originalPath,function (data) {
                                 _this.originalthree =data.data
+                            },function () {
+
                             });
                             _this.licensePhoto = data.data.thumbnailSmallPath;
                         }
@@ -308,6 +314,8 @@
             },
             goComplete:function () {
                 var _this=this
+                utils.debug('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
+                    '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category)
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
                     '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {

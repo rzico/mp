@@ -129,6 +129,7 @@
                 if(utils.isNull(this.code)) {
                     this.scan()
                 }else {
+                    event.toast('已绑定二维码，如需修改请点击扫一扫')
                     let message = utils.message('success','成功','');
                     event.closeURL(message)
                 }
