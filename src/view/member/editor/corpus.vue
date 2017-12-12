@@ -17,7 +17,7 @@
                 <!--左侧文集名称-->
                 <div class="flex-row">
                     <text class="lineText">全部文章</text>
-                    <text class="lineText">({{allTotal}})</text>
+                    <!--<text class="lineText">({{allTotal}})</text>-->
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
                 <!--左侧文集名称-->
                 <div class="flex-row">
                     <text class="lineText">回收站</text>
-                    <text class="lineText">({{recycle}})</text>
+                    <!--<text class="lineText">({{recycle}})</text>-->
                 </div>
             </div>
         </div>
