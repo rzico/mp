@@ -112,13 +112,13 @@
                                 .then(
                                     function(data) {
                                         if (data.type == "success") {
-                                            event.closeURL();
+                                            event.closeURL(data);
                                         } else {
                                             event.toast(data.content);
                                         }
                                     },
                                     function(err) {
-                                        event.toast("网络不稳定");
+                                        event.toast(err.content);
                                     }
                                 )
                         } else {
