@@ -242,12 +242,10 @@
                 this.lastCaptchaLength = 0;
             },
             show (sn) {
-                event.toast('2222');
                 var _this = this;
                 _this.sn = sn;
                 _this.isPwd = false;
                 _this.clearPwd();
-                event.toast('1111');
                 GET("payment/view.jhtml?sn="+sn,function (res) {
                     _this.info = res.data;
                     _this.isShow = true;
