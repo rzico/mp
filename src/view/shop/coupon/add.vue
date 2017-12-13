@@ -195,7 +195,9 @@
                 id:'',
                 transform:'元',
                 frontTransfrom:'优惠面额',
-                bottomTransform:'请输入优惠金额'
+                bottomTransform:'请输入优惠金额',
+                begin:0,
+                beginTwo:0
             }
         },
         components: {
@@ -265,6 +267,18 @@
                 var _this = this;
                 GET('weex/member/coupon/view.jhtml?id='+_this.id,function (mes) {
                     if (mes.type == 'success') {
+                        if(mes.data.scope =='all'){
+                            _this.begin =0
+                        }else if(mes.data.scope =='shop'){
+                            _this.begin =1
+                        }else {
+                            _this.begin =2
+                        };
+                        if(mes.data.type =='fullcut'){
+                            _this.beginTwo =0
+                        }else {
+                            _this.beginTwo =1
+                        };
                         _this.number = mes.data.stock;
                         _this.money = mes.data.amount;
                         _this.rule = mes.data.introduction;
@@ -288,21 +302,23 @@
             scopesetting:function () {
                 var _this = this;
                 picker.pick({
-                    index:0,
+                    index:_this.begin,
                     items:['全场','店内','商城']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.address = '全场'
-                            _this.scene = 'all'
-
+                            _this.address = '全场';
+                            _this.scene = 'all';
+                            _this.begin = e.data
                         }else if(e.data == 1){
-                            _this.address = '店内'
-                            _this.scene = 'shop'
+                            _this.address = '店内';
+                            _this.scene = 'shop';
+                            _this.begin = e.data
                         }
                         else{
-                            _this.address = '商城'
-                            _this.scene = 'mall'
+                            _this.address = '商城';
+                            _this.scene = 'mall';
+                            _this.begin = e.data
                         }
                     }
                 })
@@ -311,7 +327,7 @@
             typesetting:function () {
                 var _this = this;
                 picker.pick({
-                    index:0,
+                    index:_this.beginTwo,
                     items:['满减','满折']
                 }, e => {
                     if (e.result == 'success') {
@@ -321,12 +337,14 @@
                             _this.transform ='元';
                             _this.frontTransfrom = '优惠面额';
                             _this.bottomTransform = '请输入优惠金额'
+                            _this.beginTwo =e.data
                         }else if(e.data == 1){
                             _this.type = '满折';
                             _this.codeName = 'discount';
                             _this.transform = '折';
                             _this.frontTransfrom = '优惠折扣';
                             _this.bottomTransform = '请输入优惠折扣(输入0-10之间自然数)'
+                            _this.beginTwo =e.data
                         }
                     }
                 })

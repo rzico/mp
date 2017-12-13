@@ -45,12 +45,6 @@
                     </div>
                 </div>
             </cell>
-
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                <!--src="file://resources/images/loading.gif"></image>-->
-                <text class="indicator">{{loadingState}}</text>
-            </loading>
         </list>
     </div>
 </template>
