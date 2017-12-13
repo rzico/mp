@@ -27,19 +27,19 @@
             </div>
         </div>
 
-        <div class="head" @click="add" v-if="!isOwner">
+        <div class="head" @click="add" v-if="isOwner">
             <text class="clickAdd" >+点击添加商铺</text>
         </div>
-        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="isOwner">
+        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="!isOwner">
             <text style="font-size: 32px;color:#ffffff;">点我离职</text>
         </div>
-        <div style="background-color: #eeeeee" v-if="!isOwner">
-        <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list class="list" v-if="isNoEmpty()" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
+        <noData :noDataHint="noDataHint" v-if="isEmpty()&&isOwner"></noData>
+        <list class="list" v-if="isNoEmpty()&&isOwner" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
+                <div style="background-color: #eeeeee">
         <div class="shops" v-for="(num,index) in lists" >
             <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                 <text class="deleteText">删除</text>
@@ -64,10 +64,11 @@
             </div>
             </div>
         </div>
+                </div>
             </cell>
         </list>
         </div>
-        </div>
+
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
