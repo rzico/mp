@@ -1,8 +1,8 @@
 <template>
     <div style="background-color: #eeeeee">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"  > </navbar>
-        <list>
-            <cell>
+        <list >
+            <cell :style="{minHeight:screenHeight + 'px'}">
     <div class="setting" v-for="(num,index) in div">
         <div class="titile">
             <text class="tiele">活动设置</text>
@@ -108,11 +108,13 @@
     export default {
         data: function () {
             return{
-                div:[]
+                div:[],
+                screenHeight:0,
             }
         },
         created: function () {
             utils.initIconFont();
+            this.screenHeight = utils.fullScreen(136)+500;
             this.open()
         },
         components: {
@@ -131,24 +133,26 @@
             select:function (num,index) {
                 var _this = this;
                 picker.pick({
-                    index:0,
+                    index:num.begin,
                     items:['vip1','vip2','vip3']
                 },e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            num.vip = 'vip1'
+                            num.vip = 'vip1';
+                            num.begin = e.data;
                         }else if(e.data == 1){
-                            num.vip = 'vip2'
+                            num.vip = 'vip2';
+                            num.begin = e.data;
                         }
                         else{
-                            num.vip = 'vip3'
-
-                        }
-                    }
-                })
+                            num.vip = 'vip3';
+                            num.begin = e.data;
+                        };
+                    };
+                });
             },
             add:function () {
-                this.div.push({amount:'',present:'0',vip:'vip1'})
+                this.div.push({amount:'',present:'0',vip:'vip1',begin:''})
             },
             goback:function () {
                 event.closeURL()
@@ -158,6 +162,13 @@
                 GET('weex/member/topiccard/activity.jhtml',function (mes) {
                     if (mes.type == 'success') {
                         mes.data.forEach(function (item) {
+                            if(item.vip == 'vip1'){
+                                item.begin =0
+                            }if(item.vip == 'vip2'){
+                                item.begin =1
+                            }else {
+                                item.begin =2
+                            }
                             _this.div.push(item)
                         })
                     } else {
