@@ -61,7 +61,6 @@
         </div>
     </scroller>
 </template>
-
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .voteBigBox{
@@ -144,9 +143,7 @@
         background-color: #fff;
     }
 </style>
-
 <script>
-
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     const storage = weex.requireModule('storage');

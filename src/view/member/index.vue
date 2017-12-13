@@ -1,6 +1,6 @@
 
 <template>
-    <scroller class="pageBgColor" show-scrollbar="false"  offset-accuracy="0"   @loadmore="onloading" loadmoreoffset="50" @scroll="scrollHandler" :scrollable="canScroll">
+    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0"   @loadmore="onloading" loadmoreoffset="50" @scroll="scrollHandler" :scrollable="canScroll">
         <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >-->
             <!--<image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>-->
         <!--</refresh>-->

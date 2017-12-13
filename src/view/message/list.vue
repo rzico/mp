@@ -1,14 +1,5 @@
 <template>
     <div class="wrapper">
-        <!--<div class="header">-->
-        <!--<div class="flex-center flex1"></div>-->
-        <!--<div class="nav flex4">-->
-        <!--<text class="nav_title">消息</text>-->
-        <!--</div>-->
-        <!--<div class="flex-center flex1" @click="menu()">-->
-        <!--<text class="menu" :style="{fontFamily:'iconfont'}" >&#xe618;</text>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="header"  :class="[classHeader()]">
             <!--顶部导航-->
             <div class="nav nw">
@@ -26,9 +17,6 @@
         <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list v-else  class="list" :scrollable="canScroll">
-            <refresh class="refresh"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新 ...</text>
-            </refresh>
             <!--朋友信息-->
             <cell v-for="(item,index) in messageList" >
                 <!--左滑删除时如果是直接在cell下 而没有多一个div包住的话 第一次要点删除的文字才能触发。-->
@@ -222,7 +210,6 @@
             return{
                 searchKeyword:'搜索',
                 messageList:[],
-                refreshing: false,
                 canScroll:true,
                 currentNum:0,
                 pageNum:20,
@@ -423,13 +410,13 @@
                 return ((new Date(first.replace(/-/g, "\/"))) > (new Date(second.replace(/-/g, "\/"))));
             },
             //            下拉刷新
-            onrefresh (event) {
-                modal.toast({ message: '加载中...', duration: 1})
-                this.refreshing = true
-                setTimeout(() => {
-                    this.refreshing = false
-                }, 2000)
-            },
+//            onrefresh (event) {
+//                modal.toast({ message: '加载中...', duration: 1})
+//                this.refreshing = true
+//                setTimeout(() => {
+//                    this.refreshing = false
+//                }, 2000)
+//            },
 //            跳转消息列表
             jumpMessage:function(item,index){
 //                event.toast(item);

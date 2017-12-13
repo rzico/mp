@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="wrapper" >
         <!--导航栏-->
         <navbar :title="title"  @goback="goback" ></navbar>
-        <scroller style="background-color: #fff">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
+        <scroller style="background-color: #fff" @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
              <noData :noDataHint="noDataHint" ndBgColor="#fff"  v-if="shareList.length == 0"></noData>
             <!--分享-->
             <div class="lineBox" v-for="item in shareList">
@@ -28,9 +28,6 @@
                 </div>
             </div>
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
     </div>
 </template>
@@ -72,7 +69,7 @@
 <script>
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
-    const event = weex.requireModule('event');
+    import {dom,event,animation} from '../../../weex.js';
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
@@ -82,11 +79,12 @@
             articleId:'',
             shareList:[],
             refreshing: false,
-            showLoading: false,
-            listCurrent: 0,
+            pageStart: 0,
             pageSize: 15,
             screenHeight: 0,
             title:'0人分享',
+            refreshImg:utils.locate('resources/images/loading.png'),
+            hadUpdate:false,
         },
         components: {
             navbar, noData
@@ -157,57 +155,87 @@
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);
             this.articleId = utils.getUrlParameter('articleId');
-            GET('weex/share/list.jhtml?articleId=' + this.articleId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize, function (data) {
-                if(data.type == 'success' && data.data.data != '' ){
-                    _this.title = data.data.recordsTotal + '人分享';
-                    _this.shareList = data.data.data;
-                }else  if(data.type == 'success' && data.data.data == '' ){
-                }else{
-                    event.toast(data.content);
-                }
-            }, function (err) {
-                event.toast(err.content);
-            })
-
+            this.getAllShare();
 
         },
+
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
+        },
         methods: {
+//            获取黑名单列表
+            getAllShare(){
+                let _this = this;
+                GET('weex/share/list.jhtml?articleId=' + this.articleId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize, function (data) {
+                    if(data.type == 'success' && data.data.data != '' ){
+                        if (_this.pageStart == 0) {
+                            _this.shareList = data.data.data;
+                            _this.title = data.data.recordsTotal + '人分享';
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                _this.shareList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else if(data.type == 'success' && data.data.data == '' ){
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+            onloading:function () {
+////            获取黑名单列表
+                this.getAllShare();
+            },
+            onrefresh:function () {
+                var _this = this;
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.getAllShare();
+                }, 1000)
+            },
             goback() {
                 event.closeURL();
-            },
-
-            onrefresh: function () {
-                var _this = this;
-                this.refreshing = true;
-                setTimeout(() => {
-                    this.refreshing = false;
-                }, 50)
             },
             goAuthor(id) {
                 event.openURL(utils.locate("view/topic/index.js?id=" + id), function (message) {
                 });
             },
-            onloading: function () {
-                var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
-                setTimeout(() => {
-                    this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/share/list.jhtml?articleId=' + this.articleId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize, function (data) {
-                        if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.foreach(function (item) {
-                                _this.shareList.push(item);
-                            })
-                        }else if(data.type == 'success' && data.data.data == '' ){
-                        }else{
-                            event.toast(data.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content);
-                    })
-                    _this.showLoading = false;
-                }, 1500)
-            }
         }
     }
 </script>

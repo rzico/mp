@@ -68,22 +68,22 @@ export function SCAN (message,resolve,reject) {
         utils.readScan(message.data,function (data) {
             if(data.type == 'success'){
                 if(data.data.type == '865380'){
-                    let userId = parseInt(data.data.code - 10200);
+                    let userId = parseInt(data.data.code) - 10200;
                     POST('weex/member/friends/add.jhtml?friendId='+ userId).then(
-                        function (data) {
-                            if (data.type == "success") {
+                        function (mes) {
+                            if (mes.type == "success") {
                                 event.toast('添加好友请求已发送,请等待对方验证');
                             } else {
-                                event.toast(data.content);
+                                event.toast(mes.content);
                             }
-                            resolve(data)
+                            resolve(mes)
                         }, function (err) {
                             reject(err);
-                            event.toast(data.content);
+                            event.toast(err.content);
                         }
                     )
                 }else if(data.data.type == 'webView'){
-                    event.openURL(message.data,function (data) {
+                    event.openURL(message.data,function () {
 
                     });
                 }

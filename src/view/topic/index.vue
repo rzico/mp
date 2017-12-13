@@ -1,5 +1,5 @@
 <template>
-    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll">
+    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll"  @loadmore="onloading" loadmoreoffset="50">
         <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
         <!--<image class="gif" resize="cover"-->
         <!--src="file://resources/image/loading.gif"></image>-->
@@ -158,8 +158,8 @@
         <div v-if="isOperation ">
             <div class="mask" @touchstart="maskTouch"></div>
             <div class="operationBox"  style="width: 230px;">
-                <div class="arrow-up" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe608;</text>
+                <div class="arrowUp" >
+                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                 </div>
                 <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="friendStatus=='black'" @click="doBlack()">
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
@@ -177,9 +177,9 @@
             </div>
         </div>
         <!--</div>-->
-        <loading class="loading" @loading="onloading" :display="showLoading">
-            <text class="indicator">Loading ...</text>
-        </loading>
+        <!--<loading class="loading" @loading="onloading" :display="showLoading">-->
+            <!--<text class="indicator">Loading ...</text>-->
+        <!--</loading>-->
     </scroller>
 </template>
 
@@ -572,9 +572,8 @@
 </style>
 
 <script>
-    import {dom,event,storage,stream} from '../../weex.js';
+    import {dom,event,storage,stream,animation} from '../../weex.js';
     const modal = weex.requireModule('modal');
-    const animation = weex.requireModule('animation');
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
     import filters from '../../filters/filters.js'
@@ -595,14 +594,11 @@
                 userSign:'未填写',
                 whichCorpus:0,
                 isNoArticle:false,
-//                refreshing:false,
-//                refreshState:'',
                 collectNum:0,
                 fansNum:0,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.png'),
                 bgImgUrl:utils.locate('resources/images/background.png'),
-//                maskUrl:utils.('resources/images/frosted.png'),
                 showLoading: 'hide',
                 corpusList:[{
                     name:'全部',
@@ -656,9 +652,8 @@
                     }else{
                         _this.friendStatus = data.data.friendStatus;
                     }
-                    let cataLength = data.data.catalogs.length;
 //                                将文集名循环插入数组中
-                    for(let i = 0; i < 4;i++){
+                    for(let i = 0; i < data.data.catalogs.length;i++){
                         _this.corpusList.splice(1 + i,0,data.data.catalogs[i]);
                     }
                     _this.addArticle();

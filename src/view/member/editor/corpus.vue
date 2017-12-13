@@ -1,5 +1,5 @@
 <template>
-    <scroller class="bkg-gray" >
+    <scroller class="wrapper" >
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
         <div class="bgWhite addCorpus">
             <div class="lineStyle pr30" @click="addCorpus()">
@@ -217,7 +217,7 @@
                             })
                         })
                     }
-//                    storage.removeItem(corpus);
+                    storage.removeItem(corpus);
                 })
             }
         },

@@ -1,5 +1,5 @@
 <template>
-    <scroller>
+    <scroller class="wrapper">
         <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.key)" @swipe="onpanmove($event)">
             <div class="atricleHead">
                 <text class="articleTitle">{{item.value.title}}</text>
@@ -28,6 +28,7 @@
         </loading>
     </scroller>
 </template>
+<style lang="less" src="../../style/wx.less"/>
 <style>
 
     .activeClass{

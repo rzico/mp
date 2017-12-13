@@ -2,15 +2,13 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" > </navbar>
         <!--输入栏-->
-        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search" :showCancel="showCancel"  style="height: 96px;padding-top:0px;background-color:#eee" ref="childFind"> </searchNav>
+        <noHeadSearch :searchHint="searchHint" @oninput="oninput" @search="search" :showCancel="showCancel"  ref="childFind"> </noHeadSearch>
         <!--无数据提示-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list class="list" v-if="isNoEmpty()">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                       <!--src="file://resources/images/loading.gif"></image>-->
-                <text class="indicator">{{refreshState}}</text>
-            </refresh>
+        <list class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="50">
+            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--</refresh>-->
             <cell :style="{minHeight:screenHeight + 'px'}">
                 <div v-for="(friend,index) in sortList" >
                     <!--姓氏首字母-->
@@ -38,58 +36,6 @@
                     </div>
                 </div>
             </cell>
-
-            <!--<cell v-for="(friend,index) in sortList" v-else>-->
-                <!--<div v-if="findFriend()">-->
-                    <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
-                    <!--<div class="letterBox" v-if="isRepeat(index)">-->
-                        <!--<text class="nameLetter">{{friend.name | watchLetter}}</text>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;姓氏里每个人的名子&ndash;&gt;-->
-                    <!--<div class="addFriendsBorder">-->
-                        <!--<div class="friendsLine" @click="jump()">-->
-                            <!--<image :src="friend.logo | watchlogo" class="friendsImage"></image>-->
-                            <!--<div class="friendsName">-->
-                                <!--<text class="lineTitle lines-ellipsis">{{friend.name}}</text>-->
-                                <!--<text class="realName">魔篇:{{friend.number | watchNickNmae}}</text>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="status_panel">-->
-                            <!--<text class="ask bkg-primary" v-if="isAsk(friend.status)"  @click="adopt(friend.id)">添加</text>-->
-                            <!--<text class="adopt " v-if="isAdopt(friend.status)">已添加</text>-->
-                            <!--<text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</cell>-->
-            <!--<cell v-for="(friend,index) in friendsList" v-else>-->
-            <!--<div v-if="findFriend(index)">-->
-            <!--&lt;!&ndash;姓氏首字母&ndash;&gt;-->
-            <!--<div class="letterBox" v-if="isRepeat(index)">-->
-            <!--<text class="nameLetter">{{friend.name | watchLetter}}</text>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;姓氏里每个人的名子&ndash;&gt;-->
-            <!--<div class="addFriendsBorder">-->
-            <!--<div class="friendsLine" @click="jump()">-->
-            <!--<image :src="friend.logo" class="friendsImage"></image>-->
-            <!--<div class="friendsName">-->
-            <!--<text class="lineTitle lines-ellipsis">手机通讯录名字1 {{friend.name}}</text>-->
-            <!--<text class="realName">魔篇:{{friend.nickName | watchNickNmae}}</text>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="status_panel">-->
-            <!--<text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>-->
-            <!--<text class="adopt " v-if="isAdopt(friend.status)">已添加</text>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</cell>-->
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                       <!--src="file://resources/images/loading.gif"></image>-->
-                <text class="indicator">加载中...</text>
-                <!--{{loadingState}}-->
-            </loading>
         </list>
     </div>
 </template>
@@ -190,26 +136,22 @@
     }
 </style>
 <script>
-    const event = weex.requireModule('event');
     const phone = weex.requireModule('phone');
     import navbar from '../../include/navbar.vue';
     import { POST, GET } from '../../assets/fetch';
-    import searchNav from '../../include/searchNav.vue';
+    import noHeadSearch from '../../widget/noHeadSearch.vue';
     import noData from '../../include/noData.vue';
     import utils from '../../assets/utils';
     import {getLetter,dictFirstLetter} from '../../assets/letter';
+    import {dom,event,animation} from '../../weex.js';
     export default {
         components: {
-            searchNav,noData,navbar
+            noHeadSearch,noData,navbar
         },
         data() {
             return {
                 refreshing:false,
                 showLoading:false,
-//                keyword:"",
-//                startList:true,
-                loadingState:'',
-//                showLoading:'hide',
                 friendsList:[],
                 initList:[],
                 allLetter:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'],
@@ -218,14 +160,14 @@
                 currentNum:0,
                 pageNum:20,
                 screenHeight:0,
+//                refreshImg:utils.locate('resources/images/loading.png'),
+//                hadUpdate:false,
             }
         },
         props: {
             title: { default: "手机联系人"},
             noDataHint: { default: "无手机联系人" },
             showCancel:{default:false},
-            ptNum:{default:0},
-            hNum:{default:96}
         },
         computed:{
 //            计算属性
@@ -262,6 +204,21 @@
 //            调用通讯录
             this.mailFriend();
         },
+////        dom呈现完执行滚动一下
+//        updated(){
+////            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+//            if(this.hadUpdate){
+//                return;
+//            }
+//            this.hadUpdate = true;
+////            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+//            if(!utils.isIosSystem()){
+//                const el = this.$refs.adoptPull//跳转到相应的cell
+//                dom.scrollToElement(el, {
+//                    offset: -119
+//                })
+//            }
+//        },
         methods:{
 //             获取通讯录好友
             mailFriend(){
@@ -455,28 +412,6 @@
                 setTimeout(() => {
                     this.refreshing = false
                 }, 50)
-
-//                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
-//                        if (data.type == "success") {
-//                            let page = data.data;
-//                            _this.friendsList = page.data;
-//                            _this.start = page.start+page.data.length;
-//                            _this.refreshState = "数据刷新完成";
-//                            setTimeout(() => {
-//                                _this.refreshing = false;
-//                                _this.refreshState = "松开刷新数据";
-//                            }, 500);
-//                        } else {
-//                            _this.refreshing = false;
-//                            _this.refreshState = "松开刷新数据";
-//                            event.toast(data.content);
-//                        }
-//                    },function (err) {
-//                        _this.refreshing = false;
-//                        _this.refreshState = "松开刷新数据";
-//                        event.toast("网络不稳定");
-//                    }
-//                )
             },
             onloading:function () {
                 var _this = this;
@@ -487,32 +422,6 @@
                     _this.showLoading = false;
                 }, 1500)
 
-//                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart='+_this.start,
-//                    function (data) {
-//                        if (data.type == "success") {
-//                            let page = data.data;
-//                            if (page.data.length>0) {
-//                                _this.friendsList.push(page.data);
-//                                _this.start = page.start+page.data.length;
-//                                _this.loadingState = "加载"+page.data.length+"条数据";
-//                            } else {
-//                                _this.loadingState = "亲，没有数据了";
-//                            }
-//                            setTimeout(() => {
-//                                _this.showLoading = false;
-//                                _this.loadingState = "松开加载更多";
-//                            }, 500);
-//                        } else {
-//                            _this.showLoading = false;
-//                            _this.loadingState = "松开加载更多";
-//                            event.toast(weex.data.content);
-//                        }
-//                    },function (err) {
-//                        _this.showLoading = false;
-//                        _this.loadingState = "松开加载更多";
-//                        event.toast("网络不稳定");
-//                    }
-//                )
             },
             //添加好友
             adopt:function (id) {
@@ -520,7 +429,7 @@
                     function (data) {
                         if (data.type == "success") {
                             event.toast(data.content);
-                            _this.onrefresh();
+//                            _this.onrefresh();
                         } else {
                             event.toast(data.content);
                         }
@@ -546,7 +455,7 @@
 
             },
             invite(number){
-                phone.sms(number,'邀请您加入图文分享软件 魔篇。魔篇能帮助您更快的分享文章，让您轻松记录生活。 ',function (data) {
+                phone.sms(number,'邀请您加入图文分享软件。我们能帮助您更快的分享文章，让您轻松记录生活。 ',function (data) {
                 })
             }
         }

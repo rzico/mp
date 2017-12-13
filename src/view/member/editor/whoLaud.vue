@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="wrapper" >
         <navbar :title="title"@goback="goback"></navbar>
-        <scroller  :class="[bgWhite ? 'whiteColor' : '']">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
+        <scroller  :class="[bgWhite ? 'whiteColor' : '']"  @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
                 <!--点赞-->
                 <div class="lineBox"  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
@@ -20,9 +20,6 @@
                     <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
     </div>
 </template>
@@ -75,7 +72,7 @@
 </style>
 <script>
     import navbar from '../../../include/navbar.vue';
-    import {dom,event,storage,stream} from '../../../weex.js';
+    import {dom,event,storage,stream,animation} from '../../../weex.js';
     import utils from '../../../assets/utils';
     import { POST, GET } from '../../../assets/fetch'
     import noData from '../../../include/noData.vue'
@@ -86,12 +83,13 @@
                 bgWhite:false,
                 dataList:[],
                 refreshing:false,
-                showLoading:false,
-                listCurrent:0,
+                pageStart:0,
                 pageSize:15,
                 articleId:'',
                 title:'0人点赞',
-                screenHeight:0
+                screenHeight:0,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         components: {
@@ -102,19 +100,80 @@
             utils.initIconFont();
             this.screenHeight = utils.fullScreen(136);
             this.articleId = utils.getUrlParameter('articleId');
-            GET('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                if(data.type == 'success' && data.data.data != ''){
-                    _this.title = data.data.recordsTotal + '人点赞';
-                    _this.dataList =  data.data.data;
-                }else if(data.type == 'success' && data.data.data == '' ){
-                }else{
-                    event.toast(data.content);
-                }
-            },function (err) {
-                event.toast('网络不稳定');
-            })
+            this.getAllLaud();
+        },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         methods:{
+//            获取点赞列表
+            getAllLaud(){
+                let _this = this;
+                GET('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success' && data.data.data != '' ){
+                        if (_this.pageStart == 0) {
+                            _this.dataList = data.data.data;
+                            _this.title = data.data.recordsTotal + '人点赞';
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                _this.dataList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else if(data.type == 'success' && data.data.data == '' ){
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+            onloading:function () {
+////            获取黑名单列表
+                this.getAllLaud();
+            },
+            onrefresh:function () {
+                var _this = this;
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.getAllLaud();
+                }, 1000)
+            },
+
+
             goback(){
                 event.closeURL();
             },

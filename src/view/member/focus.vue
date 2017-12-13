@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper" >
         <navbar :title="title" @goback="goback" > </navbar>
         <scroller show-scrollbar="false" style="background-color: #ffffff"  @loadmore="onloading" loadmoreoffset="50" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
@@ -27,9 +27,6 @@
                     </div>
                 </div>
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
     </div>
 </template>

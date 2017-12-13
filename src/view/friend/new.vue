@@ -10,13 +10,11 @@
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list  class="list" v-if="isNoEmpty()">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                       <!--src="file://resources/images/loading.gif"></image>-->
-                <text class="indicator">{{refreshState}}</text>
+        <list  class="list" v-if="isNoEmpty()" @loadmore="onloading" loadmoreoffset="50" >
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}">
+            <cell :style="{minHeight:screenHeight + 'px'}"   ref="adoptPull">
                 <div v-for="(friend,index) in friendsList" >
                     <!--姓氏首字母-->
                     <div class="letterBox" v-if="isRepeat(index)">
@@ -38,12 +36,6 @@
                     </div>
                 </div>
             </cell>
-
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <!--<image class="gif" resize="cover"-->
-                       <!--src="file://resources/images/loading.gif"></image>-->
-                <text class="indicator">{{loadingState}}</text>
-            </loading>
         </list>
     </div>
 </template>
@@ -146,12 +138,12 @@
 </style>
 
 <script>
-    import { POST, GET } from '../../assets/fetch'
+    import { POST, GET ,SCAN} from '../../assets/fetch'
     import utils from '../../assets/utils'
     import filters from '../../filters/filters'
-    const event = weex.requireModule('event');
     import navbar from '../../include/navbar.vue';
     import search from '../../include/search.vue';
+    import {dom,event,animation,storage} from '../../weex.js';
     import noData from '../../include/noData.vue';
     export default {
         components: {
@@ -159,14 +151,14 @@
         },
         data() {
             return   {
-                start:0,
+                pageStart:0,
                 refreshing:false,
-                refreshState:"松开刷新数据",
                 showLoading:false,
-                loadingState:"松开加载更多",
                 friendsList:[],
                 screenHeight:0,
-                hadNew:0
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
+                pageSize:20,
             }
         },
         props: {
@@ -180,9 +172,22 @@
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(404);
             var _this = this;
-//            setTimeout(() => {
-            _this.onrefresh();
-//            }, 500);
+            _this.getNewFriends();
+        },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         filters:{
             watchName(value){
@@ -200,7 +205,7 @@
                 });
             },
             goComplete:function () {
-             event.openURL(utils.locate("view/friend/add.js"),function (message) {
+                event.openURL(utils.locate("view/friend/add.js"),function (message) {
 //                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
                     if(message.data != ''){
                         event.closeURL(message);
@@ -221,7 +226,9 @@
 //            触发自组件的二维码方法
             scan:function () {
                 event.scan(function (message) {
-                    event.toast(message);
+                    SCAN(message,function (data) {
+                    },function (err) {
+                    })
                 });
             },
             isNoEmpty:function() {
@@ -254,64 +261,54 @@
                     return false;
                 }
             },
+//            获取所以新朋友列表
+            getNewFriends(){
+                let _this = this;
+                GET('weex/member/friends/list.jhtml?pageSize='+ _this.pageSize + '&pageStart='+_this.pageStart, function(data) {
+                    if (data.type == 'success' && data.data.data != '') {
+                        if (_this.pageStart == 0) {
+                            _this.friendsList = data.data.data;
+                        } else {
+                            data.data.data.forEach(function (item) {
+                                _this.friendsList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    } else if (data.type == 'success' && data.data.data == '') {
+                    } else {
+                        event.toast(data.content);
+                    };
+                });
+            },
             onrefresh:function () {
                 var _this = this;
-                _this.refreshing = true;
-                _this.refreshState = "正在刷新数据";
-                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
-//                    utils.debug('onrefresh:');
-//                    utils.debug(data);
-                        if (data.type == "success") {
-                            let page = data.data;
-                            _this.friendsList = page.data;
-                            _this.start = page.start+page.data.length;
-                            _this.refreshState = "数据刷新完成";
-                            setTimeout(() => {
-                                _this.refreshing = false;
-                                _this.refreshState = "松开刷新数据";
-                            }, 500);
-                        } else {
-                            _this.refreshing = false;
-                            _this.refreshState = "松开刷新数据";
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        _this.refreshing = false;
-                        _this.refreshState = "松开刷新数据";
-                        event.toast("网络不稳定");
-                    }
-                )
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.getNewFriends();
+                }, 1000)
             },
             onloading:function () {
-                var _this = this;
-                _this.showLoading = true;
-                _this.loadingState = "正在加载数据";
-                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart='+_this.start,
-                    function (data) {
-                        if (data.type == "success") {
-                            let page = data.data;
-                            if (page.data.length>0) {
-                                _this.friendsList.push(page.data);
-                                _this.start = page.start+page.data.length;
-                                _this.loadingState = "加载"+page.data.length+"条数据";
-                            } else {
-                                _this.loadingState = "亲，没有数据了";
-                            }
-                            setTimeout(() => {
-                                _this.showLoading = false;
-                                _this.loadingState = "松开加载更多";
-                            }, 500);
-                        } else {
-                            _this.showLoading = false;
-                            _this.loadingState = "松开加载更多";
-                            event.toast(weex.data.content);
-                        }
-                    },function (err) {
-                        _this.showLoading = false;
-                        _this.loadingState = "松开加载更多";
-                        event.toast("网络不稳定");
-                    }
-                )
+                this.getNewFriends();
             },
             jump:function () {
                 event.toast("网络不稳定");
@@ -329,7 +326,7 @@
                     function (data) {
                         if (data.type == "success") {
                             event.toast(data.content);
-                            _this.hadNew = 1;
+                            storage.setItem('hadNew','1');
                             _this.onrefresh();
                         } else {
                             event.toast(data.content);

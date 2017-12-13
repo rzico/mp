@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
-        <scroller  style="background-color: #fff;">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
+        <scroller  style="background-color: #fff;"  @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="reviewList.length == 0"></noData>
                 <!--导航栏-->
                 <div class="lineBox" v-else v-for="(item,index) in reviewList">
@@ -26,9 +26,6 @@
                     </div>
                 </div>
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
     </div>
 </template>
@@ -80,7 +77,7 @@
 <script>
     import navbar from '../../include/navbar.vue';
     import utils from '../../assets/utils';
-    const event = weex.requireModule('event');
+    import {dom,event,animation} from '../../weex.js';
     const modal = weex.requireModule('modal');
     import { POST, GET } from '../../assets/fetch';
     import filters from '../../filters/filters.js';
@@ -92,11 +89,11 @@
             screenHeight:0,
             reviewList:[],
             refreshing:false,
-            showLoading:false,
-            listCurrent:0,
+            pageStart:0,
             pageSize:15,
-            refreshState:'',
             reviewNum:0,
+            refreshImg:utils.locate('resources/images/loading.png'),
+            hadUpdate:false,
         },
         props:{
             noDataHint:{default:'暂无评论'},
@@ -111,17 +108,23 @@
             this.articleId = utils.getUrlParameter('articleId');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(136);
-            this.refresh();
+            this.getAllReview();
 
         },
         methods:{
-//            刷新和获取数据
-            refresh(){
+//            获取所以评论列表
+            getAllReview(){
                 let _this = this;
-                GET('weex/member/review/list.jhtml?pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/member/review/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
-                        _this.reviewList = data.data.data;
-//                        _this.reviewNum = data.data.recordsTotal;
+                        if (_this.pageStart == 0) {
+                            _this.reviewList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                _this.reviewList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
                     }else if(data.type == 'success' && data.data.data == '' ){
                     }else{
                         event.toast(data.content);
@@ -130,37 +133,40 @@
                     event.toast(err.content);
                 })
             },
-            goback(){
-                event.closeURL();
+            onloading:function () {
+////            获取黑名单列表
+                this.getAllReview();
             },
             onrefresh:function () {
                 var _this = this;
-                this.refreshing = true
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
                 setTimeout(() => {
-                    this.refresh();
-                    this.refreshing = false
-                }, 500)
-            },
-            onloading:function () {
-                var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
-                setTimeout(() => {
-                    this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/member/review/list.jhtml?pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                        if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.foreach(function (item) {
-                                _this.reviewList.push(item);
-                            })
-                        }else if(data.type == 'success' && data.data.data == '' ){
-                        }else{
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        event.toast(err.content);
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
                     })
-                    _this.showLoading = false;
-                }, 1500)
+                    this.refreshing = false
+                    _this.getAllReview();
+                }, 1000)
+            },
+            goback(){
+                event.closeURL();
             },
 //            前往作者专栏
             goAuthor(id){

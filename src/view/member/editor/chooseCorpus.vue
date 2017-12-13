@@ -1,5 +1,5 @@
 <template>
-    <scroller class="bkg-gray" >
+    <scroller class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="bgWhite addCorpus "  @click="addCorpus()">
             <div class="lineStyle pr30" >

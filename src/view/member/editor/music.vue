@@ -1,5 +1,5 @@
 <template>
-    <div  @viewdisappear="viewdisappear()">
+    <div  @viewdisappear="viewdisappear()" class="wrapper" >
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
         <list class="wrapperBox" >
             <cell>
