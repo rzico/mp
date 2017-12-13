@@ -319,7 +319,7 @@
         },
         methods: {
             employee:function () {
-                event.openURL(utils.locate("view/shop/employee/list.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {});
             },
             shop:function () {
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {

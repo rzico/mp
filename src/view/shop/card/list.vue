@@ -227,9 +227,7 @@
 //            setTimeout(() => {
 //            _this.onrefresh();
 //            }, 500);
-            this.open(function () {
-
-            });
+            this.open();
         },
         //        dom呈现完执行滚动一下
         updated(){

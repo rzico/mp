@@ -21,18 +21,19 @@
                                 <image :src="num.logo" class="friendsImage"></image>
                             </div>
                             <div class="friendsName">
-                                <text class="lineTitle ">手机号:{{num.mobile}}</text>
-                                <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                    <text class="realName">{{num.name}}(店铺:{{num.shopName}}   职位:{{num.roleName}})</text>
-                                </div>
+                                <text class="lineTitle ">{{num.name}}:{{num.mobile}}</text>
+
+                                <text class="realName">店铺:{{num.shopName}}</text>
+                                <text class="realName">职位:{{num.roleName}}</text>
+
                             </div>
                         </div>
                         <div class="bottomBotton">
-                            <div style="margin-right: 20px;border-radius: 5px;border-width: 1px;" @click="popup(num.id,num.shopId)">
-                                <text style="font-size: 32px;">选择店铺</text>
+                            <div class="button" @click="popup(num.id,num.shopId)">
+                                <text class="sub_title">选择店铺</text>
                             </div>
-                            <div style="border-color:red;border-radius: 5px;border-width:1px;"@click="selectPosition(num.id,num.shopId)">
-                                <text style="font-size: 32px;color:red;">选择职位</text>
+                            <div class="button"@click="selectPosition(num.id,num.shopId)">
+                                <text class="sub_title">选择职位</text>
                             </div>
                         </div>
                     </div>
@@ -41,19 +42,19 @@
         </list>
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center;justify-content: center;height: 70px">
-                <text class="fz30 " style="color: #444">选择所属店铺</text>
+                <text class="fz30 " style="color: #444">选择所在店铺</text>
             </div>
             <list>
                 <cell>
                 <div  class="message" v-for="num in shops" @click="allotment(num.id)">
                     <div class="shopLogo" >
+                        <text class="shopCheck" :style="{fontFamily:'iconfont'}" v-if="storeId == num.id">&#xe64d;</text>
                         <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor "></image>
                     </div>
                     <div class="shopInformation">
                         <div class="shopNameDiv">
                             <text class="shopName">店铺名：</text>
                             <text class="fullName">{{num.name}}</text>
-                            <text class="shopCheck" :style="{fontFamily:'iconfont'}" v-if="storeId == num.id">&#xe64d;</text>
                         </div>
                         <div class="shopAddressDiv">
                             <text class="shopAddress">地址：</text>
@@ -77,7 +78,26 @@
 <style lang="less" src="../../../style/wx.less"/>
 <style>
     .bottomBotton{
-        flex-direction: row;justify-content: flex-end;align-items:flex-end;padding-right: 30px; border-top-width: 1px;border-color: #eeeeee;
+        flex-direction: row;justify-content: flex-end;align-items:flex-end;
+        padding-right: 30px;
+    }
+    .button {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-right: 20px;
+        border-width: 1px;
+        border-radius: 5px;
+        border-color: #ccc;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color:#EB4E40;
+
+        height:50px;
+        line-height: 50px;
+        align-items: center;
+        justify-content: center;
     }
 
     .cancelBox{
@@ -112,6 +132,10 @@
         font-weight: bold;
         font-size: 32px;
     }
+    .shopCheck {
+        font-size: 48px;
+        color:red;
+    }
     .fullName{
         font-size: 32px;
     }
@@ -131,6 +155,8 @@
     }
     .shopLogo{
         margin-left: 20px;
+        flex-direction: row;
+        align-items: center;
     }
     .deleteText{
         font-size: 32px;color: #fff;
@@ -163,7 +189,7 @@
     }
 
     .friendsName{
-        height:90px;
+        height:130px;
         margin-top: 15px;
         justify-content: space-between;
     }
@@ -191,7 +217,7 @@
     }
     .friendsLine{
         padding-left: 30px;
-        height:120px;
+        height:140px;
         background-color: #fff;
         flex-direction: row;
         flex:5;
@@ -227,7 +253,6 @@
                 start:0,
                 refreshing:false,
                 showLoading:false,
-                friendsList:[],
                 lists:[],
                 shops:[],
                 roles:[{id:0,name:"4e"}],
@@ -281,18 +306,29 @@
         },
         methods: {
             roleof:function(id) {
-              for (var i=0;i<this.roles.length;i++) {
-                  if (this.roles[i].id==id) {
+                var _this = this;
+              for (var i=0;i<_this.roles.length;i++) {
+                  if (_this.roles[i].id==id) {
                       return i;
                   }
               }
               return -1;
             },
+            rolePicker:function() {
+                var _this = this;
+                var rs = [];
+                for (var i=0;i<this.roles.length;i++) {
+                   rs.push(_this.roles[i].name);
+                }
+
+                return rs;
+            },
 //            获取员工职位
             huoqu:function(){
+                var _this = this;
                 GET('weex/member/role/list.jhtml', function (mes) {
                     if (mes.type == 'success') {
-                        utils.debug(mes)
+                        _this.roles = mes.data;
                     } else {
                         event.toast(mes.content);
                     }
@@ -304,43 +340,20 @@
             selectPosition:function (id,shopId) {
                 var _this = this;
                 picker.pick({
-                    index:_this.begin,
-                    items:['管理员','运营商','代理商','推广员']
+                    index:_this.roleof(id),
+                    items:_this.rolePicker()
                 }, e => {
                     if (e.result == 'success') {
-                        if (e.data == 0){
-                            _this.position = '管理员';
-                            _this.positionId =1;
-                            _this.begin = e.data
-                        }else if(e.data == 1){
-                            _this.position = '运营商';
-                            _this.positionId =2;
-                            _this.begin = e.data
-                        }else if(e.data == 2){
-                            _this.position = '代理商';
-                            _this.positionId =3;
-                            _this.begin = e.data
-                        }
-                        else{
-                            _this.position = '推广员';
-                            _this.positionId =4;
-                            _this.begin = e.data
-                        }
-                        POST('weex/member/admin/update.jhtml?id=' +id+'&shopId='+shopId+'&roleId='+_this.positionId).then(
+                        POST('weex/member/admin/update.jhtml?id=' +id+'&shopId='+shopId+'&roleId='+_this.roles[e.data].id).then(
                             function (mes) {
 
                                 if (mes.type == "success") {
-                                    if(mes.data.roleId == 0){
-                                        _this.position ='未分配'
-                                    }else if(mes.data.roleId == 1){
-                                        _this.begin =0
-                                    }else if(mes.data.roleId == 2){
-                                        _this.begin =1
-                                    }else if(mes.data.roleId == 3){
-                                        _this.begin =2
-                                    }else {
-                                        _this.begin =3
-                                    }
+                                    _this.lists.forEach(function(item){
+                                        if (item.id==mes.data.id) {
+                                            item.roleId = mes.data.roleId;
+                                            item.roleName = mes.data.roleName;
+                                        }
+                                    })
                                 } else {
                                     event.toast(mes.content);
                                 }
