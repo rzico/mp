@@ -15,7 +15,7 @@
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
-                    <div class="addFriendsBorder" @click="popup(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                    <div class="addFriendsBorder"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
                         <div class="friendsLine">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
@@ -23,8 +23,16 @@
                             <div class="friendsName">
                                 <text class="lineTitle ">手机号:{{num.mobile}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                    <text class="realName">{{num.name}}(店铺:{{num.shopName}})</text>
+                                    <text class="realName">{{num.name}}(店铺:{{num.shopName}}   职位:{{num.roleName}})</text>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="bottomBotton">
+                            <div style="margin-right: 20px;border-radius: 5px;border-width: 1px;" @click="popup(num.id,num.shopId)">
+                                <text style="font-size: 32px;">选择店铺</text>
+                            </div>
+                            <div style="border-color:red;border-radius: 5px;border-width:1px;"@click="selectPosition(num.id,num.shopId)">
+                                <text style="font-size: 32px;color:red;">选择职位</text>
                             </div>
                         </div>
                     </div>
@@ -33,7 +41,7 @@
         </list>
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center;justify-content: center;height: 70px">
-                <text class="fz30 " style="color: #444">分配所属门店</text>
+                <text class="fz30 " style="color: #444">选择所属店铺</text>
             </div>
             <list>
                 <cell>
@@ -45,6 +53,7 @@
                         <div class="shopNameDiv">
                             <text class="shopName">店铺名：</text>
                             <text class="fullName">{{num.name}}</text>
+                            <text class="shopCheck" :style="{fontFamily:'iconfont'}" v-if="storeId == num.id">&#xe64d;</text>
                         </div>
                         <div class="shopAddressDiv">
                             <text class="shopAddress">地址：</text>
@@ -67,6 +76,10 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .bottomBotton{
+        flex-direction: row;justify-content: flex-end;align-items:flex-end;padding-right: 30px; border-top-width: 1px;border-color: #eeeeee;
+    }
+
     .cancelBox{
         width: 730px;align-items: center;height:100px;background-color: #eee;justify-content: center;
     }
@@ -173,8 +186,8 @@
         border-style: solid;
         border-color: rgba(153,153,153,0.2);
         justify-content: space-between;
-        flex-direction: row;
-        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
     }
     .friendsLine{
         padding-left: 30px;
@@ -198,6 +211,7 @@
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     const modal = weex.requireModule('modal');
+    const picker = weex.requireModule('picker');
     import {dom,event,animation} from '../../../weex.js';
     import navbar from '../../../include/navbar.vue';
     import search from '../../../include/search.vue';
@@ -216,6 +230,7 @@
                 friendsList:[],
                 lists:[],
                 shops:[],
+                roles:[{id:0,name:"4e"}],
                 screenHeight:0,
                 pageSize:10,
                 pageStart:0,
@@ -224,6 +239,9 @@
                 isPopup:false,
 //                点击弹窗获取的员工id存入此变量
                 memberId:'',
+                positionId:0,
+                position:'',
+                storeId:'',
                 canScroll:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
@@ -240,6 +258,7 @@
             this.screenHeight = utils.fullScreen(236);
             this.open();
             this.openTwo()
+            this.huoqu()
         },
         //        dom呈现完执行滚动一下
         updated(){
@@ -261,9 +280,81 @@
 
         },
         methods: {
+            roleof:function(id) {
+              for (var i=0;i<this.roles.length;i++) {
+                  if (this.roles[i].id==id) {
+                      return i;
+                  }
+              }
+              return -1;
+            },
+//            获取员工职位
+            huoqu:function(){
+                GET('weex/member/role/list.jhtml', function (mes) {
+                    if (mes.type == 'success') {
+                        utils.debug(mes)
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+//            选择职位
+            selectPosition:function (id,shopId) {
+                var _this = this;
+                picker.pick({
+                    index:_this.begin,
+                    items:['管理员','运营商','代理商','推广员']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.position = '管理员';
+                            _this.positionId =1;
+                            _this.begin = e.data
+                        }else if(e.data == 1){
+                            _this.position = '运营商';
+                            _this.positionId =2;
+                            _this.begin = e.data
+                        }else if(e.data == 2){
+                            _this.position = '代理商';
+                            _this.positionId =3;
+                            _this.begin = e.data
+                        }
+                        else{
+                            _this.position = '推广员';
+                            _this.positionId =4;
+                            _this.begin = e.data
+                        }
+                        POST('weex/member/admin/update.jhtml?id=' +id+'&shopId='+shopId+'&roleId='+_this.positionId).then(
+                            function (mes) {
+
+                                if (mes.type == "success") {
+                                    if(mes.data.roleId == 0){
+                                        _this.position ='未分配'
+                                    }else if(mes.data.roleId == 1){
+                                        _this.begin =0
+                                    }else if(mes.data.roleId == 2){
+                                        _this.begin =1
+                                    }else if(mes.data.roleId == 3){
+                                        _this.begin =2
+                                    }else {
+                                        _this.begin =3
+                                    }
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
+                    }
+                })
+            },
 //            分配店铺
             allotment:function (id) {
-                let _this =this
+                let _this =this;
+
                 POST('weex/member/admin/update.jhtml?id='+_this.memberId+'&shopId='+id).then(
                     function (mes) {
                         if (mes.type == "success") {
@@ -271,8 +362,8 @@
                                 if (item.id==mes.data.id) {
                                     item.shopName  = mes.data.shopName;
                                 }
-
-                            })
+                            });
+                            _this.onrefresh()
                             _this.isPopup =false;
                             modal.alert({
                                 message: mes.content,
@@ -370,30 +461,31 @@
             open:function () {
                 var _this = this;
                 GET('weex/member/admin/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
-                    if (mes.type == 'success') {
-                        if (_this.pageStart==0) {
-                            mes.data.data.forEach(function(item){
-                                if(item.shopName == '未分配'){
-                                    item.shopName ='点击分配店铺'
-                                }
-                            });
-                            _this.lists = mes.data.data;
-                        } else {
-                            mes.data.data.forEach(function(item){
-                                if(item.shopName == '未分配'){
-                                    item.shopName ='点击分配店铺'
-                                }
-                                _this.lists.push(item);
-                            })
-                        }
-                        _this.pageStart = mes.data.start+mes.data.data.length;
+                    utils.debug(mes)
+                if (mes.type == 'success') {
+                    if (_this.pageStart==0) {
+                        mes.data.data.forEach(function(item){
+                            if(item.shopName == '未分配'){
+                                item.shopName ='点击分配店铺'
+                            }
+                        });
+                        _this.lists = mes.data.data;
                     } else {
-                        event.toast(mes.content);
+                        mes.data.data.forEach(function(item){
+                            if(item.shopName == '未分配'){
+                                item.shopName ='点击分配店铺'
+                            }
+                            _this.lists.push(item);
+                        })
                     }
-                }, function (err) {
-                    event.toast(err.content)
-                })
-            },
+                    _this.pageStart = mes.data.start+mes.data.data.length;
+                } else {
+                    event.toast(mes.content);
+                }
+            }, function (err) {
+                event.toast(err.content)
+            })
+    },
 //            店铺列表
             openTwo:function () {
                 let _this = this;
@@ -408,8 +500,9 @@
                 })
             },
 //            触发店铺列表
-            popup:function (id) {
+            popup:function (id,shopId) {
                 this.memberId = id;
+                this.storeId = shopId
                 if (this.isPopup==false) {
                     this.isPopup = true;
                 }
