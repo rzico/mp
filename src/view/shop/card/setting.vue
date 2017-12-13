@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #eeeeee">
+    <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"  > </navbar>
         <list >
             <cell :style="{minHeight:screenHeight + 'px'}">
