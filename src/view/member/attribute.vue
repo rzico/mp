@@ -64,7 +64,7 @@
                         <text class="title ml10">个性签名</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title" style="width:300px;lines:1;text-overflow:ellipsis;">{{autograph}}</text>
+                        <text class="sub_title" style="width:300px;lines:1;text-overflow:ellipsis; text-align: right">{{autograph}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -282,7 +282,7 @@
                         POST('weex/member/update.jhtml?birth=' +e.data).then(
                             function (mes) {
                                 if (mes.type == "success") {
-                                    _this.birthday = "已设置";
+                                    _this.birthday =e.data
                                 } else {
                                     event.toast(mes.content);
                                 }
@@ -396,11 +396,11 @@
                 } else {
                     _this.autograph = "未填写";
                 }
-                if (attr.birthday!=null && attr.birthday!="") {
-                    _this.birthday = "已设置";
-                } else {
-                    _this.birthday = "未设置";
-                }
+//                if (attr.birthday!=null && attr.birthday!="") {
+//                    _this.birthday = "已设置";
+//                } else {
+//                    _this.birthday = "未设置";
+//                }
                 if (attr.hasPassword!=null && attr.hasPassword) {
                     _this.hasPassword = "已设置";
                 } else {
