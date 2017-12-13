@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="inputBox">
             <input type="text" placeholder="写下你的评论..." v-model="reviewWord" autofocus="true" class="reviewInput"  />
@@ -7,11 +7,11 @@
                 <text class="sendText">发送</text>
             </div>
         </div>
-        <scroller  style="background-color: #fff;">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
+        <scroller  style="background-color: #fff;"  @loadmore="onloading" loadmoreoffset="50" >
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="reviewList.length == 0"></noData>
                 <!--导航栏-->
                 <div class="lineBox" v-else v-for="(item,index) in reviewList">
@@ -28,23 +28,6 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="lineBox" >-->
-            <!--<div class="flexRow">-->
-            <!--<image class="headImg" src="https://gd1.alicdn.com/bao/uploaded/i1/TB1PXJCJFXXXXciXFXXXXXXXXXX_!!0-item_pic.jpg"></image>-->
-            <!--<div class="userInfo">-->
-            <!--<text class="fz32 nameColor" >小白分</text>-->
-            <!--<text class="infoText">是啊</text>-->
-            <!--<div class="reviewContent">-->
-            <!--<text class="reviewUser">@飘窗:</text>-->
-            <!--<text class="reviewText">很漂亮</text>-->
-            <!--</div>-->
-            <!--<text class="sub_title mt20">07-13</text>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
     </div>
 </template>
@@ -140,7 +123,7 @@
 <script>
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
-    const event = weex.requireModule('event');
+    import {dom,event,animation} from '../../../weex.js';
     const modal = weex.requireModule('modal');
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
@@ -154,11 +137,12 @@
             reviewList:[],
             refreshing:false,
             showLoading:false,
-            listCurrent:0,
+            pageStart:0,
             pageSize:15,
-            refreshState:'',
             reviewNum:0,
             selfId:'',
+            refreshImg:utils.locate('resources/images/loading.png'),
+            hadUpdate:false,
         },
         props:{
             noDataHint:{default:'暂无评论'},
@@ -177,17 +161,39 @@
             this.articleId = utils.getUrlParameter('articleId');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(236);
-            this.refresh();
+            this.getAllReview();
 
+        },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         methods:{
 //            刷新和获取数据
-            refresh(){
+            getAllReview(){
                 let _this = this;
-                GET('weex/review/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/review/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
-                        _this.reviewList = data.data.data;
-                        _this.reviewNum = data.data.recordsTotal;
+                        if (_this.pageStart == 0) {
+                            _this.reviewList = data.data.data;
+                            _this.reviewNum = data.data.recordsTotal;
+                        } else {
+                            data.data.data.forEach(function (item) {
+                                _this.reviewList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
                     }else if(data.type == 'success' && data.data.data == '' ){
                     }else{
                         event.toast(data.content);
@@ -196,6 +202,7 @@
                     event.toast(err.content);
                 })
             },
+
             goback(){
                 event.closeURL();
             },
@@ -223,32 +230,33 @@
             },
             onrefresh:function () {
                 var _this = this;
-                this.refreshing = true
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
                 setTimeout(() => {
-                    this.refresh();
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
                     this.refreshing = false
-                }, 500)
+                    _this.getAllReview();
+                }, 1000)
             },
             onloading:function () {
-                var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
-                setTimeout(() => {
-                    this.listCurrent = this.listCurrent + this.pageSize;
-                    GET('weex/review/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                        if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.foreach(function (item) {
-                                _this.reviewList.push(item);
-                            })
-                        }else if(data.type == 'success' && data.data.data == '' ){
-                        }else{
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        event.toast(err.content);
-                    })
-                    _this.showLoading = false;
-                }, 1500)
+                this.getAllReview();
             },
 //            前往作者专栏
             goAuthor(id){

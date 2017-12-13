@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrapper" >
         <navbar :title="title" @goback="goback" > </navbar>
         <scroller style="background-color: #fff;" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">

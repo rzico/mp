@@ -106,11 +106,10 @@
                     <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                     <text class="fz28 pl10">作者主页</text>
                 </div>
-                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
-                <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
-                <!--<text class="fz28 pl10">举报</text>-->
-                <!--</div>-->
-
+                <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
+                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                    <text class="fz28 pl10">分享</text>
+                </div>
             </div>
         </div>
         <!--动画无效-->

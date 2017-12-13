@@ -50,7 +50,7 @@
             </div>
         </div>
         <!--数据显示-->
-        <scroller v-if="isSearch">
+        <scroller v-if="isSearch"  @loadmore="onloading" loadmoreoffset="50" >
             <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
                 <!--<text class="indicator">{{refreshState}}</text>-->
             <!--</refresh>-->
@@ -159,9 +159,9 @@
                     </div>
                 </div>
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
+            <!--<loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">-->
+                <!--<text class="indicator">加载中...</text>-->
+            <!--</loading>-->
         </scroller>
     </div>
 </template>
@@ -372,7 +372,7 @@
                     friend:[],
                     article:[]
                 },
-                listCurrent:0,
+                pageStart:0,
                 pageSize:15,
                 friendsList:[],
                 historyList:[],
@@ -470,7 +470,7 @@
                 if(this.keyword.length == 0 ){
                     this.getHistory();
                 };
-                this.listCurrent=0;
+                this.pageStart=0;
                 this.pageSize=15;
             },
 //            读取缓存的搜索历史
@@ -533,7 +533,7 @@
 //            用户专栏搜索
             userSearch(){
                 let _this = this;
-                GET('weex/topic/search.jhtml.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/topic/search.jhtml.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != ''){
                         _this.searchList.friend = data.data.data;
                     }else if(data.type == 'success' && data.data.data == ''){
@@ -547,7 +547,7 @@
 //            文章搜索
             articleSearch(){
                 let _this = this;
-                GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
 
                     if(data.type == 'success' && data.data.data != ''){
                         _this.searchList.article = data.data.data;
@@ -623,7 +623,7 @@
                     friend:[],
                     article:[]
                 };
-                this.listCurrent=0;
+                this.pageStart=0;
                 this.pageSize=15;
                 switch (itemType){
                     case 1:
@@ -650,7 +650,7 @@
                     friend:[],
                     article:[]
                 };
-                this.listCurrent=0;
+                this.pageStart=0;
                 this.pageSize=15;
                 switch (index){
                     case 0 :
@@ -726,18 +726,18 @@
 //            上拉加载
             onloading:function () {
                 var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
                 setTimeout(() => {
                     if(_this.whichCorpus == 0){
 
                     }else if(_this.whichCorpus == 1){//文章的上啦加载
-                        _this.pageSize = _this.listCurrent + _this.pageSize;
-                        GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
+                        GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + _this.pageStart + '&pageSize=' + _this.pageSize,function (data) {
                             if(data.type == 'success' && data.data.data != ''){
                                 data.data.data.forEach(function (item) {
                                     _this.searchList.article.push(item);
                                 });
+
+                                _this.pageStart = data.data.start + data.data.data.length;
+
                             }else if(data.type == 'success' && data.data.data == ''){
                             }else{
                                 event.toast(data.content);
@@ -745,13 +745,13 @@
                         },function (err) {
                             event.toast(err.content);
                         });
-                    }else if(_this.whichCorpus == 2){//文章的下拉刷新
-                        _this.pageSize = _this.listCurrent + _this.pageSize;
-                        GET('weex/topic/search.jhtml.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
+                    }else if(_this.whichCorpus == 2){//专栏的上啦加载
+                        GET('weex/topic/search.jhtml.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + _this.pageStart + '&pageSize=' + _this.pageSize,function (data) {
                             if(data.type == 'success' && data.data.data != ''){
                                 data.data.data.forEach(function (item) {
                                     _this.searchList.friend.push(item);
                                 });
+                           _this.pageStart = data.data.start + data.data.data.length;
                             }else if(data.type == 'success' && data.data.data == ''){
                             }else{
                                 event.toast(data.content);
@@ -760,8 +760,6 @@
                             event.toast(err.content);
                         });
                     }
-
-                    _this.showLoading = false;
                 }, 1500)
             },
 //            跳转文章

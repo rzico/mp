@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper card_bg" :class="[isShow ? 'isvisible' : 'novisible'] ">
+    <div class="wrapper card_bg" @click="close()" :class="[isShow ? 'isvisible' : 'novisible'] ">
         <div class="card">
             <div class="card_header">
                     <div class="flex-start">

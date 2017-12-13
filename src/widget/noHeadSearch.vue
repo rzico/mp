@@ -1,5 +1,6 @@
+<!--手机通讯录顶部导航栏。不是导航栏但是又要实现搜索功能。如果用include的searchNav 样式无法完美实现。在搜索过后会导致样式丢失，所以重新扩展一个小组件-->
 <template>
-    <div class="header search" :class="[classHeader()]" >
+    <div class="search"  >
         <div class="search_box flex5" >
             <div class="flex-start">
                 <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
@@ -18,7 +19,11 @@
     .search {
         position:sticky;
         background:#eee;
-        /*height: 100px;*/
+        height: 96px;
+        flex-direction: row;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-color:#ccc;
     }
     .search_box {
         margin-top:20px;
@@ -66,10 +71,6 @@
             showCancel:{default:true},
         },
         methods: {
-            classHeader:function () {
-                let dc = utils.device();
-                return dc
-            },
             goback:function (e) {
                 event.closeURL();
             },

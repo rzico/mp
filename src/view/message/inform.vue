@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="wrapper" >
         <navbar :title="title"@goback="goback"></navbar>
-        <scroller  :class="[bgWhite ? 'whiteColor' : 'bkg-gray']">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
+        <scroller  :class="[bgWhite ? 'whiteColor' : 'bkg-gray']" @loadmore="onloading" loadmoreoffset="50" >
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
@@ -96,52 +96,49 @@
                 </div>
                 <!--赞赏-->
                 <!--<div class="lineBox"  v-if="messageType == 'gm_10207'" v-for="item in dataList">-->
-                    <!--<div class="flex-row">-->
-                        <!--<image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>-->
-                        <!--<div class="userInfo">-->
-                            <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                            <!--<text   class="infoText" >{{item.content}}</text>-->
-                            <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>-->
+                <!--<div class="userInfo">-->
+                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
+                <!--<text   class="infoText" >{{item.content}}</text>-->
+                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
                 <!--分享提醒-->
                 <!--<div class="lineBox"  v-if="messageType == 'gm_10208'" v-for="item in dataList">-->
-                    <!--<div class="flex-row">-->
-                        <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                        <!--<div class="userInfo">-->
-                            <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                            <!--<text   class="infoText" >{{item.content}}</text>-->
-                            <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
+                <!--<div class="userInfo">-->
+                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
+                <!--<text   class="infoText" >{{item.content}}</text>-->
+                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
                 <!--添加好友-->
                 <!--<div class="lineBox"  v-if="messageType == 'gm_10209'" v-for="item in dataList">-->
-                    <!--<div class="flex-row">-->
-                        <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                        <!--<div class="userInfo">-->
-                            <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                            <!--<text   class="infoText" >{{item.content}}</text>-->
-                            <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
+                <!--<div class="userInfo">-->
+                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
+                <!--<text   class="infoText" >{{item.content}}</text>-->
+                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
                 <!--&lt;!&ndash;同意好友&ndash;&gt;-->
                 <!--<div class="lineBox"  v-if="messageType == 'gm_10210'" v-for="item in dataList">-->
-                    <!--<div class="flex-row">-->
-                        <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                        <!--<div class="userInfo">-->
-                            <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                            <!--<text   class="infoText" >{{item.content}}</text>-->
-                            <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
+                <!--<div class="userInfo">-->
+                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
+                <!--<text   class="infoText" >{{item.content}}</text>-->
+                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-                <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
     </div>
 </template>
@@ -274,7 +271,7 @@
 </style>
 <script>
     import navbar from '../../include/navbar.vue';
-    import {dom,event,storage,stream} from '../../weex.js';
+    import {dom,event,storage,stream,animation} from '../../weex.js';
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
     import noData from '../../include/noData.vue'
@@ -286,10 +283,11 @@
                 bgWhite:false,
                 dataList:[],
                 refreshing:false,
-                showLoading:false,
-                listCurrent:0,
+                pageStart:0,
                 pageSize:15,
-                screenHeight:0
+                screenHeight:0,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         components: {
@@ -366,24 +364,39 @@
                     this.bgWhite = false;
                     break;
             }
-            GET('weex/member/message/list.jhtml?userId=' + this.messageType +'&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,
-                function (data) {
-                    if(data.type == 'success' && data.data.data != ''){
-                        data.data.data.forEach(function(item){
-                            if(!utils.isNull(item.ext)){
-                                item.ext = JSON.parse(item.ext);
-                            }
-                        _this.dataList.push(item);
-                        })
-                    }else if(data.type == 'success' && data.data.data == '' ){
-                    }else{
-                        event.toast(data.content);
-                    }
-                },function (err) {
-                    event.toast('网络不稳定');
-                })
+            this.getAllInform();
         },
         methods:{
+//            获取所以消息
+            getAllInform(){
+                let _this = this;
+                GET('weex/member/message/list.jhtml?userId=' + this.messageType +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,
+                    function (data) {
+                        if(data.type == 'success' && data.data.data != ''){
+                            if (_this.pageStart == 0) {
+                                data.data.data.forEach(function(item) {
+                                    if (!utils.isNull(item.ext)) {
+                                        item.ext = JSON.parse(item.ext);
+                                    }
+                                })
+                                _this.dataList = data.data.data;
+                            }else{
+                                data.data.data.forEach(function(item){
+                                    if(!utils.isNull(item.ext)){
+                                        item.ext = JSON.parse(item.ext);
+                                    }
+                                    _this.dataList.push(item);
+                                })
+                            }
+                            _this.pageStart = data.data.start + data.data.data.length;
+                        }else if(data.type == 'success' && data.data.data == '' ){
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast('网络不稳定');
+                    })
+            },
             goback(){
                 event.closeURL();
             },
@@ -395,34 +408,34 @@
             },
             onrefresh:function () {
                 var _this = this;
-                this.refreshing = true
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
                 setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
                     this.refreshing = false
-                }, 50)
+                    _this.getAllInform();
+                }, 1000)
             },
             onloading:function () {
-                var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
-                setTimeout(() => {
-                    _this.listCurrent = _this.listCurrent + _this.pageSize;
-                    GET('weex/member/message/list.jhtml?userId=' + _this.messageType +'&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
-                        if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.forEach(function (item) {
-                                if(!utils.isNull(item.ext)){
-                                    item.ext = JSON.parse(item.ext);
-                                }
-                                _this.dataList.push(item);
-                            })
-                        }else if(data.type == 'success' && data.data.data == '' ){
-                        }else{
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        event.toast(err.content);
-                    })
-                    _this.showLoading = false;
-                }, 1500)
+                this.getAllInform();
             },
 //            前往链接
             goLink(id){

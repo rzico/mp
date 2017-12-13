@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goBack" @goComplete="goComplete"> </navbar>
         <list class="wrapperBox" >
             <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->

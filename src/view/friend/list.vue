@@ -1,16 +1,15 @@
 
 <template>
-    <div>
+    <div class="wrapper">
         <div class="header" :class="[classHeader()]">
             <!--顶部导航-->
             <div class="nav nw">
-                <div style="width: 100px;" >
-                </div>
+                <div style="width: 100px;" ></div>
                 <!--页面名称-->
                 <div class="userBox" >
                     <text class=" nav_title">{{pageName}}</text>
                 </div>
-                <div class="rightTop" @click="goAddFriend()" >
+                <div class="rightTop" @click="goAddFriend()">
                     <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
                 </div>
             </div>
@@ -449,8 +448,14 @@
                     data.data.forEach(function (friend) {
                         var jsonData = JSON.parse(friend.value);
                         jsonData.key = friend.key;
+                        var firstLetter;
+                        if(utils.isNull(jsonData.nickName)){//判断是否手机号登录，手机号登录的昵称为空
+                            firstLetter = '#';
+                        }else{
 //                          获取首字母
-                        let firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
+                            firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
+                        }
+
                         _this.friendsList.forEach(function (item) {
                             if(item.letter == firstLetter){
                                 item.name.push(jsonData);
@@ -518,29 +523,54 @@
 //                                判断该用户是否有手机号md5，有就存入缓存
                                 friend.md5 = utils.isNull(friend.md5) ? '' : friend.md5;
 
-
-                                _this.friendsList.forEach(function (item) {
-                                    if(item.letter == getLetter.getFirstLetter(friend.nickName.substring(0,1))){
-                                        let option = {
-                                            type:'friend',
-                                            key:'u' + (10200 + friend.id),//用于之后删除好友方便查找key
-                                            value:friend,
-                                            keyword:',' + friend.name + ',' +friend.nickName + ',' + friend.md5 + ',',
-                                            sort:item.letter + ',' + timestamp
-                                        }
-                                        event.save(option,function (message) {
-                                            if(message.type == 'success' && message.content =='保存成功'){
-                                                item.name.push(friend);
-                                                _this.friendTotal ++;
-//                                            将本次时间戳缓存起来
-                                                storage.setItem('lastTimestamp' + _this.UId, timestamp);
-                                            }else if(message.type == 'success' && message.content =='更新成功'){
-                                            }else{
-                                                event.toast(message.content);
+                                if(utils.isNull(friend.nickName)){//手机号登录的昵称为空
+                                    _this.friendsList.forEach(function (item) {
+                                        if(item.letter == '#'){
+                                            let option = {
+                                                type:'friend',
+                                                key:'u' + (10200 + friend.id),//用于之后删除好友方便查找key
+                                                value:friend,
+                                                keyword:',' + friend.name + ',' +friend.nickName + ',' + friend.md5 + ',',
+                                                sort:item.letter + ',' + timestamp
                                             }
-                                        })
-                                    }
-                                })
+                                            event.save(option,function (message) {
+                                                if(message.type == 'success' && message.content =='保存成功'){
+                                                    item.name.push(friend);
+                                                    _this.friendTotal ++;
+//                                            将本次时间戳缓存起来
+                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp);
+                                                }else if(message.type == 'success' && message.content =='更新成功'){
+                                                }else{
+                                                    event.toast(message.content);
+                                                }
+                                            })
+                                        }
+                                    })
+                                }else{
+                                    _this.friendsList.forEach(function (item) {
+                                        if(item.letter == getLetter.getFirstLetter(friend.nickName.substring(0,1))){
+                                            let option = {
+                                                type:'friend',
+                                                key:'u' + (10200 + friend.id),//用于之后删除好友方便查找key
+                                                value:friend,
+                                                keyword:',' + friend.name + ',' +friend.nickName + ',' + friend.md5 + ',',
+                                                sort:item.letter + ',' + timestamp
+                                            }
+                                            event.save(option,function (message) {
+                                                if(message.type == 'success' && message.content =='保存成功'){
+                                                    item.name.push(friend);
+                                                    _this.friendTotal ++;
+//                                            将本次时间戳缓存起来
+                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp);
+                                                }else if(message.type == 'success' && message.content =='更新成功'){
+                                                }else{
+                                                    event.toast(message.content);
+                                                }
+                                            })
+                                        }
+                                    })
+                                }
+
                             })
                         }else if(data.type == 'success' && data.data.data ==''){
                         }else{
@@ -684,9 +714,13 @@
                                     }
                                 })
                             }
-                            if(message.type == 'success' && message.data == '1'){
-                                _this.hadFriend();
-                            }
+                            storage.getItem('hadNew', e => {
+                                if(e.data != 'undefined'){
+                                    _this.hadFriend();
+                                }
+                                storage.removeItem('hadNew');
+                            })
+
 
                         });
                         break;

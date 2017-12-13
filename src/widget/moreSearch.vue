@@ -8,11 +8,8 @@
         <!--<text class="title">搜索: {{keyword}} </text>-->
         <!--</div>-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <scroller v-else>
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">{{refreshState}}</text>
-            </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+        <scroller v-else @loadmore="onloading" loadmoreoffset="50">
+            <div :style="{minHeight:screenHeight + 'px'}" >
             <!--朋友-->
             <div  v-for="(item,index) in searchList.friend" >
                 <!--类别-->
@@ -82,7 +79,7 @@
                     <div class="collectBox borderTop"  @click="goArticle(item.value.id)">
                         <div class="flex-row">
                             <!--文章封面-->
-                            <image resize="cover" class="articleImg" :src="item.value.thumbnail" ></image>
+                            <image resize="cover" class="articleImg" :src="item.value.thumbnail | watchThumbnail" ></image>
                             <!--文章相关信息。标题点赞...-->
                             <div class="articleInfo">
                                 <text class="fz30 articleTitle">{{item.value.title}} </text>
@@ -100,9 +97,6 @@
                 </div>
             </div>
             </div>
-            <loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">
-            <text class="indicator">加载中...</text>
-            </loading>
         </scroller>
 
     </div>
@@ -240,8 +234,7 @@
 
 </style>
 <script>
-    const event = weex.requireModule('event');
-    const stream = weex.requireModule('stream');
+    import {dom,event,animation} from '../weex.js';
     import searchNav from '../include/searchNav.vue';
     import noData from '../include/noData.vue';
     import utils from '../assets/utils';
@@ -262,12 +255,10 @@
                 },
                 screenHeight:0,
                 listCurrent:0,
-                pageSize:20,
+                pageSize:10,
                 friendsList:[],
                 singeType:'',
-                refreshState:'',
-                refreshing:false,
-                showLoading:false,
+                hadUpdate:false,
             }
         },
         filters:{
@@ -314,6 +305,9 @@
                         return value.nickName;
                         break;
                 }
+            },
+            watchThumbnail:function (value) {
+                return utils.thumbnail(value,250,150);
             },
 
         },
@@ -458,13 +452,6 @@
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
                     function () {}
                 )
-            },
-            onrefresh:function () {
-                var _this = this;
-                this.refreshing = true
-                setTimeout(() => {
-                    this.refreshing = false
-                }, 50)
             },
             onloading:function () {
                 var _this = this;
