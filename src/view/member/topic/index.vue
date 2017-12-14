@@ -234,9 +234,10 @@
                                         }
                                     )
                                 } else {
-                                    event.toast(data.content);
+                                    event.toast(message.content);
                                 }
                             },function (data) {
+                                event.toast(data.content);
                             })
 
 
