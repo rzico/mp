@@ -745,11 +745,19 @@
 
 
             this.getAllArticle();
+//            监听文章的变化。
             globalEvent.addEventListener("onArticleChange", function (e) {
                     _this.getAllArticle();
             });
-            globalEvent.addEventListener("onBalanceChange", function (e) {
+//            监听用户信息的变化。
+            globalEvent.addEventListener("onUserInfoChange", function (e) {
                 _this.updateUserInfo();
+            });
+//            监听账单消息提醒.
+            globalEvent.addEventListener("onMessage", function (e) {
+                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201'){
+                    _this.updateUserInfo();
+                }
             });
 
         },
