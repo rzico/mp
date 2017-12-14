@@ -5,7 +5,7 @@
             <div class="deleteBoxTwo bkg-delete" @click="out()">
                 <text class="deleteText">离职</text>
             </div>
-            <div  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+            <div style="height: 475px;align-items: center" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
             <div  class="messageTwo " >
                 <div  style="flex-direction: column;align-items: center">
                     <div class="shopNameDivthree">
@@ -26,17 +26,17 @@
             </div>
             </div>
         </div>
-        <div style="background-color: #eeeeee" v-if="!isOwner">
+        <div style="background-color: #eeeeee" v-if="isOwner">
         <div class="head" @click="add" >
             <text class="clickAdd" >+点击添加商铺</text>
         </div>
         </div>
-        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="isOwner">
+        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="!isOwner">
             <text style="font-size: 32px;color:#ffffff;">点我离职</text>
         </div>
-        <noData :noDataHint="noDataHint" v-if="isEmpty()&&!isOwner" :style="{minHeight:screenHeight + 'px'}"></noData>
+        <noData :noDataHint="noDataHint" v-if="isEmpty()&&isOwner" :style="{minHeight:screenHeight + 'px'}"></noData>
 
-        <list style="background-color: #eeeeee" v-if="isNoEmpty()&&!isOwner" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
+        <list style="background-color: #eeeeee" v-if="isNoEmpty()&&isOwner" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
@@ -87,6 +87,7 @@
         height: 375px;
         margin-left: 20px;
         margin-right: 20px;
+        margin-top: 50px;
         border-radius: 10px;
     }
     .deleteText{
@@ -145,7 +146,7 @@
         width: 100px;
         border-radius: 50px;
         position: absolute;
-        top: -50px;
+        top: 0;
         left: 325px;
     }
     .shopInformation{
