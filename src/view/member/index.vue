@@ -857,13 +857,13 @@
                             _this.helpList.push({
                                 key:2,
                                 articleSign:'样例',
-                                articleTitle:'我在魔篇有了自己的专栏！',
+                                articleTitle:'我在微信有了自己的专栏！',
                                 articleCoverUrl:utils.locate('resources/images/column.jpg'),
                                 articleDate:'2017-10-19'
                             },{
                                 key:1,
                                 articleSign:'样例',
-                                articleTitle:'魔篇使用帮助！',
+                                articleTitle:'新手使用帮助！',
                                 articleCoverUrl:utils.locate('resources/images/help.jpg'),
                                 articleDate:'2017-10-19'
                             })
