@@ -578,7 +578,7 @@
             },
 //            前往评论
             goReview(){
-                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId ),function (data) {
+                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId + '&authorId=' + this.memberId),function (data) {
                 })
             },
 //            收藏文章
