@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div >
         <div class="header" :class="[classHeader()]">
             <div class="nav" style="width:750px;">
                 <!--<div class="flex-center flex1" >-->

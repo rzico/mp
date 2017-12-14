@@ -182,7 +182,6 @@
             },
             onrefresh:function () {
                 var _this = this;
-
                 _this.pageStart = 0;
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {

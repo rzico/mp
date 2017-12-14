@@ -1,14 +1,14 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
-        <list class="list">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新</text>
+        <list class="list"  @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-if="noData()" >
                    <noData > </noData>
             </cell>
-            <cell v-for="(deposit,index) in depositList" >
+            <cell v-for="(deposit,index) in depositList"  ref="adoptPull">
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
                     <div class="flex-row flex-start">
@@ -41,9 +41,6 @@
             <cell v-if="noLoading">
                 <div class="noLoading"></div>
             </cell>
-            <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
-                <text class="indicator">加载中..</text>
-            </loading>
         </list>
     </div>
 
@@ -96,7 +93,7 @@
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
-    var event = weex.requireModule('event')
+    import {dom,event,animation} from '../../../weex.js';
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
@@ -111,7 +108,9 @@
                 loading: 'hide',
                 pageStart:0,
                 pageSize:20,
-                noLoading:true
+                noLoading:true,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         components: {
@@ -119,6 +118,21 @@
         },
         props: {
             title: { default: "消费记录" }
+        },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         methods: {
             noData:function () {
@@ -182,23 +196,37 @@
 //            上拉加载
             onloading (event) {
                 var _this = this;
-                _this.loading = true;
-                setTimeout(
                   _this.open(_this.pageStart,function () {
-                     _this.loading = false;
                   })
-                ,1500)
             },
 //            下拉刷新
-            onrefresh (event) {
+            onrefresh:function (event) {
                 var _this = this;
                 _this.pageStart = 0;
-                _this.refreshing = true;
-                setTimeout(
-                   _this.open(_this.pageStart,function () {
-                     _this.refreshing = false;
-                  })
-                ,1500)
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                });
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    });
+                    _this.open(_this.pageStart,function () {
+                        _this.refreshing = false;
+                    })
+                }, 1000)
             },
 //            获取月份
             getDate: function(value) {
