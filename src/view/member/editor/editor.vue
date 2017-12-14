@@ -551,8 +551,10 @@
                 event.find(options,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         let articleData = JSON.parse(data.data.value);
+                        if(!utils.isNull(data.data.sort)){
 //                            保存置顶状态。
-                        _this.sortStatus = data.data.sort.substring(0,2);
+                            _this.sortStatus = data.data.sort.substring(0,2);
+                        }
                         _this.setTitle = articleData.title;
                         _this.coverImage = articleData.thumbnail;
                         _this.musicName = articleData.music.name;
@@ -844,7 +846,10 @@
 //                let devWidth = weex.config.env.deviceWidth;
 ////                获取缩略图的宽高
 //                _this.proportion = parseInt(155 * devWidth/750);
-                let frontcoverUrl = this.coverImage.substring(0,4);
+                var frontcoverUrl = '';
+                if(!utils.isNull(this.coverImage)){
+                    frontcoverUrl = this.coverImage.substring(0,4);
+                }
 //                event.toast(frontcoverUrl);
                 if(frontcoverUrl == 'http'){
 //                    event.toast('1');
