@@ -1244,6 +1244,7 @@
             },
 //            上箭头
             moveUp:function (index) {
+                let _this = this;
                 this.firstPlusShow = true;
                 if(lastIndex != -1){
                     this.paraList[lastIndex].show = true;
@@ -1277,6 +1278,7 @@
             },
 //            下箭头
             moveBottom:function (index) {
+                let _this = this;
                 this.firstPlusShow = true;
                 if(lastIndex != -1){
                     this.paraList[lastIndex].show = true;
