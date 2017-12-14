@@ -68,7 +68,7 @@
                             <!--文章内容-->
                             <div class="paraText" @click="editorText(index)">
                                 <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                                <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText | htmlDeal}}</text>
+                                <text class="paraTextSize" v-if="item.paraText != '' && item.paraText != null && item.paraText != undefined && item.paraText != 'undefined'">{{item.paraText | htmlDeal}}</text>
                                 <text class="paraTextSize greyColor" v-else  >点击添加文字</text>
                             </div>
                         </div>
