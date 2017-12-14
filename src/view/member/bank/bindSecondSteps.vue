@@ -14,7 +14,7 @@
         </div>
         <div class="inputC">
             <text class="textID">证件号</text>
-            <input class="input" type="number" placeholder="请输入证件号码" :autofocus="true" value="" @input="idcard"/>
+            <input class="input" type="text" placeholder="请输入证件号码" :autofocus="true" value="" @input="idcard"/>
         </div>
         <div class="textdiv">
             <text class="textC">同意</text>
@@ -216,7 +216,22 @@
             },
            goComplete: function () {
                 var _this=this;
-                let  threedata = {
+               if (utils.isNull(this.phone)) {
+                   modal.alert({
+                       message: "请输入手机号",
+                       okTitle: '知道了'
+                   })
+                   return;
+               }
+               if (utils.isNull(this.idno)) {
+                   modal.alert({
+                       message: "请输入证件号",
+                       okTitle: '知道了'
+                   })
+                   return;
+               }
+
+               let  threedata = {
                     cardNo : this.txtInput,
                     mobile :this.phone,
                     identity:this.idno,

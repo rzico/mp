@@ -540,7 +540,7 @@
                                         okTitle: '知道了'
                                     })
                                 } else {
-                                    event.toast(res.content);
+                                    event.toast(mes.content);
                                 }
                             }, function (err) {
                                 event.toast(err.content)

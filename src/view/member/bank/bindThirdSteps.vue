@@ -167,6 +167,13 @@
 
             binding:function (e){
                 var _this=this;
+                if (utils.isNull(this.verification)) {
+                    modal.alert({
+                        message: "请输入验证码",
+                        okTitle: '知道了'
+                    })
+                    return;
+                }
                 var  threedata = {
                     cardno : this.txtInput,
                     mobile :this.phone,

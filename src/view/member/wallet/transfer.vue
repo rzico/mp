@@ -142,6 +142,7 @@
     .input{
         width: 500px;
         height: 120px;
+        line-height: 120px;
        font-size:100px;
     }
     .maxQuotaServicefee{
