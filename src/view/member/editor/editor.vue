@@ -831,12 +831,12 @@
                 this.toSendArticle = true;
                 this.proTotal = 0;
 //                判断封面图片是否已上传过
-                if(this.coverImage.substring(0,4) != 'http'){
+                if(this.coverImage != '' && this.coverImage.substring(0,4) != 'http'){
                     this.proTotal ++;
                 };
 //                判断段落图片是否已上传
                 this.paraList.forEach(function (item) {
-                    if(item.paraImage.substring(0,4) != 'http' && item.paraImage != ''){
+                    if( item.paraImage != '' && item.paraImage.substring(0,4) != 'http'){
                         _this.proTotal ++;
                     }
                 });
@@ -876,7 +876,10 @@
 //                var frontUrl;
                 let sendLength = _this.paraList.length;//获取图片数组总长度
                 var mediaType = _this.paraList[sendIndex].mediaType;
-                let frontUrl = _this.paraList[sendIndex].paraImage.substring(0,4);
+                var frontUrl = '';
+                if(!utils.isNull(_this.paraList[sendIndex].paraImage)){
+                    frontUrl = _this.paraList[sendIndex].paraImage.substring(0,4);
+                }
 //                if(mediaType == 'image') {
 //                    modal.toast({message:frontUrl,duration:1});
 //                }else if(mediaType == 'video'){//如果是视频
@@ -1022,7 +1025,7 @@
                     var uploadThumbnail ;
 //                    如果是临时缓存 是没有上传过的本地图片； thumbnail:item.thumbnailImage,
                     this.paraList.forEach(function(item){
-                        if(item.paraImage.substring(0,4) == 'http'){
+                        if(item.paraImage != '' &&  item.paraImage.substring(0,4) == 'http'){
                             uploadThumbnail = item.serveThumbnail;
                         }else{
                             uploadThumbnail = item.thumbnailImage;
