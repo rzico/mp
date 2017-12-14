@@ -129,7 +129,15 @@
             title: { default: "钱包" }
         },
         created() {
+            let _this = this;
             this.load();
+//            监听账单消息提醒.
+            globalEvent.addEventListener("onMessage", function (e) {
+                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201'){
+                    _this.load();
+                }
+            });
+
         },
         methods: {
             goback: function (e) {

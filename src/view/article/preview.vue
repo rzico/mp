@@ -589,6 +589,7 @@
                         if(data.type == 'success'){
                             event.toast('收藏成功');
                             _this.isCollect = true;
+                            event.sendGlobalEvent('onUserInfoChange',data);
                         }
                     },
                     function (err) {

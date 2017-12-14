@@ -195,8 +195,8 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import { POST, GET ,SCAN} from '../../assets/fetch'
-    import utils from '../../assets/utils'
+    import { POST, GET ,SCAN} from '../../assets/fetch';
+    import utils from '../../assets/utils';
     import {dom,event,stream} from '../../weex.js';
     import noData from '../../include/noData.vue';
     import search from '../../include/search.vue';
@@ -273,7 +273,7 @@
             }
         },
         props:{
-            noDataHint: { default: "没有消息，快去聊天吧" },
+            noDataHint: { default: "没有消息，快去聊天吧"},
         },
         created() {
 //            创建前

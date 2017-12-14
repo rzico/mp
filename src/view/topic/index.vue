@@ -879,6 +879,7 @@
                         function (data) {
                             if(data.type == 'success'){
                                 _this.isFocus = !_this.isFocus;
+                                event.sendGlobalEvent('onUserInfoChange',data);
                             }else{
                                 event.toast(data.content);
                             }
@@ -891,6 +892,7 @@
                         function (data) {
                             if(data.type == 'success'){
                                 _this.isFocus = !_this.isFocus;
+                                event.sendGlobalEvent('onUserInfoChange',data);
                             }else{
                                 event.toast(data.content);
                             }

@@ -277,7 +277,7 @@
                                 message: '提交成功，请注意到账情况',
                                 okTitle: '知道了'
                             })
-                            event.sendGlobalEvent('onBalanceChange',data);
+                            event.sendGlobalEvent('onUserInfoChange',data);
                             event.closeURL(data);
                         } else {
                             event.toast(data.content);
