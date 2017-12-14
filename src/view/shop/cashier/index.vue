@@ -311,7 +311,6 @@
         created() {
             var _this = this;
             utils.initIconFont();
-            event.toast(utils.getUrlParameter("index"));
             this.isIndex = (utils.getUrlParameter("index")=='true');
             this.view();
             globalEvent.addEventListener("onCashierChange", function (e) {
