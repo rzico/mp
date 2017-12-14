@@ -234,22 +234,22 @@
                         return '订单提醒';
                         break;
                     case 'gm_10201':
-                        return '账单提醒'
+                        return '账单提醒';
                         break;
                     case 'gm_10202':
                         return '系统消息';
                         break;
                     case 'gm_10203':
-                        return '评论回复'
+                        return '评论回复';
                         break;
                     case 'gm_1024':
                         return '点赞提醒';
                         break;
                     case 'gm_10205':
-                        return '关注提醒'
+                        return '关注提醒';
                         break;
                     case 'gm_10206':
-                        return '收藏提醒'
+                        return '收藏提醒';
                         break;
                     case 'gm_10207':
                         return '赞赏提醒';
@@ -258,10 +258,10 @@
                         return  '分享提醒';
                         break;
                     case 'gm_10209':
-                        return  '添加好友提醒';
+                        return  '添加好友';
                         break;
                     case 'gm_10210':
-                        return '同意好友提醒';
+                        return '同意好友';
                         break;
                     case 'gm_10211':
                         return '系统客服';
@@ -306,8 +306,16 @@
 //                event.toast(e);
 //                    用户消息没有userId。只有id。
                 e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
-
                 _this.addMessage(e.data);
+            });
+            //           添加好友消息红点控制
+            globalEvent.addEventListener("onNewFriendChange", function (e) {
+//                _this.newFriendNum = 0;
+                _this.messageList.forEach(function (item) {
+                    if(item.id == 'gm_10209'){
+                        item.unRead = 0;
+                    }
+                })
             });
         },
         beforeMount(){
@@ -418,8 +426,8 @@
 //                }, 2000)
 //            },
 //            跳转消息列表
-            jumpMessage:function(item,index){
-//                event.toast(item);
+            jumpMessage:function(item){
+                utils.debug(item);
                 var _this = this;
 //                如果没有未读数就不更新缓存。直接跳转页面
                 if(item.unRead != 0){
@@ -445,6 +453,10 @@
                                             if (data.type == 'success') {
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                                                 });
+                                                if(item.userId == 'gm_10209'){
+                                                    let listenData = utils.message('success','添加好友跳转','');
+                                                    event.sendGlobalEvent('onNewFriendChange',listenData);
+                                                }
                                             } else {
                                                 event.toast(data.content);
                                             }
@@ -478,6 +490,7 @@
 //                    }
 ////                    更新缓存数据后，跳转到通知页面
 //                    event.save(option,function (message) {
+
                         event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                         });
 //                    })

@@ -494,11 +494,14 @@
 
                 }
             });
+//            消息红点控制
+            globalEvent.addEventListener("onNewFriendChange", function (e) {
+                _this.newFriendNum = 0;
+            });
         },
         methods: {
             classHeader:function () {
                 let dc = utils.device();
-
                 return dc
             },
 //            有新朋友时，
@@ -693,6 +696,8 @@
 //                            event.toast(message);
                             //            读取本地朋友未读消息
                             if(_this.newFriendNum != 0){
+                                let listenData = utils.message('success','添加好友跳转','');
+                                event.sendGlobalEvent('onNewFriendChange',listenData);
                                 let newFriend = {
                                     type:'message',//类型
                                     key:'gm_10209',//关键址
