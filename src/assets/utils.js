@@ -2,10 +2,10 @@
  * Created by zwwill on 2017/8/27.
  */
 const resLocateURL = 'file://';
-const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weixin.rzico.com';
+const resRemoteURL = 'http://cdnx.1xx.me/weex/';
+const websiteURL = 'http://mopian.1xx.me';
 const event = weex.requireModule('event');
-const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
