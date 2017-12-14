@@ -2,14 +2,11 @@
     <div  class="bkg-primary">
         <navbar :title="title" :complete="complete" @goback="goback" border=false></navbar>
         <div class="shopstwo bkg-primary">
-            <div>
             <div class="deleteBoxTwo bkg-delete" @click="out()">
                 <text class="deleteText">离职</text>
             </div>
-            <div  class="messageTwo "  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                <div class="shopLogotwo" >
-                    <image style="width: 100px;height: 100px;border-radius: 100px"  class="img" :src="logo"></image>
-                </div>
+            <div  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+            <div  class="messageTwo " >
                 <div  style="flex-direction: column;align-items: center">
                     <div class="shopNameDivthree">
                         <text style="font-size: 32px">{{name}}</text>
@@ -24,19 +21,22 @@
                     </div>
                 </div>
             </div>
+            <div class="shopLogotwo" >
+                <image style="width: 100px;height: 100px;border-radius: 100px"  class="img" :src="logo"></image>
+            </div>
             </div>
         </div>
-        <div style="background-color: #eeeeee" v-if="isOwner">
+        <div style="background-color: #eeeeee" v-if="!isOwner">
         <div class="head" @click="add" >
             <text class="clickAdd" >+点击添加商铺</text>
         </div>
         </div>
-        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="!isOwner">
+        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="isOwner">
             <text style="font-size: 32px;color:#ffffff;">点我离职</text>
         </div>
-        <noData :noDataHint="noDataHint" v-if="isEmpty()&&isOwner" :style="{minHeight:screenHeight + 'px'}"></noData>
+        <noData :noDataHint="noDataHint" v-if="isEmpty()&&!isOwner" :style="{minHeight:screenHeight + 'px'}"></noData>
 
-        <list style="background-color: #eeeeee" v-if="isNoEmpty()&&isOwner" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
+        <list style="background-color: #eeeeee" v-if="isNoEmpty()&&!isOwner" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
@@ -96,7 +96,7 @@
         position: absolute;right: 0px;top: 0px;height: 230px;align-items: center;width: 130px;justify-content: center;
     }
     .deleteBoxTwo{
-        position: absolute;right: 20px;top: 0px;height: 300px;align-items: center;width: 190px;justify-content: center;border-bottom-right-radius: 10px
+        position: absolute;right: 20px;top: 63px;height: 375px;align-items: center;width: 190px;justify-content: center;border-bottom-right-radius: 10px
     ;border-top-right-radius: 10px;
     }
     .head {
@@ -132,8 +132,9 @@
         height: 230px;
     }
     .shopstwo{
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
         height: 500px;
     }
     .shopLogo{
@@ -145,7 +146,7 @@
         border-radius: 50px;
         position: absolute;
         top: -50px;
-        left: 315px;
+        left: 325px;
     }
     .shopInformation{
         /*justify-content: space-between;*/

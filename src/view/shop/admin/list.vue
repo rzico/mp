@@ -32,7 +32,7 @@
                             <div class="button" @click="popup(num.id,num.shopId)">
                                 <text class="sub_title">选择店铺</text>
                             </div>
-                            <div class="button"@click="selectPosition(num.id,num.shopId)">
+                            <div class="button"@click="selectPosition(num.id,num.shopId,num.roleId)">
                                 <text class="sub_title">选择职位</text>
                             </div>
                         </div>
@@ -337,10 +337,10 @@
                 })
             },
 //            选择职位
-            selectPosition:function (id,shopId) {
+            selectPosition:function (id,shopId,roleId) {
                 var _this = this;
                 picker.pick({
-                    index:_this.roleof(id),
+                    index:_this.roleof(roleId),
                     items:_this.rolePicker()
                 }, e => {
                     if (e.result == 'success') {
