@@ -5,7 +5,7 @@
             <div class="deleteBoxTwo bkg-delete" @click="out()">
                 <text class="deleteText">离职</text>
             </div>
-            <div  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+            <div style="height: 475px;align-items: center" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
             <div  class="messageTwo " >
                 <div  style="flex-direction: column;align-items: center">
                     <div class="shopNameDivthree">
@@ -87,6 +87,7 @@
         height: 375px;
         margin-left: 20px;
         margin-right: 20px;
+        margin-top: 50px;
         border-radius: 10px;
     }
     .deleteText{
@@ -145,7 +146,7 @@
         width: 100px;
         border-radius: 50px;
         position: absolute;
-        top: -50px;
+        top: 0;
         left: 325px;
     }
     .shopInformation{
