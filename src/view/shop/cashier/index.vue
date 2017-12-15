@@ -343,7 +343,7 @@
             },
             objHeader:function () {
                 if (utils.device()=='V1') {
-                    return {backgroundColor:'#fff'}
+                    return {backgroundColor:'#000'}
                 } else {
                     return {backgroundColor:'#EB4E40'}
                 }
