@@ -29,11 +29,11 @@
             </div>
             <!--导航栏返回-->
             <div class="backMenu"  :class="[classTop()]" style="left: 0px;" @click="goback()">
-                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:38px;">&#xe669;</text>
+                <text  :style="{fontFamily:'iconfont'}" style="font-size:38px;color:#fff">&#xe669;</text>
             </div>
             <!--导航栏菜单栏-->
             <div class="backMenu"  :class="[classTop()]" style="right: 0px;" @click="goManage()">
-                <text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe72b;</text>
+                <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;;color:#fff">&#xe72b;</text>
             </div>
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
@@ -285,7 +285,7 @@
     .navText{
         padding-left: 10px;
         font-size: 33px;
-
+        color:#fff;
     }
     .setTop{
         top:136px;
