@@ -2,59 +2,59 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
-        <div class="cell-header total">
-                <text class="balance">{{cashier.today | currencyfmt}}</text>
-                <div class="wallet-title">
-                    <text class="sub_title">今天收银（元）     </text>
-                    <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
-                </div>
-                <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
+        <div class="cell-header total" >
+            <text class="balance">{{cashier.today | currencyfmt}}</text>
+            <div class="wallet-title">
+                <text class="sub_title">今天收银（元）     </text>
+                <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
+            </div>
+            <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
         </div>
-        <list class="list mt20" @loadmore="onloading" loadmoreoffset="50">
+        <scroller class="list "  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell v-if="noData()" >
-                   <noData > </noData>
-            </cell>
-            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-            <div v-for="(deposit,index) in depositList" >
-                <!--如果月份重复就不渲染该区域-->
-                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
-                    <div class="flex-row flex-start">
-                        <text class="title" >{{deposit.createDate | daydayfmt}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">查看统计</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
+            <div :style="{minHeight:screenHeight + 'px'}"  ref="adoptPull">
+                <div v-if="noData()" >
+                    <noData > </noData>
                 </div>
-                <div class="cell-row cell-clear" :style="rowBk(deposit.id)" @click="popup(deposit.id)">
-                    <div class="cell-panel newHeight" :style="addBorder(index)">
-                        <div class="flex1">
-                            <image class="logo" resize="cover"
-                                   :src="deposit.logo">
-                            </image>
+                <div v-for="(deposit,index) in depositList" :class="[index == 0 ? 'mt20' : '']">
+                    <!--如果月份重复就不渲染该区域-->
+                    <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
+                        <div class="flex-row flex-start">
+                            <text class="title" >{{deposit.createDate | daydayfmt}}</text>
                         </div>
-                        <div class="content flex5">
-                            <div class="flex-row space-between align-bottom">
-                                <text class="title lines-ellipsis">{{deposit.memo}}</text>
-                                <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
+                        <div class="flex-row flex-end">
+                            <text class="sub_title">查看统计</text>
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                    <div class="cell-row cell-clear" :style="rowBk(deposit.id)" @click="popup(deposit.id)">
+                        <div class="cell-panel newHeight" :style="addBorder(index)">
+                            <div class="flex1">
+                                <image class="logo" resize="cover"
+                                       :src="deposit.logo">
+                                </image>
                             </div>
-                            <div class="flex-row space-between align-bottom">
-                                <text class="datetime">{{deposit.createDate | hitimefmt}} (流水号:{{deposit.id+10200}})</text>
-                                <text class="status pr25">{{deposit.status | statusFilter}}</text>
+                            <div class="content flex5">
+                                <div class="flex-row space-between align-bottom">
+                                    <text class="title lines-ellipsis">{{deposit.memo}}</text>
+                                    <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
+                                </div>
+                                <div class="flex-row space-between align-bottom">
+                                    <text class="datetime">{{deposit.createDate | hitimefmt}} (流水号:{{deposit.id+10200}})</text>
+                                    <text class="status pr25">{{deposit.status | statusFilter}}</text>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </cell>
             <!--<cell v-if="noLoading">-->
-                <!--<div class="noLoading"></div>-->
+            <!--<div class="noLoading"></div>-->
             <!--</cell>-->
 
-        </list>
+        </scroller>
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center">
                 <text class="fz30 pt30 " style="color: #444">操作</text>
@@ -181,7 +181,7 @@
         background-color: #999;
     }
     .color444{
-       color:#444;
+        color:#444;
     }
     .popupImg {
         font-size: 78px;
@@ -239,20 +239,6 @@
         props: {
             title: { default: "消费记录" }
         },
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
-        },
         filters: {
             statusFilter:function (val) {
                 if (val=='none') {
@@ -271,20 +257,35 @@
                 }
             }
         },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
+        },
         methods: {
             rowBk:function (id) {
-               if (id==this.currentId) {
-                   return {backgroundColor:'#ddd'}
-               } else {
-                   return {backgroundColor:'#fff'}
-               }
+                if (id==this.currentId) {
+                    return {backgroundColor:'#ddd'}
+                } else {
+                    return {backgroundColor:'#fff'}
+                }
             },
             moneyColor:function (amount) {
-               if (amount<0) {
-                   return {color:'red'}
-               }  else {
-                   return {color:'#000'}
-               }
+                if (amount<0) {
+                    return {color:'red'}
+                }  else {
+                    return {color:'#000'}
+                }
             },
             pickDate () {
                 var _this = this;
@@ -345,7 +346,7 @@
                                     item.status = "success";
                                 }
                             }
-                         });
+                        });
                         if (utils.device()=='V1') {
                             _this.isPopup = false;
                             printer.print(mes.data);
@@ -439,20 +440,20 @@
                     });
                 }
                 GET('weex/member/paybill/list.jhtml?billDate='+this.billDate+'&pageStart=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
-                   if (res.type=="success") {
-                       if (res.data.start==0) {
-                          _this.depositList = res.data.data;
-                       } else {
-                           res.data.data.forEach(function (item) {
-                               _this.depositList.push(item);
-                           })
-                       }
-                       _this.pageStart = res.data.start+res.data.data.length;
-                       _this.noLoading = res.data.data.length<_this.pageSize;
-                   } else {
-                       event.toast(res.content);
-                   }
-                 }, function (err) {
+                    if (res.type=="success") {
+                        if (res.data.start==0) {
+                            _this.depositList = res.data.data;
+                        } else {
+                            res.data.data.forEach(function (item) {
+                                _this.depositList.push(item);
+                            })
+                        }
+                        _this.pageStart = res.data.start+res.data.data.length;
+                        _this.noLoading = res.data.data.length<_this.pageSize;
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
                     event.toast(err.content);
                 })
             },
@@ -490,8 +491,8 @@
             },
             popup:function (id) {
                 if (this.isPopup==false) {
-                   this.currentId = id;
-                   this.isPopup = true;
+                    this.currentId = id;
+                    this.isPopup = true;
                 }
             },
             summary:function (timestamp) {
