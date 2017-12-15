@@ -207,6 +207,20 @@
             },
             goComplete: function () {
                 var _this=this;
+                if (utils.isNull(this.txtInput)) {
+                    modal.alert({
+                        message: "请输入卡号",
+                        okTitle: '知道了'
+                    })
+                    return;
+                }
+                if (utils.isNull(this.accountName)) {
+                    modal.alert({
+                        message: "请输入开户名",
+                        okTitle: '知道了'
+                    })
+                    return;
+                }
                 let  twodata = {
                     cardNo : this.txtInput,
                     name :this.accountName,

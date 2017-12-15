@@ -386,7 +386,6 @@
                 event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
             goIndex:function () {
-
                 event.openURL(utils.locate("view/topic/index.js?id=" +event.getUId()),
                     function (e) {}
                     );
@@ -497,7 +496,7 @@
                         if (res.type=='success') {
                             _this.id = res.data.id;
                             _this.sn = res.data.sn;
-                            POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+_this.plugId+"&safeKey="+safeKey).then(
+                            POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+_this.plugId+"&safeKey="+encodeURIComponent(safeKey)).then(
                                 function (data) {
                                     if (data.type=='success') {
                                         _this.time = 29;
@@ -533,7 +532,7 @@
                 _this.isScan = true;
                 _this.plugId = plugId;
                 event.scan(function (message) {
-                    if (message.type=='success') {
+                     if (message.type=='success') {
                         _this.isScan = false;
                         _this.submit(message.data);
                     } else {

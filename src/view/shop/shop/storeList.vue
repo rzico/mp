@@ -27,11 +27,11 @@
             </div>
         </div>
         <div style="background-color: #eeeeee" v-if="isOwner">
-        <div class="head" @click="add" >
-            <text class="clickAdd" >+点击添加商铺</text>
+            <div class="head" @click="add" >
+                <text class="clickAdd" >+点击添加商铺</text>
+            </div>
         </div>
-        </div>
-        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="!isOwner">
+        <div class="outtwo bkg-primary"  @click="outtwo" v-else>
             <text style="font-size: 32px;color:#ffffff;">点我离职</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()&&isOwner" :style="{minHeight:screenHeight + 'px'}"></noData>
@@ -112,6 +112,12 @@
         align-items: center;
         justify-content: center;
 
+    }
+    .outtwo {
+        flex-direction: column;
+        align-items: center;
+        width:750px;
+        height:80px;
     }
     .headtwo {
         background-color: white;
