@@ -693,6 +693,9 @@
                 if(value.sort.substring(0,1) == '1'){
                     return '置顶';
                 }
+                if(value.value.isDraft){
+                    return '草稿';
+                }
                 if(value.value.articleOption.articleCatalog.id == '99'){
                     return '已删除';
                 }
@@ -828,6 +831,7 @@
                     if( data.type == "success" && data.data != '' ) {
                         data.data.forEach(function (item) {
 //                    将value json化
+
                             item.value = JSON.parse(item.value);
 //                            将封面转为缩略图
 //                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
@@ -991,7 +995,7 @@
                                 }
                             }
                         })
-                }else if(item.isDraft){
+                }else if(item.value.isDraft){
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + item.key),
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
@@ -1334,6 +1338,11 @@
 //            删除文章
             jumpDelete:function (item,index) {
                 let _this = this;
+                if(item.value.isDraft){
+                    _this.deleteAfter(item,index);
+                    return;
+                }
+
                 POST('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(
                     function(e){
                         if(e.type == 'success'){

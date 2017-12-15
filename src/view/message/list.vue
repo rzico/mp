@@ -427,7 +427,6 @@
 //            },
 //            跳转消息列表
             jumpMessage:function(item){
-                utils.debug(item);
                 var _this = this;
 //                如果没有未读数就不更新缓存。直接跳转页面
                 if(item.unRead != 0){

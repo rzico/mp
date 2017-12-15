@@ -239,8 +239,6 @@
                             },function (data) {
                                 event.toast(data.content);
                             })
-
-
                         }
                     })
             },

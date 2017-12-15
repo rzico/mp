@@ -436,6 +436,19 @@
                 musicData:'',//音乐数据
                 voteData:[],//投票的数组
                 hadChange:0,
+//                缓存有用
+                articleOption:{
+                    articleCatalog:{count:0},
+                    articleCategory:{},
+                    authority:'draft',
+                    pitch:false,
+                    publish:false,
+                    top:false,
+                },
+                hits:0,
+                laud:0,
+                products:[],
+                review:0,
             }
         },
         filters:{
@@ -526,7 +539,7 @@
                     }
                 });
             }else{//再次文章编辑
-                _this.deleteDraft();
+                _this.delOnceDraft('noclose');
                 var op = getVal.split('=');
                 if(op[0] == 'articleId') {
                     let options = {
@@ -534,14 +547,17 @@
                         key:op[1]
                     };
                     _this.articleId = op[1];
-                    GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
-                        if(data.type == 'success' && data.data != ''){
-                            _this.catalogId = data.data.articleCatalog.id;
-                        }
-                    },function (err) {
-                        event.toast(err.content);
-                        return;
-                    });
+                    if(_this.articleId.length == 13){//13位的id为草稿文章
+                    }else{
+                        GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
+                            if(data.type == 'success' && data.data != ''){
+                                _this.catalogId = data.data.articleCatalog.id;
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                            return;
+                        });
+                    }
                     //从缓存读取数据 写入界面
                     _this.readData(options);
                 };
@@ -564,6 +580,11 @@
                             _this.musicName = articleData.music.name;
                         }
                         _this.publish = articleData.articleOption.publish;
+                            _this.articleOption = articleData.articleOption,
+                            _this.hits = articleData.hits,
+                            _this.laud = articleData.laud,
+                            _this.products = articleData.products,
+                            _this.review = articleData.review,
                         musicId = articleData.music.id;
                         let templatesData = articleData.templates;
                         for(let i = 0;i < templatesData.length;i++){
@@ -626,86 +647,106 @@
                         }
 
                     }else{
-
-                        GET('weex/member/article/view.jhtml?id=' + _this.articleId,function (res) {
-                            if (res.data != '' && res.type == 'success') {
+                        if(this.articleId.length == 13){
+                            event.toast('本地数据已被删除')
+                            event.closeURL();
+                            return;
+                        }
+//                        从服务器获取文章信息并存入缓存
+                        _this.getServerArticle(function () {
+                                let options = {
+                                    type:'article',
+                                    key:_this.articleId
+                                };
+                                _this.readData(options)
+                            }
+                        )
+                    };
+                });
+            },
+//           从服务器获取文章信息并存入缓存
+            getServerArticle(callback){
+                let _this = this;
+                GET('weex/member/article/view.jhtml?id=' + _this.articleId,function (res) {
+                    if (res.data != '' && res.type == 'success') {
 //                                   将服务器的缩略图换成原图的缩略图
 //                                    res.data.templates.forEach(function (item) {
 //                                        item.thumbnail = utils.thumbnail(item.original,155,155);
 //                                    })
-                                let resDataStr = JSON.stringify(res.data);
-                                let saveData = {
-                                    type: "article",
-                                    key: res.data.id,
-                                    value:resDataStr,
-                                    sort: '0,' + res.data.modifyDate,
-                                    keyword: ',[' + _this.catalogId + '],' + _this.setTitle + ','
-                                };
-                                event.save(saveData, function (data) {
-                                    if (data.type == 'success') {
-                                        let options = {
-                                            type:'article',
-                                            key:_this.articleId
-                                        };
-                                        //从缓存读取数据 写入界面
-                                        _this.readData(options);
-                                    } else {
-                                        event.toast(data.content);
-                                    }
-                                })
+                        let resDataStr = JSON.stringify(res.data);
+                        let saveData = {
+                            type: "article",
+                            key: res.data.id,
+                            value:resDataStr,
+                            sort: '0,' + res.data.modifyDate,
+                            keyword: ',[' + _this.catalogId + '],' + _this.setTitle + ','
+                        };
+                        event.save(saveData, function (data) {
+                            if (data.type == 'success') {
+                                callback();
+                            } else {
+                                event.toast(data.content);
                             }
-                        },function (err) {
-                            event.toast(err.content);
                         })
-                    };
-                });
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
             },
 //            保存临时草稿
-            saveDraft(){
+            saveDraft(callback){
                 let _this = this;
 //                将数据保存到变量里
                 this.savePage();
                 var allPageData = {
-                    articleOption:{
-                        articleCatalog:{count:0},
-                        articleCategory:{},
-                        authority:'draft',
-                        pitch:false,
-                        publish:false,
-                        top:false,
-                    },
-                    hits:0,
-                    id:0,
-                    isDraft:false,
-                    laud:0,
+                    articleOption:this.articleOption,
+                    hits:this.hits,
+                    laud:this.laud,
+                    products:this.products,
+                    review:this.review,
+                    id:this.articleId,
+                    isDraft:true,
                     modifyDate:this.timestamp,
                     music:this.musicData,
-                    products:[],
-                    review:0,
                     templates:this.articleTemplates,
                     thumbnail:this.coverImage,
                     title:this.setTitle,
                     votes:this.voteData
                 }
                 allPageData = JSON.stringify(allPageData);
+                var storageType;
+                var storageKey;
+                if(utils.isNull(this.articleId)){
+                    storageType = "articleDraft";
+                    storageKey = '0';
+                }else {
+                    storageType = "article";
+                    storageKey = this.articleId;
+                }
                 let draftOptions = {
-                    type:"articleDraft",
-                    key:'0',
+                    type:storageType,
+                    key:storageKey,
                     value:allPageData,
                     sort:_this.sortStatus + _this.timestamp,
                     keyword:',['+ _this.catalogId + '],' + _this.setTitle + ','
                 }
                 event.save(draftOptions,function(data){
-                    if(data.type == 'success'){
-//                                    全局监听文章变动
-//                        let listenData = utils.message('success','文章改变','')
-//                        event.sendGlobalEvent('onArticleChange',listenData);
-//                    event.toast(data);
-                    }else{
+                    if(data.type == 'success' && !utils.isNull(_this.articleId)){
 
+//                                    全局监听文章变动
+                        let listenData = utils.message('success','文章改变','')
+                        event.sendGlobalEvent('onArticleChange',listenData);
+                        if(!utils.isNull(callback)){
+                            callback();
+                        }
+                    }else if(data.type == 'success'){
+                        if(!utils.isNull(callback)){
+                            callback();
+                        }
+                    }else{
+                        event.toast(data.content);
                     }
                 })
-
             },
 
 //            控制进度条
@@ -731,10 +772,10 @@
                         if (message.type == 'success' && message.data != ''   && message.data.text != '') {
                             _this.setTitle = message.data.text;
                             _this.hadChange = 1;
-                            if(utils.isNull(_this.articleId)){
+//                            if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                                _this.saveDraft();
-                            }
+                            _this.saveDraft();
+//                            }
                         }
                     })
                 })
@@ -748,10 +789,10 @@
 //                    将返回回来的html数据赋值进去
                         _this.paraList[index].paraText = data.data;
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 })
             },
@@ -759,33 +800,51 @@
             goBack:function () {
                 let _this = this;
 //                判断是草稿还是已经发布文章
-                if(utils.isNull(this.articleId)){
+                if(utils.isNull(this.articleId) || this.articleId.length == 13){
                     modal.confirm({
-                        message: '是否保存该文章?',
+                        message: '请选择方式?',
                         duration: 0.3,
-                        okTitle:'保存',
-                        cancelTitle:'取消',
+                        okTitle:'删除草稿',
+                        cancelTitle:'存草稿',
                     }, function (value) {
-                        if(value == '保存'){
-                            _this.goComplete();
-                        }else if(value == '取消'){
+                        if(value == '存草稿'){
+                            if(utils.isNull(_this.articleId)){
+                                //            获取当前时间戳 作为唯一标识符key
+                                _this.articleId = Math.round(new Date().getTime());
+                            }
+                            _this.saveDraft(function () {
+                                _this.delOnceDraft();
+                            });
+                        }else if(value == '删除草稿'){
                             _this.deleteDraft();
-                            event.closeURL();
                         }
                     })
                 }else{
 //                    判断是否有修改过
                     if(this.hadChange == 1){
                         modal.confirm({
-                            message: '是否保存所修改的内容?',
+                            message: '请选择方式?',
                             duration: 0.3,
-                            okTitle:'保存',
-                            cancelTitle:'取消',
+                            okTitle:'撤销编辑',
+                            cancelTitle:'存草稿',
                         }, function (value) {
-                            if(value == '保存'){
-                                _this.goComplete();
-                            }else if(value == '取消'){
-                                event.closeURL();
+                            if(value == '存草稿'){
+                                _this.saveDraft(function () {
+                                    let E = {
+                                        isDone : 'complete'
+                                    }
+                                    let backData = utils.message('success','成功',E);
+                                    event.closeURL(backData);
+                                });
+                            }else if(value == '撤销编辑'){
+                                _this.getServerArticle(
+                                    function () {
+//                                    全局监听文章变动
+                                        let listenData = utils.message('success','文章改变','')
+                                        event.sendGlobalEvent('onArticleChange',listenData);
+                                        event.closeURL();
+                                    }
+                                )
                             }
                         })
                     }else{
@@ -793,9 +852,49 @@
                     }
                 }
             },
-//            删除临时缓存
+//            删除临时缓存和草稿缓存
             deleteDraft(){
+                let _this = this;
+                var storageType;
+                var storageKey;
+                if(utils.isNull(this.articleId)){
+                    storageType = "articleDraft";
+                    storageKey = '0';
+                }else {
+                    storageType = "article";
+                    storageKey = this.articleId;
+                }
 //                                    判断是否第一次编辑该文章
+                let findDel = {
+                    type:storageType,
+                    key:storageKey
+                }
+                event.find(findDel,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        //  将临时缓存删除;
+                        let delOption = {
+                            type:storageType,
+                            key:storageKey
+                        }
+                        event.delete(delOption,function (data) {
+                            if(data.type == 'success' && !utils.isNull(_this.articleId)){
+//                                    全局监听文章变动
+                                let listenData = utils.message('success','文章改变','')
+                                event.sendGlobalEvent('onArticleChange',listenData);
+                                event.closeURL();
+                            }else if(data.type == 'success'){
+                                event.closeURL();
+                            }
+                        });
+                    }else{
+                        event.toast(delData.content);
+                    }
+                });
+            },
+//            删除临时缓存
+            delOnceDraft(close){
+                let _this = this;
+//   将临时草稿删除
                 let findDel = {
                     type:'articleDraft',
                     key:'0'
@@ -807,8 +906,24 @@
                             type:'articleDraft',
                             key:'0'
                         }
-                        event.delete(delOption,function (data) {});
-                    };
+                        event.delete(delOption,function (data) {
+                            if(data.type == 'success' ){
+                                if(utils.isNull(close)){
+                                    let E = {
+                                        isDone : 'complete'
+                                    }
+                                    let backData = utils.message('success','成功',E);
+                                    event.closeURL(backData);
+                                }
+                            }else{
+                                event.toast(data.content);
+                            }
+                        });
+                    }else{
+                        if(utils.isNull(close)){
+                            event.closeURL();
+                        }
+                    }
                 });
             },
 //            完成
@@ -1021,11 +1136,16 @@
 //                    event.toast(voteData);
                 });
 //                var articleTemplates = [];
-
-                if(!utils.isNull(this.articleId)){
+                if(!utils.isNull(this.articleId) && this.articleId.length == 13){//判断id为13位的是草稿，或者有文章id时。
+                    var uploadThumbnailImg ;
                     this.paraList.forEach(function(item){
+                        if(!utils.isNull(item.serveThumbnail)){
+                            uploadThumbnailImg = item.serveThumbnail;
+                        }else{
+                            uploadThumbnailImg = item.thumbnailImage;
+                        }
                         _this.articleTemplates.push({
-                            thumbnail:item.serveThumbnail,
+                            thumbnail:uploadThumbnailImg,
                             original:item.paraImage,
                             mediaType: item.mediaType,
                             content:item.paraText
@@ -1035,7 +1155,7 @@
                     var uploadThumbnail ;
 //                    如果是临时缓存 是没有上传过的本地图片； thumbnail:item.thumbnailImage,
                     this.paraList.forEach(function(item){
-                        if(!utils.isNull(item.paraImage) &&  item.paraImage.substring(0,4) == 'http'){
+                        if(!utils.isNull(item.paraImage) &&  item.paraImage.substring(0,4) == 'http' && !utils.isNull(item.serveThumbnail)){
                             uploadThumbnail = item.serveThumbnail;
                         }else{
                             uploadThumbnail = item.thumbnailImage;
@@ -1071,7 +1191,7 @@
                 POST('weex/member/article/submit.jhtml',articleData).then(
                     function (res) {
                         if(res.data != '' && res.type == 'success'){
-                            _this.articleId = res.data.id;
+//                            _this.articleId = res.data.id;
                             let resDataStr = JSON.stringify(res.data);
                             let saveData = {
                                 type:"article",
@@ -1147,10 +1267,10 @@
 
 //                    添加修改标志
                     _this.hadChange = 1;
-                    if(utils.isNull(_this.articleId)){
+//                    if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                        _this.saveDraft();
-                    }
+                    _this.saveDraft();
+//                    }
 //                    modal.toast({message:_this.paraList[index].paraText,duration:3});
                 });
             },
@@ -1178,10 +1298,10 @@
 
 //                    添加修改标志
                                 _this.hadChange = 1;
-                                if(utils.isNull(_this.articleId)){
+//                                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                                    _this.saveDraft();
-                                }
+                                _this.saveDraft();
+//                                }
                             }
                         }
                     }
@@ -1337,10 +1457,10 @@
                         _this.paraList.splice(index,1);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 });
             },
@@ -1359,10 +1479,10 @@
                         _this.voteList.splice(index,1);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 })
             },
@@ -1376,10 +1496,10 @@
                         _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     })
                     return;
                 }else{
@@ -1405,10 +1525,10 @@
                                 _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
                                 _this.hadChange = 1;
-                                if(utils.isNull(_this.articleId)){
+//                                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                                    _this.saveDraft();
-                                }
+                                _this.saveDraft();
+//                                }
                             }else{
                                 if(data.content == '用户取消'){
                                 }else{
@@ -1423,10 +1543,10 @@
                                 _this.paraList[index].thumbnailImage = data.data.coverImagePath;
 //                    添加修改标志
                                 _this.hadChange = 1;
-                                if(utils.isNull(_this.articleId)){
+//                                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                                    _this.saveDraft();
-                                }
+                                _this.saveDraft();
+//                                }
                             }else{
                                 if(data.content == '用户取消'){
                                 }else{
@@ -1493,10 +1613,10 @@
                         _this.coverImage = message.data;
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 });
             },
@@ -1515,10 +1635,10 @@
                         musicId = message.data.chooseMusicId;
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 });
             },
@@ -1531,10 +1651,10 @@
                         _this.voteList.push(message.data);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 });
             },
@@ -1552,10 +1672,10 @@
                         _this.voteList.splice(index,0,message.data);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 });
             },
@@ -1582,10 +1702,10 @@
 
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(utils.isNull(_this.articleId)){
+//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                            _this.saveDraft();
-                        }
+                        _this.saveDraft();
+//                        }
                     }
                 })
             },
