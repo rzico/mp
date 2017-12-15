@@ -745,11 +745,19 @@
 
 
             this.getAllArticle();
+//            监听文章的变化。
             globalEvent.addEventListener("onArticleChange", function (e) {
                     _this.getAllArticle();
             });
-            globalEvent.addEventListener("onBalanceChange", function (e) {
+//            监听用户信息的变化。
+            globalEvent.addEventListener("onUserInfoChange", function (e) {
                 _this.updateUserInfo();
+            });
+//            监听账单消息提醒.
+            globalEvent.addEventListener("onMessage", function (e) {
+                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201'){
+                    _this.updateUserInfo();
+                }
             });
 
         },
@@ -832,13 +840,13 @@
                             _this.helpList.push({
                                 key:2,
                                 articleSign:'样例',
-                                articleTitle:'我在魔篇有了自己的专栏！',
+                                articleTitle:'我在微信有了自己的专栏！',
                                 articleCoverUrl:utils.locate('resources/images/column.jpg'),
                                 articleDate:'2017-10-19'
                             },{
                                 key:1,
                                 articleSign:'样例',
-                                articleTitle:'魔篇使用帮助！',
+                                articleTitle:'新手使用帮助！',
                                 articleCoverUrl:utils.locate('resources/images/help.jpg'),
                                 articleDate:'2017-10-19'
                             })
@@ -849,13 +857,13 @@
                             _this.helpList.push({
                                 key:2,
                                 articleSign:'样例',
-                                articleTitle:'我在魔篇有了自己的专栏！',
+                                articleTitle:'我在微信有了自己的专栏！',
                                 articleCoverUrl:utils.locate('resources/images/column.jpg'),
                                 articleDate:'2017-10-19'
                             },{
                                 key:1,
                                 articleSign:'样例',
-                                articleTitle:'魔篇使用帮助！',
+                                articleTitle:'新手使用帮助！',
                                 articleCoverUrl:utils.locate('resources/images/help.jpg'),
                                 articleDate:'2017-10-19'
                             })

@@ -578,7 +578,7 @@
             },
 //            前往评论
             goReview(){
-                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId ),function (data) {
+                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId + '&authorId=' + this.memberId),function (data) {
                 })
             },
 //            收藏文章
@@ -589,6 +589,7 @@
                         if(data.type == 'success'){
                             event.toast('收藏成功');
                             _this.isCollect = true;
+                            event.sendGlobalEvent('onUserInfoChange',data);
                         }
                     },
                     function (err) {

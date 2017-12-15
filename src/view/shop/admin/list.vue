@@ -30,10 +30,10 @@
                         </div>
                         <div class="bottomBotton">
                             <div class="button" @click="popup(num.id,num.shopId)">
-                                <text class="sub_title">选择店铺</text>
+                                <text class="sub_title">设置店铺</text>
                             </div>
-                            <div class="button"@click="selectPosition(num.id,num.shopId)">
-                                <text class="sub_title">选择职位</text>
+                            <div class="button"@click="selectPosition(num.id,num.shopId,num.roleId)">
+                                <text class="sub_title">设置职位</text>
                             </div>
                         </div>
                     </div>
@@ -49,11 +49,11 @@
                 <div  class="message" v-for="num in shops" @click="allotment(num.id)">
                     <div class="shopLogo" >
                         <text class="shopCheck" :style="{fontFamily:'iconfont'}" v-if="storeId == num.id">&#xe64d;</text>
-                        <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor "></image>
+                        <image style="width: 150px;height: 150px;"  class="img" :src="num.thedoor "></image>
                     </div>
                     <div class="shopInformation">
                         <div class="shopNameDiv">
-                            <text class="shopName">店铺名：</text>
+                            <text class="shopName">店名：</text>
                             <text class="fullName">{{num.name}}</text>
                         </div>
                         <div class="shopAddressDiv">
@@ -117,16 +117,16 @@
     }
     .shopInformation{
         /*justify-content: space-between;*/
-        height: 230px;
+        height: 170px;
         margin-left: 20px;
     }
     .shopNameDiv{
         flex-direction: row;
-        margin-top: 20px;
+        margin-top: 10px;
     }
     .shopAddressDiv{
         flex-direction: row;
-        margin-top: 30px;
+        margin-top: 10px;
     }
     .shopName{
         font-weight: bold;
@@ -337,10 +337,10 @@
                 })
             },
 //            选择职位
-            selectPosition:function (id,shopId) {
+            selectPosition:function (id,shopId,roleId) {
                 var _this = this;
                 picker.pick({
-                    index:_this.roleof(id),
+                    index:_this.roleof(roleId),
                     items:_this.rolePicker()
                 }, e => {
                     if (e.result == 'success') {
@@ -540,7 +540,7 @@
                                         okTitle: '知道了'
                                     })
                                 } else {
-                                    event.toast(res.content);
+                                    event.toast(mes.content);
                                 }
                             }, function (err) {
                                 event.toast(err.content)

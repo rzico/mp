@@ -68,7 +68,7 @@
                             <!--文章内容-->
                             <div class="paraText" @click="editorText(index)">
                                 <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                                <text class="paraTextSize" v-if="item.paraText != ''">{{item.paraText | htmlDeal}}</text>
+                                <text class="paraTextSize" v-if="item.paraText != '' && item.paraText != null && item.paraText != undefined && item.paraText != 'undefined'">{{item.paraText | htmlDeal}}</text>
                                 <text class="paraTextSize greyColor" v-else  >点击添加文字</text>
                             </div>
                         </div>
@@ -441,6 +441,9 @@
         filters:{
 //            过滤html标签
             htmlDeal:function(value){
+                if(utils.isNull(value)){
+                    return value;
+                }
 //                将h1-h5换成\n
                 let takeEnter=value.replace(/<\/h[0-9]>/g,"\n");
 //                将html标签替换，可能遗留空格
@@ -448,11 +451,11 @@
 //                将空格 &nbsp; 替换成 。
                 let spaceText=nbspText.replace(/&nbsp;/g," ");
                 return spaceText;
-                //                将空格去除
-//                var onlyText=spaceText.replace(/ /g,"");
+//                //                将空格去除
+////                var onlyText=spaceText.replace(/ /g,"");
             },
             watchThumbImg:function (value) {
-                if(value == ''){
+                if(utils.isNull(value)){
                     return utils.locate('resources/images/text.png');
                 }else{
                     return value;
@@ -481,7 +484,7 @@
             var bundleUrl = this.$getConfig().bundleUrl;
             var getVal = bundleUrl.split('?')[1];
 //          创建文章编辑（首次）
-            if(getVal == '' || getVal == null || getVal == 'undefined'){
+            if(utils.isNull(getVal)){
 
                 //       多选图片
                 //      调用安卓的相册
@@ -551,11 +554,15 @@
                 event.find(options,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         let articleData = JSON.parse(data.data.value);
+                        if(!utils.isNull(data.data.sort)){
 //                            保存置顶状态。
-                        _this.sortStatus = data.data.sort.substring(0,2);
+                            _this.sortStatus = data.data.sort.substring(0,2);
+                        }
                         _this.setTitle = articleData.title;
                         _this.coverImage = articleData.thumbnail;
-                        _this.musicName = articleData.music.name;
+                        if(!utils.isNull(articleData.music.name)){
+                            _this.musicName = articleData.music.name;
+                        }
                         _this.publish = articleData.articleOption.publish;
                         musicId = articleData.music.id;
                         let templatesData = articleData.templates;
@@ -724,7 +731,7 @@
                         if (message.type == 'success' && message.data != ''   && message.data.text != '') {
                             _this.setTitle = message.data.text;
                             _this.hadChange = 1;
-                            if(_this.articleId == ''){
+                            if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                                 _this.saveDraft();
                             }
@@ -741,7 +748,7 @@
 //                    将返回回来的html数据赋值进去
                         _this.paraList[index].paraText = data.data;
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -752,7 +759,7 @@
             goBack:function () {
                 let _this = this;
 //                判断是草稿还是已经发布文章
-                if(this.articleId == ''){
+                if(utils.isNull(this.articleId)){
                     modal.confirm({
                         message: '是否保存该文章?',
                         duration: 0.3,
@@ -831,12 +838,12 @@
                 this.toSendArticle = true;
                 this.proTotal = 0;
 //                判断封面图片是否已上传过
-                if(this.coverImage.substring(0,4) != 'http'){
+                if(!utils.isNull(this.coverImage) && this.coverImage.substring(0,4) != 'http'){
                     this.proTotal ++;
                 };
 //                判断段落图片是否已上传
                 this.paraList.forEach(function (item) {
-                    if(item.paraImage.substring(0,4) != 'http' && item.paraImage != ''){
+                    if(!utils.isNull(item.paraImage) && item.paraImage.substring(0,4) != 'http'){
                         _this.proTotal ++;
                     }
                 });
@@ -844,7 +851,10 @@
 //                let devWidth = weex.config.env.deviceWidth;
 ////                获取缩略图的宽高
 //                _this.proportion = parseInt(155 * devWidth/750);
-                let frontcoverUrl = this.coverImage.substring(0,4);
+                var frontcoverUrl = '';
+                if(!utils.isNull(this.coverImage)){
+                    frontcoverUrl = this.coverImage.substring(0,4);
+                }
 //                event.toast(frontcoverUrl);
                 if(frontcoverUrl == 'http'){
 //                    event.toast('1');
@@ -876,7 +886,10 @@
 //                var frontUrl;
                 let sendLength = _this.paraList.length;//获取图片数组总长度
                 var mediaType = _this.paraList[sendIndex].mediaType;
-                let frontUrl = _this.paraList[sendIndex].paraImage.substring(0,4);
+                var frontUrl = '';
+                if(!utils.isNull(_this.paraList[sendIndex].paraImage)){
+                    frontUrl = _this.paraList[sendIndex].paraImage.substring(0,4);
+                }
 //                if(mediaType == 'image') {
 //                    modal.toast({message:frontUrl,duration:1});
 //                }else if(mediaType == 'video'){//如果是视频
@@ -902,7 +915,7 @@
                     }else{//进行上传文章
                         _this.realSave();
                     }
-                }else if(_this.paraList[sendIndex].paraImage == ''){//判断是否只有文字
+                }else if(utils.isNull(_this.paraList[sendIndex].paraImage)){//判断是否只有文字
                     _this.paraList[sendIndex].serveThumbnail = '';
                     sendIndex ++ ;
 //                        判断是否最后一张图
@@ -1009,7 +1022,7 @@
                 });
 //                var articleTemplates = [];
 
-                if(this.articleId != ''){
+                if(!utils.isNull(this.articleId)){
                     this.paraList.forEach(function(item){
                         _this.articleTemplates.push({
                             thumbnail:item.serveThumbnail,
@@ -1022,7 +1035,7 @@
                     var uploadThumbnail ;
 //                    如果是临时缓存 是没有上传过的本地图片； thumbnail:item.thumbnailImage,
                     this.paraList.forEach(function(item){
-                        if(item.paraImage.substring(0,4) == 'http'){
+                        if(!utils.isNull(item.paraImage) &&  item.paraImage.substring(0,4) == 'http'){
                             uploadThumbnail = item.serveThumbnail;
                         }else{
                             uploadThumbnail = item.thumbnailImage;
@@ -1042,7 +1055,7 @@
 //                将页面上的数据存储起来
                 this.savePage();
 //                判断是再次编辑还是初次编辑;
-                let sendId =  _this.articleId == '' ? _this.timestamp : _this.articleId;
+                let sendId =  utils.isNull(_this.articleId) ? _this.timestamp : _this.articleId;
                 let articleData = {
                     thumbnail:this.serveCover,
                     music:_this.musicData,
@@ -1134,7 +1147,7 @@
 
 //                    添加修改标志
                     _this.hadChange = 1;
-                    if(_this.articleId == ''){
+                    if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                         _this.saveDraft();
                     }
@@ -1165,7 +1178,7 @@
 
 //                    添加修改标志
                                 _this.hadChange = 1;
-                                if(_this.articleId == ''){
+                                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                                     _this.saveDraft();
                                 }
@@ -1231,6 +1244,7 @@
             },
 //            上箭头
             moveUp:function (index) {
+                let _this = this;
                 this.firstPlusShow = true;
                 if(lastIndex != -1){
                     this.paraList[lastIndex].show = true;
@@ -1257,13 +1271,14 @@
 
 //                    添加修改标志
                 this.hadChange = 1;
-                if(this.articleId == ''){
+                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                     this.saveDraft();
                 }
             },
 //            下箭头
             moveBottom:function (index) {
+                let _this = this;
                 this.firstPlusShow = true;
                 if(lastIndex != -1){
                     this.paraList[lastIndex].show = true;
@@ -1289,7 +1304,7 @@
                 }
 //                    添加修改标志
                 this.hadChange = 1;
-                if(this.articleId == ''){
+                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                     this.saveDraft();
                 }
@@ -1322,7 +1337,7 @@
                         _this.paraList.splice(index,1);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -1344,7 +1359,7 @@
                         _this.voteList.splice(index,1);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -1355,13 +1370,13 @@
             editParaImage(imgSrc,index,mediaType){
                 var _this = this;
 //                判断是否没有图片
-                if(imgSrc == ''){
+                if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
                         _this.paraList[index].paraImage = data.data.originalPath;
                         _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -1390,7 +1405,7 @@
                                 _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
                                 _this.hadChange = 1;
-                                if(_this.articleId == ''){
+                                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                                     _this.saveDraft();
                                 }
@@ -1408,7 +1423,7 @@
                                 _this.paraList[index].thumbnailImage = data.data.coverImagePath;
 //                    添加修改标志
                                 _this.hadChange = 1;
-                                if(_this.articleId == ''){
+                                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                                     _this.saveDraft();
                                 }
@@ -1478,7 +1493,7 @@
                         _this.coverImage = message.data;
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -1500,7 +1515,7 @@
                         musicId = message.data.chooseMusicId;
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -1516,7 +1531,7 @@
                         _this.voteList.push(message.data);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -1537,7 +1552,7 @@
                         _this.voteList.splice(index,0,message.data);
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }
@@ -1567,7 +1582,7 @@
 
 //                    添加修改标志
                         _this.hadChange = 1;
-                        if(_this.articleId == ''){
+                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                             _this.saveDraft();
                         }

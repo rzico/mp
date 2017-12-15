@@ -316,6 +316,12 @@
             globalEvent.addEventListener("onCashierChange", function (e) {
                 _this.view();
             });
+//            监听账单消息提醒.
+            globalEvent.addEventListener("onMessage", function (e) {
+                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201'){
+                    _this.view();
+                }
+            });
         },
         methods: {
             employee:function () {
@@ -337,7 +343,7 @@
             },
             objHeader:function () {
                 if (utils.device()=='V1') {
-                    return {backgroundColor:'#fff'}
+                    return {backgroundColor:'#000'}
                 } else {
                     return {backgroundColor:'#EB4E40'}
                 }
@@ -380,7 +386,6 @@
                 event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
             goIndex:function () {
-
                 event.openURL(utils.locate("view/topic/index.js?id=" +event.getUId()),
                     function (e) {}
                     );
@@ -491,7 +496,7 @@
                         if (res.type=='success') {
                             _this.id = res.data.id;
                             _this.sn = res.data.sn;
-                            POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+_this.plugId+"&safeKey="+safeKey).then(
+                            POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+_this.plugId+"&safeKey="+encodeURIComponent(safeKey)).then(
                                 function (data) {
                                     if (data.type=='success') {
                                         _this.time = 29;
@@ -527,7 +532,7 @@
                 _this.isScan = true;
                 _this.plugId = plugId;
                 event.scan(function (message) {
-                    if (message.type=='success') {
+                     if (message.type=='success') {
                         _this.isScan = false;
                         _this.submit(message.data);
                     } else {

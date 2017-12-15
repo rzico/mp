@@ -129,7 +129,9 @@
             title: { default: "钱包" }
         },
         created() {
+            let _this = this;
             this.load();
+
         },
         methods: {
             goback: function (e) {

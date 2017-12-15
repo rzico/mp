@@ -349,6 +349,7 @@
                                 })
                             }
                             _this.collectList.splice(index,1);
+                            event.sendGlobalEvent('onUserInfoChange',data);
                             event.toast('取消收藏成功');
                         }else{
                             event.toast(data.content);

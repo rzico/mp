@@ -143,12 +143,13 @@
     import { POST, GET } from '../assets/fetch';
     const clipboard = weex.requireModule('clipboard');
     const event = weex.requireModule('event');
+    import utils from '../assets/utils';
      export default {
         data() {
             return {
                 isShow:false,
                 nickName:"",
-                logo:"",
+                logo:utils.locate('resources/images/background.png'),
                 autograph:"",
                 qrcode:"",
                 copy:"点击复制名片"
@@ -167,9 +168,15 @@
                 function (data) {
                          if (data.type == "success") {
                             var member = data.data;
-                            _this.nickName = member.nickName;
-                            _this.logo = member.logo;
-                            _this.autograph = member.autograph;
+                             if(!utils.isNull(member.nickName)){
+                                 _this.nickName = member.nickName;
+                             }
+                             if(!utils.isNull(member.logo)){
+                                 _this.logo = member.logo;
+                             }
+                            if(!utils.isNull(member.autograph)){
+                                _this.autograph = member.autograph;
+                            }
                             _this.copy = "邀请码:"+(member.id+10200)+"";
                             _this.qrcode = "http://pan.baidu.com/share/qrcode?w=450&h=450&url=" +encodeURI(_this.dataURL+"/q/865380"+(member.id+10200)+'.jhtml');
                             _this.isShow = true;

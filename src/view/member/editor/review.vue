@@ -22,7 +22,7 @@
                             <text class="infoText">{{item.content}}</text>
                             <div class="delDate" >
                                 <text class="sub_date mt20 pb15">{{item.createDate | timefmtOther}}</text>
-                                <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" v-if="selfId == item.memberId">删除</text>
+                                <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" v-if="selfId == item.memberId || selfId == authorId">删除</text>
                             </div>
                         </div>
                     </div>
@@ -143,6 +143,7 @@
             selfId:'',
             refreshImg:utils.locate('resources/images/loading.png'),
             hadUpdate:false,
+            authorId:''
         },
         props:{
             noDataHint:{default:'暂无评论'},
@@ -159,6 +160,7 @@
             let _this = this;
             this.selfId = event.getUId();
             this.articleId = utils.getUrlParameter('articleId');
+            this.authorId = utils.getUrlParameter('authorId');
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(236);
             this.getAllReview();

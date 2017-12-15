@@ -1,9 +1,9 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback"></navbar>
-        <list class="list">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新</text>
+        <list class="list"  @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell >
                 <div class="cumulative">
@@ -11,7 +11,7 @@
                 </div>
                 <noData :ndBgColor="'#fff'"  v-if="noData()"> </noData>
             </cell>
-            <cell class="cell " v-for="(num,index) in lists">
+            <cell class="cell " v-for="(num,index) in lists"  ref="adoptPull">
                 <div class="month"  v-if="isRepeat(index)">
                     <text class="monthText">{{num.createDate | datefmt}}</text>
                 </div>
@@ -29,9 +29,6 @@
             <cell v-if="noLoading">
                 <div class="noLoading"></div>
             </cell>
-            <loading class="loading" @loading="onloading" :display="loading ? 'show' : 'hide'">
-                <text class="indicator">加载中..</text>
-            </loading>
         </list>
     </div>
 </template>
@@ -116,8 +113,7 @@
     import {POST, GET} from '../../../assets/fetch';
     import utils from '../../../assets/utils';
     import filters from '../../../filters/filters';
-
-    var event = weex.requireModule('event');
+    import {dom,event,animation} from '../../../weex.js';
     const modal = weex.requireModule('modal');
 
     export default {
@@ -130,7 +126,9 @@
                 lists: [],
                 month: '',
                 total:0,
-                noLoading:false
+                noLoading:false,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
             }
         },
         components: {
@@ -145,6 +143,21 @@
             this.open(function () {
 
             });
+        },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.adoptPull//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
         },
         methods: {
 //            获取月份
@@ -179,7 +192,7 @@
                         if (res.data.start==0) {
                             _this.lists = res.data.data;
                         } else {
-                            data.data.data.forEach(function (item) {
+                            res.data.data.forEach(function (item) {
                                 _this.lists.push(item);
                             })
                         }
@@ -194,29 +207,42 @@
                     event.toast(err.content)
                 })
             },
+
 //            上拉加载
             onloading (event) {
                 var _this = this;
-                _this.loading = true;
-                setTimeout(
-                    _this.open(function () {
-                        _this.loading = false;
-                    })
-                ,1500)
+                _this.open(function () {
+                })
             },
 //            下拉刷新
-            onrefresh (event) {
+            onrefresh:function (event) {
                 var _this = this;
                 _this.pageStart = 0;
-                _this.refreshing = true;
-                this.summary();
-                setTimeout(
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                });
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    });
                     _this.open(function () {
                         _this.refreshing = false;
                     })
-                    ,1500)
+                }, 1000)
             },
-
             goback: function () {
                 event.closeURL()
             },

@@ -476,7 +476,7 @@
                     event.openURL(utils.locate("view/member/password/captcha.js"),
                         function (res) {
                             if (res.type=='success') {
-                                _this.attribute.hasPassword = updated;
+                                _this.attribute.hasPassword = true;
                             }
                             _this.updateStatus(_this.attribute);
                         }

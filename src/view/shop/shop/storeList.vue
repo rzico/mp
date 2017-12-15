@@ -2,14 +2,11 @@
     <div  class="bkg-primary">
         <navbar :title="title" :complete="complete" @goback="goback" border=false></navbar>
         <div class="shopstwo bkg-primary">
-            <div>
             <div class="deleteBoxTwo bkg-delete" @click="out()">
                 <text class="deleteText">离职</text>
             </div>
-            <div  class="messageTwo "  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                <div class="shopLogotwo" >
-                    <image style="width: 100px;height: 100px;border-radius: 100px"  class="img" :src="logo"></image>
-                </div>
+            <div style="height: 475px;align-items: center" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+            <div  class="messageTwo " >
                 <div  style="flex-direction: column;align-items: center">
                     <div class="shopNameDivthree">
                         <text style="font-size: 32px">{{name}}</text>
@@ -24,14 +21,17 @@
                     </div>
                 </div>
             </div>
+            <div class="shopLogotwo" >
+                <image style="width: 100px;height: 100px;border-radius: 100px"  class="img" :src="logo"></image>
+            </div>
             </div>
         </div>
         <div style="background-color: #eeeeee" v-if="isOwner">
-        <div class="head" @click="add" >
-            <text class="clickAdd" >+点击添加商铺</text>
+            <div class="head" @click="add" >
+                <text class="clickAdd" >+点击添加商铺</text>
+            </div>
         </div>
-        </div>
-        <div style=" flex-direction:row;justify-content:center "  @click="outtwo" v-if="!isOwner">
+        <div class="outtwo bkg-primary"  @click="outtwo" v-else>
             <text style="font-size: 32px;color:#ffffff;">点我离职</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()&&isOwner" :style="{minHeight:screenHeight + 'px'}"></noData>
@@ -87,6 +87,7 @@
         height: 375px;
         margin-left: 20px;
         margin-right: 20px;
+        margin-top: 50px;
         border-radius: 10px;
     }
     .deleteText{
@@ -96,7 +97,7 @@
         position: absolute;right: 0px;top: 0px;height: 230px;align-items: center;width: 130px;justify-content: center;
     }
     .deleteBoxTwo{
-        position: absolute;right: 20px;top: 0px;height: 300px;align-items: center;width: 190px;justify-content: center;border-bottom-right-radius: 10px
+        position: absolute;right: 20px;top: 63px;height: 375px;align-items: center;width: 190px;justify-content: center;border-bottom-right-radius: 10px
     ;border-top-right-radius: 10px;
     }
     .head {
@@ -111,6 +112,12 @@
         align-items: center;
         justify-content: center;
 
+    }
+    .outtwo {
+        flex-direction: column;
+        align-items: center;
+        width:750px;
+        height:80px;
     }
     .headtwo {
         background-color: white;
@@ -132,8 +139,9 @@
         height: 230px;
     }
     .shopstwo{
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
         height: 500px;
     }
     .shopLogo{
@@ -144,8 +152,8 @@
         width: 100px;
         border-radius: 50px;
         position: absolute;
-        top: -50px;
-        left: 315px;
+        top: 0;
+        left: 325px;
     }
     .shopInformation{
         /*justify-content: space-between;*/

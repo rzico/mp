@@ -237,8 +237,8 @@
                     placeholder:'输入文集名'
                 }, function (value) {
                     if(value.result == '确定'){
-                        if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入文集名',duration:1})
+                        if(utils.isNull(value.data)){
+                            event.toast('请输入文集名');
                         }else{
                             let orders = _this.corpusList.length + 1;
                             value.data = encodeURI(value.data);
@@ -313,12 +313,13 @@
             deleteCorpus(index,id){
                 let _this = this;
                 modal.confirm({
-                    message: '不会删除文集下的文章，可在"全部文章"中找到,确定删除文集？',
+//                    message: '不会删除文集下的文章，可在"全部文章"中找到,确定删除文集？',
+                    message: '是否删除该文集？',
                     duration: 0.3,
-                    okTitle:'确定',
+                    okTitle:'删除',
                     cancelTitle:'取消',
                 }, function (value) {
-                    if(value == '确定'){
+                    if(value == '删除'){
                         POST('weex/member/article_catalog/delete.jhtml?id=' + id).then(
                             function (data) {
                                 if(data.type == 'success'){

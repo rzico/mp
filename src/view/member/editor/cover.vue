@@ -44,7 +44,7 @@
                 <div class="articleBox">
                     <div class="atricleHead">
                         <text class="articleSign">公开</text>
-                        <text class="articleTitle">我的魔篇</text>
+                        <text class="articleTitle">我的文章</text>
                     </div>
                     <!--文章封面-->
                     <div>
