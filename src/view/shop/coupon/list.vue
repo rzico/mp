@@ -190,7 +190,7 @@
 <script>
     var modal = weex.requireModule('modal')
     var prompting =''
-    import { POST, GET } from '../../../assets/fetch'
+    import { POST, GET ,SCAN} from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     import {dom,event,animation} from '../../../weex.js';
@@ -315,38 +315,12 @@
                     }
                 });
             },
-//            弹窗
-            showAlert (event) {
-                let _this =this
-                console.log('will show alert')
-                modal.alert({
-                    message:prompting,
-                    duration: 0.3
-                }, function (value) {
-                    console.log('alert callback', value)
-                })
-            },
 //            触发自组件的二维码方法
             scan:function () {
-                let _this=this
                 event.scan(function (message) {
-                    utils.readScan(message.data,function (data) {
-                        if(data.data.type == '818803'){
-                            _this.code =data.data.code
-                            GET('weex/member/couponCode/use.jhtml?code='+_this.code,function (mes) {
-                                if (mes.type == 'success') {
-                                    prompting = mes.content
-                                    _this.showAlert()
-                                } else {
-                                    prompting = mes.content
-                                    _this.showAlert()
-                                }
-                            }, function (err) {
-                                event.toast(err.content)
-                            })
-                        }
+                    SCAN(message,function (data) {
+                    },function (err) {
                     })
-
                 });
             },
             isNoEmpty:function() {
