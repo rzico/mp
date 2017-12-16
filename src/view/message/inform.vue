@@ -8,7 +8,7 @@
             <cell>
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
             </cell>
-                <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200' || messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
+                <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="dateBox">
                         <text class="dateText">{{item.createDate | timefmtMore}}</text>
                     </div>
@@ -17,7 +17,7 @@
                         <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
                         <div class="moneyBox">
                             <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
-                            <text class="fz30 mt10">元</text>
+                            <text class="fz30">元</text>
                         </div>
                         <div class="contentLine">
                             <text class="fz30 black">付款方式:</text>
@@ -36,6 +36,34 @@
                         </div>
                     </div>
                 </cell>
+            <cell  v-if="messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="dateBox">
+                    <text class="dateText">{{item.createDate | timefmtMore}}</text>
+                </div>
+                <div class="contentBox">
+                    <text class="fz45 black">{{item.title}}</text>
+                    <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
+                    <div class="moneyBox">
+                        <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
+                        <text class="fz30">元</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">付款方式:</text>
+                        <text class="fz30 gray ml10">{{item.ext.method}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">交易对象:</text>
+                        <text class="fz30 gray ml10">{{item.name}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">交易说明:</text>
+                        <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
+                    </div>
+                    <div class="bottomBtn">
+                        <text class="title">查看详情</text>
+                    </div>
+                </div>
+            </cell>
             <cell v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--系统消息-->
                 <div class="lineBox lineBoxHeight"  >
@@ -168,9 +196,9 @@
     }
     .bottomBtn{
         width: 670px;
-        padding-top: 30px;
-        padding-bottom: 30px;
-        margin-top: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-top: 10px;
         align-items: center;
         border-color: gainsboro;
         border-style: solid;
@@ -195,15 +223,15 @@
         font-size: 30px;
     }
     .moneyBox{
-        padding-top: 50px;
-        padding-bottom: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
         align-items: center;
         flex-direction: row;
         justify-content: center;
         border-color: #ccc;
         border-style: solid;
         border-bottom-width:1px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
     }
     .contentBox{
         width:700px;

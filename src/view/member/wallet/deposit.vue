@@ -9,13 +9,10 @@
             </div>
             <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
         </div>
-        <list class="list mt20"  @loadmore="onloading" loadmoreoffset="50">
+        <list class="list mt20"  @loadmore="onloading" loadmoreoffset="180">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell v-if="noData()" >
-                <noData > </noData>
-            </cell>
             <cell v-for="(deposit,index) in depositList" ref="adoptPull">
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
@@ -47,8 +44,8 @@
                     </div>
                 </div>
             </cell>
-            <cell v-if="noLoading">
-                <div class="noLoading"></div>
+            <cell v-if="noData()" >
+                <noData > </noData>
             </cell>
         </list>
     </div>
@@ -82,9 +79,9 @@
         margin-left:20px;
     }
     .bal {
-        margin-top: 5px;
         font-size: 24px;
         margin-top: 5px;
+        color:#fff;
     }
 
     .day {
@@ -130,6 +127,7 @@
     .money {
         font-weight: 700;
         margin-right: 20px;
+        font-size: 32px;
     }
 
 </style>
@@ -248,19 +246,19 @@
                         event.toast(err.content);
                     });
                 }
-                GET('weex/member/deposit/list.jhtml?billDate='+_this.billDate+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                GET('weex/member/deposit/list.jhtml?billDate='+_this.billDate+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
-                          _this.depositList = res.data.data;
+                           _this.depositList = res.data.data;
                        } else {
-                           data.data.data.forEach(function (item) {
+                           res.data.data.forEach(function (item) {
                                _this.depositList.push(item);
                            })
                        }
                        _this.pageStart = res.data.start+res.data.data.length;
                        _this.noLoading = res.data.data.length<_this.pageSize;
                    } else {
-                       event.toast(err.content);
+                       event.toast(res.content);
                    }
                 }, function (err) {
                     event.toast(err.content);

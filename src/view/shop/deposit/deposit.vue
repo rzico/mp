@@ -10,13 +10,10 @@
             </div>
             <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
         </div>
-        <list class="list "  @loadmore="onloading" loadmoreoffset="50">
+        <list class="list "  @loadmore="onloading" loadmoreoffset="180">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-                <cell v-if="noData()" >
-                    <noData > </noData>
-                </cell> 
                 <cell v-for="(deposit,index) in depositList" :class="[index == 0 ? 'mt20' : '']">
                     <!--如果月份重复就不渲染该区域-->
                     <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
@@ -47,6 +44,9 @@
                             </div>
                         </div>
                     </div>
+                </cell>
+                <cell v-if="noData()" >
+                  <noData > </noData>
                 </cell>
         </list>
         <div class="shareBox" v-if="isPopup">
@@ -147,11 +147,11 @@
         margin-top: 8px;
     }
     .status {
-        margin-top: 5px;
         font-size: 24px;
         margin-top: 5px;
     }
     .money {
+        font-size: 32px;
         font-weight: 700;
         margin-right: 20px;
     }
@@ -265,7 +265,7 @@
             },
             statusColor:function (status) {
                 if (status=="none") {
-                    return {color: 'yellow'}
+                    return {color: 'orange'}
                 }  else {
                     return {color:'#999'}
                 }

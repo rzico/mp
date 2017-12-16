@@ -240,6 +240,22 @@
                     return false;
                 }
             },
+            dayfmt:function (val) {
+                let res = utils.resolvetimefmt(value);
+                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+                let daySub = tds.d - res.d;
+                if (daySub<1) {
+                    return "今天"
+                }
+                if (daySub<3) {
+                    return "近三天"
+                }
+                if (daySub<7) {
+                    return "近七天"
+                }
+                return "七天前"
+
+            },
 //            获取所以新朋友列表
             getNewFriends(){
                 let _this = this;
@@ -257,6 +273,8 @@
                     } else {
                         event.toast(data.content);
                     };
+                },function (err) {
+                    event.toast(err.content);
                 });
             },
             onrefresh:function () {
@@ -314,21 +332,6 @@
                         event.showToast("网络不稳定");
                     }
                 )
-            },
-            dayfmt:function () {
-                let res = utils.resolvetimefmt(value);
-                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
-                let daySub = tds.d - res.d;
-                if (daySub<1) {
-                    return "今天"
-                }
-                if (daySub<3) {
-                    return "近三天"
-                }
-                if (daySub<7) {
-                    return "近七天"
-                }
-                return "七天前"
             },
             //判断时间是否重复
             isRepeat:function(index){
