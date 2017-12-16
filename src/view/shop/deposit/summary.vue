@@ -231,7 +231,7 @@
             },
             print:function (shopId) {
                 var _this = this;
-                GET("weex/member/paybill/summary_print.jhtml?shopId="+shopId+"&billDate="+encodeURIComponent(utils.ymdtimefmt(_this.billDate)),
+                GET("weex/member/paybill/summary_print.jhtml?shopId="+shopId+"&billDate="+encodeURIComponent(_this.billDate),
                     function (mes) {
                     if (mes.type=='success') {
                         if (utils.device()=='V1') {

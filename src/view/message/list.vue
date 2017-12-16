@@ -266,6 +266,9 @@
                     case 'gm_10211':
                         return '系统客服';
                         break;
+                    case 'gm_10212':
+                        return '线下收款';
+                        break;
                     default:
                         return value.nickName;
                         break;
