@@ -10,15 +10,14 @@
             </div>
             <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
         </div>
-        <scroller class="list "  @loadmore="onloading" loadmoreoffset="50">
+        <list class="list "  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}"  ref="adoptPull">
-                <div v-if="noData()" >
+                <cell v-if="noData()" >
                     <noData > </noData>
-                </div>
-                <div v-for="(deposit,index) in depositList" :class="[index == 0 ? 'mt20' : '']">
+                </cell> 
+                <cell v-for="(deposit,index) in depositList" :class="[index == 0 ? 'mt20' : '']">
                     <!--如果月份重复就不渲染该区域-->
                     <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
                         <div class="flex-row flex-start">
@@ -48,13 +47,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!--<cell v-if="noLoading">-->
-            <!--<div class="noLoading"></div>-->
-            <!--</cell>-->
-
-        </scroller>
+                </cell>
+        </list>
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center">
                 <text class="fz30 pt30 " style="color: #444">操作</text>
@@ -228,9 +222,7 @@
                 pageSize:20,
                 noLoading:true,
                 billDate:'',
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         components: {
@@ -255,21 +247,6 @@
                 } else {
                     return '失败'
                 }
-            }
-        },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
             }
         },
         methods: {

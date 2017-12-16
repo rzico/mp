@@ -2,8 +2,8 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <list class="list">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新</text>
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-if="noData()" >
                 <noData > </noData>
@@ -28,7 +28,6 @@
                             <text class="name">{{deposit.method}}</text>
                             <text class="money">{{deposit.amount | currencyfmt}}</text>
                         </div>
-
                 </div>
             </cell>
         </list>
@@ -95,7 +94,7 @@
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
-    var event = weex.requireModule('event')
+    import {dom,event,animation} from '../../../weex.js';
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var he = require('he');
@@ -112,7 +111,8 @@
                 billDate:"",
                 total:0,
                 fee:0,
-                account:0
+                account:0,
+                refreshImg:utils.locate('resources/images/loading.png'),
             }
         },
         components: {
@@ -222,12 +222,32 @@
                 })
             },
 //            下拉刷新
-            onrefresh (event) {
+            onrefresh (e) {
                 var _this = this;
-                _this.refreshing = true;
-                setTimeout(
-                    _this.open()
-                    ,1500)
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.open();
+                }, 1000)
             },
             print:function (shopId) {
                 var _this = this;
