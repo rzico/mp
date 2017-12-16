@@ -17,8 +17,7 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <div v-for="(num,index) in lists" >
+                <cell v-for="(num,index) in lists" >
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
@@ -43,8 +42,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </cell>
+                </cell>
         </list>
     </div>
 </template>
@@ -211,13 +209,11 @@
                 showLoading:false,
                 friendsList:[],
                 lists:[],
-                screenHeight:0,
                 pageSize:10,
                 pageStart:0,
                 id:'',
                 canScroll:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         props: {
@@ -226,26 +222,9 @@
         },
         created() {
             utils.initIconFont();
-
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(404);
             this.open(function () {
 
             });
-        },
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         filters:{
             judgment:function (data) {

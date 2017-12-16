@@ -9,9 +9,10 @@
         </div>
         <div class="middle">
             <text class="fz32">验证码:</text>
-            <input type="number" maxlength="6" placeholder="请输入验证码" class="input" />
-            <div class="code">
-                <text class="fz28" style="color: #EB4E40">发送验证码</text>
+            <input type="number" maxlength="6" placeholder="请输入验证码" class="input" v-model="captcha" @input="captchaInput"/>
+            <div class="code" @click="onSend">
+                <text class="fz28" style="color: #EB4E40" v-if="retry">发送验证码</text>
+                <text class="fz28" style='color: #cccccc' v-else> {{time}}秒后重新发送 </text>
             </div>
         </div>
         <div class="button mt50 ml30 mr30">
@@ -58,6 +59,9 @@
     }
 </style>
 <script>
+    var optionIndex = 0;
+    var lastCaptchaLength = 0;
+    var timer = null;
     import navbar from '../../../include/navbar.vue';
     import { POST, GET } from '../../../assets/fetch';
     var event = weex.requireModule('event');
@@ -68,7 +72,10 @@
         },
         data() {
             return {
-                tel:''
+                tel:'',
+                time:59,
+                retry:true,
+                captcha:''
             }
         },
         props: {
@@ -76,7 +83,100 @@
         },
         created() {
             this.tel = utils.getUrlParameter("mobile");
-            utils.debug(this.tel)
         },
+        methods:{
+            beginTimer:function () {
+                var _this = this;
+                _this.retry = false;
+                if (utils.isNull(timer) == false)  {
+                    clearInterval(timer);
+                    _this.time = 59;
+                    timer = null;
+                }
+                timer = setInterval(function () {
+                    _this.time = _this.time - 1;
+                    if (_this.time < 1) {
+                        _this.endTimer();
+                    }
+                },1000)
+            },
+            endTimer:function () {
+                var _this = this;
+                if (utils.isNull(timer) == false)  {
+                    clearInterval(timer);
+                    _this.time = 59;
+                    timer = null;
+                }
+                this.clear();
+                this.retry = true;
+            },
+            clear:function () {
+                this.captcha = "";
+                lastCaptchaLength = 0;
+                optionIndex = 0;
+            },
+//            当用户输入数字时触发
+            captchaInput:function (e) {
+                var _this = this;
+//                判断删除还是输入  '大于' --> 删除
+//                if(lastCaptchaLength > e.value.length){
+//                    optionIndex --;
+//                    _this.textList[optionIndex] = '';
+//                }else{
+//                    let a = e.value;
+//                    let b = a.substr(a.length-1,1)
+//                    _this.textList[optionIndex] = b;
+//                    if(_this.textList[0] != ''){
+//                        optionIndex ++;
+//                    }
+//                }
+                lastCaptchaLength = e.value.length;
+//               当用户输完验证码后进行系统验证
+                if(lastCaptchaLength == 6){
+                    _this.captcha = e.value;
+                    _this.onEnd();
+                }
+            },
+            onSend: function (e) {
+                var _this = this;
+                        POST('weex/member/mobile/send_mobile.jhtml').then(
+                            function (data) {
+                                if (data.type == "success") {
+                                    _this.beginTimer();
+                                } else {
+                                    _this.endTimer();
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                _this.endTimer();
+                                event.toast("网络不稳定")
+                            }
+                        )
+            },
+            onEnd: function () {
+                let _this = this;
+                event.encrypt(_this.captcha,function (msg) {
+                    if (msg.type=="success") {
+                        POST('weex/member/mobile/captcha.jhtml?captcha='+ msg.data).
+                        then(function (data) {
+                                if (data.type == "success") {
+
+                                } else {
+                                    _this.endTimer();
+                                    event.toast(data.content);
+                                }
+                            },function () {
+                                _this.endTimer();
+                                event.toast("网络不稳定请重试");
+                            }
+                        )
+                    } else {
+                        _this.clear();
+                        event.toast(data.content);
+                    }
+                })
+            }
+        }
     }
 </script>
