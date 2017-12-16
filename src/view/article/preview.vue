@@ -458,8 +458,6 @@
             goComplete(){
                 if(!this.publish){
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-//                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
-//                    _this.updateArticle();
                         if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                             let E = {
                                 isDone : 'complete'
