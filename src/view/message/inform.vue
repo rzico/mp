@@ -8,7 +8,7 @@
             <cell>
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
             </cell>
-                <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
+            <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="dateBox">
                         <text class="dateText">{{item.createDate | timefmtMore}}</text>
                     </div>
@@ -53,7 +53,7 @@
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">交易对象:</text>
-                        <text class="fz30 gray ml10">{{item.name}}</text>
+                        <text class="fz30 gray ml10">{{item.ext.name}}</text>
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">交易说明:</text>
@@ -223,7 +223,7 @@
         font-size: 30px;
     }
     .moneyBox{
-        padding-top: 20px;
+        padding-top: 0px;
         padding-bottom: 20px;
         align-items: center;
         flex-direction: row;
@@ -355,7 +355,7 @@
                     break;
                 case 'gm_10212':
                     this.title =  '线下收单';
-                    this.bgWhite = true;
+                    this.bgWhite = false;
                     break;
                 default:
                     this.title = '消息助手';
