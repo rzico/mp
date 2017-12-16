@@ -187,31 +187,6 @@
 //            event.toast(this.logo)
         },
         methods: {
-            // 时间格式化  2017-09-01
-            timeDatefmt:function (value) {
-                if(value == '' || value == null || value == undefined){
-                    return value;
-                }
-                //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-                value = value + '';
-                if(value.length == 10){
-                    value = parseInt(value) * 1000;
-                }else{
-                    value = parseInt(value);
-                }
-                let    date = new Date(value);
-                let    tody = new Date();
-                let    y = date.getFullYear();
-                let    m = date.getMonth() + 1;
-                let    d = date.getDate();
-                if (m < 10) {
-                    m = '0' + m;
-                }
-                if (d < 10) {
-                    d = '0' + d;
-                }
-                return y + '-' + m + '-' + d;
-            },
             showQrcode: function (e) {
                 this.$refs.qrcode.show();
             },
@@ -428,7 +403,7 @@
                     _this.autograph = "未填写";
                 }
                 if (attr.birthday!=null && attr.birthday!="") {
-                    _this.birthday = _this.timeDatefmt(attr.birthday)
+                    _this.birthday = utils.ymdtimefmt(attr.birthday)
                 } else {
                     _this.birthday = "未设置";
                 }
