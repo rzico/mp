@@ -10,12 +10,16 @@
             </cell>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
-                <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="print(deposit.shopId)">
                     <div class="flex-row flex-start">
                         <image class="logo" resize="cover"
                                :src="deposit.logo">
                         </image>
                         <text class="title" >{{deposit.name}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">打印</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="panel" >
@@ -104,6 +108,8 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     var event = weex.requireModule('event')
+    const modal = weex.requireModule('modal');
+    const printer = weex.requireModule('print');
     var he = require('he');
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
@@ -235,6 +241,34 @@
                     _this.open()
                     ,1500)
             },
+            print:function (shopId) {
+                var _this = this;
+                GET("weex/member/paybill/summary_print.jhtml?shopId="+shopId+"&billDate="+encodeURIComponent(utils.ymdtimefmt(_this.billDate)),
+                    function (mes) {
+                    if (mes.type=='success') {
+                        event.toast(mes);
+                        if (utils.device()=='V1') {
+                            _this.isPopup = false;
+                            printer.print(mes.data);
+                        } else {
+                            _this.isPopup = false;
+                            modal.alert({
+                                message: '请使用收款机',
+                                okTitle: '知道了'
+                            })
+                        }
+                    } else {
+                        _this.isPopup = false;
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: '知道了'
+                        })
+                    }
+                },function (err) {
+                    _this.isPopup = false;
+                    event.toast(err.content);
+                })
+            }
         },
     }
 </script>

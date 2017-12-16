@@ -318,7 +318,7 @@
             });
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
-                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201'){
+                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10212'){
                     _this.view();
                 }
             });
