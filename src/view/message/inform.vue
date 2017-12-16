@@ -7,7 +7,7 @@
             </refresh>
             <div :style="{minHeight:screenHeight + 'px'}">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
-                <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
+                <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10200' || messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="dateBox">
                         <text class="dateText">{{item.createDate | timefmtMore}}</text>
                     </div>
@@ -94,50 +94,6 @@
                     </div>
                     <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
-                <!--赞赏-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10207'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--分享提醒-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10208'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--添加好友-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10209'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;同意好友&ndash;&gt;-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10210'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
             </div>
         </scroller>
     </div>

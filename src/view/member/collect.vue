@@ -1,48 +1,48 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title" @goback="goback" > </navbar>
-        <scroller style="background-color: #fff;" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50" >
+        <list style="background-color: #fff;" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}"  ref="adoptPull">
+            <cell>
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="collectList.length == 0"></noData>
-                <div v-for="(item,index) in collectList"  >
-                    <div class="deleteBox bkg-delete" @click="deleteMessage(item.id,index)" v-if="isSelf" >
-                        <text class="deleteText">取</text>
-                        <text class="deleteText">消</text>
-                        <text class="deleteText">收</text>
-                        <text class="deleteText">藏</text>
-                    </div>
-                    <div class="collectBox"  @click="goArticle(item.id)"  @swipe="onpanmove($event,index)" @touchstart="ontouchstart($event,index)">
-                        <!--名字与日期-->
-                        <div class="nameDate">
-                            <div class="nameImg" @click="goAuthor(item.authorId)">
-                                <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
-                                <text class="authorName ml10">{{item.author}}</text>
-                            </div>
-                            <text class="authorName">{{item.createDate | timeDatefmt}}</text>
+            </cell>
+            <cell v-for="(item,index) in collectList"  >
+                <div class="deleteBox bkg-delete" @click="deleteMessage(item.id,index)" v-if="isSelf" >
+                    <text class="deleteText">取</text>
+                    <text class="deleteText">消</text>
+                    <text class="deleteText">收</text>
+                    <text class="deleteText">藏</text>
+                </div>
+                <div class="collectBox"  @click="goArticle(item.id)"  @swipe="onpanmove($event,index)" @touchstart="ontouchstart($event,index)">
+                    <!--名字与日期-->
+                    <div class="nameDate">
+                        <div class="nameImg" @click="goAuthor(item.authorId)">
+                            <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
+                            <text class="authorName ml10">{{item.author}}</text>
                         </div>
-                        <div class="flex-row">
-                            <!--文章封面-->
-                            <image resize="cover" class="articleImg" :src="item.thumbnail  " ></image>
-                            <!--文章相关信息。标题点赞...-->
-                            <div class="articleInfo">
-                                <text class="fz30 articleTitle">{{item.title}}</text>
-                                <div class="relevantInfo">
-                                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                    <text class="relevantText">{{item.hits}}</text>
-                                    <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                    <text class="relevantText">{{item.laud}}</text>
-                                    <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                    <text class="relevantText">{{item.review}}</text>
-                                </div>
+                        <text class="authorName">{{item.createDate | timeDatefmt}}</text>
+                    </div>
+                    <div class="flex-row">
+                        <!--文章封面-->
+                        <image resize="cover" class="articleImg" :src="item.thumbnail  " ></image>
+                        <!--文章相关信息。标题点赞...-->
+                        <div class="articleInfo">
+                            <text class="fz30 articleTitle">{{item.title}}</text>
+                            <div class="relevantInfo">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.hits}}</text>
+                                <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.laud}}</text>
+                                <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.review}}</text>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </scroller>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -144,9 +144,7 @@
                 canScroll:true,
                 isSelf:false,
                 userName:'我',
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         filters:{
@@ -173,8 +171,6 @@
             let _this = this;
             utils.initIconFont();
             this.UId = utils.getUrlParameter('id');
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(136);
             let selfId = event.getUId();
             if(this.UId == selfId){
                 this.isSelf = true;
@@ -183,21 +179,6 @@
                 this.userName = utils.isNull(name) ? '我' : name;
             }
             this.getAllCollect();
-        },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-               return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         methods:{
 //            获取收藏列表

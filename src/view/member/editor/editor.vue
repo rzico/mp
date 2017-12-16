@@ -607,7 +607,7 @@
                                 if(utils.isNull(item.expire)){
                                     startDate = '无截止时间'
                                 }else{
-                                    let time =  utils.timeChange(item.expire);
+                                    let time =  utils.ymdhistimefmt(item.expire);
                                     startDate = time.substring(0,10);
                                     startTime = time.substring(11,19);
                                 }
@@ -647,7 +647,7 @@
                         }
 
                     }else{
-                        if(this.articleId.length == 13){
+                        if(_this.articleId.length == 13){
                             event.toast('本地数据已被删除')
                             event.closeURL();
                             return;
@@ -853,7 +853,7 @@
                 }
             },
 //            删除临时缓存和草稿缓存
-            deleteDraft(){
+            deleteDraft(close){
                 let _this = this;
                 var storageType;
                 var storageKey;
@@ -878,12 +878,16 @@
                         }
                         event.delete(delOption,function (data) {
                             if(data.type == 'success' && !utils.isNull(_this.articleId)){
+                                if(utils.isNull(close)){
 //                                    全局监听文章变动
-                                let listenData = utils.message('success','文章改变','')
-                                event.sendGlobalEvent('onArticleChange',listenData);
-                                event.closeURL();
+                                    let listenData = utils.message('success','文章改变','')
+                                    event.sendGlobalEvent('onArticleChange',listenData);
+                                    event.closeURL();
+                                }
                             }else if(data.type == 'success'){
-                                event.closeURL();
+                                if(utils.isNull(close)){
+                                    event.closeURL();
+                                }
                             }
                         });
                     }else{
@@ -1208,7 +1212,7 @@
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','')
                                     event.sendGlobalEvent('onArticleChange',listenData);
-                                    _this.deleteDraft();
+                                    _this.deleteDraft('noclose');
                                     event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 0;//总的进度
@@ -1391,10 +1395,10 @@
 
 //                    添加修改标志
                 this.hadChange = 1;
-                if(utils.isNull(_this.articleId)){
+//                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                     this.saveDraft();
-                }
+//                }
             },
 //            下箭头
             moveBottom:function (index) {
@@ -1424,10 +1428,10 @@
                 }
 //                    添加修改标志
                 this.hadChange = 1;
-                if(utils.isNull(_this.articleId)){
+//                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                     this.saveDraft();
-                }
+//                }
             },
 //            用户执行删除时触发询问。
             showConfirm :function(index) {

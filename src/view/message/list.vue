@@ -266,6 +266,9 @@
                     case 'gm_10211':
                         return '系统客服';
                         break;
+                    case 'gm_10212':
+                        return '线下收单';
+                        break;
                     default:
                         return value.nickName;
                         break;
@@ -303,7 +306,6 @@
                 }
             })
             globalEvent.addEventListener("onMessage", function (e) {
-//                event.toast(e);
 //                    用户消息没有userId。只有id。
                 e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
                 _this.addMessage(e.data);

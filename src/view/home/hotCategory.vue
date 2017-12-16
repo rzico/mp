@@ -1,42 +1,39 @@
 <template>
-    <scroller class="wrapper" show-scrollbar="false"  @loadmore="onloading" loadmoreoffset="50" >
+    <list class="wrapper" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="50" >
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <div :style="{minHeight:screenHeight + 'px'}" @swipe="onpanmove($event)"  ref="adoptPull">
-
+        <cell>
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"></noData>
-            <div class="articleBox" v-for="(item,index) in articleList" v-else :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
-                <div class="atricleHead">
-                    <text class="articleTitle">{{item.title}}</text>
+        </cell>
+        <cell class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
+            <div class="atricleHead">
+                <text class="articleTitle">{{item.title}}</text>
+            </div>
+            <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                <text class="articleContent">{{item.htmlTag}}</text>
+            </div>
+            <!--文章封面-->
+            <div style="position: relative">
+                <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
+            </div>
+            <!--文章底部-->
+            <div class="articleFoot">
+                <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
+                    <image :src="item.logo" resize="cover" class="authorImg"></image>
+                    <text class="authorName">{{item.author}}</text>
                 </div>
-
-
-                <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                    <text class="articleContent">{{item.htmlTag}}</text>
-                </div>
-                <!--文章封面-->
-                <div style="position: relative">
-                    <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
-                </div>
-                <!--文章底部-->
-                <div class="articleFoot">
-                    <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
-                        <image :src="item.logo" resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author}}</text>
-                    </div>
-                    <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                        <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                        <text class="relevantText">{{item.hits}}</text>
-                        <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                        <text class="relevantText">{{item.laud}}</text>
-                        <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                        <text class="relevantText">{{item.review}}</text>
-                    </div>
+                <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                    <text class="relevantText">{{item.hits}}</text>
+                    <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                    <text class="relevantText">{{item.laud}}</text>
+                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                    <text class="relevantText">{{item.review}}</text>
                 </div>
             </div>
-        </div>
-    </scroller>
+        </cell>
+    </list>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
@@ -132,14 +129,13 @@
                 showLoading: 'hide',
                 pageStart:0,
                 pageSize:10,
-                screenHeight:0,
                 articleList:[],
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
             }
         },
         components: {
-           noData
+            noData
         },
         props:{
 //            whichCorpus:{default:0}
@@ -152,30 +148,13 @@
                 return utils.thumbnail(value,750,375);
             },
             watchlogo:function (value) {
-               return utils.thumbnail(value,60,60);
+                return utils.thumbnail(value,60,60);
             },
         },
         created(){
             utils.initIconFont();
             var _this = this;
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(216);
             this.getAllArticle();
-        },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         methods:{
 //            获取文章列表
@@ -216,7 +195,7 @@
             goArticle(id){
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
                     function () {}
-                    )
+                )
             },
             onpanmove(e){
                 this.$emit('onpanmove',e.direction);

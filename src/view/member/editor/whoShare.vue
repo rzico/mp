@@ -2,14 +2,15 @@
     <div class="wrapper" >
         <!--导航栏-->
         <navbar :title="title"  @goback="goback" ></navbar>
-        <scroller style="background-color: #fff" @loadmore="onloading" loadmoreoffset="50">
+        <list style="background-color: #fff" @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
+            <cell v-if="shareList.length == 0">
              <noData :noDataHint="noDataHint" ndBgColor="#fff"  v-if="shareList.length == 0"></noData>
+            </cell>
             <!--分享-->
-            <div class="lineBox" v-for="item in shareList">
+            <cell class="lineBox" v-for="item in shareList">
                 <div class="flex-row" >
                     <!--人物头像-->
                     <image class="headImg" :src="item.logo" ></image>
@@ -26,9 +27,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            </div>
-        </scroller>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -81,10 +81,8 @@
             refreshing: false,
             pageStart: 0,
             pageSize: 15,
-            screenHeight: 0,
             title:'0人分享',
             refreshImg:utils.locate('resources/images/loading.png'),
-            hadUpdate:false,
         },
         components: {
             navbar, noData
@@ -152,27 +150,9 @@
         },
         created() {
             let _this = this;
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(136);
             this.articleId = utils.getUrlParameter('articleId');
             this.getAllShare();
 
-        },
-
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         methods: {
 //            获取黑名单列表

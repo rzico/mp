@@ -1,26 +1,26 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"@goback="goback"></navbar>
-        <scroller  :class="[bgWhite ? 'whiteColor' : '']"  @loadmore="onloading" loadmoreoffset="50">
+        <list  :class="[bgWhite ? 'whiteColor' : '']"  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
-                <!--点赞-->
-                <div class="lineBox"  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
-                    <div class="flex-row">
-                        <image class="headImg" :src="item.logo" ></image>
-                        <div class="userInfo">
-                            <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="sub_title">{{item.createDate | timefmtOther}}</text>
-                        </div>
+            <cell v-if="dataList.length == 0">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
+            </cell>
+            <!--点赞-->
+            <cell class="lineBox"  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
+                <div class="flex-row">
+                    <image class="headImg" :src="item.logo" ></image>
+                    <div class="userInfo">
+                        <text class="fz30 nameColor" >{{item.nickName}}</text>
+                        <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                        <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                     </div>
-                    <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
-            </div>
-        </scroller>
+                <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -87,9 +87,7 @@
                 pageSize:15,
                 articleId:'',
                 title:'0人点赞',
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         components: {
@@ -98,24 +96,8 @@
         created(){
             let _this = this;
             utils.initIconFont();
-            this.screenHeight = utils.fullScreen(136);
             this.articleId = utils.getUrlParameter('articleId');
             this.getAllLaud();
-        },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         methods:{
 //            获取点赞列表

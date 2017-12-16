@@ -291,7 +291,6 @@
             },
 //            选项输入（当一进页面选项里有数据时，会触发该函数）
             optionsOninput:function (e,index) {
-                event.toast(index);
                 var _this = this;
                 var len = this.getLen(e.value);
 //                当字符数超过25时，将多行输入改成2行并且高度设为96

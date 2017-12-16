@@ -14,25 +14,23 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}"   ref="adoptPull">
-                <div v-for="(friend,index) in friendsList" >
-                    <!--姓氏首字母-->
-                    <div class="letterBox" v-if="isRepeat(index)">
-                        <text class="nameLetter">{{friend.createDate | dayfmt}}</text>
+            <cell v-for="(friend,index) in friendsList" >
+                <!--姓氏首字母-->
+                <div class="letterBox" v-if="isRepeat(index)">
+                    <text class="nameLetter">{{friend.createDate | dayfmt}}</text>
+                </div>
+                <!--姓氏里每个人的名子-->
+                <div class="addFriendsBorder">
+                    <div class="friendsLine" @click="goAuthor(friend.id)">
+                        <image :src="friend.logo" class="friendsImage"></image>
+                        <div class="friendsName">
+                            <text class="lineTitle ">{{friend.nickName}}</text>
+                            <text class="realName">真实姓名:{{friend.name | watchName}}</text>
+                        </div>
                     </div>
-                    <!--姓氏里每个人的名子-->
-                    <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="goAuthor(friend.id)">
-                            <image :src="friend.logo" class="friendsImage"></image>
-                            <div class="friendsName">
-                                <text class="lineTitle ">{{friend.nickName}}</text>
-                                <text class="realName">真实姓名:{{friend.name | watchName}}</text>
-                            </div>
-                        </div>
-                        <div class="status_panel">
-                            <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
-                            <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
-                        </div>
+                    <div class="status_panel">
+                        <text class="ask bkg-primary" v-if="isAsk(friend.status)" @click="adopt(friend.id)">添加</text>
+                        <text class="adopt " v-if="isAdopt(friend.status)">已添加</text>
                     </div>
                 </div>
             </cell>
@@ -155,9 +153,7 @@
                 refreshing:false,
                 showLoading:false,
                 friendsList:[],
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
                 pageSize:20,
             }
         },
@@ -169,25 +165,8 @@
         created() {
             utils.initIconFont();
 
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(404);
             var _this = this;
             _this.getNewFriends();
-        },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         filters:{
             watchName(value){
