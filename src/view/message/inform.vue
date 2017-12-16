@@ -195,7 +195,7 @@
         align-items: center;
     }
     .bottomBtn{
-        width: 670px;
+        width: 650px;
         padding-top: 20px;
         padding-bottom: 20px;
         margin-top: 10px;
@@ -224,7 +224,7 @@
     }
     .moneyBox{
         padding-top: 0px;
-        padding-bottom: 20px;
+        padding-bottom: 25px;
         align-items: center;
         flex-direction: row;
         justify-content: center;
@@ -238,8 +238,8 @@
         margin-left: 25px;
         background-color: #fff;
         padding-top: 25px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 25px;
+        padding-right: 25px;
         border-radius: 10px;
         border-color:gainsboro;
         border-width: 1px;

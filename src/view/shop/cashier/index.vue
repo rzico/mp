@@ -184,6 +184,7 @@
     }
 
     .menuBtn {
+        margin-top: 10px;
         font-size: 32px;
         color:#666;
     }
