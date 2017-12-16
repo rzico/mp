@@ -93,7 +93,7 @@
             <div  class="corpusBox"  >
                 <scroller scroll-direction="horizontal"  class="corpusScroll">
                     <div class="articleClass">
-                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
             </div>
@@ -103,34 +103,34 @@
             <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
                 <!--绑定动画-->
                 <!--<transition-group name="paraTransition" tag="div">-->
-                    <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
-                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                        <div class="atricleHead">
-                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
-                            <text class="articleTitle">{{item.title}}</text>
+                <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
+                <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
+                    <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
+                    <div class="atricleHead">
+                        <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                        <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
+                        <text class="articleTitle">{{item.title}}</text>
+                    </div>
+                    <!--文章封面-->
+                    <div style="position: relative">
+                        <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
+                    </div>
+                    <!--文章底部-->
+                    <div class="articleFoot">
+                        <div>
+                            <text class="articleDate">{{item.createDate | timeDatefmt}}</text>
+                            <!--<text class="articleDate">{{item.createDate}}</text>-->
                         </div>
-                        <!--文章封面-->
-                        <div style="position: relative">
-                            <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
-                        </div>
-                        <!--文章底部-->
-                        <div class="articleFoot">
-                            <div>
-                                <text class="articleDate">{{item.createDate | timeDatefmt}}</text>
-                                <!--<text class="articleDate">{{item.createDate}}</text>-->
-                            </div>
-                            <div class="relevantInfo">
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                <text class="relevantText">{{item.hits}}</text>
-                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                <text class="relevantText">{{item.laud}}</text>
-                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                <text class="relevantText">{{item.review}}</text>
-                            </div>
+                        <div class="relevantInfo">
+                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                            <text class="relevantText">{{item.hits}}</text>
+                            <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                            <text class="relevantText">{{item.laud}}</text>
+                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                            <text class="relevantText">{{item.review}}</text>
                         </div>
                     </div>
+                </div>
                 <!--<div style="height: 1300px;">-->
                 <!--</div>-->
                 <!--</transition-group>-->
@@ -178,7 +178,7 @@
         </div>
         <!--</div>-->
         <!--<loading class="loading" @loading="onloading" :display="showLoading">-->
-            <!--<text class="indicator">Loading ...</text>-->
+        <!--<text class="indicator">Loading ...</text>-->
         <!--</loading>-->
     </scroller>
 </template>

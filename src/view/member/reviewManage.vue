@@ -8,8 +8,9 @@
             <cell v-if="reviewList.length == 0">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
             </cell>
-                <!--导航栏-->
-                <cell class="lineBox" v-else v-for="(item,index) in reviewList">
+            <!--导航栏-->
+            <cell v-else v-for="(item,index) in reviewList">
+                <div class="lineBox">
                     <div class="flexRow" >
                         <image class="headImg" :src="item.logo" @click="goAuthor(item.memberId)"></image>
                         <div class="userInfo">
@@ -25,7 +26,8 @@
                             </div>
                         </div>
                     </div>
-                </cell>
+                </div>
+            </cell>
         </list>
     </div>
 </template>

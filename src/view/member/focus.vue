@@ -8,7 +8,8 @@
             <cell v-if="userList.length == 0">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
             </cell>
-                <cell class="addFriendsBorder" v-else v-for="(item,index) in userList" @click="goAuthor(item.id)">
+            <cell  v-else v-for="(item,index) in userList" @click="goAuthor(item.id)">
+                <div class="addFriendsBorder">
                     <!--用户头像与昵称签名-->
                     <div class="friendsLine" >
                         <image :src="item.logo" class="friendsImage"></image>
@@ -26,7 +27,8 @@
                         <text class="ask " v-if="item.follow" >已关注</text>
                         <text class="focus bkg-primary"  v-else>关注</text>
                     </div>
-                </cell>
+                </div>
+            </cell>
         </list>
     </div>
 </template>

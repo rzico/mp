@@ -3,33 +3,35 @@
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <cell>
-            <noData :noDataHint="noDataHint" v-if="articleList.length == 0"></noData>
+        <cell @swipe="onpanmove($event)" >
+            <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
-        <cell class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
-            <div class="atricleHead">
-                <text class="articleTitle">{{item.title}}</text>
-            </div>
-            <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                <text class="articleContent">{{item.htmlTag}}</text>
-            </div>
-            <!--文章封面-->
-            <div style="position: relative">
-                <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
-            </div>
-            <!--文章底部-->
-            <div class="articleFoot">
-                <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
-                    <image :src="item.logo" resize="cover" class="authorImg"></image>
-                    <text class="authorName">{{item.author}}</text>
+        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
+            <div  class="articleBox">
+                <div class="atricleHead">
+                    <text class="articleTitle">{{item.title}}</text>
                 </div>
-                <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                    <text class="relevantText">{{item.hits}}</text>
-                    <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="relevantText">{{item.laud}}</text>
-                    <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                    <text class="relevantText">{{item.review}}</text>
+                <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                    <text class="articleContent">{{item.htmlTag}}</text>
+                </div>
+                <!--文章封面-->
+                <div style="position: relative">
+                    <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
+                </div>
+                <!--文章底部-->
+                <div class="articleFoot">
+                    <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
+                        <image :src="item.logo" resize="cover" class="authorImg"></image>
+                        <text class="authorName">{{item.author}}</text>
+                    </div>
+                    <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                        <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                        <text class="relevantText">{{item.hits}}</text>
+                        <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                        <text class="relevantText">{{item.laud}}</text>
+                        <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                        <text class="relevantText">{{item.review}}</text>
+                    </div>
                 </div>
             </div>
         </cell>
@@ -132,6 +134,7 @@
                 articleList:[],
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
+                screenHeight:0
             }
         },
         components: {
@@ -155,6 +158,9 @@
             utils.initIconFont();
             var _this = this;
             this.getAllArticle();
+
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(316);
         },
         methods:{
 //            获取文章列表

@@ -8,24 +8,26 @@
             <cell v-if="userList.length == 0">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
             </cell>
-            <cell class="addFriendsBorder" v-else v-for="item in userList" @click="goAuthor(item.id)">
-                <!--用户头像与昵称签名-->
-                <div class="friendsLine" >
-                    <image :src="item.logo" class="friendsImage"></image>
-                    <div class="friendsName">
-                        <text class="lineTitle ">{{item.nickName}}</text>
-                        <text class="realName">{{item.autograph}}</text>
+            <cell v-else v-for="item in userList" @click="goAuthor(item.id)">
+                <div class="addFriendsBorder" >
+                    <!--用户头像与昵称签名-->
+                    <div class="friendsLine" >
+                        <image :src="item.logo" class="friendsImage"></image>
+                        <div class="friendsName">
+                            <text class="lineTitle ">{{item.nickName}}</text>
+                            <text class="realName">{{item.autograph}}</text>
+                        </div>
                     </div>
-                </div>
-                <!--关注与否-->
-                <div class="status_panel" v-if="!item.follow" @click="doFocus(item)">
-                    <text class="focus bkg-primary bd-primary" >关注</text>
-                </div>
-                <div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">
-                    <text class="ask ">已关注</text>
-                </div>
-                <div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">
-                    <text class="ask ">互相关注</text>
+                    <!--关注与否-->
+                    <div class="status_panel" v-if="!item.follow" @click="doFocus(item)">
+                        <text class="focus bkg-primary bd-primary" >关注</text>
+                    </div>
+                    <div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">
+                        <text class="ask ">已关注</text>
+                    </div>
+                    <div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">
+                        <text class="ask ">互相关注</text>
+                    </div>
                 </div>
             </cell>
         </list>

@@ -1,13 +1,14 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"@goback="goback"></navbar>
-        <scroller  :class="[bgWhite ? 'whiteColor' : 'bkg-gray']" @loadmore="onloading" loadmoreoffset="50" >
+        <list  :class="[bgWhite ? 'whiteColor' : 'bkg-gray']" @loadmore="onloading" loadmoreoffset="50" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <cell>
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
-                <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10200' || messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
+            </cell>
+                <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200' || messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="dateBox">
                         <text class="dateText">{{item.createDate | timefmtMore}}</text>
                     </div>
@@ -34,9 +35,10 @@
                             <text class="title">查看详情</text>
                         </div>
                     </div>
-                </div>
+                </cell>
+            <cell v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--系统消息-->
-                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight"  >
                     <div class="flex-row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -47,8 +49,10 @@
                     </div>
                     <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
+            </cell>
+            <cell v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--评论-->
-                <div class="lineBox pt20 pb20" v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
+                <div class="lineBox pt20 pb20">
                     <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="commentsInfo">
@@ -59,8 +63,10 @@
                     </div>
                     <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail" ></image>
                 </div>
+            </cell>
+            <cell v-if="messageType == 'gm_10204'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--点赞-->
-                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10204'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight" >
                     <div class="flex-row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -71,8 +77,10 @@
                     </div>
                     <image class="coverImg"  :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
+            </cell>
+            <cell  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--关注-->
-                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight" >
                     <div class="flex-row">
                         <image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -82,8 +90,10 @@
                         </div>
                     </div>
                 </div>
+            </cell>
+            <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--收藏--> <!--分享提醒--><!--赞赏-->
-                <div class="lineBox lineBoxHeight" v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight">
                     <div class="flex-row" >
                         <image class="headImg" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -94,8 +104,8 @@
                     </div>
                     <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
-            </div>
-        </scroller>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -241,9 +251,7 @@
                 refreshing:false,
                 pageStart:0,
                 pageSize:15,
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         components: {
@@ -267,8 +275,6 @@
         created(){
             let _this = this;
             utils.initIconFont();
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(136);
             this.messageType = utils.getUrlParameter('type');
             switch(this.messageType){
                 case 'gm_10200':
