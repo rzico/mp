@@ -5,7 +5,10 @@
         </div>
 
         <div class="content">
-            <text class="title">我们已向</text><text  class="number">{{mobile}}</text><text class="title">发送验证码短信，请查看短信并输入验证码</text>
+            <div style="flex-direction: row">
+            <text class="title">我们已向</text><text  class="number">{{tel}}</text>
+            </div>
+            <text class="title">发送验证码短信，请查看短信并输入验证码</text>
         </div>
         <!--6个验证码框-->
         <div class="flex-row inputTextBox mtb50" @click="getFocus()">
@@ -62,10 +65,10 @@
     .number {
         font-size: 48px;
         color: #000;
-        font-weight: 600;
+        font-weight: bold;
     }
     .content {
-        flex-wrap: wrap;
+        flex-direction: column;
     }
 
     .mobile-title {
@@ -103,7 +106,6 @@
         props: {
             title: { default: "验证码" },
             captcha: {default:""},
-            mobile:{default:""},
             status:{default:"点击重新发送"},
             retry:{default:false},
         },
@@ -117,6 +119,7 @@
         },
         created(){
             this.beginTimer();
+            this.tel = utils.getUrlParameter("telNum");
         },
         methods:{
             beginTimer:function () {
