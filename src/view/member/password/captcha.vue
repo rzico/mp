@@ -28,6 +28,7 @@
         created() {
             utils.initIconFont();
             this.mobile = utils.getUrlParameter("mobile");
+            this.tel = utils.getUrlParameter("telNum");
             this.onSend();
         },
         props: {
@@ -39,7 +40,6 @@
             onSend: function (e) {
                 var _this = this;
                 event.encrypt(this.mobile,function (msg) {
-                    utils.debug(msg)
                     if (msg.type ==="success"){
                         POST('weex/member/password/send_mobile.jhtml?mobile=' +msg.data).then(
                             function (data) {
@@ -71,7 +71,6 @@
                         POST('weex/member/password/captcha.jhtml?captcha=' + msg.data).
                         then(function (data) {
                                 if (data.type == "success") {
-                                    utils.debug(data);
                                     event.openURL(utils.locate("view/member/password/update.js?captcha="+msg.data),
                                         function (resp) {
                                            event.closeURL(resp);
