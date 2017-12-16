@@ -41,6 +41,7 @@
                             </div>
                             <div class="flex-row space-between align-bottom">
                                 <text class="datetime">{{deposit.createDate | datetimefmt}}</text>
+                                <text class="bal pr25">余额:{{deposit.balance | currencyfmt}}</text>
                             </div>
                         </div>
                     </div>
@@ -80,6 +81,11 @@
         color: red;
         margin-left:20px;
     }
+    .bal {
+        margin-top: 5px;
+        font-size: 24px;
+        margin-top: 5px;
+    }
 
     .day {
         position: absolute;
@@ -117,7 +123,7 @@
         align-items: flex-start;
     }
     .datetime {
-        color:#ccc;
+        color:#999;
         font-size: 28px;
         margin-top: 5px;
     }

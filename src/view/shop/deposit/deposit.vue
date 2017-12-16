@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="flex-row space-between align-bottom">
                                     <text class="datetime">{{deposit.createDate | hitimefmt}} (流水号:{{deposit.id+10200}})</text>
-                                    <text class="status pr25">{{deposit.status | statusFilter}}</text>
+                                    <text class="status pr25" :style="statusColor(deposit.status)">{{deposit.status | statusFilter}}</text>
                                 </div>
                             </div>
                         </div>
@@ -142,13 +142,12 @@
         align-items: flex-start;
     }
     .datetime {
-        color:#ccc;
+        color:#999;
         font-size: 28px;
         margin-top: 8px;
     }
     .status {
         margin-top: 5px;
-        color:#ccc;
         font-size: 24px;
         margin-top: 5px;
     }
@@ -262,6 +261,13 @@
                     return {color:'red'}
                 }  else {
                     return {color:'#000'}
+                }
+            },
+            statusColor:function (status) {
+                if (status=="none") {
+                    return {color: 'yellow'}
+                }  else {
+                    return {color:'#999'}
                 }
             },
             pickDate () {

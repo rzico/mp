@@ -53,15 +53,6 @@
         background-color: #fff;
     }
 
-
-    .logo {
-        height:40px;
-        width:40px;
-        border-radius:20px;
-        overflow:hidden;
-        margin: 20px;
-    }
-
     .textMonth {
         font-size: 32px;
         margin-left: 20px;
