@@ -88,6 +88,9 @@
             this.tel = utils.getUrlParameter("mobile");
         },
         methods:{
+            goback:function(e) {
+                event.closeURL();
+            },
             beginTimer:function () {
                 var _this = this;
                 _this.retry = false;

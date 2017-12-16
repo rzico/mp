@@ -88,6 +88,9 @@
             this.banknum = utils.getUrlParameter("banknum");
         },
         methods:{
+            goback:function(e) {
+                event.closeURL();
+            },
             beginTimer:function () {
                 var _this = this;
                 _this.retry = false;

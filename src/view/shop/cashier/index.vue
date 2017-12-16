@@ -554,7 +554,8 @@
                 event.scan(function (message) {
                      if (message.type=='success') {
                         _this.isScan = false;
-                        _this.submit(message.data);
+                       let c = utils.qr2scan(message.data);
+                        _this.submit(c);
                     } else {
                         _this.isScan = false;
                     }

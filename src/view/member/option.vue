@@ -55,7 +55,7 @@
             <div class="cell-row cell-line" @click="sendQrcode()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
-                        <text class="title ml10">我的二维码</text>
+                        <text class="title ml10">推广二维码</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title">{{setQrcode}}</text>
