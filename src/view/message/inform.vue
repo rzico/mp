@@ -342,11 +342,19 @@
                     this.bgWhite = true;
                     break;
                 case 'gm_10209':
-                    this.title =  '添加好友提醒';
+                    this.title =  '添加好友';
                     this.bgWhite = true;
                     break;
                 case 'gm_10210':
-                    this.title =  '同意好友提醒';
+                    this.title =  '同意好友';
+                    this.bgWhite = true;
+                    break;
+                case 'gm_10211':
+                    this.title =  '客服消息';
+                    this.bgWhite = true;
+                    break;
+                case 'gm_10212':
+                    this.title =  '线下收单';
                     this.bgWhite = true;
                     break;
                 default:
