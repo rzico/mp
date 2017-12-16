@@ -48,26 +48,6 @@ let utilsFunc = {
         }
         return null;
     },
-    dayfmt (value) {
-        if(value.toString().length == 10){
-            value = parseInt(value) * 1000;
-        }else{
-            value = parseInt(value);
-        }
-        let date = new Date(value);
-        let tody = new Date();
-        let m = tody.getDate() - date.getDate();
-        if (m<1) {
-            return "今天"
-        }
-        if (m<3) {
-            return "近三天"
-        }
-        if (m<7) {
-            return "近七天"
-        }
-        return "七天前"
-    },
     message (_type,_content,_data) {
         return {
             type:_type,

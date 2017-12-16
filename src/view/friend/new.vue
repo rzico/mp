@@ -315,11 +315,26 @@
                     }
                 )
             },
+            dayfmt:function () {
+                let res = utils.resolvetimefmt(value);
+                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+                let daySub = tds.d - res.d;
+                if (daySub<1) {
+                    return "今天"
+                }
+                if (daySub<3) {
+                    return "近三天"
+                }
+                if (daySub<7) {
+                    return "近七天"
+                }
+                return "七天前"
+            },
             //判断时间是否重复
             isRepeat:function(index){
                 var _this = this;
                 if(index != 0){
-                    if (utils.dayfmt(_this.friendsList[index].createDate) == utils.dayfmt(_this.friendsList[index - 1].createDate)) {
+                    if (_this.dayfmt(_this.friendsList[index].createDate) == _this.dayfmt(_this.friendsList[index - 1].createDate)) {
                         return false;
                     } else {
                         return true;
