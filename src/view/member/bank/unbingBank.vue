@@ -2,15 +2,15 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback"  > </navbar>
         <div class="headPrompting">
-            <text class="fz28" style="color: #999">如遇手机号更换的情况，导致账号需换绑手机号，第一步需验证原手机号，再验证新手机号，即可完成换绑。</text>
+            <text class="fz28" style="color: #999">如遇银行卡更换的情况，导致账号需换绑银行卡，第一步需验证已绑手机号，通过验证后，即可换绑。</text>
         </div>
         <div class="middle mt20">
-            <text class="fz32">目前已绑定手机尾号:  {{tel}}</text>
+            <text class="fz32">目前已绑卡类型:  {{banknum}}</text>
         </div>
         <div class="middle">
             <div style="flex-direction: row;align-items: center">
-            <text class="fz32">验证码:</text>
-            <input type="number" maxlength="6" placeholder="请输入验证码" class="input" v-model="captcha" @input="captchaInput"/>
+                <text class="fz32">验证码:</text>
+                <input type="number" maxlength="6" placeholder="请输入验证码" class="input" v-model="captcha" @input="captchaInput"/>
             </div>
             <div class="code" @click="onSend">
                 <text class="fz28" style="color: #EB4E40" v-if="retry">发送验证码</text>
@@ -75,17 +75,17 @@
         },
         data() {
             return {
-                tel:'',
+                banknum:'',
                 time:59,
                 retry:true,
                 captcha:''
             }
         },
         props: {
-            title: {default: "换绑手机号"},
+            title: {default: "换绑银行卡"},
         },
         created() {
-            this.tel = utils.getUrlParameter("mobile");
+            this.banknum = utils.getUrlParameter("banknum");
         },
         methods:{
             goback:function(e) {
@@ -145,20 +145,20 @@
             },
             onSend: function (e) {
                 var _this = this;
-                        POST('weex/member/mobile/send_mobile.jhtml').then(
-                            function (data) {
-                                if (data.type == "success") {
-                                    _this.beginTimer();
-                                } else {
-                                    _this.endTimer();
-                                    event.toast(data.content);
-                                }
-                            },
-                            function (err) {
-                                _this.endTimer();
-                                event.toast("网络不稳定")
-                            }
-                        )
+                POST('weex/member/bankcard/send_mobile.jhtml').then(
+                    function (data) {
+                        if (data.type == "success") {
+                            _this.beginTimer();
+                        } else {
+                            _this.endTimer();
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        _this.endTimer();
+                        event.toast("网络不稳定")
+                    }
+                )
             },
             onEnd: function () {
                 let _this = this;
@@ -167,10 +167,10 @@
                         POST('weex/member/mobile/captcha.jhtml?captcha='+ msg.data).
                         then(function (data) {
                                 if (data.type == "success") {
-                                    event.openURL(utils.locate("view/member/mobile/index.js"),
-                                        function (res) {
-                                            if (res.type == "success") {}
-                                        })
+                                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+                                        if (message.type=='success') {
+                                        }
+                                    })
                                 } else {
                                     _this.endTimer();
                                     event.toast(data.content);
