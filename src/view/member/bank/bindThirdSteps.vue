@@ -196,6 +196,10 @@
                                 function (data) {
                                     utils.debug(data)
                                     if (data.type == "success") {
+                                        modal.alert({
+                                            message: data.content,
+                                            okTitle: '知道了'
+                                        });
                                         event.closeURL(data);
                                     } else {
                                         _this.endTimer();

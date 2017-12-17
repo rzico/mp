@@ -121,8 +121,8 @@
     }
     .input{
         height:80px;
-        font-size:30px;
-        line-height: 30px;
+        font-size:32px;
+        line-height: 32px;
     }
 
     .textA{
@@ -228,9 +228,9 @@
                 };
                 twodata = JSON.stringify(twodata);
                 storage.setItem('twonumber', twodata,e=> {
-                    event.openURL(utils.locate('view/member/bank/bindSecondSteps.js?name=twonumber'), function (mes) {
-                        if (mes.type=="success") {
-                            event.closeURL(mes);
+                    event.openURL(utils.locate('view/member/bank/bindSecondSteps.js?name=twonumber'), function (res) {
+                        if (res.type=="success") {
+                            event.closeURL(res);
                         }
                     })
                 });

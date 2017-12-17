@@ -69,7 +69,7 @@
     }
     .sweepCode{
         font-size: 28px;
-        color: #cccccc;
+        color: #999;
         margin-top: 40px;
         margin-bottom: 40px;
     }
