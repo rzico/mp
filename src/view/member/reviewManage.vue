@@ -1,14 +1,16 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
-        <scroller  style="background-color: #fff;"  @loadmore="onloading" loadmoreoffset="50">
+        <list  style="background-color: #fff;"  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="reviewList.length == 0"></noData>
-                <!--导航栏-->
-                <div class="lineBox" v-else v-for="(item,index) in reviewList">
+            <cell v-if="reviewList.length == 0">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
+            </cell>
+            <!--导航栏-->
+            <cell v-else v-for="(item,index) in reviewList">
+                <div class="lineBox">
                     <div class="flexRow" >
                         <image class="headImg" :src="item.logo" @click="goAuthor(item.memberId)"></image>
                         <div class="userInfo">
@@ -25,8 +27,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </scroller>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -86,14 +88,12 @@
         data:{
 
             articleId:'',
-            screenHeight:0,
             reviewList:[],
             refreshing:false,
             pageStart:0,
             pageSize:15,
             reviewNum:0,
             refreshImg:utils.locate('resources/images/loading.png'),
-            hadUpdate:false,
         },
         props:{
             noDataHint:{default:'暂无评论'},
@@ -106,8 +106,6 @@
             utils.initIconFont();
             let _this = this;
             this.articleId = utils.getUrlParameter('articleId');
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(136);
             this.getAllReview();
 
         },

@@ -1,13 +1,15 @@
 <template>
     <div @viewdisappear="viewdisappear()" class="wrapper" >
         <navbar :title="title" @goback="goback" > </navbar>
-        <scroller style="background-color: #fff" @loadmore="onloading" loadmoreoffset="50">
+        <list style="background-color: #fff" @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="userList.length == 0"></noData>
-                <div class="addFriendsBorder" v-else v-for="item in userList" @click="goAuthor(item.id)">
+            <cell v-if="userList.length == 0">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
+            </cell>
+            <cell v-else v-for="item in userList" @click="goAuthor(item.id)">
+                <div class="addFriendsBorder">
                     <!--用户头像与昵称签名-->
                     <div class="friendsLine" >
                         <image :src="item.logo" class="friendsImage"></image>
@@ -20,15 +22,15 @@
                     <div class="status_panel" @click="doCancel(item.id,index)">
                         <text class="focus" >解除黑名单</text>
                     </div>
-                    <!--<div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">-->
-                        <!--<text class="ask ">已关注</text>-->
-                    <!--</div>-->
-                    <!--<div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">-->
-                        <!--<text class="ask ">互相关注</text>-->
-                    <!--</div>-->
                 </div>
-            </div>
-        </scroller>
+                <!--<div class="status_panel" v-if="item.follow && !item.followed"  @click="doFocus(item)">-->
+                <!--<text class="ask ">已关注</text>-->
+                <!--</div>-->
+                <!--<div class="status_panel" v-if="item.follow && item.followed"  @click="doFocus(item)">-->
+                <!--<text class="ask ">互相关注</text>-->
+                <!--</div>-->
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -120,9 +122,7 @@
                 refreshing:false,
                 pageStart:0,
                 pageSize:15,
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         components: {
@@ -135,24 +135,7 @@
         created(){
             utils.initIconFont();
             let _this = this;
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(136);
             this.getAllBlack();
-        },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         methods:{
 //            获取黑名单列表
@@ -211,7 +194,7 @@
 
 //            在页面销毁时触发，可用来捕捉安卓的回退
             viewdisappear(){
-              this.goback();
+                this.goback();
             },
             goback(){
                 let E = utils.message('success','成功',this.userList.length);
@@ -225,27 +208,27 @@
 //            解除黑名单
             doCancel(id,index){
                 let _this = this;
-                    modal.confirm({
-                        message: '确定要解除黑名单吗?',
-                        okTitle:'确定',
-                        cancelTitle:'取消',
-                        duration: 0.3
-                    }, function (value) {
-                        if(value == '确定'){
-                            POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
-                                function(data){
-                                    if(data.type == 'success'){
-                                        _this.userList.splice(index,1);
-                                    }else{
-                                        event.toast(err.content);
-                                    }
-                                },
-                                function(err){
+                modal.confirm({
+                    message: '确定要解除黑名单吗?',
+                    okTitle:'确定',
+                    cancelTitle:'取消',
+                    duration: 0.3
+                }, function (value) {
+                    if(value == '确定'){
+                        POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
+                            function(data){
+                                if(data.type == 'success'){
+                                    _this.userList.splice(index,1);
+                                }else{
                                     event.toast(err.content);
                                 }
-                            )
-                        }
-                    })
+                            },
+                            function(err){
+                                event.toast(err.content);
+                            }
+                        )
+                    }
+                })
             },
 
         }

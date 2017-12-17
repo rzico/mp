@@ -10,8 +10,8 @@
             </div>
         </div>
         <scroller class="scroller">
-            <refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">刷新数据</text>
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <div class="fontInput" v-if="hasShop()">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
@@ -184,6 +184,7 @@
     }
 
     .menuBtn {
+        margin-top: 10px;
         font-size: 32px;
         color:#666;
     }
@@ -281,8 +282,8 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters.js'
+    import {dom,event,animation} from '../../../weex.js';
     const modal = weex.requireModule('modal');
-    const event = weex.requireModule('event');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
     export default {
@@ -300,7 +301,8 @@
                 time:30,
                 isScan:false,
                 isSubmit:false,
-                plugId:""
+                plugId:"",
+                refreshImg:utils.locate('resources/images/loading.png'),
             }
         },
         components: {
@@ -318,7 +320,7 @@
             });
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
-                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201'){
+                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10212'){
                     _this.view();
                 }
             });
@@ -358,13 +360,32 @@
             classHeader:function () {
                 return utils.device();
             },
+//            下拉刷新
             onrefresh (event) {
                 var _this = this;
-                _this.refreshing = true
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
                 setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
                     _this.view();
-                    _this.refreshing = false
-                }, 2000)
+                }, 1000)
             },
             view:function () {
                 var _this = this;
@@ -534,7 +555,8 @@
                 event.scan(function (message) {
                      if (message.type=='success') {
                         _this.isScan = false;
-                        _this.submit(message.data);
+                       let c = utils.qr2scan(message.data);
+                        _this.submit(c);
                     } else {
                         _this.isScan = false;
                     }

@@ -1,13 +1,14 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"@goback="goback"></navbar>
-        <scroller  :class="[bgWhite ? 'whiteColor' : 'bkg-gray']" @loadmore="onloading" loadmoreoffset="50" >
+        <list  :class="[bgWhite ? 'whiteColor' : 'bkg-gray']" @loadmore="onloading" loadmoreoffset="50" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}">
+            <cell>
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
-                <div  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
+            </cell>
+            <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
                     <div class="dateBox">
                         <text class="dateText">{{item.createDate | timefmtMore}}</text>
                     </div>
@@ -16,7 +17,7 @@
                         <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
                         <div class="moneyBox">
                             <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
-                            <text class="fz30 mt10">元</text>
+                            <text class="fz30">元</text>
                         </div>
                         <div class="contentLine">
                             <text class="fz30 black">付款方式:</text>
@@ -34,9 +35,38 @@
                             <text class="title">查看详情</text>
                         </div>
                     </div>
+                </cell>
+            <cell  v-if="messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="dateBox">
+                    <text class="dateText">{{item.createDate | timefmtMore}}</text>
                 </div>
+                <div class="contentBox">
+                    <text class="fz45 black">{{item.title}}</text>
+                    <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
+                    <div class="moneyBox">
+                        <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
+                        <text class="fz30">元</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">付款方式:</text>
+                        <text class="fz30 gray ml10">{{item.ext.method}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">交易对象:</text>
+                        <text class="fz30 gray ml10">{{item.ext.name}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">交易说明:</text>
+                        <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
+                    </div>
+                    <div class="bottomBtn">
+                        <text class="title">查看详情</text>
+                    </div>
+                </div>
+            </cell>
+            <cell v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--系统消息-->
-                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight"  >
                     <div class="flex-row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -47,8 +77,10 @@
                     </div>
                     <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
+            </cell>
+            <cell v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--评论-->
-                <div class="lineBox pt20 pb20" v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
+                <div class="lineBox pt20 pb20">
                     <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="commentsInfo">
@@ -59,8 +91,10 @@
                     </div>
                     <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail" ></image>
                 </div>
+            </cell>
+            <cell v-if="messageType == 'gm_10204'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--点赞-->
-                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10204'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight" >
                     <div class="flex-row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -71,8 +105,10 @@
                     </div>
                     <image class="coverImg"  :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
+            </cell>
+            <cell  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--关注-->
-                <div class="lineBox lineBoxHeight"  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight" >
                     <div class="flex-row">
                         <image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -82,8 +118,10 @@
                         </div>
                     </div>
                 </div>
+            </cell>
+            <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--收藏--> <!--分享提醒--><!--赞赏-->
-                <div class="lineBox lineBoxHeight" v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="lineBox lineBoxHeight">
                     <div class="flex-row" >
                         <image class="headImg" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
                         <div class="userInfo">
@@ -94,52 +132,8 @@
                     </div>
                     <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
-                <!--赞赏-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10207'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--分享提醒-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10208'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--添加好友-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10209'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;同意好友&ndash;&gt;-->
-                <!--<div class="lineBox"  v-if="messageType == 'gm_10210'" v-for="item in dataList">-->
-                <!--<div class="flex-row">-->
-                <!--<image class="headImg":src="item.logo"  @click="goAuthor(item.userId)"></image>-->
-                <!--<div class="userInfo">-->
-                <!--<text class="fz30 nameColor" >{{item.nickName}}</text>-->
-                <!--<text   class="infoText" >{{item.content}}</text>-->
-                <!--<text class="sub_title">{{item.createDate | timefmtOther}}</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-            </div>
-        </scroller>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -201,10 +195,10 @@
         align-items: center;
     }
     .bottomBtn{
-        width: 670px;
-        padding-top: 30px;
-        padding-bottom: 30px;
-        margin-top: 30px;
+        width: 650px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-top: 10px;
         align-items: center;
         border-color: gainsboro;
         border-style: solid;
@@ -229,23 +223,23 @@
         font-size: 30px;
     }
     .moneyBox{
-        padding-top: 50px;
-        padding-bottom: 30px;
+        padding-top: 0px;
+        padding-bottom: 25px;
         align-items: center;
         flex-direction: row;
         justify-content: center;
         border-color: #ccc;
         border-style: solid;
         border-bottom-width:1px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
     }
     .contentBox{
         width:700px;
         margin-left: 25px;
         background-color: #fff;
         padding-top: 25px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 25px;
+        padding-right: 25px;
         border-radius: 10px;
         border-color:gainsboro;
         border-width: 1px;
@@ -285,9 +279,7 @@
                 refreshing:false,
                 pageStart:0,
                 pageSize:15,
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         components: {
@@ -311,8 +303,6 @@
         created(){
             let _this = this;
             utils.initIconFont();
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(136);
             this.messageType = utils.getUrlParameter('type');
             switch(this.messageType){
                 case 'gm_10200':
@@ -352,12 +342,20 @@
                     this.bgWhite = true;
                     break;
                 case 'gm_10209':
-                    this.title =  '添加好友提醒';
+                    this.title =  '添加好友';
                     this.bgWhite = true;
                     break;
                 case 'gm_10210':
-                    this.title =  '同意好友提醒';
+                    this.title =  '同意好友';
                     this.bgWhite = true;
+                    break;
+                case 'gm_10211':
+                    this.title =  '客服消息';
+                    this.bgWhite = true;
+                    break;
+                case 'gm_10212':
+                    this.title =  '线下收单';
+                    this.bgWhite = false;
                     break;
                 default:
                     this.title = '消息助手';

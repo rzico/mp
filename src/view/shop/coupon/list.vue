@@ -17,8 +17,7 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <div v-for="(num,index) in lists" >
+                <cell v-for="(num,index) in lists" >
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
@@ -43,8 +42,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </cell>
+                </cell>
         </list>
     </div>
 </template>
@@ -190,7 +188,7 @@
 <script>
     var modal = weex.requireModule('modal')
     var prompting =''
-    import { POST, GET } from '../../../assets/fetch'
+    import { POST, GET ,SCAN} from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     import {dom,event,animation} from '../../../weex.js';
@@ -211,13 +209,11 @@
                 showLoading:false,
                 friendsList:[],
                 lists:[],
-                screenHeight:0,
                 pageSize:10,
                 pageStart:0,
                 id:'',
                 canScroll:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         props: {
@@ -226,26 +222,9 @@
         },
         created() {
             utils.initIconFont();
-
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(404);
             this.open(function () {
 
             });
-        },
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         filters:{
             judgment:function (data) {
@@ -315,38 +294,12 @@
                     }
                 });
             },
-//            弹窗
-            showAlert (event) {
-                let _this =this
-                console.log('will show alert')
-                modal.alert({
-                    message:prompting,
-                    duration: 0.3
-                }, function (value) {
-                    console.log('alert callback', value)
-                })
-            },
 //            触发自组件的二维码方法
             scan:function () {
-                let _this=this
                 event.scan(function (message) {
-                    utils.readScan(message.data,function (data) {
-                        if(data.data.type == '818803'){
-                            _this.code =data.data.code
-                            GET('weex/member/couponCode/use.jhtml?code='+_this.code,function (mes) {
-                                if (mes.type == 'success') {
-                                    prompting = mes.content
-                                    _this.showAlert()
-                                } else {
-                                    prompting = mes.content
-                                    _this.showAlert()
-                                }
-                            }, function (err) {
-                                event.toast(err.content)
-                            })
-                        }
+                    SCAN(message,function (data) {
+                    },function (err) {
                     })
-
                 });
             },
             isNoEmpty:function() {

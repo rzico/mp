@@ -40,9 +40,7 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <div style="background-color: #eeeeee; ">
-        <div class="shops" v-for="(num,index) in lists" >
+        <cell class="shops" v-for="(num,index) in lists" >
             <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                 <text class="deleteText">删除</text>
             </div>
@@ -65,9 +63,7 @@
                 </div>
             </div>
             </div>
-        </div>
-                </div>
-            </cell>
+        </cell>
         </list>
         </div>
 
@@ -214,7 +210,6 @@ export default {
             loading: false,
             refreshing : false,
             lists: [],
-            screenHeight:0,
             run:[],
             isOwner:true,
             name:'',
@@ -223,7 +218,6 @@ export default {
             roleName:'',
             canScroll:true,
             refreshImg:utils.locate('resources/images/loading.png'),
-            hadUpdate:false,
         }
     },
     components: {
@@ -237,21 +231,6 @@ export default {
         utils.initIconFont();
         this.open(function () {});
         this.openTwo(function () {});
-        this.screenHeight = utils.fullScreen(511);
-    },
-    updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-        if(this.hadUpdate){
-            return;
-        }
-        this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-        if(!utils.isIosSystem()){
-            const el = this.$refs.adoptPull//跳转到相应的cell
-            dom.scrollToElement(el, {
-                offset: -119
-            })
-        }
     },
     filters:{
         filterHead:function (value) {

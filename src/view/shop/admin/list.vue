@@ -10,8 +10,7 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <div v-for="(num,index) in lists" >
+                <cell v-for="(num,index) in lists" >
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
@@ -37,16 +36,14 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </cell>
+                </cell>
         </list>
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center;justify-content: center;height: 70px">
                 <text class="fz30 " style="color: #444">选择所在店铺</text>
             </div>
             <list>
-                <cell>
-                <div  class="message" v-for="num in shops" @click="allotment(num.id)">
+                <cell  class="message" v-for="num in shops" @click="allotment(num.id)">
                     <div class="shopLogo" >
                         <text class="shopCheck" :style="{fontFamily:'iconfont'}" v-if="storeId == num.id">&#xe64d;</text>
                         <image style="width: 150px;height: 150px;"  class="img" :src="num.thedoor "></image>
@@ -65,7 +62,6 @@
                             <text class="concretely">{{num.linkman}}</text>
                         </div>
                     </div>
-                </div>
                 </cell>
             </list>
             <div class="cancelBox" @click="doCancel()">
@@ -256,7 +252,6 @@
                 lists:[],
                 shops:[],
                 roles:[{id:0,name:"4e"}],
-                screenHeight:0,
                 pageSize:10,
                 pageStart:0,
                 code:'',
@@ -269,7 +264,6 @@
                 storeId:'',
                 canScroll:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         props: {
@@ -278,27 +272,10 @@
         },
         created() {
             utils.initIconFont();
-
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(236);
             this.open();
             this.openTwo()
             this.huoqu()
-        },
-        //        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
 
         filters:{

@@ -1,4 +1,5 @@
 const stream = weex.requireModule('stream');
+const modal = weex.requireModule('modal');
 const baseURL = '';
 import utils from './utils.js';
 const event = weex.requireModule('event');
@@ -82,6 +83,16 @@ export function SCAN (message,resolve,reject) {
                             event.toast(err.content);
                         }
                     )
+                }else if(data.data.type == '818803'){
+                    GET('weex/member/couponCode/use.jhtml?code='+ data.data.code,function (mes) {
+                        modal.alert({
+                            message:mes.content,
+                            duration: 0.3
+                        }, function (value) {
+                        })
+                    }, function (err) {
+                        event.toast(err.content)
+                    })
                 }else if(data.data.type == 'webView'){
                     event.openURL(message.data,function () {
 

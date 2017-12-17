@@ -119,7 +119,8 @@
      export default {
         data() {
             return {
-                wallet:{balance:0,bankinfo:"未绑定",binded:true}
+                wallet:{balance:0,bankinfo:"未绑定",binded:true},
+                bankinfo:''
             }
         },
         components: {
@@ -163,12 +164,19 @@
             },
             bindingCard:function () {
                 var _this = this;
-                event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
-                    if (message.type=='success') {
-                        _this.wallet.binded = true;
-                        _this.wallet.bankinfo = "已绑定";
-                    }
-                })
+                if(_this.wallet.bankinfo!='未绑定'){
+                    event.openURL(utils.locate("view/member/bank/unbingBank.js?banknum="+encodeURI(_this.bankinfo)), function (message) {
+                        if (message.type=='success') {
+                            _this.load();
+                        }
+                    })
+                }else {
+                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+                        if (message.type == 'success') {
+                            _this.load();
+                        }
+                    })
+                }
             },
             reward:function () {
                 var _this = this;
@@ -193,6 +201,7 @@
                 GET("weex/member/wallet/view.jhtml",function (res) {
                     if (res.type=='success') {
                         _this.wallet = res.data;
+                        _this.bankinfo = res.data.bankinfo
                     } else {
                         event.toast(res.content);
                     }

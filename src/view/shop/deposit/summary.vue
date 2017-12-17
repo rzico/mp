@@ -2,20 +2,21 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <list class="list">
-            <refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <text class="indicator">下拉刷新</text>
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-if="noData()" >
                 <noData > </noData>
             </cell>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
-                <div class="cell-header cell-line space-between" v-if="isRepeat(index)">
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="print(deposit.shopId)">
                     <div class="flex-row flex-start">
-                        <image class="logo" resize="cover"
-                               :src="deposit.logo">
-                        </image>
                         <text class="title" >{{deposit.name}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">打印</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
                 <div class="panel" >
@@ -27,7 +28,6 @@
                             <text class="name">{{deposit.method}}</text>
                             <text class="money">{{deposit.amount | currencyfmt}}</text>
                         </div>
-
                 </div>
             </cell>
         </list>
@@ -41,7 +41,7 @@
                 <text class="money" style="color:red">{{fee | currencyfmt}}</text>
             </div>
             <div class="moneyname">
-                <text class="name" style="margin-left:20px">结算额</text>
+                <text class="name" style="margin-left:20px">线上结算</text>
                 <text class="money" style="color:red">{{account | currencyfmt}}</text>
             </div>
         </div>
@@ -59,15 +59,6 @@
         border-style: solid;
         border-color: #ccc;
         background-color: #fff;
-    }
-
-
-    .logo {
-        height:40px;
-        width:40px;
-        border-radius:20px;
-        overflow:hidden;
-        margin: 20px;
     }
 
     .textMonth {
@@ -103,7 +94,9 @@
 <script>
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
-    var event = weex.requireModule('event')
+    import {dom,event,animation} from '../../../weex.js';
+    const modal = weex.requireModule('modal');
+    const printer = weex.requireModule('print');
     var he = require('he');
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
@@ -118,7 +111,8 @@
                 billDate:"",
                 total:0,
                 fee:0,
-                account:0
+                account:0,
+                refreshImg:utils.locate('resources/images/loading.png'),
             }
         },
         components: {
@@ -228,13 +222,56 @@
                 })
             },
 //            下拉刷新
-            onrefresh (event) {
+            onrefresh (e) {
                 var _this = this;
-                _this.refreshing = true;
-                setTimeout(
-                    _this.open()
-                    ,1500)
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.open();
+                }, 1000)
             },
+            print:function (shopId) {
+                var _this = this;
+                GET("weex/member/paybill/summary_print.jhtml?shopId="+shopId+"&billDate="+encodeURIComponent(_this.billDate),
+                    function (mes) {
+                    if (mes.type=='success') {
+                        if (utils.device()=='V1') {
+                            printer.print(mes.data);
+                        } else {
+                            modal.alert({
+                                message: '请使用收款机',
+                                okTitle: '知道了'
+                            })
+                        }
+                    } else {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: '知道了'
+                        })
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            }
         },
     }
 </script>

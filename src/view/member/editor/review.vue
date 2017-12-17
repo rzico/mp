@@ -7,28 +7,28 @@
                 <text class="sendText">发送</text>
             </div>
         </div>
-        <scroller  style="background-color: #fff;"  @loadmore="onloading" loadmoreoffset="50" >
+        <list  style="background-color: #fff;"  @loadmore="onloading" loadmoreoffset="50" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}" ref="adoptPull">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="reviewList.length == 0"></noData>
-                <!--导航栏-->
-                <div class="lineBox" v-else v-for="(item,index) in reviewList">
-                    <div class="flexRow" >
-                        <image class="headImg" :src="item.logo" @click="goAuthor(item.memberId)"></image>
-                        <div class="userInfo">
-                            <text class="fz32 nameColor" >{{item.nickName}}</text>
-                            <text class="infoText">{{item.content}}</text>
-                            <div class="delDate" >
-                                <text class="sub_date mt20 pb15">{{item.createDate | timefmtOther}}</text>
-                                <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" v-if="selfId == item.memberId || selfId == authorId">删除</text>
-                            </div>
+            <cell v-if="reviewList.length == 0">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
+            </cell>
+            <!--导航栏-->
+            <cell class="lineBox" v-else v-for="(item,index) in reviewList">
+                <div class="flexRow" >
+                    <image class="headImg" :src="item.logo" @click="goAuthor(item.memberId)"></image>
+                    <div class="userInfo">
+                        <text class="fz32 nameColor" >{{item.nickName}}</text>
+                        <text class="infoText">{{item.content}}</text>
+                        <div class="delDate" >
+                            <text class="sub_date mt20 pb15">{{item.createDate | timefmtOther}}</text>
+                            <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" v-if="selfId == item.memberId || selfId == authorId">删除</text>
                         </div>
                     </div>
                 </div>
-            </div>
-        </scroller>
+            </cell>
+    </list>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -133,7 +133,6 @@
 
             reviewWord:'',
             articleId:'',
-            screenHeight:0,
             reviewList:[],
             refreshing:false,
             showLoading:false,
@@ -161,8 +160,6 @@
             this.selfId = event.getUId();
             this.articleId = utils.getUrlParameter('articleId');
             this.authorId = utils.getUrlParameter('authorId');
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(236);
             this.getAllReview();
 
         },

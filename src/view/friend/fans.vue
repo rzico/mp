@@ -1,13 +1,15 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" > </navbar>
-        <scroller show-scrollbar="false" style="background-color: #ffffff"  @loadmore="onloading" loadmoreoffset="50" >
+        <list show-scrollbar="false" style="background-color: #ffffff"  @loadmore="onloading" loadmoreoffset="50" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div :style="{minHeight:screenHeight + 'px'}"  ref="adoptPull">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="userList.length == 0"></noData>
-                <div class="addFriendsBorder" v-else v-for="item in userList" @click="goAuthor(item.id)">
+            <cell v-if="userList.length == 0">
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
+            </cell>
+            <cell v-else v-for="item in userList" @click="goAuthor(item.id)">
+                <div class="addFriendsBorder" >
                     <!--用户头像与昵称签名-->
                     <div class="friendsLine" >
                         <image :src="item.logo" class="friendsImage"></image>
@@ -27,8 +29,8 @@
                         <text class="ask ">互相关注</text>
                     </div>
                 </div>
-            </div>
-        </scroller>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -122,9 +124,7 @@
                 UId:'',
                 isSelf:false,
                 userName:'我',
-                screenHeight:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
             }
         },
         components: {
@@ -145,8 +145,6 @@
         created(){
             let _this = this;
             this.UId = utils.getUrlParameter('id');
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(136);
             let selfId = event.getUId();
             if(this.UId == selfId){
                 this.isSelf = true;
@@ -155,21 +153,6 @@
                 this.userName = utils.isNull(name) ? '我' : name;
             }
             this.getAllFans();
-        },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
         },
         methods:{
 //            获取所有粉丝列表

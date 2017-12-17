@@ -9,8 +9,7 @@
             <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
                 <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
             <!--</refresh>-->
-            <cell :style="{minHeight:screenHeight + 'px'}">
-                <div v-for="(friend,index) in sortList" >
+                <cell v-for="(friend,index) in sortList" >
                     <!--姓氏首字母-->
                     <div class="letterBox" v-if="isRepeat(index)">
                         <text class="nameLetter">{{friend.name | watchLetter}}</text>
@@ -34,8 +33,7 @@
                             <text class="ask bkg-primary" v-if="isInvite(friend.status)" @click="invite(friend.number)">邀请</text>
                         </div>
                     </div>
-                </div>
-            </cell>
+                </cell>
         </list>
     </div>
 </template>
@@ -159,7 +157,6 @@
                 dataNum:0,
                 currentNum:0,
                 pageNum:20,
-                screenHeight:0,
 //                refreshImg:utils.locate('resources/images/loading.png'),
 //                hadUpdate:false,
             }
@@ -198,8 +195,6 @@
 //            }
         },
         created() {
-//            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(272);
             utils.initIconFont();
 //            调用通讯录
             this.mailFriend();

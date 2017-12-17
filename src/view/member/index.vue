@@ -1,8 +1,7 @@
-
 <template>
     <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0"   @loadmore="onloading" loadmoreoffset="50" @scroll="scrollHandler" :scrollable="canScroll">
         <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >-->
-            <!--<image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>-->
+        <!--<image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>-->
         <!--</refresh>-->
         <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
         <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear" ></div>
@@ -169,8 +168,8 @@
                                 <text class="rightHiddenText" v-else>取消置顶</text>
                             </div>
                             <!--<div class="rightHiddenIconBox" v-else @click="jumpTop(item,index)">-->
-                                <!--<text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>-->
-                                <!--<text class="rightHiddenText">取消置顶</text>-->
+                            <!--<text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>-->
+                            <!--<text class="rightHiddenText">取消置顶</text>-->
                             <!--</div>-->
                             <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
                                 <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
@@ -219,7 +218,7 @@
         </div>
         <!--</div>-->
         <!--<loading class="loading" @loading="onloading"  :display="showLoading">-->
-            <!--<text class="indicator">Loading ...</text>-->
+        <!--<text class="indicator">Loading ...</text>-->
         <!--</loading>-->
     </scroller>
 </template>
@@ -326,22 +325,22 @@
 
     /*文章段落动画*/
     .paraTransition-enter-active{
-    transition: all 0.2s;
+        transition: all 0.2s;
     }
     .paraTransition-leave-active {
-    transition: all 0.2s;
+        transition: all 0.2s;
     }
     .paraTransition-leave-to{
-    transform: translateX(0px);
-    opacity: 0;
+        transform: translateX(0px);
+        opacity: 0;
     }
     .paraTransition-enter-to{
-    transform: translateX(0px);
-    opacity: 1;
+        transform: translateX(0px);
+        opacity: 1;
     }
     .paraTransition-enter{
-    transform: translateX(0px);
-    opacity: 0;
+        transform: translateX(0px);
+        opacity: 0;
     }
     .rightBlur{
         right: 100px;
@@ -388,7 +387,7 @@
         color: #999;
     }
     /*.rightHiddenIcon:active{*/
-        /*background-color: #ccc;*/
+    /*background-color: #ccc;*/
     /*}*/
     .rightHiddenIcon{
         text-align: center;
@@ -674,7 +673,7 @@
 
                 helpList:[],
                 UId:'',
-                screenHeight:'',
+                screenHeight:0,
 //                文集id
                 corpusId:'',
                 showMenu:false,
@@ -692,6 +691,9 @@
             watchWho:function (value) {
                 if(value.sort.substring(0,1) == '1'){
                     return '置顶';
+                }
+                if(value.value.isDraft){
+                    return '草稿';
                 }
                 if(value.value.articleOption.articleCatalog.id == '99'){
                     return '已删除';
@@ -736,7 +738,7 @@
             let _this = this;
             utils.initIconFont();
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(216)  ;
+            this.screenHeight = utils.fullScreen(316);
             this.UId = event.getUId();
 //           获取用户信息;
             this.updateUserInfo();
@@ -747,7 +749,7 @@
             this.getAllArticle();
 //            监听文章的变化。
             globalEvent.addEventListener("onArticleChange", function (e) {
-                    _this.getAllArticle();
+                _this.getAllArticle();
             });
 //            监听用户信息的变化。
             globalEvent.addEventListener("onUserInfoChange", function (e) {
@@ -828,6 +830,7 @@
                     if( data.type == "success" && data.data != '' ) {
                         data.data.forEach(function (item) {
 //                    将value json化
+
                             item.value = JSON.parse(item.value);
 //                            将封面转为缩略图
 //                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
@@ -906,9 +909,9 @@
             getCorpus:function () {
                 var _this = this;
                 GET('weex/member/article_catalog/list.jhtml',function (data) {
-                            if (data.type == "success") {
-                                if(data.data == ''){
-                                }else{
+                    if (data.type == "success") {
+                        if(data.data == ''){
+                        }else{
 //                            event.toast(data.data);
                             _this.corpusList = '';
                             _this.corpusList =[{
@@ -991,7 +994,7 @@
                                 }
                             }
                         })
-                }else if(item.isDraft){
+                }else if(item.value.isDraft){
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + item.key),
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
@@ -1334,6 +1337,11 @@
 //            删除文章
             jumpDelete:function (item,index) {
                 let _this = this;
+                if(item.value.isDraft){
+                    _this.deleteAfter(item,index);
+                    return;
+                }
+
                 POST('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(
                     function(e){
                         if(e.type == 'success'){
@@ -1442,41 +1450,41 @@
                 event.save(saveData,function(data){
                     if(data.type == 'success'){
 
-                            let option = {
-                                type:item.type,
-                                key:item.key
-                            }
-                            event.find(option,function (e) {
-                                if(e.type == 'success'){
+                        let option = {
+                            type:item.type,
+                            key:item.key
+                        }
+                        event.find(option,function (e) {
+                            if(e.type == 'success'){
 //                                    把动画收回来
-                                    if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
-                                    }else{
-                                        animation.transition(animationPara, {
-                                            styles: {
-                                                transform: 'translateX(0)',
-                                            },
-                                            duration: 10, //ms
-                                            timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+                                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                                }else{
+                                    animation.transition(animationPara, {
+                                        styles: {
+                                            transform: 'translateX(0)',
+                                        },
+                                        duration: 10, //ms
+                                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
-                                            needLayout:false,
-                                            delay: 0 //ms
-                                        })
-                                    }
-                                    e.data.value = JSON.parse(e.data.value);
-                                    if(item.sort.substring(0,1) == '0'){
-                                        _this.articleList.splice(index,1);
-                                        _this.articleList.splice(0,0,e.data);
-                                        event.toast('置顶成功');
-                                    }else{
+                                        needLayout:false,
+                                        delay: 0 //ms
+                                    })
+                                }
+                                e.data.value = JSON.parse(e.data.value);
+                                if(item.sort.substring(0,1) == '0'){
+                                    _this.articleList.splice(index,1);
+                                    _this.articleList.splice(0,0,e.data);
+                                    event.toast('置顶成功');
+                                }else{
 //                                        _this.articleList.splice(index,1);
 //                                        _this.articleList.splice(index,0,e.data);
 
-                                        _this.getAllArticle();
-                                        event.toast('取消成功');
-                                    }
-
+                                    _this.getAllArticle();
+                                    event.toast('取消成功');
                                 }
-                            })
+
+                            }
+                        })
                     }else{
                         event.toast(data.content);
                     }
@@ -1491,6 +1499,8 @@
         }
     }
 </script>
+
+
 
 
 

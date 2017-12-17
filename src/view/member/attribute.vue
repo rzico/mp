@@ -146,6 +146,7 @@
 <script>
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
+    import filters from '../../filters/filters'
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     const picker = weex.requireModule('picker');
@@ -172,7 +173,9 @@
                 areaName:"未设置",
                 occupation:"未设置",
                 category:1,
-                sex:''
+                sex:'',
+                begin:'',
+                tel:''
             }
         },
         props: {
@@ -330,21 +333,24 @@
             pick () {
                 var _this = this;
                 picker.pick({
-                    index:0,
+                    index:_this.begin,
                     items:['男','女','保密']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
                             _this.gender = '男'
                             _this.sex = 'male'
+                            _this.begin =e.data
 
                         }else if(e.data == 1){
                             _this.gender = '女'
                             _this.sex = 'female'
+                            _this.begin =e.data
                         }
                         else{
                             _this.gender = '保密'
                             _this.sex = 'secrecy'
+                            _this.begin =e.data
                         }
                         POST('weex/member/update.jhtml?gender=' +this.sex).then(
                             function (mes) {
@@ -396,18 +402,18 @@
                 } else {
                     _this.autograph = "未填写";
                 }
-//                if (attr.birthday!=null && attr.birthday!="") {
-//                    _this.birthday = "已设置";
-//                } else {
-//                    _this.birthday = "未设置";
-//                }
+                if (attr.birthday!=null && attr.birthday!="") {
+                    _this.birthday = utils.ymdtimefmt(attr.birthday)
+                } else {
+                    _this.birthday = "未设置";
+                }
                 if (attr.hasPassword!=null && attr.hasPassword) {
                     _this.hasPassword = "已设置";
                 } else {
                     _this.hasPassword = "未设置";
                 }
                 if (attr.bindMobile!=null && attr.bindMobile) {
-                    _this.bindMobile = "已绑定";
+                    _this.bindMobile = "已绑定(可换绑)";
                 } else {
                     _this.bindMobile = "未绑定";
                 }
@@ -430,12 +436,15 @@
                 if (attr.gender!=null && attr.gender!="") {
                     if (attr.gender=="male") {
                         _this.gender = "男";
+                        _this.begin =0
                     }
                     if (attr.gender=="female") {
                         _this.gender = "女";
+                        _this.begin =1
                     }
                     if (attr.gender=="secrecy") {
                         _this.gender = "保密";
+                        _this.begin =2
                     }
 
 
@@ -447,10 +456,10 @@
                 var _this = this;
                 GET("weex/member/attribute.jhtml",
                     function (data) {
-//                    utils.debug(data)
                         if (data.type=="success") {
                             _this.attribute = data.data;
                             _this.updateStatus(_this.attribute);
+                            _this.tel =data.data.mobile
                         } else {
                             event.toast(data.content);
                         }
@@ -473,7 +482,7 @@
                         }
                     )
                 } else {
-                    event.openURL(utils.locate("view/member/password/captcha.js"),
+                    event.openURL(utils.locate("view/member/password/captcha.js?telNum=" +_this.tel),
                         function (res) {
                             if (res.type=='success') {
                                 _this.attribute.hasPassword = true;
@@ -485,18 +494,23 @@
             },
             doBindMobile: function (e) {
                 var _this = this;
-                if (_this.attribute.bindMobile) {
-                    return;
-                }
-                event.openURL(utils.locate("view/member/mobile/index.js"),
-                    function (res) {
-                        if (res.type=="success") {
-                            _this.attribute.bindMobile = true;
+                if (_this.attribute.bindMobile!=null && _this.attribute.bindMobile!='') {
+                    event.openURL(utils.locate("view/member/mobile/unbind.js?mobile=" +_this.tel),
+                        function (res) {
+                            if (res.type == "success") {
+                               _this.open();
+                            }
                         }
-                        _this.updateStatus(_this.attribute);
-                    }
-                )
-
+                    )
+                }else {
+                    event.openURL(utils.locate("view/member/mobile/index.js"),
+                        function (res) {
+                            if (res.type == "success") {
+                                _this.open();
+                            }
+                        }
+                    )
+                }
             },
             doBindWeiXin: function (e) {
                 var _this = this;
