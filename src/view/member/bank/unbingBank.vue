@@ -78,7 +78,8 @@
                 banknum:'',
                 time:59,
                 retry:true,
-                captcha:''
+                captcha:'',
+                isEnd:false
             }
         },
         props: {
@@ -162,6 +163,10 @@
             },
             onEnd: function () {
                 let _this = this;
+                if (_this.isEnd==true) {
+                    return;
+                }
+                _this.isEnd = true;
                 event.encrypt(_this.captcha,function (msg) {
                     if (msg.type=="success") {
                         POST('weex/member/mobile/captcha.jhtml?captcha='+ msg.data).
@@ -170,16 +175,20 @@
                                     event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (res) {
                                        event.closeURL(res);
                                     })
+                                    _this.isEnd = false;
                                 } else {
+                                    _this.isEnd = false;
                                     _this.endTimer();
                                     event.toast(data.content);
                                 }
                             },function () {
+                                _this.isEnd = false;
                                 _this.endTimer();
                                 event.toast("网络不稳定请重试");
                             }
                         )
                     } else {
+                        _this.isEnd = false;
                         _this.clear();
                         event.toast(data.content);
                     }

@@ -79,7 +79,7 @@
                                     event.toast(data.content);
                                 }
                             },function () {
-                            _this.$refs.captcha.clear();
+                                _this.$refs.captcha.clear();
                                 event.toast("网络不稳定请重试");
                             }
                         )

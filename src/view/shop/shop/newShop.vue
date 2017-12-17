@@ -92,8 +92,6 @@
         border-bottom-width: 1px;
         border-bottom-color: #cccccc;
         background-color: white;
-        padding-left: 20px;
-        padding-right: 20px;
         height: 100px;
     }
     .vendorName{
@@ -111,8 +109,6 @@
         background-color: white;
         border-bottom-color: #ccc;
         border-bottom-width: 1px;
-        padding-left: 20px;
-        padding-right: 20px;
         height: 100px;
     }
     .belongIndustry{
@@ -130,8 +126,6 @@
         background-color: white;
         border-bottom-color: #ccc;
         border-bottom-width: 1px;
-        padding-left: 20px;
-        padding-right: 20px;
         height: 100px;
     }
     .businessLocation{
@@ -148,10 +142,7 @@
         background-color: white;
         border-bottom-color: #ccc;
         border-bottom-width: 1px;
-        padding-left: 20px;
-        padding-right: 20px;
         height: 100px;
-        line-height: 32px;
     }
     .detailedAddress{
         font-size: 32px;
@@ -164,29 +155,28 @@
         border-bottom-width: 1px;
         border-bottom-color: #cccccc;
         background-color: white;
-        padding-left: 20px;
-        padding-right: 20px;
         margin-top: 50px;
         height: 100px;
-        line-height: 32px;
     }
     .contactName{
         font-size: 32px;
-        line-height: 32px;
+    }
+    .contactNumber{
+        font-size: 32px;
     }
     .input{
         padding-left: 100px;
-        font-size: 28px;
+        font-size: 32px;
         line-height: 32px;
-        height: 32px;
+        height: 100px;
         width: 500px;
     }
     .addressInput{
-        font-size: 28px;
-        height: 32px;
+        padding-left: 100px;
+        font-size: 32px;
         line-height: 32px;
         width: 500px;
-        padding-left: 100px;
+        height: 100px;
         color: #999;
     }
     /*联系电话*/
@@ -196,8 +186,6 @@
         border-bottom-width: 1px;
         border-bottom-color: #cccccc;
         background-color: white;
-        padding-left: 20px;
-        padding-right: 20px;
         height: 100px;
     }
     /*下一步*/

@@ -98,6 +98,7 @@
     var lastCaptchaLength = 0;
     var timer = null;
     var event = weex.requireModule('event')
+    var modal = weex.requireModule('modal')
     const storage = weex.requireModule('storage');
     import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue';
@@ -262,6 +263,7 @@
                     _this.time = 59;
                     timer = null;
                 }
+                _this.captcha = '';
                 this.retry = true;
             },
             statusStyle: function () {
