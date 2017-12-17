@@ -126,6 +126,8 @@
     }
     .textAA{
         margin-left: 30px;
+        font-size: 32px;
+        color:#999;
     }
 </style>
 
