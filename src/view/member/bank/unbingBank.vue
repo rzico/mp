@@ -167,9 +167,8 @@
                         POST('weex/member/mobile/captcha.jhtml?captcha='+ msg.data).
                         then(function (data) {
                                 if (data.type == "success") {
-                                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
-                                        if (message.type=='success') {
-                                        }
+                                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (res) {
+                                       event.closeURL(res);
                                     })
                                 } else {
                                     _this.endTimer();

@@ -498,7 +498,7 @@
                     event.openURL(utils.locate("view/member/mobile/unbind.js?mobile=" +_this.tel),
                         function (res) {
                             if (res.type == "success") {
-
+                               _this.open();
                             }
                         }
                     )
@@ -506,9 +506,8 @@
                     event.openURL(utils.locate("view/member/mobile/index.js"),
                         function (res) {
                             if (res.type == "success") {
-                                _this.attribute.bindMobile = true;
+                                _this.open();
                             }
-                            _this.updateStatus(_this.attribute);
                         }
                     )
                 }

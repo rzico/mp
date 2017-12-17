@@ -167,14 +167,13 @@
                 if(_this.wallet.bankinfo!='未绑定'){
                     event.openURL(utils.locate("view/member/bank/unbingBank.js?banknum="+encodeURI(_this.bankinfo)), function (message) {
                         if (message.type=='success') {
-
+                            _this.load();
                         }
                     })
                 }else {
                     event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
                         if (message.type == 'success') {
-                            _this.wallet.binded = true;
-                            _this.wallet.bankinfo = "已绑定";
+                            _this.load();
                         }
                     })
                 }

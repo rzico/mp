@@ -169,7 +169,7 @@
                                 if (data.type == "success") {
                                     event.openURL(utils.locate("view/member/mobile/index.js"),
                                         function (res) {
-                                            if (res.type == "success") {}
+                                            event.closeURL(res);
                                         })
                                 } else {
                                     _this.endTimer();
