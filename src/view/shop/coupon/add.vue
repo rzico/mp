@@ -69,7 +69,6 @@
         height: 50px;
         flex-direction: row;
         align-items: center;
-        padding-left: 20px;
         margin-left: 20px;
         margin-bottom: 20px;
         margin-top: 20px;
