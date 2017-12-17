@@ -151,9 +151,11 @@
         padding-left: 20px;
         padding-right: 20px;
         height: 100px;
+        line-height: 32px;
     }
     .detailedAddress{
         font-size: 32px;
+        line-height: 32px;
     }
     /*联系姓名*/
     .name{
@@ -166,19 +168,23 @@
         padding-right: 20px;
         margin-top: 50px;
         height: 100px;
+        line-height: 32px;
     }
     .contactName{
         font-size: 32px;
+        line-height: 32px;
     }
     .input{
         padding-left: 100px;
         font-size: 28px;
+        line-height: 32px;
         height: 32px;
         width: 500px;
     }
     .addressInput{
         font-size: 28px;
         height: 32px;
+        line-height: 32px;
         width: 500px;
         padding-left: 100px;
         color: #999;

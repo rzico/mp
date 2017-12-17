@@ -72,6 +72,8 @@
         width:450px;
         height: 80px;
         padding-left:50px;
+        font-size: 32px;
+        line-height: 32px;
     }
     .button{
         margin-left: 20px;

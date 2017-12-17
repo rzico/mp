@@ -71,6 +71,8 @@
     }
     .input{
         padding-left: 30px;
+        font-size: 32px;
+        line-height: 32px;
         width:550px;
         height: 80px;
     }
