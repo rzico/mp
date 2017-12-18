@@ -27,16 +27,16 @@
                     <text class="btn-text" value="微信钱包">微信钱包</text>
                 </div>
             </div>
-            <div class="buttombox">
-                <div class="btn "  @click="payment('cardPayPlugin')">
-                    <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="btn-text" value="会员卡">会员卡</text>
-                </div>
-                <div class="btn "  @click="payment('balancePayPlugin')">
-                    <text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>
-                    <text class="btn-text" value="芸店钱包">芸店钱包</text>
-                </div>
-            </div>
+            <!--<div class="buttombox">-->
+                <!--<div class="btn "  @click="payment('cardPayPlugin')">-->
+                    <!--<text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
+                    <!--<text class="btn-text" value="会员卡">会员卡</text>-->
+                <!--</div>-->
+                <!--<div class="btn "  @click="payment('balancePayPlugin')">-->
+                    <!--<text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
+                    <!--<text class="btn-text" value="芸店钱包">芸店钱包</text>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="buttombox">
                 <div class="btn " @click="offline('bankPayPlugin')">
                     <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
@@ -266,7 +266,9 @@
             print:function () {
                 GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
                     if (mes.type=='success') {
-                        printer.print(mes.data);
+                        if (utils.device()=='V1') {
+                            _this.print();
+                        }
                     } else {
                         modal.alert({
                             message: mes.content,

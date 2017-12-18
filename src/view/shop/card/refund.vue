@@ -246,7 +246,9 @@
             print:function () {
                 GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
                     if (mes.type=='success') {
-                        printer.print(mes.data);
+                        if (utils.device()=='V1') {
+                            _this.print();
+                        }
                     } else {
                         modal.alert({
                             message: mes.content,
