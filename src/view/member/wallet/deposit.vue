@@ -81,7 +81,7 @@
     .bal {
         font-size: 24px;
         margin-top: 5px;
-        color:#fff;
+        color:#999;
     }
 
     .day {

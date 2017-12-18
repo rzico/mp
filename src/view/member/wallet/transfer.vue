@@ -26,10 +26,10 @@
             </div>
             <div class="maxQuotaServicefee">
                 <div class="servicefeeText" v-bind:style="{visibility:hide}">
-                    <text class="servicefee">手续费 {{service}}元</text>
+                    <text class="servicefee">手续费 {{service | currencyfmt}}元</text>
                 </div>
                 <div class="serviceArrival">
-                    <text class="arrival">实际到账 {{creditedAmount}}元</text>
+                    <text class="arrival">实际到账 {{creditedAmount | currencyfmt}}元</text>
             </div>
             </div>
         </div>
@@ -141,9 +141,9 @@
     }
     .input{
         width: 500px;
-        height: 120px;
-        line-height: 120px;
-       font-size:100px;
+        height: 100px;
+        line-height: 80px;
+        font-size:80px;
     }
     .maxQuotaServicefee{
         flex-direction: row;
@@ -192,6 +192,7 @@
     var modal = weex.requireModule('modal');
     import navbar from '../../../include/navbar.vue';
     import { POST, GET } from '../../../assets/fetch'
+    import filters from '../../../filters/filters.js'
     export default {
         data() {
 
