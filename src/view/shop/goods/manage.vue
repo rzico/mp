@@ -76,7 +76,7 @@
                 <text class="fz32">取消</text>
             </div>
         </div>
-        <div class="button bw bkg-primary" >
+        <div class="button bw bkg-primary" @click="addGoods()">
             <text class="buttonText ">添加商品</text>
         </div>
     </div>
@@ -237,6 +237,10 @@
                     this.isPopup = true;
                 }
             },
+            addGoods(){
+                event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function () {
+                });
+            }
         }
     }
 </script>
