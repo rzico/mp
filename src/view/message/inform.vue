@@ -274,7 +274,7 @@
         data(){
             return{
                 messageType:'',
-                bgWhite:false,
+                bgWhite:true,
                 dataList:[],
                 refreshing:false,
                 pageStart:0,
