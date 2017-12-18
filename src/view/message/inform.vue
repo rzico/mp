@@ -315,7 +315,7 @@
                     break;
                 case 'gm_10202':
                     this.title =  '系统消息';
-                    this.bgWhite = false;
+                    this.bgWhite = true;
                     break;
                 case 'gm_10203':
                     this.title =  '评论回复';
@@ -359,7 +359,7 @@
                     break;
                 default:
                     this.title = '消息助手';
-                    this.bgWhite = false;
+                    this.bgWhite = true;
                     break;
             }
             this.getAllInform();

@@ -25,7 +25,7 @@
                         <div class="oneImage">
                             <!--分享到平台效果的第一张图-->
                             <!--<image :src="shareCoverImage" resize="cover" class="coverImage" ></image>-->
-                            <image :src="coverImage" resize="cover" class="coverImage" ></image>
+                            <image :src="coverImage | watchShareImg" resize="cover" class="coverImage" ></image>
                         </div>
                     </div>
                     <!--分享封面的内容-->
@@ -147,13 +147,13 @@
             top: 136px;
              left:0;
              width:750px;
-             height:300px;
+             height:375px;
              background-color: #888;
              opacity: 0.5;
          }
     .information{
         position: absolute;
-        top: 268.5px;
+        top: 306px;
         left:235px;
     }
     .shareTitle{
@@ -204,7 +204,7 @@
     }
     .coverImageBox{
         width:750px;
-        height:300px;
+        height:375px;
     }
     .oneImage{
         flex:1;
@@ -239,6 +239,13 @@
             title: { default: "编辑封面"},
             complete: {default : "完成"}
         },
+        filters:{
+          watchShareImg(value){
+//                    没过滤前是原图
+                  return utils.thumbnail(value,160,160);
+              }
+
+        },
         created(){
             var _this = this;
             utils.initIconFont();
@@ -260,8 +267,8 @@
 //                如果没有图片就调用单选接口
                 let options = {
                     imageArray:_this.imageList,
-                    height:300,
-                    width:750
+                    height:500,
+                    width:1000
                 }
                 album.openPuzzle(options,function(data){
                     if(data.type == 'success' && data.data != ''){

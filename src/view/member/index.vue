@@ -1341,7 +1341,6 @@
                     _this.deleteAfter(item,index);
                     return;
                 }
-
                 POST('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(
                     function(e){
                         if(e.type == 'success'){
