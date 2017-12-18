@@ -198,12 +198,10 @@
 
                 }
                 let backData = utils.message('success','成功',E);
-//                utils.debug(E)
                 event.closeURL(backData);
             },
             profession: function () {
                 var _this = this;
-
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=occupation'), function (data) {
                     if(data.type == 'success' ) {
                         _this.category = parseInt(data.data.listId);
@@ -232,7 +230,6 @@
                         POST('weex/member/update.jhtml?areaId=' + data.data.chooseId).then(
                             function (mes) {
                                 if (mes.type == "success") {
-//                                        utils.debug(mes)
                                     _this.areaName = data.data.name;
                                 } else {
                                     event.toast(mes.content);
@@ -263,7 +260,6 @@
                             POST('weex/member/update.jhtml?nickName=' +encodeURI(value.data)).then(
                                 function (mes) {
                                     if (mes.type == "success") {
-//                                        utils.debug(mes)
                                         _this.nickName = value.data
                                     } else {
                                         event.toast(mes.content);
@@ -376,7 +372,6 @@
                 storage.setItem('oneNumber', textData,e=>{
                 event.openURL(utils.locate('widget/autograph.js?name=oneNumber'), function (message) {
                     if(message.data != ''){
-//                       utils.debug('weex/member/update.jhtml?autograph=' + encodeURI(message.data.text))
                         POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
                             function (mes) {
                                 if (mes.type == "success") {
@@ -460,6 +455,7 @@
                             _this.attribute = data.data;
                             _this.updateStatus(_this.attribute);
                             _this.tel =data.data.mobile
+                            _this.category =data.data.occupation.id
                         } else {
                             event.toast(data.content);
                         }
