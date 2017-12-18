@@ -243,7 +243,7 @@
                     if (res.type=='success') {
                         if(res.data.card.vip == 'vip1'){
                             _this.begin =0
-                        }if(res.data.card.vip == 'vip2'){
+                        }else if(res.data.card.vip == 'vip2'){
                             _this.begin =1
                         }else {
                             _this.begin =2

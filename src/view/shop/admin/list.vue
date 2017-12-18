@@ -147,7 +147,8 @@
         align-items: center;
         width: 750px;
         background-color: white;
-        margin-bottom: 10px;
+        border-color: #cccccc;
+        border-bottom-width: 1px;
     }
     .shopLogo{
         margin-left: 20px;
@@ -451,7 +452,6 @@
             open:function () {
                 var _this = this;
                 GET('weex/member/admin/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
-                    utils.debug(mes)
                 if (mes.type == 'success') {
                     if (_this.pageStart==0) {
                         mes.data.data.forEach(function(item){

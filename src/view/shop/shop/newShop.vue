@@ -329,6 +329,26 @@
             },
             goComplete:function () {
                 var _this=this;
+                if(_this.vendorName ==''){
+                    event.toast('商家名称未填写');
+                    return
+                }if(_this.industryName == ''){
+                    event.toast('所属行业未选择');
+                    return
+                }if(_this.addressName == ''){
+                    event.toast('商家区位未选择');
+                    return
+                }if(_this.detailedAddress == ''){
+                    event.toast('商家地址未填写');
+                    return
+                }
+                if(_this.contactName == ''){
+                    event.toast('联系姓名未填写');
+                    return
+                }if(_this.contactNumber == ''){
+                    event.toast('联系电话未填写');
+                    return
+                }
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
                     '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
