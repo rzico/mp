@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="sub-panel tip" v-if="isNoActivate()" @click="activate()">
-                <text class="vip">点亮VIP专栏特权（388元/年）</text>
+                <text class="vip">点亮VIP专栏特权（588元/年）</text>
             </div>
             <div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">
                 <text class="vip">开通店铺，体验众卖新营销模式</text>

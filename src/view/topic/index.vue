@@ -700,7 +700,10 @@
                 let _this = this;
 //                this.listCurrent = this.listPageSize + this.listCurrent;
                 GET('weex/article/list.jhtml?authorId='+ this.UId + '&articleCatalogId=' + this.corpusId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
-                    if(data.type == 'success' && data.data.data != ''){
+                    if(data.type == 'success'){
+                        if (data.data.start==0) {
+                            _this.articleList = [];
+                        }
                         data.data.data.forEach(function (item) {
                             if(utils.isNull(item.thumbnail)){
                             }else{
@@ -708,7 +711,7 @@
                             }
                             _this.articleList.push(item);
                         });
-                    } else if(data.type == 'success' && data.data.data == ''){
+                        _this.listCurrent = data.data.start+data.data.data.length;
                     }
                     else{
                         event.toast(data.content);
@@ -745,7 +748,7 @@
                 var _this = this;
                 this.showLoading = 'show'
                 setTimeout(() => {
-                    _this.listCurrent = _this.listCurrent + 10;
+//                    _this.listCurrent = _this.listCurrent + 10;
                     _this.addArticle();
                     this.showLoading = 'hide'
                 }, 10)
@@ -843,27 +846,29 @@
                 var _this = this;
                 _this.refreshing = true;
                 _this.refreshState = "正在刷新数据";
-                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
-                        if (data.type == "success") {
-                            let page = data.data;
-                            _this.friendsList = page.data;
-                            _this.start = page.start+page.data.length;
-                            _this.refreshState = "数据刷新完成";
-                            setTimeout(() => {
-                                _this.refreshing = false;
-                                _this.refreshState = "松开刷新数据";
-                            }, 500);
-                        } else {
-                            _this.refreshing = false;
-                            _this.refreshState = "松开刷新数据";
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        _this.refreshing = false;
-                        _this.refreshState = "松开刷新数据";
-                        event.toast("网络不稳定");
-                    }
-                )
+                _this.listCurrent = 0;
+                _this.addArticle();
+//                GET('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function(data) {
+//                        if (data.type == "success") {
+//                            let page = data.data;
+//                            _this.friendsList = page.data;
+//                            _this.start = page.start+page.data.length;
+//                            _this.refreshState = "数据刷新完成";
+//                            setTimeout(() => {
+//                                _this.refreshing = false;
+//                                _this.refreshState = "松开刷新数据";
+//                            }, 500);
+//                        } else {
+//                            _this.refreshing = false;
+//                            _this.refreshState = "松开刷新数据";
+//                            event.toast(data.content);
+//                        }
+//                    },function (err) {
+//                        _this.refreshing = false;
+//                        _this.refreshState = "松开刷新数据";
+//                        event.toast("网络不稳定");
+//                    }
+//                )
             },
             onpanmove:function () {
                 return;
