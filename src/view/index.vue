@@ -2,7 +2,7 @@
     <div class="wrapper bkg-white">
         <slider class="slider" interval="3000" auto-play="true">
             <div class="frame" v-for="img in imageList">
-                <image class="image" resize="cover" :src="img.src"></image>
+                <image class="image"   :class="[indexMt()]" resize="cover" :src="img.src"></image>
             </div>
             <indicator class="indicator"></indicator>
         </slider>
@@ -101,6 +101,11 @@
             event.changeWindowsBar(true);
         },
         methods: {
+//    登录主页的轮播图控制
+            indexMt:function () {
+                let dc = utils.indexMt();
+                return dc;
+            },
             isNoPos:function () {
                 return utils.device()!="V1";
             },

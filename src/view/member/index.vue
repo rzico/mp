@@ -252,9 +252,6 @@
         flex-direction: row;width: 650px;
         background-color: #fff;
     }
-    .fz35{
-        font-size: 35px;
-    }
     .corpusIconBox{
         width: 100px;justify-content: center;align-items: center;background-color: white;
     }

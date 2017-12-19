@@ -41,7 +41,8 @@
         /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
         padding-left: 27px;
         padding-right: 27px;
-        font-family: Verdana, Geneva, sans-serif;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
         font-size: 44px;
         line-height: 44px;
         color: #FFFFFF;
@@ -49,7 +50,8 @@
     .nav_Complete {
         padding-left: 27px;
         padding-right: 27px;
-        font-family: Verdana, Geneva, sans-serif;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
     }
 
 </style>

@@ -1,6 +1,16 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
+        <div  class="corpusBox" >
+            <scroller scroll-direction="horizontal"  class="corpusScroll">
+                <div class="articleClass">
+                    <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+                </div>
+            </scroller>
+            <div class="corpusIconBox" @click="goCatagory()"  >
+                <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
+            </div>
+        </div>
         <list  style="background-color: #fff;"  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
@@ -77,12 +87,40 @@
             </div>
         </div>
         <div class="button bw bkg-primary" @click="addGoods()">
-            <text class="buttonText ">添加商品</text>
+            <text class="buttonText ">保存</text>
         </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .articleClass{
+        flex-direction: row;
+        padding-left: 10px;
+        height:80px;
+        background-color: #fff;
+    }
+    .corpusIconBox{
+        width: 100px;justify-content: center;align-items: center;background-color: white;
+    }
+    .allArticle{
+        font-size: 29px;
+        line-height: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .corpusScroll{
+        flex-direction: row;width: 650px;
+        background-color: #fff;
+    }
+    .corpusBox{
+        flex-direction: row;
+        height:80px;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: gainsboro;
+        background-color: #fff;
+
+    }
     /*<!--底部操作-->*/
     .shareBox{
         background-color:#F5F4F5;
@@ -184,6 +222,13 @@
             reviewNum:0,
             isPopup:false,
             refreshImg:utils.locate('resources/images/loading.png'),
+            corpusList:[{
+                name:'全部',
+                id:''
+            }],
+            whichCorpus:0,
+//                分类id
+            corpusId:'',
         },
         props:{
             noDataHint:{default:'暂无商品'},
@@ -240,7 +285,26 @@
             addGoods(){
                 event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function () {
                 });
-            }
+            },
+//            分类
+            goCatagory(){
+                var _this = this;
+                event.openURL(utils.locate('view/shop/goods/catagory.js?name=corpusList'), function (data) {
+//                    _this.getCorpus();
+                });
+            },
+//分类切换
+            corpusChange:function(index,id){
+//                event.toast(id);
+                var _this = this;
+                if(_this.whichCorpus == index){
+                    return;
+                }
+                _this.whichCorpus = index;
+                _this.corpusId = id;
+
+//                _this.getAllArticle();
+            },
         }
     }
 </script>
