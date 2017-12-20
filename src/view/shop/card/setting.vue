@@ -115,7 +115,7 @@
         data: function () {
             return{
                 div:[],
-                vipDATA:[{id:0,name:'VIP1'},{id:0,name:'VIP2'},{id:0,name:'VIP3'}],
+                vipDATA:[{id:0,name:'vip1'},{id:1,name:'vip2'},{id:2,name:'vip3'}],
                 screenHeight:0,
             }
         },

@@ -3,7 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weex.1xx.me';
+const websiteURL = 'http://weixin.rzicom.com';
 const event = weex.requireModule('event');
 const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
