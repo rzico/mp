@@ -112,7 +112,7 @@
             navbar
         },
         props: {
-            title: { default: "选择文集"},
+            title: { default: "选择分类"},
         },
         created(){
             var _this = this;
@@ -145,15 +145,15 @@
             addCorpus(){
                 let _this = this;
                 modal.prompt({
-                    message: '新建文集',
+                    message: '新建分类',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
-                    placeholder:'输入文集名'
+                    placeholder:'输入分类名'
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入文集名',duration:1})
+                            modal.toast({message:'请输入分类名',duration:1})
                         }else{
                             let orders = _this.corpusList.length + 1;
                             value.data = encodeURI(value.data);

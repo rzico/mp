@@ -172,7 +172,7 @@
             navbar
         },
         props: {
-            title: { default: "文集管理"},
+            title: { default: "分类管理"},
             complete: {default : "完成"},
         },
         created(){
@@ -207,15 +207,15 @@
             addCorpus(){
                 let _this = this;
                 modal.prompt({
-                    message: '新建文集',
+                    message: '新建分类',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
-                    placeholder:'输入文集名'
+                    placeholder:'输入分类名'
                 }, function (value) {
                     if(value.result == '确定'){
                         if(utils.isNull(value.data)){
-                            event.toast('请输入文集名');
+                            event.toast('请输入分类名');
                         }else{
                             let orders = _this.corpusList.length + 1;
                             value.data = encodeURI(value.data);

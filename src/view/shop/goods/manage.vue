@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="goodsLine boder-bottom">
+                <div class="goodsLine boder-bottom" @click="popup()">
                     <image class="goodsImg" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1310014862,401506166&fm=27&gp=0.jpg"></image>
                     <div class="infoBox">
                         <div class="flex1 bt5">
@@ -87,7 +87,7 @@
             </div>
         </div>
         <div class="button bw bkg-primary" @click="addGoods()">
-            <text class="buttonText ">保存</text>
+            <text class="buttonText ">添加商品</text>
         </div>
     </div>
 </template>
