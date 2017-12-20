@@ -316,7 +316,17 @@
                     })
             },
             goComplete:function () {
-                var _this=this
+                var _this=this;
+                if(_this.logo ==''){
+                    event.toast('门头照未选择');
+                    return
+                }if(_this.palcePhoto == ''){
+                    event.toast('经营场所照未选择');
+                    return
+                }if(_this.licensePhoto == ''){
+                    event.toast('营业执照未选择');
+                    return
+                }
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
                     '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {

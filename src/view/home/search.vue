@@ -115,8 +115,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <!--文章-->
                 <div  v-for="(item,index) in searchList.article" >
                     <!--类别-->
@@ -548,7 +546,6 @@
             articleSearch(){
                 let _this = this;
                 GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-
                     if(data.type == 'success' && data.data.data != ''){
                         _this.searchList.article = data.data.data;
                     }else if(data.type == 'success' && data.data.data == ''){

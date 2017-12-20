@@ -47,6 +47,20 @@
         methods: {
             onSend: function (e) {
                 var _this = this;
+                if (utils.isNull(this.value)) {
+                    modal.alert({
+                        message: "请输入手机号",
+                        okTitle: '知道了'
+                    })
+                    return;
+                }
+                if (this.value.length!=11) {
+                    modal.alert({
+                        message: "请输入11位手机号",
+                        okTitle: '知道了'
+                    })
+                    return;
+                }
                 event.encrypt(_this.value, function (message){
                     if (message.type == "success") {
                     POST('weex/member/mobile/send_mobile.jhtml?mobile=' + message.data).then(

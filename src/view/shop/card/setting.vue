@@ -9,15 +9,15 @@
             <text class="tiele" @click="del">删除</text>
         </div>
         <div class="money">
-            <text class="monyeTexttwo">充</text>
-            <input type="text" placeholder="设置金额" class="input" v-model="num.amount" @change="" @input=""/>
-            <text class="monyeTextthree">送</text>
-            <input type="text" placeholder="设置金额" class="input" v-model="num.present" @change="" @input=""/>
+            <text class="fz32">充</text>
+            <input type="number" placeholder="设置金额" class="input" v-model="num.amount" />
+            <text class="monyeTextthree fz32">送</text>
+            <input type="number" placeholder="设置金额" class="inputTwo" v-model="num.present" />
         </div>
         <div class="vip" @click="select(num)">
-            <text class="vipText">会员等级</text>
-            <text class="vipTexttwo">升级至</text>
-            <text class="member" >{{num.vip}}</text>
+            <text class="vipText fz32">会员等级</text>
+            <text class="vipTexttwo fz32">升级至</text>
+            <text class="fz32" >{{num.vip}}</text>
         </div>
     </div>
                 <div style="align-items: center">
@@ -29,6 +29,7 @@
         </list>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style>
     .sign{
         height: 80px;
@@ -53,6 +54,8 @@
         margin-left: 25px;
         margin-right: 25px;
         margin-top: 25px;
+        border-width: 1px;
+        border-color: #cccccc;
         border-radius: 15px;
     }
     .titile{
@@ -85,9 +88,6 @@
     .vipTexttwo{
         padding-left: 20px;
     }
-    .monyeTexttwo{
-
-    }
     .monyeTextthree{
         padding-left: 20px;
     }
@@ -95,6 +95,12 @@
     .input{
         padding-left: 20px;
         width: 150px;
+        font-size: 28px;
+        height: 100px;
+    }
+    .inputTwo{
+        padding-left: 20px;
+        width: 300px;
         font-size: 28px;
         height: 100px;
     }
@@ -109,6 +115,7 @@
         data: function () {
             return{
                 div:[],
+                vipDATA:[{id:0,name:'vip1'},{id:1,name:'vip2'},{id:2,name:'vip3'}],
                 screenHeight:0,
             }
         },
@@ -128,31 +135,41 @@
             del:function (index) {
                 let _this = this;
                 _this.div.splice(index,1);
+                event.toast('删除成功')
+            },
+            VIP:function(name) {
+                var _this = this;
+                for (var i=0;i<_this.vipDATA.length;i++) {
+                    if (_this.vipDATA[i].name==name) {
+                        return i;
+                    }
+                }
+                return -1;
+            },
+            vipPicker:function() {
+                var _this = this;
+                var vp = [];
+                for (var i=0;i<_this.vipDATA.length;i++) {
+                    vp.push(_this.vipDATA[i].name);
+                }
+
+                return vp;
             },
 //            设置会员等级
-            select:function (num,index) {
+            select:function (num) {
                 var _this = this;
+                let vips = _this.vipPicker();
                 picker.pick({
-                    index:num.begin,
-                    items:['vip1','vip2','vip3']
+                    index:_this.VIP(num.vip),
+                    items:vips
                 },e => {
                     if (e.result == 'success') {
-                        if (e.data == 0){
-                            num.vip = 'vip1';
-                            num.begin = e.data;
-                        }else if(e.data == 1){
-                            num.vip = 'vip2';
-                            num.begin = e.data;
-                        }
-                        else{
-                            num.vip = 'vip3';
-                            num.begin = e.data;
-                        };
+                        num.vip = vips[e.data];
                     };
                 });
             },
             add:function () {
-                this.div.push({amount:'',present:'0',vip:'vip1',begin:''})
+                this.div.push({amount:'',present:'0',vip:'VIP1'})
             },
             goback:function () {
                 event.closeURL()
@@ -162,13 +179,6 @@
                 GET('weex/member/topiccard/activity.jhtml',function (mes) {
                     if (mes.type == 'success') {
                         mes.data.forEach(function (item) {
-                            if(item.vip == 'vip1'){
-                                item.begin =0
-                            }if(item.vip == 'vip2'){
-                                item.begin =1
-                            }else {
-                                item.begin =2
-                            }
                             _this.div.push(item)
                         })
                     } else {
@@ -186,7 +196,7 @@
                             id: index,
                             amount: item.amount,
                             present: item.present,
-                            vip: item.vip
+                            vip: item.vip,
                         })
                     }else {
                         event.toast('金额不能为空')

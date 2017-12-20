@@ -131,8 +131,9 @@
         background-color: white;
         flex-direction: row;
         align-items: center;
-        margin-bottom: 10px;
-        height: 230px;
+        border-bottom-width: 1px;
+        border-color: #cccccc;
+        height: 231px;
     }
     .shopstwo{
         flex-direction: column;

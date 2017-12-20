@@ -66,12 +66,12 @@
             </cell>
             <cell v-if="messageType == 'gm_10202' || messageType == 'gm_10209' || messageType == 'gm_10210'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--系统消息-->
-                <div class="lineBox lineBoxHeight"  >
-                    <div class="flex-row">
+                <div class="lineBox pt20 pb20"  >
+                    <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
-                        <div class="userInfo">
+                        <div class="commentsInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text  class="infoText mt10 bt10">{{item.content}}</text>
+                            <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
@@ -121,12 +121,12 @@
             </cell>
             <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--收藏--> <!--分享提醒--><!--赞赏-->
-                <div class="lineBox lineBoxHeight">
-                    <div class="flex-row" >
+                <div class="lineBox pt20 pb20">
+                    <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
-                        <div class="userInfo">
+                        <div class="commentsInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text  class="infoText">{{item.content}}</text>
+                            <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
@@ -274,7 +274,7 @@
         data(){
             return{
                 messageType:'',
-                bgWhite:false,
+                bgWhite:true,
                 dataList:[],
                 refreshing:false,
                 pageStart:0,
@@ -315,7 +315,7 @@
                     break;
                 case 'gm_10202':
                     this.title =  '系统消息';
-                    this.bgWhite = false;
+                    this.bgWhite = true;
                     break;
                 case 'gm_10203':
                     this.title =  '评论回复';
@@ -359,7 +359,7 @@
                     break;
                 default:
                     this.title = '消息助手';
-                    this.bgWhite = false;
+                    this.bgWhite = true;
                     break;
             }
             this.getAllInform();

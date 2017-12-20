@@ -3,14 +3,14 @@
             <navbar :title="title" :complete="complete" @goback="goback" > </navbar>
     <div class="big">
         <div class="bankWechat">
-        <div class="bank" @click="bankmessage()" v-bind:style="{borderBottomWidth:bankstyle + 'px',borderBottomColor:bankcolor}">
+        <div class="bank" @click="bankmessage()">
                 <text class="bankIconFont primary" :style="{fontFamily:'iconfont'}" >&#xe64f;</text>
             <div class="bankInformation">
                 <text class="bankName">{{wdata.bankName}}</text>
                 <text class="bankTailnumber">{{wdata.cardNo}}</text>
             </div>
         </div>
-            <div class="wechat" @click="wechatmessage" v-bind:style="{borderBottomWidth:wechatstyle + 'px',borderBottomColor:wechatcolor}">
+            <div class="wechat" @click="wechatmessage" >
                 <text class="wechatIconFont" :style="{fontFamily:'iconfont'}" >&#xe659;</text>
                 <div class="wechatInformation">
                 <text class="wechatFont">微信提现</text>
@@ -26,10 +26,10 @@
             </div>
             <div class="maxQuotaServicefee">
                 <div class="servicefeeText" v-bind:style="{visibility:hide}">
-                    <text class="servicefee">手续费 {{service}}元</text>
+                    <text class="servicefee">手续费 {{service | currencyfmt}}元</text>
                 </div>
                 <div class="serviceArrival">
-                    <text class="arrival">实际到账 {{creditedAmount}}元</text>
+                    <text class="arrival">实际到账 {{creditedAmount | currencyfmt}}元</text>
             </div>
             </div>
         </div>
@@ -49,12 +49,13 @@
     .bank{
         background-color:#ffffff;
         border-style: solid;
-        border-bottom-width:5px;
-        border-bottom-color:#D9141E;
         border-top-width:1px;
+        border-top-color:#CCC;
+        border-bottom-width: 2px;
+        border-bottom-color:#D9141E ;
         /*border-right-style: dashed;*/
         border-right-width: 1px;
-        border-color:#CCC;
+        border-right-color:#CCC;
         height: 120px;
         margin-top: 30px;
         flex-direction: row;
@@ -141,9 +142,9 @@
     }
     .input{
         width: 500px;
-        height: 120px;
-        line-height: 120px;
-       font-size:100px;
+        height: 110px;
+        line-height: 80px;
+        font-size:80px;
     }
     .maxQuotaServicefee{
         flex-direction: row;
@@ -192,6 +193,7 @@
     var modal = weex.requireModule('modal');
     import navbar from '../../../include/navbar.vue';
     import { POST, GET } from '../../../assets/fetch'
+    import filters from '../../../filters/filters.js'
     export default {
         data() {
 
@@ -248,21 +250,19 @@
             bankmessage: function () {
                 var self = this
                 self.message = '单笔最大限额 5万元'
-                this.bankstyle=2
-                this.bankcolor='#D9141E'
                 this.wechatstyle=1
                 this.wechatcolor='#ccc'
                 this.bankWithdrawals ='bankcard'
             },
             wechatmessage: function (event) {
                 var self = this
-                self.message = '单笔最大限度 1万元'
-                this.wechatstyle=2
-                this.wechatcolor='#D9141E'
-                this.bankstyle=1
-                this.bankcolor='#ccc'
-                this.bankWithdrawals ='weixin'
-                console.log('will show alert')
+//                self.message = '单笔最大限度 1万元'
+//                this.wechatstyle=2
+//                this.wechatcolor='#D9141E'
+//                this.bankstyle=1
+//                this.bankcolor='#ccc'
+//                this.bankWithdrawals ='weixin'
+//                console.log('will show alert')
                 modal.alert({
                     message: '微信提现功能尚未开通，敬请谅解',
                     okTitle: '知道了'

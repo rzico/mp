@@ -241,7 +241,7 @@
                 }
             },
             dayfmt:function (val) {
-                let res = utils.resolvetimefmt(value);
+                let res = utils.resolvetimefmt(val);
                 let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
                 let daySub = tds.d - res.d;
                 if (daySub<1) {

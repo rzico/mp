@@ -407,9 +407,17 @@
                 event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
             },
             goIndex:function () {
-                event.openURL(utils.locate("view/topic/index.js?id=" +event.getUId()),
-                    function (e) {}
+                GET("weex/member/topic/owner.jhtml",function (res) {
+                    if (res.type=='success') {
+                    event.openURL(utils.locate("view/topic/index.js?id=" +res.data),
+                        function (e) {}
                     );
+                    } else {
+                        event.toast(res.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
 
             },
             isShow:function () {

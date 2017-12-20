@@ -97,6 +97,8 @@ export function SCAN (message,resolve,reject) {
                     event.openURL(message.data,function () {
 
                     });
+                }else{
+                    event.toast('无效验证码');
                 }
             }else{
                 event.toast(data.content);

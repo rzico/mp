@@ -72,6 +72,8 @@
         width:450px;
         height: 80px;
         padding-left:50px;
+        font-size: 32px;
+        line-height: 32px;
     }
     .button{
         margin-left: 20px;
@@ -96,6 +98,7 @@
     var lastCaptchaLength = 0;
     var timer = null;
     var event = weex.requireModule('event')
+    var modal = weex.requireModule('modal')
     const storage = weex.requireModule('storage');
     import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue';
@@ -194,6 +197,10 @@
                                 function (data) {
                                     utils.debug(data)
                                     if (data.type == "success") {
+                                        modal.alert({
+                                            message: data.content,
+                                            okTitle: '知道了'
+                                        });
                                         event.closeURL(data);
                                     } else {
                                         _this.endTimer();
@@ -256,6 +263,7 @@
                     _this.time = 59;
                     timer = null;
                 }
+                _this.captcha = '';
                 this.retry = true;
             },
             statusStyle: function () {

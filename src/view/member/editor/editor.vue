@@ -36,6 +36,10 @@
                         <div class="addIconBox " @click="addVideoPara(0)">
                             <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                         </div>
+                        <!--添加链接-->
+                        <div class="addIconBox " @click="addLinkPara(0)">
+                            <text class="addLink iconSize" :style="{fontFamily:'iconfont'}">&#xe678;</text>
+                        </div>
                     </div>
                 </div>
             </cell>
@@ -91,6 +95,10 @@
                                 <!--添加视频-->
                                 <div class="addIconBox " @click="addVideoPara(index + 1)">
                                     <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
+                                </div>
+                                <!--添加链接-->
+                                <div class="addIconBox " @click="addLinkPara(index + 1)">
+                                    <text class="addLink iconSize" :style="{fontFamily:'iconfont'}">&#xe678;</text>
                                 </div>
                             </div>
                         </div>
@@ -315,6 +323,9 @@
     .addVideo{
         color: #CCA7FC;
     }
+    .addLink{
+        color: #ccc;
+    }
     .iconSize{
         font-size: 38px;
     }
@@ -389,13 +400,13 @@
         top:0;
         left:0;
         width:750px;
-        height:300px;
+        height:375px;
         background-color: #888;
         opacity: 0.5;
     }
     .coverImage{
         width:750px;
-        height:300px;
+        height:375px;
     }
 </style>
 
@@ -1207,12 +1218,12 @@
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
                             event.save(saveData,function(data){
                                 if(data.type == 'success'){
+                                    _this.deleteDraft('noclose');
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
 //                                    全局监听文章变动
-                                    let listenData = utils.message('success','文章改变','')
+                                    let listenData = utils.message('success','文章改变','');
                                     event.sendGlobalEvent('onArticleChange',listenData);
-                                    _this.deleteDraft('noclose');
                                     event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 0;//总的进度
@@ -1298,8 +1309,6 @@
                                 }
                                 _this.paraList.splice(index + i,0,newPara)
                                 _this.clearIconBox();
-
-
 //                    添加修改标志
                                 _this.hadChange = 1;
 //                                if(utils.isNull(_this.articleId)){
@@ -1392,7 +1401,6 @@
                     this.paraList[index].serveThumbnail = this.paraList[index - 1].serveThumbnail;
                     this.paraList[index - 1].paraImage = e;
                 }
-
 //                    添加修改标志
                 this.hadChange = 1;
 //                if(utils.isNull(_this.articleId)){
@@ -1712,6 +1720,12 @@
 //                        }
                     }
                 })
+            },
+//            点击加号里的添加链接
+            addLinkPara:function (index) {
+                event.openURL(utils.locate('view/shop/goods/manage.js'),function (message) {
+
+                });
             },
             maskClick(){
                 return;

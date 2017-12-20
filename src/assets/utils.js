@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdnx.1xx.me/weex/';
 const websiteURL = 'http://mopian.1xx.me';
 const event = weex.requireModule('event');
-const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -215,6 +215,23 @@ let utilsFunc = {
             }
         }
     },
+
+//    登录主页的轮播图控制
+    indexMt(){
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'indexMtV1';
+            }else if(s == 'IPhoneX'){
+                return 'indexMtIPhoneX';
+            }else{
+                return s;
+            }
+        }
+    },
+
 //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addTop:function () {
         let s = this.device();

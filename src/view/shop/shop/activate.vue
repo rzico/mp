@@ -70,13 +70,13 @@
     }
     .sweepCode{
          font-size: 28px;
-         color: #cccccc;
+         color: #999;
          margin-top: 20px;
          margin-bottom: 20px;
      }
     .sweepCodetwo{
         font-size: 28px;
-        color: #cccccc;
+        color: #999;
         margin-bottom: 40px;
     }
     .iconfont{

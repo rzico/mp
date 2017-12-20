@@ -71,6 +71,8 @@
     }
     .input{
         padding-left: 30px;
+        font-size: 32px;
+        line-height: 32px;
         width:550px;
         height: 80px;
     }
@@ -124,6 +126,8 @@
     }
     .textAA{
         margin-left: 30px;
+        font-size: 32px;
+        color:#999;
     }
 </style>
 
@@ -223,6 +227,13 @@
                    })
                    return;
                }
+               if (this.phone.length!=11) {
+                   modal.alert({
+                       message: "请输入11位手机号",
+                       okTitle: '知道了'
+                   })
+                   return;
+               }
                if (utils.isNull(this.idno)) {
                    modal.alert({
                        message: "请输入证件号",
@@ -248,7 +259,6 @@
                 threedata = JSON.stringify(threedata);
                 storage.setItem('threenumber', threedata,e=>{
                     event.openURL (utils.locate('view/member/bank/bindThirdSteps.js?name=threenumber'), function (mes) {
-                        utils.debug(mes)
                         if (mes.type=="success") {
                             event.closeURL(mes);
                         }

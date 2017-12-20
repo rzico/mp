@@ -43,7 +43,6 @@
     const dom = weex.requireModule('dom')
     import headerNav from './header.vue';
     import hotCategory from './hotCategory.vue';
-    import focusCategory from './focusCategory.vue';
     import tabNav from '../../include/tabNav.vue';
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
@@ -63,7 +62,7 @@
             }
         },
         components: {
-            headerNav,tabNav,hotCategory,focusCategory
+            headerNav,tabNav,hotCategory
         },
         props:{
             corpusList:{

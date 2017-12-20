@@ -332,7 +332,7 @@
                         });
                         if (utils.device()=='V1') {
                             _this.isPopup = false;
-                            printer.print(mes.data);
+                            printer.doPrint(mes.data);
                         } else {
                             _this.isPopup = false;
                             modal.alert({

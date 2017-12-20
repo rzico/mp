@@ -67,11 +67,8 @@
     }
     .titleOne{
         height: 50px;
-        border-left-width: 5px;
         flex-direction: row;
         align-items: center;
-        background-color: white;
-        padding-left: 20px;
         margin-left: 20px;
         margin-bottom: 20px;
         margin-top: 20px;
