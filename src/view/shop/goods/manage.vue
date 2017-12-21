@@ -4,7 +4,7 @@
         <div  class="corpusBox" >
             <scroller scroll-direction="horizontal"  class="corpusScroll">
                 <div class="articleClass">
-                    <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+                    <text @click="catagoryChange(index,item.id)" class="allArticle" v-for="(item,index) in catagoryList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
             </scroller>
             <div class="corpusIconBox" @click="goCatagory()"  >
@@ -23,12 +23,12 @@
                 <div class="goodsLine boder-bottom" @click="popup()">
                     <image class="goodsImg" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1310014862,401506166&fm=27&gp=0.jpg"></image>
                     <div class="infoBox">
-                        <div class="flex1 bt5">
-                            <text class="linesCtrl title">逗狗小玩具</text>
+                        <div class="flex1 ">
+                            <text class="linesCtrl title">逗狗小玩具逗狗</text>
                         </div>
-                        <div class="flex1 "  >
-                            <div class="bt5 flex1">
-                                <text class="goodsPrice" >¥ 44.00</text>
+                        <div class="flex1 " >
+                            <div class="bt10 flex1" >
+                                <text class="goodsPrice" >¥ 144.00</text>
                             </div>
                             <div class="space-between bottomInfo flex1">
                                 <text class="sub_title fz28">库存: 292</text>
@@ -40,12 +40,12 @@
                 <div class="goodsLine boder-bottom" @click="popup()">
                     <image class="goodsImg" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1310014862,401506166&fm=27&gp=0.jpg"></image>
                     <div class="infoBox">
-                        <div class="flex1 bt5">
+                        <div class="flex1 ">
                             <text class="linesCtrl title">逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具</text>
                         </div>
-                        <div class="flex1 "  >
-                            <div class="bt5 flex1">
-                                <text class="goodsPrice" >¥ 44.00</text>
+                        <div class="flex1 " >
+                            <div class="bt10 flex1" >
+                                <text class="goodsPrice" >¥ 144.00</text>
                             </div>
                             <div class="space-between bottomInfo flex1">
                                 <text class="sub_title fz28">库存: 292</text>
@@ -209,7 +209,7 @@
 <script>
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
-    import {dom,event,animation} from '../../../weex.js';
+    import {dom,event,animation,storage} from '../../../weex.js';
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
@@ -222,7 +222,7 @@
             reviewNum:0,
             isPopup:false,
             refreshImg:utils.locate('resources/images/loading.png'),
-            corpusList:[{
+            catagoryList:[{
                 name:'全部',
                 id:''
             }],
@@ -239,7 +239,7 @@
         },
         created(){
             utils.initIconFont();
-
+            this.getCatagory();
         },
         methods:{
             onloading:function () {
@@ -289,12 +289,12 @@
 //            分类
             goCatagory(){
                 var _this = this;
-                event.openURL(utils.locate('view/shop/goods/catagory.js?name=corpusList'), function (data) {
-//                    _this.getCorpus();
+                event.openURL(utils.locate('view/shop/goods/catagory.js?name=catagoryList'), function (data) {
+                    this.getCatagory();
                 });
             },
 //分类切换
-            corpusChange:function(index,id){
+            catagoryChange:function(index,id){
 //                event.toast(id);
                 var _this = this;
                 if(_this.whichCorpus == index){
@@ -304,6 +304,34 @@
                 _this.corpusId = id;
 
 //                _this.getAllArticle();
+            },
+
+//            获取分类
+            getCatagory:function () {
+                var _this = this;
+                GET('weex/member/product_category/list.jhtml',function (data) {
+                    if (data.type == "success") {
+                        if(data.data == ''){
+                        }else{
+//                            event.toast(data.data);
+                            _this.catagoryList = '';
+                            _this.catagoryList =[{
+                                name:'全部',
+                                id:''
+                            }];
+//                                将文集名循环插入数组中
+                            for(let i = 0; i<data.data.length;i++){
+                                _this.catagoryList.splice(1 + i,0,data.data[i]);
+                            }
+                            data.data = JSON.stringify(data.data);
+                            storage.setItem('catagoryList',data.data);
+                        }
+                    }else {
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
             },
         }
     }

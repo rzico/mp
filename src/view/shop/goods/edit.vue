@@ -4,7 +4,7 @@
             <navbar :title="title"  @goback="goback" ></navbar>
             <!--商品名称-->
             <div class="textareaBox boder-bottom boder-top" ref="textareaRef">
-                <textarea class="textarea " v-model="goodsName" return-key-type="next" placeholder="请输入商品名称" @input="oninput" @change="onchange" @focus="onfocus" @blur="onblur"></textarea>
+                <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="oninput" @change="onchange" @focus="onfocus" @blur="onblur"></textarea>
             </div>
             <!--<div class="onlyPriceNum boder-top boder-bottom mt30">-->
             <!--<div class="inputLine flex-row boder-bottom">-->
@@ -16,6 +16,12 @@
             <!--<input type="number"  return-key-type="next"class="lineContent"  style="width:646px" placeholder="设置合力库存避免超卖" />-->
             <!--</div>-->
             <!--</div>-->
+            <div style="width: 750px;background-color: #fff" class="mt30 boder-bottom boder-top" >
+                <div class="inputLine flex-row" >
+                    <text class="title">单位</text>
+                    <input type="text" v-model="goodsAddress" return-key-type="next"class="lineContent goodsAdress" placeholder="个、件、袋等" />
+                </div>
+            </div>
             <transition name="paraTransition" tag="div">
                 <!--第一次出来时的商品规格行-->
                 <div class="flex-row topGoodsBox boder-top boder-bottom"  v-if="list.length == 0">
@@ -98,7 +104,7 @@
                         <text class="title ">选择分类</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">{{categoryName}}</text>
+                        <text class="sub_title">{{catagoryName}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -117,7 +123,7 @@
                 <!--进度条背景-->
                 <div class="processStyle processBg"></div>
                 <!--进度条进度与颜色-->
-                <div :style="{width:processWidth + 'px'}" style="background-color: #D9141E" class="processStyle"></div>
+                <div :style="{width:processWidth + 'px'}"  class="processStyle bkg-primary"></div>
                 <text class="processTotal">{{currentPro}}/{{proTotal}}</text>
             </div>
         </div>
@@ -279,6 +285,9 @@
         width: 160px;
         margin-left: 20px;
     }
+    .goodsAdress{
+        width: 600px;
+    }
     .toplineContentHeight{
         width:446px;
     }
@@ -334,15 +343,20 @@
         data:{
             list:[],
             goodsName:'',
-            categoryName:'全部商品',
+            catagoryName:'全部商品',
+            catagoryId:'',
             topLinePrice:'',
             topLineNum:'',
             firstThumbnailImg:'',
-            firstOriginalImg:'',
+            firstParaImage:'',
+            firstProductId:'',
             toSendArticle:false,//控制进度条 遮罩显示
             currentPro:0,//当前进度
             proTotal:0,//总的进度
             processWidth:0,//进度条宽度
+            goodsAddress:'',
+            productTemplates:[],
+            productId:'',
         },
         props:{
             title:{default:'新增商品'}
@@ -356,38 +370,39 @@
                 this.title = '编辑商品';
             }
         },
-        methods:{
+        methods: {
 //            添加商品规格行
-            addLines(){
-                if(this.list.length == 0){
+            addLines() {
+                if (this.list.length == 0) {
 //                    第一个商品规格的价格和库存默认为页面单独填写的商品初始价格和库存
                     this.list.push({
-                        sepcificationFirst:'',
-                        sepcificationSecond:'',
-                        price:this.topLinePrice,
-                        num:this.topLineNum,
-                        isNew:true,
-                        thumbnailImg:this.firstThumbnailImg,
-                        originalImg:this.firstOriginalImg,
+                        sepcificationFirst: '',
+                        sepcificationSecond: '',
+                        price: this.topLinePrice,
+                        num: this.topLineNum,
+                        isNew: true,
+                        thumbnailImg: this.firstThumbnailImg,
+                        paraImage: this.firstParaImage,
+                        productId:''
                     })
                     let _this = this;
 //                    滑动到多行输入框,优化用户体验
                     setTimeout(function () {
                         const el = _this.$refs.textareaRef//跳转到相应的cell
-                        dom.scrollToElement(el, {
-                        })
-                    },200)
-                }else{
+                        dom.scrollToElement(el, {})
+                    }, 200)
+                } else {
                     let goodsIndex = this.list.length - 1;
 //                    新加的商品规格默认为上一个物品的商品规格
                     this.list.push({
-                        sepcificationFirst:this.list[goodsIndex].sepcificationFirst,
-                        sepcificationSecond:this.list[goodsIndex].sepcificationSecond,
-                        price:this.list[goodsIndex].price,
-                        num:this.list[goodsIndex].num,
-                        isNew:true,
-                        thumbnailImg:this.list[goodsIndex].thumbnailImg,
-                        originalImg:this.list[goodsIndex].originalImg,
+                        sepcificationFirst: this.list[goodsIndex].sepcificationFirst,
+                        sepcificationSecond: this.list[goodsIndex].sepcificationSecond,
+                        price: this.list[goodsIndex].price,
+                        num: this.list[goodsIndex].num,
+                        isNew: true,
+                        thumbnailImg: this.list[goodsIndex].thumbnailImg,
+                        paraImage: this.list[goodsIndex].paraImage,
+                        productId:''
                     })
                     //                    滑动到上一个输入框,优化用户体验
                     let _this = this;
@@ -396,15 +411,15 @@
                         dom.scrollToElement(el, {
                             offset: 100
                         })
-                    },200)
+                    }, 200)
 
                 }
             },
 //            删除商品规格行
-            delLines(item,index){
-                if(item.isNew){
-                    this.list.splice(index,1);
-                }else {
+            delLines(item, index) {
+                if (item.isNew) {
+                    this.list.splice(index, 1);
+                } else {
                     let _this = this;
                     modal.confirm({
                         message: '是否删除该商品规格?',
@@ -413,31 +428,31 @@
                         cancelTitle: '取消',
                     }, function (value) {
                         if (value == '删除') {
-                            _this.list.splice(index,1);
+                            _this.list.splice(index, 1);
                         }
                     })
                 }
 
             },
 //            输入框输入事件   input的oninput事件，在安卓上 通过v-model事件预设input内的值时会触发oninput事件，ios上不会
-            oninput(item,index){
+            oninput(item, index) {
 //                if(index != 0){
                 var isRepeat = 0;
 //                    规格1不能为空
-                if(item.sepcificationFirst == ''){
+                if (item.sepcificationFirst == '') {
                     item.isNew = true;
                     return;
                 }
 //                    每次输入 遍历规格1 2的名称是否重复
                 this.list.forEach(function (listItem) {
-                    if(item.sepcificationFirst == listItem.sepcificationFirst && item.sepcificationSecond == listItem.sepcificationSecond){
-                        isRepeat ++ ;
+                    if (item.sepcificationFirst == listItem.sepcificationFirst && item.sepcificationSecond == listItem.sepcificationSecond) {
+                        isRepeat++;
                     }
                 })
 //                    因为本身肯定等于本身，所以isRepeat至少会为1。
-                if(isRepeat >= 2){
+                if (isRepeat >= 2) {
                     item.isNew = true;
-                }else {
+                } else {
                     item.isNew = false;
                 }
 //                    if(item.specificationFirst != this.list[index - 1].sepcificationFirst && item.sepcificationSecond != this.list[index - 1].sepcificationSecond){
@@ -452,52 +467,51 @@
 //                }
             },
 //            初始商品选择图片
-            firstImg(){
+            firstImg() {
                 let _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (mes) {
-                        if(mes.type == 'success') {
-                            event.upload(mes.data.originalPath,function (data) {
-                                _this.firstOriginalImg =data.data
+                    true, function (mes) {
+                        if (mes.type == 'success') {
+                                _this.firstParaImage = mes.data.originalPath;
                                 _this.firstThumbnailImg = mes.data.thumbnailSmallPath;
-                            },function () {
-                            });
                         }
                     })
             },
 //            新增的商品行选择图片
-            goodsImg(item){
+            goodsImg(item) {
                 let _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (mes) {
-                        if(mes.type == 'success') {
-                            event.upload(mes.data.originalPath,function (data) {
-                                item.originalImg =data.data
+                    true, function (mes) {
+                        if (mes.type == 'success') {
+                                item.paraImage = mes.data.originalPath;
                                 item.thumbnailImg = mes.data.thumbnailSmallPath;
-                            },function () {
-                            });
                         }
                     })
             },
 //            选择商品分类
-            goChooseCatagory(){
+            goChooseCatagory() {
+                let _this = this;
                 event.openURL(utils.locate('view/shop/goods/chooseCatagory.js'), function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        _this.catagoryId = parseInt(data.data.catagoryId);
+                        _this.catagoryName = data.data.catagoryName;
+                    }
                 });
             },
 
 //            判断是否最后一个段落来添加向下移动的箭头。
-            lastPara:function(index){
-                if(index != this.list.length-1){
+            lastPara: function (index) {
+                if (index != this.list.length - 1) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             },
 
 //            上箭头
-            moveUp:function (index) {
+            moveUp: function (index) {
                 let _this = this;
 //         方法2
                 let a = this.list[index].sepcificationFirst;
@@ -506,24 +520,27 @@
                 let d = this.list[index].num;
                 let e = this.list[index].isNew;
                 let f = this.list[index].thumbnailImg;
-                let g = this.list[index].originalImg;
+                let g = this.list[index].paraImage;
+                let h = this.list[index].productId;
                 this.list[index].sepcificationFirst = this.list[index - 1].sepcificationFirst;
                 this.list[index].sepcificationSecond = this.list[index - 1].sepcificationSecond;
                 this.list[index].price = this.list[index - 1].price;
                 this.list[index].num = this.list[index - 1].num;
                 this.list[index].isNew = this.list[index - 1].isNew;
                 this.list[index].thumbnailImg = this.list[index - 1].thumbnailImg;
-                this.list[index].originalImg = this.list[index - 1].originalImg;
+                this.list[index].paraImage = this.list[index - 1].paraImage;
+                this.list[index].productId = this.list[index - 1].productId;
                 this.list[index - 1].sepcificationFirst = a;
                 this.list[index - 1].sepcificationSecond = b;
                 this.list[index - 1].price = c;
                 this.list[index - 1].num = d;
                 this.list[index - 1].isNew = e;
                 this.list[index - 1].thumbnailImg = f;
-                this.list[index - 1].originalImg = g
+                this.list[index - 1].paraImage = g;
+                this.list[index - 1].productId = h;
             },
 //            下箭头
-            moveBottom:function (index) {
+            moveBottom: function (index) {
                 let _this = this;
 //         方法2
                 let a = this.list[index].sepcificationFirst;
@@ -532,71 +549,101 @@
                 let d = this.list[index].num;
                 let e = this.list[index].isNew;
                 let f = this.list[index].thumbnailImg;
-                let g = this.list[index].originalImg;
+                let g = this.list[index].paraImage;
+                let h = this.list[index].productId;
                 this.list[index].sepcificationFirst = this.list[index + 1].sepcificationFirst;
                 this.list[index].sepcificationSecond = this.list[index + 1].sepcificationSecond;
                 this.list[index].price = this.list[index + 1].price;
                 this.list[index].num = this.list[index + 1].num;
                 this.list[index].isNew = this.list[index + 1].isNew;
                 this.list[index].thumbnailImg = this.list[index + 1].thumbnailImg;
-                this.list[index].originalImg = this.list[index + 1].originalImg;
+                this.list[index].paraImage = this.list[index + 1].paraImage;
+                this.list[index].productId = this.list[index + 1].productId;
                 this.list[index + 1].sepcificationFirst = a;
                 this.list[index + 1].sepcificationSecond = b;
                 this.list[index + 1].price = c;
                 this.list[index + 1].num = d;
                 this.list[index + 1].isNew = e;
                 this.list[index + 1].thumbnailImg = f;
-                this.list[index + 1].originalImg = g
+                this.list[index + 1].paraImage = g;
+                this.list[index + 1].productId = h;
             },
 //            完成
-            goComplete:function () {
+            goComplete: function () {
+                let _this = this;
                 this.toSendArticle = true;
                 this.proTotal = 0;
 //                判断段落图片是否已上传
                 this.list.forEach(function (item) {
-                    if(!utils.isNull(item.paraImage) && item.paraImage.substring(0,4) != 'http'){
-                        _this.proTotal ++;
+                    if (!utils.isNull(item.paraImage) && item.paraImage.substring(0, 4) != 'http') {
+                        _this.proTotal++;
                     }
                 });
+                if(this.list.length == 0){
+                    var frontUrl = '';
+                    if (!utils.isNull(_this.firstParaImage)) {
+                        frontUrl = _this.firstParaImage.substring(0,4);
+                    }
+//                判断是否已经是服务器图片
+                    if (frontUrl == 'http') {
+                            _this.realSave();
+                    }else{
+                        _this.proTotal++;
+                        event.upload(_this.list[sendIndex].paraImage, function (data) {
+                            if (data.type == 'success') {
+                                _this.firstParaImage = data.data;
+                                    _this.realSave();
+                            } else {//上传失败
+                                _this.toSendArticle = false;
+                                _this.currentPro = 0;//当前进度
+                                _this.proTotal = 0;//总的进度
+                                _this.processWidth = 0;//进度条宽度
+                                event.toast(data.content);
+                                return;
+                            }
+                        }, function (data) {
+//                    上传进度
+                            _this.ctrlProcess(data);
+                        })
+                    }
+                }else{
+                    this.sendImage(0);
+                }
             },
 
             //上传图片到服务器
-            sendImage (sendIndex) {
+            sendImage(sendIndex) {
                 var _this = this;
 //                var frontUrl;
                 let sendLength = _this.list.length;//获取图片数组总长度
                 var frontUrl = '';
-                if(!utils.isNull(_this.list[sendIndex].paraImage)){
+                if (!utils.isNull(_this.list[sendIndex].paraImsage)) {
                     frontUrl = _this.list[sendIndex].paraImage.substring(0,4);
                 }
 //                判断是否已经是服务器图片
-                if(frontUrl == 'http'){
-                     _this.list[sendIndex].serveThumbnail = utils.thumbnail(_this.list[sendIndex].paraImage,155,155);
-                    sendIndex ++ ;
+                if (frontUrl == 'http') {
+                    sendIndex++;
 //                        判断是否最后一张图
-                    if(sendIndex < sendLength){
+                    if (sendIndex < sendLength) {
 //                            回调自己自己
                         _this.sendImage(sendIndex)
-                    }else{//进行上传文章
+                    } else {//进行上传文章
                         _this.realSave();
                     }
-                }else{
-                    event.upload(_this.list[sendIndex].paraImage,function (data) {
-                        if(data.type == 'success'){
+                } else {
+                    event.upload(_this.list[sendIndex].paraImage, function (data) {
+                        if (data.type == 'success') {
                             _this.list[sendIndex].paraImage = data.data;
-//                            判断是图片还是视频
-                                //                            向后台获取缩略图
-                                _this.list[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
-//                                    因为异步操作,所以要分别在if elseif里写下列代码
-                                sendIndex ++ ;
+//                         因为异步操作,所以要分别在if elseif里写下列代码
+                            sendIndex++;
 //                        判断是否最后一张图
-                                if(sendIndex < sendLength){
+                            if (sendIndex < sendLength) {
 //                            回调自己自己
-                                    _this.sendImage(sendIndex);
-                                }else{//进行上传文章
-                                    _this.realSave();
-                                }
-                        }else{//上传失败
+                                _this.sendImage(sendIndex);
+                            } else {//进行上传文章
+                                _this.realSave();
+                            }
+                        } else {//上传失败
                             _this.toSendArticle = false;
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 0;//总的进度
@@ -604,18 +651,114 @@
                             event.toast(data.content);
                             return;
                         }
-                    },function (data) {
+                    }, function (data) {
 //                    上传进度
                         _this.ctrlProcess(data);
                     })
                 }
             },
+
+//            图片上传后，正式将文章数据上传服务器
+            realSave() {
+                var _this = this;
+//                将页面上的数据存储起来
+                this.savePage();
+//                判断是再次编辑还是初次编辑;
+                let sendId = utils.isNull(_this.productId) ? '' : _this.productId;
+                let categoryTemplate = {
+                    id:_this.catagoryId,
+                    name:_this.catagoryName
+                }
+                let productData = {
+                    id: sendId,
+                    name: _this.goodsName,
+                    unit: _this.goodsAddress,
+                    productCategory: categoryTemplate,
+                    products: _this.productTemplates,
+                };
+//                转成json字符串后上传服务器
+                productData = JSON.stringify(productData);
+//                网络请求，保存文章
+                POST('weex/member/product/submit.jhtml', productData).then(
+                    function (res) {
+                        if (res.data != '' && res.type == 'success') {
+//                            _this.articleId = res.data.id;
+
+                            utils.debug(res.data);
+//                                    全局监听文章变动
+//                            let listenData = utils.message('success', '文章改变', '');
+//                            event.sendGlobalEvent('onArticleChange', listenData);
+//                            event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish), function (data) {
+//                                _this.currentPro = 0;//当前进度
+//                                _this.proTotal = 0;//总的进度
+//                                _this.processWidth = 0;//进度条宽度
+////                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                                let E = {
+//                                    isDone: 'complete'
+//                                }
+//                                let backData = utils.message('success', '成功', E);
+//                                event.closeURL(backData);
+////                                        }
+//                            })
+
+                        } else {
+                            event.toast(res.content);
+                            _this.toSendArticle = false;
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 0;//总的进度
+                            _this.processWidth = 0;//进度条宽度
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                        _this.toSendArticle = false;
+                        _this.currentPro = 0;//当前进度
+                        _this.proTotal = 0;//总的进度
+                        _this.processWidth = 0;//进度条宽度
+                    }
+                )
+            },
+
+//            将页面上的数据存储起来
+            savePage() {
+                let _this = this;
+//                每次保存前 将下列3个变量重新置空;
+                this.productTemplates = [];//文章段落数组
+
+                if(this.list.length == 0){
+                    _this.productTemplates.push({
+                        productId:this.firstProductId,
+                        thumbnail:this.firstParaImage,
+                        spec1: '',
+                        spec2: '',
+                        price: parseInt(_this.topLinePrice),
+                        stock: parseInt(_this.topLineNum)
+                    })
+                }else{
+                    this.list.forEach(function (item) {
+                        _this.productTemplates.push({
+                            productId:item.productId,
+                            thumbnail: item.paraImage,
+                            spec1: item.sepcificationFirst,
+                            spec2: item.sepcificationSecond,
+                            price: parseInt(item.price),
+                            stock: parseInt(item.num)
+                        })
+                    })
+                }
+
+
+            },
+
             //            控制进度条
             ctrlProcess(data){
                 this.processWidth = parseInt(data.data) * 5;
                 if(this.processWidth == 500){
                     this.currentPro ++ ;
                 };
+            },
+            maskClick(){
+                return;
             },
         }
     }

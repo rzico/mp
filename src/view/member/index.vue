@@ -932,7 +932,6 @@
                 },function (err) {
                     event.toast(err.content);
                 })
-
             },
             jumpEditor:function (id) {
                 var _this = this;
