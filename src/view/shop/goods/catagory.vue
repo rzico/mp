@@ -254,7 +254,7 @@
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入分类名',duration:1})
+                            event.toast('请输入分类名');
                         }else{
                             POST('weex/member/product_category/update.jhtml?id=' + id + '&name=' + value.data).then(
                                 function (data) {
@@ -286,7 +286,6 @@
                     if(value == '删除'){
                         POST('weex/member/product_category/delete.jhtml?id=' + id).then(
                             function (data) {
-                                utils.debug(data);
                                 if(data.type == 'success'){
                                     _this.catagoryList.splice(index,1);
                                 }else{
@@ -333,7 +332,7 @@
 //                判断是否有更换顺序 没有就不上传服务器
                 if(this.isSort == 1){
                     this.isSort = 0;
-                    let url = 'weex/member/product_category/sort.jhtml?ids='
+                    var url = 'weex/member/product_category/sort.jhtml?ids=';
                     this.catagoryList.forEach(function (item,index) {
                         if(index == 0){
                             url = url + item.id;

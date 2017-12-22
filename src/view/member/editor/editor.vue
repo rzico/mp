@@ -558,7 +558,7 @@
                         key:op[1]
                     };
                     _this.articleId = op[1];
-                    if(_this.articleId.length == 13){//13位的id为草稿文章
+                    if(_this.articleId.length == 19){//19位的id为草稿文章
                     }else{
                         GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
                             if(data.type == 'success' && data.data != ''){
@@ -658,7 +658,7 @@
                         }
 
                     }else{
-                        if(_this.articleId.length == 13){
+                        if(_this.articleId.length == 19){
                             event.toast('本地数据已被删除')
                             event.closeURL();
                             return;
@@ -811,7 +811,7 @@
             goBack:function () {
                 let _this = this;
 //                判断是草稿还是已经发布文章
-                if(utils.isNull(this.articleId) || this.articleId.length == 13){
+                if(utils.isNull(this.articleId) || this.articleId.length == 19){
                     modal.confirm({
                         message: '请选择方式?',
                         duration: 0.3,
@@ -820,8 +820,14 @@
                     }, function (value) {
                         if(value == '存草稿'){
                             if(utils.isNull(_this.articleId)){
+//                                生成6位随机数
+                                var Num="";
+                                for(var i=0;i<6;i++)
+                                {
+                                    Num += Math.floor(Math.random()*10);
+                                }
                                 //            获取当前时间戳 作为唯一标识符key
-                                _this.articleId = Math.round(new Date().getTime());
+                                _this.articleId = Math.round(new Date().getTime()) + Num;
                             }
                             _this.saveDraft(function () {
                                 _this.delOnceDraft();
@@ -872,6 +878,10 @@
                     storageType = "articleDraft";
                     storageKey = '0';
                 }else {
+                    if(this.articleId.length != 19){
+                        return;
+                    }
+
                     storageType = "article";
                     storageKey = this.articleId;
                 }
@@ -1151,7 +1161,7 @@
 //                    event.toast(voteData);
                 });
 //                var articleTemplates = [];
-                if(!utils.isNull(this.articleId) && this.articleId.length == 13){//判断id为13位的是草稿，或者有文章id时。
+                if(!utils.isNull(this.articleId) && this.articleId.length == 19){//判断id为19位的是草稿，或者有文章id时。
                     var uploadThumbnailImg ;
                     this.paraList.forEach(function(item){
                         if(!utils.isNull(item.serveThumbnail)){
@@ -1659,7 +1669,7 @@
                 let _this = this;
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
-                    if(message.data != '') {
+                    if(message.type == 'success' &&  message.data != '') {
                         _this.voteList.push(message.data);
 //                    添加修改标志
                         _this.hadChange = 1;

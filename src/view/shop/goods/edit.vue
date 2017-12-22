@@ -19,7 +19,7 @@
             <div style="width: 750px;background-color: #fff" class="mt30 boder-bottom boder-top" >
                 <div class="inputLine flex-row" >
                     <text class="title">单位</text>
-                    <input type="text" v-model="goodsAddress" return-key-type="next"class="lineContent goodsAdress" placeholder="个、件、袋等" />
+                    <input type="text" v-model="goodsUnit" return-key-type="next"class="lineContent goodsAdress" placeholder="个、件、袋等" />
                 </div>
             </div>
             <transition name="paraTransition" tag="div">
@@ -44,18 +44,18 @@
             <div v-for="(item,index) in list" ref="goodsRef">
                 <div class="flex-row goodsBox boder-top boder-bottom boder-right"  :class="[item.isNew ? 'borderColor' : '']" >
                     <div>
-                        <image class="goodsImg" @click="goodsImg(item)"  :class="[firstThumbnailImg == '' ? 'goodsImgBorder' : '']" :src="item.thumbnailImg"></image>
+                        <image class="goodsImg" @click="goodsImg(item)"  :class="[firstThumbnailImg == '' ? 'goodsImgBorder' : '']" :src="item.thumbnail"></image>
                     </div>
                     <div class="priceNum">
                         <div class="inputLine flex-row boder-bottom">
                             <div class="flex-row">
                                 <text class="title">规格</text>
-                                <input type="text" autofocus="true" @input="oninput(item,index)" v-model="item.sepcificationFirst" return-key-type="next" class="lineContent specification pr20"  placeholder="规格1" />
+                                <input type="text" autofocus="true" @input="oninput(item,index)" v-model="item.spec1" return-key-type="next" class="lineContent specification pr20"  placeholder="规格1" />
                             </div>
                             <!--2个规格中间的框-->
                             <div style="width: 1px;height: 40px" class="boder-left"></div>
                             <div class="flex-row" >
-                                <input type="text" v-model="item.sepcificationSecond" @input="oninput(item,index)" return-key-type="next" class="lineContent specification "   placeholder="规格2" />
+                                <input type="text" v-model="item.spec2" @input="oninput(item,index)" return-key-type="next" class="lineContent specification "   placeholder="规格2" />
                             </div>
                         </div>
                         <div class="inputLine flex-row boder-bottom">
@@ -64,7 +64,7 @@
                         </div>
                         <div class="inputLine flex-row">
                             <text class="title">库存</text>
-                            <input type="number" v-model="item.num" @input="oninput(item,index)" return-key-type="next" class="lineContent" placeholder="设置合理库存避免超卖" />
+                            <input type="number" v-model="item.stock" @input="oninput(item,index)" return-key-type="next" class="lineContent" placeholder="设置合理库存避免超卖" />
                         </div>
                     </div>
 
@@ -354,9 +354,9 @@
             currentPro:0,//当前进度
             proTotal:0,//总的进度
             processWidth:0,//进度条宽度
-            goodsAddress:'',
+            goodsUnit:'',
             productTemplates:[],
-            productId:'',
+            goodsId:'',
         },
         props:{
             title:{default:'新增商品'}
@@ -365,9 +365,40 @@
             navbar
         },
         created(){
+            let _this = this;
             utils.initIconFont();
-            if(utils.getUrlParameter('type') == 'edit'){
+            if(!utils.isNull(utils.getUrlParameter('id'))){
                 this.title = '编辑商品';
+                this.goodsId = utils.getUrlParameter('id');
+                GET('weex/member/product/view.jhtml?id=' + this.goodsId,function (data) {
+                    if(data.type == 'success'){
+                        _this.goodsName = data.data.name;
+                        _this.goodsUnit = data.data.unit;
+                        if(!utils.isNull(data.data.productCategory.id)){
+                            _this.catagoryId = data.data.productCategory.id;
+                        }
+                        if(!utils.isNull(data.data.productCategory.name)){
+                            _this.catagoryName = data.data.productCategory.name;
+                        }
+                        if(data.data.products.length == 1 &&  utils.isNull(data.data.products.spec1)){
+                            _this.firstProductId = data.data.products[0].productId;
+                            _this.firstThumbnailImg = data.data.products[0].thumbnail;
+                            _this.firstParaImage = data.data.products[0].thumbnail;
+                            _this.topLinePrice = data.data.products[0].price;
+                            _this.topLineNum = data.data.products[0].stock;
+                        }else{
+                            data.data.products.forEach(function (item) {
+                                item.paraImage = item.thumbnail;
+                                item.isNew = false;
+                                _this.list.push(item);
+                            })
+                        }
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
             }
         },
         methods: {
@@ -376,12 +407,12 @@
                 if (this.list.length == 0) {
 //                    第一个商品规格的价格和库存默认为页面单独填写的商品初始价格和库存
                     this.list.push({
-                        sepcificationFirst: '',
-                        sepcificationSecond: '',
+                        spec1: '',
+                        spec2: '',
                         price: this.topLinePrice,
-                        num: this.topLineNum,
+                        stock: this.topLineNum,
                         isNew: true,
-                        thumbnailImg: this.firstThumbnailImg,
+                        thumbnail: this.firstThumbnailImg,
                         paraImage: this.firstParaImage,
                         productId:''
                     })
@@ -395,12 +426,12 @@
                     let goodsIndex = this.list.length - 1;
 //                    新加的商品规格默认为上一个物品的商品规格
                     this.list.push({
-                        sepcificationFirst: this.list[goodsIndex].sepcificationFirst,
-                        sepcificationSecond: this.list[goodsIndex].sepcificationSecond,
+                        spec1: this.list[goodsIndex].spec1,
+                        spec2: this.list[goodsIndex].spec2,
                         price: this.list[goodsIndex].price,
-                        num: this.list[goodsIndex].num,
+                        stock: this.list[goodsIndex].stock,
                         isNew: true,
-                        thumbnailImg: this.list[goodsIndex].thumbnailImg,
+                        thumbnail: this.list[goodsIndex].thumbnail,
                         paraImage: this.list[goodsIndex].paraImage,
                         productId:''
                     })
@@ -439,13 +470,13 @@
 //                if(index != 0){
                 var isRepeat = 0;
 //                    规格1不能为空
-                if (item.sepcificationFirst == '') {
+                if (item.spec1 == '') {
                     item.isNew = true;
                     return;
                 }
 //                    每次输入 遍历规格1 2的名称是否重复
                 this.list.forEach(function (listItem) {
-                    if (item.sepcificationFirst == listItem.sepcificationFirst && item.sepcificationSecond == listItem.sepcificationSecond) {
+                    if (item.spec1 == listItem.spec1 && item.spec2 == listItem.spec2) {
                         isRepeat++;
                     }
                 })
@@ -455,11 +486,11 @@
                 } else {
                     item.isNew = false;
                 }
-//                    if(item.specificationFirst != this.list[index - 1].sepcificationFirst && item.sepcificationSecond != this.list[index - 1].sepcificationSecond){
+//                    if(item.specificationFirst != this.list[index - 1].spec1 && item.sepcificationSecond != this.list[index - 1].sepcificationSecond){
 //                        item.isNew = false;
 //                    }
 //                }else{
-//                    if(item.sepcificationFirst != '' ){
+//                    if(item.spec1 != '' ){
 //                        item.isNew = false;
 //                    }else{
 //                        item.isNew = true;
@@ -486,7 +517,7 @@
                     true, function (mes) {
                         if (mes.type == 'success') {
                                 item.paraImage = mes.data.originalPath;
-                                item.thumbnailImg = mes.data.thumbnailSmallPath;
+                                item.thumbnail = mes.data.thumbnailSmallPath;
                         }
                     })
             },
@@ -514,28 +545,28 @@
             moveUp: function (index) {
                 let _this = this;
 //         方法2
-                let a = this.list[index].sepcificationFirst;
-                let b = this.list[index].sepcificationSecond;
+                let a = this.list[index].spec1;
+                let b = this.list[index].spec2;
                 let c = this.list[index].price;
-                let d = this.list[index].num;
+                let d = this.list[index].stock;
                 let e = this.list[index].isNew;
-                let f = this.list[index].thumbnailImg;
+                let f = this.list[index].thumbnail;
                 let g = this.list[index].paraImage;
                 let h = this.list[index].productId;
-                this.list[index].sepcificationFirst = this.list[index - 1].sepcificationFirst;
-                this.list[index].sepcificationSecond = this.list[index - 1].sepcificationSecond;
+                this.list[index].spec1 = this.list[index - 1].spec1;
+                this.list[index].spec2 = this.list[index - 1].spec2;
                 this.list[index].price = this.list[index - 1].price;
-                this.list[index].num = this.list[index - 1].num;
+                this.list[index].stock = this.list[index - 1].stock;
                 this.list[index].isNew = this.list[index - 1].isNew;
-                this.list[index].thumbnailImg = this.list[index - 1].thumbnailImg;
+                this.list[index].thumbnail = this.list[index - 1].thumbnail;
                 this.list[index].paraImage = this.list[index - 1].paraImage;
                 this.list[index].productId = this.list[index - 1].productId;
-                this.list[index - 1].sepcificationFirst = a;
-                this.list[index - 1].sepcificationSecond = b;
+                this.list[index - 1].spec1 = a;
+                this.list[index - 1].spec2 = b;
                 this.list[index - 1].price = c;
-                this.list[index - 1].num = d;
+                this.list[index - 1].stock = d;
                 this.list[index - 1].isNew = e;
-                this.list[index - 1].thumbnailImg = f;
+                this.list[index - 1].thumbnail = f;
                 this.list[index - 1].paraImage = g;
                 this.list[index - 1].productId = h;
             },
@@ -543,28 +574,28 @@
             moveBottom: function (index) {
                 let _this = this;
 //         方法2
-                let a = this.list[index].sepcificationFirst;
-                let b = this.list[index].sepcificationSecond;
+                let a = this.list[index].spec1;
+                let b = this.list[index].spec2;
                 let c = this.list[index].price;
-                let d = this.list[index].num;
+                let d = this.list[index].stock;
                 let e = this.list[index].isNew;
-                let f = this.list[index].thumbnailImg;
+                let f = this.list[index].thumbnail;
                 let g = this.list[index].paraImage;
                 let h = this.list[index].productId;
-                this.list[index].sepcificationFirst = this.list[index + 1].sepcificationFirst;
-                this.list[index].sepcificationSecond = this.list[index + 1].sepcificationSecond;
+                this.list[index].spec1 = this.list[index + 1].spec1;
+                this.list[index].spec2 = this.list[index + 1].spec2;
                 this.list[index].price = this.list[index + 1].price;
-                this.list[index].num = this.list[index + 1].num;
+                this.list[index].stock = this.list[index + 1].stock;
                 this.list[index].isNew = this.list[index + 1].isNew;
-                this.list[index].thumbnailImg = this.list[index + 1].thumbnailImg;
+                this.list[index].thumbnail = this.list[index + 1].thumbnail;
                 this.list[index].paraImage = this.list[index + 1].paraImage;
                 this.list[index].productId = this.list[index + 1].productId;
-                this.list[index + 1].sepcificationFirst = a;
-                this.list[index + 1].sepcificationSecond = b;
+                this.list[index + 1].spec1 = a;
+                this.list[index + 1].spec2 = b;
                 this.list[index + 1].price = c;
-                this.list[index + 1].num = d;
+                this.list[index + 1].stock = d;
                 this.list[index + 1].isNew = e;
-                this.list[index + 1].thumbnailImg = f;
+                this.list[index + 1].thumbnail = f;
                 this.list[index + 1].paraImage = g;
                 this.list[index + 1].productId = h;
             },
@@ -573,12 +604,6 @@
                 let _this = this;
                 this.toSendArticle = true;
                 this.proTotal = 0;
-//                判断段落图片是否已上传
-                this.list.forEach(function (item) {
-                    if (!utils.isNull(item.paraImage) && item.paraImage.substring(0, 4) != 'http') {
-                        _this.proTotal++;
-                    }
-                });
                 if(this.list.length == 0){
                     var frontUrl = '';
                     if (!utils.isNull(_this.firstParaImage)) {
@@ -589,7 +614,7 @@
                             _this.realSave();
                     }else{
                         _this.proTotal++;
-                        event.upload(_this.list[sendIndex].paraImage, function (data) {
+                        event.upload(_this.firstParaImage, function (data) {
                             if (data.type == 'success') {
                                 _this.firstParaImage = data.data;
                                     _this.realSave();
@@ -607,10 +632,15 @@
                         })
                     }
                 }else{
+//                判断段落图片是否已上传
+                    this.list.forEach(function (item) {
+                        if (!utils.isNull(item.paraImage) && item.paraImage.substring(0, 4) != 'http') {
+                            _this.proTotal++;
+                        }
+                    });
                     this.sendImage(0);
                 }
             },
-
             //上传图片到服务器
             sendImage(sendIndex) {
                 var _this = this;
@@ -657,14 +687,13 @@
                     })
                 }
             },
-
 //            图片上传后，正式将文章数据上传服务器
             realSave() {
                 var _this = this;
 //                将页面上的数据存储起来
                 this.savePage();
 //                判断是再次编辑还是初次编辑;
-                let sendId = utils.isNull(_this.productId) ? '' : _this.productId;
+                let sendId = utils.isNull(_this.goodsId) ? '' : _this.goodsId;
                 let categoryTemplate = {
                     id:_this.catagoryId,
                     name:_this.catagoryName
@@ -672,7 +701,7 @@
                 let productData = {
                     id: sendId,
                     name: _this.goodsName,
-                    unit: _this.goodsAddress,
+                    unit: _this.goodsUnit,
                     productCategory: categoryTemplate,
                     products: _this.productTemplates,
                 };
@@ -682,25 +711,10 @@
                 POST('weex/member/product/submit.jhtml', productData).then(
                     function (res) {
                         if (res.data != '' && res.type == 'success') {
-//                            _this.articleId = res.data.id;
-
-                            utils.debug(res.data);
-//                                    全局监听文章变动
-//                            let listenData = utils.message('success', '文章改变', '');
-//                            event.sendGlobalEvent('onArticleChange', listenData);
-//                            event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish), function (data) {
-//                                _this.currentPro = 0;//当前进度
-//                                _this.proTotal = 0;//总的进度
-//                                _this.processWidth = 0;//进度条宽度
-////                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-//                                let E = {
-//                                    isDone: 'complete'
-//                                }
-//                                let backData = utils.message('success', '成功', E);
-//                                event.closeURL(backData);
-////                                        }
-//                            })
-
+                                _this.currentPro = 0;//当前进度
+                                _this.proTotal = 0;//总的进度
+                                _this.processWidth = 0;//进度条宽度
+                                event.closeURL(res);
                         } else {
                             event.toast(res.content);
                             _this.toSendArticle = false;
@@ -739,10 +753,10 @@
                         _this.productTemplates.push({
                             productId:item.productId,
                             thumbnail: item.paraImage,
-                            spec1: item.sepcificationFirst,
-                            spec2: item.sepcificationSecond,
+                            spec1: item.spec1,
+                            spec2: item.spec2,
                             price: parseInt(item.price),
-                            stock: parseInt(item.num)
+                            stock: parseInt(item.stock)
                         })
                     })
                 }

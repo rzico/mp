@@ -20,36 +20,19 @@
             </cell>
             <!--导航栏-->
             <cell v-else v-for="(item,index) in goodsList">
-                <div class="goodsLine boder-bottom" @click="popup()">
-                    <image class="goodsImg" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1310014862,401506166&fm=27&gp=0.jpg"></image>
+                <div class="goodsLine boder-bottom" :class="[item.id == goodsId ? 'bgActive' : '']" @click="popup(item.id,index)">
+                    <image class="goodsImg" :src="item.thumbnail | watchThumbnail"></image>
                     <div class="infoBox">
                         <div class="flex1 ">
-                            <text class="linesCtrl title">逗狗小玩具逗狗</text>
+                            <text class="linesCtrl title">{{item.name}}</text>
                         </div>
                         <div class="flex1 " >
                             <div class="bt10 flex1" >
-                                <text class="goodsPrice" >¥ 144.00</text>
+                                <text class="goodsPrice" >¥ {{item.price | currencyfmt}}</text>
                             </div>
                             <div class="space-between bottomInfo flex1">
-                                <text class="sub_title fz28">库存: 292</text>
-                                <text class="sub_title fz28">销量: 0</text>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="goodsLine boder-bottom" @click="popup()">
-                    <image class="goodsImg" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1310014862,401506166&fm=27&gp=0.jpg"></image>
-                    <div class="infoBox">
-                        <div class="flex1 ">
-                            <text class="linesCtrl title">逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具</text>
-                        </div>
-                        <div class="flex1 " >
-                            <div class="bt10 flex1" >
-                                <text class="goodsPrice" >¥ 144.00</text>
-                            </div>
-                            <div class="space-between bottomInfo flex1">
-                                <text class="sub_title fz28">库存: 292</text>
-                                <text class="sub_title fz28">销量: 0</text>
+                                <text class="sub_title fz28">库存: {{item.stock}}</text>
+                                <!--<text class="sub_title fz28">销量: {{item.sales}}</text>-->
                             </div>
                         </div>
                     </div>
@@ -166,7 +149,7 @@
 
 
 
-    .goodsLine:active{
+    .bgActive{
         background-color: #ccc;
     }
     .linesCtrl{
@@ -213,12 +196,15 @@
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
+    const modal = weex.requireModule('modal');
     export default {
         data:{
-            goodsList:['1'],
+            goodsList:[],
+            goodsId:0,
+            goodsIndex:0,
             refreshing:false,
             pageStart:0,
-            pageSize:15,
+            pageSize:10,
             reviewNum:0,
             isPopup:false,
             refreshImg:utils.locate('resources/images/loading.png'),
@@ -228,7 +214,7 @@
             }],
             whichCorpus:0,
 //                分类id
-            corpusId:'',
+            productCategoryId:''
         },
         props:{
             noDataHint:{default:'暂无商品'},
@@ -237,13 +223,43 @@
         components: {
             navbar,noData
         },
+        filters:{
+            watchThumbnail(value){
+                return utils.thumbnail(value,160,160);
+            }
+        },
         created(){
             utils.initIconFont();
+//            获取分类列表
             this.getCatagory();
+//            获取商品列表
+            this.getAllGoods();
         },
         methods:{
+//            商品列表
+            getAllGoods(){
+                let _this = this;
+                //            获取商品列表
+                GET('weex/member/product/list.jhtml?productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success'){
+                        if (_this.pageStart == 0) {
+                            _this.goodsList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                _this.goodsList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
             onloading:function () {
-////            获取关注列表
+////            获取商品列表
+                this.getAllGoods();
             },
             onrefresh:function () {
                 var _this = this;
@@ -270,27 +286,36 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false;
-////            获取关注列表
+////            获取商品列表
+                    this.getAllGoods();
                 }, 1000)
             },
 
             doCancel:function () {
                 this.isPopup = false;
+                this.goodsId = 0;
             },
-            popup:function (id) {
+            popup:function (id,index) {
                 if (this.isPopup==false) {
                     this.isPopup = true;
                 }
+                this.goodsId = id;
+                this.goodsIndex = index;
             },
             addGoods(){
-                event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function () {
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function (res) {
+                    if(res.type == 'success'){
+//                        res.data.sales = 0;
+                        _this.goodsList.splice(0,0,res.data);
+                    }
                 });
             },
 //            分类
             goCatagory(){
                 var _this = this;
                 event.openURL(utils.locate('view/shop/goods/catagory.js?name=catagoryList'), function (data) {
-                    this.getCatagory();
+                    _this.getCatagory();
                 });
             },
 //分类切换
@@ -301,9 +326,9 @@
                     return;
                 }
                 _this.whichCorpus = index;
-                _this.corpusId = id;
-
-//                _this.getAllArticle();
+                _this.productCategoryId = id;
+                this.pageStart = 0;
+                _this.getAllGoods();
             },
 
 //            获取分类
@@ -332,6 +357,41 @@
                 },function (err) {
                     event.toast(err.content);
                 })
+            },
+//            编辑商品
+            doEdit(){
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/edit.js?id=' + this.goodsId), function (res) {
+                    _this.isPopup = false;
+                    if(res.type == 'success'){
+                        _this.goodsList.splice(_this.goodsIndex,1);
+                        _this.goodsList.splice(0,0,res.data);
+                    }
+                });
+            },
+//            删除商品
+            doDel(){
+                let _this = this;
+                modal.confirm({
+                    message: '是否要删除该商品?',
+                    duration: 0.3,
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if (value == '删除') {
+                        GET('weex/member/product/delete.jhtml?ids=' + _this.goodsId, function (data) {
+                            if (data.type == 'success') {
+                                _this.goodsList.splice(_this.goodsIndex, 1);
+                                event.toast('删除成功');
+                                _this.isPopup = false;
+                            } else {
+                                event.toast(data.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content);
+                        });
+                    };
+                });
             },
         }
     }

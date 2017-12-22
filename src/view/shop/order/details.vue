@@ -8,57 +8,158 @@
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0" ndBgColor="#fff"></noData>
             <!--导航栏-->
             <div v-else v-for="(item,index) in ordersList">
-
-
-
-
-
+                <div class="flex-row infoLines mt20" style="background-color: #fff">
+                    <text class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe604;</text>
+                    <text class="title">感谢您在xxx购物,欢迎您再次光临!</text>
+                </div>
+                <div class="addressBox flex-row mt20">
+                    <div style="width: 70px;">
+                        <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
+                    </div>
+                    <div style="width: 630px">
+                        <div class="flex-row">
+                            <text class="title">柯志杰</text>
+                            <text class="title ml20">158****1039</text>
+                        </div>
+                        <div class="mt10">
+                            <text class="sub_title" style="line-height: 42px">地址: 福建厦门市思明区城区谊爱路16号海西文创大厦228</text>
+                        </div>
+                    </div>
+                </div>
                 <div class="goodsLine mt20">
-                    <div class="space-between goodsHead">
+                    <div class="space-between goodsHead boder-bottom">
                         <div class="flex-row">
                             <image :src="refreshImg" class="shopImg"></image>
                             <text class="title ml20 mr20">adima旗舰店</text>
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
-                        <div >
-                            <text class="title red">交易成功</text>
+                        <div class="flex-row">
+                            <text class="sub_title" style="color: #666" :style="{fontFamily:'iconfont'}">联系卖家 </text>
+                            <text class="sub_title primary"  :style="{fontFamily:'iconfont'}">&#xe628;</text>
                         </div>
                     </div>
-                    <div class="flex-row goodsBody">
+                    <div class="flex-row goodsBody boder-bottom">
                         <image :src="refreshImg" class="goodsImg"></image>
                         <div class="goodsInfo" >
                             <text class="title goodsName">Adima 太阳伞防紫外线这样小清新纯色简约三折两用晴雨伞软面</text>
                             <text class="sub_title mt10">颜色分类:深蓝直伞</text>
                         </div>
                         <div class="goodsPriceNum">
-                            <text class="title coral">¥ 148.00</text>
+                            <text class="title ">¥ 148.00</text>
                             <text class="sub_title">x1</text>
+                            <text class="sub_title border shopCar" >加购物车</text>
                         </div>
                     </div>
-                    <div class="flex-row goodsTotalPrice boder-bottom">
-                        <text class="title mr20">共1件商品</text>
-                        <text class="title">合计:¥ 148.00</text>
-                    </div>
-                    <div class="flex-row space-between goodsFoot">
-                        <div class="footMore">
-                            <text class="sub_title">删除</text>
+                    <div class="flex-row goodsBody">
+                        <image :src="refreshImg" class="goodsImg"></image>
+                        <div class="goodsInfo " >
+                            <text class="title goodsName">Adima 太阳伞防紫外线这样小清新纯色简约三折两用晴雨伞软面</text>
+                            <text class="sub_title mt10">颜色分类:深蓝直伞</text>
                         </div>
-                        <div class="flex-row">
-                            <text class="title footText">查看物流</text>
-                            <text class="title footText">评价晒单</text>
-                            <text class="title footText red">再次购买</text>
+                        <div class="goodsPriceNum">
+                            <text class="title ">¥ 148.00</text>
+                            <text class="sub_title">x1</text>
+                            <text class="sub_title border shopCar" >加购物车</text>
                         </div>
                     </div>
                 </div>
+                <div class="mt20 infoBox">
+                    <div class="infoLines boder-bottom">
+                        <div class="flex-row">
+                            <text class="sub_title">订单编号: 64805405523</text>
+                            <text class="sub_title copyBtn border ml20">复制</text>
+                        </div>
+                        <div class="mt10 ">
+                            <text class="sub_title">下单时间: 2017-12-05 10:43:46</text>
+                        </div>
+                    </div>
+                    <div class="infoLines boder-bottom">
+                        <text class="sub_title fz32">支付方式: 快捷支付</text>
+                    </div>
+                    <div class="infoLines">
+                        <text class="sub_title fz32">配送方式: 普通快递</text>
+                    </div>
+                </div>
+                <div class="mt20  boder-bottom" style="background-color: #fff">
+                    <div class="priceLine boder-bottom">
+                        <div class="space-between">
+                            <text class="sub_title">商品总额</text>
+                            <text class="sub_title">¥39.00</text>
+                        </div>
+                        <div class="mt10 space-between">
+                            <text class="sub_title">+运费</text>
+                            <text class="sub_title">¥0.00</text>
+                        </div>
+                    </div>
+                    <div class="priceLine flex-end">
+                        <div class="flex-row">
+                            <text class="title mr20">实付款:</text>
+                            <text class="title" style="color: red">¥39.00</text>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </scroller>
 
+        <div class="flex-row space-between goodsFoot">
+            <div class="footMore">
+                <text class="title" style="color: #444">删除订单</text>
+            </div>
+            <div class="flex-row">
+                <text class="title footText">查看物流</text>
+                <text class="title footText">评价晒单</text>
+                <text class="title footText ">再次购买</text>
+            </div>
+        </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .carIcon{
+        width: 60px;color: #444;font-size: 35px;
+    }
+    /*<!--底部金额-->*/
+    .priceLine{
+        background-color: #fff;
+        padding-right: 30px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        margin-left: 30px;
+    }
+    /**/
+    /*<!--订单 支付方式 信息行-->*/
+    .infoBox{
+        background-color: #fff;
+    }
+    .copyBtn{
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        border-radius: 5px;
+        font-size: 26px;
+    }
+    .infoLines{
+        padding: 30px;
+
+    }
+    /**/
+
+    /*<!--收货地址-->*/
+    .addressIcon{
+        width: 70px;
+        font-size: 50px;
+        color: #666;
+    }
+    .addressBox{
+        padding: 20px;
+        background-color: #fff;
+    }
+
+    /**/
     .footMore{
-        width: 206px;align-items: center;
+        width: 158px;align-items: center;
     }
     .red{
         color: red;
@@ -68,16 +169,17 @@
         color: coral;
     }
     .footText{
-        padding: 10px;
+        padding: 18px;
         border-radius: 5px;
+        color: #444;
         border-color: #ccc;
         border-width: 1px;
         border-style: solid;
         margin-right: 20px;
     }
     .goodsFoot{
-        padding-top: 15px;
-        padding-bottom: 15px;
+        padding-top: 20px;
+        padding-bottom: 20px;
         padding-left: 15px;
     }
     .goodsTotalPrice{
@@ -97,15 +199,14 @@
     }
     .goodsInfo{
         height: 160px;
-        width: 400px;
+        width: 380px;
         padding-left: 20px;
     }
     .goodsBody{
-        padding-top: 10px;
-        padding-bottom: 10px;
-        padding-left: 20px;
-        padding-right: 20px;
-        background-color: #eee;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-left: 30px;
+        padding-right: 30px;
     }
     .goodsLine{
         background-color: #fff;
@@ -113,14 +214,25 @@
     .goodsImg{
         height: 160px;
         width: 160px;
+        border-radius: 5px;
     }
     .goodsHead{
         background-color: #fff;
         padding: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
     }
     .shopImg{
         height: 40px;
         width: 40px;
+    }
+    .shopCar{
+        font-size: 20px;color: #444;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 20px;
+        padding-left: 20px;
+        border-radius: 5px;
     }
 
 </style>
@@ -131,9 +243,10 @@
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
+    const clipboard = weex.requireModule('clipboard');
     export default {
         data: {
-            ordersList: ['1', '2'],
+            ordersList: ['1'],
             refreshing: false,
             pageStart: 0,
             pageSize: 15,
@@ -149,7 +262,6 @@
         },
         created() {
             utils.initIconFont();
-            this.getCatagory();
         },
         methods: {
             onloading: function () {
@@ -183,7 +295,11 @@
 ////            获取关注列表
                 }, 1000)
             },
-
+//            点击复制
+            copyCode(){
+                clipboard.setString(this.copy);
+                event.toast('复制成功');
+            }
         }
     }
 </script>

@@ -153,7 +153,7 @@
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入分类名',duration:1})
+                            event.toast('请输入分类名');
                         }else{
                             let orders = _this.catagoryList.length + 1;
                             value.data = encodeURI(value.data);
