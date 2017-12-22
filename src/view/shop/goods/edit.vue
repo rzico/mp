@@ -647,7 +647,7 @@
 //                var frontUrl;
                 let sendLength = _this.list.length;//获取图片数组总长度
                 var frontUrl = '';
-                if (!utils.isNull(_this.list[sendIndex].paraImsage)) {
+                if (!utils.isNull(_this.list[sendIndex].paraImage)) {
                     frontUrl = _this.list[sendIndex].paraImage.substring(0,4);
                 }
 //                判断是否已经是服务器图片

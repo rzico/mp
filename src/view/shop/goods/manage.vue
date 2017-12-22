@@ -1,6 +1,18 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goback="goback" ></navbar>
+        <!--<navbar :title="title"  @goback="goback" ></navbar>-->
+        <div class="header" :class="[classHeader()]" >
+            <div class="nav_back" @click="goback()">
+                <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
+            </div>
+            <div class="nav">
+                <text class="nav_title">{{title}}</text>
+                <div class="navRightBox"  @click="goSearch()">
+                    <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
+                    <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                </div>
+            </div>
+        </div>
         <div  class="corpusBox" >
             <scroller scroll-direction="horizontal"  class="corpusScroll">
                 <div class="articleClass">
@@ -76,6 +88,35 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    /*<!--顶部导航栏-->*/
+    .navRightBox{
+        min-width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+    }
+    .nav_ico {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
+    }
+    .nav_CompleteIcon{
+        /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+        font-size: 44px;
+        line-height: 44px;
+        color: #FFFFFF;
+    }
+    .nav_Complete {
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+    }
+    /**/
     .articleClass{
         flex-direction: row;
         padding-left: 10px;
@@ -236,6 +277,10 @@
             this.getAllGoods();
         },
         methods:{
+            classHeader:function () {
+                let dc = utils.device();
+                return dc
+            },
 //            商品列表
             getAllGoods(){
                 let _this = this;
@@ -290,10 +335,14 @@
                     this.getAllGoods();
                 }, 1000)
             },
-
-            doCancel:function () {
+//            重置商品选择状态
+            doReset(){
                 this.isPopup = false;
                 this.goodsId = 0;
+            },
+//            点击取消
+            doCancel:function () {
+                this.doReset();
             },
             popup:function (id,index) {
                 if (this.isPopup==false) {
@@ -328,6 +377,8 @@
                 _this.whichCorpus = index;
                 _this.productCategoryId = id;
                 this.pageStart = 0;
+
+                this.doReset();
                 _this.getAllGoods();
             },
 
@@ -362,7 +413,7 @@
             doEdit(){
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/edit.js?id=' + this.goodsId), function (res) {
-                    _this.isPopup = false;
+                    _this.doReset();
                     if(res.type == 'success'){
                         _this.goodsList.splice(_this.goodsIndex,1);
                         _this.goodsList.splice(0,0,res.data);
@@ -379,7 +430,7 @@
                     cancelTitle:'取消',
                 }, function (value) {
                     if (value == '删除') {
-                        GET('weex/member/product/delete.jhtml?ids=' + _this.goodsId, function (data) {
+                        POST('weex/member/product/delete.jhtml?ids=' + _this.goodsId).then(function (data) {
                             if (data.type == 'success') {
                                 _this.goodsList.splice(_this.goodsIndex, 1);
                                 event.toast('删除成功');
@@ -391,6 +442,20 @@
                             event.toast(err.content);
                         });
                     };
+                });
+            },
+//            返回
+            goback:function () {
+                event.closeURL();
+            },
+//            前往搜索
+            goSearch:function () {
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
+                    _this.doReset();
+                    if(res.type == 'success'){
+
+                    }
                 });
             },
         }

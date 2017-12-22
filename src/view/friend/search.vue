@@ -3,9 +3,11 @@
         <!--输入栏-->
         <searchNav :searchHint="searchHint" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
         <!--搜索栏-->
-        <div class="confm" v-if="isInput()" @click="childSearch()">
-            <text class="ico" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-            <text class="title">搜索: {{keyword}} </text>
+        <div v-if="isInput() ">
+            <div class="confm" v-if="!isSearch" @click="childSearch()">
+                <text class="ico" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                <text class="title">搜索: {{keyword}} </text>
+            </div>
         </div>
         <!--无数据提示-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
@@ -87,10 +89,11 @@
             return {
                 keyword:"",
                 friendsList:[],
+                isSearch:false,
             }
         },
         props: {
-            searchHint: { default: "输入手机号/账户号" },
+            searchHint: { default: "输入手机号/登录名" },
             noDataHint: { default: "输入查找用户" }
         },
         created(){
@@ -105,9 +108,10 @@
                 return this.friendsList.length!=0;
             },
             isInput:function () {
-                return this.keyword!="";
+                return this.keyword!=""  ;
             },
             oninput:function (val) {
+                this.isSearch = false;
               this.keyword = val;
               if(val.length == 0){
                   this.friendsList = [];
@@ -116,6 +120,7 @@
             },
             search: function (e) {
                 var _this = this;
+                this.isSearch = true;
                 GET('weex/member/friends/search.jhtml?keyword='+_this.keyword,function (data) {
                         if(data.type == 'success'){
                             _this.friendsList = [];

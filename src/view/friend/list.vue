@@ -305,7 +305,7 @@
         data:function () {
             return   {
                 newFriendNum:0,
-                searchKeyword:'搜索',
+                searchKeyword:'手机号/账户号',
                 pageName:'朋友',
                 beforePointPoor:-1,//前一次手机按压时与移动后的字母数量
                 pressPoint:-1,//手指按压

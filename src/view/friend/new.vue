@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper"  >
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete" > </navbar>
-        <search @gosearch="gosearch" @scan="scan"> </search>
+        <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
         <div class="addFriend" @click="goMobile()">
             <div class="flex-row">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe637;</text>
@@ -155,9 +155,11 @@
                 friendsList:[],
                 refreshImg:utils.locate('resources/images/loading.png'),
                 pageSize:20,
+                searchKeyword:'手机号/登录名',
             }
         },
         props: {
+
             title: { default: "新的朋友"},
             noDataHint: { default: "没有新朋友"},
             complete:{ default:"添加"}
