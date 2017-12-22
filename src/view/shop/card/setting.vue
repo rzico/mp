@@ -26,6 +26,9 @@
                 </div>
                 </div>
             </cell>
+            <cell>
+                <div class="noLoading"></div>
+            </cell>
         </list>
     </div>
 </template>
