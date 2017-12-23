@@ -68,6 +68,9 @@
                                 <div class="videoIconBox" v-if="item.mediaType == 'video'">
                                     <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe644;</text>
                                 </div>
+                                <div class="videoIconBox" v-if="item.mediaType == 'product'">
+                                    <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
+                                </div>
                             </div>
                             <!--文章内容-->
                             <div class="paraText" @click="editorText(index)">
@@ -591,12 +594,12 @@
                             _this.musicName = articleData.music.name;
                         }
                         _this.publish = articleData.articleOption.publish;
-                            _this.articleOption = articleData.articleOption,
+                        _this.articleOption = articleData.articleOption,
                             _this.hits = articleData.hits,
                             _this.laud = articleData.laud,
                             _this.products = articleData.products,
                             _this.review = articleData.review,
-                        musicId = articleData.music.id;
+                            musicId = articleData.music.id;
                         let templatesData = articleData.templates;
                         for(let i = 0;i < templatesData.length;i++){
                             _this.paraList.push({
@@ -795,6 +798,24 @@
 //            段落里的文本编辑
             editorText(index){
                 var _this = this;
+
+                if(_this.paraList[index].mediaType == 'product'){
+                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+                        if (data.type == 'success') {
+                            _this.paraList[index].paraImage = data.data.thumbnail;
+                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
+                            _this.paraList[index].paraText = data.data.name;
+//                    添加修改标志
+                            _this.hadChange = 1;
+//                        if(utils.isNull(_this.articleId)){
+//                        临时保存到缓存
+                            _this.saveDraft();
+//                        }
+                        }
+                    })
+                    return;
+                }
+
                 event.openEditor(_this.paraList[index].paraText,function (data) {
                     if(data.data != '') {
 //                    将返回回来的html数据赋值进去
@@ -1040,7 +1061,7 @@
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http'){
 
-                    if(mediaType == 'image'){
+                    if(mediaType == 'image' || mediaType == 'product'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
                         _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
                     }else if(mediaType == 'video'){//如果是视频就将缩略图进行赋值
@@ -1070,7 +1091,7 @@
                         if(data.type == 'success'){
                             _this.paraList[sendIndex].paraImage = data.data;
 //                            判断是图片还是视频
-                            if(mediaType == 'image'){
+                            if(mediaType == 'image' || mediaType == 'product'){
                                 //                            向后台获取缩略图
                                 _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
 //                                    因为异步操作,所以要分别在if elseif里写下列代码
@@ -1415,7 +1436,7 @@
                 this.hadChange = 1;
 //                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                    this.saveDraft();
+                this.saveDraft();
 //                }
             },
 //            下箭头
@@ -1448,7 +1469,7 @@
                 this.hadChange = 1;
 //                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                    this.saveDraft();
+                this.saveDraft();
 //                }
             },
 //            用户执行删除时触发询问。
@@ -1510,7 +1531,24 @@
             },
 //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
+
                 var _this = this;
+                if(mediaType == 'product'){
+                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+                        if (data.type == 'success') {
+                            _this.paraList[index].paraImage = data.data.thumbnail;
+                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
+                            _this.paraList[index].paraText = data.data.name;
+//                    添加修改标志
+                            _this.hadChange = 1;
+//                        if(utils.isNull(_this.articleId)){
+//                        临时保存到缓存
+                            _this.saveDraft();
+//                        }
+                        }
+                    })
+                    return;
+                }
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
@@ -1577,7 +1615,6 @@
                             }
                         })
                     }
-
 
 //                        }else{
 //                            event.toast(value);
@@ -1733,8 +1770,31 @@
             },
 //            点击加号里的添加链接
             addLinkPara:function (index) {
-                event.openURL(utils.locate('view/shop/goods/manage.js'),function (message) {
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+                    if(data.type == 'success'){
+                        let newPara = {
+                            //原图
+//                                    paraImage: data.data[i].originalPath,
+                            paraImage: data.data.thumbnail,
+//                                    小缩略图
+//                                    thumbnailImage: data.data[i].thumbnailSmallPath,
+                            thumbnailImage: data.data.thumbnail,
+                            mediaType: "product",
+                            paraText:data.data.name,
+                            show:true,
+//                          serveThumbnail:''
+                        }
+                        _this.paraList.splice(index,0,newPara);
+                        _this.clearIconBox();
 
+//                    添加修改标志
+                        _this.hadChange = 1;
+//                        if(utils.isNull(_this.articleId)){
+//                        临时保存到缓存
+                        _this.saveDraft();
+//                        }
+                    }
                 });
             },
             maskClick(){

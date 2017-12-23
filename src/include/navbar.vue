@@ -10,7 +10,6 @@
                 <text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>
                 <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-else>&#xe72b;</text>
             </div>
-
          </div>
     </div>
  </template>

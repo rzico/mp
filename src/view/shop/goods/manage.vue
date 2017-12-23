@@ -1,17 +1,21 @@
 <template>
     <div class="wrapper" >
         <!--<navbar :title="title"  @goback="goback" ></navbar>-->
-        <div class="header" :class="[classHeader()]" >
-            <div class="nav_back" @click="goback()">
-                <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
-            </div>
-            <div class="nav">
-                <text class="nav_title">{{title}}</text>
-                <div class="navRightBox"  @click="goSearch()">
-                    <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
-                    <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+        <div style="min-height: 136px">
+            <div class="header" v-if="!doSearch" :class="[classHeader()]" >
+                <div class="nav_back" @click="goback()">
+                    <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
+                </div>
+                <div class="nav">
+                    <text class="nav_title">{{title}}</text>
+                    <div class="navRightBox"  @click="goSearch()">
+                        <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
+                        <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                    </div>
                 </div>
             </div>
+            <!--输入栏-->
+            <searchNav v-else :searchHint="searchHint" :searchOrCancel="searchOrCancel" :showCancel="false" :cancelSearch="true" @noSearch="noSearch" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
         </div>
         <div  class="corpusBox" >
             <scroller scroll-direction="horizontal"  class="corpusScroll">
@@ -32,7 +36,7 @@
             </cell>
             <!--导航栏-->
             <cell v-else v-for="(item,index) in goodsList">
-                <div class="goodsLine boder-bottom" :class="[item.id == goodsId ? 'bgActive' : '']" @click="popup(item.id,index)">
+                <div class="goodsLine boder-bottom" :class="[item.id == goodsId ? 'bgActive' : '']" @click="popup(item,index)">
                     <image class="goodsImg" :src="item.thumbnail | watchThumbnail"></image>
                     <div class="infoBox">
                         <div class="flex1 ">
@@ -81,7 +85,7 @@
                 <text class="fz32">取消</text>
             </div>
         </div>
-        <div class="button bw bkg-primary" @click="addGoods()">
+        <div class="button bw bkg-primary" v-if="!doSearch" @click="addGoods()">
             <text class="buttonText ">添加商品</text>
         </div>
     </div>
@@ -238,6 +242,7 @@
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
     const modal = weex.requireModule('modal');
+    import searchNav from '../../../include/searchNav.vue';
     export default {
         data:{
             goodsList:[],
@@ -255,14 +260,18 @@
             }],
             whichCorpus:0,
 //                分类id
-            productCategoryId:''
+            productCategoryId:'',
+            doSearch:false,
+            pageFrom:''
         },
         props:{
             noDataHint:{default:'暂无商品'},
-            title:{default:'商品管理'}
+            title:{default:'商品管理'},
+            searchHint: { default: "输入商品名" },
+            searchOrCancel:{default:'取消'},
         },
         components: {
-            navbar,noData
+            navbar,noData,searchNav
         },
         filters:{
             watchThumbnail(value){
@@ -275,6 +284,9 @@
             this.getCatagory();
 //            获取商品列表
             this.getAllGoods();
+            if(!utils.isNull(utils.getUrlParameter('from'))){
+                this.pageFrom = utils.getUrlParameter('from');
+            }
         },
         methods:{
             classHeader:function () {
@@ -303,8 +315,14 @@
                 })
             },
             onloading:function () {
+//                判断是否正在搜索
+                if(!this.doSearch){
 ////            获取商品列表
-                this.getAllGoods();
+                    this.getAllGoods();
+                }else{
+//                        重新搜索商品
+                    this.searchGoods();
+                }
             },
             onrefresh:function () {
                 var _this = this;
@@ -331,8 +349,13 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false;
+                    if(!this.doSearch){
 ////            获取商品列表
-                    this.getAllGoods();
+                        this.getAllGoods();
+                    }else{
+//                        重新搜索商品
+                        this.searchGoods();
+                    }
                 }, 1000)
             },
 //            重置商品选择状态
@@ -344,12 +367,17 @@
             doCancel:function () {
                 this.doReset();
             },
-            popup:function (id,index) {
-                if (this.isPopup==false) {
-                    this.isPopup = true;
+            popup:function (item,index) {
+                if(!utils.isNull(this.pageFrom)){
+                    let E = utils.message('success','返回商品',item)
+                    event.closeURL(E);
+                }else{
+                    if (this.isPopup==false) {
+                        this.isPopup = true;
+                    }
+                    this.goodsId = item.id;
+                    this.goodsIndex = index;
                 }
-                this.goodsId = id;
-                this.goodsIndex = index;
             },
             addGoods(){
                 let _this = this;
@@ -379,7 +407,10 @@
                 this.pageStart = 0;
 
                 this.doReset();
-                _this.getAllGoods();
+//                如果在搜索状态下就不做数据加载
+                if(!this.doSearch){
+                    _this.getAllGoods();
+                }
             },
 
 //            获取分类
@@ -450,13 +481,70 @@
             },
 //            前往搜索
             goSearch:function () {
+                this.doSearch = true;
+                this.searchOrCancel = '取消'
                 let _this = this;
-                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
-                    _this.doReset();
-                    if(res.type == 'success'){
-
+                this.goodsList = [];
+                this.noDataHint = "输入查找商品";
+//                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
+//                    _this.doReset();
+//                    if(res.type == 'success'){
+//
+//                    }
+//                });
+            },
+//            通知自组件将input失去焦点
+            childSearch(){
+                this.$refs.childFind.search();
+            },
+            oninput:function (val) {
+                this.isSearch = false;
+                this.keyword = val;
+                this.searchOrCancel = '搜索'
+                if(val.length == 0){
+                    this.goodsList = [];
+                    this.noDataHint = "输入查找商品";
+                    this.searchOrCancel = '取消'
+                }
+            },
+            search: function (e) {
+                var _this = this;
+                this.isSearch = true;
+                this.pageStart = 0;
+                this.searchOrCancel = '取消'
+                this.searchGoods();
+            },
+//            点击右上角取消或者搜索按钮
+            noSearch:function () {
+                if(this.searchOrCancel == '取消'){
+                    this.pageStart = 0;
+                    this.doSearch = false;
+                    this.$refs.childFind.inputBlur();
+                    this.getAllGoods();
+                }else{
+                    this.childSearch();
+                }
+            },
+//          查找商品
+            searchGoods:function () {
+                let _this = this;
+                GET('weex/member/product/search.jhtml?keyword='+_this.keyword  + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success'){
+                        if (_this.pageStart == 0) {
+                            _this.goodsList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                _this.goodsList.push(item);
+                            })
+                        }
+                        _this.noDataHint = '商品不存在';
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else{
+                        event.toast(data.content);
                     }
-                });
+                },function (err) {
+                    event.toast(err.content);
+                })
             },
         }
     }
