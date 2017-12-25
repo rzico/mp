@@ -150,6 +150,7 @@
         </div>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .videoIconBox{
         position: absolute;
@@ -541,7 +542,11 @@
                                             mediaType: "image",
                                             paraText:'',
                                             show:true,
-                                            serveThumbnail:''
+                                            serveThumbnail:'',
+//                                            对象id
+                                            id:0,
+//                                            第三方链接
+                                            url:'',
                                         });
                                         _this.saveDraft();
                                     }
@@ -571,9 +576,37 @@
                             event.toast(err.content);
                             return;
                         });
-                    }
+                    };
                     //从缓存读取数据 写入界面
                     _this.readData(options);
+                }else if(op[0] == 'goodsStorageName'){//读取商品缓存并写入页面之中。
+                    storage.getItem(op[1], function (e) {
+                        if (e.result == 'success') {
+                            var goodsInfo = JSON.parse(e.data);
+                            _this.coverImage =  goodsInfo.thumbnail;
+                            _this.setTitle = goodsInfo.name;
+//                    data.data里存放的是用户选取的图片路径
+                            _this.paraList.push({
+                                //原图
+                                paraImage: goodsInfo.thumbnail,
+                                //小缩略图
+                                thumbnailImage:goodsInfo.thumbnail,
+                                mediaType: "product",
+                                paraText:'',
+                                show:true,
+                                serveThumbnail:'',
+//                                            对象id
+                                id:goodsInfo.id,
+//                                            第三方链接
+                                url:'',
+                            });
+//                            存储页面数据
+                            _this.saveDraft();
+//                          把缓存删除
+                            storage.removeItem(op[1], e => {
+                            })
+                        }
+                    });
                 };
             };
         },
@@ -602,6 +635,8 @@
                             musicId = articleData.music.id;
                         let templatesData = articleData.templates;
                         for(let i = 0;i < templatesData.length;i++){
+                            let paraId = utils.isNull(templatesData[i].id) ? 0 : templatesData[i].id;
+                            let paraUrl = utils.isNull(templatesData[i].url) ? '' : templatesData[i].url;
                             _this.paraList.push({
                                 //原图
                                 paraImage:templatesData[i].original,
@@ -610,7 +645,11 @@
                                 paraText:templatesData[i].content,
                                 show:true,
                                 mediaType:templatesData[i].mediaType,
-                                serveThumbnail:'' //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                                serveThumbnail:'', //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                                //          对象id
+                                id:paraId,
+//                                            第三方链接
+                                url:paraUrl,
                             })
                         }
 //                            投票
@@ -799,22 +838,22 @@
             editorText(index){
                 var _this = this;
 
-                if(_this.paraList[index].mediaType == 'product'){
-                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
-                        if (data.type == 'success') {
-                            _this.paraList[index].paraImage = data.data.thumbnail;
-                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
-                            _this.paraList[index].paraText = data.data.name;
-//                    添加修改标志
-                            _this.hadChange = 1;
-//                        if(utils.isNull(_this.articleId)){
-//                        临时保存到缓存
-                            _this.saveDraft();
+//                if(_this.paraList[index].mediaType == 'product'){
+//                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+//                        if (data.type == 'success') {
+//                            _this.paraList[index].paraImage = data.data.thumbnail;
+//                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
+//                            _this.paraList[index].paraText = data.data.name;
+////                    添加修改标志
+//                            _this.hadChange = 1;
+////                        if(utils.isNull(_this.articleId)){
+////                        临时保存到缓存
+//                            _this.saveDraft();
+////                        }
 //                        }
-                        }
-                    })
-                    return;
-                }
+//                    })
+//                    return;
+//                }
 
                 event.openEditor(_this.paraList[index].paraText,function (data) {
                     if(data.data != '') {
@@ -985,9 +1024,9 @@
                     return;
                 }
                 var imageNum = 0;
-//                上传时判断至少要有一张图;
+//                上传时判断至少要有一张图,或者一个商品;
                 _this.paraList.forEach(function (item) {
-                    if(item.mediaType == 'image' && item.paraImage != ''){
+                    if((item.mediaType == 'image' || item.mediaType == 'product')&& item.paraImage != ''){
                         imageNum ++;
                     }
                 })
@@ -1194,7 +1233,11 @@
                             thumbnail:uploadThumbnailImg,
                             original:item.paraImage,
                             mediaType: item.mediaType,
-                            content:item.paraText
+                            content:item.paraText,
+                            //          对象id
+                            id:parseInt(item.id),
+//                                            第三方链接
+                            url:item.url,
                         })
                     })
                 }else{
@@ -1210,7 +1253,11 @@
                             thumbnail:uploadThumbnail,
                             original:item.paraImage,
                             mediaType: item.mediaType,
-                            content:item.paraText
+                            content:item.paraText,
+                            //          对象id
+                            id:parseInt(item.id),
+//                                            第三方链接
+                            url:item.url,
                         })
                     })
                 }
@@ -1233,9 +1280,11 @@
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
+//                utils.debug(articleData);
 //                网络请求，保存文章
                 POST('weex/member/article/submit.jhtml',articleData).then(
                     function (res) {
+//                        utils.debug(res);
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
                             let resDataStr = JSON.stringify(res.data);
@@ -1307,7 +1356,11 @@
 //                        paraText:_this.checkInput(data.data),
                         paraText:data.data,
                         mediaType: "image",
-                        show:true
+                        show:true,
+                        //          对象id
+                        id:0,
+//                                            第三方链接
+                        url:'',
                     };
                     _this.paraList.splice(index,0,newPara);
 
@@ -1337,6 +1390,10 @@
                                     paraText:'',
                                     show:true,
                                     mediaType: "image",
+                                    //          对象id
+                                    id:0,
+//                                            第三方链接
+                                    url:'',
                                 }
                                 _this.paraList.splice(index + i,0,newPara)
                                 _this.clearIconBox();
@@ -1419,18 +1476,24 @@
                 let b = this.paraList[index].paraText;
                 let c = this.paraList[index].mediaType;
                 let d = this.paraList[index].paraImage;
+                let e = this.paraList[index].id;
+                let f = this.paraList[index].url;
                 this.paraList[index].mediaType = this.paraList[index - 1].mediaType;
                 this.paraList[index].thumbnailImage = this.paraList[index - 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index - 1].paraText;
                 this.paraList[index].paraImage = this.paraList[index - 1].paraImage;
+                this.paraList[index].id = this.paraList[index - 1].id;
+                this.paraList[index].url = this.paraList[index - 1].url;
                 this.paraList[index - 1].thumbnailImage = a;
                 this.paraList[index - 1].paraText = b;
                 this.paraList[index - 1].mediaType = c;
                 this.paraList[index - 1].paraImage = d;
+                this.paraList[index - 1].id = e;
+                this.paraList[index - 1].url = f;
                 if(!utils.isNull(this.paraList[index].serveThumbnail)){
-                    let e = this.paraList[index].serveThumbnail;
+                    let g = this.paraList[index].serveThumbnail;
                     this.paraList[index].serveThumbnail = this.paraList[index - 1].serveThumbnail;
-                    this.paraList[index - 1].paraImage = e;
+                    this.paraList[index - 1].paraImage = g;
                 }
 //                    添加修改标志
                 this.hadChange = 1;
@@ -1452,18 +1515,24 @@
                 let b = this.paraList[index].paraText;
                 let c = this.paraList[index].mediaType;
                 let d = this.paraList[index].paraImage;
+                let e = this.paraList[index].id;
+                let f = this.paraList[index].url;
                 this.paraList[index].mediaType = this.paraList[index + 1].mediaType;
                 this.paraList[index].thumbnailImage = this.paraList[index + 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index + 1].paraText;
                 this.paraList[index].paraImage = this.paraList[index + 1].paraImage;
+                this.paraList[index].id = this.paraList[index + 1].id;
+                this.paraList[index].url = this.paraList[index + 1].url;
                 this.paraList[index + 1].thumbnailImage = a;
                 this.paraList[index + 1].paraText = b;
                 this.paraList[index + 1].mediaType = c;
                 this.paraList[index + 1].paraImage = d;
+                this.paraList[index + 1].id = e;
+                this.paraList[index + 1].url = f;
                 if(!utils.isNull(this.paraList[index].serveThumbnail)){
-                    let e = this.paraList[index].serveThumbnail;
+                    let g = this.paraList[index].serveThumbnail;
                     this.paraList[index].serveThumbnail = this.paraList[index + 1].serveThumbnail;
-                    this.paraList[index + 1].paraImage = e;
+                    this.paraList[index + 1].paraImage = g;
                 }
 //                    添加修改标志
                 this.hadChange = 1;
@@ -1479,7 +1548,7 @@
 //                判断至少要保留一张图;
                 if(_this.paraList[index].mediaType == 'image' && _this.paraList[index].paraImage != ''){//判断是不是图片
                     _this.paraList.forEach(function (item) {
-                        if(item.mediaType == 'image' && item.paraImage != ''){
+                        if((item.mediaType == 'image' || item.mediaType == 'product') && item.paraImage != '' ){
                             imageNum ++;
                         }
                     })
@@ -1531,24 +1600,23 @@
             },
 //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
-
                 var _this = this;
-                if(mediaType == 'product'){
-                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
-                        if (data.type == 'success') {
-                            _this.paraList[index].paraImage = data.data.thumbnail;
-                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
-                            _this.paraList[index].paraText = data.data.name;
-//                    添加修改标志
-                            _this.hadChange = 1;
-//                        if(utils.isNull(_this.articleId)){
-//                        临时保存到缓存
-                            _this.saveDraft();
+//                if(mediaType == 'product'){
+//                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+//                        if (data.type == 'success') {
+//                            _this.paraList[index].paraImage = data.data.thumbnail;
+//                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
+//                            _this.paraList[index].paraText = data.data.name;
+////                    添加修改标志
+//                            _this.hadChange = 1;
+////                        if(utils.isNull(_this.articleId)){
+////                        临时保存到缓存
+//                            _this.saveDraft();
+////                        }
 //                        }
-                        }
-                    })
-                    return;
-                }
+//                    })
+//                    return;
+//                }
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
@@ -1577,7 +1645,7 @@
 //                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
 //                            })
 //                        }else if(value == '裁剪'){
-                    if(mediaType == 'image'){
+                    if(mediaType == 'image' || mediaType == 'product'){
 //                                调用裁剪图片
                         album.openCrop(imgSrc,function (data) {
                             if(data.type == 'success'){
@@ -1615,7 +1683,6 @@
                             }
                         })
                     }
-
 //                        }else{
 //                            event.toast(value);
 //                        }
@@ -1689,7 +1756,7 @@
 //                    event.toast(message);
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
-                    if(message.data != ''){
+                    if(message.type == 'success' && message.data != ''){
                         _this.musicName = message.data.chooseMusicName;
                         musicId = message.data.chooseMusicId;
 //                    添加修改标志
@@ -1754,6 +1821,10 @@
                             mediaType: "video",
                             paraText:'',
                             show:true,
+//                             对象ID
+                            id:0,
+//                            第三方链接
+                            url:'',
 //                          serveThumbnail:''
                         }
                         _this.paraList.splice(index,0,newPara);
@@ -1781,13 +1852,16 @@
 //                                    thumbnailImage: data.data[i].thumbnailSmallPath,
                             thumbnailImage: data.data.thumbnail,
                             mediaType: "product",
-                            paraText:data.data.name,
+                            paraText:'',
                             show:true,
+//                             对象ID
+                            id:data.data.id,
+//                            第三方链接
+                            url:'',
 //                          serveThumbnail:''
                         }
                         _this.paraList.splice(index,0,newPara);
                         _this.clearIconBox();
-
 //                    添加修改标志
                         _this.hadChange = 1;
 //                        if(utils.isNull(_this.articleId)){

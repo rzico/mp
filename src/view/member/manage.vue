@@ -41,10 +41,30 @@
             </div>
 
             <div class="cell-row cell-line"  v-if="member.useCashier">
-                <div class="cell-panel space-between cell-clear" @click="store">
+                <div class="cell-panel space-between " @click="store">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                         <text class="title ml10">店铺管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between " @click="goodsManage()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
+                        <text class="title ml10">商品管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="orderManage()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="title ml10">订单管理</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -288,6 +308,22 @@
             },
             gmchat:function () {
                 event.navToChat("u10201");
+            },
+//            前往商品管理
+            goodsManage:function () {
+                event.openURL(utils.locate('view/shop/goods/manage.js'),
+                    function (data) {
+                        return ;
+                    }
+                );
+            },
+//            前往订单管理
+            orderManage:function () {
+                event.openURL(utils.locate('view/shop/order/details.js'),
+                    function (data) {
+                        return ;
+                    }
+                );
             }
 
         }

@@ -67,8 +67,8 @@
                         </div>
                         <text class="fz28 mt20 color444 ">编辑</text>
                     </div>
-                    <div class="singleBox" @click="doDel()">
-                        <div class="imgBox" @click="doDel()">
+                    <div class="singleBox" @click="doPublish()">
+                        <div class="imgBox" @click="doPublish()">
                             <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                         </div>
                         <text class="fz28 mt20 color444">发布</text>
@@ -439,6 +439,29 @@
                 },function (err) {
                     event.toast(err.content);
                 })
+            },
+//            发布商品
+            doPublish(){
+                let _this = this;
+//                        如果没有历史记录就新添加一个缓存
+                var goodsPublish =  this.goodsList[this.goodsIndex];
+                goodsPublish = JSON.stringify(goodsPublish);
+                storage.setItem('goodsPublish', goodsPublish , e => {
+                    if(e.result == 'success'){
+                        event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish'), function (data) {
+                            _this.doReset();
+                            if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                                let E = {
+                                    isDone : 'complete'
+                                }
+                                let backData = utils.message('success','成功',E);
+                                event.closeURL(backData);
+                            }
+                        });
+                    }else{
+                        event.toast('网络不稳定');
+                    }
+                });
             },
 //            编辑商品
             doEdit(){
