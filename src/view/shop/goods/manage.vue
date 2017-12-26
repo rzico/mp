@@ -1,29 +1,45 @@
 <template>
     <div class="wrapper" >
         <!--<navbar :title="title"  @goback="goback" ></navbar>-->
-        <div style="min-height: 136px">
-            <div class="header" v-if="!doSearch" :class="[classHeader()]" >
-                <div class="nav_back" @click="goback()">
-                    <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
-                </div>
-                <div class="nav">
-                    <text class="nav_title">{{title}}</text>
-                    <div class="navRightBox"  @click="goSearch()">
-                        <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
-                        <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+        <!--<div style="min-height: 136px">-->
+        <div class="header"  :class="[classHeader()]" >
+            <transition name="component-fade-top" mode="out-in">
+                <div class="pageTop" v-if="!doSearch">
+                    <div class="nav_back " @click="goback()">
+                        <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
+                    </div>
+                    <div class="nav">
+                        <text class="nav_title">{{title}}</text>
+                        <div class="navRightBox"  @click="goSearch()">
+                            <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
+                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!--输入栏-->
-            <searchNav v-else :searchHint="searchHint" :searchOrCancel="searchOrCancel" :showCancel="false" :cancelSearch="true" @noSearch="noSearch" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
+                <div v-else  class="search ">
+                    <div class="search_box flex5">
+                        <div class="flex-start">
+                            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                            <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
+                        </div>
+                        <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
+                    </div>
+                    <div class="flex-center flex1" @click="noSearch()">
+                        <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
+                    </div>
+                </div>
+            </transition>
         </div>
+        <!--输入栏-->
+        <!--<searchNav v-else :searchHint="searchHint" :searchOrCancel="searchOrCancel" :showCancel="false" :cancelSearch="true" @noSearch="noSearch" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>-->
+        <!--</div>-->
         <div  class="corpusBox" >
             <scroller scroll-direction="horizontal"  class="corpusScroll">
                 <div class="articleClass">
                     <text @click="catagoryChange(index,item.id)" class="allArticle" v-for="(item,index) in catagoryList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
             </scroller>
-            <div class="corpusIconBox" @click="goCatagory()"  >
+            <div class="corpusIconBox" @click="goCatagory()">
                 <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
             </div>
         </div>
@@ -92,6 +108,73 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    /*<!---->*/
+    /*动画*/
+    .component-fade-top-enter-active{
+        transition: all 0.2s;
+    }
+    .component-fade-top-leave-active {
+        transition: all 0.2s;
+    }
+    .component-fade-top-leave-to{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    .component-fade-top-enter-to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+    .component-fade-top-enter{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    /**/
+    .pageTop{
+        flex-direction: row;
+    }
+    /*<!--搜索栏-->*/
+
+    .searchCancelText{
+        color: #fff;
+    }
+    .search {
+        position:sticky;
+        background:#eee;
+        /*height: 100px;*/
+        flex-direction: row;
+        flex:1;
+    }
+    .search_box {
+        margin-top:20px;
+        margin-left:20px;
+        margin-right:20px;
+        margin-bottom:20px;
+        padding-left: 20px;
+        height: 60px;
+        border-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+        border-radius:8px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+    }
+    .clearBuf {
+        width:58px;
+        height:58px;
+        text-align: center;
+        padding-top: 10px;
+    }
+    .search_input {
+        margin-left: 20px;
+        font-size:32px;
+        line-height: 58px;
+        height: 58px;
+        width:400px;
+    }
+
+
     /*<!--顶部导航栏-->*/
     .navRightBox{
         min-width: 92px;
@@ -262,13 +345,15 @@
 //                分类id
             productCategoryId:'',
             doSearch:false,
-            pageFrom:''
+            pageFrom:'',
+            searchHint: "输入商品名",
+            searchOrCancel:'取消',
         },
         props:{
             noDataHint:{default:'暂无商品'},
             title:{default:'商品管理'},
-            searchHint: { default: "输入商品名" },
-            searchOrCancel:{default:'取消'},
+//            searchHint: { default: "输入商品名" },
+//            searchOrCancel:{default:'取消'},
         },
         components: {
             navbar,noData,searchNav
@@ -516,10 +601,6 @@
 //                    }
 //                });
             },
-//            通知自组件将input失去焦点
-            childSearch(){
-                this.$refs.childFind.search();
-            },
             oninput:function (val) {
                 this.isSearch = false;
                 this.keyword = val;
@@ -539,13 +620,13 @@
             },
 //            点击右上角取消或者搜索按钮
             noSearch:function () {
+                this.inputBlur();
                 if(this.searchOrCancel == '取消'){
                     this.pageStart = 0;
                     this.doSearch = false;
-                    this.$refs.childFind.inputBlur();
                     this.getAllGoods();
                 }else{
-                    this.childSearch();
+                    this.search();
                 }
             },
 //          查找商品
@@ -569,6 +650,13 @@
                     event.toast(err.content);
                 })
             },
+//          清空关键字
+            clearBuf:function () {
+                this.keyword = "";
+            },
+            inputBlur(){
+                this.$refs['searchBar'].blur();
+            }
         }
     }
 </script>

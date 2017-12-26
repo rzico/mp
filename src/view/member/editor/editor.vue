@@ -18,9 +18,11 @@
             <cell >
                 <!--加号跟功能盒子-->
                 <div class="addBox" @click="clearIconBox()">
-                    <!--加号-->
-                    <div  v-if="firstPlusShow" @click="firstShow()">
-                        <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                    <!--加号 *** 此处v-if需要一个空div包着，否则频繁切换v-if会导致样式错乱-->
+                    <div  v-if="firstPlusShow"  >
+                        <div class="plusSignBox" @click="firstShow()">
+                            <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                        </div>
                     </div>
                     <!--图标-->
                     <div class="iconBox" v-else>
@@ -81,9 +83,11 @@
                         </div>
                         <!--加号跟功能盒子-->
                         <div class="addBox" @click="clearIconBox()">
-                            <!--加号-->
-                            <div v-if="item.show"  @click="showIconBox(index)" >
-                                <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                            <!--加号 *** 此处v-if需要一个空div包着，否则频繁切换v-if会导致样式错乱-->
+                            <div v-if="item.show"   >
+                                <div class="plusSignBox" @click="showIconBox(index)">
+                                    <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                                </div>
                             </div>
                             <!--图标-->
                             <div class="iconBox"  v-else >
@@ -346,6 +350,8 @@
         border-top-right-radius: 20px;
         border-bottom-left-radius: 20px;
         border-top-left-radius: 20px;
+        margin-top:15px;
+        margin-bottom:15px;
     }
     .plusSign{
         padding-left: 12px;
@@ -361,11 +367,17 @@
         font-size: 30px;
         font-weight: 700;
     }
+    .plusSignBox{
+        padding-left:15px;
+        padding-right: 15px;
+        padding-bottom:15px;
+        padding-top: 15px;
+    }
     .addBox{
         align-items: center;
         justify-content: center;
-        margin-top: 15px;
-        margin-bottom: 15px;
+        /*padding-top: 15px;*/
+        /*padding-bottom: 15px;*/
     }
     .setTitle{
         position: absolute;
@@ -941,7 +953,6 @@
                     if(this.articleId.length != 19){
                         return;
                     }
-
                     storageType = "article";
                     storageKey = this.articleId;
                 }
@@ -1077,8 +1088,6 @@
                         _this.ctrlProcess(data);
                     })
                 }
-
-
             },
             //上传图片到服务器
             sendImage (sendIndex) {
@@ -1099,7 +1108,6 @@
 //                }
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http'){
-
                     if(mediaType == 'image' || mediaType == 'product'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
                         _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
@@ -1107,7 +1115,6 @@
                         _this.paraList[sendIndex].serveThumbnail = _this.paraList[sendIndex].thumbnailImage;
                     }
                     sendIndex ++ ;
-
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){
 //                            回调自己自己
