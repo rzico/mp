@@ -332,7 +332,7 @@
                         });
                         if (utils.device()=='V1') {
                             _this.isPopup = false;
-                            printer.doPrint(mes.data);
+                            printer.print(mes.data);
                         } else {
                             _this.isPopup = false;
                             modal.alert({
@@ -393,7 +393,7 @@
                             }
                         });
                         if (finded==false) {
-                            _this.depositList.splice(0, 0, mes.data.data);``
+                            _this.depositList.splice(0, 0, mes.data.data);
                         }
                         _this.currentId = mes.data.data.id;
                         _this.refunds(mes.data.sn);
