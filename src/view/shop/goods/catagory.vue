@@ -256,7 +256,7 @@
                         if(value.data == '' || value.data == null ){
                             event.toast('请输入分类名');
                         }else{
-                            POST('weex/member/product_category/update.jhtml?id=' + id + '&name=' + value.data).then(
+                            POST('weex/member/product_category/update.jhtml?id=' + id + '&name=' + encodeURI(value.data)).then(
                                 function (data) {
                                     if(data.type == 'success'){
                                         _this.catagoryList[index].name = value.data;//把名字改上去
