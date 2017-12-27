@@ -521,6 +521,7 @@
                         }
                     })
             },
+
 //            选择商品分类
             goChooseCatagory() {
                 let _this = this;
@@ -798,6 +799,9 @@
             maskClick(){
                 return;
             },
+            goback(){
+                event.closeURL();
+            }
         }
     }
 </script>

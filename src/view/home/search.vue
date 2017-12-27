@@ -376,19 +376,19 @@
                 historyList:[],
                 hotList:[
                     {
-                        history:'中国最美花'
+                        history:'儿童安全椅'
                     },{
-                        history:'玩转应用'
+                        history:'北航校花'
                     },{
-                        history:'寻梦环游记'
+                        history:'太姥山游记'
                     },{
-                        history:'小吃'
+                        history:'聚会'
                     },{
-                        history:'基金'
+                        history:'女神'
                     },{
-                        history:'吉普车'
+                        history:'工笔画'
                     },{
-                        history:'红包'
+                        history:'长城'
                     }],
                 isSearch:false,
                 typeList:[{
