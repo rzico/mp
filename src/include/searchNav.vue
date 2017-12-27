@@ -10,6 +10,9 @@
         <div class="flex-center flex1" @click="goback()" v-if="showCancel">
             <text class=" fz32" style="color:#fff">取消</text>
         </div>
+        <!--<div class="flex-center flex1" @click="noSearch()" v-if="cancelSearch">-->
+            <!--<text class=" fz32" style="color:#fff">{{searchOrCancel}}</text>-->
+        <!--</div>-->
     </div>
 </template>
 <style lang="less" src="../style/wx.less"/>
@@ -64,6 +67,8 @@
             keyword:{default:''},
             searchHint:{default:'搜索'},
             showCancel:{default:true},
+//            cancelSearch:{default:false},
+            searchOrCancel:{default:'取消'}
         },
         methods: {
             classHeader:function () {
@@ -84,6 +89,12 @@
             clearBuf:function () {
                 this.keyword = "";
             },
+            noSearch:function () {
+                this.$emit('noSearch');
+            },
+            inputBlur(){
+                this.$refs['searchBar'].blur();
+            }
         }
     }
 </script>

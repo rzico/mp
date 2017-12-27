@@ -163,7 +163,7 @@
                                     if(res.type == 'success' && res.data != ''){
                                         _this.corpusList.push({
                                             name:res.data.name,
-                                            total:0,
+                                            count:0,
                                             bgChange:false,
                                             id:res.data.id,
                                         });

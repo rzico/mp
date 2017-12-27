@@ -77,7 +77,7 @@
                 <!--进度条背景-->
                 <div class="processStyle processBg"></div>
                 <!--进度条进度与颜色-->
-                <div :style="{width:processWidth + 'px'}" style="background-color: #D9141E" class="processStyle"></div>
+                <div :style="{width:processWidth + 'px'}"  class="processStyle bkg-primary"></div>
                 <text class="processTotal">{{currentPro}}/{{proTotal}}</text>
             </div>
         </div>

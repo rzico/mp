@@ -24,7 +24,6 @@
                 <text class="hit">扫一扫二维码，加我好友</text>
                 <text class="button" @click="copyCode()"> 复制({{copy}})</text>
             </div>
-
         </div>
     </div>
  </template>

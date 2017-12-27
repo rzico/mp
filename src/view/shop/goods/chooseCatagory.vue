@@ -15,7 +15,7 @@
                 <div class="flex-row">
                     <text class="lineText">全部商品</text>
                 </div>
-                <div v-if="corpusId == 0 || corpusId == 'undefined'" >
+                <div v-if="catagoryId == 0 || catagoryId == 'undefined'" >
                     <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                 </div>
             </div>
@@ -23,7 +23,7 @@
         <!--绑定动画-->
         <transition-group name="paraTransition" tag="div">
             <!--文集行背景-->
-            <div class="bgWhite changeCorpus" v-for="(item,index) in corpusList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
+            <div class="bgWhite changeCorpus" v-for="(item,index) in catagoryList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
                 <!--文集行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧文集名称-->
@@ -31,7 +31,7 @@
                         <text class="lineText limitWidth"  >{{item.name}}</text>
                         <text class="lineText">({{item.count}})</text>
                     </div>
-                    <div v-if="corpusId == item.id" >
+                    <div v-if="catagoryId == item.id" >
                         <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                     </div>
                 </div>
@@ -102,9 +102,9 @@
         data:function () {
             return{
                 allTotal:69,
-                corpusList:[],
-                corpusId:0,
-                corpusName:'全部文章',
+                catagoryList:[],
+                catagoryId:0,
+                catagoryName:'全部商品',
                 articleId:''
             }
         },
@@ -117,19 +117,19 @@
         created(){
             var _this = this;
             utils.initIconFont();
-            this.getCorpus();
+            this.getCatagory();
             this.articleId = utils.getUrlParameter('articleId');
-            let urlId = utils.getUrlParameter('corpusId');
+            let urlId = utils.getUrlParameter('catagoryId');
             if(utils.isNull(urlId)){
 
             }else{
-                this.corpusId = urlId;
+                this.catagoryId = urlId;
             }
         },
         methods:{
             goback(){
 //                var _this = this;
-//                this.corpusList.forEach(function (item) {
+//                this.catagoryList.forEach(function (item) {
 //                    if(item.corpusId == _this.corpusId){
 //                        _this.corpusName = item.name;
 //                    }
@@ -141,7 +141,7 @@
 //                let backData = utils.message('success','成功',E);
                 event.closeURL();
             },
-//            添加文集
+//            添加分类
             addCorpus(){
                 let _this = this;
                 modal.prompt({
@@ -153,17 +153,17 @@
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入分类名',duration:1})
+                            event.toast('请输入分类名');
                         }else{
-                            let orders = _this.corpusList.length + 1;
+                            let orders = _this.catagoryList.length + 1;
                             value.data = encodeURI(value.data);
 //                            向服务器存入文集名称
-                            POST('weex/member/article_catalog/add.jhtml?name=' + value.data + '&orders=' + orders).then(
+                            POST('weex/member/product_category/add.jhtml?name=' + value.data + '&orders=' + orders).then(
                                 function (res) {
                                     if(res.type == 'success' && res.data != ''){
-                                        _this.corpusList.push({
+                                        _this.catagoryList.push({
                                             name:res.data.name,
-                                            total:0,
+                                            count:0,
                                             bgChange:false,
                                             id:res.data.id,
                                         });
@@ -178,17 +178,17 @@
                     }
                 })
             },
-//            向服务器获取文集名称
-            getCorpus:function () {
+//            向服务器获取分类名称
+            getCatagory:function () {
                 var _this = this;
-                GET('weex/member/article_catalog/list.jhtml',function (data) {
+                GET('weex/member/product_category/list.jhtml',function (data) {
                     if (data.type == "success") {
                         if(data.data == ''){
                         }else{
-                            _this.corpusList = [];
-//                                将文集名循环插入数组中
+                            _this.catagoryList = [];
+//                                将分类名循环插入数组中
                             for(let i = 0; i<data.data.length;i++){
-                                _this.corpusList.splice(1 + i,0,data.data[i]);
+                                _this.catagoryList.splice(1 + i,0,data.data[i]);
                             }
                         }
                     } else {
@@ -199,33 +199,22 @@
                 })
 
             },
-//            更改文集后
+//            更改分类后
             chooseCorpus:function (id,name,itemCount) {
-
                 let _this = this;
-                if(_this.corpusId == id){
+                if(_this.catagoryId == id){
                     return;
                 };
-                POST('weex/member/article/update.jhtml?id=' + this.articleId + '&articleCatalogId=' + id).then(
-                    function (data) {
-                        if(data.type == 'success'){
-                            _this.corpusId = id;
-                            _this.corpusName = name;
-                            let E = {
-                                corpusId : _this.corpusId,
-                                corpusName : _this.corpusName,
-                                count:parseInt(itemCount) + 1
-                            }
-                            let backData = utils.message('success','成功',E);
-                            event.closeURL(backData);
-                        }else {
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        event.toast(err.content);
-                    }
-                )
-            }
+                _this.catagoryId = id;
+                _this.catagoryName = name;
+                let E = {
+                    catagoryId : _this.catagoryId,
+                    catagoryName : _this.catagoryName,
+                    count:parseInt(itemCount) + 1
+                }
+                let backData = utils.message('success','成功',E);
+                event.closeURL(backData);
+            },
         }
     }
 </script>

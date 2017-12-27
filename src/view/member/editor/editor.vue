@@ -18,9 +18,11 @@
             <cell >
                 <!--加号跟功能盒子-->
                 <div class="addBox" @click="clearIconBox()">
-                    <!--加号-->
-                    <div  v-if="firstPlusShow" @click="firstShow()">
-                        <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                    <!--加号 *** 此处v-if需要一个空div包着，否则频繁切换v-if会导致样式错乱-->
+                    <div  v-if="firstPlusShow"  >
+                        <div class="plusSignBox" @click="firstShow()">
+                            <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                        </div>
                     </div>
                     <!--图标-->
                     <div class="iconBox" v-else>
@@ -37,8 +39,8 @@
                             <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                         </div>
                         <!--添加链接-->
-                        <div class="addIconBox " @click="addLinkPara(0)">
-                            <text class="addLink iconSize" :style="{fontFamily:'iconfont'}">&#xe678;</text>
+                        <div class="addIconBox addLinkPt"  @click="addLinkPara(0)">
+                            <text class=" iconSize addLink" :style="{fontFamily:'iconfont'}">&#xe63f;</text>
                         </div>
                     </div>
                 </div>
@@ -68,6 +70,9 @@
                                 <div class="videoIconBox" v-if="item.mediaType == 'video'">
                                     <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe644;</text>
                                 </div>
+                                <div class="videoIconBox" v-if="item.mediaType == 'product'">
+                                    <text class="videoIcon goodsIcon" :style="{fontFamily:'iconfont'}" >&#xe640;</text>
+                                </div>
                             </div>
                             <!--文章内容-->
                             <div class="paraText" @click="editorText(index)">
@@ -78,9 +83,11 @@
                         </div>
                         <!--加号跟功能盒子-->
                         <div class="addBox" @click="clearIconBox()">
-                            <!--加号-->
-                            <div v-if="item.show"  @click="showIconBox(index)" >
-                                <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                            <!--加号 *** 此处v-if需要一个空div包着，否则频繁切换v-if会导致样式错乱-->
+                            <div v-if="item.show"   >
+                                <div class="plusSignBox" @click="showIconBox(index)">
+                                    <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
+                                </div>
                             </div>
                             <!--图标-->
                             <div class="iconBox"  v-else >
@@ -97,8 +104,8 @@
                                     <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                                 </div>
                                 <!--添加链接-->
-                                <div class="addIconBox " @click="addLinkPara(index + 1)">
-                                    <text class="addLink iconSize" :style="{fontFamily:'iconfont'}">&#xe678;</text>
+                                <div class="addIconBox addLinkPt" @click="addLinkPara(index + 1)">
+                                    <text class=" iconSize addLink" :style="{fontFamily:'iconfont'}">&#xe63f;</text>
                                 </div>
                             </div>
                         </div>
@@ -141,12 +148,13 @@
                 <!--进度条背景-->
                 <div class="processStyle processBg"></div>
                 <!--进度条进度与颜色-->
-                <div :style="{width:processWidth + 'px'}" style="background-color: #D9141E" class="processStyle"></div>
+                <div :style="{width:processWidth + 'px'}"  class="processStyle bkg-primary"></div>
                 <text class="processTotal">{{currentPro}}/{{proTotal}}</text>
             </div>
         </div>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .videoIconBox{
         position: absolute;
@@ -155,6 +163,13 @@
         width: 155px;
         height: 155px;
         background-color: rgba(136,136,136,0.3);
+    }
+    .goodsIcon{
+        color: #fff;
+        font-size: 80px;
+        position:absolute;
+        top:37.5px;
+        left:37.5px;
     }
     .videoIcon{
         color: #fff;
@@ -275,7 +290,6 @@
     .paraCloseSize{
         color: #999;
         font-size: 34px;
-
     }
     .paraTextSize{
         font-size: 32px;
@@ -323,8 +337,12 @@
     .addVideo{
         color: #CCA7FC;
     }
+    .addLinkPt{
+        padding-top: 12px;
+    }
     .addLink{
-        color: #ccc;
+        color: #d81e06;
+        font-size: 44px;
     }
     .iconSize{
         font-size: 38px;
@@ -342,6 +360,8 @@
         border-top-right-radius: 20px;
         border-bottom-left-radius: 20px;
         border-top-left-radius: 20px;
+        margin-top:15px;
+        margin-bottom:15px;
     }
     .plusSign{
         padding-left: 12px;
@@ -357,11 +377,17 @@
         font-size: 30px;
         font-weight: 700;
     }
+    .plusSignBox{
+        padding-left:15px;
+        padding-right: 15px;
+        padding-bottom:15px;
+        padding-top: 15px;
+    }
     .addBox{
         align-items: center;
         justify-content: center;
-        margin-top: 15px;
-        margin-bottom: 15px;
+        /*padding-top: 15px;*/
+        /*padding-bottom: 15px;*/
     }
     .setTitle{
         position: absolute;
@@ -538,7 +564,11 @@
                                             mediaType: "image",
                                             paraText:'',
                                             show:true,
-                                            serveThumbnail:''
+                                            serveThumbnail:'',
+//                                            对象id
+                                            id:0,
+//                                            第三方链接
+                                            url:'',
                                         });
                                         _this.saveDraft();
                                     }
@@ -558,7 +588,7 @@
                         key:op[1]
                     };
                     _this.articleId = op[1];
-                    if(_this.articleId.length == 13){//13位的id为草稿文章
+                    if(_this.articleId.length == 19){//19位的id为草稿文章
                     }else{
                         GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
                             if(data.type == 'success' && data.data != ''){
@@ -568,9 +598,37 @@
                             event.toast(err.content);
                             return;
                         });
-                    }
+                    };
                     //从缓存读取数据 写入界面
                     _this.readData(options);
+                }else if(op[0] == 'goodsStorageName'){//读取商品缓存并写入页面之中。
+                    storage.getItem(op[1], function (e) {
+                        if (e.result == 'success') {
+                            var goodsInfo = JSON.parse(e.data);
+                            _this.coverImage =  goodsInfo.thumbnail;
+                            _this.setTitle = goodsInfo.name;
+//                    data.data里存放的是用户选取的图片路径
+                            _this.paraList.push({
+                                //原图
+                                paraImage: goodsInfo.thumbnail,
+                                //小缩略图
+                                thumbnailImage:goodsInfo.thumbnail,
+                                mediaType: "product",
+                                paraText:'',
+                                show:true,
+                                serveThumbnail:'',
+//                                            对象id
+                                id:goodsInfo.id,
+//                                            第三方链接
+                                url:'',
+                            });
+//                            存储页面数据
+                            _this.saveDraft();
+//                          把缓存删除
+                            storage.removeItem(op[1], e => {
+                            })
+                        }
+                    });
                 };
             };
         },
@@ -591,14 +649,16 @@
                             _this.musicName = articleData.music.name;
                         }
                         _this.publish = articleData.articleOption.publish;
-                            _this.articleOption = articleData.articleOption,
+                        _this.articleOption = articleData.articleOption,
                             _this.hits = articleData.hits,
                             _this.laud = articleData.laud,
                             _this.products = articleData.products,
                             _this.review = articleData.review,
-                        musicId = articleData.music.id;
+                            musicId = articleData.music.id;
                         let templatesData = articleData.templates;
                         for(let i = 0;i < templatesData.length;i++){
+                            let paraId = utils.isNull(templatesData[i].id) ? 0 : templatesData[i].id;
+                            let paraUrl = utils.isNull(templatesData[i].url) ? '' : templatesData[i].url;
                             _this.paraList.push({
                                 //原图
                                 paraImage:templatesData[i].original,
@@ -607,7 +667,11 @@
                                 paraText:templatesData[i].content,
                                 show:true,
                                 mediaType:templatesData[i].mediaType,
-                                serveThumbnail:'' //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                                serveThumbnail:'', //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                                //          对象id
+                                id:paraId,
+//                                            第三方链接
+                                url:paraUrl,
                             })
                         }
 //                            投票
@@ -658,7 +722,7 @@
                         }
 
                     }else{
-                        if(_this.articleId.length == 13){
+                        if(_this.articleId.length == 19){
                             event.toast('本地数据已被删除')
                             event.closeURL();
                             return;
@@ -795,6 +859,24 @@
 //            段落里的文本编辑
             editorText(index){
                 var _this = this;
+
+//                if(_this.paraList[index].mediaType == 'product'){
+//                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+//                        if (data.type == 'success') {
+//                            _this.paraList[index].paraImage = data.data.thumbnail;
+//                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
+//                            _this.paraList[index].paraText = data.data.name;
+////                    添加修改标志
+//                            _this.hadChange = 1;
+////                        if(utils.isNull(_this.articleId)){
+////                        临时保存到缓存
+//                            _this.saveDraft();
+////                        }
+//                        }
+//                    })
+//                    return;
+//                }
+
                 event.openEditor(_this.paraList[index].paraText,function (data) {
                     if(data.data != '') {
 //                    将返回回来的html数据赋值进去
@@ -811,7 +893,7 @@
             goBack:function () {
                 let _this = this;
 //                判断是草稿还是已经发布文章
-                if(utils.isNull(this.articleId) || this.articleId.length == 13){
+                if(utils.isNull(this.articleId) || this.articleId.length == 19){
                     modal.confirm({
                         message: '请选择方式?',
                         duration: 0.3,
@@ -820,8 +902,14 @@
                     }, function (value) {
                         if(value == '存草稿'){
                             if(utils.isNull(_this.articleId)){
+//                                生成6位随机数
+                                var Num="";
+                                for(var i=0;i<6;i++)
+                                {
+                                    Num += Math.floor(Math.random()*10);
+                                }
                                 //            获取当前时间戳 作为唯一标识符key
-                                _this.articleId = Math.round(new Date().getTime());
+                                _this.articleId = Math.round(new Date().getTime()) + Num;
                             }
                             _this.saveDraft(function () {
                                 _this.delOnceDraft();
@@ -872,6 +960,9 @@
                     storageType = "articleDraft";
                     storageKey = '0';
                 }else {
+                    if(this.articleId.length != 19){
+                        return;
+                    }
                     storageType = "article";
                     storageKey = this.articleId;
                 }
@@ -954,9 +1045,9 @@
                     return;
                 }
                 var imageNum = 0;
-//                上传时判断至少要有一张图;
+//                上传时判断至少要有一张图,或者一个商品;
                 _this.paraList.forEach(function (item) {
-                    if(item.mediaType == 'image' && item.paraImage != ''){
+                    if((item.mediaType == 'image' || item.mediaType == 'product')&& item.paraImage != ''){
                         imageNum ++;
                     }
                 })
@@ -1007,8 +1098,6 @@
                         _this.ctrlProcess(data);
                     })
                 }
-
-
             },
             //上传图片到服务器
             sendImage (sendIndex) {
@@ -1029,15 +1118,13 @@
 //                }
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http'){
-
-                    if(mediaType == 'image'){
+                    if(mediaType == 'image' || mediaType == 'product'){
 //                    如果已经是http的图片 就直接将图片赋予要上传的变量；
                         _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(_this.paraList[sendIndex].paraImage,155,155);
                     }else if(mediaType == 'video'){//如果是视频就将缩略图进行赋值
                         _this.paraList[sendIndex].serveThumbnail = _this.paraList[sendIndex].thumbnailImage;
                     }
                     sendIndex ++ ;
-
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){
 //                            回调自己自己
@@ -1060,7 +1147,7 @@
                         if(data.type == 'success'){
                             _this.paraList[sendIndex].paraImage = data.data;
 //                            判断是图片还是视频
-                            if(mediaType == 'image'){
+                            if(mediaType == 'image' || mediaType == 'product'){
                                 //                            向后台获取缩略图
                                 _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
 //                                    因为异步操作,所以要分别在if elseif里写下列代码
@@ -1151,7 +1238,7 @@
 //                    event.toast(voteData);
                 });
 //                var articleTemplates = [];
-                if(!utils.isNull(this.articleId) && this.articleId.length == 13){//判断id为13位的是草稿，或者有文章id时。
+                if(!utils.isNull(this.articleId) && this.articleId.length == 19){//判断id为19位的是草稿，或者有文章id时。
                     var uploadThumbnailImg ;
                     this.paraList.forEach(function(item){
                         if(!utils.isNull(item.serveThumbnail)){
@@ -1163,7 +1250,11 @@
                             thumbnail:uploadThumbnailImg,
                             original:item.paraImage,
                             mediaType: item.mediaType,
-                            content:item.paraText
+                            content:item.paraText,
+                            //          对象id
+                            id:parseInt(item.id),
+//                                            第三方链接
+                            url:item.url,
                         })
                     })
                 }else{
@@ -1179,7 +1270,11 @@
                             thumbnail:uploadThumbnail,
                             original:item.paraImage,
                             mediaType: item.mediaType,
-                            content:item.paraText
+                            content:item.paraText,
+                            //          对象id
+                            id:parseInt(item.id),
+//                                            第三方链接
+                            url:item.url,
                         })
                     })
                 }
@@ -1202,9 +1297,11 @@
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
+//                utils.debug(articleData);
 //                网络请求，保存文章
                 POST('weex/member/article/submit.jhtml',articleData).then(
                     function (res) {
+//                        utils.debug(res);
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
                             let resDataStr = JSON.stringify(res.data);
@@ -1276,7 +1373,11 @@
 //                        paraText:_this.checkInput(data.data),
                         paraText:data.data,
                         mediaType: "image",
-                        show:true
+                        show:true,
+                        //          对象id
+                        id:0,
+//                                            第三方链接
+                        url:'',
                     };
                     _this.paraList.splice(index,0,newPara);
 
@@ -1306,6 +1407,10 @@
                                     paraText:'',
                                     show:true,
                                     mediaType: "image",
+                                    //          对象id
+                                    id:0,
+//                                            第三方链接
+                                    url:'',
                                 }
                                 _this.paraList.splice(index + i,0,newPara)
                                 _this.clearIconBox();
@@ -1388,24 +1493,30 @@
                 let b = this.paraList[index].paraText;
                 let c = this.paraList[index].mediaType;
                 let d = this.paraList[index].paraImage;
+                let e = this.paraList[index].id;
+                let f = this.paraList[index].url;
                 this.paraList[index].mediaType = this.paraList[index - 1].mediaType;
                 this.paraList[index].thumbnailImage = this.paraList[index - 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index - 1].paraText;
                 this.paraList[index].paraImage = this.paraList[index - 1].paraImage;
+                this.paraList[index].id = this.paraList[index - 1].id;
+                this.paraList[index].url = this.paraList[index - 1].url;
                 this.paraList[index - 1].thumbnailImage = a;
                 this.paraList[index - 1].paraText = b;
                 this.paraList[index - 1].mediaType = c;
                 this.paraList[index - 1].paraImage = d;
+                this.paraList[index - 1].id = e;
+                this.paraList[index - 1].url = f;
                 if(!utils.isNull(this.paraList[index].serveThumbnail)){
-                    let e = this.paraList[index].serveThumbnail;
+                    let g = this.paraList[index].serveThumbnail;
                     this.paraList[index].serveThumbnail = this.paraList[index - 1].serveThumbnail;
-                    this.paraList[index - 1].paraImage = e;
+                    this.paraList[index - 1].paraImage = g;
                 }
 //                    添加修改标志
                 this.hadChange = 1;
 //                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                    this.saveDraft();
+                this.saveDraft();
 //                }
             },
 //            下箭头
@@ -1421,24 +1532,30 @@
                 let b = this.paraList[index].paraText;
                 let c = this.paraList[index].mediaType;
                 let d = this.paraList[index].paraImage;
+                let e = this.paraList[index].id;
+                let f = this.paraList[index].url;
                 this.paraList[index].mediaType = this.paraList[index + 1].mediaType;
                 this.paraList[index].thumbnailImage = this.paraList[index + 1].thumbnailImage;
                 this.paraList[index].paraText = this.paraList[index + 1].paraText;
                 this.paraList[index].paraImage = this.paraList[index + 1].paraImage;
+                this.paraList[index].id = this.paraList[index + 1].id;
+                this.paraList[index].url = this.paraList[index + 1].url;
                 this.paraList[index + 1].thumbnailImage = a;
                 this.paraList[index + 1].paraText = b;
                 this.paraList[index + 1].mediaType = c;
                 this.paraList[index + 1].paraImage = d;
+                this.paraList[index + 1].id = e;
+                this.paraList[index + 1].url = f;
                 if(!utils.isNull(this.paraList[index].serveThumbnail)){
-                    let e = this.paraList[index].serveThumbnail;
+                    let g = this.paraList[index].serveThumbnail;
                     this.paraList[index].serveThumbnail = this.paraList[index + 1].serveThumbnail;
-                    this.paraList[index + 1].paraImage = e;
+                    this.paraList[index + 1].paraImage = g;
                 }
 //                    添加修改标志
                 this.hadChange = 1;
 //                if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                    this.saveDraft();
+                this.saveDraft();
 //                }
             },
 //            用户执行删除时触发询问。
@@ -1448,7 +1565,7 @@
 //                判断至少要保留一张图;
                 if(_this.paraList[index].mediaType == 'image' && _this.paraList[index].paraImage != ''){//判断是不是图片
                     _this.paraList.forEach(function (item) {
-                        if(item.mediaType == 'image' && item.paraImage != ''){
+                        if((item.mediaType == 'image' || item.mediaType == 'product') && item.paraImage != '' ){
                             imageNum ++;
                         }
                     })
@@ -1501,6 +1618,22 @@
 //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
                 var _this = this;
+//                if(mediaType == 'product'){
+//                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+//                        if (data.type == 'success') {
+//                            _this.paraList[index].paraImage = data.data.thumbnail;
+//                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
+//                            _this.paraList[index].paraText = data.data.name;
+////                    添加修改标志
+//                            _this.hadChange = 1;
+////                        if(utils.isNull(_this.articleId)){
+////                        临时保存到缓存
+//                            _this.saveDraft();
+////                        }
+//                        }
+//                    })
+//                    return;
+//                }
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
@@ -1529,9 +1662,10 @@
 //                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
 //                            })
 //                        }else if(value == '裁剪'){
-                    if(mediaType == 'image'){
+                    if(mediaType == 'image' || mediaType == 'product'){
 //                                调用裁剪图片
                         album.openCrop(imgSrc,function (data) {
+//                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.originalPath;
                                 _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
@@ -1567,8 +1701,6 @@
                             }
                         })
                     }
-
-
 //                        }else{
 //                            event.toast(value);
 //                        }
@@ -1642,7 +1774,7 @@
 //                    event.toast(message);
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
-                    if(message.data != ''){
+                    if(message.type == 'success' && message.data != ''){
                         _this.musicName = message.data.chooseMusicName;
                         musicId = message.data.chooseMusicId;
 //                    添加修改标志
@@ -1659,7 +1791,7 @@
                 let _this = this;
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
-                    if(message.data != '') {
+                    if(message.type == 'success' &&  message.data != '') {
                         _this.voteList.push(message.data);
 //                    添加修改标志
                         _this.hadChange = 1;
@@ -1707,6 +1839,10 @@
                             mediaType: "video",
                             paraText:'',
                             show:true,
+//                             对象ID
+                            id:0,
+//                            第三方链接
+                            url:'',
 //                          serveThumbnail:''
                         }
                         _this.paraList.splice(index,0,newPara);
@@ -1723,8 +1859,34 @@
             },
 //            点击加号里的添加链接
             addLinkPara:function (index) {
-                event.openURL(utils.locate('view/shop/goods/manage.js'),function (message) {
-
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+                    if(data.type == 'success'){
+                        let newPara = {
+                            //原图
+//                                    paraImage: data.data[i].originalPath,
+                            paraImage: data.data.thumbnail,
+//                                    小缩略图
+//                                    thumbnailImage: data.data[i].thumbnailSmallPath,
+                            thumbnailImage: data.data.thumbnail,
+                            mediaType: "product",
+                            paraText:'',
+                            show:true,
+//                             对象ID
+                            id:data.data.id,
+//                            第三方链接
+                            url:'',
+//                          serveThumbnail:''
+                        }
+                        _this.paraList.splice(index,0,newPara);
+                        _this.clearIconBox();
+//                    添加修改标志
+                        _this.hadChange = 1;
+//                        if(utils.isNull(_this.articleId)){
+//                        临时保存到缓存
+                        _this.saveDraft();
+//                        }
+                    }
                 });
             },
             maskClick(){

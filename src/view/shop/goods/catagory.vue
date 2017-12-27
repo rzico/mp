@@ -2,7 +2,7 @@
     <scroller class="wrapper" >
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
         <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="addCorpus()">
+            <div class="lineStyle pr30" @click="addCatagory()">
                 <text class="lineText">添加分类</text>
                 <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
             </div>
@@ -10,11 +10,11 @@
         <div>
             <text class="remind" >长按分类可进行排序,排序后请点击"完成"</text>
         </div>
-        <!--文集行背景-->
+        <!--分类行背景-->
         <div class="bgWhite ">
-            <!--文集行内容-->
+            <!--分类行内容-->
             <div class="lineStyle bottomBorder">
-                <!--左侧文集名称-->
+                <!--左侧分类名称-->
                 <div class="flex-row">
                     <text class="lineText">全部商品</text>
                     <!--<text class="lineText">({{allTotal}})</text>-->
@@ -23,11 +23,11 @@
         </div>
         <!--绑定动画-->
         <transition-group name="paraTransition" tag="div">
-            <!--文集行背景-->
-            <div class="bgWhite " v-for="(item,index) in corpusList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
-                <!--文集行内容-->
+            <!--分类行背景-->
+            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
+                <!--分类行内容-->
                 <div class="lineStyle bottomBorder">
-                    <!--左侧文集名称-->
+                    <!--左侧分类名称-->
                     <div class="flex-row" style="width: 450px;">
                         <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
                         <text class="lineText" :class = "[item.bgChange ? 'active' : 'noActive']">({{item.total}})</text>
@@ -165,7 +165,7 @@
                 recycle:0,
                 moveSign:false,
                 showSort:false,//子组件
-                corpusList:[],
+                catagoryList:[],
             }
         },
         components: {
@@ -178,15 +178,15 @@
         created(){
             var _this = this;
             utils.initIconFont();
-            let corpus = utils.getUrlParameter('name');
-            if(utils.isNull(corpus)){
+            let catagory = utils.getUrlParameter('name');
+            if(utils.isNull(catagory)){
                 return;
             }else{
-                storage.getItem(corpus, e => {
+                storage.getItem(catagory, e => {
                     if(e.data != 'undefined'){
-                        let corpusData =  JSON.parse(e.data);
-                        corpusData.forEach(function (item) {
-                            _this.corpusList.push({
+                        let catagoryData =  JSON.parse(e.data);
+                        catagoryData.forEach(function (item) {
+                            _this.catagoryList.push({
                                 name:item.name,
                                 total:item.count,
                                 id:item.id,
@@ -194,7 +194,7 @@
                             })
                         })
                     }
-                    storage.removeItem(corpus);
+                    storage.removeItem(catagory);
                 })
             }
         },
@@ -203,8 +203,8 @@
                 let backData = utils.message('success','成功','');
                 event.closeURL(backData);
             },
-//            添加文集
-            addCorpus(){
+//            添加分类
+            addCatagory(){
                 let _this = this;
                 modal.prompt({
                     message: '新建分类',
@@ -217,13 +217,13 @@
                         if(utils.isNull(value.data)){
                             event.toast('请输入分类名');
                         }else{
-                            let orders = _this.corpusList.length + 1;
+                            let orders = _this.catagoryList.length + 1;
                             value.data = encodeURI(value.data);
-//                            向服务器存入文集名称
-                            POST('weex/member/article_catalog/add.jhtml?name=' + value.data + '&orders=' + orders).then(
+//                            向服务器存入分类名称
+                            POST('weex/member/product_category/add.jhtml?name=' + value.data + '&orders=' + orders).then(
                                 function (res) {
                                     if(res.type == 'success' && res.data != ''){
-                                        _this.corpusList.push({
+                                        _this.catagoryList.push({
                                             name:res.data.name,
                                             total:0,
                                             bgChange:false,
@@ -241,11 +241,11 @@
                     }
                 })
             },
-//            修改文集名称
+//            修改分类名称
             changeName(index,corpusName,id){
                 let _this = this;
                 modal.prompt({
-                    message: '修改文集名',
+                    message: '修改分类名',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
@@ -254,12 +254,12 @@
                 }, function (value) {
                     if(value.result == '确定'){
                         if(value.data == '' || value.data == null ){
-                            modal.toast({message:'请输入文集名',duration:1})
+                            event.toast('请输入分类名');
                         }else{
-                            POST('weex/member/article_catalog/update.jhtml?id=' + id + '&name=' + value.data).then(
+                            POST('weex/member/product_category/update.jhtml?id=' + id + '&name=' + encodeURI(value.data)).then(
                                 function (data) {
                                     if(data.type == 'success'){
-                                        _this.corpusList[index].name = value.data;//把名字改上去
+                                        _this.catagoryList[index].name = value.data;//把名字改上去
                                         event.toast('修改成功');
                                     }else{
                                         event.toast(data.content);
@@ -273,21 +273,21 @@
                     }
                 })
             },
-//            删除该文集
+//            删除该分类
             deleteCorpus(index,id){
                 let _this = this;
                 modal.confirm({
-//                    message: '不会删除文集下的文章，可在"全部文章"中找到,确定删除文集？',
-                    message: '是否删除该文集？',
+//                    message: '不会删除分类下的文章，可在"全部文章"中找到,确定删除分类？',
+                    message: '是否删除该分类？',
                     duration: 0.3,
                     okTitle:'删除',
                     cancelTitle:'取消',
                 }, function (value) {
                     if(value == '删除'){
-                        POST('weex/member/article_catalog/delete.jhtml?id=' + id).then(
+                        POST('weex/member/product_category/delete.jhtml?id=' + id).then(
                             function (data) {
                                 if(data.type == 'success'){
-                                    _this.corpusList.splice(index,1);
+                                    _this.catagoryList.splice(index,1);
                                 }else{
                                     event.toast(data.content);
                                 }
@@ -301,7 +301,7 @@
             },
 //            判断是否最后一个段落来添加向下移动的箭头。
             lastPara:function(index){
-                if(index != this.corpusList.length - 1){
+                if(index != this.catagoryList.length - 1){
                     return true;
                 }else{
                     return false;
@@ -310,19 +310,19 @@
 //            长按屏幕后
             onlongpress:function (index) {
                 var _this = this;
-                this.corpusList.forEach(function (item) {
+                this.catagoryList.forEach(function (item) {
                     if(item.bgChange == true){
                         item.bgChange = false;
                     }
                 })
-                _this.corpusList[index].bgChange = true;
+                _this.catagoryList[index].bgChange = true;
                 _this.showSort = true;
 
             },
 //            点击完成时、上传排序后的数组
             cleanbgChange:function () {
-//                关闭所有的文集背景变化
-                this.corpusList.forEach(function (item) {
+//                关闭所有的分类背景变化
+                this.catagoryList.forEach(function (item) {
                     if(item.bgChange == true){
                         item.bgChange = false;
                     }
@@ -332,8 +332,8 @@
 //                判断是否有更换顺序 没有就不上传服务器
                 if(this.isSort == 1){
                     this.isSort = 0;
-                    let url = 'weex/member/article_catalog/sort.jhtml?ids='
-                    this.corpusList.forEach(function (item,index) {
+                    var url = 'weex/member/product_category/sort.jhtml?ids=';
+                    this.catagoryList.forEach(function (item,index) {
                         if(index == 0){
                             url = url + item.id;
                         }else{
@@ -359,7 +359,7 @@
             },
             //            判断是否最后一个段落来添加向下移动的箭头。
             lastPara:function(index){
-                if(index != this.corpusList.length - 1){
+                if(index != this.catagoryList.length - 1){
                     return true;
                 }else{
                     return false;
@@ -369,35 +369,35 @@
             moveUp(index){
                 this.isSort = 1;
                 //         方法2
-                let a = this.corpusList[index].name;
-                let b = this.corpusList[index].id;
-                let c = this.corpusList[index].total;
-                let d = this.corpusList[index].bgChange;
-                this.corpusList[index].name = this.corpusList[index - 1].name;
-                this.corpusList[index].id = this.corpusList[index - 1].id;
-                this.corpusList[index].total = this.corpusList[index - 1].total;
-                this.corpusList[index].bgChange = this.corpusList[index - 1].bgChange;
-                this.corpusList[index - 1].name = a;
-                this.corpusList[index - 1].id = b;
-                this.corpusList[index - 1].total = c;
-                this.corpusList[index - 1].bgChange = d;
+                let a = this.catagoryList[index].name;
+                let b = this.catagoryList[index].id;
+                let c = this.catagoryList[index].total;
+                let d = this.catagoryList[index].bgChange;
+                this.catagoryList[index].name = this.catagoryList[index - 1].name;
+                this.catagoryList[index].id = this.catagoryList[index - 1].id;
+                this.catagoryList[index].total = this.catagoryList[index - 1].total;
+                this.catagoryList[index].bgChange = this.catagoryList[index - 1].bgChange;
+                this.catagoryList[index - 1].name = a;
+                this.catagoryList[index - 1].id = b;
+                this.catagoryList[index - 1].total = c;
+                this.catagoryList[index - 1].bgChange = d;
             },
             //向下移动，下箭头
             moveBottom(index){
                 this.isSort = 1;
                 //         方法2
-                let a = this.corpusList[index].name;
-                let b = this.corpusList[index].id;
-                let c = this.corpusList[index].total;
-                let d = this.corpusList[index].bgChange;
-                this.corpusList[index].name = this.corpusList[index + 1].name;
-                this.corpusList[index].id = this.corpusList[index + 1].id;
-                this.corpusList[index].total = this.corpusList[index + 1].total;
-                this.corpusList[index].bgChange = this.corpusList[index + 1].bgChange;
-                this.corpusList[index + 1].name = a;
-                this.corpusList[index + 1].id = b;
-                this.corpusList[index + 1].total = c;
-                this.corpusList[index + 1].bgChange = d;
+                let a = this.catagoryList[index].name;
+                let b = this.catagoryList[index].id;
+                let c = this.catagoryList[index].total;
+                let d = this.catagoryList[index].bgChange;
+                this.catagoryList[index].name = this.catagoryList[index + 1].name;
+                this.catagoryList[index].id = this.catagoryList[index + 1].id;
+                this.catagoryList[index].total = this.catagoryList[index + 1].total;
+                this.catagoryList[index].bgChange = this.catagoryList[index + 1].bgChange;
+                this.catagoryList[index + 1].name = a;
+                this.catagoryList[index + 1].id = b;
+                this.catagoryList[index + 1].total = c;
+                this.catagoryList[index + 1].bgChange = d;
             },
         }
     }

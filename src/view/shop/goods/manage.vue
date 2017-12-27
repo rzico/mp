@@ -1,13 +1,45 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goback="goback" ></navbar>
+        <!--<navbar :title="title"  @goback="goback" ></navbar>-->
+        <!--<div style="min-height: 136px">-->
+        <div class="header"  :class="[classHeader()]">
+            <transition name="component-fade-top" mode="out-in">
+                <div class="pageTop" v-if="!doSearch">
+                    <div class="nav_back " @click="goback()">
+                        <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
+                    </div>
+                    <div class="nav">
+                        <text class="nav_title">{{title}}</text>
+                        <div class="navRightBox"  @click="goSearch()">
+                            <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
+                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                        </div>
+                    </div>
+                </div>
+                <div v-else  class="search">
+                    <div class="search_box flex5">
+                        <div class="flex-start">
+                            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                            <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
+                        </div>
+                        <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
+                    </div>
+                    <div class="flex-center flex1" @click="noSearch()">
+                        <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
+                    </div>
+                </div>
+            </transition>
+        </div>
+        <!--输入栏-->
+        <!--<searchNav v-else :searchHint="searchHint" :searchOrCancel="searchOrCancel" :showCancel="false" :cancelSearch="true" @noSearch="noSearch" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>-->
+        <!--</div>-->
         <div  class="corpusBox" >
             <scroller scroll-direction="horizontal"  class="corpusScroll">
                 <div class="articleClass">
-                    <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+                    <text @click="catagoryChange(index,item.id)" class="allArticle" v-for="(item,index) in catagoryList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
             </scroller>
-            <div class="corpusIconBox" @click="goCatagory()"  >
+            <div class="corpusIconBox" @click="goCatagory()">
                 <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
             </div>
         </div>
@@ -20,36 +52,19 @@
             </cell>
             <!--导航栏-->
             <cell v-else v-for="(item,index) in goodsList">
-                <div class="goodsLine boder-bottom" @click="popup()">
-                    <image class="goodsImg" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1310014862,401506166&fm=27&gp=0.jpg"></image>
+                <div class="goodsLine boder-bottom" :class="[item.id == goodsId ? 'bgActive' : '']" @click="popup(item,index)">
+                    <image class="goodsImg" :src="item.thumbnail | watchThumbnail"></image>
                     <div class="infoBox">
-                        <div class="flex1 bt5">
-                            <text class="linesCtrl title">逗狗小玩具</text>
+                        <div class="flex1 ">
+                            <text class="linesCtrl title">{{item.name}}</text>
                         </div>
-                        <div class="flex1 "  >
-                            <div class="bt5 flex1">
-                                <text class="goodsPrice" >¥ 44.00</text>
+                        <div class="flex1 " >
+                            <div class="bt10 flex1" >
+                                <text class="goodsPrice" >¥ {{item.price | currencyfmt}}</text>
                             </div>
                             <div class="space-between bottomInfo flex1">
-                                <text class="sub_title fz28">库存: 292</text>
-                                <text class="sub_title fz28">销量: 0</text>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="goodsLine boder-bottom" @click="popup()">
-                    <image class="goodsImg" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1310014862,401506166&fm=27&gp=0.jpg"></image>
-                    <div class="infoBox">
-                        <div class="flex1 bt5">
-                            <text class="linesCtrl title">逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具逗狗小玩具</text>
-                        </div>
-                        <div class="flex1 "  >
-                            <div class="bt5 flex1">
-                                <text class="goodsPrice" >¥ 44.00</text>
-                            </div>
-                            <div class="space-between bottomInfo flex1">
-                                <text class="sub_title fz28">库存: 292</text>
-                                <text class="sub_title fz28">销量: 0</text>
+                                <text class="sub_title fz28">库存: {{item.stock}}</text>
+                                <!--<text class="sub_title fz28">销量: {{item.sales}}</text>-->
                             </div>
                         </div>
                     </div>
@@ -68,8 +83,8 @@
                         </div>
                         <text class="fz28 mt20 color444 ">编辑</text>
                     </div>
-                    <div class="singleBox" @click="doDel()">
-                        <div class="imgBox" @click="doDel()">
+                    <div class="singleBox" @click="doPublish()">
+                        <div class="imgBox" @click="doPublish()">
                             <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                         </div>
                         <text class="fz28 mt20 color444">发布</text>
@@ -86,13 +101,109 @@
                 <text class="fz32">取消</text>
             </div>
         </div>
-        <div class="button bw bkg-primary" @click="addGoods()">
+        <div class="button bw bkg-primary" v-if="!doSearch" @click="addGoods()">
             <text class="buttonText ">添加商品</text>
         </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    /*<!---->*/
+    /*动画*/
+    .component-fade-top-enter-active{
+        transition: all 0.2s;
+    }
+    .component-fade-top-leave-active {
+        transition: all 0.2s;
+    }
+    .component-fade-top-leave-to{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    .component-fade-top-enter-to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+    .component-fade-top-enter{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    /**/
+    .pageTop{
+        flex-direction: row;
+    }
+    /*<!--搜索栏-->*/
+
+    .searchCancelText{
+        color: #fff;
+    }
+    .search {
+        position:sticky;
+        background:#eee;
+        /*height: 100px;*/
+        flex-direction: row;
+        flex:1;
+    }
+    .search_box {
+        margin-top:20px;
+        margin-left:20px;
+        margin-right:20px;
+        margin-bottom:20px;
+        padding-left: 20px;
+        height: 60px;
+        border-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+        border-radius:8px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+    }
+    .clearBuf {
+        width:58px;
+        height:58px;
+        text-align: center;
+        padding-top: 10px;
+    }
+    .search_input {
+        margin-left: 20px;
+        font-size:32px;
+        line-height: 58px;
+        height: 58px;
+        width:400px;
+    }
+
+
+    /*<!--顶部导航栏-->*/
+    .navRightBox{
+        min-width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+    }
+    .nav_ico {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
+    }
+    .nav_CompleteIcon{
+        /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+        font-size: 44px;
+        line-height: 44px;
+        color: #FFFFFF;
+    }
+    .nav_Complete {
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+    }
+    /**/
     .articleClass{
         flex-direction: row;
         padding-left: 10px;
@@ -166,7 +277,7 @@
 
 
 
-    .goodsLine:active{
+    .bgActive{
         background-color: #ccc;
     }
     .linesCtrl{
@@ -190,6 +301,11 @@
         flex-direction: row;
         width: 750px;
     }
+    .goodsImg{
+        border-radius: 5px;
+        height: 160px;
+        width: 160px;
+    }
     .bw{
         margin-top:20px;
         margin-left: 30px;
@@ -200,50 +316,99 @@
         font-size: 32px;
         color:#ffffff;
     }
-    .goodsImg{
-        border-radius: 5px;
-        height: 160px;
-        width: 160px;
-    }
 </style>
 <script>
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
-    import {dom,event,animation} from '../../../weex.js';
+    import {dom,event,animation,storage} from '../../../weex.js';
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
+    const modal = weex.requireModule('modal');
+    import searchNav from '../../../include/searchNav.vue';
     export default {
         data:{
-            goodsList:['1'],
+            goodsList:[],
+            goodsId:0,
+            goodsIndex:0,
             refreshing:false,
             pageStart:0,
-            pageSize:15,
+            pageSize:10,
             reviewNum:0,
             isPopup:false,
             refreshImg:utils.locate('resources/images/loading.png'),
-            corpusList:[{
+            catagoryList:[{
                 name:'全部',
                 id:''
             }],
             whichCorpus:0,
 //                分类id
-            corpusId:'',
+            productCategoryId:'',
+            doSearch:false,
+            pageFrom:'',
+            searchHint: "输入商品名",
+            searchOrCancel:'取消',
+            keyword:'',
         },
         props:{
             noDataHint:{default:'暂无商品'},
-            title:{default:'商品管理'}
+            title:{default:'商品管理'},
+//            searchHint: { default: "输入商品名" },
+//            searchOrCancel:{default:'取消'},
         },
         components: {
-            navbar,noData
+            navbar,noData,searchNav
+        },
+        filters:{
+            watchThumbnail(value){
+                return utils.thumbnail(value,160,160);
+            }
         },
         created(){
             utils.initIconFont();
-
+//            获取分类列表
+            this.getCatagory();
+//            获取商品列表
+            this.getAllGoods();
+            if(!utils.isNull(utils.getUrlParameter('from'))){
+                this.pageFrom = utils.getUrlParameter('from');
+            }
         },
         methods:{
+            classHeader:function () {
+                let dc = utils.device();
+                return dc
+            },
+//            商品列表
+            getAllGoods(){
+                let _this = this;
+                //            获取商品列表
+                GET('weex/member/product/list.jhtml?productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success'){
+                        if (_this.pageStart == 0) {
+                            _this.goodsList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                _this.goodsList.push(item);
+                            })
+                        }
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
             onloading:function () {
-////            获取关注列表
+//                判断是否正在搜索
+                if(!this.doSearch){
+////            获取商品列表
+                    this.getAllGoods();
+                }else{
+//                        重新搜索商品
+                    this.searchGoods();
+                }
             },
             onrefresh:function () {
                 var _this = this;
@@ -270,41 +435,234 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false;
-////            获取关注列表
+                    if(!this.doSearch){
+////            获取商品列表
+                        this.getAllGoods();
+                    }else{
+//                        重新搜索商品
+                        this.searchGoods();
+                    }
                 }, 1000)
             },
-
-            doCancel:function () {
+//            重置商品选择状态
+            doReset(){
                 this.isPopup = false;
+                this.goodsId = 0;
             },
-            popup:function (id) {
-                if (this.isPopup==false) {
-                    this.isPopup = true;
+//            点击取消
+            doCancel:function () {
+                this.doReset();
+            },
+            popup:function (item,index) {
+                if(!utils.isNull(this.pageFrom)){
+                    let E = utils.message('success','返回商品',item)
+                    event.closeURL(E);
+                }else{
+                    if (this.isPopup==false) {
+                        this.isPopup = true;
+                    }
+                    this.goodsId = item.id;
+                    this.goodsIndex = index;
                 }
             },
             addGoods(){
-                event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function () {
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function (res) {
+                    if(res.type == 'success'){
+//                        res.data.sales = 0;
+                        _this.goodsList.splice(0,0,res.data);
+                    }
                 });
             },
 //            分类
             goCatagory(){
                 var _this = this;
-                event.openURL(utils.locate('view/shop/goods/catagory.js?name=corpusList'), function (data) {
-//                    _this.getCorpus();
+                event.openURL(utils.locate('view/shop/goods/catagory.js?name=catagoryList'), function (data) {
+                    _this.getCatagory();
                 });
             },
-//分类切换
-            corpusChange:function(index,id){
+                //分类切换
+            catagoryChange:function(index,id){
 //                event.toast(id);
                 var _this = this;
                 if(_this.whichCorpus == index){
                     return;
                 }
                 _this.whichCorpus = index;
-                _this.corpusId = id;
+                _this.productCategoryId = id;
+                this.pageStart = 0;
 
-//                _this.getAllArticle();
+                this.doReset();
+//                如果在搜索状态下就不做数据加载
+                if(!this.doSearch){
+                    _this.getAllGoods();
+                }else{
+                    _this.goodsList = [];
+                    _this.searchGoods();
+                }
             },
+
+//            获取分类
+            getCatagory:function () {
+                var _this = this;
+                GET('weex/member/product_category/list.jhtml',function (data) {
+                    if (data.type == "success") {
+                        if(data.data == ''){
+                        }else{
+//                            event.toast(data.data);
+                            _this.catagoryList = '';
+                            _this.catagoryList =[{
+                                name:'全部',
+                                id:''
+                            }];
+//                                将文集名循环插入数组中
+                            for(let i = 0; i<data.data.length;i++){
+                                _this.catagoryList.splice(1 + i,0,data.data[i]);
+                            }
+                            data.data = JSON.stringify(data.data);
+                            storage.setItem('catagoryList',data.data);
+                        }
+                    }else {
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+//            发布商品
+            doPublish(){
+                let _this = this;
+//                        如果没有历史记录就新添加一个缓存
+                var goodsPublish =  this.goodsList[this.goodsIndex];
+                goodsPublish = JSON.stringify(goodsPublish);
+                storage.setItem('goodsPublish', goodsPublish , e => {
+                    if(e.result == 'success'){
+                        event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish'), function (data) {
+                            _this.doReset();
+                            if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                                let E = {
+                                    isDone : 'complete'
+                                }
+                                let backData = utils.message('success','成功',E);
+                                event.closeURL(backData);
+                            }
+                        });
+                    }else{
+                        event.toast('网络不稳定');
+                    }
+                });
+            },
+//            编辑商品
+            doEdit(){
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/edit.js?id=' + this.goodsId), function (res) {
+                    _this.doReset();
+                    if(res.type == 'success'){
+                        _this.goodsList.splice(_this.goodsIndex,1);
+                        _this.goodsList.splice(0,0,res.data);
+                    }
+                });
+            },
+//            删除商品
+            doDel(){
+                let _this = this;
+                modal.confirm({
+                    message: '是否要删除该商品?',
+                    duration: 0.3,
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if (value == '删除') {
+                        POST('weex/member/product/delete.jhtml?ids=' + _this.goodsId).then(function (data) {
+                            if (data.type == 'success') {
+                                _this.goodsList.splice(_this.goodsIndex, 1);
+                                event.toast('删除成功');
+                                _this.isPopup = false;
+                            } else {
+                                event.toast(data.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content);
+                        });
+                    };
+                });
+            },
+//            返回
+            goback:function () {
+                event.closeURL();
+            },
+//            前往搜索
+            goSearch:function () {
+                this.doSearch = true;
+                this.searchOrCancel = '取消'
+                let _this = this;
+                this.goodsList = [];
+                this.noDataHint = "输入查找商品";
+//                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
+//                    _this.doReset();
+//                    if(res.type == 'success'){
+//
+//                    }
+//                });
+            },
+            oninput:function (e) {
+                this.isSearch = false;
+                this.keyword = e.value;
+                this.searchOrCancel = '搜索';
+                this.goodsList = [];
+                this.noDataHint = "输入查找商品";
+                if(e.value.length == 0){
+                    this.searchOrCancel = '取消'
+                }
+            },
+            search: function (e) {
+                var _this = this;
+                this.isSearch = true;
+                this.pageStart = 0;
+                this.searchOrCancel = '取消';
+                this.productCategoryId = '';
+                this.whichCorpus = 0;
+                this.searchGoods();
+            },
+//            点击右上角取消或者搜索按钮
+            noSearch:function () {
+                this.inputBlur();
+                if(this.searchOrCancel == '取消'){
+                    this.pageStart = 0;
+                    this.doSearch = false;
+                    this.getAllGoods();
+                }else{
+                    this.search();
+                }
+            },
+//          查找商品
+            searchGoods:function () {
+                let _this = this;
+                GET('weex/member/product/list.jhtml?keyword='+ encodeURI(_this.keyword)  + '&productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success'){
+                        if (_this.pageStart == 0) {
+                            _this.goodsList = data.data.data;
+                        }else{
+                            data.data.data.forEach(function (item) {
+                                _this.goodsList.push(item);
+                            })
+                        }
+                        _this.noDataHint = '商品不存在';
+                        _this.pageStart = data.data.start + data.data.data.length;
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+//          清空关键字
+            clearBuf:function () {
+                this.keyword = '';
+            },
+            inputBlur(){
+                this.$refs['searchBar'].blur();
+            }
         }
     }
 </script>
