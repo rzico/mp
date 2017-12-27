@@ -2,7 +2,7 @@
     <div class="wrapper" >
         <!--<navbar :title="title"  @goback="goback" ></navbar>-->
         <!--<div style="min-height: 136px">-->
-        <div class="header"  :class="[classHeader()]" >
+        <div class="header"  :class="[classHeader()]">
             <transition name="component-fade-top" mode="out-in">
                 <div class="pageTop" v-if="!doSearch">
                     <div class="nav_back " @click="goback()">
@@ -16,7 +16,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-else  class="search ">
+                <div v-else  class="search">
                     <div class="search_box flex5">
                         <div class="flex-start">
                             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
@@ -301,6 +301,11 @@
         flex-direction: row;
         width: 750px;
     }
+    .goodsImg{
+        border-radius: 5px;
+        height: 160px;
+        width: 160px;
+    }
     .bw{
         margin-top:20px;
         margin-left: 30px;
@@ -310,11 +315,6 @@
     .buttonText{
         font-size: 32px;
         color:#ffffff;
-    }
-    .goodsImg{
-        border-radius: 5px;
-        height: 160px;
-        width: 160px;
     }
 </style>
 <script>

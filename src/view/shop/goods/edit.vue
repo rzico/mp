@@ -601,10 +601,22 @@
             },
 //            完成
             goComplete: function () {
-                let _this = this;
-                this.toSendArticle = true;
+                if(utils.isNull(this.goodsName)){
+                    event.toast('请完善商品名称');
+                    return;
+                }else if(utils.isNull(this.goodsUnit)){
+                    event.toast('单位不能为空');
+                    return;
+                }
+
+
                 this.proTotal = 0;
+                let _this = this;
                 if(this.list.length == 0){
+                    if(utils.isNull(this.topLinePrice) || utils.isNull(this.topLineNum) || utils.isNull(this.firstParaImage)){
+                        event.toast('请完善商品信息');
+                        return;
+                    }
                     var frontUrl = '';
                     if (!utils.isNull(_this.firstParaImage)) {
                         frontUrl = _this.firstParaImage.substring(0,4);
@@ -632,17 +644,29 @@
                         })
                     }
                 }else{
-//                判断段落图片是否已上传
+                    let sign = 0;
+//                    判断规格有没有完整
                     this.list.forEach(function (item) {
+                        if(item.isNew || utils.isNull(item.paraImage)  || utils.isNull(item.price) || utils.isNull(item.stock)){
+                            sign ++ ;
+                        }
+                    })
+                    if(sign != 0){
+                        event.toast('请完善规格或规格不能重复');
+                        return;
+                    }
+//                判断段落图片是否已上传
+                    this.list.forEach(function (item,index) {
                         if (!utils.isNull(item.paraImage) && item.paraImage.substring(0, 4) != 'http') {
                             _this.proTotal++;
                         }
                     });
-                    this.sendImage(0);
+                    _this.sendImage(0);
                 }
             },
             //上传图片到服务器
             sendImage(sendIndex) {
+                this.toSendArticle = true;
                 var _this = this;
 //                var frontUrl;
                 let sendLength = _this.list.length;//获取图片数组总长度
