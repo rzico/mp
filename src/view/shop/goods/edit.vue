@@ -524,7 +524,7 @@
 //            选择商品分类
             goChooseCatagory() {
                 let _this = this;
-                event.openURL(utils.locate('view/shop/goods/chooseCatagory.js'), function (data) {
+                event.openURL(utils.locate('view/shop/goods/chooseCatagory.js?catagoryId=' + this.catagoryId), function (data) {
                     if(data.type == 'success' && data.data != ''){
                         _this.catagoryId = parseInt(data.data.catagoryId);
                         _this.catagoryName = data.data.catagoryName;

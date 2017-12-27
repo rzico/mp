@@ -15,7 +15,7 @@
                 <div class="flex-row">
                     <text class="lineText">全部商品</text>
                 </div>
-                <div v-if="corpusId == 0 || corpusId == 'undefined'" >
+                <div v-if="catagoryId == 0 || catagoryId == 'undefined'" >
                     <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                         <text class="lineText limitWidth"  >{{item.name}}</text>
                         <text class="lineText">({{item.count}})</text>
                     </div>
-                    <div v-if="corpusId == item.id" >
+                    <div v-if="catagoryId == item.id" >
                         <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                     </div>
                 </div>
