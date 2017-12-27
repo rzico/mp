@@ -279,7 +279,7 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入文集名',duration:1})
                         }else{
-                            POST('weex/member/article_catalog/update.jhtml?id=' + id + '&name=' + value.data).then(
+                            POST('weex/member/article_catalog/update.jhtml?id=' + id + '&name=' + encodeURI(value.data)).then(
                                 function (data) {
                                     if(data.type == 'success'){
                                         _this.corpusList[index].name = value.data;//把名字改上去
