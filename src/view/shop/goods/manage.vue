@@ -348,6 +348,7 @@
             pageFrom:'',
             searchHint: "输入商品名",
             searchOrCancel:'取消',
+            keyword:'',
         },
         props:{
             noDataHint:{default:'暂无商品'},
@@ -480,7 +481,7 @@
                     _this.getCatagory();
                 });
             },
-//分类切换
+                //分类切换
             catagoryChange:function(index,id){
 //                event.toast(id);
                 var _this = this;
@@ -495,6 +496,9 @@
 //                如果在搜索状态下就不做数据加载
                 if(!this.doSearch){
                     _this.getAllGoods();
+                }else{
+                    _this.goodsList = [];
+                    _this.searchGoods();
                 }
             },
 
@@ -601,13 +605,13 @@
 //                    }
 //                });
             },
-            oninput:function (val) {
+            oninput:function (e) {
                 this.isSearch = false;
-                this.keyword = val;
-                this.searchOrCancel = '搜索'
-                if(val.length == 0){
-                    this.goodsList = [];
-                    this.noDataHint = "输入查找商品";
+                this.keyword = e.value;
+                this.searchOrCancel = '搜索';
+                this.goodsList = [];
+                this.noDataHint = "输入查找商品";
+                if(e.value.length == 0){
                     this.searchOrCancel = '取消'
                 }
             },
@@ -615,7 +619,9 @@
                 var _this = this;
                 this.isSearch = true;
                 this.pageStart = 0;
-                this.searchOrCancel = '取消'
+                this.searchOrCancel = '取消';
+                this.productCategoryId = '';
+                this.whichCorpus = 0;
                 this.searchGoods();
             },
 //            点击右上角取消或者搜索按钮
@@ -632,7 +638,7 @@
 //          查找商品
             searchGoods:function () {
                 let _this = this;
-                GET('weex/member/product/search.jhtml?keyword='+_this.keyword  + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/member/product/list.jhtml?keyword='+ encodeURI(_this.keyword)  + '&productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success'){
                         if (_this.pageStart == 0) {
                             _this.goodsList = data.data.data;
@@ -652,7 +658,7 @@
             },
 //          清空关键字
             clearBuf:function () {
-                this.keyword = "";
+                this.keyword = '';
             },
             inputBlur(){
                 this.$refs['searchBar'].blur();

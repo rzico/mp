@@ -39,8 +39,8 @@
                             <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                         </div>
                         <!--添加链接-->
-                        <div class="addIconBox " @click="addLinkPara(0)">
-                            <text class="addLink iconSize" :style="{fontFamily:'iconfont'}">&#xe678;</text>
+                        <div class="addIconBox addLinkPt"  @click="addLinkPara(0)">
+                            <text class=" iconSize addLink" :style="{fontFamily:'iconfont'}">&#xe63f;</text>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                     <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe644;</text>
                                 </div>
                                 <div class="videoIconBox" v-if="item.mediaType == 'product'">
-                                    <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe6a7;</text>
+                                    <text class="videoIcon goodsIcon" :style="{fontFamily:'iconfont'}" >&#xe640;</text>
                                 </div>
                             </div>
                             <!--文章内容-->
@@ -104,8 +104,8 @@
                                     <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                                 </div>
                                 <!--添加链接-->
-                                <div class="addIconBox " @click="addLinkPara(index + 1)">
-                                    <text class="addLink iconSize" :style="{fontFamily:'iconfont'}">&#xe678;</text>
+                                <div class="addIconBox addLinkPt" @click="addLinkPara(index + 1)">
+                                    <text class=" iconSize addLink" :style="{fontFamily:'iconfont'}">&#xe63f;</text>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +163,13 @@
         width: 155px;
         height: 155px;
         background-color: rgba(136,136,136,0.3);
+    }
+    .goodsIcon{
+        color: #fff;
+        font-size: 80px;
+        position:absolute;
+        top:37.5px;
+        left:37.5px;
     }
     .videoIcon{
         color: #fff;
@@ -283,7 +290,6 @@
     .paraCloseSize{
         color: #999;
         font-size: 34px;
-
     }
     .paraTextSize{
         font-size: 32px;
@@ -331,8 +337,12 @@
     .addVideo{
         color: #CCA7FC;
     }
+    .addLinkPt{
+        padding-top: 12px;
+    }
     .addLink{
-        color: #ccc;
+        color: #d81e06;
+        font-size: 44px;
     }
     .iconSize{
         font-size: 38px;
@@ -1655,6 +1665,7 @@
                     if(mediaType == 'image' || mediaType == 'product'){
 //                                调用裁剪图片
                         album.openCrop(imgSrc,function (data) {
+//                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.originalPath;
                                 _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;

@@ -380,7 +380,7 @@
                         if(!utils.isNull(data.data.productCategory.name)){
                             _this.catagoryName = data.data.productCategory.name;
                         }
-                        if(data.data.products.length == 1 &&  utils.isNull(data.data.products.spec1)){
+                        if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1)){
                             _this.firstProductId = data.data.products[0].productId;
                             _this.firstThumbnailImg = data.data.products[0].thumbnail;
                             _this.firstParaImage = data.data.products[0].thumbnail;
@@ -644,14 +644,14 @@
                         })
                     }
                 }else{
-                    let sign = 0;
+                    var sign = 0;
 //                    判断规格有没有完整
                     this.list.forEach(function (item) {
-                        if(item.isNew || utils.isNull(item.paraImage)  || utils.isNull(item.price) || utils.isNull(item.stock)){
+                        if(item.isNew || utils.isNull(item.paraImage)  || utils.isNull(item.price) || item.stock != ''){
                             sign ++ ;
                         }
                     })
-                    if(sign != 0){
+                    if(sign > 0){
                         event.toast('请完善规格或规格不能重复');
                         return;
                     }

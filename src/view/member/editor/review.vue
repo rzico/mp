@@ -15,20 +15,22 @@
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
             </cell>
             <!--导航栏-->
-            <cell class="lineBox" v-else v-for="(item,index) in reviewList">
-                <div class="flexRow" >
-                    <image class="headImg" :src="item.logo" @click="goAuthor(item.memberId)"></image>
-                    <div class="userInfo">
-                        <text class="fz32 nameColor" >{{item.nickName}}</text>
-                        <text class="infoText">{{item.content}}</text>
-                        <div class="delDate" >
-                            <text class="sub_date mt20 pb15">{{item.createDate | timefmtOther}}</text>
-                            <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" v-if="selfId == item.memberId || selfId == authorId">删除</text>
+            <cell  v-else v-for="(item,index) in reviewList">
+                <div class="lineBox">
+                    <div class="flexRow" >
+                        <image class="headImg" :src="item.logo" @click="goAuthor(item.memberId)"></image>
+                        <div class="userInfo">
+                            <text class="fz32 nameColor" >{{item.nickName}}</text>
+                            <text class="infoText">{{item.content}}</text>
+                            <div class="delDate" >
+                                <text class="sub_date mt20 pb15">{{item.createDate | timefmtOther}}</text>
+                                <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" v-if="selfId == item.memberId || selfId == authorId">删除</text>
+                            </div>
                         </div>
                     </div>
                 </div>
             </cell>
-    </list>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
