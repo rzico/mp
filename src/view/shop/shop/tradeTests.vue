@@ -128,7 +128,14 @@
             scan:function() {
                 var _this=this
                 event.scan(function (message) {
+                    if (message.type=='error') {
+                        return;
+                    }
                     utils.readScan(message.data,function (data) {
+                        if (data.data.type!='818804') {
+                            event.toast("无效收钱码");
+                            return;
+                        }
                         _this.code = data.data.code
                         if(data.type == 'success'){
                             POST('weex/member/shop/test.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
