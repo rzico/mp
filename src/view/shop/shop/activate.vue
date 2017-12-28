@@ -151,12 +151,12 @@
                         return;
                     }
                     utils.readScan(message.data,function (data) {
-                        if (data.data.type!='818804') {
-                            event.toast("无效收钱码");
-                            return;
-                        }
-                        _this.code = data.data.code
                         if (data.type == 'success'){
+                            if (data.data.type!='818804') {
+                                event.toast("无效收钱码");
+                                return;
+                            }
+                            _this.code = data.data.code
                             POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
                                 function (mes) {
                                     if (mes.type == "success") {
@@ -175,6 +175,8 @@
                                     event.toast("网络不稳定");
                                 }
                             )
+                        } else {
+                            event.toast(data.content);
                         }
 
                     })
