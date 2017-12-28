@@ -648,7 +648,7 @@
                     var sign = 0;
 //                    判断规格有没有完整
                     this.list.forEach(function (item) {
-                        if(item.isNew || utils.isNull(item.paraImage)  || utils.isNull(item.price) || item.stock != ''){
+                        if(item.isNew || utils.isNull(item.paraImage)  || utils.isNull(item.price) || utils.isNull(item.stock)){
                             sign ++ ;
                         }
                     })
