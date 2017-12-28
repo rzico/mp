@@ -93,6 +93,8 @@
         border-bottom-color: #cccccc;
         background-color: white;
         height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .vendorName{
         font-size: 32px;
@@ -110,6 +112,8 @@
         border-bottom-color: #ccc;
         border-bottom-width: 1px;
         height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .belongIndustry{
         font-size: 32px;
@@ -127,6 +131,8 @@
         border-bottom-color: #ccc;
         border-bottom-width: 1px;
         height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .businessLocation{
         font-size: 32px;
@@ -143,6 +149,8 @@
         border-bottom-color: #ccc;
         border-bottom-width: 1px;
         height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .detailedAddress{
         font-size: 32px;
@@ -157,6 +165,8 @@
         background-color: white;
         margin-top: 50px;
         height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     .contactName{
         font-size: 32px;
@@ -187,6 +197,8 @@
         border-bottom-color: #cccccc;
         background-color: white;
         height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
     /*下一步*/
     .button{
