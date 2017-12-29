@@ -14,9 +14,10 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-                <cell v-for="(deposit,index) in depositList" :class="[index == 0 ? 'mt20' : '']">
+                <cell v-for="(deposit,index) in depositList" >
+
                     <!--如果月份重复就不渲染该区域-->
-                    <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
+                    <div class="cell-header cell-line space-between" v-if="isRepeat(index)" :class="[index == 0 ? 'mt20' : '']" @click="summary(deposit.createDate)">
                         <div class="flex-row flex-start">
                             <text class="title" >{{deposit.createDate | daydayfmt}}</text>
                         </div>
@@ -25,7 +26,7 @@
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
                     </div>
-                    <div class="cell-row cell-clear" :style="rowBk(deposit.id)" @click="popup(deposit.id)">
+                    <div class="cell-row cell-clear" style="background-color: black" :style="rowBk(deposit.id)" @click="popup(deposit.id)">
                         <div class="cell-panel newHeight" :style="addBorder(index)">
                             <div class="flex1">
                                 <image class="logo" resize="cover"
@@ -488,7 +489,8 @@
             getDate: function(value) {
                 let res = utils.resolvetimefmt(value);
                 let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
-                var w = tds.d - res.d;
+                let span = Math.abs(Math.round(new Date().getTime())-value);
+                let w = Math.floor(span / (24 * 3600 * 1000));
                 if (w<1) {
                     return "今天"
                 } else

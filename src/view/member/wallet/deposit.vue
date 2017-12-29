@@ -9,13 +9,13 @@
             </div>
             <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
         </div>
-        <list class="list mt20"  @loadmore="onloading" loadmoreoffset="180">
+        <list class="list "  @loadmore="onloading" loadmoreoffset="180">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-for="(deposit,index) in depositList" ref="adoptPull">
                 <!--如果月份重复就不渲染该区域-->
-                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
+                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" :class="[index == 0 ? 'mt20' : '']"  @click="summary(deposit.createDate)">
                     <div class="flex-row flex-start">
                         <text class="title" >{{deposit.createDate | monthfmt}}</text>
                     </div>
@@ -307,16 +307,16 @@
                 // 返回处理后的值
                 let m = tds.m - res.m;
                 let y = tds.y - res.y;
-                if (m < 1) {
+                if (y<1 && m<1) {
                     return "本月"
                 }
-                if (m < 2) {
+                if (y<1 && m<2) {
                     return "上月"
                 }
-                if (y < 1) {
-                    return res.m + "月"
+                if (y<1) {
+                    return res.m +"月"
                 }
-                return res.y + "年" + res.m + "月";
+                return res.y+"年"+ res.m +"月";
             }
         },
         created () {

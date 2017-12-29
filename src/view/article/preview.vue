@@ -422,9 +422,7 @@
                 this.templateSn= itemSn;
                 this.templateId ='t' + itemSn;
                 this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
-
             },
-
 //            点击 标题 更换模版类型的触发
             tickTitle(name){
                 this.templateName= name;
@@ -540,7 +538,7 @@
                                     _this.isLaud = false;
                                     _this.laudNum --;
                                 }else{
-                                    event.toast(err.content);
+                                    event.toast(data.content);
                                 }
                             },function (err) {
                                 event.toast(err.content);
@@ -553,7 +551,7 @@
                                     _this.laudNum ++;
                                     _this.isLaud = true;
                                 }else{
-                                    event.toast(err.content);
+                                    event.toast(data.content);
                                 }
                             },function (err) {
                                 event.toast(err.content);

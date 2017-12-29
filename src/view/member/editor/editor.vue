@@ -1363,31 +1363,32 @@
             addTextPara:function(index){
                 var _this = this;
                 event.openEditor('',function (data) {
-                    let textImg = utils.locate('resources/images/text.png');
+                    if(data.type == 'success' && data.data != ''){
+                        let textImg = utils.locate('resources/images/text.png');
 //                    将返回回来的html数据赋值进去
-                    let newPara = {
-                        //原图
-                        paraImage:'',
+                        let newPara = {
+                            //原图
+                            paraImage:'',
 //                                    小缩略图
-                        thumbnailImage:textImg,
+                            thumbnailImage:textImg,
 //                        paraText:_this.checkInput(data.data),
-                        paraText:data.data,
-                        mediaType: "image",
-                        show:true,
-                        //          对象id
-                        id:0,
+                            paraText:data.data,
+                            mediaType: "image",
+                            show:true,
+                            //          对象id
+                            id:0,
 //                                            第三方链接
-                        url:'',
-                    };
-                    _this.paraList.splice(index,0,newPara);
-
+                            url:'',
+                        };
+                        _this.paraList.splice(index,0,newPara);
 //                    添加修改标志
-                    _this.hadChange = 1;
+                        _this.hadChange = 1;
 //                    if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                    _this.saveDraft();
+                        _this.saveDraft();
 //                    }
 //                    modal.toast({message:_this.paraList[index].paraText,duration:3});
+                    }
                 });
             },
 //            点击"+"号里的图片时
