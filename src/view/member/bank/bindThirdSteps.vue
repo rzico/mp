@@ -15,7 +15,7 @@
             </div>
             <div class="flex-end">
                 <text class="status primary" @click="send()" :style="statusStyle()" v-if="retry">{{status}}</text>
-                <text class="status gray"  :style="statusStyle()"  v-else> {{time}}秒后刷新</text>
+                <text class="status gray fz28"  :style="statusStyle()"  v-else> {{time}}秒后刷新</text>
             </div>
         </div>
 
