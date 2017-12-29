@@ -140,7 +140,6 @@
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
 
-    var pageNumber = 1;
     export default {
         data:function(){
             return{
@@ -256,7 +255,6 @@
                            })
                        }
                        _this.pageStart = res.data.start+res.data.data.length;
-                       _this.noLoading = res.data.data.length<_this.pageSize;
                    } else {
                        event.toast(res.content);
                    }

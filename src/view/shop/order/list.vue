@@ -172,10 +172,7 @@
             refreshing:false,
             pageStart:0,
             pageSize:15,
-            reviewNum:0,
-            isPopup:false,
-//            refreshImg:utils.locate('resources/images/loading.png'),
-            refreshImg:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514462683&di=8f6e78d98e3cc8a0480c93058e674b14&imgtype=jpg&er=1&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F27%2F68%2F55f95158e34f2_1024.jpg',
+            refreshImg:utils.locate('resources/images/loading.png'),
             catagoryList:[{
                 name:'全部',
                 id:'0'
@@ -189,12 +186,9 @@
                 name:'待收货',
                 id:'3'
             },{
-                name:'待评价',
+                name:'退款/售后',
                 id:'4'
             }],
-            whichCorpus:0,
-//                分类id
-            corpusId:'',
         },
         props:{
             noDataHint:{default:'暂无订单'},
@@ -205,7 +199,6 @@
         },
         created(){
             utils.initIconFont();
-            this.getCatagory();
         },
         methods:{
             onloading:function () {
@@ -240,65 +233,10 @@
                 }, 1000)
             },
 
-            doCancel:function () {
-                this.isPopup = false;
-            },
-            popup:function (id) {
-                if (this.isPopup==false) {
-                    this.isPopup = true;
-                }
-            },
-            addGoods(){
-                event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function () {
-                });
-            },
-//            分类
-            goCatagory(){
-                var _this = this;
-                event.openURL(utils.locate('view/shop/goods/catagory.js?name=catagoryList'), function (data) {
-                    _this.getCatagory();
-                });
-            },
-//分类切换
-            catagoryChange:function(index,id){
-//                event.toast(id);
-                var _this = this;
-                if(_this.whichCorpus == index){
-                    return;
-                }
-                _this.whichCorpus = index;
-                _this.corpusId = id;
+            goback:function () {
+                event.closeURL();
+            }
 
-//                _this.getAllArticle();
-            },
-
-//            获取分类
-            getCatagory:function () {
-                var _this = this;
-                GET('weex/member/product_category/list.jhtml',function (data) {
-                    if (data.type == "success") {
-                        if(data.data == ''){
-                        }else{
-//                            event.toast(data.data);
-                            _this.catagoryList = '';
-                            _this.catagoryList =[{
-                                name:'全部',
-                                id:''
-                            }];
-//                                将文集名循环插入数组中
-                            for(let i = 0; i<data.data.length;i++){
-                                _this.catagoryList.splice(1 + i,0,data.data[i]);
-                            }
-                            data.data = JSON.stringify(data.data);
-                            storage.setItem('catagoryList',data.data);
-                        }
-                    }else {
-                        event.toast(data.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                })
-            },
         }
     }
 </script>
