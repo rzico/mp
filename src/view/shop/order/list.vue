@@ -167,28 +167,30 @@
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
     export default {
-        data:{
-            ordersList:['1','2'],
-            refreshing:false,
-            pageStart:0,
-            pageSize:15,
-            refreshImg:utils.locate('resources/images/loading.png'),
-            catagoryList:[{
-                name:'全部',
-                id:'0'
-            },{
-                name:'待付款',
-                id:'1'
-            },{
-                name:'待发货',
-                id:'2'
-            },{
-                name:'待收货',
-                id:'3'
-            },{
-                name:'退款/售后',
-                id:'4'
-            }],
+        data:function(){
+            return{
+                ordersList:['1','2'],
+                refreshing:false,
+                pageStart:0,
+                pageSize:15,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                catagoryList:[{
+                    name:'全部',
+                    id:'0'
+                },{
+                    name:'待付款',
+                    id:'1'
+                },{
+                    name:'待发货',
+                    id:'2'
+                },{
+                    name:'待收货',
+                    id:'3'
+                },{
+                    name:'退款/售后',
+                    id:'4'
+                }],
+            }
         },
         props:{
             noDataHint:{default:'暂无订单'},

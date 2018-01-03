@@ -245,13 +245,15 @@
     import noData from '../../../include/noData.vue';
     const clipboard = weex.requireModule('clipboard');
     export default {
-        data: {
-            ordersList: ['1'],
-            refreshing: false,
-            pageStart: 0,
-            pageSize: 15,
+        data:function() {
+            return{
+                ordersList: ['1'],
+                refreshing: false,
+                pageStart: 0,
+                pageSize: 15,
 //            refreshImg:utils.locate('resources/images/loading.png'),
-            refreshImg: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514462683&di=8f6e78d98e3cc8a0480c93058e674b14&imgtype=jpg&er=1&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F27%2F68%2F55f95158e34f2_1024.jpg',
+                refreshImg: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1514462683&di=8f6e78d98e3cc8a0480c93058e674b14&imgtype=jpg&er=1&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F18%2F27%2F68%2F55f95158e34f2_1024.jpg',
+            }
         },
         props: {
             noDataHint: {default: '暂无订单'},
