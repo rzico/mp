@@ -1,13 +1,15 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
+        <div class="corpusBox"  >
+            <div class="articleClass">
+                <text @click="corpusChange(index,item.id)"class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index && corpusList.length != 0 ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+            </div>
+        </div>
         <list class="list">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell v-if="noData()" >
-                <noData > </noData>
-            </cell>
             <cell v-for="(deposit,index) in depositList" >
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)" @click="print(deposit.shopId)">
@@ -30,11 +32,18 @@
                         </div>
                 </div>
             </cell>
+            <cell v-if="noData()" >
+                <noData > </noData>
+            </cell>
         </list>
         <div class="panel" >
             <div class="moneyname">
                 <text class="name" style="margin-left:20px">营业额</text>
                 <text class="money" style="color:red">{{total | currencyfmt}}</text>
+            </div>
+            <div class="moneyname">
+                <text class="name" style="margin-left:20px">充值送</text>
+                <text class="money" style="color:red">{{present | currencyfmt}}</text>
             </div>
             <div class="moneyname">
                 <text class="name" style="margin-left:20px">手续费</text>
@@ -74,20 +83,48 @@
     }
 
     .moneyname {
-        flex-direction: row;
+        flex-direction: column;
         flex:6;
-        justify-content: space-between;
+        align-items: center;
     }
 
     .money {
         font-size: 32px;
         font-weight: bold;
-        margin-right: 20px;
     }
 
     .name {
         font-size: 28px;
         color: #ccc;
+    }
+    .noActive{
+        border-bottom-width:0px;
+    }
+    .corpusBox{
+        flex-direction: row;
+        height:80px;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: gainsboro;
+        background-color: #fff;
+    }
+    .articleClass{
+        flex-direction: row;
+        padding-left: 10px;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: gainsboro;
+        height:80px;
+        background-color: #fff;
+        width:750px;
+    }
+    .allArticle{
+        font-size: 29px;
+        line-height: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
+        text-align:center;
+        flex:1
     }
 
 </style>
@@ -110,9 +147,21 @@
                 shopId:"",
                 billDate:"",
                 total:0,
+                present:0,
                 fee:0,
                 account:0,
                 refreshImg:utils.locate('resources/images/loading.png'),
+                whichCorpus:0,
+                corpusList:[{
+                    name:'日报',
+                    id:'0'
+                },{
+                    name:'月报',
+                    id:'1'
+                },{
+                    name:'年报',
+                    id:'2'
+                }],
             }
         },
         components: {
@@ -165,6 +214,10 @@
             this.open();
         },
         methods: {
+            corpusChange:function (index,id) {
+                this.whichCorpus = index;
+                this.open();
+            },
             noData:function () {
                 return this.depositList.length==0;
             },
@@ -202,15 +255,17 @@
             },
             open:function () {
                 var _this = this;
-                var addr = 'weex/member/paybill/summary.jhtml?shopId='+_this.shopId+'&billDate='+ encodeURIComponent(_this.billDate);
+                var addr = 'weex/member/paybill/summary.jhtml?shopId='+_this.shopId+'&billDate='+ encodeURIComponent(_this.billDate)+"&type="+this.whichCorpus;
                 GET(addr, function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
                         _this.total = 0;
+                        _this.present = 0;
                         _this.fee = 0;
                         _this.account = 0;
                         _this.depositList.forEach(function (item) {
                             _this.total = _this.total + item.amount;
+                            _this.present = _this.present + item.present;
                             _this.fee = _this.fee + item.fee;
                             _this.account = _this.account + item.account;
                         })
@@ -251,7 +306,7 @@
             },
             print:function (shopId) {
                 var _this = this;
-                GET("weex/member/paybill/summary_print.jhtml?shopId="+shopId+"&billDate="+encodeURIComponent(_this.billDate),
+                GET("weex/member/paybill/summary_print.jhtml?shopId="+shopId+"&billDate="+encodeURIComponent(_this.billDate)+"&type="+this.whichCorpus,
                     function (mes) {
                     if (mes.type=='success') {
                         if (utils.device()=='V1') {

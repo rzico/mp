@@ -146,8 +146,7 @@
                 if (val=='recharge') {
                     return "充值"
                 } else
-                if
-                (val=='refunds') {
+                if (val=='refunds') {
                     return "退款"
                 } else
                 if (val=='product') {
@@ -170,6 +169,9 @@
                 } else
                 if (val=='transfer') {
                     return '提现'
+                } else
+                if (val=='smsSend') {
+                    return '短信'
                 } else {
                     return '其他'
                 }

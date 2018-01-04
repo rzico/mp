@@ -110,6 +110,7 @@
                 return utils.device()!="V1";
             },
             weixin: function (e) {
+                var _this = this;
                 event.wxAuth(
                     function (message) {
                         if (message.type=="success") {
@@ -128,6 +129,7 @@
                                 )
                         } else {
                             event.toast(message.content);
+                            _this.login();
                         }
 
                     }
