@@ -90,7 +90,8 @@
                 refreshing: false,
                 shopId:"",
                 billDate:"",
-                total:0
+                total:0,
+                refreshImg:utils.locate('resources/images/loading.png'),
             }
         },
         components: {
