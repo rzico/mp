@@ -8,34 +8,63 @@
             <cell>
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
             </cell>
-            <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
-                    <div class="dateBox">
-                        <text class="dateText">{{item.createDate | timefmtMore}}</text>
+            <cell  v-if="messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="dateBox">
+                    <text class="dateText">{{item.createDate | timefmtMore}}</text>
+                </div>
+                <div class="contentBox">
+                    <text class="fz45 black">{{item.ext.orderItems[0].name}}</text>
+                    <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
+                    <div class="moneyBox">
+                        <text class="fz65">{{item.ext.orderItems[0].price | currencyfmt}}</text>
+                        <text class="fz30" >元</text>
+
                     </div>
-                    <div class="contentBox">
-                        <text class="fz45 black">{{item.title}}</text>
-                        <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
-                        <div class="moneyBox">
-                            <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
-                            <text class="fz30">元</text>
-                        </div>
-                        <div class="contentLine">
-                            <text class="fz30 black">付款方式:</text>
-                            <text class="fz30 gray ml10">{{item.ext.method}}</text>
-                        </div>
-                        <div class="contentLine">
-                            <text class="fz30 black">交易对象:</text>
-                            <text class="fz30 gray ml10">{{item.nickName}}</text>
-                        </div>
-                        <div class="contentLine">
-                            <text class="fz30 black">商品说明:</text>
-                            <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
-                        </div>
-                        <div class="bottomBtn">
-                            <text class="title">查看详情</text>
-                        </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">订单号:</text>
+                        <text class="fz30 gray ml10">{{item.ext.sn}}</text>
                     </div>
-                </cell>
+                    <div class="contentLine">
+                        <text class="fz30 black">订单状态:</text>
+                        <text class="fz30 gray ml10">{{item.ext.statusDescr}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">商品说明:</text>
+                        <text class=" fz30 gray ml10">{{item.ext.orderItems[0].spec}}</text>
+                    </div>
+                    <div class="bottomBtn">
+                        <text class="title">查看详情</text>
+                    </div>
+                </div>
+            </cell>
+            <cell  v-if="messageType == 'gm_10201'"   v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="dateBox">
+                    <text class="dateText">{{item.createDate | timefmtMore}}</text>
+                </div>
+                <div class="contentBox">
+                    <text class="fz45 black">{{item.title}}</text>
+                    <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
+                    <div class="moneyBox">
+                        <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
+                        <text class="fz30" >元</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">付款方式:</text>
+                        <text class="fz30 gray ml10">{{item.ext.method}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">交易对象:</text>
+                        <text class="fz30 gray ml10">{{item.nickName}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">商品说明:</text>
+                        <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
+                    </div>
+                    <div class="bottomBtn">
+                        <text class="title">查看详情</text>
+                    </div>
+                </div>
+            </cell>
             <cell  v-if="messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
                 <div class="dateBox">
                     <text class="dateText">{{item.createDate | timefmtMore}}</text>
