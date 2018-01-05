@@ -37,19 +37,19 @@
             </cell>
         </list>
         <div class="panel" >
-            <div class="moneyname">
+            <div class="moneyname_total">
                 <text class="name" style="margin-left:20px">营业额</text>
                 <text class="money" style="color:red">{{total | currencyfmt}}</text>
             </div>
-            <div class="moneyname">
+            <div class="moneyname_total">
                 <text class="name" style="margin-left:20px">充值送</text>
                 <text class="money" style="color:red">{{present | currencyfmt}}</text>
             </div>
-            <div class="moneyname">
+            <div class="moneyname_total">
                 <text class="name" style="margin-left:20px">手续费</text>
                 <text class="money" style="color:red">{{fee | currencyfmt}}</text>
             </div>
-            <div class="moneyname">
+            <div class="moneyname_total">
                 <text class="name" style="margin-left:20px">线上结算</text>
                 <text class="money" style="color:red">{{account | currencyfmt}}</text>
             </div>
@@ -82,8 +82,14 @@
         flex:2;
     }
 
-    .moneyname {
+    .moneyname_total {
         flex-direction: column;
+        flex:6;
+        align-items: center;
+    }
+
+    .moneyname {
+        flex-direction: row;
         flex:6;
         align-items: center;
     }
