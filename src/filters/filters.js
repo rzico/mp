@@ -4,8 +4,11 @@ Vue.filter('daydayfmt', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
+
     if (daySub<1) {
         return "今天"
     } else
@@ -24,7 +27,9 @@ Vue.filter('dayfmt', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
     if (daySub<1) {
         return "今天"
@@ -42,7 +47,9 @@ Vue.filter('timefmt', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
     if (daySub<1) {
         return res.h +":"+ res.i ;
@@ -76,7 +83,9 @@ Vue.filter('timefmtMore', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
     if (daySub<1) {
         return res.h +":"+ res.i ;
@@ -97,9 +106,10 @@ Vue.filter('timefmtOther', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
-
     if (daySub<1) {
         return res.h +":"+res.i ;
     }
