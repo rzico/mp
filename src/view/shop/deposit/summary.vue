@@ -23,12 +23,14 @@
                 </div>
                 <div class="panel" >
                         <div class="monthFont">
-                            <text class="textMonth flex1">{{deposit.type | typefmt}}</text>
-                            <text class="ico flex1 mt10" :style="{fontFamily:'iconfont'}">{{deposit.type | typeico}}</text>
-                        </div>
+                            <text class="ico_big mt10" :style="{fontFamily:'iconfont'}">{{deposit.type | typeico}}</text>
+                         </div>
                         <div class="moneyname">
-                            <text class="name">{{deposit.method}}</text>
-                            <text class="money">{{deposit.amount | currencyfmt}}</text>
+                            <div>
+                                <text class="textMonth">{{deposit.type | typefmt}}</text>
+                                <text class="name">{{deposit.method}}</text>
+                            </div>
+                            <text class="money" style="margin-right: 20px">{{deposit.amount | currencyfmt}}</text>
                         </div>
                 </div>
             </cell>
@@ -38,19 +40,19 @@
         </list>
         <div class="panel" >
             <div class="moneyname_total">
-                <text class="name" style="margin-left:20px">营业额</text>
+                <text class="name" >营业额</text>
                 <text class="money" style="color:red">{{total | currencyfmt}}</text>
             </div>
             <div class="moneyname_total">
-                <text class="name" style="margin-left:20px">充值送</text>
+                <text class="name" >充值送</text>
                 <text class="money" style="color:red">{{present | currencyfmt}}</text>
             </div>
             <div class="moneyname_total">
-                <text class="name" style="margin-left:20px">手续费</text>
+                <text class="name" >手续费</text>
                 <text class="money" style="color:red">{{fee | currencyfmt}}</text>
             </div>
             <div class="moneyname_total">
-                <text class="name" style="margin-left:20px">线上结算</text>
+                <text class="name" >线上结算</text>
                 <text class="money" style="color:red">{{account | currencyfmt}}</text>
             </div>
         </div>
@@ -72,14 +74,13 @@
 
     .textMonth {
         font-size: 32px;
-        margin-left: 20px;
         color: #444;
     }
 
     .monthFont {
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        flex:2;
+        flex:1;
     }
 
     .moneyname_total {
@@ -92,6 +93,7 @@
         flex-direction: row;
         flex:6;
         align-items: center;
+        justify-content: space-between;
     }
 
     .money {
@@ -101,7 +103,7 @@
 
     .name {
         font-size: 28px;
-        color: #ccc;
+        color: #999;
     }
     .noActive{
         border-bottom-width:0px;
@@ -140,7 +142,7 @@
     import {dom,event,animation} from '../../../weex.js';
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
-    var he = require('he');
+    const he = require('he');
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
@@ -179,13 +181,13 @@
         filters: {
             typefmt:function (val) {
                 if (val == 'cashier') {
-                    return '消费'
+                    return '消费买单'
                 } else if (val == 'cashierRefund') {
-                    return '退款'
+                    return '消费退款'
                 } else if (val == 'card') {
-                    return '充值'
+                    return '会员卡充值'
                 } else if (val == 'cardRefund') {
-                    return '卡退款'
+                    return '会员卡退款'
                 } else {
                     return '未知'
                 }
@@ -193,15 +195,15 @@
 
             typeico:function (val) {
                 if (val == 'cashier') {
-                    return he.decode("&#xe622;");
+                    return he.decode("&#xe69f;");
                 } else if (val == 'cashierRefund') {
                     return he.decode("&#xe710;");
                 } else if (val == 'card') {
-                    return he.decode("&#xe622;");
+                    return he.decode("&#xe69f;");
                 } else if (val == 'cardRefund') {
                     return he.decode("&#xe710;");
                 } else {
-                    return he.decode("&#xe622;");
+                    return he.decode("&#xe69f;");
                 }
             }
 
