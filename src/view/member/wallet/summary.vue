@@ -19,10 +19,10 @@
                     </div>
                 </div>
             </cell>
-            <cell v-if="noData()" >
-                <noData > </noData>
-            </cell>
         </list>
+        <div v-if="noData()" >
+            <noData > </noData>
+        </div>
         <div class="panel" >
             <div class="moneyname">
                 <text class="name" style="margin-left:20px">合计</text>

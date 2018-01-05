@@ -34,10 +34,10 @@
                         </div>
                 </div>
             </cell>
-            <cell v-if="noData()" >
-                <noData > </noData>
-            </cell>
         </list>
+        <div v-if="noData()" >
+            <noData > </noData>
+        </div>
         <div class="panel" >
             <div class="moneyname_total">
                 <text class="name" >营业额</text>
@@ -229,35 +229,6 @@
             noData:function () {
                 return this.depositList.length==0;
             },
-//            是否添加底部边框
-            addBorder: function (index) {
-                let listLength = this.depositList.length;
-//                判断是否最后一个元素并且是否每月的结尾
-                if(index != listLength - 1 ){
-                    if(this.depositList[index].shopId == this.depositList[index + 1].shopId){
-                        return {
-                            borderBottomWidth:'1px'
-                        }
-                    }else{
-                        return {
-                            borderBottomWidth:'0px'
-                        }
-                    }
-                }else{
-                    return {
-                        borderBottomWidth:'0px'
-                    }
-                }
-            },
-            //判断月份是否重复
-            isRepeat(index){
-                if(index != 0){
-                    if(this.depositList[index].shopId== this.depositList[index - 1].shopId){
-                        return false;
-                    }
-                }
-                return true;
-            },
             goback: function (e) {
                 event.closeURL();
             },
@@ -277,6 +248,7 @@
                             _this.fee = _this.fee + item.fee;
                             _this.account = _this.account + item.account;
                         })
+                        event.toast(JSON.stringify(res));
                      } else {
                         event.toast(res.content);
                     }
