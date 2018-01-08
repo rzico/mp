@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
-        <div  class="corpusBox" >
+        <div  class="corpusBox">
             <scroller scroll-direction="horizontal"  class="corpusScroll">
                 <div class="articleClass" v-for="(item,index) in catagoryList" >
                     <text @click="catagoryChange(index,item.id)" class="allArticle" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>

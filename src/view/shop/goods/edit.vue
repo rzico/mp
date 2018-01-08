@@ -770,7 +770,7 @@
                         thumbnail:this.firstParaImage,
                         spec1: '',
                         spec2: '',
-                        price: parseInt(_this.topLinePrice),
+                        price:_this.topLinePrice,
                         stock: parseInt(_this.topLineNum)
                     })
                 }else{
@@ -780,7 +780,7 @@
                             thumbnail: item.paraImage,
                             spec1: item.spec1,
                             spec2: item.spec2,
-                            price: parseInt(item.price),
+                            price: item.price,
                             stock: parseInt(item.stock)
                         })
                     })
