@@ -122,7 +122,8 @@
                 city:'',
                 time:59,
                 textList:['','','','','',''],
-                verification:''
+                verification:'',
+                clicked:false
             }
         },
         components: {
@@ -169,7 +170,11 @@
         methods: {
 
             binding:function (e){
-                var _this=this;
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
                 if (utils.isNull(this.verification)) {
                     modal.alert({
                         message: "请输入验证码",
@@ -221,6 +226,10 @@
 
             onSend: function (e) {
                 var _this = this;
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 event.encrypt(_this.phone, function (message) {
                     if (message.type == "success") {
                         POST('weex/member/bankcard/send_mobile.jhtml?mobile=' + message.data).then(
@@ -230,12 +239,15 @@
                                 } else {
                                     event.toast(data.content);
                                 }
+                                this.clicked = false;
                             }, function (err) {
                                 event.toast(err.content);
+                                this.clicked = false;
                             }
                         )
                     } else {
                         event.toast(message.content);
+                        this.clicked = false;
                     }
                 })
 
@@ -264,7 +276,8 @@
                     timer = null;
                 }
                 _this.captcha = '';
-                this.retry = true;
+                _this.retry = true;
+                _this.clicked = false;
             },
             statusStyle: function () {
                 if (this.retry) {

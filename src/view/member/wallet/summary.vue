@@ -127,10 +127,10 @@
                     (val=='cashier') ||
                     (val=='card'))
                 {
-                    return  he.decode("&#xe63e;");
+                    return  he.decode("&#xe69f;");
                 } else
                 {
-                    return  he.decode("&#xe80a;");
+                    return  he.decode("&#xe710;");
                 }
             },
 

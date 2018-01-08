@@ -93,7 +93,8 @@
                     { src: utils.remote('resources/images/flash2.jpg')},
                     { src: utils.remote('resources/images/flash3.jpg')},
                     { src: utils.remote('resources/images/flash4.jpg')}
-                ]
+                ],
+                clicked:false
             }
         },
         created(){
@@ -110,6 +111,10 @@
                 return utils.device()!="V1";
             },
             weixin: function (e) {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.wxAuth(
                     function (message) {
@@ -131,21 +136,32 @@
                             event.toast(message.content);
                             _this.login();
                         }
-
+                        _this.clicked = false;
                     }
                 );
             },
             login: function (e) {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
                 event.openURL(utils.locate('view/login/index.js'),function (data) {
                     if(data.type=='success') {
                         event.closeURL();
                     }
+                    _this.clicked = false;
                 });
             },
             goback: function (e) {
                 event.closeURL();
             },
             scan:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
                 event.scan(function (message) {
                     if (message.type == 'success') {
                         utils.readScan(message.data,function (res) {
@@ -175,7 +191,8 @@
                     } else {
                         event.toast(message.content);
                     }
-                 }
+                    _this.clicked = false;
+                }
                 )
             }
         }

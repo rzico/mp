@@ -210,6 +210,7 @@
         },
         created() {
 //              页面创建时请求数据
+            this.whichCorpus = 0;
             utils.initIconFont();
             this.shopId = utils.getUrlParameter("shopId");
             if (this.shopId==null) {
@@ -232,9 +233,39 @@
             goback: function (e) {
                 event.closeURL();
             },
+//            是否添加底部边框
+            addBorder: function (index) {
+                let listLength = this.depositList.length;
+//                判断是否最后一个元素并且是否每月的结尾
+                if(index != listLength - 1 ){
+                    if(this.depositList[index].shopId == this.depositList[index + 1].shopId){
+                        return {
+                            borderBottomWidth:'1px'
+                        }
+                    }else{
+                        return {
+                            borderBottomWidth:'0px'
+                        }
+                    }
+                }else{
+                    return {
+                        borderBottomWidth:'0px'
+                    }
+                }
+            },
+            //判断月份是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if (this.depositList[index].shopId== this.depositList[index - 1].shopId){
+                        return false;
+                    }
+                }
+                return true;
+            },
             open:function () {
                 var _this = this;
                 var addr = 'weex/member/paybill/summary.jhtml?shopId='+_this.shopId+'&billDate='+ encodeURIComponent(_this.billDate)+"&type="+this.whichCorpus;
+
                 GET(addr, function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
@@ -248,7 +279,6 @@
                             _this.fee = _this.fee + item.fee;
                             _this.account = _this.account + item.account;
                         })
-                        event.toast(JSON.stringify(res));
                      } else {
                         event.toast(res.content);
                     }
@@ -260,7 +290,7 @@
             onrefresh (e) {
                 var _this = this;
                 _this.pageStart = 0;
-                this.refreshing = true;
+                _this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
                         transform: 'rotate(360deg)',
@@ -280,7 +310,7 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    this.refreshing = false
+                    _this.refreshing = false
                     _this.open();
                 }, 1000)
             },
