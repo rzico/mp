@@ -39,7 +39,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
-                        <text class="title ml10">开通收银台</text>
+                        <text class="title ml10">开启商户模式</text>
                     </div>
                     <div class="flex-row flex-end">
                         <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCashier" @change="onUseCashier"></switch>
@@ -47,22 +47,9 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">适用于有实体店铺的商家,线下ERP集成</text>
+                <text class="sub_title">适用于有实体店铺的商家，首页默认管理后台</text>
             </div>
 
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">启用优惠券</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCoupon" @change="onUseCoupon"></switch>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-panel">
-                <text class="sub_title">营销利器，支持满折、满减营销活动</text>
-            </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -77,6 +64,7 @@
                 <text class="sub_title">电子会员卡，集成微信卡包</text>
             </div>
             </div>
+
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear"  @click="linkman()">
                     <div class="flex-row">
@@ -107,9 +95,34 @@
                 <text class="sub_title">信息同步至公众号,自已也能管理</text>
                 <!--<text class="sub_title" style="color:blue">《操作手册》</text>-->
             </div>
+
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between cell-clear"  @click="share()">
+                    <div class="flex-row">
+                        <text class="title ml10">分享至朋友圈</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+
             <div class="fill"></div>
+
+
         </scroller>
+
         <payment ref="payment" @notify="notify"></payment>
+
+        <!--动画无效-->
+        <!--<transition name="slide-fade-share" mode="out-in">-->
+        <div v-if="showShare"  key="share">
+            <div class="mask" @touchstart="maskTouch"></div>
+            <share @doShare="doShare" @doCancel="doCancel"></share>
+        </div>
+        <!--模版内容-->
+        <!--</transition>-->
+
     </div>
 
 </template>
@@ -176,6 +189,7 @@
     import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue'
     import payment from '../../../include/payment.vue'
+    import share from '../../../include/share.vue'
     import utils from '../../../assets/utils'
     import music from '../../../assets/music'
     const album = weex.requireModule('album');
@@ -187,11 +201,12 @@
               sn:"",
               topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false},
               noJob:true,
-              isOwner:false
+              isOwner:false,
+              showShare:false
           }
         },
         components: {
-            navbar,payment
+            navbar,payment,share
         },
         props: {
             title: { default: "我的专栏" }
@@ -346,7 +361,6 @@
                         event.toast(err.content);
                     }
                 )
-
             },
             onUseCard:function (e) {
                 var _this = this;
@@ -432,7 +446,55 @@
                     })
                     this.load();
                 }
-            }
+            },
+            doCancel:function () {
+                this.showShare = false;
+            },
+            share:function () {
+                this.showShare = true;
+            },
+            doShare(id){
+                var shareType;
+                let _this = this;
+                switch(id){
+                    case 0 :
+                        shareType = 'timeline';
+                        break;
+                    case 1 :
+                        shareType = 'appMessage';
+                        break;
+                    case 2 :
+                        shareType = 'copyHref';
+                        break;
+                    case 3 :
+                        shareType = 'browser';
+                        break;
+                    default:
+                        shareType = '';
+                        break;
+                }
+
+                GET('share/topic.jhtml?topicId=' + this.topic.id + '&shareType=' +  shareType ,function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        var option = {
+                            title:data.data.title,
+                            text:data.data.descr,
+                            imageUrl:data.data.thumbnail,
+                            url:data.data.url,
+                            type:shareType
+                        }
+                        _this.showShare = false;
+                        event.share(option,function (data) {
+                            if(data.type == 'success'){
+                                event.toast(data.content);
+                            }
+                        })
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+
         }
 
     }
