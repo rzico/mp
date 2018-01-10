@@ -131,10 +131,10 @@
                         </div>
                     </div>
                 </div>
-                <!--添加投票-->
-                <div class="paraBox flexRow " @click="goVote()">
-                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                    <text class="addVote">添加投票</text>
+                <!--添加商品-->
+                <div class="paraBox flexRow " @click="addLinkPara(paraList.length)">
+                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe640;</text>
+                    <text class="addVote">添加商品</text>
                 </div>
             </cell>
             <!--用来撑起底部空白区域-->
