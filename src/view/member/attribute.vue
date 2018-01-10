@@ -371,7 +371,7 @@
                 textData = JSON.stringify(textData);
                 storage.setItem('oneNumber', textData,e=>{
                 event.openURL(utils.locate('widget/autograph.js?name=oneNumber'), function (message) {
-                    if(message.data != ''){
+                    if(message.type == 'success'){
                         POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
                             function (mes) {
                                 if (mes.type == "success") {
