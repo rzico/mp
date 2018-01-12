@@ -771,7 +771,8 @@
                         spec1: '',
                         spec2: '',
                         price:_this.topLinePrice,
-                        stock: parseInt(_this.topLineNum)
+                        stock: parseInt(_this.topLineNum),
+                        distribution:0
                     })
                 }else{
                     this.list.forEach(function (item) {
@@ -781,7 +782,8 @@
                             spec1: item.spec1,
                             spec2: item.spec2,
                             price: item.price,
-                            stock: parseInt(item.stock)
+                            stock: parseInt(item.stock),
+                            distribution:0
                         })
                     })
                 }

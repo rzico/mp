@@ -144,7 +144,8 @@
             selfId:'',
             refreshImg:utils.locate('resources/images/loading.png'),
             hadUpdate:false,
-            authorId:''
+            authorId:'',
+            clicked:false
         },
         props:{
             noDataHint:{default:'暂无评论'},
@@ -209,8 +210,13 @@
             },
             sendReview(){
                 let _this = this;
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
 //                判断是否输入内容为空
                 if(utils.isAllEmpty(this.reviewWord)){
+                    _this.clicked = false;
                     event.toast('请输入评论内容');
                 }else{
                     POST('weex/member/review/submit.jhtml?articleId=' + this.articleId + '&content=' + encodeURI(this.reviewWord)).then(
@@ -222,9 +228,11 @@
                             }else{
                                 event.toast(data.content);
                             }
+                            _this.clicked = false;
                         },
                         function (err) {
                             event.toast(err.content);
+                            _this.clicked = false;
                         }
                     )
                 }
@@ -279,7 +287,7 @@
                             function (data) {
                                 if(data.type == 'success'){
                                     _this.reviewList.splice(index,1);
-                                    _this.reviewNum ++;
+                                    _this.reviewNum --;
                                 }else{
                                     event.toast(data.content);
                                 }

@@ -55,7 +55,6 @@
                 </div>
             </div>
         </transition-group>
-
         <div class="dialog" v-if="isShow">
             <div class="flex-row ml30">
                 <text class="title">策略名称:</text>

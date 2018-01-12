@@ -351,22 +351,23 @@
 //                    event.toast(_weex);
 //                        本地查找是已有消息列表还是新消息列表~
                     event.find(findOption,function (data) {
-                        var storageData = JSON.stringify(_weex.data);
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.value)){
 //                        判断是否无法获取到头像跟昵称
                                 let JSONData = JSON.parse(data.data.value);
-                                if(!utils.isNull(_weex.data.logo)){
+//                                现在安卓后台数据logo nickName有误，不管有没有获取到logo、nickName 都使用本地头像;
+//                                if(utils.isNull(_weex.data.logo)){
                                     _weex.data.logo = JSONData.logo;
-                                }
-                                if(!utils.isNull(_weex.data.nickName)){
+//                                }
+//                                if(utils.isNull(_weex.data.nickName)){
                                     _weex.data.nickName = JSONData.nickName;
-                                }
+//                                }
                             }
+                            var storageDataNew = JSON.stringify(_weex.data);
                             let option = {
                                 type:'message',
                                 key:_weex.data.userId,
-                                value:storageData,
+                                value:storageDataNew,
                                 keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
                                 sort:'0,' + timestamp
                             }
@@ -389,6 +390,7 @@
                                 }
                             })
                         }else{//新消息
+                            var storageData = JSON.stringify(_weex.data);
                             let option = {
                                 type:'message',
                                 key:_weex.data.userId,

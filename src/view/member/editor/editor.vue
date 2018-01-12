@@ -239,6 +239,7 @@
     }
     .addVoteIcon{
         font-size: 39px;
+        padding-top:3px;
     }
     .addVote{
         color: #A89F95;
@@ -486,6 +487,7 @@
                 laud:0,
                 products:[],
                 review:0,
+                clicked:false
             }
         },
         filters:{
@@ -1056,6 +1058,13 @@
                     event.toast('至少要有一张图片');
                     return;
                 }
+
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+
                 this.toSendArticle = true;
                 this.proTotal = 0;
 //                判断封面图片是否已上传过
@@ -1098,6 +1107,8 @@
                         _this.ctrlProcess(data);
                     })
                 }
+//                防止重复点击
+                _this.clicked = false;
             },
             //上传图片到服务器
             sendImage (sendIndex) {

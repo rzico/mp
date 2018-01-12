@@ -226,9 +226,9 @@
         height: 80px;
         margin-left: 25px;
         background-color: #fff;
+        border-bottom-style: solid;
+        border-bottom-color: gainsboro;
         border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
     }
     .searchContentText{
         height: 90px;
