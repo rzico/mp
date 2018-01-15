@@ -648,12 +648,42 @@
                     var sign = 0;
 //                    判断规格有没有完整
                     this.list.forEach(function (item) {
-                        if(item.isNew || utils.isNull(item.paraImage)  || utils.isNull(item.price) || utils.isNull(item.stock)){
+                        if(item.isNew ){
                             sign ++ ;
                         }
                     })
                     if(sign > 0){
-                        event.toast('请完善规格或规格不能重复');
+                        event.toast('商品规格1不能为空或重复');
+                        return;
+                    }
+//                    判断规格有没有完整
+                    this.list.forEach(function (item) {
+                        if(utils.isNull(item.paraImage) ){
+                            sign ++ ;
+                        }
+                    })
+                    if(sign > 0){
+                        event.toast('请添加商品图片');
+                        return;
+                    }
+//                    判断规格有没有完整
+                    this.list.forEach(function (item) {
+                        if(utils.isNull(item.price)){
+                            sign ++ ;
+                        }
+                    })
+                    if(sign > 0){
+                        event.toast('商品价格不能为空');
+                        return;
+                    }
+//                    判断规格有没有完整
+                    this.list.forEach(function (item) {
+                        if(utils.isNull(item.stock)){
+                            sign ++ ;
+                        }
+                    })
+                    if(sign > 0){
+                        event.toast('商品库存不能为空');
                         return;
                     }
 //                判断段落图片是否已上传
