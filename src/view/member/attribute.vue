@@ -23,6 +23,14 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <div class="cell-panel space-between">
+                    <div class="flex-row">
+                        <text class="title ml10">登录名</text>
+                    </div>
+                    <div class="flex-row flex-end" >
+                        <text class="sub_title" style="margin-right:40px">{{userId}}</text>
+                    </div>
+                </div>
                 <div class="cell-panel space-between" @click="pick">
                     <div class="flex-row">
                          <text class="title ml10">性别</text>
@@ -160,6 +168,7 @@
         },
         data() {
             return {
+                userId:"",
                 attribute:{},
                 bindWeiXin:"未绑定",
                 bindMobile:"未绑定",
@@ -392,6 +401,7 @@
                 var _this = this;
                 _this.logo = attr.logo;
                 _this.nickName = attr.nickName;
+                _this.userId = attr.userId;
                 if (attr.autograph!=null && attr.autograph!="") {
                     _this.autograph = attr.autograph;
                 } else {
