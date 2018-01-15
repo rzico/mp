@@ -304,12 +304,16 @@
                 var _this = this;
                 var timestamp = Math.round(new Date().getTime()/1000);
                 data.data.forEach(function (contactItem) {
+                    var nameSub = '';
+                    if(!utils.isNull(contactItem.name)){
+                        nameSub = getLetter.getFirstLetter(contactItem.name.substring(0,1));
+                    }
                     let option = {
                         type:'contact',
                         key:contactItem.numberMd5,
                         value:contactItem,
                         keyword:','+ contactItem.name + ',' + contactItem.nickName + ',',
-                        sort:  getLetter.getFirstLetter(contactItem.name.substring(0,1)) + ',' + timestamp
+                        sort:  nameSub + ',' + timestamp
                     }
 //                                将数据缓存起来，用于搜索时的模糊查询
                     event.save(option,function (message) {})
