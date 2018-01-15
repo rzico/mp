@@ -84,6 +84,7 @@
 <script>
     import { POST, GET } from '../assets/fetch'
     import utils from '../assets/utils'
+    const modal = weex.requireModule('modal');
     const event = weex.requireModule('event');
     export default {
         data () {
@@ -133,8 +134,17 @@
                                     }
                                 )
                         } else {
-                            event.toast(message.content);
-                            _this.login();
+                            modal.alert({
+                                message: "没有安装微信,系统进入体验模式",
+                                okTitle: '知道了'
+                            })
+                            //event.toast(message.content);
+                            //_this.login();
+                            GET("weex/login/demo.jhtml?id=43",function (res) {
+                                event.closeURL(res);
+                            },function (err) {
+                                event.closeURL(err);
+                            })
                         }
                         _this.clicked = false;
                     }
