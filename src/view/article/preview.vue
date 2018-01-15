@@ -349,8 +349,7 @@
             this.screenHeight = utils.fullScreen(237);
             var isPublish = utils.getUrlParameter('publish');
 //            如果不传就是null
-            if(isPublish == null){
-            }else{
+            if(!utils.isNull(isPublish)){
                 this.publish = isPublish;
             }
 

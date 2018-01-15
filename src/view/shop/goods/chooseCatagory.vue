@@ -55,14 +55,17 @@
     .paraTransition-enter-active, .paraTransition-leave-active {
         transition: all 0.2s;
     }
-    .paraTransition-enter{
-        transform: translateY(-300px);
-        opacity: 1;
-    }
-    .paraTransition-enter-to{
-        transform: translateY(0px);
-        opacity: 1;
-    }
+    /*.paraTransition-enter{*/
+        /*transform: translateY(-300px);*/
+        /*opacity: 1;*/
+    /*}*/
+    /*.paraTransition-enter-to{*/
+        /*transform: translateY(0px);*/
+        /*opacity: 1;*/
+    /*}*/
+
+
+
     .pr30{
         padding-right: 30px;
     }
