@@ -380,6 +380,15 @@ let utilsFunc = {
 
         return timeObj.y + '-' + timeObj.m + '-' + timeObj.d + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
     },
+    //返回格式 2017年09月01日 06:35:59
+    ymdhisdayfmt:function(value){
+        if(value == '' || value == null || value == undefined){
+            return value;
+        }
+        let timeObj = this.resolvetimefmt(value);
+
+        return timeObj.y + '年' + timeObj.m + '月' + timeObj.d + '日' + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
+    },
     //返回格式 06:35:59
     histimefmt:function(value){
         if(value == '' || value == null || value == undefined){

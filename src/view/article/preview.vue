@@ -440,7 +440,6 @@
                         function (data) {
                             if(data.type == 'success'){
                                 _this.initTemplateSn = _this.templateSn;
-
                             }else{
                                 event.toast(data.content);
                             }
@@ -501,12 +500,12 @@
 //            点击返回
             goback(){
                 event.closeURL();
+//                event.closeRouter();
             },
 //            点击下一步 跳转文章设置。
             goOption(){
                 var _this = this;
 //                event.openURL(utils.locate('view/member/editor/option.js),
-
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
