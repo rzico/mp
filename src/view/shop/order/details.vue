@@ -17,7 +17,7 @@
                         <text  class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe62e;</text>
                     </div>
                     <div>
-                        <div  class="flex-row" v-for="(orderLog,index) in item.orderLogs" :class="[index != 0 ? 'mt20' : '']">
+                        <div  class="logBox"  v-for="(orderLog,index) in item.orderLogs" :class="[index != 0 ? 'mt20' : '']">
                             <text class="title">{{orderLog.content}} </text>
                             <text class="subDate"> {{orderLog.createDate | watchLogDate}}</text>
                         </div>
@@ -163,6 +163,12 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .logBox{
+        display:flex;
+        flex-direction: row;
+        justify-content:space-between;
+        align-items: center;
+    }
     .subDate{
         font-size: 24px;
         color: #999;

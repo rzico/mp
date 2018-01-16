@@ -95,7 +95,7 @@
                 <text class="fz35 primary" style="margin-top: 3px" :style="{fontFamily:'iconfont'}">&#xe6b5;</text>
                 <text class="fz35 ml10">添加商品规格</text>
             </div>
-            <div class="sub-panel ml20">
+            <div class="sub-panel ml20 ">
                 <text class="sub_title">通过分类有效管理不同类型的商品</text>
             </div>
             <div class="cell-row cell-line mt10" @click="goChooseCatagory()">
@@ -109,10 +109,26 @@
                     </div>
                 </div>
             </div>
+
+            <!--<div class="sub-panel ml20 mt10">-->
+                <!--<text class="sub_title">设置你的专属营销策略</text>-->
+            <!--</div>-->
+            <!--<div class="cell-row cell-line mt10" @click="goChooseDistri()">-->
+                <!--<div class="cell-panel space-between cell-clear">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ">营销策略</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{catagoryName}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
             <div style="height: 400px"></div>
         </scroller>
         <div class="button bw bkg-primary" @click="goComplete()">
-            <text class="buttonText ">保存</text>
+            <text class="buttonText ">新增商品</text>
         </div>
 
         <!--遮罩-->
@@ -357,6 +373,7 @@
             goodsUnit:'',
             productTemplates:[],
             goodsId:'',
+            clicked:false,
         },
         props:{
             title:{default:'新增商品'}
@@ -532,6 +549,16 @@
                     }
                 });
             },
+//            选择营销策略
+            goChooseDistri(){
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/distribution.js?catagoryId=' + this.catagoryId), function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        _this.catagoryId = parseInt(data.data.catagoryId);
+                        _this.catagoryName = data.data.catagoryName;
+                    }
+                });
+            },
 
 //            判断是否最后一个段落来添加向下移动的箭头。
             lastPara: function (index) {
@@ -602,11 +629,18 @@
             },
 //            完成
             goComplete: function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+
                 if(utils.isNull(this.goodsName)){
                     event.toast('请完善商品名称');
+                    this.clicked = false;
                     return;
                 }else if(utils.isNull(this.goodsUnit)){
                     event.toast('单位不能为空');
+                    this.clicked = false;
                     return;
                 }
 
@@ -616,6 +650,7 @@
                 if(this.list.length == 0){
                     if(utils.isNull(this.topLinePrice) || utils.isNull(this.topLineNum) || utils.isNull(this.firstParaImage)){
                         event.toast('请完善商品信息');
+                        this.clicked = false;
                         return;
                     }
                     var frontUrl = '';
@@ -654,6 +689,7 @@
                     })
                     if(sign > 0){
                         event.toast('商品规格1不能为空或重复');
+                        this.clicked = false;
                         return;
                     }
 //                    判断规格有没有完整
@@ -664,6 +700,7 @@
                     })
                     if(sign > 0){
                         event.toast('请添加商品图片');
+                        this.clicked = false;
                         return;
                     }
 //                    判断规格有没有完整
@@ -674,6 +711,7 @@
                     })
                     if(sign > 0){
                         event.toast('商品价格不能为空');
+                        this.clicked = false;
                         return;
                     }
 //                    判断规格有没有完整
@@ -684,6 +722,7 @@
                     })
                     if(sign > 0){
                         event.toast('商品库存不能为空');
+                        this.clicked = false;
                         return;
                     }
 //                判断段落图片是否已上传
@@ -698,6 +737,7 @@
             //上传图片到服务器
             sendImage(sendIndex) {
                 this.toSendArticle = true;
+                this.clicked = false;
                 var _this = this;
 //                var frontUrl;
                 let sendLength = _this.list.length;//获取图片数组总长度
@@ -744,6 +784,7 @@
             },
 //            图片上传后，正式将文章数据上传服务器
             realSave() {
+                this.clicked = false;
                 var _this = this;
 //                将页面上的数据存储起来
                 this.savePage();

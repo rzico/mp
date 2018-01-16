@@ -41,7 +41,7 @@
                     </div>
                     <div class="flex-row goodsTotalPrice boder-bottom">
                         <text class="title mr20">共{{item.orderItems[0].quantity}}件商品</text>
-                        <text class="title">合计:¥ {{item.orderItems[0].price | currencyfmt}}</text>
+                        <text class="title">合计:¥ {{item.amount | currencyfmt}}</text>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-if="item.status == 'unpaid'">
                         <div class="footMore">
