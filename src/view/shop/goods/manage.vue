@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="button bw bkg-primary" v-if="!doSearch" @click="addGoods()">
-            <text class="buttonText ">添加商品</text>
+            <text class="buttonText ">新增商品</text>
         </div>
     </div>
 </template>

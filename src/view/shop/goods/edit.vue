@@ -128,7 +128,7 @@
             <div style="height: 400px"></div>
         </scroller>
         <div class="button bw bkg-primary" @click="goComplete()">
-            <text class="buttonText ">{{buttonText}}</text>
+            <text class="buttonText ">保存</text>
         </div>
 
         <!--遮罩-->
@@ -374,7 +374,6 @@
             productTemplates:[],
             goodsId:'',
             clicked:false,
-            buttonText:'新增商品',
         },
         props:{
             title:{default:'新增商品'}
@@ -387,7 +386,6 @@
             utils.initIconFont();
             if(!utils.isNull(utils.getUrlParameter('id'))){
                 this.title = '编辑商品';
-                this.buttonText = '保存'
                 this.goodsId = utils.getUrlParameter('id');
                 GET('weex/member/product/view.jhtml?id=' + this.goodsId,function (data) {
                     if(data.type == 'success'){
