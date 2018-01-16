@@ -24,7 +24,7 @@
             </div>
         </div>
         <!--模版-->
-        <div class="templateIcon "  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1">
+        <div class="templateIcon "  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1" >
             <text class="templateText" >模版</text>
         </div>
         <!--收藏-->
@@ -114,7 +114,7 @@
         </div>
         <!--动画无效-->
         <!--<transition name="slide-fade-share" mode="out-in">-->
-        <div v-if="showShare"  key="share">
+        <div v-if="showShare"  key="share" >
             <div class="mask" @touchstart="maskTouch"></div>
             <share @doShare="doShare" @doCancel="doCancel"></share>
         </div>
@@ -299,6 +299,12 @@
         top:136px;
         /*bottom: 100px;*/
     }
+    .doOpacity{
+        opacity: 0;
+    }
+    .noOpacity{
+        opacity: 1;
+    }
 </style>
 
 <script>
@@ -381,6 +387,8 @@
 //            判断是否作者本人
                     if(uId == _this.memberId){
                         _this.isSelf = 1;
+//                        跳出分享。
+                        _this.relaseShare();
                         //获取所有的文章模版
                         GET('weex/member/template/list.jhtml?type=template',function (data) {
                             if(data.type == 'success' && data.data != ''){
@@ -414,8 +422,18 @@
             },function (err) {
                 event.toast(err.content);
             })
+
+
+
         },
         methods:{
+//            发布后直接跳出分享
+            relaseShare(){
+                let doneEdit = utils.getUrlParameter('showShare');
+                if(!utils.isNull(doneEdit)){
+                    this.showShare = doneEdit;
+                }
+            },
 //            点击 图片 更换模版的触发
             tickImage(itemSn){
                 this.templateSn= itemSn;

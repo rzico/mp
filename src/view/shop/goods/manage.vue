@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" >
+    <div class="wrapper">
         <!--<navbar :title="title"  @goback="goback" ></navbar>-->
         <!--<div style="min-height: 136px">-->
         <div class="header"  :class="[classHeader()]">
@@ -55,7 +55,7 @@
                 <div class="goodsLine boder-bottom" :class="[item.id == goodsId ? 'bgActive' : '']" @click="popup(item,index)">
                     <image class="goodsImg" :src="item.thumbnail | watchThumbnail"></image>
                     <div class="infoBox">
-                        <div class="flex1 ">
+                        <div class="flex1">
                             <text class="linesCtrl title">{{item.name}}</text>
                         </div>
                         <div class="flex1 " >

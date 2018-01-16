@@ -13,9 +13,9 @@
                     </div>
                 </div>
             </div>
-                <div class="sub-panel">
-                    <text class="sub_title">可自行控制文章展示范围</text>
-                </div>
+            <div class="sub-panel">
+                <text class="sub_title">可自行控制文章展示范围</text>
+            </div>
             <div class="cell-row cell-line" @click="goCategory()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -26,7 +26,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-             </div>
+            </div>
             <div class="sub-panel">
                 <text class="sub_title">正确设置分类的文章将展示在“身边”栏目</text>
             </div>
@@ -89,7 +89,7 @@
 
         </scroller>
         <!--<div class="footer button-panel" @click="goDone()">-->
-            <!--<text class="button">完成</text>-->
+        <!--<text class="button">完成</text>-->
         <!--</div>-->
         <div  class="footer button-panel">
             <text class="button" @click="goDone()">完成</text>
@@ -355,11 +355,19 @@
 //                                全局监听 文章变动
                                 let listenData = utils.message('success','文章改变','')
                                 event.sendGlobalEvent('onArticleChange',listenData);
-                                let E = {
-                                    isDone : 'complete'
-                                }
-                                let backData = utils.message('success','成功',E);
-                                event.closeURL(backData);
+//                                let E = {
+//                                    isDone : 'complete'
+//                                }
+//                                let backData = utils.message('success','成功',E);
+//                                event.closeURL(backData);
+                                event.openURL(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=true'),
+                                    function () {
+                                        let E = {
+                                            isDone : 'complete'
+                                        }
+                                        let backData = utils.message('success','成功',E);
+                                        event.closeURL(backData);
+                                    })
                             } else {
                                 event.toast(data.content);
                             }

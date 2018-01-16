@@ -479,14 +479,14 @@
                     articleCatalog:{count:0},
                     articleCategory:{},
                     authority:'draft',
-                    pitch:false,
-                    publish:false,
-                    top:false,
+                    isPitch:false,
+                    isPublish:false,
+                    isTop:false,
                 },
                 hits:0,
                 laud:0,
                 products:[],
-                review:0,
+                isReview:0,
                 clicked:false
             }
         },
@@ -650,12 +650,12 @@
                         if(!utils.isNull(articleData.music.name)){
                             _this.musicName = articleData.music.name;
                         }
-                        _this.publish = articleData.articleOption.publish;
+                        _this.publish = articleData.articleOption.isPublish;
                         _this.articleOption = articleData.articleOption,
                             _this.hits = articleData.hits,
                             _this.laud = articleData.laud,
                             _this.products = articleData.products,
-                            _this.review = articleData.review,
+                            _this.review = articleData.isReview,
                             musicId = articleData.music.id;
                         let templatesData = articleData.templates;
                         for(let i = 0;i < templatesData.length;i++){
@@ -780,7 +780,7 @@
                     hits:this.hits,
                     laud:this.laud,
                     products:this.products,
-                    review:this.review,
+                    review:this.isReview,
                     id:this.articleId,
                     isDraft:true,
                     modifyDate:this.timestamp,
@@ -1344,6 +1344,7 @@
                                         event.closeURL(backData);
 //                                        }
                                     })
+//                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish));
                                 }else{
                                     _this.toSendArticle = false;
                                     _this.currentPro = 0;//当前进度

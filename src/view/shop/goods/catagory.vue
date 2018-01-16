@@ -35,11 +35,11 @@
                     <!--右侧功能-->
                     <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
                         <div class="flex-row btnHtight" @click="changeName(index,item.name,item.id)">
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe607;</text>
+                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
                             <text class="gray fontSize30 ml5mr10">改名</text>
                         </div>
                         <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe615;</text>
+                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe652;</text>
                             <text class="gray fontSize30 ml5mr10">删除</text>
                         </div>
                     </div>

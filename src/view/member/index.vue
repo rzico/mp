@@ -695,7 +695,7 @@
                 if(value.value.articleOption.articleCatalog.id == '99'){
                     return '已删除';
                 }
-                if(value.value.articleOption.publish == 'false' || !value.value.articleOption.publish){
+                if(value.value.articleOption.isPublish == 'false' || !value.value.articleOption.isPublish){
                     return '私密';
                 }
                 switch (value.value.articleOption.authority){
@@ -978,6 +978,7 @@
 
 //            前往文章
             goArticle(item,index){
+//                utils.debug(item);
                 var _this = this;
                 if(item.value.articleOption.articleCatalog.id == '99'){
                     event.openURL(utils.locate('view/article/delete.js?articleId=' + item.key),
@@ -997,8 +998,8 @@
 //                    _this.updateArticle();
                         })
                 }else{
-
-                    event.openURL(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.publish ),
+//                    utils.debug('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish);
+                    event.openURL(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish ),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
 //                    _this.updateArticle();
