@@ -662,6 +662,7 @@
                             _this.realSave();
                     }else{
                         _this.proTotal++;
+                        _this.toSendArticle = true;
                         event.upload(_this.firstParaImage, function (data) {
                             if (data.type == 'success') {
                                 _this.firstParaImage = data.data;
@@ -674,6 +675,7 @@
                                 event.toast(data.content);
                                 return;
                             }
+                            _this.toSendArticle = false;
                         }, function (data) {
 //                    上传进度
                             _this.ctrlProcess(data);
