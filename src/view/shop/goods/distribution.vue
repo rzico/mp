@@ -61,15 +61,15 @@
                 <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
             </div>
             <div class="flex-row ml30">
-                <text class="title">直接佣金(%):</text>
+                <text class="title">直接佣金:</text>
                 <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
             </div>
             <div class="flex-row ml30">
-                <text class="title">间接佣金(%):</text>
+                <text class="title">间接佣金:</text>
                 <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
             </div>
             <div class="flex-row ml30">
-                <text class="title">三级佣金(%):</text>
+                <text class="title">三级佣金:</text>
                 <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
             </div>
             <div class="flex-row button_box">
