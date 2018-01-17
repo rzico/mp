@@ -108,7 +108,6 @@
                 catagoryList:[],
                 catagoryId:0,
                 catagoryName:'全部商品',
-                articleId:''
             }
         },
         components: {
@@ -121,7 +120,6 @@
             var _this = this;
             utils.initIconFont();
             this.getCatagory();
-            this.articleId = utils.getUrlParameter('articleId');
             let urlId = utils.getUrlParameter('catagoryId');
             if(utils.isNull(urlId)){
 

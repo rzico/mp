@@ -1396,13 +1396,13 @@
 //            点击"+"号里的文本时
             addTextPara:function(index){
                 //防止重复点击按钮
-                if(this.clicked) {
-                    return;
-                }
-                this.clicked = true;
+//                if(this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
                 var _this = this;
                 event.openEditor('',function (data) {
-                    _this.clicked = false;
+//                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         let textImg = utils.locate('resources/images/text.png');
 //                    将返回回来的html数据赋值进去
@@ -1434,15 +1434,15 @@
 //            点击"+"号里的图片时
             addImgPara:function (index) {
                 //防止重复点击按钮
-                if(this.clicked) {
-                    return;
-                }
-                this.clicked = true;
+//                if(this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
                 var _this = this;
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
-                        _this.clicked = false;
+//                        _this.clicked = false;
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
@@ -1898,16 +1898,16 @@
                     }
                 });
             },
-//            点击加号里的添加视频
+//            点击"+"加号里的添加视频
             addVideoPara:function (index) {
                 //防止重复点击按钮
-                if(this.clicked) {
-                    return;
-                }
-                this.clicked = true;
+//                if(this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
                 let _this = this;
                 album.openVideo(function (data) {
-                    _this.clicked = false;
+//                    _this.clicked = false;
                     if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                         let newPara = {
@@ -1938,16 +1938,16 @@
                     }
                 })
             },
-//            点击加号里的添加链接
+//            点击"+"加号里的添加链接
             addLinkPara:function (index) {
                 //防止重复点击按钮
-                if(this.clicked) {
-                    return;
-                }
-                this.clicked = true;
+//                if(this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
-                    _this.clicked = false;
+//                    _this.clicked = false;
                     if(data.type == 'success'){
                         let newPara = {
                             //原图

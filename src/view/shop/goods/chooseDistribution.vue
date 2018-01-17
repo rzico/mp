@@ -7,9 +7,6 @@
                 <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
             </div>
         </div>
-        <div>
-            <text class="remind" >长按策略可进行排序,排序后请点击"完成"</text>
-        </div>
         <!--分类行背景-->
         <!--<div class="bgWhite ">-->
             <!--&lt;!&ndash;分类行内容&ndash;&gt;-->
@@ -19,38 +16,23 @@
                     <!--<text class="lineText">全部策略</text>-->
                     <!--&lt;!&ndash;<text class="lineText">({{allTotal}})</text>&ndash;&gt;-->
                 <!--</div>-->
+                <!--<div v-if="catagoryId == 0 || catagoryId == 'undefined'" >-->
+                    <!--<text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>-->
+                <!--</div>-->
             <!--</div>-->
         <!--</div>-->
         <!--绑定动画-->
         <transition-group name="paraTransition" tag="div">
             <!--分类行背景-->
-            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
+            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @click="chooseCorpus(item.id,item.name,item.count)"   >
                 <!--分类行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧分类名称-->
                     <div class="flex-row" style="width: 450px;">
                         <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
                     </div>
-                    <!--右侧功能-->
-                    <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id)">
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
-                            <text class="gray fontSize30 ml5mr10">修改</text>
-                        </div>
-                        <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe652;</text>
-                            <text class="gray fontSize30 ml5mr10">删除</text>
-                        </div>
-                    </div>
-                    <div class="flex-row"  v-else>
-                        <div class="flex-row btnHtight"  @click="moveUp(index)" v-if="index != 0">
-                            <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe608;</text>
-                            <text class="white fontSize30 ml5mr10" >上移</text>
-                        </div>
-                        <div class="flex-row btnHtight" @click="moveBottom(index)" v-if="lastPara(index)">
-                            <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe601;</text>
-                            <text class="white fontSize30 ml5mr10">下移</text>
-                        </div>
+                    <div v-if="catagoryId == item.id" >
+                        <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                     </div>
                 </div>
             </div>
@@ -222,7 +204,9 @@
                 moveSign:false,
                 showSort:false,//子组件
                 catagoryList:[],
-                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false}
+                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false},
+                catagoryId:0,
+                catagoryName:'',
             }
         },
         components: {
@@ -235,6 +219,10 @@
         created(){
             var _this = this;
             utils.initIconFont();
+            let urlId = utils.getUrlParameter('catagoryId');
+            if(!utils.isNull(urlId)){
+                this.catagoryId = urlId;
+            }
             let catagory = utils.getUrlParameter('name');
             if(utils.isNull(catagory)){
                 GET("weex/member/distribution/list.jhtml",function (res) {
@@ -353,154 +341,22 @@
                 let _this = this;
                 _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false};
                 _this.isShow  = true;
-             },
-//            修改分类名称
-            changeName(id){
+            },
+//            更改分类后
+            chooseCorpus:function (id,name,itemCount) {
                 let _this = this;
-                _this.catagoryList.forEach( function(item) {
-                    if (item.id==id) {
-                      _this.item = item;
-                    }
-                });
-                _this.isShow  = true;
-            },
-//            删除该分类
-            deleteCorpus(index,id){
-                let _this = this;
-                modal.confirm({
-//                    message: '不会删除分类下的文章，可在"全部文章"中找到,确定删除分类？',
-                    message: '是否删除该策略？',
-                    duration: 0.3,
-                    okTitle:'删除',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '删除'){
-                        POST('weex/member/distribution/delete.jhtml?id=' + id).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.catagoryList.splice(index,1);
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },
-                            function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                })
-            },
-//            判断是否最后一个段落来添加向下移动的箭头。
-            lastPara:function(index){
-                if(index != this.catagoryList.length - 1){
-                    return true;
-                }else{
-                    return false;
-                }
-            },
-//            长按屏幕后
-            onlongpress:function (index) {
-                var _this = this;
-                this.catagoryList.forEach(function (item) {
-                    if(item.bgChange == true){
-                        item.bgChange = false;
-                    }
-                })
-                _this.catagoryList[index].bgChange = true;
-                _this.showSort = true;
-
-            },
-//            点击完成时、上传排序后的数组
-            cleanbgChange:function () {
-//                关闭所有的分类背景变化
-                this.catagoryList.forEach(function (item) {
-                    if(item.bgChange == true){
-                        item.bgChange = false;
-                    }
-                })
-//                隐藏完成
-                this.showSort = false;
-//                判断是否有更换顺序 没有就不上传服务器
-                if(this.isSort == 1){
-                    this.isSort = 0;
-                    var url = 'weex/member/distribution/sort.jhtml?ids=';
-                    this.catagoryList.forEach(function (item,index) {
-                        if(index == 0){
-                            url = url + item.id;
-                        }else{
-                            url = url + '&ids=' + item.id;
-                        }
-                    })
-//                    向服务器提交
-                    POST(url).then(
-                        function (data) {
-                            if(data.type == 'success'){
-                                event.toast('排序成功');
-                            }else{
-                                event.toast(data.content);
-                            }
-                        },
-                        function (err) {
-                            event.toast("网络不稳定");
-                        }
-                    )
-                }else{
+                if(_this.catagoryId == id){
                     return;
+                };
+                _this.catagoryId = id;
+                _this.catagoryName = name;
+                let E = {
+                    catagoryId : _this.catagoryId,
+                    catagoryName : _this.catagoryName,
+                    count:parseInt(itemCount) + 1
                 }
-            },
-            //            判断是否最后一个段落来添加向下移动的箭头。
-            lastPara:function(index){
-                if(index != this.catagoryList.length - 1){
-                    return true;
-                }else{
-                    return false;
-                }
-            },
-//            向上移动，上箭头
-            moveUp(index){
-                this.isSort = 1;
-                //         方法2
-                let a = this.catagoryList[index].name;
-                let b = this.catagoryList[index].id;
-                let c1 = this.catagoryList[index].percent1;
-                let c2 = this.catagoryList[index].percent2;
-                let c3 = this.catagoryList[index].percent3;
-                let d = this.catagoryList[index].bgChange;
-                this.catagoryList[index].name = this.catagoryList[index - 1].name;
-                this.catagoryList[index].id = this.catagoryList[index - 1].id;
-                this.catagoryList[index].percent1 = this.catagoryList[index - 1].percent1;
-                this.catagoryList[index].percent2 = this.catagoryList[index - 1].percent2;
-                this.catagoryList[index].percent3 = this.catagoryList[index - 1].percent3;
-                this.catagoryList[index].bgChange = this.catagoryList[index - 1].bgChange;
-                this.catagoryList[index - 1].name = a;
-                this.catagoryList[index - 1].id = b;
-                this.catagoryList[index - 1].percent1 = c1;
-                this.catagoryList[index - 1].percent2 = c2;
-                this.catagoryList[index - 1].percent3 = c3;
-                this.catagoryList[index - 1].bgChange = d;
-            },
-            //向下移动，下箭头
-            moveBottom(index){
-                this.isSort = 1;
-                //         方法2
-                let a = this.catagoryList[index].name;
-                let b = this.catagoryList[index].id;
-                let c1 = this.catagoryList[index].percent1;
-                let c2 = this.catagoryList[index].percent2;
-                let c3 = this.catagoryList[index].percent3;
-                let d = this.catagoryList[index].bgChange;
-                this.catagoryList[index].name = this.catagoryList[index + 1].name;
-                this.catagoryList[index].id = this.catagoryList[index + 1].id;
-                this.catagoryList[index].percent1 = this.catagoryList[index + 1].percent1;
-                this.catagoryList[index].percent2 = this.catagoryList[index + 1].percent2;
-                this.catagoryList[index].percent3 = this.catagoryList[index + 1].percent3;
-                this.catagoryList[index].bgChange = this.catagoryList[index + 1].bgChange;
-                this.catagoryList[index + 1].name = a;
-                this.catagoryList[index + 1].id = b;
-                this.catagoryList[index + 1].percent1 = c1;
-                this.catagoryList[index + 1].percent2 = c2;
-                this.catagoryList[index + 1].percent3 = c3;
-                this.catagoryList[index + 1].bgChange = d;
+                let backData = utils.message('success','成功',E);
+                event.closeURL(backData);
             },
         }
     }

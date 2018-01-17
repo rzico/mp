@@ -110,20 +110,20 @@
                 </div>
             </div>
 
-            <!--<div class="sub-panel ml20 mt10">-->
-                <!--<text class="sub_title">设置你的专属营销策略</text>-->
-            <!--</div>-->
-            <!--<div class="cell-row cell-line mt10" @click="goChooseDistri()">-->
-                <!--<div class="cell-panel space-between cell-clear">-->
-                    <!--<div class="flex-row">-->
-                        <!--<text class="title ">营销策略</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title">{{catagoryName}}</text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="sub-panel ml20 mt10">
+                <text class="sub_title">设置你的专属销售策略</text>
+            </div>
+            <div class="cell-row cell-line mt10" @click="goChooseDistri()">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title">销售策略</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{distributionName}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
 
             <div style="height: 400px"></div>
         </scroller>
@@ -361,6 +361,8 @@
             goodsName:'',
             catagoryName:'全部商品',
             catagoryId:'',
+            distributionId:'',
+            distributionName:'',
             topLinePrice:'',
             topLineNum:'',
             firstThumbnailImg:'',
@@ -391,11 +393,19 @@
                     if(data.type == 'success'){
                         _this.goodsName = data.data.name;
                         _this.goodsUnit = data.data.unit;
+//                        分类
                         if(!utils.isNull(data.data.productCategory.id)){
                             _this.catagoryId = data.data.productCategory.id;
                         }
                         if(!utils.isNull(data.data.productCategory.name)){
                             _this.catagoryName = data.data.productCategory.name;
+                        }
+//                        策略
+                        if(!utils.isNull(data.data.distribution.id)){
+                            _this.distributionId = data.data.distribution.id;
+                        }
+                        if(!utils.isNull(data.data.distribution.name)){
+                            _this.distributionName = data.data.distribution.name;
                         }
                         if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1)){
                             _this.firstProductId = data.data.products[0].productId;
@@ -552,10 +562,10 @@
 //            选择营销策略
             goChooseDistri(){
                 let _this = this;
-                event.openURL(utils.locate('view/shop/goods/distribution.js?catagoryId=' + this.catagoryId), function (data) {
+                event.openURL(utils.locate('view/shop/goods/chooseDistribution.js?catagoryId=' + this.distributionId), function (data) {
                     if(data.type == 'success' && data.data != ''){
-                        _this.catagoryId = parseInt(data.data.catagoryId);
-                        _this.catagoryName = data.data.catagoryName;
+                        _this.distributionId = parseInt(data.data.catagoryId);
+                        _this.distributionName = data.data.catagoryName;
                     }
                 });
             },
@@ -796,11 +806,17 @@
                     id:_this.catagoryId,
                     name:_this.catagoryName
                 }
+//                销售策略
+                let distributionTemplate = {
+                    id:_this.distributionId,
+                    name:_this.distributionName
+                }
                 let productData = {
                     id: sendId,
                     name: _this.goodsName,
                     unit: _this.goodsUnit,
                     productCategory: categoryTemplate,
+                    distribution:distributionTemplate,
                     products: _this.productTemplates,
                 };
 //                转成json字符串后上传服务器
