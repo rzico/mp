@@ -160,7 +160,8 @@
               blackNum:0,
               setQrcode:'未设置',
               storageNum:'0M',
-              hasTopic:false
+              hasTopic:false,
+              clicked:false,
           }
         },
         components: {
@@ -209,6 +210,10 @@
             },
 //            下载文章 20 20的循环
             downloadArticle(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                     GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
                         if(data.type == 'success' && data.data.data != ''){
@@ -248,7 +253,9 @@
                         }else{
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     },function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     })
             },
@@ -275,6 +282,10 @@
             },
 //            清除缓存
             clearCache(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 let option = {
                     type:['cache','tim','wxstorage']
@@ -286,10 +297,15 @@
                     }else{
                         event.toast(data.content);
                     }
+                    _this.clicked = fasle;
                 });
             },
 //            上传二维码
             sendQrcode(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //                调用单选
                 album.openAlbumSingle(true, function(data){
@@ -323,10 +339,15 @@
                             event.toast(data.content);
                         }
                     }
+                    _this.clicked = false;
                 })
             },
 //             开通专栏
             create:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 POST('weex/member/topic/submit.jhtml').then(
                     function (data) {
@@ -336,14 +357,21 @@
                         } else {
                             event.toast(err.content)
                         }
+                        _this.clicked = false;
                     },function (err) {
+                        _this.clicked = false;
                         event.toast(err.content)
                     })
             },
 //            黑名单列表
             goBlackList(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/member/blackList.js'),function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         _this.blackNum = data.data;
                     }

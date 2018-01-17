@@ -134,7 +134,8 @@
                 articleList:[],
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
-                screenHeight:0
+                screenHeight:0,
+                clicked:false,
             }
         },
         components: {
@@ -194,13 +195,26 @@
             },
 //            前往作者专栏
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
             },
             goArticle(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {}
+                    function () {
+                        _this.clicked = false;
+                    }
                 )
             },
             onpanmove(e){

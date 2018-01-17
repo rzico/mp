@@ -614,7 +614,8 @@
                 corpusId:'',
                 isOperation:false,
                 friendStatus:'',
-                authorId:0
+                authorId:0,
+                clicked:false,
             }
         },
         filters:{
@@ -722,9 +723,15 @@
             },
 //            前往文章
             goArticle(id){
-                var _this = this;
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id + '&publish=true'),
                     function () {
+                        _this.clicked = false;
                     })
             },
             corpusChange:function(index,id){
@@ -814,24 +821,45 @@
             },
 //            我的关注
             goFocus(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/focus.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
+                        _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            我的收藏
             goCollect(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/collect.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
+                        _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            粉丝
             goFans(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
+                        _this.clicked = false;
                         return ;
                     }
                 );
@@ -878,6 +906,11 @@
             },
 //            关注
             focus:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 if(this.isFocus){
                     POST('weex/member/follow/delete.jhtml?authorId=' + this.UId).then(
@@ -888,7 +921,9 @@
                             }else{
                                 event.toast(data.content);
                             }
+                            _this.clicked = false;
                         },function (err) {
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -901,7 +936,9 @@
                             }else{
                                 event.toast(data.content);
                             }
+                            _this.clicked = false;
                         },function (err) {
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -913,19 +950,27 @@
             },
 //            拉黑
             doBlack(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //                解除
                 if(this.friendStatus == 'black'){
-                    POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
+                    POST('weex/member/friends/delete.jhtml?friendId=' + this.UId).then(
                         function(data){
                             if(data.type == 'success'){
                                 _this.friendStatus = 'ask';
                                 event.toast('已解除黑名单');
+                                _this.clicked = false;
                             }else{
+                                _this.clicked = false;
                                 event.toast(err.content);
                             }
                         },
                         function(err){
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -935,9 +980,11 @@
                             if(data.type == 'success'){
                                 _this.friendStatus = 'black';
                                 event.toast('已加入黑名单');
+                                _this.clicked = false;
                             }
                         },
                         function (err) {
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -950,17 +997,25 @@
             },
 //            添加好友
             goAddFriend(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 POST('weex/member/friends/add.jhtml?friendId='+  this.UId).then(
                     function (weex) {
                         if (weex.type == "success") {
                             event.toast('请求已发送,请等待对方验证');
+                            _this.clicked = false;
 //                            let backData = utils.message('success','成功','请求已发送,请等待对方验证');
 //                            event.closeURL(backData);
                         } else {
+                            _this.clicked = false;
                             event.toast(weex.content);
                         }
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast("网络不稳定请重试");
                     }
                 )

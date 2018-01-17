@@ -229,6 +229,7 @@
                 }],
                 whichCorpus:0,
                 productCategoryId:1,
+                clicked:false,
             }
         },
         props:{
@@ -355,7 +356,13 @@
                 event.closeURL();
             },
             goDetails:function (sn) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/shop/order/details.js?sn=' + sn), function () {
+                    _this.clicked = false;
                 });
             },
 //            确认退款
@@ -494,7 +501,14 @@
             },
 //            前往作者主页
             goAuthor(id){
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
         }

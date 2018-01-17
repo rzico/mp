@@ -145,6 +145,7 @@
                 isSelf:false,
                 userName:'我',
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         filters:{
@@ -247,12 +248,25 @@
                 event.closeURL();
             },
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             goArticle(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {}
+                    function () {
+                        _this.clicked = false;
+                    }
                 )
             },
             //            点击屏幕时
@@ -312,6 +326,10 @@
 //            取消收藏
             deleteMessage(id,index){
                 let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 POST('weex/member/favorite/delete.jhtml?articleId=' + id).then(
                     function(data){
                         if(data.type == 'success'){
@@ -335,7 +353,9 @@
                         }else{
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     },function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )

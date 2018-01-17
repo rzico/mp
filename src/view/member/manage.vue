@@ -174,7 +174,8 @@
         data() {
             return {
                 member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false},
-                showShare:false
+                showShare:false,
+                clicked:false,
             }
         },
         props: {
@@ -194,8 +195,13 @@
                 this.showShare = false;
             },
             store:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/cashier/index.js'),function (mes) {
+                    _this.clicked = false;
                     if(mes.type == 'success') {
                         _this.member.useCashier = false;
                         _this.open();
@@ -203,6 +209,10 @@
                 })
             },
             open:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 GET("weex/member/manager/view.jhtml",
                     function (data) {
@@ -211,8 +221,10 @@
                         } else {
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast("网络不稳定")
                     }
                 )
@@ -228,6 +240,10 @@
                 event.closeURL(backData);
             },
             attribute:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
@@ -245,35 +261,56 @@
                         }else if(data.type == 'success' && data.content == '关闭'){
                             event.closeURL();
                         }
+                        _this.clicked = false;
                     }
                 );
             },
             option: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate('view/member/option.js'),
                     function (data) {
+                    _this.clicked = false;
                         _this.open();
                         return ;
                     }
                 );
             },
             topic: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate('view/member/topic/index.js'), function (mes) {
                         _this.open();
+                        _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            评论管理
             goReviewManage:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/reviewManage.js'),
                     function (data) {
+                    _this.clicked = false;
                         return ;
                     }
                 );
             },
             doShare(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var shareType;
                 let _this = this;
                 switch(id){
@@ -301,6 +338,7 @@
                 _this.showShare = false;
                 event.share(option,function (data) {
                     event.toast(data.content);
+                    _this.clicked = false;
                 })
             },
             beginShare:function () {
@@ -311,16 +349,28 @@
             },
 //            前往商品管理
             goodsManage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/shop/goods/manage.js'),
                     function (data) {
+                    _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            前往订单管理
             orderManage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
+                    _this.clicked = false;
                         return ;
                     }
                 );

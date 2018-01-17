@@ -230,6 +230,7 @@
                 shareText:'   《惊喜魔篇》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里《横穿玛丽亚》历时三十天，总行程两万里',
                 shareTitle:'  《惊喜魔篇》',
                 imageList:[],
+                clicked:false,
             }
         },
         components: {
@@ -263,6 +264,10 @@
         methods:{
 //            点击图片时
             clickImage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 //                如果没有图片就调用单选接口
                 let options = {
@@ -271,6 +276,7 @@
                     width:1000
                 }
                 album.openPuzzle(options,function(data){
+                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         _this.coverImage = data.data;
 //                        还缺少获取所以的合并图片中第一张图的路径

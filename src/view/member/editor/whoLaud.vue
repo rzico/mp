@@ -88,6 +88,7 @@
                 articleId:'',
                 title:'0人点赞',
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         components: {
@@ -161,7 +162,13 @@
             },
             //            作者主页
             goAuthor:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             onrefresh:function () {

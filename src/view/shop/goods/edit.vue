@@ -673,6 +673,7 @@
                                 _this.proTotal = 0;//总的进度
                                 _this.processWidth = 0;//进度条宽度
                                 event.toast(data.content);
+                                _this.clicked = false;
                                 return;
                             }
                             _this.toSendArticle = false;
@@ -739,7 +740,6 @@
             //上传图片到服务器
             sendImage(sendIndex) {
                 this.toSendArticle = true;
-                this.clicked = false;
                 var _this = this;
 //                var frontUrl;
                 let sendLength = _this.list.length;//获取图片数组总长度
@@ -776,6 +776,7 @@
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
                             event.toast(data.content);
+                            _this.clicked = false;
                             return;
                         }
                     }, function (data) {
@@ -786,7 +787,6 @@
             },
 //            图片上传后，正式将文章数据上传服务器
             realSave() {
-                this.clicked = false;
                 var _this = this;
 //                将页面上的数据存储起来
                 this.savePage();
@@ -820,6 +820,8 @@
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
                         }
+
+                        _this.clicked = false;
                     },
                     function (err) {
                         event.toast(err.content);
@@ -827,6 +829,7 @@
                         _this.currentPro = 0;//当前进度
                         _this.proTotal = 0;//总的进度
                         _this.processWidth = 0;//进度条宽度
+                        _this.clicked = false;
                     }
                 )
             },

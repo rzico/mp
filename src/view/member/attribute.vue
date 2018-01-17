@@ -184,7 +184,8 @@
                 category:1,
                 sex:'',
                 begin:'',
-                tel:''
+                tel:'',
+                clicked:false,
             }
         },
         props: {
@@ -210,8 +211,13 @@
                 event.closeURL(backData);
             },
             profession: function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=occupation'), function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' ) {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
@@ -233,8 +239,13 @@
 
             areaChoose:function () {
 //                event.openURL('http://192.168.2.108:8081/city.weex.js?type=0',function (data) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('widget/city.js?type=0'),function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' && !utils.isNull(data.data) ){
                         POST('weex/member/update.jhtml?areaId=' + data.data.chooseId).then(
                             function (mes) {
@@ -302,11 +313,16 @@
                 })
             },
             headLogo: function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
                     true,function (data) {
                         if(data.type == 'success') {
+                            _this.clicked = false;
 //                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
 //                            _this.original = data.data.originalPath
@@ -372,6 +388,10 @@
                 })
             },
             goAutograph:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 let senfData = this.autograph;
                 let textData = {
@@ -380,6 +400,7 @@
                 textData = JSON.stringify(textData);
                 storage.setItem('oneNumber', textData,e=>{
                 event.openURL(utils.locate('widget/autograph.js?name=oneNumber'), function (message) {
+                    _this.clicked = false;
                     if(message.type == 'success'){
                         POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
                             function (mes) {
@@ -477,9 +498,14 @@
             },
             updatePassword: function (e) {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 if (!_this.attribute.bindMobile) {
                     event.openURL(utils.locate("view/member/password/index.js"),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type=='success') {
                                 _this.attribute.bindMobile = true;
                                 _this.attribute.hasPassword = true;
@@ -490,6 +516,7 @@
                 } else {
                     event.openURL(utils.locate("view/member/password/captcha.js?telNum=" +_this.tel),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type=='success') {
                                 _this.attribute.hasPassword = true;
                             }
@@ -500,9 +527,14 @@
             },
             doBindMobile: function (e) {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 if (_this.attribute.bindMobile!=null && _this.attribute.bindMobile!='') {
                     event.openURL(utils.locate("view/member/mobile/unbind.js?mobile=" +_this.tel),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type == "success") {
                                _this.open();
                             }
@@ -511,6 +543,7 @@
                 }else {
                     event.openURL(utils.locate("view/member/mobile/index.js"),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type == "success") {
                                 _this.open();
                             }
@@ -519,8 +552,13 @@
                 }
             },
             doBindWeiXin: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 if (_this.attribute.bindWeiXin) {
+                    _this.clicked = false;
                     return;
                 }
                 event.wxAuth(function (msg) {
@@ -533,12 +571,15 @@
                                } else {
                                    event.toast(data.content);
                                }
+                               _this.clicked = false;
                            },
                            function (err) {
+                               _this.clicked = false;
                                event.toast(err.content);
                            }
                        )
                    } else {
+                       _this.clicked = false;
                        event.toast(msg.content);
                    }
                 })
@@ -562,7 +603,13 @@
 //                    event.toast(err.content);
 //                }
 //                )
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.logout(function (e) {
+                    _this.clicked = false;
                     if(e.type == 'success'){
                         let E = utils.message('success','关闭','')
                         event.closeURL(E);

@@ -90,6 +90,7 @@
                 keyword:"",
                 friendsList:[],
                 isSearch:false,
+                clicked:false,
             }
         },
         props: {
@@ -119,6 +120,10 @@
               }
             },
             search: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 this.isSearch = true;
                 GET('weex/member/friends/search.jhtml?keyword='+    encodeURI(_this.keyword),function (data) {
@@ -132,7 +137,9 @@
                         }else{
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                 },function (err) {
+                    _this.clicked = false;
                     event.toast(err.content);
                 })
 //                return stream.fetch({
@@ -179,6 +186,10 @@
 //                        event.toast("网络不稳定请重试");
 //                    }
 //                })
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 POST('weex/member/friends/add.jhtml?friendId='+ id).then(
                     function (weex) {
                         if (weex.type == "success") {
@@ -188,7 +199,9 @@
                         } else {
                             event.toast(weex.content);
                         }
+                        _this.clicked = false;
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast("网络不稳定请重试");
                     }
                 )

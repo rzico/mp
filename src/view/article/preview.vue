@@ -339,6 +339,7 @@
                 memberId:'',
                 showShare:false,
                 screenHeight:0,
+                clicked:false,
             }
         },
         components: {
@@ -470,8 +471,14 @@
             },
 //            点击编辑
             goComplete(){
+                let _this = this;
                 if(!this.publish){
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+                        _this.clicked = false;
                         if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                             let E = {
                                 isDone : 'complete'
@@ -522,9 +529,14 @@
             },
 //            点击下一步 跳转文章设置。
             goOption(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 //                event.openURL(utils.locate('view/member/editor/option.js),
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
+                    _this.clicked = false;
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                         let E = {
@@ -545,6 +557,10 @@
             },
 //            点赞
             goLaud(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 if(this.isSelf == 0){
                     var _this =this;
                     if(this.isLaud){
@@ -556,7 +572,9 @@
                                 }else{
                                     event.toast(data.content);
                                 }
+                                _this.clicked = false;
                             },function (err) {
+                                _this.clicked = false;
                                 event.toast(err.content);
                             }
                         )
@@ -569,13 +587,16 @@
                                 }else{
                                     event.toast(data.content);
                                 }
+                                _this.clicked = false;
                             },function (err) {
+                                _this.clicked = false;
                                 event.toast(err.content);
                             }
                         )
                     }
                 }else{
                     event.openURL(utils.locate('view/member/editor/whoLaud.js?articleId=' + this.articleId),function (data) {
+                        _this.clicked = false;
                     })
                 }
             },
@@ -587,20 +608,37 @@
                         this.isOperation = false;
                     }
                 }else{
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
                     event.openURL(utils.locate('view/member/editor/whoShare.js?articleId=' + this.articleId),function (data) {
+                        _this.clicked = false;
                     })
                 }
             },
 //            前往评论
             goReview(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId + '&authorId=' + this.memberId),function (data) {
+                    _this.clicked = false;
                 })
             },
 //            收藏文章
             collectArticle(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 POST('weex/member/favorite/add.jhtml?articleId=' + this.articleId).then(
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success'){
                             event.toast('收藏成功');
                             _this.isCollect = true;
@@ -608,15 +646,21 @@
                         }
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )
             },
 //            作者主页
             goAuthor(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + this.memberId),function (message) {
                     _this.isOperation = false;
+                    _this.clicked =false;
                 });
             },
 //            举报
@@ -626,6 +670,10 @@
 //            分享
             doShare(id){
                 var shareType;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 switch(id){
                     case 0 :
@@ -646,6 +694,7 @@
                 }
 
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         var option = {
                             title:data.data.title,
@@ -676,12 +725,17 @@
                         })
                     }
                 },function (err) {
+                    _this.clicked = false;
                     event.toast(err.content);
                 })
             },
 //            生成长图
             longPic(){
                 let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 webview.getLongImage(this.$refs.webView,function(data){
                     if(data.type == 'success'){
                         event.toast('长图已保存到相册里');
@@ -689,6 +743,7 @@
                     }else{
                         event.toast(data.content);
                     }
+                    _this.clicked = false;
                 });
             },
 //            删除文章

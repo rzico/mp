@@ -836,6 +836,11 @@
 
 //            设置文章标题
             articleTitle:function(title){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 if(title == '点击设置标题'){
                     title = '';
@@ -846,6 +851,7 @@
                 textData = JSON.stringify(textData);
                 storage.setItem('articleTitle', textData,e=> {
                     event.openURL(utils.locate('widget/autograph.js?name=articleTitle'), function (message) {
+                        _this.clicked = false;
                         if (message.type == 'success' && !utils.isNull(message.data)  && !utils.isNull(message.data.text)) {
                             _this.setTitle = message.data.text;
                             _this.hadChange = 1;
@@ -860,6 +866,11 @@
             },
 //            段落里的文本编辑
             editorText(index){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 
 //                if(_this.paraList[index].mediaType == 'product'){
@@ -880,6 +891,7 @@
 //                }
 
                 event.openEditor(_this.paraList[index].paraText,function (data) {
+                    _this.clicked = false;
                     if(data.data != '') {
 //                    将返回回来的html数据赋值进去
                         _this.paraList[index].paraText = data.data;
@@ -1100,6 +1112,8 @@
                             _this.sendImage(0);
                         }else{
                             _this.toSendArticle = false;
+//                防止重复点击
+                            _this.clicked = false;
                             event.toast(data.content);
                             return;
                         }
@@ -1107,8 +1121,6 @@
                         _this.ctrlProcess(data);
                     })
                 }
-//                防止重复点击
-                _this.clicked = false;
             },
             //上传图片到服务器
             sendImage (sendIndex) {
@@ -1200,6 +1212,8 @@
                             }
                         }else{//上传失败
                             _this.toSendArticle = false;
+//                防止重复点击
+                            _this.clicked = false;
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
@@ -1329,6 +1343,8 @@
                                     _this.deleteDraft('noclose');
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
+//                                  防止重复点击
+                                    _this.clicked = false;
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','');
                                     event.sendGlobalEvent('onArticleChange',listenData);
@@ -1347,6 +1363,8 @@
 //                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish));
                                 }else{
                                     _this.toSendArticle = false;
+//                防止重复点击
+                                    _this.clicked = false;
                                     _this.currentPro = 0;//当前进度
                                     _this.proTotal = 0;//总的进度
                                     _this.processWidth = 0;//进度条宽度
@@ -1356,6 +1374,8 @@
                         }else{
                             event.toast(res.content);
                             _this.toSendArticle = false;
+//                防止重复点击
+                            _this.clicked = false;
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
@@ -1363,6 +1383,8 @@
                     },
                     function (err) {
                         event.toast(err.content);
+//                防止重复点击
+                        _this.clicked = false;
                         _this.toSendArticle = false;
                         _this.currentPro = 0;//当前进度
                         _this.proTotal = 0;//总的进度
@@ -1373,8 +1395,14 @@
 
 //            点击"+"号里的文本时
             addTextPara:function(index){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openEditor('',function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         let textImg = utils.locate('resources/images/text.png');
 //                    将返回回来的html数据赋值进去
@@ -1405,10 +1433,16 @@
             },
 //            点击"+"号里的图片时
             addImgPara:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
@@ -1630,6 +1664,11 @@
             },
 //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 //                if(mediaType == 'product'){
 //                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
@@ -1650,6 +1689,7 @@
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
+                        _this.clicked = false;
                         _this.paraList[index].paraImage = data.data.originalPath;
                         _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
@@ -1678,6 +1718,7 @@
                     if(mediaType == 'image' || mediaType == 'product'){
 //                                调用裁剪图片
                         album.openCrop(imgSrc,function (data) {
+                            _this.clicked = false;
 //                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.originalPath;
@@ -1697,6 +1738,7 @@
                         })
                     }else if(mediaType == 'video'){
                         album.openVideo(function (data) {
+                            _this.clicked = false;
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.videoPath;
                                 _this.paraList[index].thumbnailImage = data.data.coverImagePath;
@@ -1735,6 +1777,11 @@
 //            跳转封面页面
             goCover:function () {
 //                event.openURL('file://assets/member/editor/cover.js');
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 let paraLength =  _this.paraList.length;
                 var uploadLength = 0;
@@ -1743,12 +1790,12 @@
                 for(let i = 0;i < paraLength; i++){
                     if(uploadLength < 6){
 //                        区分字体 图像 视频
-                        if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'image'){
+                        if(_this.paraList[i].paraImage != '' && (_this.paraList[i].mediaType == 'image' || _this.paraList[i].mediaType == 'product')){
                             imgList.push({
                                 path:_this.paraList[i].paraImage
                             });
                             uploadLength ++ ;
-                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video'){
+                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video' ){
                             imgList.push({
                                 path:_this.paraList[i].thumbnailImage
                             });
@@ -1763,6 +1810,7 @@
                 coverData = JSON.stringify(coverData);
                 storage.setItem('coverImage', coverData);
                 event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
+                    _this.clicked = false;
 //                event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
 //                    let jsonData = JSON.parse(data);
 //                    modal.toast({message:message,duration:1});
@@ -1779,14 +1827,16 @@
             },
 //            跳转音乐页面
             goMusic:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
 //                event.toast(musicId);
                 event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
-//                event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
-//                    event.toast(message);
-//                    let jsonData = JSON.parse(data);
-//                    modal.toast({message:message,duration:1});
+                    _this.clicked = false;
                     if(message.type == 'success' && message.data != ''){
                         _this.musicName = message.data.chooseMusicName;
                         musicId = message.data.chooseMusicId;
@@ -1801,9 +1851,15 @@
             },
 //            跳转投票页面
             goVote:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
+                    _this.clicked = false;
                     if(message.type == 'success' &&  message.data != '') {
                         _this.voteList.push(message.data);
 //                    添加修改标志
@@ -1817,11 +1873,17 @@
             },
 //            编辑投票
             editVote:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 let voteData = JSON.stringify(_this.voteList[index]);
                 storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
+                    _this.clicked = false;
                     if(message.type=='success' && message.data != '') {
 //                        直接=无法重新渲染页面。需要push后才可以
 //                        _this.voteList[index] = message.data;
@@ -1838,8 +1900,14 @@
             },
 //            点击加号里的添加视频
             addVideoPara:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 album.openVideo(function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                         let newPara = {
@@ -1872,8 +1940,14 @@
             },
 //            点击加号里的添加链接
             addLinkPara:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success'){
                         let newPara = {
                             //原图

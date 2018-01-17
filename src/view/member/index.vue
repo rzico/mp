@@ -676,6 +676,7 @@
                 showMenu:false,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
+                clicked:false,
             }
         },
         components: {
@@ -934,8 +935,13 @@
                 })
             },
             jumpEditor:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
+                    _this.clicked = false;
 //                    _this.updateArticle();
                 });
 
@@ -945,10 +951,15 @@
             },
 //            右侧隐藏栏里跳转文集
             jumpCorpus:function (item) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id + '&articleId=' + item.key),
 //                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             item.value.articleOption.articleCatalog.id = data.data.corpusId;
                             item.value.articleOption.articleCatalog.name = data.data.corpusName;1
@@ -978,11 +989,16 @@
 
 //            前往文章
             goArticle(item,index){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
 //                utils.debug(item);
                 var _this = this;
                 if(item.value.articleOption.articleCatalog.id == '99'){
                     event.openURL(utils.locate('view/article/delete.js?articleId=' + item.key),
                         function (data) {
+                            _this.clicked = false;
                             if(data.type == 'success'){
                                 if(data.data == 'restore'){
                                     _this.jumpRestore(item,index);
@@ -995,6 +1011,7 @@
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + item.key),
 //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
+                            _this.clicked = false;
 //                    _this.updateArticle();
                         })
                 }else{
@@ -1002,15 +1019,22 @@
                     event.openURL(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish ),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
+                            _this.clicked = false;
 //                    _this.updateArticle();
                         })
                 }
             },
 //            跳转帮助文章
             goHelpArticle(key){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + key  + '&publish=true'),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                     function () {
+                    _this.clicked = false;
 //                    _this.updateArticle();
                     })
             },
@@ -1161,16 +1185,26 @@
             },
 //            文集
             goCorpus(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
                     _this.getCorpus();
+                    _this.clicked = false;
                 });
             },
 //            个人信息
             goAttribute(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
+                    _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.logo)){
                                 _this.imageUrl = data.data.logo;
@@ -1189,9 +1223,14 @@
             },
 //            设置中心
             goManage(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
+                    _this.clicked = false;
 //                    utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.occupation)){
@@ -1211,9 +1250,14 @@
             },
 //            我的关注
             goFocus(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else {
@@ -1224,9 +1268,14 @@
             },
 //            我的收藏
             goCollect(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else{
@@ -1237,9 +1286,14 @@
             },
 //            钱包
             goWallet(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/member/wallet/index.js'),
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
                         }else{
@@ -1283,6 +1337,10 @@
 //            },
 //            还原
             jumpRestore(item,index){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 POST('weex/member/article/revert.jhtml?articleId=' + item.value.id).then(
                     function(e){
@@ -1325,17 +1383,24 @@
                         }else{
                             event.toast(e.content);
                         }
+                        _this.clicked = false;
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )
             },
 //            删除文章
             jumpDelete:function (item,index) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 if(item.value.isDraft){
                     _this.deleteAfter(item,index);
+                    _this.clicked = false;
                     return;
                 }
                 POST('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(
@@ -1375,8 +1440,10 @@
                         }else{
                             event.toast(e.content);
                         }
+                        _this.clicked = false;
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )
@@ -1427,6 +1494,10 @@
             },
 //            置顶
             jumpTop:function (item,index) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var saveSort;
                 if(item.sort.substring(0,1) == '0'){
                     saveSort = '1,'+ item.sort.substring(2);
@@ -1481,7 +1552,9 @@
 
                             }
                         })
+                        _this.clicked = false;
                     }else{
+                        _this.clicked = false;
                         event.toast(data.content);
                     }
                 })

@@ -323,6 +323,7 @@
 //            refreshImg:utils.locate('resources/images/loading.png'),
                 orderSN:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         props: {
@@ -566,7 +567,13 @@
             },
 //            前往作者主页
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             goback:function () {

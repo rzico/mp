@@ -349,6 +349,7 @@
             searchHint: "输入商品名",
             searchOrCancel:'取消',
             keyword:'',
+            clicked:false,
         },
         props:{
             noDataHint:{default:'暂无商品'},
@@ -466,8 +467,13 @@
                 }
             },
             addGoods(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function (res) {
+                    _this.clicked = false;
                     if(res.type == 'success'){
 //                        res.data.sales = 0;
                         _this.goodsList.splice(0,0,res.data);
@@ -476,8 +482,13 @@
             },
 //            分类
             goCatagory(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/shop/goods/catagory.js?name=catagoryList'), function (data) {
+                    _this.clicked = false;
                     _this.getCatagory();
                 });
             },
@@ -531,6 +542,10 @@
             },
 //            发布商品
             doPublish(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //                        如果没有历史记录就新添加一个缓存
                 var goodsPublish =  this.goodsList[this.goodsIndex];
@@ -539,6 +554,7 @@
                     if(e.result == 'success'){
                         event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish'), function (data) {
                             _this.doReset();
+                            _this.clicked = false;
                             if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                                 let E = {
                                     isDone : 'complete'
@@ -548,14 +564,20 @@
                             }
                         });
                     }else{
+                        _this.clicked = false;
                         event.toast('网络不稳定');
                     }
                 });
             },
 //            编辑商品
             doEdit(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/edit.js?id=' + this.goodsId), function (res) {
+                    _this.clicked = false;
                     _this.doReset();
                     if(res.type == 'success'){
                         _this.goodsList.splice(_this.goodsIndex,1);

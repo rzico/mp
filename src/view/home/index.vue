@@ -190,8 +190,15 @@
 //                            event.closeURL(message);
 //                        }
 //                    });
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
                     event.openURL(utils.locate('view/home/search.js'),
-                        function () {}
+                        function () {
+                            _this.clicked = false;
+                        }
                     )
                 },
 //            点击右上角菜单

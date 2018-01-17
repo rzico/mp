@@ -157,6 +157,7 @@
                 dataNum:0,
                 currentNum:0,
                 pageNum:20,
+                clicked:false,
 //                refreshImg:utils.locate('resources/images/loading.png'),
 //                hadUpdate:false,
             }
@@ -424,6 +425,11 @@
             },
             //添加好友
             adopt:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 POST('weex/member/friends/add.jhtml?friendId='+id).then(
                     function (data) {
                         if (data.type == "success") {
@@ -432,7 +438,9 @@
                         } else {
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     },function(err) {
+                        _this.clicked = false;
                         event.showToast("网络不稳定");
                     }
                 )

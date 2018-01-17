@@ -216,6 +216,7 @@
                 selfUserId:'',
                 pageName:'消息',
                 showMenu:false,
+                clicked:false,
             }
         },
         components: {
@@ -431,6 +432,10 @@
 //            },
 //            跳转消息列表
             jumpMessage:function(item){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 //                如果没有未读数就不更新缓存。直接跳转页面
                 if(item.unRead != 0){
@@ -455,6 +460,7 @@
                                         event.setReadMessage(item.userId,function(data) {
                                             if (data.type == 'success') {
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
+                                                    _this.clicked = false;
                                                 });
                                                 if(item.userId == 'gm_10209'){
                                                     let listenData = utils.message('success','添加好友跳转','');
@@ -467,6 +473,7 @@
                                     }else{
 //                                       设置已读
                                         event.setReadMessage(item.userId,function(data){
+                                            _this.clicked = false;
                                             if(data.type == 'success'){
                                                 event.navToChat(item.userId);
                                             }else{
@@ -475,6 +482,7 @@
                                         });
                                     };
                                 }else{
+                                    _this.clicked = false;
                                     event.toast(message.content);
                                 };
                             });
@@ -495,6 +503,7 @@
 //                    event.save(option,function (message) {
 
                         event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
+                            _this.clicked = false;
                         });
 //                    })
 
@@ -504,6 +513,7 @@
 //                        event.setReadMessage(item.userId,function(data){
 //                            if(data.type == 'success'){
                         event.navToChat(item.userId);
+                        _this.clicked = false;
 //                            }else{
 //                                event.toast(data.content);
 //                            }
@@ -568,6 +578,10 @@
             },
 //            删除会话消息；
             deleteMessage(userId,index){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //        modal.confirm({
 //            message: '删除后,将清空该？',
@@ -606,18 +620,27 @@
                         }else{
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     })
                 }else{
+                    _this.clicked = false;
                     event.toast('系统繁忙');
                 };
             },
             //            触发自组件的跳转方法
             gosearch:function () {
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
 //                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
+                    _this.clicked = false;
+//                    if(message.data != ''){
+//                        event.closeURL(message);
+//                    }
                 });
             },
             //            触发自组件的二维码方法
@@ -639,8 +662,14 @@
             },
 //            前往添加好友
             goAddFriend(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 this.showMenu = false;
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
+                    _this.clicked = false;
                 })
 
             },

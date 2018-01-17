@@ -135,6 +135,7 @@
                 isPublish:false,
                 categoryName:'生活',
                 category:7,
+                clicked:false,
             }
 
         },
@@ -244,10 +245,15 @@
             },
 //            跳转至选择范围
             goScope:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/scope.js?checkId=' + this.scope),
 //                event.openURL('http://192.168.2.157:8081/scope.weex.js?checkId=' + _this.scope,
                     function (data) {
+                    _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.scope = parseInt(data.data.checkId);
                             if (data.data.checkId == 2 && !utils.isNull(data.data.password)) {
@@ -259,10 +265,15 @@
             },
 //            跳转至选择类别
             goCategory:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=article_category'),
 //                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
                     function (data) {
+                    _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.category = parseInt(data.data.listId);
                             _this.categoryName = data.data.listName;
@@ -273,9 +284,14 @@
 //            跳转至选择文集
             goChooseCorpus:function () {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + this.corpusId  + '&articleId=' +  this.articleId),
 //                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + _this.corpusId,
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             _this.corpusId = parseInt(data.data.corpusId);
                             _this.corpusName = data.data.corpusName;
@@ -297,7 +313,11 @@
             },
 //            点击完成，进行发布
             goDone:function () {
-                var _this =this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
                 var authorityData ='';
                 switch (this.scope){
                     case 0 ://公开
@@ -375,7 +395,9 @@
                     }else{
                         event.toast(data.content);
                     }
+                    _this.clicked = false;
                 },function (err) {
+                    _this.clicked = false;
                     event.toast(err.content);
                 })
             },

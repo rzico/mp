@@ -309,6 +309,7 @@
                 pageStart:0,
                 pageSize:15,
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         components: {
@@ -429,8 +430,14 @@
             },
             //            作者主页
             goAuthor:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = thisl
                 id = parseInt(id.substr(-5)) - 10200;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             onrefresh:function () {
@@ -466,6 +473,11 @@
             },
 //            前往链接
             goLink(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 POST('weex/member/message/go.jhtml?id='+ id).then(function(data){
                     if(data.type == 'success'){
                         event.openURL(data.data,function(){
@@ -474,8 +486,9 @@
                     }else{
                         event.toast(data.content);
                     }
-
+                    _this.clicked = false;
                 },function(err){
+                    _this.clicked = false;
                     event.toast(err.content);
                 })
             }
