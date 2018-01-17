@@ -111,7 +111,8 @@
             return{
                 prompting:'点击扫码',
                 shopId:'',
-                code:''
+                code:'',
+                clicked:false
             }
         },
         components: {
@@ -145,6 +146,10 @@
                 }
             },
             scan:function() {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this
                 event.scan(function (message) {
                     if (message.type=='error') {
@@ -160,27 +165,29 @@
                             POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
                                 function (mes) {
                                     if (mes.type == "success") {
-                                        utils.debug(mes)
                                         event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
-                                          utils.debug(message)
                                             if (message.type == "success") {
-
                                                 event.closeURL(message);
+                                                _this.clicked =false
                                             }
                                         })
+                                        _this.clicked = false
                                     } else {
                                         event.toast(mes.content);
+                                        _this.clicked =false
                                     }
                                 }, function (err) {
                                     event.toast("网络不稳定");
+                                    _this.clicked =false
                                 }
                             )
                         } else {
                             event.toast(data.content);
+                            _this.clicked =false
                         }
 
                     })
-
+                    _this.clicked = false
                 });
             }
         }

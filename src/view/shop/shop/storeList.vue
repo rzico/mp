@@ -219,6 +219,7 @@ export default {
             roleName:'',
             canScroll:true,
             refreshImg:utils.locate('resources/images/loading.png'),
+            clicked:false
         }
     },
     components: {
@@ -241,11 +242,16 @@ export default {
     },
     methods:{
         modification:function (id) {
-                    let _this =this;
+            if (this.clicked==true) {
+                return;
+            }
+            this.clicked = true;
+            let _this = this
                     event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
                         if(message.type == 'success'){
                             _this.onrefresh()
                         }
+                        _this.clicked =false
                     })
         },
         open:function () {
@@ -319,12 +325,17 @@ export default {
         },
 
         add:function () {
+            if (this.clicked==true) {
+                return;
+            }
+            this.clicked = true;
             let _this= this;
             event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
 
                 if(message.type == 'success'){
                     _this.onrefresh()
                 }
+                _this.clicked = false
             })
         },
         onpanmove:function (e,index) {

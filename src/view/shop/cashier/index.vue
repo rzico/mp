@@ -69,6 +69,10 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
                     <text class="menuBtn" value="刷卡">优惠券</text>
                 </div>
+                <div class="menu" @click="godistribution()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
+                    <text class="menuBtn" value="刷卡">营销</text>
+                </div>
                 <div class="content">
                     <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
                     <text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>
@@ -303,6 +307,7 @@
                 isSubmit:false,
                 plugId:"",
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false
             }
         },
         components: {
@@ -327,21 +332,50 @@
         },
         methods: {
             employee:function () {
-                event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
+
             },
             shop:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
                     if(mes.type =='success'&&mes.data==''){
                         event.closeURL(mes)
                     }
-
+                    _this.clicked =false
                 });
             },
             gocard:function () {
-                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {_this.clicked = false});
             },
             gocoupon:function () {
-                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {_this.clicked = false});
+            },
+            godistribution:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {_this.clicked = false});
             },
             objHeader:function () {
                 if (utils.device()=='V1') {

@@ -104,6 +104,7 @@
         data: function () {
             return{
                 prompting:'点击测试',
+                clicked:false
             }
         },
         components: {
@@ -126,6 +127,10 @@
                 event.closeURL(message);
             },
             scan:function() {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this
                 event.scan(function (message) {
                     if (message.type=='error') {
@@ -146,17 +151,20 @@
                                     } else {
                                         event.toast(mes.content);
                                     }
+                                    _this.clicked = false
                                 }, function (err) {
                                     event.toast("网络不稳定");
+                                    _this.clicked = false
                                 }
                             )
                         } else {
                             event.toast(data.content);
+                            _this.clicked =false
                         }
 
 
                     })
-
+                    _this.clicked =false
                 });
             }
         }

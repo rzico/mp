@@ -252,13 +252,7 @@
 
               category:1,
               industryName:'',
-//              id:'',
-//
-//              shopName:'',
-//              shopareaName:'',
-//              shopAddress:'',
-//              shopLinkman:'',
-//              shoptel:''
+              clicked:false
 
           }
         },
@@ -340,6 +334,10 @@
                 })
             },
             goComplete:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this;
                 if(_this.vendorName ==''){
                     event.toast('商家名称未填写');
@@ -385,14 +383,18 @@
                                 event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=elevennumber'), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);
+                                        _this.clicked =false
                                     }
                                 })
                             })
                         } else {
                             event.toast(mes.content);
+                            _this.clicked =false
                         }
+                        _this.clicked = false
                     }, function (err) {
                         event.toast("网络不稳定");
+                        _this.clicked =false
                     }
                 )
     }

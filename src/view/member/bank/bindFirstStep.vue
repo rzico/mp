@@ -152,7 +152,8 @@
             return {
                 txtInput: '',
                 accountName:'',
-                autofocus: false
+                autofocus: false,
+                clicked:false
             };
         },
         components: {
@@ -207,6 +208,10 @@
                 event.closeURL()
             },
             goComplete: function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this;
                 if (utils.isNull(this.txtInput)) {
                     modal.alert({
@@ -232,6 +237,7 @@
                         if (res.type=="success") {
                             event.closeURL(res);
                         }
+                        _this.clicked =false
                     })
                 });
         }

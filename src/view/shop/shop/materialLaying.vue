@@ -228,7 +228,8 @@
                 addressName:'',
                 originalone:'',
                 originaltwo:'',
-                originalthree:''
+                originalthree:'',
+                clicked:false
         }
         },
         components: {
@@ -316,6 +317,10 @@
                     })
             },
             goComplete:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this;
                 if(_this.logo ==''){
                     event.toast('门头照未选择');
@@ -335,13 +340,18 @@
                                 event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code), function (message) {
                                     if (message.type == "success") {
                                         event.closeURL(message);
+                                        _this.clicked =false
                                     }
                                 })
+                            _this.clicked = false
                         } else {
                             event.toast(mes.content);
+                            _this.clicked =false
                         }
+                        _this.clicked = false
                     }, function (err) {
                         event.toast("网络不稳定");
+                        _this.clicked =false
                     }
                 )
             }

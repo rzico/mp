@@ -221,15 +221,11 @@
                             event.toast(message.content);
                         }
                 });
-
+                    _this.clicked =false
             },
 
             onSend: function (e) {
                 var _this = this;
-                if (this.clicked==true) {
-                    return;
-                }
-                this.clicked = true;
                 event.encrypt(_this.phone, function (message) {
                     if (message.type == "success") {
                         POST('weex/member/bankcard/send_mobile.jhtml?mobile=' + message.data).then(
@@ -239,15 +235,12 @@
                                 } else {
                                     event.toast(data.content);
                                 }
-                                this.clicked = false;
                             }, function (err) {
                                 event.toast(err.content);
-                                this.clicked = false;
                             }
                         )
                     } else {
                         event.toast(message.content);
-                        this.clicked = false;
                     }
                 })
 
@@ -276,8 +269,8 @@
                     timer = null;
                 }
                 _this.captcha = '';
+                _this.clicked =false;
                 _this.retry = true;
-                _this.clicked = false;
             },
             statusStyle: function () {
                 if (this.retry) {

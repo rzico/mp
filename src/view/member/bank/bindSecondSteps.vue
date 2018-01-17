@@ -151,7 +151,8 @@
               bankimage:'',
               province:'',
               city:'',
-                autofocus: false
+                autofocus: false,
+              clicked:false
           }
         },
         components: {
@@ -219,6 +220,10 @@
                 event.closeURL()
             },
            goComplete: function () {
+               if (this.clicked==true) {
+                   return;
+               }
+               this.clicked = true;
                 var _this=this;
                if (utils.isNull(this.phone)) {
                    modal.alert({
@@ -262,6 +267,7 @@
                         if (mes.type=="success") {
                             event.closeURL(mes);
                         }
+                        _this.clicked =false
                     })
                 });
 

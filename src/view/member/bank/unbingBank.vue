@@ -145,6 +145,10 @@
                 }
             },
             onSend: function (e) {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 POST('weex/member/bankcard/send_mobile.jhtml').then(
                     function (data) {
@@ -154,10 +158,12 @@
                             _this.endTimer();
                             event.toast(data.content);
                         }
+                        _this.clicked = false
                     },
                     function (err) {
                         _this.endTimer();
                         event.toast("网络不稳定")
+                        _this.clicked = false
                     }
                 )
             },
