@@ -1402,6 +1402,8 @@
 //                this.clicked = true;
                 var _this = this;
                 event.openEditor('',function (data) {
+                    utils.debug(1);
+                    utils.debug(data);
 //                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         let textImg = utils.locate('resources/images/text.png');
@@ -1442,6 +1444,8 @@
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
+                        utils.debug(1);
+                        utils.debug(data);
 //                        _this.clicked = false;
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
@@ -1907,6 +1911,8 @@
 //                this.clicked = true;
                 let _this = this;
                 album.openVideo(function (data) {
+                    utils.debug(1);
+                    utils.debug(data);
 //                    _this.clicked = false;
                     if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径

@@ -321,8 +321,8 @@
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
                     true,function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success') {
-                            _this.clicked = false;
 //                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
 //                            _this.original = data.data.originalPath
