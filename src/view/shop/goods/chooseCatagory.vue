@@ -63,9 +63,6 @@
         /*transform: translateY(0px);*/
         /*opacity: 1;*/
     /*}*/
-
-
-
     .pr30{
         padding-right: 30px;
     }

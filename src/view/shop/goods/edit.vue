@@ -819,6 +819,7 @@
                     distribution:distributionTemplate,
                     products: _this.productTemplates,
                 };
+//                utils.debug(productData);
 //                转成json字符串后上传服务器
                 productData = JSON.stringify(productData);
 //                网络请求，保存文章
@@ -864,7 +865,7 @@
                         spec2: '',
                         price:_this.topLinePrice,
                         stock: parseInt(_this.topLineNum),
-                        distribution:0
+//                        distribution:0
                     })
                 }else{
                     this.list.forEach(function (item) {
@@ -875,7 +876,7 @@
                             spec2: item.spec2,
                             price: item.price,
                             stock: parseInt(item.stock),
-                            distribution:0
+//                            distribution:0
                         })
                     })
                 }
