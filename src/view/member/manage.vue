@@ -247,6 +247,7 @@
                 let _this = this
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.logo)){
                                 _this.member.logo = data.data.logo;
@@ -261,7 +262,7 @@
                         }else if(data.type == 'success' && data.content == '关闭'){
                             event.closeURL();
                         }
-                        _this.clicked = false;
+
                     }
                 );
             },
