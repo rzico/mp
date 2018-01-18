@@ -362,6 +362,7 @@
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
                     '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
+                        _this.clicked =false
                         if (mes.type == "success") {
                             _this.shopId = mes.data.id;
                             let  elevendata = {
@@ -381,17 +382,15 @@
                             elevendata = JSON.stringify(elevendata);
                             storage.setItem('elevennumber', elevendata,e=> {
                                 event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=elevennumber'), function (message) {
+                                    _this.clicked =false;
                                     if (message.type == "success") {
                                         event.closeURL(message);
-                                        _this.clicked =false
                                     }
                                 })
                             })
                         } else {
                             event.toast(mes.content);
-                            _this.clicked =false
                         }
-                        _this.clicked = false
                     }, function (err) {
                         event.toast("网络不稳定");
                         _this.clicked =false

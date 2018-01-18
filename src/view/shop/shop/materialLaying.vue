@@ -335,20 +335,17 @@
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
                     '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
+                        _this.clicked =false
                         if (mes.type == "success") {
-                            var _this =this
                                 event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code), function (message) {
+                                    _this.clicked =false
                                     if (message.type == "success") {
                                         event.closeURL(message);
-                                        _this.clicked =false
                                     }
                                 })
-                            _this.clicked = false
                         } else {
                             event.toast(mes.content);
-                            _this.clicked =false
                         }
-                        _this.clicked = false
                     }, function (err) {
                         event.toast("网络不稳定");
                         _this.clicked =false
