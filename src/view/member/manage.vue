@@ -244,7 +244,7 @@
                     return;
                 }
                 this.clicked = true;
-                let _this = this
+                let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
                         _this.clicked = false;
