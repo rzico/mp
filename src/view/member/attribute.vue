@@ -209,6 +209,7 @@
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
+                this.clicked = false
             },
             profession: function () {
                 if (this.clicked) {
@@ -313,16 +314,11 @@
                 })
             },
             headLogo: function () {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
                     true,function (data) {
                         if(data.type == 'success') {
-                            _this.clicked = false;
 //                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
 //                            _this.original = data.data.originalPath
