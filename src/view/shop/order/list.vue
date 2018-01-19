@@ -40,8 +40,13 @@
                         </div>
                     </div>
                     <div class="flex-row goodsTotalPrice boder-bottom">
-                        <text class="title mr20">共{{item.quantity}}件商品</text>
-                        <text class="title">合计:¥ {{item.amount | currencyfmt}}</text>
+                        <div>
+                            <text class="sub_title">{{item.createDate | watchCreateDate}}</text>
+                        </div>
+                        <div class="flex-row">
+                            <text class="title mr20">共{{item.quantity}}件商品</text>
+                            <text class="title">合计:¥ {{item.amount | currencyfmt}}</text>
+                        </div>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-if="item.status == 'unpaid'">
                         <div class="footMore">
@@ -120,7 +125,7 @@
     }
     .goodsTotalPrice{
         padding: 20px;
-        justify-content: flex-end;
+        justify-content: space-between;
     }
     .goodsName{
         line-height: 32px;
@@ -243,6 +248,9 @@
                 }else{
                     return value;
                 }
+            },
+            watchCreateDate:function (value) {
+                return utils.ymdhistimefmt(value);
             },
             watchThumbnail:function (value) {
 //                    没过滤前是原图
@@ -402,22 +410,22 @@
                     cancelTitle:'取消',
                 }, function (value) {
                     if(value == '确定'){
-                            POST('weex/member/order/cancel.jhtml?sn=' + sn).then(function (data) {
-                                if(data.type == 'success'){
+                        POST('weex/member/order/cancel.jhtml?sn=' + sn).then(function (data) {
+                            if(data.type == 'success'){
 //            _this.ordersList.splice(_this.selectIndex,1);
 //                                        _this.ordersList[_this.selectIndex].status = 'completed',
 //                                        _this.ordersList[_this.selectIndex].statusDescr = '已取消',
-                                    item.status = 'completed';
-                                    item.statusDescr = '已取消';
+                                item.status = 'completed';
+                                item.statusDescr = '已取消';
 //                                    _this.pageStart = 0;
 //                                    _this.open();
-                                     event.toast('关闭订单成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            })
+                                event.toast('关闭订单成功');
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        })
                     }
                 })
             },
@@ -501,7 +509,6 @@
             },
 //            前往作者主页
             goAuthor(id){
-
                 if (this.clicked) {
                     return;
                 }

@@ -54,7 +54,7 @@
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">交易对象:</text>
-                        <text class="fz30 gray ml10">{{item.nickName}}</text>
+                        <text class="fz30 gray ml10">{{item.ext.nickName}}</text>
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">商品说明:</text>
