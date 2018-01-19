@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
-const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -102,6 +102,15 @@ let utilsFunc = {
         if (debug) {
             event.toast(msg);
         }
+    },
+    isRoles(roles,all) {
+        for (var i=0;i<roles.length;i++) {
+            let role = roles.substring(i,i+1);
+            if (all.indexOf(role)>=0) {
+                return true;
+            }
+        }
+        return false;
     },
     //  获取字符串的字符总长度
     getLength(e){
