@@ -100,7 +100,7 @@
                 <div class="cell-panel space-between" @click="beginShare()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                        <text class="title ml10">推荐给好友</text>
+                        <text class="title ml10">推荐好友下载APP</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
