@@ -59,6 +59,7 @@
                 canScroll:true,
                 pageWidth:750,
                 showMenu:false,
+                clicked:false,
             }
         },
         components: {

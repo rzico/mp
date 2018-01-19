@@ -501,7 +501,6 @@
             },
 //            前往作者主页
             goAuthor(id){
-
                 if (this.clicked) {
                     return;
                 }

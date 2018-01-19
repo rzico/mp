@@ -467,6 +467,7 @@
                                                     event.sendGlobalEvent('onNewFriendChange',listenData);
                                                 }
                                             } else {
+                                                _this.clicked = false;
                                                 event.toast(data.content);
                                             }
                                         })
