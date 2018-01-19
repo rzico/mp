@@ -133,6 +133,7 @@
                 this.clicked = true;
                 var _this=this
                 event.scan(function (message) {
+                    _this.clicked = false
                     if (message.type=='error') {
                         return;
                     }
@@ -145,26 +146,19 @@
                             _this.code = data.data.code
                             POST('weex/member/shop/test.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
                                 function (mes) {
-                                    utils.debug(mes)
                                     if (mes.type == "success") {
                                         event.closeURL(mes);
                                     } else {
                                         event.toast(mes.content);
                                     }
-                                    _this.clicked = false
                                 }, function (err) {
                                     event.toast("网络不稳定");
-                                    _this.clicked = false
                                 }
                             )
                         } else {
                             event.toast(data.content);
-                            _this.clicked =false
                         }
-
-
                     })
-                    _this.clicked =false
                 });
             }
         }

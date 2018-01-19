@@ -209,6 +209,7 @@
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
+                this.clicked = false
             },
             profession: function () {
                 if (this.clicked) {
@@ -313,10 +314,6 @@
                 })
             },
             headLogo: function () {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
                 var _this = this;
                 album.openAlbumSingle(
                     //选完图片后触发回调函数

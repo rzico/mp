@@ -152,6 +152,7 @@
                 this.clicked = true;
                 var _this=this
                 event.scan(function (message) {
+                    _this.clicked =false
                     if (message.type=='error') {
                         return;
                     }
@@ -166,28 +167,22 @@
                                 function (mes) {
                                     if (mes.type == "success") {
                                         event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
+                                            _this.clicked =false
                                             if (message.type == "success") {
                                                 event.closeURL(message);
-                                                _this.clicked =false
                                             }
                                         })
-                                        _this.clicked = false
                                     } else {
                                         event.toast(mes.content);
-                                        _this.clicked =false
                                     }
                                 }, function (err) {
                                     event.toast("网络不稳定");
-                                    _this.clicked =false
                                 }
                             )
                         } else {
                             event.toast(data.content);
-                            _this.clicked =false
                         }
-
                     })
-                    _this.clicked = false
                 });
             }
         }

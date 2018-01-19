@@ -331,11 +331,10 @@ export default {
             this.clicked = true;
             let _this= this;
             event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
-
+                _this.clicked =false
                 if(message.type == 'success'){
                     _this.onrefresh()
                 }
-                _this.clicked = false
             })
         },
         onpanmove:function (e,index) {
