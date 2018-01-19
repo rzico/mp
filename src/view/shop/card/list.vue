@@ -198,6 +198,7 @@
         },
         data() {
             return   {
+                roles:'',
                 start:0,
                 refreshing:false,
                 showLoading:false,
@@ -217,8 +218,8 @@
         },
         created() {
             utils.initIconFont();
-
             this.open();
+            this.permissions()
         },
         filters:{
             watchCode:function (value) {
@@ -234,6 +235,19 @@
             }
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             classHeader:function () {
                 let dc = utils.device();
 
@@ -363,6 +377,14 @@
                 })
             },
             setting:function () {
+                let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate('view/shop/card/setting.js'),function () {
 
                 })

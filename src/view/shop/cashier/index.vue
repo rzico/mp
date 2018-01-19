@@ -301,6 +301,7 @@
     export default {
         data() {
             return {
+                roles:"",
                 isIndex:false,
                 refreshing:false,
                 id:0,
@@ -337,14 +338,36 @@
                     _this.view();
                 }
             });
+            this.permissions()
         },
         methods: {
+//            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             employee:function () {
                 if (this.clicked==true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
             },
             shop:function () {
@@ -353,6 +376,14 @@
                 }
                 this.clicked = true;
                 let _this = this
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
                     if(mes.type =='success'&&mes.data==''){
                         event.closeURL(mes)
@@ -382,6 +413,14 @@
                 }
                 this.clicked = true;
                 let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {_this.clicked = false});
             },
             goods:function () {
@@ -390,6 +429,14 @@
                 }
                 this.clicked = true;
                 let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate("view/shop/goods/manage.js"),function (e) {_this.clicked = false});
             },
             order:function () {
@@ -398,6 +445,14 @@
                 }
                 this.clicked = true;
                 let _this = this
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate("view/shop/order/list.js"),function (e) {_this.clicked = false});
             },
             objHeader:function () {
@@ -461,7 +516,20 @@
                 event.closeURL();
             },
             deposit:function () {
-                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("16",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {_this.clicked =false});
             },
             goIndex:function () {
                 GET("weex/member/topic/owner.jhtml",function (res) {

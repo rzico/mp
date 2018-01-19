@@ -150,15 +150,30 @@
                 id:"",
                 qrcode:"",
                 data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,code:'392203232323'},},
-                begin:0
+                begin:0,
+                roles:''
             }
         },
         created(){
             utils.initIconFont();
             this.id = utils.getUrlParameter("id");
             this.load();
+            this.permissions()
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             vipClass:function (v) {
                 if (v=='vip3') {
                     return "vip3";
@@ -223,6 +238,13 @@
             },
             fill: function () {
                 var _this = this;
+                if (!utils.isRoles("15",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate("view/shop/card/fill.js?id="+this.id),function (data) {
                     if (data.type=='success') {
                         _this.load();
@@ -231,6 +253,13 @@
             },
             refund: function () {
                 var _this = this;
+                if (!utils.isRoles("15",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate("view/shop/card/refund.js?id="+this.id),function (data) {
                     if (data.type=='success') {
                         _this.load();
