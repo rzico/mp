@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="cell-row cell-line"  v-if="member.useCashier">
+            <div class="cell-row cell-line"  v-if="hastopic()">
                 <div class="cell-panel space-between cell-clear" @click="store">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
@@ -55,7 +55,7 @@
 
 
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between " @click="orderManage()">
+                <div class="cell-panel space-between " @click="orderManage()" v-if="hasuseCashier()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title ml10">订单管理</text>
@@ -65,7 +65,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between " @click="goodsManage()">
+                <div class="cell-panel space-between " @click="goodsManage()" v-if="hasuseCashier()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
                         <text class="title ml10">商品管理</text>
@@ -85,16 +85,17 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between  cell-clear">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                        <text class="title ml10">投票管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--投票管理暂未开发，关闭连接-->
+                <!--<div class="cell-panel space-between  cell-clear">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
+                        <!--<text class="title ml10">投票管理</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title"></text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between" @click="beginShare()">
@@ -176,6 +177,7 @@
                 member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false},
                 showShare:false,
                 clicked:false,
+                isuseCashier:false
             }
         },
         props: {
@@ -187,6 +189,22 @@
             _this.open();
         },
         methods: {
+//            判断是否点亮专栏
+            hastopic:function () {
+                if(this.member.topic == '已认证'){
+                    return true
+                }else{
+                    return false
+                }
+            },
+//            判断是否开启商户模式
+            hasuseCashier:function () {
+                if(!this.isuseCashier == true){
+                    return true
+                }else{
+                    return false
+                }
+            },
             maskTouch(){
                 this.showShare = false;
             },
@@ -218,6 +236,7 @@
                     function (data) {
                         if (data.type=="success") {
                             _this.member = data.data;
+                            _this.isuseCashier = data.data.useCashier
                         } else {
                             event.toast(data.content);
                         }
