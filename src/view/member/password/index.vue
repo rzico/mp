@@ -46,11 +46,10 @@
                 var _this = this;
                 event.encrypt(_this.value,function (message) {
                     if (message.type=="success") {
-//                        utils.debug('weex/member/password/check_mobile.jhtml?mobile=' + message.data)
                         POST('weex/member/password/check_mobile.jhtml?mobile=' + message.data).then(
                             function (data) {
                                 if (data.type == "success") {
-                                    event.openURL(utils.locate("view/member/passowrd/captcha.js?mobile=" +_this.value),
+                                    event.openURL(utils.locate("view/member/password/captcha.js?mobile=" +_this.value),
                                         function (resp) {
                                            event.closeURL(resp);
                                         });
