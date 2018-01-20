@@ -360,7 +360,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("12",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -376,14 +376,6 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("1",_this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    })
-                    _this.clicked = false
-                    return
-                }
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
                     if(mes.type =='success'&&mes.data==''){
                         event.closeURL(mes)
