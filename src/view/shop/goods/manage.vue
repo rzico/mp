@@ -350,6 +350,7 @@
             searchOrCancel:'取消',
             keyword:'',
             clicked:false,
+            roles:''
         },
         props:{
             noDataHint:{default:'暂无商品'},
@@ -366,6 +367,7 @@
             }
         },
         created(){
+            this.permissions()
             utils.initIconFont();
 //            获取分类列表
             this.getCatagory();
@@ -376,6 +378,19 @@
             }
         },
         methods:{
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc
@@ -472,6 +487,14 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function (res) {
                     _this.clicked = false;
                     if(res.type == 'success'){

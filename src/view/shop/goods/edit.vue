@@ -376,6 +376,7 @@
             productTemplates:[],
             goodsId:'',
             clicked:false,
+            roles:''
         },
         props:{
             title:{default:'新增商品'}
@@ -385,6 +386,7 @@
         },
         created(){
             let _this = this;
+            this.permissions();
             utils.initIconFont();
             if(!utils.isNull(utils.getUrlParameter('id'))){
                 this.title = '编辑商品';
@@ -429,6 +431,19 @@
             }
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
 //            添加商品规格行
             addLines() {
                 if (this.list.length == 0) {
@@ -562,6 +577,13 @@
 //            选择营销策略
             goChooseDistri(){
                 let _this = this;
+                if (!utils.isRoles("A",_this.roles)) {
+                    modal.alert({
+                        message: '请点亮专栏',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate('view/shop/goods/chooseDistribution.js?catagoryId=' + this.distributionId), function (data) {
                     if(data.type == 'success' && data.data != ''){
                         _this.distributionId = parseInt(data.data.catagoryId);
