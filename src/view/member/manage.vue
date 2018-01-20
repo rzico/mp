@@ -384,6 +384,14 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate('view/shop/goods/manage.js'),
                     function (data) {
                     _this.clicked = false;
@@ -398,6 +406,14 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
                     _this.clicked = false;
