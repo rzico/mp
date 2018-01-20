@@ -75,7 +75,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between" @click="goReviewManage()">
+                <div class="cell-panel space-between cell-clear" @click="goReviewManage()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
                         <text class="title ml10">评价管理</text>
@@ -177,7 +177,8 @@
                 member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false},
                 showShare:false,
                 clicked:false,
-                isuseCashier:false
+                isuseCashier:false,
+                roles:''
             }
         },
         props: {
@@ -187,13 +188,28 @@
             utils.initIconFont();
             var _this = this;
             _this.open();
+            this.permissions()
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
 //            判断是否点亮专栏
             hastopic:function () {
-                if(this.member.topic == '已认证'){
+                let _this = this
+                if (utils.isRoles("A",_this.roles)) {
                     return true
-                }else{
+                }else {
                     return false
                 }
             },
@@ -227,10 +243,6 @@
                 })
             },
             open:function () {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
                 var _this = this;
                 GET("weex/member/manager/view.jhtml",
                     function (data) {
@@ -240,10 +252,8 @@
                         } else {
                             event.toast(data.content);
                         }
-                        _this.clicked = false;
                     },
                     function (err) {
-                        _this.clicked = false;
                         event.toast("网络不稳定")
                     }
                 )
