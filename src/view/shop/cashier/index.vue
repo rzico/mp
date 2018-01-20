@@ -455,7 +455,12 @@
                 }
             },
             hasShop:function () {
-                return (this.shopId>0 && this.shopId!="");
+                let _this = this
+                if (utils.isRoles("15",_this.roles) && _this.shopId>0 && !utils.isNull(_this.shopId)) {
+                    return true
+                }else {
+                    return false
+                }
             },
             hasInput:function () {
                 return utils.isNull(this.amount)==false;
