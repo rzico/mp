@@ -29,10 +29,10 @@
                         </div>
                         <div class="bottomBotton">
                             <div class="button" @click="popup(num.id,num.shopId)">
-                                <text class="sub_title">设置店铺</text>
+                                <text style="color:#ffffff;font-size: 30px">设置店铺</text>
                             </div>
                             <div class="button"@click="selectPosition(num.id,num.shopId,num.roleId)">
-                                <text class="sub_title">设置职位</text>
+                                <text style="color:#ffffff;font-size: 30px">设置职位</text>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,6 @@
         padding-top: 10px;
         padding-bottom: 10px;
         background-color:#EB4E40;
-
         height:50px;
         line-height: 50px;
         align-items: center;
