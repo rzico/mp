@@ -542,7 +542,7 @@
                                                     item.name.push(friend);
                                                     _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
-                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp);
+                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp.toString());
                                                 }else if(message.type == 'success' && message.content =='更新成功'){
                                                 }else{
                                                     event.toast(message.content);
@@ -565,7 +565,7 @@
                                                     item.name.push(friend);
                                                     _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
-                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp);
+                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp.toString());
                                                 }else if(message.type == 'success' && message.content =='更新成功'){
                                                 }else{
                                                     event.toast(message.content);

@@ -219,7 +219,7 @@
                         if(data.type == 'success' && data.data.data != ''){
                             if(data.data.start == 0 ){
 //                           将本次时间戳缓存起来
-                                storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate);
+                                storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate.toString());
                             }
                             _this.toSendArticle = true;
                             _this.proTotal = data.data.recordsTotal;
