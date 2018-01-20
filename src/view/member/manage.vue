@@ -166,6 +166,7 @@
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
+    const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue';
     import share from '../../include/share.vue'
     export default {
