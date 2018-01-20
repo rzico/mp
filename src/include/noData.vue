@@ -1,5 +1,5 @@
 <template>
-    <div class="noData" :style="{backgroundColor:ndBgColor}">
+    <div class="noData" :style="{backgroundColor:ndBgColor,paddingBottom:pbNumbe+'px'}">
                 <text class="noData_ico" :style="{fontFamily:'iconfont'}">&#xe615;</text>
                 <text class="noData_hint">{{noDataHint}}</text>
     </div>
@@ -24,7 +24,8 @@
     export default {
         props: {
             ndBgColor:{default:'#eee'},
-            noDataHint:{default:'没有数据'}
+            noDataHint:{default:'没有数据'},
+            pdNumber:{default:200}
         }
     }
 </script>

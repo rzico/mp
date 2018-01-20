@@ -222,7 +222,8 @@
                 moveSign:false,
                 showSort:false,//子组件
                 catagoryList:[],
-                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false}
+                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false},
+                roles:''
             }
         },
         components: {
@@ -234,6 +235,7 @@
         },
         created(){
             var _this = this;
+            this.permissions();
             utils.initIconFont();
             let catagory = utils.getUrlParameter('name');
             if(utils.isNull(catagory)){
@@ -275,6 +277,19 @@
             }
         },
         methods:{
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             goback(){
                 let backData = utils.message('success','成功','');
                 event.closeURL(backData);
@@ -351,12 +366,26 @@
 //            添加分类
             addCatagory(){
                 let _this = this;
+                if (!utils.isRoles("A",_this.roles)) {
+                    modal.alert({
+                        message: '请点亮专栏',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false};
                 _this.isShow  = true;
              },
 //            修改分类名称
             changeName(id){
                 let _this = this;
+                if (!utils.isRoles("A",_this.roles)) {
+                    modal.alert({
+                        message: '请点亮专栏',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 _this.catagoryList.forEach( function(item) {
                     if (item.id==id) {
                       _this.item = item;

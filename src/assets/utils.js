@@ -103,6 +103,15 @@ let utilsFunc = {
             event.toast(msg);
         }
     },
+    isRoles(roles,all) {
+        for (var i=0;i<roles.length;i++) {
+            let role = roles.substring(i,i+1);
+            if (all.indexOf(role)>=0) {
+                return true;
+            }
+        }
+        return false;
+    },
     //  获取字符串的字符总长度
     getLength(e){
         var name = e;

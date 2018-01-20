@@ -451,6 +451,7 @@
     export default {
         data:function(){
             return{
+                showStore:'',
                 toSendArticle:false,//控制进度条 遮罩显示
                 currentPro:0,//当前进度
                 proTotal:0,//总的进度
