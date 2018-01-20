@@ -50,7 +50,6 @@
             </div>
             <div class="shopInformation">
                 <div class="shopNameDiv">
-                <text class="shopName">店铺名：</text>
                 <text class="fullName">{{num.name}}</text>
                 </div>
                 <div class="shopAddressDiv">
@@ -61,6 +60,10 @@
                     <text class="shopAddress">负责人：</text>
                     <text class="concretely">{{num.linkman}}</text>
                 </div>
+                <div class="shopAddressDiv">
+                    <text class="shopAddress">收款码：</text>
+                    <text class="shopCode">{{num.code}}</text>
+                </div>
             </div>
             </div>
         </cell>
@@ -70,7 +73,7 @@
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
-<style>
+<style scoped>
     .message{
         flex-direction: row;
         align-items: center;
@@ -157,23 +160,25 @@
         height: 230px;
         margin-left: 20px;
     }
-    .shopName{
+    .fullName{
         font-weight: bold;
         font-size: 32px;
     }
-    .fullName{
+    .shopCode{
         font-size: 32px;
     }
     .shopAddress{
-        font-weight: bold;
         font-size: 32px;
     }
     .concretely{
         font-size: 32px;
+        width: 350px;
+        lines:1;
+        text-overflow: ellipsis;
     }
     .shopNameDiv{
         flex-direction: row;
-        margin-top: 20px;
+        margin-top: 10px;
     }
     .shopNameDivthree{
         flex-direction: row;
@@ -189,10 +194,8 @@
     }
     .shopAddressDiv{
         flex-direction: row;
-        margin-top: 30px;
-    }
-    .concretely{
-        width: 350px;
+        align-items: center;
+        margin-top: 10px;
     }
 </style>
 <script>
