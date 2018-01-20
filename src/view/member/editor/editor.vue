@@ -104,7 +104,7 @@
                                     <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                                 </div>
                                 <!--添加链接-->
-                                <div class="addIconBox addLinkPt" @click="addLinkPara(index + 1)" v-if="showStore">
+                                <div class="addIconBox addLinkPt" @click="addLinkPara(index + 1)">
                                     <text class=" iconSize addLink" :style="{fontFamily:'iconfont'}">&#xe63f;</text>
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <!--添加商品-->
-                <div class="paraBox flexRow " @click="addLinkPara(paraList.length)" v-if="showStore">
+                <div class="paraBox flexRow " @click="addLinkPara(paraList.length)">
                     <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe640;</text>
                     <text class="addVote">添加商品</text>
                 </div>
@@ -451,7 +451,6 @@
     export default {
         data:function(){
             return{
-                roles:'',
                 showStore:'',
                 toSendArticle:false,//控制进度条 遮罩显示
                 currentPro:0,//当前进度
@@ -529,7 +528,6 @@
             complete:{default:"完成"}
         },
         created:function(){
-            this.permissionsStore();
             utils.initIconFont();
             var _this = this;
             //            获取当前时间戳 作为唯一标识符key
@@ -638,28 +636,6 @@
             };
         },
         methods:{
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
-//            判断无权限就不渲染添加商品
-            permissionsStore:function(){
-                let _this =this;
-                if (!utils.isRoles("12",_this.roles)) {
-                    _this.showStore = false
-                }else{
-                    _this.showStore = true
-                }
-            },
             //从缓存读取数据 写入界面
             readData(options){
                 let _this =this;
