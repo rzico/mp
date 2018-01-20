@@ -557,12 +557,12 @@
             },
 //            点赞
             goLaud(){
+                var _this =this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 if(this.isSelf == 0){
-                    var _this =this;
                     if(this.isLaud){
                         POST('weex/member/laud/delete.jhtml?articleId=' + this.articleId).then(
                             function (data) {
