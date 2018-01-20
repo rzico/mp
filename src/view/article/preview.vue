@@ -50,7 +50,7 @@
                         <!--模版样图-->
                         <scroller  class="templateImgBox"  scroll-direction="horizontal" >
                             <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
-                                <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn)"></image>
+                                <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id)"></image>
                             </div>
                         </scroller>
                     </div>
@@ -74,8 +74,8 @@
                     <text class="fz28 pl10">编辑</text>
                 </div>
                 <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive">-->
-                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
-                    <!--<text class="fz28 pl10">复制</text>-->
+                <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                <!--<text class="fz28 pl10">复制</text>-->
                 <!--</div>-->
                 <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="deleteArticle()">
                     <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe652;</text>
@@ -321,6 +321,7 @@
                 templateName:'热门',
                 templateSn:'1001',
                 initTemplateSn:'1001',
+                templateSaveId:'1',
                 templateChoose:false,
                 webUrl:'',
                 lastImageItem:'',
@@ -363,8 +364,10 @@
 //            获取该文章的模版
             POST('weex/article/template.jhtml?id=' + this.articleId).then(
                 function (data) {
+//                    utils.debug(data);
                     if(data.type == 'success'){
                         _this.templateId = 't' + data.data;
+                        _this.initTemplateSn = data.data;
                         _this.templateSn = data.data;
                         _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
 //                        _this.webUrl = 'http://weex.1xx.me/';
@@ -436,9 +439,10 @@
                 }
             },
 //            点击 图片 更换模版的触发
-            tickImage(itemSn){
+            tickImage(itemSn,itemId){
                 this.templateSn= itemSn;
                 this.templateId ='t' + itemSn;
+                this.templateSaveId = itemId;
                 this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
             },
 //            点击 标题 更换模版类型的触发
@@ -455,8 +459,9 @@
                 this.chooseTemplate();
                 if(this.initTemplateSn != this.templateSn){
 //                    上传文章模版
-                    POST('weex/member/article/update.jhtml?id='+this.articleId + '&templateId=' + this.templateSn).then(
+                    POST('weex/member/article/update.jhtml?id='+this.articleId + '&templateId=' + this.templateSaveId).then(
                         function (data) {
+//                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.initTemplateSn = _this.templateSn;
                             }else{
@@ -507,10 +512,8 @@
                 var _this = this;
                 this.isOperation = false;
 //                event.openURL(utils.locate('view/member/editor/option.js),
-
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
-
                 });
             },
 //            触碰遮罩层
