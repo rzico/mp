@@ -154,12 +154,14 @@
                 event.scan(function (message) {
                     _this.clicked =false
                     if (message.type=='error') {
+                        _this.clicked =false
                         return;
                     }
                     utils.readScan(message.data,function (data) {
                         if (data.type == 'success'){
                             if (data.data.type!='818804') {
                                 event.toast("无效收钱码");
+                                _this.clicked =false
                                 return;
                             }
                             _this.code = data.data.code

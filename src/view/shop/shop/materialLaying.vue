@@ -324,12 +324,15 @@
                 var _this=this;
                 if(_this.logo ==''){
                     event.toast('门头照未选择');
+                    _this.clicked =false
                     return
                 }if(_this.palcePhoto == ''){
                     event.toast('经营场所照未选择');
+                    _this.clicked =false
                     return
                 }if(_this.licensePhoto == ''){
                     event.toast('营业执照未选择');
+                    _this.clicked =false
                     return
                 }
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
