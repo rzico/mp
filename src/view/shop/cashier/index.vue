@@ -51,35 +51,35 @@
             <div class="menubox">
                 <div class="menu" @click="goods()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
-                    <text class="menuBtn" value="刷卡">商品</text>
+                    <text class="menuBtn">商品</text>
                 </div>
                 <div class="menu" @click="order()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
-                    <text class="menuBtn" value="刷卡">订单</text>
+                    <text class="menuBtn">订单</text>
                 </div>
                 <div class="menu" @click="deposit()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn" value="刷卡">账单</text>
+                    <text class="menuBtn">账单</text>
                 </div>
                 <div class="menu" @click="gocard()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="menuBtn" value="刷卡">会员卡</text>
+                    <text class="menuBtn">会员卡</text>
                 </div>
                 <div class="menu" @click="gocoupon()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="menuBtn" value="刷卡">优惠券</text>
+                    <text class="menuBtn">优惠券</text>
                 </div>
                 <div class="menu" @click="godistribution()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
-                    <text class="menuBtn" value="刷卡">营销</text>
+                    <text class="menuBtn">新营销</text>
                 </div>
                 <div class="menu" @click="shop()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
-                    <text class="menuBtn" value="刷卡">店铺</text>
+                    <text class="menuBtn">店铺</text>
                 </div>
                 <div class="menu" @click="employee()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
-                    <text class="menuBtn" value="刷卡">员工</text>
+                    <text class="menuBtn">员工</text>
                 </div>
                 <div class="content">
                     <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
