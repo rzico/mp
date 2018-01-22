@@ -99,7 +99,7 @@
                     <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="commentsInfo">
-                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text class="fz30 nameColor" >{{item.nickName }}</text>
                             <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
@@ -149,12 +149,13 @@
                 </div>
             </cell>
             <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
+
                 <!--收藏--> <!--分享提醒--><!--赞赏-->
                 <div class="lineBox pt20 pb20">
                     <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
                         <div class="commentsInfo">
-                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text class="fz30 nameColor" >{{item.nickName }}</text>
                             <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
@@ -406,7 +407,16 @@
                                     if (!utils.isNull(item.ext)) {
                                         item.ext = JSON.parse(item.ext);
                                     }
+//                                    手机用户登录可能未设置logo和nickName
+                                    if(utils.isNull(item.nickName)){
+                                        item.nickName = '未填写';
+                                    }
+                                    //                                    手机用户登录可能未设置logo和nickName
+                                    if(utils.isNull(item.logo)){
+                                        item.logo = utils.locate('resources/images/background.png');
+                                    }
                                 })
+
                                 _this.dataList = data.data.data;
                             }else{
                                 data.data.data.forEach(function(item){
@@ -434,7 +444,7 @@
                     return;
                 }
                 this.clicked = true;
-                let _this = thisl
+                let _this = this;
                 id = parseInt(id.substr(-5)) - 10200;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
                     _this.clicked = false;
