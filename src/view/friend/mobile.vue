@@ -331,9 +331,18 @@
 //            根据字母排序
             sortLetter:function (a,b) {
                 var _this = this;
+//                判空
+                if(utils.isNull(a)){
+                    a = '#';
+                }else{
 //                分别获取昵称中的首字母
-                a = getLetter.getFirstLetter(a.name.substring(0,1));
-                b = getLetter.getFirstLetter(b.name.substring(0,1));
+                    a = getLetter.getFirstLetter(a.name.substring(0,1));
+                }
+                if(utils.isNull(b)){
+                    b = '#'
+                }else {
+                    b = getLetter.getFirstLetter(b.name.substring(0,1));
+                }
 //                    遍历字母表获取下标进行比较大小。
                 _this.allLetter.forEach(function (item,index) {
                     if(a == item){
