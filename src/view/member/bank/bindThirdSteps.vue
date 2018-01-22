@@ -180,6 +180,7 @@
                         message: "请输入验证码",
                         okTitle: '知道了'
                     })
+                    _this.clicked =false
                     return;
                 }
                 var  threedata = {

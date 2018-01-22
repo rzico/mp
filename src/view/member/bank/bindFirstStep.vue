@@ -218,6 +218,7 @@
                         message: "请输入卡号",
                         okTitle: '知道了'
                     })
+                    _this.clicked =false
                     return;
                 }
                 if (utils.isNull(this.accountName)) {
@@ -225,6 +226,7 @@
                         message: "请输入开户名",
                         okTitle: '知道了'
                     })
+                    _this.clicked =false
                     return;
                 }
                 let  twodata = {

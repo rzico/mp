@@ -230,6 +230,7 @@
                        message: "请输入手机号",
                        okTitle: '知道了'
                    })
+                   _this.clicked =false
                    return;
                }
                if (this.phone.length!=11) {
@@ -237,6 +238,7 @@
                        message: "请输入11位手机号",
                        okTitle: '知道了'
                    })
+                   _this.clicked =false
                    return;
                }
                if (utils.isNull(this.idno)) {
@@ -244,6 +246,7 @@
                        message: "请输入证件号",
                        okTitle: '知道了'
                    })
+                   _this.clicked =false
                    return;
                }
 
