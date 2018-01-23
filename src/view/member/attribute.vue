@@ -381,6 +381,8 @@
                                 event.toast("网络不稳定");
                             }
                         )
+                    }else{
+                        _this.begin = null
                     }
                 })
             },
