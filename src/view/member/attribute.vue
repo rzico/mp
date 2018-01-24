@@ -183,7 +183,7 @@
                 occupation:"未设置",
                 category:1,
                 sex:'',
-                begin:'',
+                begin:2,
                 tel:'',
                 clicked:false,
             }
@@ -332,7 +332,7 @@
                                         function (mes) {
                                             if (mes.type == "success") {
 //                                                将服务器上的路径写入页面中
-                                                _this.logo = data.data;
+                                                _this.logo = utils.thumbnail(data.data,120,120);
 //                                              event.toast(data);
                                             } else {
                                                 event.toast(mes.content);
@@ -355,22 +355,22 @@
                     items:['男','女','保密']
                 }, e => {
                     if (e.result == 'success') {
-                        if (e.data == 0){
+                        if (e.data == 0) {
                             _this.gender = '男'
                             _this.sex = 'male'
-                            _this.begin =e.data
+                            _this.begin = e.data
 
-                        }else if(e.data == 1){
+                        } else if (e.data == 1) {
                             _this.gender = '女'
                             _this.sex = 'female'
-                            _this.begin =e.data
+                            _this.begin = e.data
                         }
-                        else{
+                        else {
                             _this.gender = '保密'
                             _this.sex = 'secrecy'
-                            _this.begin =e.data
+                            _this.begin = e.data
                         }
-                        POST('weex/member/update.jhtml?gender=' +this.sex).then(
+                        POST('weex/member/update.jhtml?gender=' + this.sex).then(
                             function (mes) {
                                 if (mes.type == "success") {
 
@@ -381,8 +381,6 @@
                                 event.toast("网络不稳定");
                             }
                         )
-                    }else{
-                        _this.begin = null
                     }
                 })
             },
