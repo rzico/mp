@@ -15,7 +15,7 @@
                     <text class="title" >开户人</text>
                 </div>
                 <div class="twoA">
-                    <input type="text" placeholder="" class="input" :autofocus="true" value="" @input="oninput"/>
+                    <input type="text" placeholder="持卡人姓名" class="input" :autofocus="true" value="" @input="oninput"/>
                 </div>
                 <div class="font">
                     <text class="title2" :style="{fontFamily:'iconfont'}" @click="showAlert">&#xe620;</text>
