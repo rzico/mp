@@ -30,13 +30,13 @@
                     </div>
                     <div class="flex-row goodsBody"  v-for="goods in item.orderItems" @click="goDetails(item.sn)">
                         <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
-                        <div class="goodsInfo" >
-                            <text class="title goodsName">{{goods.name}}</text>
-                            <text class="sub_title mt10">规格:{{goods.spec | watchSpec}}</text>
-                        </div>
-                        <div class="goodsPriceNum">
-                            <text class="title coral">¥ {{goods.price | currencyfmt}}</text>
-                            <text class="sub_title">x{{goods.quantity}}</text>
+                        <div class="goodsInfo"  >
+                            <text class="title goodsName" >{{goods.name}}</text>
+                            <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                            <div class="goodsPriceNum" >
+                                <text class="title coral">¥ {{goods.price | currencyfmt}}</text>
+                                <text class="sub_title">x{{goods.quantity}}</text>
+                            </div>
                         </div>
                     </div>
                     <div class="flex-row goodsTotalPrice boder-bottom">
@@ -133,14 +133,18 @@
         text-overflow: ellipsis;
     }
     .goodsPriceNum{
-        height: 160px;
+        /*height: 160px;*/
         align-items: flex-end;
         justify-content: space-between;
-        width: 150px;
+        /*width: 150px;*/
+        width:530px;
+        display: flex;flex-direction: row;justify-content: space-between;
     }
     .goodsInfo{
+        display: flex;flex-direction: column;justify-content: space-between;
         height: 160px;
-        width: 400px;
+        /*width: 400px;*/
+        width: 550px;
         padding-left: 20px;
     }
     .goodsBody{
