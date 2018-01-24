@@ -332,7 +332,7 @@
                                         function (mes) {
                                             if (mes.type == "success") {
 //                                                将服务器上的路径写入页面中
-                                                _this.logo = data.data;
+                                                _this.logo = utils.thumbnail(data.data,120,120);
 //                                              event.toast(data);
                                             } else {
                                                 event.toast(mes.content);
