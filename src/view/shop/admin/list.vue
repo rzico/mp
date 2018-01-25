@@ -11,30 +11,36 @@
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
                 <cell v-for="(num,index) in lists" >
+                    <!--如果店铺名重复，则不渲染该区域-->
+                    <div class="headShopName" v-if="isRepeat(index)">
+                        <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
+                        <text class="name">{{num.shopName}}</text>
+                    </div>
+                    <div>
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
                     <div class="addFriendsBorder"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                        <div class="friendsLine">
+                        <div class="friendsLine" @click="jump(num.id,num.shopId,num.shopName,num.roleName,num.mobile,num.roleId,num.name)">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
                             </div>
                             <div class="friendsName">
                                 <text class="lineTitle ">{{num.name}}:{{num.mobile}}</text>
-
                                 <text class="realName">店铺:{{num.shopName}}</text>
                                 <text class="realName">职位:{{num.roleName}}</text>
 
                             </div>
                         </div>
-                        <div class="bottomBotton">
-                            <div class="button" @click="popup(num.id,num.shopId)">
-                                <text style="color:#ffffff;font-size: 30px">设置店铺</text>
-                            </div>
-                            <div class="button"@click="selectPosition(num.id,num.shopId,num.roleId)">
-                                <text style="color:#ffffff;font-size: 30px">设置职位</text>
-                            </div>
-                        </div>
+                        <!--<div class="bottomBotton">-->
+                            <!--<div class="button" @click="popup(num.id,num.shopId)">-->
+                                <!--<text style="color:#ffffff;font-size: 30px">设置店铺</text>-->
+                            <!--</div>-->
+                            <!--<div class="button"@click="selectPosition(num.id,num.shopId,num.roleId)">-->
+                                <!--<text style="color:#ffffff;font-size: 30px">设置职位</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
                     </div>
                 </cell>
         </list>
@@ -72,7 +78,21 @@
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
-<style>
+<style scoped>
+    .headShopName{
+        height: 100px;
+        padding-left: 20px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: rgba(153,153,153,0.2);
+    }
+     .name{
+        font-size: 32px;
+        margin-left: 20px;
+         font-weight: bold;
+    }
     .bottomBotton{
         flex-direction: row;justify-content: flex-end;align-items:flex-end;
         padding-right: 30px;
@@ -158,7 +178,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 0px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
+        position: absolute;right: 0px;top: 0px;height: 160px;align-items: center;width: 130px;justify-content: center;
     }
     .iconfont{
         color: #cccccc;
@@ -186,7 +206,7 @@
 
     .friendsName{
         height:130px;
-        margin-top: 15px;
+        margin-top: 13px;
         justify-content: space-between;
     }
     .realName{
@@ -213,7 +233,7 @@
     }
     .friendsLine{
         padding-left: 30px;
-        height:140px;
+        height:160px;
         background-color: #fff;
         flex-direction: row;
         flex:5;
@@ -282,6 +302,15 @@
 
         },
         methods: {
+            //判断所属店铺是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if((this.lists[index].shopName) == (this.lists[index - 1].shopName)){
+                        return false;
+                    }
+                }
+                return true;
+            },
             roleof:function(id) {
                 var _this = this;
               for (var i=0;i<_this.roles.length;i++) {
@@ -455,14 +484,14 @@
                     if (_this.pageStart==0) {
                         mes.data.data.forEach(function(item){
                             if(item.shopName == '未分配'){
-                                item.shopName ='点击分配店铺'
+                                item.shopName ='请分配店铺'
                             }
                         });
                         _this.lists = mes.data.data;
                     } else {
                         mes.data.data.forEach(function(item){
                             if(item.shopName == '未分配'){
-                                item.shopName ='点击分配店铺'
+                                item.shopName ='请分配店铺'
                             }
                             _this.lists.push(item);
                         })
@@ -567,11 +596,12 @@
                 event.closeURL();
             },
 
-//            jump:function (id) {
-//                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
-//
-//                })
-//            },
+            jump:function (id,shopId,shopName,roleName,mobile,roleId,name) {
+
+                event.openURL(utils.locate('view/shop/admin/editor.js?id='+id+'&shopId='+shopId+'&shopName='+shopName+'&roleName='+roleName+'&mobile='+mobile+'&roleId='+roleId+'&name='+name),function () {
+
+                })
+            },
 //            add:function() {
 //                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
 //
