@@ -1403,12 +1403,10 @@
 //                this.clicked = true;
                 var _this = this;
                 event.openEditor('',function (data) {
-                    utils.debug(1);
-                    utils.debug(data);
 //                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         let textImg = utils.locate('resources/images/text.png');
-//                    将返回回来的html数据赋值进去
+//                    将返回回来的html数据赋值进
                         let newPara = {
                             //原图
                             paraImage:'',
@@ -1445,8 +1443,6 @@
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
-                        utils.debug(1);
-                        utils.debug(data);
 //                        _this.clicked = false;
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
@@ -1694,15 +1690,17 @@
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
-                        _this.clicked = false;
-                        _this.paraList[index].paraImage = data.data.originalPath;
-                        _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+                        if(data.type == 'success'){
+                            _this.clicked = false;
+                            _this.paraList[index].paraImage = data.data.originalPath;
+                            _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
-                        _this.hadChange = 1;
+                            _this.hadChange = 1;
 //                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
 //                        }
+                        }
                     })
                     return;
                 }else{
@@ -1735,7 +1733,7 @@
                                 _this.saveDraft();
 //                                }
                             }else{
-                                if(data.content == '用户取消'){
+                                if(data.content.indexOf('取消') != -1){
                                 }else{
                                     event.toast(data.content);
                                 }
@@ -1781,12 +1779,35 @@
             },
 //            跳转封面页面
             goCover:function () {
-//                event.openURL('file://assets/member/editor/cover.js');
                 //防止重复点击按钮
-                if(this.clicked) {
-                    return;
-                }
-                this.clicked = true;
+//                if(this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
+
+//                ***** 单选裁剪 *****
+//                var _this = this;
+//                album.openAlbumSingle(
+//                    //选完图片后触发回调函数
+//                    true,function (data) {
+//                        utils.debug(data);
+//                        if(data.type == 'success'){
+//                            _this.coverImage = data.data.originalPath;
+//////                    添加修改标志
+//                            _this.hadChange = 1;
+////                        临时保存到缓存
+//                            _this.saveDraft();
+//                        }else{
+//                            if(data.content.indexOf('取消') != -1){
+//                            }else{
+//                                event.toast(data.content);
+//                            }
+//                        }
+//                    })
+//                ***** 单选裁剪 *****
+
+
+
                 var _this = this;
                 let paraLength =  _this.paraList.length;
                 var uploadLength = 0;
@@ -1912,8 +1933,6 @@
 //                this.clicked = true;
                 let _this = this;
                 album.openVideo(function (data) {
-                    utils.debug(1);
-                    utils.debug(data);
 //                    _this.clicked = false;
                     if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径

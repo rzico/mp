@@ -482,8 +482,10 @@
                         return;
                     }
                     this.clicked = true;
-                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+                    setTimeout(function () {
                         _this.clicked = false;
+                    },1500)
+                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
                         if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                             let E = {
                                 isDone : 'complete'
@@ -532,14 +534,16 @@
             },
 //            点击下一步 跳转文章设置。
             goOption(){
+                let _this = this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
 //                event.openURL(utils.locate('view/member/editor/option.js),
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
-                    _this.clicked = false;
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                         let E = {
@@ -558,13 +562,18 @@
                     return true;
                 }
             },
-//            点赞
+//
             goLaud(){
                 var _this =this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+
+
                 if(this.isSelf == 0){
                     if(this.isLaud){
                         POST('weex/member/laud/delete.jhtml?articleId=' + this.articleId).then(
@@ -575,9 +584,7 @@
                                 }else{
                                     event.toast(data.content);
                                 }
-                                _this.clicked = false;
                             },function (err) {
-                                _this.clicked = false;
                                 event.toast(err.content);
                             }
                         )
@@ -590,16 +597,13 @@
                                 }else{
                                     event.toast(data.content);
                                 }
-                                _this.clicked = false;
                             },function (err) {
-                                _this.clicked = false;
                                 event.toast(err.content);
                             }
                         )
                     }
                 }else{
                     event.openURL(utils.locate('view/member/editor/whoLaud.js?articleId=' + this.articleId),function (data) {
-                        _this.clicked = false;
                     })
                 }
             },
@@ -611,37 +615,43 @@
                         this.isOperation = false;
                     }
                 }else{
+                    let _this = this;
                     if (this.clicked) {
                         return;
                     }
                     this.clicked = true;
-                    let _this = this;
-                    event.openURL(utils.locate('view/member/editor/whoShare.js?articleId=' + this.articleId),function (data) {
+                    setTimeout(function () {
                         _this.clicked = false;
+                    },1500)
+                    event.openURL(utils.locate('view/member/editor/whoShare.js?articleId=' + this.articleId),function (data) {
                     })
                 }
             },
 //            前往评论
             goReview(){
+                let _this = this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId + '&authorId=' + this.memberId),function (data) {
+                setTimeout(function () {
                     _this.clicked = false;
+                },1500)
+                event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId + '&authorId=' + this.memberId),function (data) {
                 })
             },
 //            收藏文章
             collectArticle(){
+                let _this = this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 POST('weex/member/favorite/add.jhtml?articleId=' + this.articleId).then(
                     function (data) {
-                        _this.clicked = false;
                         if(data.type == 'success'){
                             event.toast('收藏成功');
                             _this.isCollect = true;
@@ -649,21 +659,22 @@
                         }
                     },
                     function (err) {
-                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )
             },
 //            作者主页
             goAuthor(){
+                let _this = this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate("view/topic/index.js?id=" + this.memberId),function (message) {
                     _this.isOperation = false;
-                    _this.clicked =false;
                 });
             },
 //            举报
@@ -672,12 +683,15 @@
             },
 //            分享
             doShare(id){
+                let _this = this;
                 var shareType;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 switch(id){
                     case 0 :
                         shareType = 'timeline';
@@ -695,9 +709,22 @@
                         shareType = '';
                         break;
                 }
-
+//                if(id == 4){
+//                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
+//                        function (data) {
+////                            if(data.type == 'success'){
+//                                utils.debug(data);
+////                            }
+//                        },
+//                        function (err) {
+//                            utils.debug(err);
+//                            event.toast(err.content);
+//                        }
+//                    )
+//                    _this.clicked = false;
+//                    return;
+//                }
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
-                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         var option = {
                             title:data.data.title,
@@ -728,9 +755,9 @@
                         })
                     }
                 },function (err) {
-                    _this.clicked = false;
                     event.toast(err.content);
                 })
+
             },
 //            生成长图
             longPic(){
@@ -739,6 +766,9 @@
                     return;
                 }
                 this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 webview.getLongImage(this.$refs.webView,function(data){
                     if(data.type == 'success'){
                         event.toast('长图已保存到相册里');
@@ -746,7 +776,6 @@
                     }else{
                         event.toast(data.content);
                     }
-                    _this.clicked = false;
                 });
             },
 //            删除文章

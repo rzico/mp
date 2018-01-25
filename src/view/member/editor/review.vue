@@ -185,7 +185,9 @@
 //            刷新和获取数据
             getAllReview(){
                 let _this = this;
+//                utils.debug('weex/review/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize);
                 GET('weex/review/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+//                    utils.debug(data);
                     if(data.type == 'success' && data.data.data != '' ){
                         if (_this.pageStart == 0) {
                             _this.reviewList = data.data.data;
@@ -211,12 +213,14 @@
             sendReview(){
                 let _this = this;
                 if (this.clicked) {
-                    return;
-                }
+                return;
+               }
                 this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
 //                判断是否输入内容为空
                 if(utils.isAllEmpty(this.reviewWord)){
-                    _this.clicked = false;
                     event.toast('请输入评论内容');
                 }else{
                     POST('weex/member/review/submit.jhtml?articleId=' + this.articleId + '&content=' + encodeURI(this.reviewWord)).then(
