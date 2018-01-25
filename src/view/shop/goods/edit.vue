@@ -1,7 +1,7 @@
 <template>
     <div  class="wrapper" >
-        <scroller>
             <navbar :title="title"  @goback="goback" ></navbar>
+            <scroller>
             <!--商品名称-->
             <div class="textareaBox boder-bottom boder-top" ref="textareaRef">
                 <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="oninput" @change="onchange" @focus="onfocus" @blur="onblur"></textarea>
