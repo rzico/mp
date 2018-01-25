@@ -1,6 +1,7 @@
 <template>
     <div class="wrapper">
         <navbar :title="title"  @goback="goback"  > </navbar>
+        <scroller>
         <div style="background-color: white">
             <div class="titleOne">
                 <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
@@ -47,6 +48,8 @@
                 <textarea rows="2" maxlength="80" placeholder="请输入使用规则(不超过80个汉字)" class="input" v-model="rule" @change="" @input=""/>
             </div>
         </div>
+        <div style="height: 600px"></div>
+        </scroller>
         <div class="button bw bottom" @click="complete">
             <text class="bottonText">完成</text>
         </div>
