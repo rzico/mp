@@ -103,9 +103,8 @@
     const event = weex.requireModule('event');
     import filters from '../../../filters/filters.js';
     import navbar from '../../../include/navbar.vue'
-    const picker = weex.requireModule('picker')
+    const picker = weex.requireModule('picker');
     const modal = weex.requireModule('modal');
-    var he = require('he');
     export default {
         components: {
             navbar
