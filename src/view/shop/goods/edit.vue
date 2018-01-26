@@ -4,7 +4,7 @@
             <scroller>
             <!--商品名称-->
             <div class="textareaBox boder-bottom boder-top" ref="textareaRef">
-                <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="oninput" @change="onchange" @focus="onfocus" @blur="onblur"></textarea>
+                <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="nameUnitFirstInput"  @focus="onfocus" @blur="onblur"></textarea>
             </div>
             <!--<div class="onlyPriceNum boder-top boder-bottom mt30">-->
             <!--<div class="inputLine flex-row boder-bottom">-->
@@ -19,7 +19,7 @@
             <div style="width: 750px;background-color: #fff" class="mt30 boder-bottom boder-top" >
                 <div class="inputLine flex-row" >
                     <text class="title">单位</text>
-                    <input type="text" v-model="goodsUnit" return-key-type="next"class="lineContent goodsAdress" placeholder="个、件、袋等" />
+                    <input type="text" v-model="goodsUnit" return-key-type="next"class="lineContent goodsAdress"  @input="nameUnitFirstInput"  placeholder="个、件、袋等" />
                 </div>
             </div>
             <transition name="paraTransition" tag="div">
@@ -31,11 +31,11 @@
                     <div class="topPriceNum " >
                         <div class="inputLine flex-row boder-bottom ">
                             <text class="title">价格</text>
-                            <input type="number" v-model="topLinePrice" return-key-type="next"class="lineContent toplineContentHeight" placeholder="给商品定个好价格" />
+                            <input type="number" v-model="topLinePrice" return-key-type="next"class="lineContent toplineContentHeight"  @input="nameUnitFirstInput" placeholder="给商品定个好价格" />
                         </div>
                         <div class="inputLine flex-row ">
                             <text class="title">库存</text>
-                            <input type="number" v-model="topLineNum"  return-key-type="next" class="lineContent toplineContentHeight" placeholder="设置合理库存避免超卖" />
+                            <input type="number" v-model="topLineNum"  return-key-type="next" class="lineContent toplineContentHeight"  @input="nameUnitFirstInput" placeholder="设置合理库存避免超卖" />
                         </div>
                     </div>
                 </div>
@@ -355,6 +355,7 @@
     import {dom,event,animation} from '../../../weex.js';
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
+    const storage = weex.requireModule('storage');
     export default {
         data:{
             list:[],
@@ -393,44 +394,116 @@
                 this.goodsId = utils.getUrlParameter('id');
                 GET('weex/member/product/view.jhtml?id=' + this.goodsId,function (data) {
                     if(data.type == 'success'){
-                        _this.goodsName = data.data.name;
-                        _this.goodsUnit = data.data.unit;
-//                        分类
-                        if(!utils.isNull(data.data.productCategory.id)){
-                            _this.catagoryId = data.data.productCategory.id;
-                        }
-                        if(!utils.isNull(data.data.productCategory.name)){
-                            _this.catagoryName = data.data.productCategory.name;
-                        }
-//                        策略
-                        if(!utils.isNull(data.data.distribution.id)){
-                            _this.distributionId = data.data.distribution.id;
-                        }
-                        if(!utils.isNull(data.data.distribution.name)){
-                            _this.distributionName = data.data.distribution.name;
-                        }
-                        if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1)){
-                            _this.firstProductId = data.data.products[0].productId;
-                            _this.firstThumbnailImg = data.data.products[0].thumbnail;
-                            _this.firstParaImage = data.data.products[0].thumbnail;
-                            _this.topLinePrice = data.data.products[0].price;
-                            _this.topLineNum = data.data.products[0].stock;
-                        }else{
-                            data.data.products.forEach(function (item) {
-                                item.paraImage = item.thumbnail;
-                                item.isNew = false;
-                                _this.list.push(item);
-                            })
-                        }
+                        _this.drawData(data);
                     }else{
                         event.toast(data.content);
                     }
                 },function (err) {
                     event.toast(err.content);
                 })
+            }else{
+                var findDelete = {
+                    type:'goodsDraft',
+                    key:'0'
+                }
+                event.find(findDelete,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        modal.confirm({
+                            message: '是否恢复上一次已填写的内容?',
+                            duration: 0.3,
+                            okTitle:'恢复',
+                            cancelTitle:'取消',
+                        }, function (value) {
+                            if(value == '恢复'){
+                                var goodsInfo = JSON.parse(delData.data.value);
+                                let a = {
+                                    data : goodsInfo,
+                                }
+                                _this.drawData(a);
+                            }else if(value == '取消'){
+                                _this.delDraft();
+                            }
+                        })
+                    }
+                })
             }
         },
         methods: {
+            nameUnitFirstInput(){
+                //                        临时缓存起来商品数据
+                if(utils.isNull(this.goodsId)){
+                   this.saveDraft();
+                }
+            },
+            drawData(data){
+                let _this = this;
+//                        商品名称
+                let goodName =  data.data.name;
+                if(!utils.isNull(goodName)){
+                    _this.goodsName = goodName;
+                }
+//                        商品单位
+                let goodUnit =  data.data.unit;
+                if(!utils.isNull(goodUnit)){
+                    _this.goodsUnit = goodUnit;
+                }
+//                        分类
+                if(!utils.isNull(data.data.productCategory.id)){
+                    _this.catagoryId = data.data.productCategory.id;
+                }
+                if(!utils.isNull(data.data.productCategory.name)){
+                    _this.catagoryName = data.data.productCategory.name;
+                }
+//                        策略
+                if(!utils.isNull(data.data.distribution.id)){
+                    _this.distributionId = data.data.distribution.id;
+                }
+                if(!utils.isNull(data.data.distribution.name)){
+                    _this.distributionName = data.data.distribution.name;
+                }
+                if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1) &&  utils.isNull(data.data.products[0].isNew)){
+
+//                        无多规格时的商品id
+                    let productId =  data.data.products[0].productId;
+                    if(!utils.isNull(productPrice)){
+                        _this.firstProductId = productPrice;
+                    }
+
+//                        无多规格时的原图、缩略图
+                    let productParaImg =  data.data.products[0].thumbnail;
+                    if(!utils.isNull(productParaImg)){
+//                    data.data.products里只有thumbnail字段，没有paraImg字段，所以这边缩略图和原图都用的thumbnail
+                        _this.firstParaImage = productParaImg;
+                        _this.firstThumbnailImg = productParaImg;
+                    }
+
+//                        无多规格时的价格
+                    let productPrice =  data.data.products[0].price;
+                    if(!utils.isNull(productPrice)){
+                        _this.topLinePrice = productPrice;
+                    }
+
+//                        无多规格时的数量
+                    let productNum =  data.data.products[0].stock;
+                    if(!utils.isNull(productNum)){
+                        _this.topLineNum = productNum;
+                    }
+                }else{
+                    data.data.products.forEach(function (item) {
+                        item.paraImage = item.thumbnail;
+//                        判断是否新增的
+                        if(utils.isNull(item.isNew)){
+                            item.isNew = false;
+                        }
+                        if(utils.isNull(item.stock)){
+                            item.stock = '';
+                        }
+
+                        _this.list.push(item);
+                    })
+                }
+            },
+
             //            获取权限
             permissions:function () {
                 var _this = this;
@@ -464,6 +537,10 @@
                         const el = _this.$refs.textareaRef//跳转到相应的cell
                         dom.scrollToElement(el, {})
                     }, 200)
+                    //                        临时缓存起来商品数据
+                    if(utils.isNull(_this.goodsId)){
+                        _this.saveDraft();
+                    }
                 } else {
                     let goodsIndex = this.list.length - 1;
 //                    新加的商品规格默认为上一个物品的商品规格
@@ -485,7 +562,10 @@
                             offset: 100
                         })
                     }, 200)
-
+//                        临时缓存起来商品数据
+                    if(utils.isNull(_this.goodsId)){
+                        _this.saveDraft();
+                    }
                 }
             },
 //            删除商品规格行
@@ -502,6 +582,10 @@
                     }, function (value) {
                         if (value == '删除') {
                             _this.list.splice(index, 1);
+                            //                        临时缓存起来商品数据
+                            if(utils.isNull(_this.goodsId)){
+                                _this.saveDraft();
+                            }
                         }
                     })
                 }
@@ -528,6 +612,11 @@
                 } else {
                     item.isNew = false;
                 }
+
+                //                        临时缓存起来商品数据
+                if(utils.isNull(this.goodsId)){
+                    this.saveDraft();
+                }
 //                    if(item.specificationFirst != this.list[index - 1].spec1 && item.sepcificationSecond != this.list[index - 1].sepcificationSecond){
 //                        item.isNew = false;
 //                    }
@@ -548,6 +637,10 @@
                         if (mes.type == 'success') {
                                 _this.firstParaImage = mes.data.originalPath;
                                 _this.firstThumbnailImg = mes.data.thumbnailSmallPath;
+                            //                        临时缓存起来商品数据
+                            if(utils.isNull(_this.goodsId)){
+                                _this.saveDraft();
+                            }
                         }
                     })
             },
@@ -560,6 +653,10 @@
                         if (mes.type == 'success') {
                                 item.paraImage = mes.data.originalPath;
                                 item.thumbnail = mes.data.thumbnailSmallPath;
+                            //                        临时缓存起来商品数据
+                            if(utils.isNull(_this.goodsId)){
+                                _this.saveDraft();
+                            }
                         }
                     })
             },
@@ -571,6 +668,11 @@
                     if(data.type == 'success' && data.data != ''){
                         _this.catagoryId = parseInt(data.data.catagoryId);
                         _this.catagoryName = data.data.catagoryName;
+
+//                        临时缓存起来商品数据
+                        if(utils.isNull(_this.goodsId)){
+                            _this.saveDraft();
+                        }
                     }
                 });
             },
@@ -588,6 +690,10 @@
                     if(data.type == 'success' && data.data != ''){
                         _this.distributionId = parseInt(data.data.catagoryId);
                         _this.distributionName = data.data.catagoryName;
+                        //                        临时缓存起来商品数据
+                        if(utils.isNull(_this.goodsId)){
+                            _this.saveDraft();
+                        }
                     }
                 });
             },
@@ -629,6 +735,10 @@
                 this.list[index - 1].thumbnail = f;
                 this.list[index - 1].paraImage = g;
                 this.list[index - 1].productId = h;
+                //                        临时缓存起来商品数据
+                if(utils.isNull(_this.goodsId)){
+                    _this.saveDraft();
+                }
             },
 //            下箭头
             moveBottom: function (index) {
@@ -658,6 +768,10 @@
                 this.list[index + 1].thumbnail = f;
                 this.list[index + 1].paraImage = g;
                 this.list[index + 1].productId = h;
+                //                        临时缓存起来商品数据
+                if(utils.isNull(_this.goodsId)){
+                    _this.saveDraft();
+                }
             },
 //            完成
             goComplete: function () {
@@ -821,13 +935,15 @@
             realSave() {
                 var _this = this;
 //                将页面上的数据存储起来
-                this.savePage();
+                this.savePage('real');
 //                判断是再次编辑还是初次编辑;
                 let sendId = utils.isNull(_this.goodsId) ? '' : _this.goodsId;
                 let categoryTemplate = {
                     id:_this.catagoryId,
                     name:_this.catagoryName
                 }
+//               ''值被parseInt后会变成NaN
+                _this.distributionId = _this.distributionId == 'NaN' ? '' : _this.distributionId;
 //                销售策略
                 let distributionTemplate = {
                     id:_this.distributionId,
@@ -841,16 +957,18 @@
                     distribution:distributionTemplate,
                     products: _this.productTemplates,
                 };
+
 //                utils.debug(productData);
 //                转成json字符串后上传服务器
                 productData = JSON.stringify(productData);
-//                网络请求，保存文章
+//                网络请求，保存商品
                 POST('weex/member/product/submit.jhtml', productData).then(
                     function (res) {
                         if (res.data != '' && res.type == 'success') {
                                 _this.currentPro = 0;//当前进度
                                 _this.proTotal = 0;//总的进度
                                 _this.processWidth = 0;//进度条宽度
+                                _this.delDraft();
                                 event.closeURL(res);
                         } else {
                             event.toast(res.content);
@@ -874,7 +992,7 @@
             },
 
 //            将页面上的数据存储起来
-            savePage() {
+            savePage(isReal) {
                 let _this = this;
 //                每次保存前 将下列3个变量重新置空;
                 this.productTemplates = [];//文章段落数组
@@ -891,20 +1009,86 @@
                     })
                 }else{
                     this.list.forEach(function (item) {
-                        _this.productTemplates.push({
+                        var pushData = {
                             productId:item.productId,
                             thumbnail: item.paraImage,
                             spec1: item.spec1,
                             spec2: item.spec2,
                             price: item.price,
                             stock: parseInt(item.stock),
-//                            distribution:0
-                        })
+//                          distribution:0
+                        }
+//                        临时缓存需要用到isNew         ***.由于安卓每次进入页面,渲染表单数据时也会触发oninput,所以会重新检测isNew是否准确,当2个规格的规格1相同时，此时2个规格的isNew都会被置成true***
+                        if(utils.isNull(_this.goodsId) && utils.isNull(isReal)){
+                            pushData.isNew = item.isNew;
+                        }
+                        _this.productTemplates.push(pushData)
                     })
                 }
-
-
             },
+
+
+//            保存临时草稿
+            saveDraft(){
+                let _this = this;
+//                将数据保存到变量里
+                this.savePage();
+//                判断是再次编辑还是初次编辑;
+//                let saveGoodId = utils.isNull(_this.goodsId) ? '' : _this.goodsId;
+                var allPageData = {
+                    id:'',
+                    name: _this.goodsName,
+                    unit:_this.goodsUnit,
+                    productCategory:{
+                        id:_this.catagoryId,
+                        name:_this.catagoryName
+                    },
+                    distribution:{
+                        id:_this.distributionId,
+                        name:_this.distributionName
+                    },
+                    products:_this.productTemplates
+                }
+                allPageData = JSON.stringify(allPageData);
+                let draftOptions = {
+                    type:'goodsDraft',
+                    key:'0',
+                    value:allPageData,
+                    sort:'0',
+                    keyword:''
+                }
+                event.save(draftOptions,function(data){
+                    if(data.type == 'success' && !utils.isNull(_this.articleId)){
+                    }else if(data.type == 'success'){
+
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+            },
+
+//            删除临时缓存
+            delDraft(){
+                let _this = this;
+//   将临时草稿删除
+                let findDel = {
+                    type:'goodsDraft',
+                    key:'0'
+                }
+                event.find(findDel,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        //  将临时缓存删除;
+                        event.delete(findDel,function (data) {
+                            if(data.type == 'success' ){
+                            }else{
+                                event.toast(data.content);
+                            }
+                        });
+                    }
+                });
+            },
+
+
 
             //            控制进度条
             ctrlProcess(data){
