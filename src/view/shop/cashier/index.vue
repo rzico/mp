@@ -456,7 +456,7 @@
             },
             hasShop:function () {
                 let _this = this
-                if (utils.isRoles("15",_this.roles) && _this.shopId>0 && !utils.isNull(_this.shopId)) {
+                if (utils.isRoles("15",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
                     return true
                 }else {
                     return false
