@@ -8,23 +8,23 @@
             </div>
         </div>
         <!--分类行背景-->
-        <!--<div class="bgWhite ">-->
-            <!--&lt;!&ndash;分类行内容&ndash;&gt;-->
-            <!--<div class="lineStyle bottomBorder">-->
-                <!--&lt;!&ndash;左侧分类名称&ndash;&gt;-->
-                <!--<div class="flex-row">-->
-                    <!--<text class="lineText">全部策略</text>-->
-                    <!--&lt;!&ndash;<text class="lineText">({{allTotal}})</text>&ndash;&gt;-->
-                <!--</div>-->
-                <!--<div v-if="catagoryId == 0 || catagoryId == 'undefined'" >-->
-                    <!--<text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+        <div class="bgWhite ">
+            <!--分类行内容-->
+            <div class="lineStyle bottomBorder" @click="noneDistribution('','')">
+                <!--左侧分类名称-->
+                <div class="flex-row">
+                    <text class="lineText">暂不用策略</text>
+                    <!--<text class="lineText">({{allTotal}})</text>-->
+                </div>
+                <div v-if="catagoryId == 0 || catagoryId == 'undefined'  || catagoryId == ''" >
+                    <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+                </div>
+            </div>
+        </div>
         <!--绑定动画-->
         <transition-group name="paraTransition" tag="div">
             <!--分类行背景-->
-            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @click="chooseCorpus(item.id,item.name,item.count)"   >
+            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)"   >
                 <!--分类行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧分类名称-->
@@ -220,7 +220,8 @@
             var _this = this;
             utils.initIconFont();
             let urlId = utils.getUrlParameter('catagoryId');
-            if(!utils.isNull(urlId)){
+//            ''值被parseInt后会变成NaN
+            if(!utils.isNull(urlId) && urlId != 'NaN'){
                 this.catagoryId = urlId;
             }
             let catagory = utils.getUrlParameter('name');
@@ -358,6 +359,21 @@
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
             },
+//            暂不用策略
+            noneDistribution:function (id,name) {
+                let _this = this;
+                if(_this.catagoryId == id){
+                    return;
+                };
+                _this.catagoryId = id;
+                _this.catagoryName = name;
+                let E = {
+                    catagoryId : _this.catagoryId,
+                    catagoryName : _this.catagoryName,
+                }
+                let backData = utils.message('success','成功',E);
+                event.closeURL(backData);
+            }
         }
     }
 </script>
