@@ -1,5 +1,5 @@
 <template>
-    <list class="wrapper" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="50" >
+    <list class="wrapper" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="300" >
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>

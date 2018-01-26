@@ -1,11 +1,11 @@
 <template>
-    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0"   @loadmore="onloading" loadmoreoffset="50" @scroll="scrollHandler" :scrollable="canScroll">
+    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
         <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >-->
         <!--<image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>-->
         <!--</refresh>-->
         <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
         <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear" ></div>
-        <div  >
+        <div >
             <!--顶部白色区域 classHeader(), -->
             <!--<div class="header  bkg-primary" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >-->
             <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
@@ -48,10 +48,10 @@
         <!--顶部个人信息栏-->
         <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
             <!--背景图片-->
-            <image   class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
+            <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
             <!--遮罩层-->
             <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-            <div  class="topHead" >
+            <div class="topHead" >
                 <!--用户头像-->
                 <image class="testImage" :src="imageUrl" ></image>
                 <!--个性签名 用户昵称-->
@@ -821,7 +821,7 @@
                     type:'article',
                     keyword:articleClass,
                     orderBy:'desc',
-                    current:0,
+                    current:_this.listCurrent,
                     pageSize:_this.listPageSize,
                 };
                 event.findList(options,function (data) {
@@ -852,6 +852,8 @@
                                 articleDate:'2017-10-19'
                             })
                         }
+
+                        _this.listCurrent = _this.listCurrent + _this.listPageSize;
                     }else{
                         if(utils.isNull(_this.corpusId)){
                             _this.helpList = [];
@@ -1034,7 +1036,7 @@
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + key  + '&publish=true'),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                     function () {
-                    _this.clicked = false;
+                        _this.clicked = false;
 //                    _this.updateArticle();
                     })
             },
@@ -1046,7 +1048,7 @@
                 }
                 _this.whichCorpus = index;
                 _this.corpusId = id;
-
+                _this.listCurrent = 0;
                 _this.getAllArticle();
             },
 //            点击屏幕时
@@ -1112,7 +1114,6 @@
                 }
                 this.showLoading = 'show'
                 setTimeout(() => {
-                    _this.listCurrent = _this.listCurrent + _this.listPageSize;
                     let options = {
                         type:'article',
                         keyword:articleClass,
@@ -1121,7 +1122,9 @@
                         pageSize:_this.listPageSize,
                     }
                     event.findList(options,function (data) {
-                        if( data.type == "success" && data.data != '' ) {
+//                        utils.debug(data);
+//                        utils.debug(_this.listCurrent);
+                        if( data.type == "success" && data.data != '') {
                             data.data.forEach(function (item) {
 //                        event.toast(item);
 //                    将value json化
@@ -1129,7 +1132,11 @@
 //                        把读取到的文章push进去文章列表
                                 _this.articleList.push(item);
                             })
+                            _this.listCurrent = _this.listCurrent + _this.listPageSize;
+//                            utils.debug('当前行:' + _this.listCurrent);
                         }else if( data.type == "success" && data.data == '' ){
+//                            utils.debug('触发强制加载');
+//                            _this.$refs.scrollerRef.resetLoadmore();
                         }else{
                             event.toast(data.content);
                         }
@@ -1204,7 +1211,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.logo)){
                                 _this.imageUrl = data.data.logo;
@@ -1230,7 +1237,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
 //                    utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.occupation)){
@@ -1494,6 +1501,7 @@
             },
 //            置顶
             jumpTop:function (item,index) {
+                let _this = this;
                 if (this.clicked) {
                     return;
                 }
@@ -1501,11 +1509,41 @@
                 var saveSort;
                 if(item.sort.substring(0,1) == '0'){
                     saveSort = '1,'+ item.sort.substring(2);
+                    POST('weex/member/article/update.jhtml?id=' + item.key + '&isTop=true').then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.topLocal(saveSort,item,index);
+                            }else{
+                                _this.clicked = false;
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            _this.clicked = false;
+                            event.toast(err.content);
+                            return;
+                        }
+                    )
                 }else{
                     saveSort = '0,'+ item.sort.substring(2);
+                    POST('weex/member/article/update.jhtml?id=' + item.key + '&isTop=false').then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.topLocal(saveSort,item,index);
+                            }else{
+                                _this.clicked = false;
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            _this.clicked = false;
+                            event.toast(err.content);
+                            return;
+                        }
+                    )
                 }
-
-
+//                event.toast('文章置顶');
+            },
+//            本地处理sort 置顶数据
+            topLocal(saveSort,item,index){
                 let _this = this;
                 let saveData = {
                     type:item.type,
@@ -1516,7 +1554,6 @@
                 }
                 event.save(saveData,function(data){
                     if(data.type == 'success'){
-
                         let option = {
                             type:item.type,
                             key:item.key
@@ -1545,11 +1582,9 @@
                                 }else{
 //                                        _this.articleList.splice(index,1);
 //                                        _this.articleList.splice(index,0,e.data);
-
                                     _this.getAllArticle();
                                     event.toast('取消成功');
                                 }
-
                             }
                         })
                         _this.clicked = false;
@@ -1558,7 +1593,6 @@
                         event.toast(data.content);
                     }
                 })
-//                event.toast('文章置顶');
             },
 
 //            触碰遮罩层
