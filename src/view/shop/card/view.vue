@@ -15,7 +15,7 @@
                 <text class="label" @click="vipsetup()" >会员详情</text>
             </div>
         </div>
-        <image class="logo" resize="cover" :src="data.card.logo"></image>
+        <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
         <div class="bbox">
             <text class="button bw" @click="fill()">充值</text>
             <text class="button bw" @click="refund()">退款</text>
@@ -152,7 +152,8 @@
                 qrcode:"",
                 data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,code:'392203232323'},},
                 begin:0,
-                roles:''
+                roles:'',
+                clicked:false
             }
         },
         created(){
@@ -199,15 +200,24 @@
                 event.closeURL();
             },
             deposit:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate("view/shop/card/deposit.js?id="+this.id),function (data) {
-
+                    _this.clicked =false
                 })
             },
             vipsetup:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate("view/shop/card/memberInfo.js?id="+this.id),function (data) {
-
+                    _this.load()
+                    _this.clicked =false
                 })
             },
 //            vipsetup:function () {
