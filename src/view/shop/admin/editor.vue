@@ -180,6 +180,7 @@
             this.mobile = utils.getUrlParameter('mobile');
             this.roleId = utils.getUrlParameter('roleId');
             this.name = utils.getUrlParameter('name');
+            this.open()
         },
         methods: {
             roleof:function(id) {
@@ -199,6 +200,19 @@
                 }
 
                 return rs;
+            },
+            //            店铺列表
+            open:function () {
+                let _this = this;
+                GET('weex/member/shop/list.jhtml?pageStart=0&pageSize=500',function (mes) {
+                    if (mes.type == 'success') {
+                        _this.shops = mes.data.data
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
             },
             //            选择职位
             selectPosition:function () {
