@@ -12,7 +12,7 @@
             <div class="flex-center">
                 <text class="label" @click="deposit()">消费记录</text>
                 <text class="label" >|</text>
-                <text class="label" @click="vipsetup()" >设置等级</text>
+                <text class="label" @click="vipsetup()" >会员详情</text>
             </div>
         </div>
         <image class="logo" resize="cover" :src="data.card.logo"></image>
@@ -206,37 +206,43 @@
             },
             vipsetup:function () {
                 var _this = this;
-                picker.pick({
-                    index:_this.begin,
-                    items:['VIP1','VIP2','VIP3']
-                }, e => {
-                    if (e.result == 'success') {
-                        let vp = 'vip1';
-                        if (e.data == 0){
-                           vp = 'vip1';
-                            _this.begin = e.data
-                        }else if(e.data == 1){
-                           vp = 'vip2';
-                            _this.begin = e.data
-                        }
-                        else{
-                           vp = 'vip3';
-                            _this.begin = e.data
-                        }
-                        POST('weex/member/card/update.jhtml?id='+_this.id+'&vip=' +vp).then(
-                            function (mes) {
-                                if (mes.type == "success") {
-                                    _this.data.card.vip = vp;
-                                } else {
-                                    event.toast(mes.content);
-                                }
-                            }, function (err) {
-                                event.toast("网络不稳定");
-                            }
-                        )
-                    }
+                event.openURL(utils.locate("view/shop/card/memberInfo.js?id="+this.id),function (data) {
+
                 })
             },
+//            vipsetup:function () {
+//                var _this = this;
+//                picker.pick({
+//                    index:_this.begin,
+//                    items:['VIP1','VIP2','VIP3']
+//                }, e => {
+//                    if (e.result == 'success') {
+//                        let vp = 'vip1';
+//                        if (e.data == 0){
+//                           vp = 'vip1';
+//                            _this.begin = e.data
+//                        }else if(e.data == 1){
+//                           vp = 'vip2';
+//                            _this.begin = e.data
+//                        }
+//                        else{
+//                           vp = 'vip3';
+//                            _this.begin = e.data
+//                        }
+//                        POST('weex/member/card/update.jhtml?id='+_this.id+'&vip=' +vp).then(
+//                            function (mes) {
+//                                if (mes.type == "success") {
+//                                    _this.data.card.vip = vp;
+//                                } else {
+//                                    event.toast(mes.content);
+//                                }
+//                            }, function (err) {
+//                                event.toast("网络不稳定");
+//                            }
+//                        )
+//                    }
+//                })
+//            },
             fill: function () {
                 var _this = this;
                 if (!utils.isRoles("15",_this.roles)) {

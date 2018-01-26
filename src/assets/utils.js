@@ -1,13 +1,11 @@
 /**
  * Created by zwwill on 2017/8/27.
  */
-
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
-const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
-
+const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -98,7 +96,7 @@ let utilsFunc = {
     //获取文章URL地址
     articleUrl(template,id) {
         template = template == '' ? 't1001' : template;
-        return websiteURL + "/#/" + template + "?id=" + id;
+        return websiteURL + "/" + template + "?id=" + id;
     },
     debug(msg) {
         if (debug) {
@@ -226,6 +224,7 @@ let utilsFunc = {
             }
         }
     },
+
 //    登录主页的轮播图控制
     indexMt(){
         let s = this.device();
@@ -257,7 +256,6 @@ let utilsFunc = {
             }
         }
     },
-
     //   会员首页 作者专栏 顶部信息栏
     addInfo:function () {
         let s = this.device();
@@ -273,7 +271,6 @@ let utilsFunc = {
             }
         }
     },
-
     //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addBgImg:function () {
         let s = this.device();
@@ -289,7 +286,6 @@ let utilsFunc = {
             }
         }
     },
-
     //    控制滑动时文集box的显示
     hideCorpus:function () {
         let s = this.device();
@@ -333,7 +329,7 @@ let utilsFunc = {
 
     resolvetimefmt:function (value) {
 //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-        if (value.toString().length == 10) {
+        if(value.toString().length == 10){
             value = parseInt(value) * 1000;
         }else{
             value = parseInt(value);
