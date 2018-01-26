@@ -7,19 +7,19 @@
                 </div>
                 <div class="name">
                     <text class="fz32" >姓名:</text>
-                    <text class="fz32">{{name}}</text>
+                    <text class="fz32 ml20">{{name}}</text>
                 </div>
                 <div class="cell">
                     <text class="fz32" >联系方式:</text>
-                    <text class="fz32">{{mobile}}</text>
+                    <text class="fz32 ml20">{{mobile}}</text>
                 </div>
                 <div class="cell" @click="popup()">
                     <text class="fz32" >设置店铺:</text>
-                    <text class="fz32">{{shopName}}</text>
+                    <text class="fz32 ml20">{{shopName}}</text>
                 </div>
                 <div class="cell" @click="selectPosition()">
-                    <text class="fz32" >设置职位</text>
-                    <text class="fz32">{{roleName}}</text>
+                    <text class="fz32" >设置职位:</text>
+                    <text class="fz32 ml20">{{roleName}}</text>
                 </div>
             </div>
         <div class="shareBox" v-if="isPopup">
@@ -54,6 +54,7 @@
         </div>
     </div>
 </template>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .headTitle{
         height: 50px;
@@ -153,7 +154,7 @@
     import navbar from '../../../include/navbar.vue';
     export default {
         components: {
-            navbar, noData
+            navbar,
         },
         data() {
             return {
@@ -180,7 +181,9 @@
             this.mobile = utils.getUrlParameter('mobile');
             this.roleId = utils.getUrlParameter('roleId');
             this.name = utils.getUrlParameter('name');
-            this.open()
+            this.open();
+            this.huoqu();
+            this.openlist()
         },
         methods: {
             roleof:function(id) {
@@ -214,6 +217,32 @@
                     event.toast(err.content)
                 })
             },
+//            获取员工信息
+            openlist:function () {
+                var _this = this;
+                GET('weex/member/admin/list.jhtml',function (mes) {
+                    if (mes.type == 'success') {
+                            _this.lists = mes.data.data;
+                        } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            //            获取员工职位
+            huoqu:function(){
+                var _this = this;
+                GET('weex/member/role/list.jhtml', function (mes) {
+                    if (mes.type == 'success') {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
             //            选择职位
             selectPosition:function () {
                 var _this = this;
@@ -225,10 +254,12 @@
                         POST('weex/member/admin/update.jhtml?id=' +_this.id+'&shopId='+_this.shopId+'&roleId='+_this.roles[e.data].id).then(
                             function (mes) {
                                 if (mes.type == "success") {
-                                        if (mes.data.id==mes.data.id) {
+                                    _this.lists.forEach(function(item){
+                                        if (item.id==mes.data.id) {
                                             _this.roleId = mes.data.roleId;
-                                           _this.roleName = mes.data.roleName;
+                                            _this.roleName = mes.data.roleName;
                                         }
+                                    })
                                 } else {
                                     event.toast(mes.content);
                                 }
@@ -240,14 +271,16 @@
                 })
             },
 //            分配店铺
-            allotment:function () {
+            allotment:function (id) {
                 let _this =this;
-                POST('weex/member/admin/update.jhtml?id='+_this.id+'&shopId='+_this.shopId).then(
+                POST('weex/member/admin/update.jhtml?id='+_this.id+'&shopId='+id).then(
                     function (mes) {
                         if (mes.type == "success") {
-                                if (mes.data.id==mes.data.id) {
+                            _this.lists.forEach(function(item){
+                                if (item.id==mes.data.id) {
                                     _this.shopName  = mes.data.shopName;
                                 }
+                            });
                             _this.isPopup =false;
                             modal.alert({
                                 message: mes.content,
@@ -271,6 +304,9 @@
 //            关闭店铺列表
             doCancel:function () {
                 this.isPopup = false;
+            },
+            goback:function () {
+                event.closeURL();
             },
         }
     }
