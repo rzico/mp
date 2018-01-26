@@ -747,6 +747,7 @@
             this.getAllArticle();
 //            监听文章的变化。
             globalEvent.addEventListener("onArticleChange", function (e) {
+                _this.listCurrent = 0;
                 _this.getAllArticle();
             });
 //            监听用户信息的变化。

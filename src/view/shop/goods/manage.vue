@@ -500,6 +500,8 @@
                     if(res.type == 'success'){
 //                        res.data.sales = 0;
                         _this.goodsList.splice(0,0,res.data);
+//                                此时自己手动添加的数据，pagestart如果没有自增,用户触发上啦加载时，会多返回一条数据来
+                        _this.pageStart ++;
                     }
                 });
             },

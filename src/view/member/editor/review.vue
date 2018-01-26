@@ -229,6 +229,8 @@
                                 _this.reviewList.splice(0,0,data.data);
                                 _this.reviewWord = '';
                                 _this.reviewNum ++;
+//                                此时自己手动添加的数据，pagestart如果没有自增,用户触发上啦加载时，会多返回一条数据来
+                                _this.pageStart ++;
                             }else{
                                 event.toast(data.content);
                             }
