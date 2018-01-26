@@ -935,7 +935,7 @@
             realSave() {
                 var _this = this;
 //                将页面上的数据存储起来
-                this.savePage();
+                this.savePage('real');
 //                判断是再次编辑还是初次编辑;
                 let sendId = utils.isNull(_this.goodsId) ? '' : _this.goodsId;
                 let categoryTemplate = {
@@ -955,10 +955,11 @@
                     distribution:distributionTemplate,
                     products: _this.productTemplates,
                 };
+
 //                utils.debug(productData);
 //                转成json字符串后上传服务器
                 productData = JSON.stringify(productData);
-//                网络请求，保存文章
+//                网络请求，保存商品
                 POST('weex/member/product/submit.jhtml', productData).then(
                     function (res) {
                         if (res.data != '' && res.type == 'success') {
@@ -989,7 +990,7 @@
             },
 
 //            将页面上的数据存储起来
-            savePage() {
+            savePage(isReal) {
                 let _this = this;
 //                每次保存前 将下列3个变量重新置空;
                 this.productTemplates = [];//文章段落数组
@@ -1016,7 +1017,7 @@
 //                          distribution:0
                         }
 //                        临时缓存需要用到isNew         ***.由于安卓每次进入页面,渲染表单数据时也会触发oninput,所以会重新检测isNew是否准确,当2个规格的规格1相同时，此时2个规格的isNew都会被置成true***
-                        if(utils.isNull(_this.goodsId)){
+                        if(utils.isNull(_this.goodsId) && utils.isNull(isReal)){
                             pushData.isNew = item.isNew;
                         }
                         _this.productTemplates.push(pushData)
@@ -1026,7 +1027,7 @@
 
 
 //            保存临时草稿
-            saveDraft(callback){
+            saveDraft(){
                 let _this = this;
 //                将数据保存到变量里
                 this.savePage();
