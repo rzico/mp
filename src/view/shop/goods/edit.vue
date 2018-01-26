@@ -942,6 +942,8 @@
                     id:_this.catagoryId,
                     name:_this.catagoryName
                 }
+//               ''值被parseInt后会变成NaN
+                _this.distributionId = _this.distributionId == 'NaN' ? '' : _this.distributionId;
 //                销售策略
                 let distributionTemplate = {
                     id:_this.distributionId,
@@ -966,8 +968,8 @@
                                 _this.currentPro = 0;//当前进度
                                 _this.proTotal = 0;//总的进度
                                 _this.processWidth = 0;//进度条宽度
-                                event.closeURL(res);
                                 _this.delDraft();
+                                event.closeURL(res);
                         } else {
                             event.toast(res.content);
                             _this.toSendArticle = false;
