@@ -2,7 +2,7 @@
     <scroller class="wrapper" >
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
         <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="addCatagory()">
+            <div class="lineStyle pr30" @click="jump()">
                 <text class="lineText">添加策略</text>
                 <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
             </div>
@@ -33,7 +33,7 @@
                     </div>
                     <!--右侧功能-->
                     <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id)">
+                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3)">
                             <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
                             <text class="gray fontSize30 ml5mr10">修改</text>
                         </div>
@@ -223,7 +223,8 @@
                 showSort:false,//子组件
                 catagoryList:[],
                 item:{id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false},
-                roles:''
+                roles:'',
+                catagory:''
             }
         },
         components: {
@@ -234,47 +235,10 @@
             complete: {default : "完成"},
         },
         created(){
-            var _this = this;
             this.permissions();
             utils.initIconFont();
-            let catagory = utils.getUrlParameter('name');
-            if(utils.isNull(catagory)){
-                GET("weex/member/distribution/list.jhtml",function (res) {
-                    if (res.type=='success') {
-                        res.data.forEach(function (item) {
-                            _this.catagoryList.push({
-                                name:item.name,
-                                percent1:item.percent1,
-                                percent2:item.percent2,
-                                percent3:item.percent3,
-                                id:item.id,
-                                bgChange:false
-                            })
-                        })
-                    } else {
-                        event.toast(res.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                })
-            }else{
-                storage.getItem(catagory, e => {
-                    if(e.data != 'undefined'){
-                        let catagoryData =  JSON.parse(e.data);
-                        catagoryData.forEach(function (item) {
-                            _this.catagoryList.push({
-                                name:item.name,
-                                percent1:item.precent1,
-                                percent2:item.precent2,
-                                percent3:item.precent3,
-                                id:item.id,
-                                bgChange:false
-                            })
-                        })
-                    }
-                    storage.removeItem(catagory);
-                })
-            }
+            this.catagory = utils.getUrlParameter('name');
+            this.open()
         },
         methods:{
             //            获取权限
@@ -296,6 +260,46 @@
             },
             close:function () {
                 this.isShow = false;
+            },
+            open:function () {
+                var _this = this;
+                if(utils.isNull(this.catagory)){
+                    GET("weex/member/distribution/list.jhtml",function (res) {
+                        if (res.type=='success') {
+                            res.data.forEach(function (item) {
+                                _this.catagoryList.push({
+                                    name:item.name,
+                                    percent1:item.percent1,
+                                    percent2:item.percent2,
+                                    percent3:item.percent3,
+                                    id:item.id,
+                                    bgChange:false
+                                })
+                            })
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+                }else{
+                    storage.getItem(_this.catagory, e => {
+                        if(e.data != 'undefined'){
+                            let catagoryData =  JSON.parse(e.data);
+                            catagoryData.forEach(function (item) {
+                                _this.catagoryList.push({
+                                    name:item.name,
+                                    percent1:item.precent1,
+                                    percent2:item.precent2,
+                                    percent3:item.precent3,
+                                    id:item.id,
+                                    bgChange:false
+                                })
+                            })
+                        }
+                        storage.removeItem(_this.catagory);
+                    })
+                }
             },
             save:function () {
                 var _this = this;
@@ -377,7 +381,7 @@
                 _this.isShow  = true;
              },
 //            修改分类名称
-            changeName(id){
+            changeName(id,name,percent1,percent2,percent3){
                 let _this = this;
                 if (!utils.isRoles("A",_this.roles)) {
                     modal.alert({
@@ -386,12 +390,10 @@
                     })
                     return
                 }
-                _this.catagoryList.forEach( function(item) {
-                    if (item.id==id) {
-                      _this.item = item;
-                    }
-                });
-                _this.isShow  = true;
+                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3),function () {
+                    _this.catagoryList =[]
+                    _this.open()
+                })
             },
 //            删除该分类
             deleteCorpus(index,id){
@@ -531,6 +533,20 @@
                 this.catagoryList[index + 1].percent3 = c3;
                 this.catagoryList[index + 1].bgChange = d;
             },
+            jump:function () {
+                let _this = this;
+                if (!utils.isRoles("A",_this.roles)) {
+                    modal.alert({
+                        message: '请点亮专栏',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                event.openURL(utils.locate("view/shop/goods/distributionList.js"),function () {
+                    _this.catagoryList =[]
+                    _this.open()
+                })
+            }
         }
     }
 </script>
