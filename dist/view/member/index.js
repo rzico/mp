@@ -49,16 +49,16 @@
 	var __vue_styles__ = []
 
 	/* styles */
-	__vue_styles__.push(__webpack_require__(218)
+	__vue_styles__.push(__webpack_require__(303)
 	)
-	__vue_styles__.push(__webpack_require__(219)
+	__vue_styles__.push(__webpack_require__(304)
 	)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(220)
+	__vue_exports__ = __webpack_require__(305)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(221)
+	var __vue_template__ = __webpack_require__(306)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -70,10 +70,10 @@
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/Users/ke/mopian/GitHubMoPian/mp/src/view/member/index.vue"
+	__vue_options__.__file = "/Users/leistercheung/Documents/mopian/mp/src/view/member/index.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	__vue_options__._scopeId = "data-v-ab1ebe0c"
+	__vue_options__._scopeId = "data-v-0decde95"
 	__vue_options__.style = __vue_options__.style || {}
 	__vue_styles__.forEach(function (module) {
 	  for (var name in module) {
@@ -1714,14 +1714,7 @@
 
 
 /***/ }),
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */
+/* 71 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1734,8 +1727,9 @@
 	 */
 	var resLocateURL = 'file://';
 	var resRemoteURL = 'http://cdn.rzico.com/weex/';
-	var dataURL = 'http://weex.rzico.com:8088/';
-
+	var websiteURL = 'http://dev.rzico.com';
+	var event = weex.requireModule('event');
+	var _debug = true; //删掉该属性时请查找该页所有debug变量并删除变量
 	var utilsFunc = {
 	    initIconFont: function initIconFont() {
 	        var domModule = weex.requireModule('dom');
@@ -1757,9 +1751,20 @@
 	        return newUrl;
 	    },
 
+	    //获取网站资源
+	    website: function website(url) {
+	        var newUrl = websiteURL + url;
+	        return newUrl;
+	    },
+
 	    //获取URL参数
-	    getUrlParameter: function getUrlParameter(name) {
-	        var url = weex.config.bundleUrl;
+	    getUrlParameter: function getUrlParameter(name, dataUrl) {
+	        var url = void 0;
+	        if (dataUrl == null || dataUrl == undefined || dataUrl == '') {
+	            url = weex.config.bundleUrl;
+	        } else {
+	            url = dataUrl;
+	        }
 	        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 	        var r = url.slice(url.indexOf('?') + 1).match(reg);
 	        if (r != null) {
@@ -1771,21 +1776,6 @@
 	        }
 	        return null;
 	    },
-	    dayfmt: function dayfmt(value) {
-	        var date = new Date(value);
-	        var tody = new Date();
-	        var m = tody.getDay() - date.getDay();
-	        if (m < 1) {
-	            return "今天";
-	        }
-	        if (m < 3) {
-	            return "近三天";
-	        }
-	        if (m < 7) {
-	            return "近七天";
-	        }
-	        return "七天前";
-	    },
 	    message: function message(_type, _content, _data) {
 	        return {
 	            type: _type,
@@ -1796,69 +1786,40 @@
 
 	    //判空
 	    isNull: function isNull(value) {
-	        if (value == null || value == undefined || value == '') {
+	        if (value == null || value == undefined || value == '' || value == 'undefined') {
 	            return true;
 	        } else {
 	            return false;
 	        }
 	    },
 
-	    //本地缓存查找多条数据。
-	    findList: function findList(value, start, size, callback) {
-	        var partevent = weex.requireModule('event'); //在ios无法识别出该语句，考虑弃用该方法
-	        partevent.findList({
-	            type: 'article',
-	            keyword: value,
-	            orderBy: 'desc',
-	            current: start,
-	            pageSize: size
-	        }, callback);
-	    },
-	    save: function save(datatype, datakey, datavalue, datasort, datakeyword, callback) {
-	        var partevent = weex.requireModule('event');
-	        partevent.save({
-	            type: datatype,
-	            key: datakey,
-	            value: datavalue,
-	            sort: datasort,
-	            keyword: datakeyword
-	        }, callback);
+	    //获取缩略图
+	    thumbnail: function thumbnail(url, w, h) {
+	        //获取屏幕宽度计算得出比例
+	        var proportion = weex.config.env.deviceWidth / 750;
+	        //                获取缩略图的宽高
+	        w = parseInt(w * proportion);
+	        h = parseInt(h * proportion);
+	        if (url.substring(0, 11) == "http://cdnx") {
+	            return url + "?x-oss-process=image/resize,w_" + w + ",h_" + h + "";
+	        } else if (url.substring(0, 10) == "http://cdn") {
+	            return url + "@" + w + "w_" + h + "h_1e_1c_100Q";
+	        } else {
+	            return url;
+	        }
 	    },
 
-	    //时间戳
-	    timeChange: function timeChange(value) {
-	        if (value.toString().length == 10) {
-	            value = value * 1000;
-	        }
-	        var date = new Date(value);
-	        var Y = date.getFullYear();
-	        var m = date.getMonth() + 1;
-	        var d = date.getDate();
-	        var H = date.getHours();
-	        var i = date.getMinutes();
-	        var s = date.getSeconds();
-	        if (m < 10) {
-	            m = '0' + m;
-	        }
-	        if (d < 10) {
-	            d = '0' + d;
-	        }
-	        if (H < 10) {
-	            H = '0' + H;
-	        }
-	        if (i < 10) {
-	            i = '0' + i;
-	        }
-	        if (s < 10) {
-	            s = '0' + s;
-	        }
-	        var t = Y + '-' + m + '-' + d + ' ' + H + ':' + i + ':' + s;
-	        // var t = Y + '-' + m + '-' + d;
-	        return t;
+	    //获取全屏的高度尺寸,可传入父组件的导航栏高度进行适配
+	    fullScreen: function fullScreen(topHeight) {
+	        //减1是为了能触发loading，不能够高度刚刚好
+	        topHeight = topHeight == '' ? 0 : topHeight - 1;
+	        return 750 / weex.config.env.deviceWidth * weex.config.env.deviceHeight - topHeight;
 	    },
-	    thumbnail: function thumbnail(url, w, h) {
+
+	    //模糊图片，r , s  为 1-50，超大超模糊
+	    blur: function blur(url, r, s) {
 	        if (url.substring(0, 10) == "http://cdn") {
-	            return url + "@" + w + "w_" + h + "h_1e_1c_100Q";
+	            return url + "@" + r + "-" + s + "bl";
 	        } else {
 	            return url;
 	        }
@@ -1866,7 +1827,321 @@
 
 	    //获取文章URL地址
 	    articleUrl: function articleUrl(template, id) {
-	        return dataURL + "article/#/" + template + "?id=" + id;
+	        template = template == '' ? 't1001' : template;
+	        return websiteURL + "/" + template + "?id=" + id;
+	    },
+	    debug: function debug(msg) {
+	        if (_debug) {
+	            event.toast(msg);
+	        }
+	    },
+	    isRoles: function isRoles(roles, all) {
+	        for (var i = 0; i < roles.length; i++) {
+	            var role = roles.substring(i, i + 1);
+	            if (all.indexOf(role) >= 0) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    },
+
+	    //  获取字符串的字符总长度
+	    getLength: function getLength(e) {
+	        var name = e;
+	        var len = 0;
+	        for (var i = 0; i < name.length; i++) {
+	            var a = name.charAt(i);
+	            if (a.match(/[^\x00-\xff]/ig) != null) {
+	                len += 2;
+	            } else {
+	                len += 1;
+	            }
+	        }
+	        return len;
+	    },
+
+	    //    将过长的字符串换成 XXX...XXX格式
+	    changeStr: function changeStr(e) {
+	        return e.substr(0, 4) + '...' + e.substr(-4);
+	    },
+
+	    //js中用正则表达式 过滤特殊字符, 校验所有输入域是否含有特殊符号 (无法过滤 \ )
+	    //  searchFilter(s) {
+	    //         event.toast(s);
+	    //         var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）&mdash;—|{}【】‘；：”“'。，、？]");
+	    //         var rs = "";
+	    //         for (var i = 0; i < s.length; i++) {
+	    //             rs = rs + s.substr(i, 1).replace(pattern,'');
+	    //         }
+	    //         return rs;
+	    //     }
+
+	    //老的二维码转换成新格式
+	    qr2scan: function qr2scan(e) {
+	        var type = this.getUrlParameter("type", e);
+	        var code = this.getUrlParameter("no", e);
+	        if (type == "paybill") {
+	            return websiteURL + "/q/818804" + code + ".jhtml";
+	        } else if (type == "card_active") {
+	            return websiteURL + "/q/818801" + code + ".jhtml";
+	        } else {
+	            return e;
+	        }
+	    },
+
+	    //    二维码读取内容
+	    readScan: function readScan(e, callback) {
+	        e = this.qr2scan(e);
+	        var backData = {};
+	        //二维码字段截取. indexOf 没找到时返回-1， 此时如果2个indexof都没找到 那么 e.substring（-1 + 3 ，-1）,e的长度会变为2
+	        // let subData = e.substring(e.indexOf("/q/8") + 3,e.indexOf(".jhtml"));
+
+	        var start = e.indexOf("/q/8");
+	        var end = e.indexOf(".jhtml");
+	        var subData = null;
+	        if (start != -1 && end != -1) {
+	            subData = e.substring(start + 3, end);
+	        }
+	        //判断是不是web  code'000000'为无效二维码 '999999'为webView；
+	        if (subData == null) {
+	            //如果没有找到q/ 和 .jhtml中的字端，就执行该段代码
+	            if (e.substring(0, 4) == 'http' && _debug) {
+	                var data = {
+	                    type: 'webView',
+	                    code: '999999'
+	                };
+	                backData = this.message('success', 'webView', data);
+	            } else {
+	                var _data2 = {
+	                    type: 'error',
+	                    code: '000000'
+	                };
+	                backData = this.message('error', '无效二维码', _data2);
+	            }
+	            callback(backData);
+	        } else {
+	            //截取11位的判断码
+	            var type = subData.substring(0, 6);
+	            var code = subData.slice(6);
+	            var _data3 = {
+	                type: type,
+	                code: code
+	            };
+	            if (code == '000000') {
+	                backData = this.message('error', '无效二维码', _data3);
+	            } else {
+	                backData = this.message('success', '扫描成功', _data3);
+	            }
+	            callback(backData);
+	        }
+	    },
+
+	    //判断用户是否只输入了空格
+	    isAllEmpty: function isAllEmpty(str) {
+	        if (str.replace(/ /g, "").length == 0) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    },
+
+	    //判断设备型号
+	    device: function device() {
+	        var s = weex.config.env.deviceModel;
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s.indexOf("V1") > 0) {
+	                return "V1";
+	            } else if (s.indexOf("10,3") > 0 || s.indexOf("10,6") > 0) {
+	                return 'IPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+
+	    //    登录主页的轮播图控制
+	    indexMt: function indexMt() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'indexMtV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'indexMtIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+
+
+	    //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
+	    addTop: function addTop() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'addTopV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'addTopIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //   会员首页 作者专栏 顶部信息栏
+	    addInfo: function addInfo() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'addInfoV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'addInfoIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
+	    addBgImg: function addBgImg() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'addBgImgV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'addBgImgIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //    控制滑动时文集box的显示
+	    hideCorpus: function hideCorpus() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'hideCorpusV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'hideCorpusIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //    控制滑动时文集box的显示
+	    pageTop: function pageTop() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'pageTopV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'pageTopIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+
+	    //判断设备系统是不是ios
+	    isIosSystem: function isIosSystem() {
+	        var s = weex.config.env.osName;
+	        if (s == 'iOS') {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    },
+
+	    resolvetimefmt: function resolvetimefmt(value) {
+	        //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+	        if (value.toString().length == 10) {
+	            value = parseInt(value) * 1000;
+	        } else {
+	            value = parseInt(value);
+	        }
+	        // 返回处理后的值
+	        var date = new Date(value);
+
+	        var d2 = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+
+	        date = new Date(d2 + 28800000);
+
+	        var y = date.getUTCFullYear();
+	        var m = date.getUTCMonth() + 1;
+	        var d = date.getUTCDate();
+	        var h = date.getUTCHours();
+	        var i = date.getUTCMinutes();
+	        var s = date.getUTCSeconds();
+	        if (m < 10) {
+	            m = '0' + m;
+	        }
+	        if (d < 10) {
+	            d = '0' + d;
+	        }
+	        if (h < 10) {
+	            h = '0' + h;
+	        }
+	        if (i < 10) {
+	            i = '0' + i;
+	        }
+	        if (s < 10) {
+	            s = '0' + s;
+	        }
+	        var timeObj = {
+	            y: y,
+	            m: m,
+	            d: d,
+	            h: h,
+	            i: i,
+	            s: s
+	        };
+	        return timeObj;
+	    },
+	    //返回格式 2017-09-01
+	    ymdtimefmt: function ymdtimefmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+	        return timeObj.y + '-' + timeObj.m + '-' + timeObj.d;
+	    },
+	    //返回格式 2017-09-01 06:35:59
+	    ymdhistimefmt: function ymdhistimefmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+
+	        return timeObj.y + '-' + timeObj.m + '-' + timeObj.d + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
+	    },
+	    //返回格式 2017年09月01日 06:35:59
+	    ymdhisdayfmt: function ymdhisdayfmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+
+	        return timeObj.y + '年' + timeObj.m + '月' + timeObj.d + '日' + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
+	    },
+	    //返回格式 06:35:59
+	    histimefmt: function histimefmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+	        return timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
 	    }
 	};
 
@@ -1874,6 +2149,13 @@
 	module.exports = exports['default'];
 
 /***/ }),
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
 /* 79 */,
 /* 80 */,
 /* 81 */,
@@ -1893,369 +2175,7 @@
 /* 95 */,
 /* 96 */,
 /* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _promise = __webpack_require__(1);
-
-	var _promise2 = _interopRequireDefault(_promise);
-
-	exports.POST = POST;
-	exports.GET = GET;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var stream = weex.requireModule('stream');
-	var baseURL = '';
-
-	function POST(path, body) {
-	    return new _promise2.default(function (resolve, reject) {
-	        stream.fetch({
-	            method: 'POST',
-	            url: '' + baseURL + path,
-	            type: 'json',
-	            body: '' + body
-	        }, function (response) {
-	            if (response.status == 200) {
-	                resolve(response.data);
-	            } else {
-	                reject({
-	                    type: "error",
-	                    content: "网络不稳定"
-	                });
-	            }
-	        }, function () {});
-	    });
-	}
-
-	function GET(path, resolve, reject) {
-	    stream.fetch({
-	        method: 'GET',
-	        url: '' + baseURL + path,
-	        type: 'json'
-	    }, function (response) {
-	        //请求 type=success 或 warn 或 error（没缓存） 时返回，都能正常获取数据
-	        if (response.status == 200) {
-	            resolve(response.data);
-	        } else
-	            //请求 type= error 网络正常，但服务器返回错误，有缓存，也需要给数据，并提示出错了  statusText=服务器返回的 content
-	            //网络异常，有缓存，需要给出缓存数据，并且   statusText 固定为 "网络不稳定"
-	            if (response.status == 304) {
-	                resolve(response.data);
-	                reject({
-	                    type: "error",
-	                    content: response.statusText
-	                });
-	            } else
-	                //网络异常，没有缓存
-	                {
-	                    reject({
-	                        type: "error",
-	                        content: '网络不稳定'
-	                    });
-	                }
-	    }, function () {});
-	}
-
-/***/ }),
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var dom = weex.requireModule('dom');
-	var event = weex.requireModule('event');
-	var stream = weex.requireModule('stream');
-	var storage = weex.requireModule('storage');
-	exports.default = { dom: dom, event: event, stream: stream, storage: storage };
-	module.exports = exports['default'];
-
-/***/ }),
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	//时间格式化 今天 近三天 近七天  七天前
-	Vue.filter('dayfmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    var date = new Date(value);
-	    var tody = new Date();
-	    var m = tody.getDate() - date.getDate();
-	    if (m < 1) {
-	        return "今天";
-	    }
-	    if (m < 3) {
-	        return "近三天";
-	    }
-	    if (m < 7) {
-	        return "近七天";
-	    }
-	    return "七天前";
-	});
-	// 时间格式化 10:30 昨天 前天 2017-09-01 09-01
-	Vue.filter('timefmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    var date = new Date(value);
-	    var tody = new Date();
-	    var y = date.getFullYear();
-	    var nowy = tody.getFullYear();
-	    var m = date.getMonth() + 1;
-	    var w = tody.getDate() - date.getDate();
-	    if (w < 1) {
-	        var h = date.getHours();
-	        var i = date.getMinutes();
-	        if (h < 10) {
-	            h = '0' + h;
-	        }
-	        if (i < 10) {
-	            i = '0' + i;
-	        }
-	        return h + ":" + i;
-	        // return value;
-	    }
-	    if (w < 2) {
-	        return "昨天";
-	    }
-	    if (w < 3) {
-	        return "前天";
-	    }
-	    if (m < 10) {
-	        m = '0' + m;
-	    }
-	    //如果是今年 就不返回年份
-	    if (nowy != y) {
-	        return m + '月' + date.getDate() + '日';
-	    } else {
-	        return y + '年' + m + '月' + date.getDate() + '日';
-	    }
-	    // return value;
-	});
-
-	//月份格式化 本月 上月 2..12月  2016年1月..
-	Vue.filter('monthfmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    // 返回处理后的值
-	    var date = new Date(value);
-	    var tody = new Date();
-	    var m = tody.getMonth() - date.getMonth();
-	    var y = tody.getYear() - date.getYear();
-	    if (m < 1) {
-	        return "本月";
-	    }
-	    if (m < 2) {
-	        return "上月";
-	    }
-	    if (y < 1) {
-	        return date.getMonth() + "月";
-	    }
-	    return date.getYear() + "年" + date.getMonth() + "月";
-	});
-
-	//返回月份 7 8 9 单数字
-	Vue.filter('detailMonth', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    // 返回处理后的值
-	    var date = new Date(value);
-	    var m = date.getMonth() + 1;
-	    return m;
-	});
-
-	//时间格式化 返回 09-30 03:07
-	Vue.filter('datetimefmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    // 返回处理后的值
-	    var date = new Date(value);
-	    var m = date.getMonth() + 1;
-	    var d = date.getDate();
-	    var H = date.getHours();
-	    var i = date.getMinutes();
-	    if (m < 10) {
-	        m = '0' + m;
-	    }
-	    if (d < 10) {
-	        d = '0' + d;
-	    }
-	    if (H < 10) {
-	        H = '0' + H;
-	    }
-	    if (i < 10) {
-	        i = '0' + i;
-	    }
-	    var t = m + '-' + d + '  ' + H + ':' + i;
-	    return t;
-	});
-	//金额保留两位小数点
-	Vue.filter('currencyfmt', function (value) {
-	    // 返回处理后的值
-	    if (value != null) {
-	        if (value == 0) {
-	            return value;
-	        } else {
-	            var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
-	            return price;
-	        }
-	    }
-	});
-
-/***/ }),
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */
+/* 98 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -2278,8 +2198,122 @@
 	    "color": "#000000"
 	  },
 	  "sub_title": {
-	    "fontSize": 28,
-	    "color": "#bbbbbb"
+	    "fontSize": 30,
+	    "color": "#999999"
+	  },
+	  "sub_date": {
+	    "fontSize": 26,
+	    "color": "#999999"
+	  },
+	  "fz28": {
+	    "fontSize": 28
+	  },
+	  "fz30": {
+	    "fontSize": 30
+	  },
+	  "fz32": {
+	    "fontSize": 32
+	  },
+	  "fz35": {
+	    "fontSize": 35
+	  },
+	  "fz40": {
+	    "fontSize": 40
+	  },
+	  "boder-bottom": {
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-top": {
+	    "borderStyle": "solid",
+	    "borderTopWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-right": {
+	    "borderStyle": "solid",
+	    "borderRightWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-left": {
+	    "borderStyle": "solid",
+	    "borderLeftWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "pl10": {
+	    "paddingLeft": 10
+	  },
+	  "pt10": {
+	    "paddingTop": 10
+	  },
+	  "pt15": {
+	    "paddingTop": 15
+	  },
+	  "pb10": {
+	    "paddingBottom": 10
+	  },
+	  "pl20": {
+	    "paddingLeft": 20
+	  },
+	  "pt20": {
+	    "paddingTop": 20
+	  },
+	  "pb15": {
+	    "paddingBottom": 15
+	  },
+	  "pb20": {
+	    "paddingBottom": 20
+	  },
+	  "pt25": {
+	    "paddingTop": 25
+	  },
+	  "pt30": {
+	    "paddingTop": 30
+	  },
+	  "pt40": {
+	    "paddingTop": 40
+	  },
+	  "pb40": {
+	    "paddingBottom": 40
+	  },
+	  "pb30": {
+	    "paddingBottom": 30
+	  },
+	  "pb25": {
+	    "paddingBottom": 25
+	  },
+	  "pl25": {
+	    "paddingLeft": 25
+	  },
+	  "pl30": {
+	    "paddingLeft": 30
+	  },
+	  "pr10": {
+	    "paddingRight": 10
+	  },
+	  "pr20": {
+	    "paddingRight": 20
+	  },
+	  "pr25": {
+	    "paddingRight": 25
+	  },
+	  "pr30": {
+	    "paddingRight": 30
+	  },
+	  "pl35": {
+	    "paddingLeft": 35
+	  },
+	  "pr35": {
+	    "paddingRight": 35
+	  },
+	  "bgWhite": {
+	    "backgroundColor": "#ffffff"
+	  },
+	  "textActive": {
+	    "backgroundColor:active": "#cccccc"
+	  },
+	  "mt0": {
+	    "marginTop": 0
 	  },
 	  "mt10": {
 	    "marginTop": 10
@@ -2289,6 +2323,39 @@
 	  },
 	  "mt30": {
 	    "marginTop": 30
+	  },
+	  "mt50": {
+	    "marginTop": 50
+	  },
+	  "bt0": {
+	    "marginBottom": 0
+	  },
+	  "bt5": {
+	    "marginBottom": 5
+	  },
+	  "bt10": {
+	    "marginBottom": 10
+	  },
+	  "bt15": {
+	    "marginBottom": 15
+	  },
+	  "bt20": {
+	    "marginBottom": 20
+	  },
+	  "bt30": {
+	    "marginBottom": 30
+	  },
+	  "bt50": {
+	    "marginBottom": 50
+	  },
+	  "mr5": {
+	    "marginRight": 5
+	  },
+	  "mr30": {
+	    "marginRight": 30
+	  },
+	  "ml5": {
+	    "marginLeft": 5
 	  },
 	  "ml10": {
 	    "marginLeft": 10
@@ -2301,12 +2368,35 @@
 	  },
 	  "header": {
 	    "height": 136,
+	    "paddingTop": 44,
 	    "flexDirection": "row",
 	    "position": "sticky",
 	    "borderBottomWidth": 1,
 	    "borderBottomStyle": "solid",
-	    "borderBottomColor": "#bbbbbb",
-	    "backgroundColor": "#D9141E"
+	    "borderColor": "#cccccc",
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "nav": {
+	    "width": 654,
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "height": 92,
+	    "alignItems": "center",
+	    "marginTop": 0
+	  },
+	  "nav_back": {
+	    "marginTop": 0,
+	    "flexDirection": "row",
+	    "width": 92,
+	    "height": 92,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "corpusActive": {
+	    "color": "#EB4E40",
+	    "borderColor": "#EB4E40",
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 4
 	  },
 	  "footer": {
 	    "position": "fixed",
@@ -2319,6 +2409,11 @@
 	    "height": 500,
 	    "width": 750,
 	    "backgroundColor": "#eeeeee"
+	  },
+	  "iconImg": {
+	    "width": 60,
+	    "height": 60,
+	    "fontSize": 60
 	  },
 	  "cell-header": {
 	    "height": 70,
@@ -2333,12 +2428,32 @@
 	    "paddingLeft": 20,
 	    "marginTop": 20
 	  },
+	  "cell-row-row": {
+	    "minHeight": 100,
+	    "flexDirection": "row",
+	    "justifyContent": "space-between",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "paddingRight": 20,
+	    "alignItems": "center",
+	    "marginTop": 20
+	  },
 	  "cell-line": {
 	    "borderTopWidth": 1,
-	    "borderTopColor": "#bbbbbb",
+	    "borderTopColor": "#cccccc",
 	    "borderTopStyle": "solid",
 	    "borderBottomWidth": 1,
-	    "borderBottomColor": "#bbbbbb",
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "borderTop": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid"
+	  },
+	  "borderBottom": {
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
 	    "borderBottomStyle": "solid"
 	  },
 	  "cell-panel": {
@@ -2347,14 +2462,28 @@
 	    "flexDirection": "row",
 	    "alignItems": "center",
 	    "borderBottomWidth": 1,
-	    "borderBottomColor": "#bbbbbb",
+	    "borderBottomColor": "#cccccc",
 	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel-column": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "column",
+	    "justifyContent": "space-around",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid",
+	    "paddingTop": 10,
+	    "paddingBottom": 10
+	  },
+	  "cell-bottom-clear": {
+	    "borderBottomWidth": 0
 	  },
 	  "cell-clear": {
 	    "marginTop": 0,
 	    "marginBottom": 0,
-	    "borderBottomWidth": 0,
-	    "borderTopWidth": 0
+	    "borderTopWidth": 0,
+	    "borderBottomWidth": 0
 	  },
 	  "space-between": {
 	    "justifyContent": "space-between",
@@ -2404,52 +2533,79 @@
 	  "flex5": {
 	    "flex": 6
 	  },
+	  "flex6": {
+	    "flex": 6
+	  },
 	  "bkg-white": {
 	    "backgroundColor": "#FFFFFF"
 	  },
 	  "bkg-primary": {
-	    "backgroundColor": "#D9141E"
+	    "backgroundColor": "#EB4E40"
 	  },
 	  "bkg-gray": {
 	    "backgroundColor": "#eeeeee"
+	  },
+	  "bd-primary": {
+	    "borderColor": "#EB4E40"
+	  },
+	  "bkg-delete": {
+	    "backgroundColor": "#FF0000"
 	  },
 	  "white": {
 	    "color": "#FFFFFF"
 	  },
 	  "primary": {
-	    "color": "#D9141E"
+	    "color": "#EB4E40"
 	  },
 	  "gray": {
-	    "color": "#bbbbbb"
+	    "color": "#999999"
 	  },
 	  "ico": {
 	    "fontSize": 48,
-	    "color": "#D9141E"
+	    "color": "#EB4E40",
+	    "marginTop": 2
 	  },
 	  "ico_big": {
 	    "fontSize": 72,
-	    "color": "#D9141E"
+	    "color": "#EB4E40",
+	    "marginTop": 4
 	  },
 	  "ico_small": {
 	    "fontSize": 32,
-	    "color": "#D9141E"
+	    "color": "#EB4E40",
+	    "marginTop": 1
 	  },
 	  "arrow": {
 	    "fontSize": 32,
 	    "color": "#cccccc",
 	    "width": 40
 	  },
+	  "check": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40
+	  },
+	  "shopCheck": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40,
+	    "marginLeft": 150
+	  },
 	  "button": {
-	    "fontSize": 36,
+	    "fontSize": 32,
 	    "textAlign": "center",
 	    "color": "#ffffff",
-	    "paddingTop": 20,
-	    "paddingBottom": 20,
-	    "backgroundColor": "#D9141E",
+	    "paddingTop": 15,
+	    "paddingBottom": 15,
+	    "backgroundColor": "#EB4E40",
 	    "borderRadius": 15,
-	    "backgroundColor:active": "#bbbbbb",
-	    "color:active": "#D9141E",
-	    "backgroundColor:disabled": "#D9141E",
+	    "height": 80,
+	    "lineHeight": 50,
+	    "alignItems": "center",
+	    "justifyContent": "center",
+	    "backgroundColor:active": "#cccccc",
+	    "color:active": "#EB4E40",
+	    "backgroundColor:disabled": "#EB4E40",
 	    "color:disabled": "#999999"
 	  },
 	  "refresh": {
@@ -2462,13 +2618,16 @@
 	    "alignItems": "center",
 	    "paddingTop": 10
 	  },
+	  "noLoading": {
+	    "height": 999
+	  },
 	  "gif": {
 	    "width": 50,
 	    "height": 50
 	  },
 	  "indicator": {
 	    "fontSize": 36,
-	    "color": "#D9141E",
+	    "color": "#EB4E40",
 	    "width": 750,
 	    "textAlign": "center",
 	    "marginTop": 20,
@@ -2477,14 +2636,1367 @@
 	  "lines-ellipsis": {
 	    "lines": 1,
 	    "textOverflow": "ellipsis"
+	  },
+	  "V1": {
+	    "height": 146,
+	    "paddingTop": 54
+	  },
+	  "IPhoneX": {
+	    "height": 156,
+	    "paddingTop": 64
+	  },
+	  "addTopV1": {
+	    "top": 54
+	  },
+	  "addTopIPhoneX": {
+	    "top": 64
+	  },
+	  "addInfoV1": {
+	    "height": 430,
+	    "paddingTop": 50
+	  },
+	  "addInfoIPhoneX": {
+	    "height": 440,
+	    "paddingTop": 60
+	  },
+	  "addBgImgV1": {
+	    "height": 430
+	  },
+	  "addBgImgIPhoneX": {
+	    "height": 440
+	  },
+	  "hideCorpusV1": {
+	    "top": 146
+	  },
+	  "hideCorpusIPhoneX": {
+	    "top": 156
+	  },
+	  "pageTopV1": {
+	    "top": 226
+	  },
+	  "pageTopIPhoneX": {
+	    "top": 236
+	  },
+	  "maskLayer": {
+	    "position": "fixed",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "backgroundColor": "#000000",
+	    "opacity": 0.5
+	  },
+	  "showBox": {
+	    "position": "fixed",
+	    "top": 150,
+	    "right": 15,
+	    "backgroundColor": "#ffffff",
+	    "borderRadius": 20,
+	    "paddingTop": 20,
+	    "paddingBottom": 20
+	  },
+	  "arrowUp": {
+	    "position": "fixed",
+	    "top": 148,
+	    "right": 30
+	  },
+	  "refreshImg": {
+	    "width": 60,
+	    "height": 60,
+	    "borderRadius": 30
+	  },
+	  "refreshBox": {
+	    "height": 120,
+	    "width": 750,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "indexMtIPhoneX": {
+	    "marginTop": 124
 	  }
 	}
 
 /***/ }),
-/* 219 */
+/* 99 */
 /***/ (function(module, exports) {
 
 	module.exports = {
+	  "noData": {
+	    "paddingTop": 250,
+	    "alignItems": "center"
+	  },
+	  "noData_ico": {
+	    "color": "#cccccc",
+	    "fontSize": 72
+	  },
+	  "noData_hint": {
+	    "color": "#cccccc",
+	    "marginTop": 30
+	  }
+	}
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
+	exports.default = {
+	    props: {
+	        ndBgColor: { default: '#eee' },
+	        noDataHint: { default: '没有数据' },
+	        pdNumber: { default: 200 }
+	    }
+	};
+	module.exports = exports['default'];
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: ["noData"],
+	    style: {
+	      backgroundColor: _vm.ndBgColor,
+	      paddingBottom: _vm.pbNumbe + 'px'
+	    }
+	  }, [_c('text', {
+	    staticClass: ["noData_ico"],
+	    style: {
+	      fontFamily: 'iconfont'
+	    }
+	  }, [_vm._v("")]), _c('text', {
+	    staticClass: ["noData_hint"]
+	  }, [_vm._v(_vm._s(_vm.noDataHint))])])
+	},staticRenderFns: []}
+	module.exports.render._withStripped = true
+
+/***/ }),
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _promise = __webpack_require__(1);
+
+	var _promise2 = _interopRequireDefault(_promise);
+
+	exports.POST = POST;
+	exports.GET = GET;
+	exports.SCAN = SCAN;
+
+	var _utils = __webpack_require__(71);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var stream = weex.requireModule('stream');
+	var modal = weex.requireModule('modal');
+	var baseURL = '';
+
+	var event = weex.requireModule('event');
+	function POST(path, body) {
+	    return new _promise2.default(function (resolve, reject) {
+	        stream.fetch({
+	            method: 'POST',
+	            url: '' + baseURL + path,
+	            type: 'json',
+	            body: '' + body
+	        }, function (response) {
+	            if (response.status == 200) {
+	                resolve(response.data);
+	            } else {
+	                reject({
+	                    type: "error",
+	                    content: "网络不稳定"
+	                });
+	            }
+	        }, function () {});
+	    });
+	}
+
+	function GET(path, resolve, reject) {
+	    // let cacheParams = {
+	    //     type:'httpCache',//类型
+	    //     key:`${baseURL}${path}`,//关键址
+	    // }
+	    // event.find(cacheParams,function (cache) {
+	    //    if (cache.type=='success') {
+	    //        if (cache.data != '') {
+	    //            resolve(JSON.parse(cache.data.value));
+	    //        }
+	    //    }
+	    // })
+	    stream.fetch({
+	        method: 'GET',
+	        url: '' + baseURL + path,
+	        type: 'json'
+	    }, function (response) {
+	        //请求 type=success 或 warn 或 error（没缓存） 时返回，都能正常获取数据
+	        if (response.status == 200) {
+	            resolve(response.data);
+	        } else
+	            //请求 type= error 网络正常，但服务器返回错误，有缓存，也需要给数据，并提示出错了  statusText=服务器返回的 content
+	            //网络异常，有缓存，需要给出缓存数据，并且   statusText 固定为 "网络不稳定"
+	            if (response.status == 304) {
+	                resolve(response.data);
+	                reject({
+	                    type: "error",
+	                    content: response.statusText
+	                });
+	            } else
+	                //网络异常，没有缓存
+	                {
+	                    reject({
+	                        type: "error",
+	                        content: '网络不稳定'
+	                    });
+	                }
+	    }, function () {});
+	}
+	//二维码扫描
+	function SCAN(message, resolve, reject) {
+	    if (message.type == 'success') {
+	        _utils2.default.readScan(message.data, function (data) {
+	            if (data.type == 'success') {
+	                if (data.data.type == '865380') {
+	                    var userId = parseInt(data.data.code) - 10200;
+	                    POST('weex/member/friends/add.jhtml?friendId=' + userId).then(function (mes) {
+	                        if (mes.type == "success") {
+	                            event.toast('添加好友请求已发送,请等待对方验证');
+	                        } else {
+	                            event.toast(mes.content);
+	                        }
+	                        resolve(mes);
+	                    }, function (err) {
+	                        reject(err);
+	                        event.toast(err.content);
+	                    });
+	                } else if (data.data.type == '818803') {
+	                    GET('weex/member/couponCode/use.jhtml?code=' + data.data.code, function (mes) {
+	                        modal.alert({
+	                            message: mes.content,
+	                            duration: 0.3
+	                        }, function (value) {});
+	                    }, function (err) {
+	                        event.toast(err.content);
+	                    });
+	                } else if (data.data.type == 'webView') {
+	                    event.openURL(message.data, function () {});
+	                } else {
+	                    event.toast('无效验证码');
+	                }
+	            } else {
+	                event.toast(data.content);
+	            }
+	        });
+	    } else {}
+	}
+
+/***/ }),
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(137), __esModule: true };
+
+/***/ }),
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var core = __webpack_require__(12);
+	var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
+	module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+	  return $JSON.stringify.apply($JSON, arguments);
+	};
+
+
+/***/ }),
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = []
+
+	/* styles */
+	__vue_styles__.push(__webpack_require__(98)
+	)
+	__vue_styles__.push(__webpack_require__(99)
+	)
+
+	/* script */
+	__vue_exports__ = __webpack_require__(100)
+
+	/* template */
+	var __vue_template__ = __webpack_require__(101)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	__vue_options__.__file = "/Users/leistercheung/Documents/mopian/mp/src/include/noData.vue"
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	__vue_options__._scopeId = "data-v-562bbe74"
+	__vue_options__.style = __vue_options__.style || {}
+	__vue_styles__.forEach(function (module) {
+	  for (var name in module) {
+	    __vue_options__.style[name] = module[name]
+	  }
+	})
+	if (typeof __register_static_styles__ === "function") {
+	  __register_static_styles__(__vue_options__._scopeId, __vue_styles__)
+	}
+
+	module.exports = __vue_exports__
+
+
+/***/ }),
+/* 149 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var dom = weex.requireModule('dom');
+	var event = weex.requireModule('event');
+	var stream = weex.requireModule('stream');
+	var storage = weex.requireModule('storage');
+	var animation = weex.requireModule('animation');
+	exports.default = { dom: dom, event: event, stream: stream, storage: storage, animation: animation };
+	module.exports = exports['default'];
+
+/***/ }),
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */,
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _utils = __webpack_require__(71);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	//时间格式化 今天 昨天 前天  年月日
+	Vue.filter('daydayfmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+
+	    if (daySub < 1) {
+	        return "今天";
+	    } else if (daySub < 2) {
+	        return "昨天";
+	    } else if (daySub < 3) {
+	        return "前天";
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日';
+	    }
+	});
+
+	//时间格式化 今天 近三天 近七天  七天前
+	Vue.filter('dayfmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return "今天";
+	    }
+	    if (daySub < 3) {
+	        return "近三天";
+	    }
+	    if (daySub < 7) {
+	        return "近七天";
+	    }
+	    return "七天前";
+	});
+	// 时间格式化 10:30 昨天 前天 2017年09月01日 09月01日
+	Vue.filter('timefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return res.h + ":" + res.i;
+	    }
+	    if (daySub < 2) {
+	        return "昨天";
+	    }
+	    if (daySub < 3) {
+	        return "前天";
+	    }
+	    if (res.y == tds.y) {
+	        return res.m + '月' + res.d + '日';
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日';
+	    }
+	});
+
+	// 时间格式化  2017年09月01日 09月01日
+	Vue.filter('ymdtimefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+	    if (res.y == tds.y) {
+	        return res.m + '月' + res.d + '日';
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日';
+	    }
+	});
+
+	// 时间格式化 10:30 昨天10:30  2017年09月01日10:30 09月01日10:30
+	Vue.filter('timefmtMore', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return res.h + ":" + res.i;
+	    }
+	    if (daySub < 2) {
+	        return "昨天" + ' ' + res.h + ":" + res.i;
+	    }
+	    if (res.y == tds.y) {
+	        return res.m + '月' + res.d + '日' + ' ' + res.h + ":" + res.i;
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日' + ' ' + res.h + ":" + res.i;
+	    }
+	});
+
+	// 时间格式化 10:30 昨天 前天 2017-09-01 09-01
+	Vue.filter('timefmtOther', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return res.h + ":" + res.i;
+	    }
+	    if (daySub < 2) {
+	        return "昨天";
+	    }
+	    if (daySub < 3) {
+	        return "前天";
+	    }
+	    //如果是今年 就不返回年份
+	    if (res.y == tds.y) {
+	        return res.m + '-' + res.d;
+	    } else {
+	        return res.y + '-' + res.m + '-' + res.d;
+	    }
+	});
+
+	// 时间格式化  2017-09-01
+	Vue.filter('timeDatefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.y + '-' + res.m + '-' + res.d;
+	});
+
+	//月份格式化 本月 上月 2..12月  2016年1月..
+	Vue.filter('monthfmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var m = tds.m - res.m;
+	    var y = tds.y - tds.y;
+	    if (y < 1 && m < 1) {
+	        return "本月";
+	    }
+	    if (y < 1 && m < 2) {
+	        return "上月";
+	    }
+	    if (y < 1) {
+	        return res.m + "月";
+	    }
+	    return res.y + "年" + res.m + "月";
+	});
+
+	//2017-01-01
+	Vue.filter('datefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.y + "年" + res.m + "月" + res.d + "日";
+	});
+
+	//返回月份 7 8 9 单数字
+	Vue.filter('detailMonth', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.m;
+	});
+
+	//时间格式化 返回 09-30 03:07
+	Vue.filter('datetimefmt', function (value) {
+
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    //如果是今年 就不返回年份
+	    if (res.y == tds.y) {
+	        return res.m + '-' + res.d + '  ' + res.h + ':' + res.i;
+	    } else {
+	        return res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i;
+	    }
+	});
+
+	//时间格式化 返回 09-30 03:07:56 2017-09-30 03:07:56
+	Vue.filter('datemoretimefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    //如果是今年 就不返回年份
+	    if (res.y == tds.y) {
+	        return res.m + '-' + res.d + '  ' + res.h + ':' + res.i + ':' + res.s;
+	    } else {
+	        return res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i + ':' + res.s;
+	    }
+	});
+	//时间格式化 返回 03:07
+	Vue.filter('hitimefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.h + ':' + res.i;
+	});
+
+	//金额保留两位小数点
+	Vue.filter('currencyfmt', function (value) {
+	    if (value == '' || value == null || value == undefined) {
+	        return value;
+	    }
+	    // 返回处理后的值
+	    if (value != null) {
+	        if (value == 0) {
+	            return value;
+	        } else {
+	            var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
+	            return price;
+	        }
+	    }
+	});
+
+/***/ }),
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+	  "wrapper": {
+	    "position": "absolute",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "width": 750,
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "nav_title": {
+	    "fontSize": 38,
+	    "color": "#ffffff",
+	    "lineHeight": 38
+	  },
+	  "title": {
+	    "fontSize": 32,
+	    "color": "#000000"
+	  },
+	  "sub_title": {
+	    "fontSize": 30,
+	    "color": "#999999"
+	  },
+	  "sub_date": {
+	    "fontSize": 26,
+	    "color": "#999999"
+	  },
+	  "fz28": {
+	    "fontSize": 28
+	  },
+	  "fz30": {
+	    "fontSize": 30
+	  },
+	  "fz32": {
+	    "fontSize": 32
+	  },
+	  "fz35": {
+	    "fontSize": 35
+	  },
+	  "fz40": {
+	    "fontSize": 40
+	  },
+	  "boder-bottom": {
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-top": {
+	    "borderStyle": "solid",
+	    "borderTopWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-right": {
+	    "borderStyle": "solid",
+	    "borderRightWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-left": {
+	    "borderStyle": "solid",
+	    "borderLeftWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "pl10": {
+	    "paddingLeft": 10
+	  },
+	  "pt10": {
+	    "paddingTop": 10
+	  },
+	  "pt15": {
+	    "paddingTop": 15
+	  },
+	  "pb10": {
+	    "paddingBottom": 10
+	  },
+	  "pl20": {
+	    "paddingLeft": 20
+	  },
+	  "pt20": {
+	    "paddingTop": 20
+	  },
+	  "pb15": {
+	    "paddingBottom": 15
+	  },
+	  "pb20": {
+	    "paddingBottom": 20
+	  },
+	  "pt25": {
+	    "paddingTop": 25
+	  },
+	  "pt30": {
+	    "paddingTop": 30
+	  },
+	  "pt40": {
+	    "paddingTop": 40
+	  },
+	  "pb40": {
+	    "paddingBottom": 40
+	  },
+	  "pb30": {
+	    "paddingBottom": 30
+	  },
+	  "pb25": {
+	    "paddingBottom": 25
+	  },
+	  "pl25": {
+	    "paddingLeft": 25
+	  },
+	  "pl30": {
+	    "paddingLeft": 30
+	  },
+	  "pr10": {
+	    "paddingRight": 10
+	  },
+	  "pr20": {
+	    "paddingRight": 20
+	  },
+	  "pr25": {
+	    "paddingRight": 25
+	  },
+	  "pr30": {
+	    "paddingRight": 30
+	  },
+	  "pl35": {
+	    "paddingLeft": 35
+	  },
+	  "pr35": {
+	    "paddingRight": 35
+	  },
+	  "bgWhite": {
+	    "backgroundColor": "#ffffff"
+	  },
+	  "textActive": {
+	    "backgroundColor:active": "#cccccc"
+	  },
+	  "mt0": {
+	    "marginTop": 0
+	  },
+	  "mt10": {
+	    "marginTop": 10
+	  },
+	  "mt20": {
+	    "marginTop": 20
+	  },
+	  "mt30": {
+	    "marginTop": 30
+	  },
+	  "mt50": {
+	    "marginTop": 50
+	  },
+	  "bt0": {
+	    "marginBottom": 0
+	  },
+	  "bt5": {
+	    "marginBottom": 5
+	  },
+	  "bt10": {
+	    "marginBottom": 10
+	  },
+	  "bt15": {
+	    "marginBottom": 15
+	  },
+	  "bt20": {
+	    "marginBottom": 20
+	  },
+	  "bt30": {
+	    "marginBottom": 30
+	  },
+	  "bt50": {
+	    "marginBottom": 50
+	  },
+	  "mr5": {
+	    "marginRight": 5
+	  },
+	  "mr30": {
+	    "marginRight": 30
+	  },
+	  "ml5": {
+	    "marginLeft": 5
+	  },
+	  "ml10": {
+	    "marginLeft": 10
+	  },
+	  "ml20": {
+	    "marginLeft": 20
+	  },
+	  "ml30": {
+	    "marginLeft": 30
+	  },
+	  "header": {
+	    "height": 136,
+	    "paddingTop": 44,
+	    "flexDirection": "row",
+	    "position": "sticky",
+	    "borderBottomWidth": 1,
+	    "borderBottomStyle": "solid",
+	    "borderColor": "#cccccc",
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "nav": {
+	    "width": 654,
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "height": 92,
+	    "alignItems": "center",
+	    "marginTop": 0
+	  },
+	  "nav_back": {
+	    "marginTop": 0,
+	    "flexDirection": "row",
+	    "width": 92,
+	    "height": 92,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "corpusActive": {
+	    "color": "#EB4E40",
+	    "borderColor": "#EB4E40",
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 4
+	  },
+	  "footer": {
+	    "position": "fixed",
+	    "bottom": 0,
+	    "left": 0,
+	    "right": 0,
+	    "height": 100
+	  },
+	  "fill": {
+	    "height": 500,
+	    "width": 750,
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "iconImg": {
+	    "width": 60,
+	    "height": 60,
+	    "fontSize": 60
+	  },
+	  "cell-header": {
+	    "height": 70,
+	    "flexDirection": "row",
+	    "backgroundColor": "#dddddd",
+	    "paddingLeft": 20
+	  },
+	  "cell-row": {
+	    "minHeight": 100,
+	    "flexDirection": "column",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "marginTop": 20
+	  },
+	  "cell-row-row": {
+	    "minHeight": 100,
+	    "flexDirection": "row",
+	    "justifyContent": "space-between",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "paddingRight": 20,
+	    "alignItems": "center",
+	    "marginTop": 20
+	  },
+	  "cell-line": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "borderTop": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid"
+	  },
+	  "borderBottom": {
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "row",
+	    "alignItems": "center",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel-column": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "column",
+	    "justifyContent": "space-around",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid",
+	    "paddingTop": 10,
+	    "paddingBottom": 10
+	  },
+	  "cell-bottom-clear": {
+	    "borderBottomWidth": 0
+	  },
+	  "cell-clear": {
+	    "marginTop": 0,
+	    "marginBottom": 0,
+	    "borderTopWidth": 0,
+	    "borderBottomWidth": 0
+	  },
+	  "space-between": {
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-start": {
+	    "justifyContent": "flex-start",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-end": {
+	    "justifyContent": "flex-end",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-center": {
+	    "justifyContent": "center",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "space-around": {
+	    "justifyContent": "space-around",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-row": {
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-column": {
+	    "flexDirection": "column",
+	    "alignItems": "center"
+	  },
+	  "flex1": {
+	    "flex": 1
+	  },
+	  "flex2": {
+	    "flex": 2
+	  },
+	  "flex3": {
+	    "flex": 3
+	  },
+	  "flex4": {
+	    "flex": 4
+	  },
+	  "flex5": {
+	    "flex": 6
+	  },
+	  "flex6": {
+	    "flex": 6
+	  },
+	  "bkg-white": {
+	    "backgroundColor": "#FFFFFF"
+	  },
+	  "bkg-primary": {
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "bkg-gray": {
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "bd-primary": {
+	    "borderColor": "#EB4E40"
+	  },
+	  "bkg-delete": {
+	    "backgroundColor": "#FF0000"
+	  },
+	  "white": {
+	    "color": "#FFFFFF"
+	  },
+	  "primary": {
+	    "color": "#EB4E40"
+	  },
+	  "gray": {
+	    "color": "#999999"
+	  },
+	  "ico": {
+	    "fontSize": 48,
+	    "color": "#EB4E40",
+	    "marginTop": 2
+	  },
+	  "ico_big": {
+	    "fontSize": 72,
+	    "color": "#EB4E40",
+	    "marginTop": 4
+	  },
+	  "ico_small": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "marginTop": 1
+	  },
+	  "arrow": {
+	    "fontSize": 32,
+	    "color": "#cccccc",
+	    "width": 40
+	  },
+	  "check": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40
+	  },
+	  "shopCheck": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40,
+	    "marginLeft": 150
+	  },
+	  "button": {
+	    "fontSize": 32,
+	    "textAlign": "center",
+	    "color": "#ffffff",
+	    "paddingTop": 15,
+	    "paddingBottom": 15,
+	    "backgroundColor": "#EB4E40",
+	    "borderRadius": 15,
+	    "height": 80,
+	    "lineHeight": 50,
+	    "alignItems": "center",
+	    "justifyContent": "center",
+	    "backgroundColor:active": "#cccccc",
+	    "color:active": "#EB4E40",
+	    "backgroundColor:disabled": "#EB4E40",
+	    "color:disabled": "#999999"
+	  },
+	  "refresh": {
+	    "flexDirection": "column",
+	    "alignItems": "center",
+	    "paddingTop": 10
+	  },
+	  "loading": {
+	    "flexDirection": "column",
+	    "alignItems": "center",
+	    "paddingTop": 10
+	  },
+	  "noLoading": {
+	    "height": 999
+	  },
+	  "gif": {
+	    "width": 50,
+	    "height": 50
+	  },
+	  "indicator": {
+	    "fontSize": 36,
+	    "color": "#EB4E40",
+	    "width": 750,
+	    "textAlign": "center",
+	    "marginTop": 20,
+	    "marginBottom": 20
+	  },
+	  "lines-ellipsis": {
+	    "lines": 1,
+	    "textOverflow": "ellipsis"
+	  },
+	  "V1": {
+	    "height": 146,
+	    "paddingTop": 54
+	  },
+	  "IPhoneX": {
+	    "height": 156,
+	    "paddingTop": 64
+	  },
+	  "addTopV1": {
+	    "top": 54
+	  },
+	  "addTopIPhoneX": {
+	    "top": 64
+	  },
+	  "addInfoV1": {
+	    "height": 430,
+	    "paddingTop": 50
+	  },
+	  "addInfoIPhoneX": {
+	    "height": 440,
+	    "paddingTop": 60
+	  },
+	  "addBgImgV1": {
+	    "height": 430
+	  },
+	  "addBgImgIPhoneX": {
+	    "height": 440
+	  },
+	  "hideCorpusV1": {
+	    "top": 146
+	  },
+	  "hideCorpusIPhoneX": {
+	    "top": 156
+	  },
+	  "pageTopV1": {
+	    "top": 226
+	  },
+	  "pageTopIPhoneX": {
+	    "top": 236
+	  },
+	  "maskLayer": {
+	    "position": "fixed",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "backgroundColor": "#000000",
+	    "opacity": 0.5
+	  },
+	  "showBox": {
+	    "position": "fixed",
+	    "top": 150,
+	    "right": 15,
+	    "backgroundColor": "#ffffff",
+	    "borderRadius": 20,
+	    "paddingTop": 20,
+	    "paddingBottom": 20
+	  },
+	  "arrowUp": {
+	    "position": "fixed",
+	    "top": 148,
+	    "right": 30
+	  },
+	  "refreshImg": {
+	    "width": 60,
+	    "height": 60,
+	    "borderRadius": 30
+	  },
+	  "refreshBox": {
+	    "height": 120,
+	    "width": 750,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "indexMtIPhoneX": {
+	    "marginTop": 124
+	  }
+	}
+
+/***/ }),
+/* 304 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+	  "hideCorpus": {
+	    "top": 136,
+	    "position": "fixed"
+	  },
+	  "rightTop": {
+	    "position": "fixed",
+	    "top": 44,
+	    "right": 0,
+	    "width": 92,
+	    "height": 92,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "categoryBox": {
+	    "position": "absolute",
+	    "backgroundColor": "rgba(136,136,136,0.1)",
+	    "left": 650,
+	    "bottom": 100,
+	    "borderRadius": 5,
+	    "paddingRight": 3,
+	    "paddingLeft": 3,
+	    "paddingTop": 3,
+	    "paddingBottom": 3
+	  },
+	  "categoryText": {
+	    "color": "#ffffff",
+	    "fontSize": 28
+	  },
 	  "moneyFormat": {
 	    "flexDirection": "row",
 	    "justifyContent": "center"
@@ -2493,9 +4005,6 @@
 	    "flexDirection": "row",
 	    "width": 650,
 	    "backgroundColor": "#ffffff"
-	  },
-	  "fz35": {
-	    "fontSize": 35
 	  },
 	  "corpusIconBox": {
 	    "width": 100,
@@ -2515,13 +4024,8 @@
 	    "flexDirection": "row",
 	    "alignItems": "center"
 	  },
-	  "nav": {
-	    "marginTop": 40,
-	    "flexDirection": "row",
-	    "height": 96,
+	  "nw": {
 	    "width": 750,
-	    "alignItems": "center",
-	    "justifyContent": "space-between",
 	    "paddingRight": 30,
 	    "paddingLeft": 30
 	  },
@@ -2532,7 +4036,8 @@
 	  },
 	  "navText": {
 	    "paddingLeft": 10,
-	    "fontSize": 33
+	    "fontSize": 33,
+	    "color": "#ffffff"
 	  },
 	  "setTop": {
 	    "top": 136
@@ -2542,14 +4047,10 @@
 	    "backgroundColor": "#FF0000",
 	    "top": 136
 	  },
-	  "header": {
-	    "flexDirection": "row",
+	  "headerMore": {
 	    "position": "fixed",
-	    "backgroundColor": "#ffffff",
-	    "left": 0,
-	    "right": 0,
 	    "top": 0,
-	    "height": 136
+	    "borderBottomWidth": 0
 	  },
 	  "@TRANSITION": {
 	    "navTransition-enter-active": {
@@ -2645,7 +4146,7 @@
 	    "top": 0,
 	    "backgroundColor": "#f4f4f4",
 	    "width": 330,
-	    "height": 457
+	    "height": 533
 	  },
 	  "relevantImage": {
 	    "flexDirection": "row",
@@ -2674,7 +4175,7 @@
 	    "color": "#888888"
 	  },
 	  "articleCover": {
-	    "height": 300,
+	    "height": 345,
 	    "width": 690,
 	    "borderRadius": 5,
 	    "marginTop": 30,
@@ -2695,14 +4196,15 @@
 	    "alignItems": "center"
 	  },
 	  "articleTitle": {
-	    "fontSize": 32,
+	    "width": 600,
+	    "fontSize": 36,
 	    "marginLeft": 10
 	  },
 	  "articleSign": {
 	    "borderRadius": 10,
 	    "padding": 5,
 	    "color": "#888888",
-	    "fontSize": 26,
+	    "fontSize": 24,
 	    "borderWidth": 1,
 	    "borderStyle": "solid",
 	    "borderColor": "#DCDCDC"
@@ -2713,8 +4215,8 @@
 	    "textAlign": "center",
 	    "lineHeight": 80
 	  },
-	  "wrapper": {
-	    "backgroundColor": "#f4f4f4"
+	  "pageBgColor": {
+	    "backgroundColor": "#eeeeee"
 	  },
 	  "tipsText": {
 	    "color": "#808080",
@@ -2722,21 +4224,12 @@
 	    "marginTop": 240,
 	    "paddingBottom": 200
 	  },
-	  "active": {
-	    "color": "#F0AD3C",
-	    "borderColor": "#F0AD3C",
-	    "borderStyle": "solid",
-	    "borderBottomWidth": 4
-	  },
 	  "noActive": {
 	    "borderBottomWidth": 0
 	  },
 	  "articleClass": {
 	    "flexDirection": "row",
 	    "paddingLeft": 10,
-	    "borderBottomWidth": 1,
-	    "borderStyle": "solid",
-	    "borderColor": "#DCDCDC",
 	    "height": 80,
 	    "backgroundColor": "#ffffff"
 	  },
@@ -2765,9 +4258,7 @@
 	    "position": "absolute",
 	    "width": 750,
 	    "top": 0,
-	    "height": 420,
-	    "filter": "blur(4px)",
-	    "opacity": 1
+	    "height": 420
 	  },
 	  "topBox": {
 	    "position": "relative",
@@ -2778,7 +4269,7 @@
 	  "topBtnBox": {
 	    "flexDirection": "row",
 	    "alignItems": "center",
-	    "marginTop": 30,
+	    "marginTop": 10,
 	    "width": 500,
 	    "marginLeft": 125,
 	    "justifyContent": "space-around"
@@ -2790,6 +4281,7 @@
 	  },
 	  "walletLayout": {
 	    "minWidth": 166,
+	    "maxWidth": 260,
 	    "flexShrink": 0,
 	    "paddingLeft": 30,
 	    "paddingRight": 30
@@ -2838,7 +4330,7 @@
 	}
 
 /***/ }),
-/* 220 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2847,15 +4339,23 @@
 	    value: true
 	});
 
-	var _weex = __webpack_require__(132);
+	var _stringify = __webpack_require__(136);
 
-	var _utils = __webpack_require__(78);
+	var _stringify2 = _interopRequireDefault(_stringify);
+
+	var _weex = __webpack_require__(149);
+
+	var _noData = __webpack_require__(148);
+
+	var _noData2 = _interopRequireDefault(_noData);
+
+	var _utils = __webpack_require__(71);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
 	var _fetch = __webpack_require__(105);
 
-	var _filters = __webpack_require__(144);
+	var _filters = __webpack_require__(173);
 
 	var _filters2 = _interopRequireDefault(_filters);
 
@@ -3450,42 +4950,72 @@
 	//
 	//
 	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 
-	var animation = weex.requireModule('animation');
+	var globalEvent = weex.requireModule('globalEvent');
 
 	var animationPara; //执行动画的文章
 	var scrollTop = 0;
-	var recycleScroll = 0;
-	var allArticleScroll = 0;
 	exports.default = {
 	    data: function data() {
 	        return {
-	            testaaa: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            settingColor: 'white',
+	            topMWidth: 166,
+	            settingColor: '',
 	            opacityNum: 0,
 	            twoTop: false,
 	            isDisappear: false,
 	            corpusScrollTop: 0,
 	            canScroll: true,
-	            userName: '刮风下雨打雷台风天',
-	            userSign: '刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。刮风下雨打雷台风天。',
+	            userName: '未填写',
+	            userSign: '未填写',
 	            whichCorpus: 0,
 	            isNoArticle: false,
 	            //                refreshing:false,
 	            //                refreshState:'',
 	            fontName: '&#xe685;',
 	            collectNum: 0,
-	            moneyNum: 888888.88,
+	            moneyNum: 0,
 	            focusNum: 0,
-	            imageUrl: _utils2.default.locate('resources/images/background.jpg'),
-	            bgImgUrl: _utils2.default.locate('resources/images/background.jpg'),
+	            imageUrl: _utils2.default.locate('resources/images/background.png'),
+	            bgImgUrl: _utils2.default.locate('resources/images/background.png'),
 	            //                maskUrl:utils.locate('resources/images/frosted.png'),
-	            id: '334',
+	            //                id:'334',
 	            showLoading: 'hide',
 	            //                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-
 	            corpusList: [{
-	                name: '全部文章',
+	                name: '全部',
 	                id: ''
 	            }, {
 	                name: '回收站',
@@ -3493,90 +5023,249 @@
 	            }],
 	            listCurrent: 0,
 	            listPageSize: 10,
-	            //                全部文章==================
+	            //                文章==================
 	            articleList: [],
 
-	            helpList: [{
-	                articleSign: '样例',
-	                articleTitle: '我在魔篇有了自己的专栏！',
-	                articleCoverUrl: _utils2.default.locate('resources/images/column.jpg'),
-	                articleDate: '2017-10-19'
-	            }, {
-	                articleSign: '样例',
-	                articleTitle: '魔篇使用帮助！',
-	                articleCoverUrl: _utils2.default.locate('resources/images/help.jpg'),
-	                articleDate: '2017-10-19'
-	            }, {
-	                articleSign: '样例',
-	                articleTitle: '魔篇使用帮助！',
-	                articleCoverUrl: _utils2.default.locate('resources/images/column.jpg'),
-	                articleDate: '2017-10-19'
-	            }, {
-	                articleSign: '样例',
-	                articleTitle: '魔篇使用帮助！',
-	                articleCoverUrl: _utils2.default.locate('resources/images/help.jpg'),
-	                articleDate: '2017-10-19'
-	            }]
+	            helpList: [],
+	            UId: '',
+	            screenHeight: 0,
+	            //                文集id
+	            corpusId: '',
+	            showMenu: false,
+	            refreshImg: _utils2.default.locate('resources/images/loading.png'),
+	            hadUpdate: false,
+	            clicked: false
 	        };
 	    },
-
-	    created: function created() {
-	        _utils2.default.initIconFont();
-	        var _this = this;
-	        //            获取用户信息
-	        (0, _fetch.GET)('weex/member/attribute.jhtml', function (weex) {
-	            if (weex.type == 'success') {
-	                if (!_utils2.default.isNull(weex.data.nickName)) {
-	                    _this.userName = weex.data.nickName;
-	                }
-	                if (!_utils2.default.isNull(weex.data.logo)) {
-	                    _this.imageUrl = weex.data.logo;
-	                }
-	            } else {
-	                _weex.event.toast(weex.content);
+	    components: {
+	        noData: _noData2.default
+	    },
+	    props: {
+	        noDataHint: { default: '暂无文章' }
+	    },
+	    filters: {
+	        watchWho: function watchWho(value) {
+	            if (value.sort.substring(0, 1) == '1') {
+	                return '置顶';
 	            }
-	        }, function (err) {
-	            _weex.event.toast(err.content);
-	        });
-
+	            if (value.value.isDraft) {
+	                return '草稿';
+	            }
+	            if (value.value.articleOption.articleCatalog.id == '99') {
+	                return '已删除';
+	            }
+	            if (value.value.articleOption.isPublish == 'false' || !value.value.articleOption.isPublish) {
+	                return '私密';
+	            }
+	            switch (value.value.articleOption.authority) {
+	                case 'isPublic':
+	                    //公开
+	                    return '公开';
+	                    break;
+	                case 'isShare':
+	                    //不公开
+	                    return '不公开';
+	                    break;
+	                case 'isEncrypt':
+	                    //加密
+	                    return '加密';
+	                    break;
+	                case 'isPrivate':
+	                    //私密
+	                    return '私密';
+	                    break;
+	                case 'draft':
+	                    //草稿
+	                    return '草稿';
+	                    break;
+	                default:
+	                    return '公开';
+	                    break;
+	            }
+	        },
+	        watchCatetory: function watchCatetory(value) {
+	            if (_utils2.default.isNull(value)) {
+	                return '生活';
+	            } else {
+	                return value;
+	            }
+	        },
+	        watchThumbnail: function watchThumbnail(value) {
+	            //                    没过滤前是原图
+	            return _utils2.default.thumbnail(value, 690, 345);
+	        }
+	    },
+	    created: function created() {
+	        var _this = this;
+	        _utils2.default.initIconFont();
+	        //            获取屏幕的高度
+	        this.screenHeight = _utils2.default.fullScreen(316);
+	        this.UId = _weex.event.getUId();
+	        //           获取用户信息;
+	        this.updateUserInfo();
 	        //            获取文集列表
 	        this.getCorpus();
 
-	        var options = {
-	            type: 'article',
-	            keyword: '',
-	            orderBy: 'desc',
-	            current: _this.listCurrent,
-	            pageSize: _this.listPageSize
-	        };
-	        _weex.event.findList(options, function (data) {
-	            if (data.type == "success" && data.data != '') {
-	                data.data.forEach(function (item) {
-	                    //                        event.toast(item);
-	                    //                    将value json化
-	                    item.value = JSON.parse(item.value);
-	                    //                        把读取到的文章push进去文章列表
-	                    _this.articleList.push(item);
-	                });
-	            } else {
-	                return;
+	        this.getAllArticle();
+	        //            监听文章的变化。
+	        globalEvent.addEventListener("onArticleChange", function (e) {
+	            _this.getAllArticle();
+	        });
+	        //            监听用户信息的变化。
+	        globalEvent.addEventListener("onUserInfoChange", function (e) {
+	            _this.updateUserInfo();
+	        });
+	        //            监听账单消息提醒.
+	        globalEvent.addEventListener("onMessage", function (e) {
+	            if (!_utils2.default.isNull(e.data.data.id) && e.data.data.id == 'gm_10201') {
+	                _this.updateUserInfo();
 	            }
 	        });
-	        //            let option = {
-	        //                type:'arcticle',//类型
-	        //                keyword:'N',//关键址
-	        //                orderBy:'desc',//"desc"降序 ,"asc"升序
-	        //                current:'0', //当前有几页
-	        //                pageSize:'10' //一页显示几行
-	        //            }
-	        //            event.findList(option,function (message) {
-	        //                event.toast(message);
-	        //                if(message.type == 'success' && message.data != ''){
-	        //
-	        //                }
-	        //            })
 	    },
+
+	    ////        dom呈现完执行滚动一下
+	    //        updated(){
+	    ////            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+	    //            if(this.hadUpdate){
+	    //                return;
+	    //            }
+	    //            this.hadUpdate = true;
+	    ////            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+	    //            if(!utils.isIosSystem()){
+	    //                const el = this.$refs.topBox//跳转到相应的cell
+	    //                dom.scrollToElement(el, {
+	    //                    offset: -119
+	    //                })
+	    //            }
+	    //        },
 	    methods: {
+
+	        isEmpty: function isEmpty() {
+	            return this.articleList.length == 0 && this.corpusId != '';
+	            //                return this.articleList.length==0 ;
+	        },
+	        //            监听设备型号,控制隐藏的文集高度
+	        hideCorpus: function hideCorpus() {
+	            var dc = _utils2.default.hideCorpus();
+	            return dc;
+	        },
+	        //            监听设备型号,控制顶部人物信息栏背景图大小
+	        headerBgImg: function headerBgImg() {
+	            var dc = _utils2.default.addBgImg();
+	            return dc;
+	        },
+	        //            监听设备型号,控制顶部人物信息栏
+	        headerInfo: function headerInfo() {
+	            var dc = _utils2.default.addInfo();
+	            return dc;
+	        },
+	        //            监听设备型号,控制导航栏设置 返回按钮
+	        classTop: function classTop() {
+	            var dc = _utils2.default.addTop();
+	            return dc;
+	        },
+	        //            监听设备型号,控制导航栏高度
+	        classHeader: function classHeader() {
+	            var dc = _utils2.default.device();
+	            return dc;
+	        },
+
+	        getAllArticle: function getAllArticle() {
+	            this.articleList = [];
+	            var articleClass = '';
+	            if (!_utils2.default.isNull(this.corpusId)) {
+	                articleClass = '[' + this.corpusId + ']';
+	            }
+	            var _this = this;
+	            var options = {
+	                type: 'article',
+	                keyword: articleClass,
+	                orderBy: 'desc',
+	                current: 0,
+	                pageSize: _this.listPageSize
+	            };
+	            _weex.event.findList(options, function (data) {
+	                if (data.type == "success" && data.data != '') {
+	                    data.data.forEach(function (item) {
+	                        //                    将value json化
+
+	                        item.value = JSON.parse(item.value);
+	                        //                            将封面转为缩略图
+	                        //                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
+	                        //                        把读取到的文章push进去文章列表
+	                        _this.articleList.push(item);
+	                    });
+	                    //                        当选择全部文章并且全部文章低于10篇时 显示帮助文档。写在这边可以避免渲染小闪屏问题。写死在data里每次切换会先闪一下帮助List再变成文章List
+	                    if (_utils2.default.isNull(_this.corpusId) && data.data.length < 10) {
+	                        _this.helpList = []; //在push前要清空list
+	                        _this.helpList.push({
+	                            key: 2,
+	                            articleSign: '样例',
+	                            articleTitle: '我在微信有了自己的专栏！',
+	                            articleCoverUrl: _utils2.default.locate('resources/images/column.jpg'),
+	                            articleDate: '2017-10-19'
+	                        }, {
+	                            key: 1,
+	                            articleSign: '样例',
+	                            articleTitle: '新手使用帮助！',
+	                            articleCoverUrl: _utils2.default.locate('resources/images/help.jpg'),
+	                            articleDate: '2017-10-19'
+	                        });
+	                    }
+	                } else {
+	                    if (_utils2.default.isNull(_this.corpusId)) {
+	                        _this.helpList = [];
+	                        _this.helpList.push({
+	                            key: 2,
+	                            articleSign: '样例',
+	                            articleTitle: '我在微信有了自己的专栏！',
+	                            articleCoverUrl: _utils2.default.locate('resources/images/column.jpg'),
+	                            articleDate: '2017-10-19'
+	                        }, {
+	                            key: 1,
+	                            articleSign: '样例',
+	                            articleTitle: '新手使用帮助！',
+	                            articleCoverUrl: _utils2.default.locate('resources/images/help.jpg'),
+	                            articleDate: '2017-10-19'
+	                        });
+	                    }
+	                    return;
+	                }
+	            });
+	        },
+
+	        //            更新用户信息；
+	        updateUserInfo: function updateUserInfo() {
+	            var _this = this;
+	            //            获取用户信息
+	            (0, _fetch.GET)('weex/member/view.jhtml', function (data) {
+	                if (data.type == 'success') {
+	                    if (!_utils2.default.isNull(data.data.nickName)) {
+	                        _this.userName = data.data.nickName;
+	                    }
+	                    if (!_utils2.default.isNull(data.data.logo)) {
+	                        _this.imageUrl = data.data.logo;
+	                    }
+	                    if (!_utils2.default.isNull(data.data.autograph)) {
+	                        _this.userSign = data.data.autograph;
+	                    }
+	                    _this.collectNum = data.data.favorite;
+	                    _this.focusNum = data.data.follow;
+	                    _this.moneyNum = data.data.balance;
+	                    //                        动态控制收藏与关注的宽度
+	                    var a = _this.moneyNum + '';
+	                    if (_utils2.default.getLength(a) > 5) {
+	                        _this.topMWidth = 119;
+	                    }
+	                } else {
+	                    _weex.event.toast(data.content);
+	                }
+	            }, function (err) {
+	                _weex.event.toast(err.content);
+	            });
+	        },
+
+	        //            获取文集
 	        getCorpus: function getCorpus() {
 	            var _this = this;
 	            (0, _fetch.GET)('weex/member/article_catalog/list.jhtml', function (data) {
@@ -3585,7 +5274,7 @@
 	                        //                            event.toast(data.data);
 	                        _this.corpusList = '';
 	                        _this.corpusList = [{
-	                            name: '全部文章',
+	                            name: '全部',
 	                            id: ''
 	                        }, {
 	                            name: '回收站',
@@ -3595,76 +5284,25 @@
 	                        for (var i = 0; i < data.data.length; i++) {
 	                            _this.corpusList.splice(1 + i, 0, data.data[i]);
 	                        }
+	                        data.data = (0, _stringify2.default)(data.data);
 	                        _weex.storage.setItem('corpusList', data.data);
 	                    }
 	                } else {
-	                    _weex.event.toast('文集');
+	                    //                        event.toast('文集');
 	                    _weex.event.toast(data.content);
 	                }
 	            }, function (err) {
 	                _weex.event.toast(err.content);
 	            });
-
-	            //                return stream.fetch({
-	            //                    method: 'GET',
-	            //                    type: 'json',
-	            //                    url: 'weex/member/article_catalog/list.jhtml'
-	            //                }, function (data) {
-	            //                    if (data.data.type == "success") {
-	            //                        if(data.data == ''){
-	            //                        }else{
-	            ////                            event.toast(data.data);
-	            //                            _this.corpusList = '';
-	            //                            _this.corpusList =[{
-	            //                                name:'全部文章',
-	            //                                id:''
-	            //                            },{
-	            //                                name:'回收站',
-	            //                                id:'99'
-	            //                            }];
-	            ////                                将文集名循环插入数组中
-	            //                            for(let i = 0; i<data.data.data.length;i++){
-	            //                                _this.corpusList.splice(1 + i,0,data.data.data[i]);
-	            //                            }
-	            //                            storage.setItem('corpusList',data.data.data);
-	            //                        }
-	            //                    } else {
-	            //                        event.toast(data);
-	            //                    }
-	            ////                    event.toast(data);
-	            //                },)
-
-
-	            //                GET('weex/member/article_catalog/list.jhtml','',
-	            //                    function (data) {
-	            //                        if (data.type == "success") {
-	            //                            if(data.data == ''){
-	            //                            }else{
-	            //                                _this.corpusList = '';
-	            //                                _this.corpusList =[{
-	            //                                    name:'全部文章',
-	            //                                    id:''
-	            //                                },{
-	            //                                    name:'回收站',
-	            //                                    id:'99'
-	            //                                }];
-	            ////                                将文集名循环插入数组中
-	            //                                for(let i = 0; i<data.data.length;i++){
-	            //                                    _this.corpusList.splice(1 + i,0,data.data[i]);
-	            //                                }
-	            //                                storage.setItem('corpusList',data.data);
-	            //                            }
-	            //                        } else {
-	            //                            event.toast(data);
-	            //                        }
-	            //                    },function(err) {
-	            //                        event.toast("网络不稳定")
-	            //                    })
-
 	        },
 	        jumpEditor: function jumpEditor(id) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
 	            var _this = this;
 	            _weex.event.openURL(_utils2.default.locate('view/member/editor/editor.js?articleId=' + id), function (message) {
+	                _this.clicked = false;
 	                //                    _this.updateArticle();
 	            });
 
@@ -3672,150 +5310,109 @@
 	            ////                    _this.updateArticle();
 	            //                })
 	        },
-	        jumpDelete: function jumpDelete() {
-	            _weex.event.toast('文章删除');
-	        },
-	        jumpTop: function jumpTop() {
-	            _weex.event.toast('文章置顶');
-	        },
-	        jumpCorpus: function jumpCorpus() {
-	            _weex.event.toast('跳转文集');
-	        },
-	        //            open (callback) {
-	        //                return stream.fetch({
-	        //                    method: 'GET',
-	        //                    type: 'json',
-	        //                    url: 'weex/member/article/list.jhtml'
-	        //                }, callback)
-	        //            },
-	        //            switchArticle:function (item) {
-	        //                if(this.whichCorpus == item || this.whichCorpus == '全部文章'){
-	        //                    return true;
-	        //                }else{
-	        //                    return false;
-	        //                }
-	        //                if(this.isAllArticle == false){
-	        //                    if(item.articleSign == '已删除'){
-	        //                        return true;
-	        //                    }else{
-	        //                        return false;
-	        //                    }
-	        //                }else{
-	        //                    return true;
-	        //                }
-	        //            },
-	        //            前往文章
-	        goArticle: function goArticle(id) {
+	        //            右侧隐藏栏里跳转文集
+	        jumpCorpus: function jumpCorpus(item) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
 	            var _this = this;
-	            //                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
-	            ////                    _this.updateArticle();
-	            //                });
-	            _weex.event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id, function () {
+	            _weex.event.openURL(_utils2.default.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id + '&articleId=' + item.key),
+	            //                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
+	            function (data) {
+	                _this.clicked = false;
+	                if (data.type == 'success' && data.data != '') {
+	                    item.value.articleOption.articleCatalog.id = data.data.corpusId;
+	                    item.value.articleOption.articleCatalog.name = data.data.corpusName;1;
+	                    item.value.articleOption.articleCatalog.count = data.data.count;
+	                    var resDataStr = (0, _stringify2.default)(item.value);
+	                    var saveData = {
+	                        type: item.type,
+	                        key: item.key,
+	                        value: resDataStr,
+	                        sort: item.sort,
+	                        keyword: ',[' + data.data.corpusId + '],' + item.title + ','
+	                        //                            event.toast(saveData);
+	                        //                1是置顶（默认倒序）  keyword ",[1],文章title,"
+	                    };_weex.event.save(saveData, function (data) {
+	                        if (data.type == 'success') {
+	                            _weex.event.toast('设置成功');
+	                        } else {
+	                            _weex.event.toast(data.content);
+	                        }
+	                    });
+	                }
+	            });
+	        },
+
+	        //            前往文章
+	        goArticle: function goArticle(item, index) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            //                utils.debug(item);
+	            var _this = this;
+	            if (item.value.articleOption.articleCatalog.id == '99') {
+	                _weex.event.openURL(_utils2.default.locate('view/article/delete.js?articleId=' + item.key), function (data) {
+	                    _this.clicked = false;
+	                    if (data.type == 'success') {
+	                        if (data.data == 'restore') {
+	                            _this.jumpRestore(item, index);
+	                        } else if (data.data == 'delete') {
+	                            _this.deleteAfter(item, index);
+	                        }
+	                    }
+	                });
+	            } else if (item.value.isDraft) {
+	                _weex.event.openURL(_utils2.default.locate('view/member/editor/editor.js?articleId=' + item.key),
+	                //                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
+	                function () {
+	                    _this.clicked = false;
+	                    //                    _this.updateArticle();
+	                });
+	            } else {
+	                //                    utils.debug('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish);
+	                _weex.event.openURL(_utils2.default.locate('view/article/preview.js?articleId=' + item.key + '&publish=' + item.value.articleOption.isPublish),
+	                //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
+	                function () {
+	                    _this.clicked = false;
+	                    //                    _this.updateArticle();
+	                });
+	            }
+	        },
+
+	        //            跳转帮助文章
+	        goHelpArticle: function goHelpArticle(key) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            _weex.event.openURL(_utils2.default.locate('view/article/preview.js?articleId=' + key + '&publish=true'),
+	            //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
+	            function () {
+	                _this.clicked = false;
 	                //                    _this.updateArticle();
 	            });
 	        },
 
-	        //            updateArticle(){
-	        //                var _this = this;
-	        ////            获取文章缓存。
-	        //                event.findList(1,'articleListTest1','desc',function (data) {
-	        ////                    modal.toast({message:data.data});
-	        //                    if(data.type == 'success'){
-	        //                        for(let i = 0;i < data.data.length;i++){
-	        //                            let articleData = JSON.parse(data.data[i].value);
-	        //                            _this.articleList.splice(0,0,{
-	        //                                articleSign: '草稿',
-	        //                                articleTitle:   articleData[0].title,
-	        //                                articleCoverUrl:  articleData[0].thumbnail,
-	        //                                articleDate: '2017-09-23',
-	        //                                browse: 0,
-	        //                                praise: 0,
-	        //                                comments: 0,
-	        //                                id:articleData[0].id,
-	        //                            })
-	        //                        }
-	        //                    }else{
-	        //                        modal.alert({
-	        //                            message: data.content,
-	        //                            duration: 0.3
-	        //                        })
-	        //                    }
-	        //                })
-	        //            },
-	        //            toPage: function(url){
-	        ////                event.pageTo(url, false);
-	        //                event.wxConfig(function (data) {
-	        //                    event.showToast(data.color);
-	        //                });
-	        //            },
-	        jump: function jump(vueName) {
-	            _weex.event.toast('will jump');
-	        },
 	        corpusChange: function corpusChange(index, id) {
 	            //                event.toast(id);
 	            var _this = this;
+	            if (_this.whichCorpus == index) {
+	                return;
+	            }
 	            _this.whichCorpus = index;
-	            //                if(this.isAllArticle == true){
-	            //
-	            //                }else{
-	            //                    this.isAllArticle = true;
-	            //                    recycleScroll = scrollTop;
-	            //                    setTimeout(function () {
-	            //
-	            //                        if(allArticleScroll > 424){
-	            //                            let listHeight = allArticleScroll - 424;
-	            //                            let positionIndex =parseInt( listHeight / 457);
-	            //                            let offsetLength = - listHeight % 457;
-	            //                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
-	            //                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
-	            //                            dom.scrollToElement(el, {
-	            //                                animated:false,
-	            //                                offset:  -80 - offsetLength
-	            //
-	            //                            })
-	            //                        }
-	            //                    },50)
-	            //                }
-	        },
-	        //废弃
-	        //            recycleSite:function(){
-	        //                var _this = this;
-	        //                if(this.isAllArticle == false){
-	        //                    modal.toast({message:"相等"})
-	        //                }else{
-	        //                    this.isAllArticle = false;
-	        //                    allArticleScroll = scrollTop;
-	        //                    setTimeout(function () {
-	        //
-	        //                        if(recycleScroll > 424){
-	        //                            let listHeight = recycleScroll - 424;
-	        //                            let positionIndex =parseInt( listHeight / 457);
-	        //                            let offsetLength = - listHeight % 457;
-	        //                            modal.toast({message:"positionIndex" + positionIndex + "offsetLength" + offsetLength})
-	        //                            const el = _this.$refs.animationRef[positionIndex]//跳转到相应的cell
-	        //                            dom.scrollToElement(el, {
-	        //                                animated:false,
-	        //                                offset:  -80 - offsetLength
-	        //                            })
-	        //                        }
-	        //                    },50)
-	        //                }
-	        //
-	        //            },
-	        swipeHappen: function swipeHappen(event) {
-	            console.log(event);
-	            //                console.log(event.direction);
-	            //                if(event.direction == 'left'){
-	            //                    this.isAllArticle = false;
-	            //                }else if(event.direction == 'right'){
-	            //                    this.isAllArticle = true;
-	            //                }
+	            _this.corpusId = id;
+
+	            _this.getAllArticle();
 	        },
 	        //            点击屏幕时
 	        ontouchstart: function ontouchstart(event, index) {
 	            var _this = this;
 	            if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
-	                animation.transition(animationPara, {
+	                _weex.animation.transition(animationPara, {
 	                    styles: {
 	                        transform: 'translateX(0)'
 	                    },
@@ -3834,7 +5431,7 @@
 	            var _this = this;
 	            if (event.direction == 'right') {
 	                _this.canScroll = false;
-	                animation.transition(animationPara, {
+	                _weex.animation.transition(animationPara, {
 	                    styles: {
 	                        transform: 'translateX(0)'
 	                    },
@@ -3849,7 +5446,7 @@
 	            } else if (event.direction == 'left') {
 	                _this.canScroll = false;
 	                //                  modal.toast({message:distance});
-	                animation.transition(animationPara, {
+	                _weex.animation.transition(animationPara, {
 	                    styles: {
 	                        transform: 'translateX(-330)'
 	                    },
@@ -3868,14 +5465,16 @@
 	            var _this2 = this;
 
 	            var _this = this;
-	            modal.toast({ message: '加载中...', duration: 1 });
+	            var articleClass = '';
+	            if (!_utils2.default.isNull(this.corpusId)) {
+	                articleClass = '[' + this.corpusId + ']';
+	            }
 	            this.showLoading = 'show';
 	            setTimeout(function () {
-	                _this.listCurrent = _this.listCurrent + 10;
-	                _this.listPageSize = _this.listPageSize + 10;
+	                _this.listCurrent = _this.listCurrent + _this.listPageSize;
 	                var options = {
 	                    type: 'article',
-	                    keyword: '',
+	                    keyword: articleClass,
 	                    orderBy: 'desc',
 	                    current: _this.listCurrent,
 	                    pageSize: _this.listPageSize
@@ -3889,8 +5488,8 @@
 	                            //                        把读取到的文章push进去文章列表
 	                            _this.articleList.push(item);
 	                        });
-	                    } else {
-	                        _weex.event.toast('缓存' + data.content);
+	                    } else if (data.type == "success" && data.data == '') {} else {
+	                        _weex.event.toast(data.content);
 	                    }
 	                });
 
@@ -3914,13 +5513,20 @@
 	                opacityDegree = 1;
 	            }
 	            if (opacityDegree > 0.4) {
-	                _weex.event.changeWindowsBar("true");
-	                this.settingColor = 'black';
-	            } else {
+	                //                    event.changeWindowsBar("true");
 	                this.settingColor = 'white';
-	                _weex.event.changeWindowsBar("false");
+	            } else {
+	                this.settingColor = '';
+	                //                    event.changeWindowsBar("false");
 	            }
 	            this.opacityNum = opacityDegree;
+	            //                if(opacityDegree > 0.4){
+	            //                    event.changeWindowsBar("true");
+	            //                    this.settingColor = 'black';
+	            //                }else{
+	            //                    this.settingColor = 'white';
+	            //                    event.changeWindowsBar("false");
+	            //                }
 
 	            //                if(scrollTop >=284){
 	            if (scrollTop >= 284) {
@@ -3935,83 +5541,380 @@
 	                //                    this.corpusPosition = 'relative';
 	                //                    modal.toast({message:this.corpusScrollTop,duration:1})
 	            }
-	            if (scrollTop < 424) {
-	                recycleScroll = 0;
-	                allArticleScroll = 0;
-	            }
 	        },
-	        //            ondisappear(){
-	        //              modal.toast({message:'消失',duration:1});
-	        ////                    this.corpusScrollTop = 0;
-	        //                    this.corpusPosition = 'fixed';
-	        //                    this.isDisappear = true;
-	        //            },
-	        //            onappear(){
-	        //                modal.toast({message:'显示',duration:1});
-	        //                this.isDisappear = false;
-	        //                this.corpusPosition = 'relative';
-	        //            },
 	        //            文集
 	        goCorpus: function goCorpus() {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
 	            var _this = this;
-	            //                event.openURL('http://192.168.2.157:8081/corpus.weex.js?name=corpusList',function (message) {
 	            _weex.event.openURL(_utils2.default.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
 	                _this.getCorpus();
+	                _this.clicked = false;
 	            });
 	        },
 
 	        //            个人信息
 	        goAttribute: function goAttribute() {
-	            _weex.event.openURL(_utils2.default.locate('view/member/attribute.js'), function (data) {
+	            if (this.clicked) {
 	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            _weex.event.openURL(_utils2.default.locate('view/member/attribute.js'), function (data) {
+	                _this.clicked = false;
+	                if (data.type == 'success' && data.data != '') {
+	                    if (!_utils2.default.isNull(data.data.logo)) {
+	                        _this.imageUrl = data.data.logo;
+	                    }
+	                    if (!_utils2.default.isNull(data.data.nickName)) {
+	                        _this.userName = data.data.nickName;
+	                    }
+	                    if (!_utils2.default.isNull(data.data.autograph)) {
+	                        _this.userSign = data.data.autograph;
+	                    }
+	                } else {
+	                    //                            return ;
+	                }
 	            });
 	        },
 
 	        //            设置中心
 	        goManage: function goManage() {
-	            _weex.event.openURL(_utils2.default.locate('view/member/manage.js'), function (data) {
+	            if (this.clicked) {
 	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            _weex.event.openURL(_utils2.default.locate('view/member/manage.js'), function (data) {
+	                _this.clicked = false;
+	                //                    utils.debug(data)
+	                if (data.type == 'success' && data.data != '') {
+	                    if (!_utils2.default.isNull(data.data.occupation)) {
+	                        _this.imageUrl = data.data.occupation;
+	                    }
+	                    if (!_utils2.default.isNull(data.data.nickName)) {
+	                        _this.userName = data.data.nickName;
+	                    }
+	                    if (!_utils2.default.isNull(data.data.autograph)) {
+	                        _this.userSign = data.data.autograph;
+	                    }
+	                } else {
+	                    //                            return ;
+	                }
+	            });
+	        },
+
+	        //            我的关注
+	        goFocus: function goFocus() {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            _weex.event.openURL(_utils2.default.locate('view/member/focus.js?id=' + this.UId), function (data) {
+	                _this.clicked = false;
+	                if (data.type == 'success' && data.data != '') {
+	                    _this.updateUserInfo();
+	                } else {
+	                    return;
+	                }
+	            });
+	        },
+
+	        //            我的收藏
+	        goCollect: function goCollect() {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            _weex.event.openURL(_utils2.default.locate('view/member/collect.js?id=' + this.UId), function (data) {
+	                _this.clicked = false;
+	                if (data.type == 'success' && data.data != '') {
+	                    _this.updateUserInfo();
+	                } else {
+	                    return;
+	                }
+	            });
+	        },
+
+	        //            钱包
+	        goWallet: function goWallet() {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            _weex.event.openURL(_utils2.default.locate('view/member/wallet/index.js'), function (data) {
+	                _this.clicked = false;
+	                if (data.type == 'success' && data.data != '') {
+	                    _this.updateUserInfo();
+	                } else {
+	                    return;
+	                }
 	            });
 	        },
 
 	        //            快速滑动滚动条时， 控制顶部导航栏消失
 	        toponappear: function toponappear() {
 	            this.opacityNum = 0;
-	            this.settingColor = 'white';
+	            //                this.settingColor = 'white';
+	            this.settingColor = '';
 	            _weex.event.changeWindowsBar("false");
 	        },
 
-	        onrefresh: function onrefresh() {
+	        //            onrefresh:function () {
+	        //                var _this = this;
+	        //                _this.refreshing = true;
+	        //                animation.transition(_this.$refs.refreshImg, {
+	        //                    styles: {
+	        //                        transform: 'rotate(360deg)',
+	        //                    },
+	        //                    duration: 1000, //ms
+	        //                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+	        //                    needLayout:false,
+	        //                    delay: 0 //ms
+	        //                });
+	        //                setTimeout(() => {
+	        //                    animation.transition(_this.$refs.refreshImg, {
+	        //                        styles: {
+	        //                            transform: 'rotate(0)',
+	        //                        },
+	        //                        duration: 10, //ms
+	        //                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+	        //                        needLayout:false,
+	        //                        delay: 0 //ms
+	        //                    })
+	        //                    _this.refreshing = false
+	        //                    _this.getAllArticle();
+	        //                }, 1000);
+	        //            },
+	        //            还原
+	        jumpRestore: function jumpRestore(item, index) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
 	            var _this = this;
-	            _this.refreshing = true;
-	            _this.refreshState = "正在刷新数据";
-	            (0, _fetch.GET)('weex/member/friends/list.jhtml?pageSize=20&pageStart=0', function (data) {
-	                if (data.type == "success") {
-	                    var page = data.data;
-	                    _this.friendsList = page.data;
-	                    _this.start = page.start + page.data.length;
-	                    _this.refreshState = "数据刷新完成";
-	                    setTimeout(function () {
-	                        _this.refreshing = false;
-	                        _this.refreshState = "松开刷新数据";
-	                    }, 500);
+	            (0, _fetch.POST)('weex/member/article/revert.jhtml?articleId=' + item.value.id).then(function (e) {
+	                if (e.type == 'success') {
+	                    //            获取当前时间戳 作为唯一标识符key
+	                    var timestamp = Math.round(new Date().getTime() / 1000);
+	                    item.value.articleOption.articleCatalog.id = null;
+	                    item.value.articleOption.articleCatalog.name = null;
+	                    var saveData = {
+	                        type: item.type,
+	                        key: item.key,
+	                        value: (0, _stringify2.default)(item.value),
+	                        sort: '0,' + timestamp,
+	                        keyword: ',[],' + item.value.title + ','
+	                    };
+	                    _weex.event.save(saveData, function (data) {
+	                        if (data.type == 'success') {
+	                            if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
+	                                _weex.animation.transition(animationPara, {
+	                                    styles: {
+	                                        transform: 'translateX(0)'
+	                                    },
+	                                    duration: 10, //ms
+	                                    timingFunction: 'ease-in-out', //350 duration配合这个效果目前较好
+	                                    //                      timingFunction: 'ease-out',
+	                                    needLayout: false,
+	                                    delay: 0 //ms
+	                                });
+	                            }
+	                            _this.articleList.splice(index, 1);
+	                            //                                    如果是在全部的文章里，就要立即把文章重新显示；(直接将数据插入而不是重新读取的 会少一个缓存的id字段。不过在该页面没有关系)
+	                            if (_this.whichCorpus == 0) {
+	                                _this.articleList.splice(0, 0, saveData);
+	                            }
+	                        } else {
+	                            _weex.event.toast(data.content);
+	                        }
+	                    });
 	                } else {
-	                    _this.refreshing = false;
-	                    _this.refreshState = "松开刷新数据";
+	                    _weex.event.toast(e.content);
+	                }
+	                _this.clicked = false;
+	            }, function (err) {
+	                _this.clicked = false;
+	                _weex.event.toast(err.content);
+	            });
+	        },
+
+	        //            删除文章
+	        jumpDelete: function jumpDelete(item, index) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            if (item.value.isDraft) {
+	                _this.deleteAfter(item, index);
+	                _this.clicked = false;
+	                return;
+	            }
+	            (0, _fetch.POST)('weex/member/article/delete.jhtml?articleId=' + item.value.id).then(function (e) {
+	                if (e.type == 'success') {
+	                    item.value.articleOption.articleCatalog.id = 99;
+	                    item.value.articleOption.articleCatalog.name = '回收站';
+	                    var saveData = {
+	                        type: item.type,
+	                        key: item.key,
+	                        value: item.value,
+	                        sort: '0,0000000000',
+	                        keyword: ',[99],' + item.value.title + ','
+	                    };
+	                    _weex.event.save(saveData, function (data) {
+	                        if (data.type == 'success') {
+	                            if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
+	                                _weex.animation.transition(animationPara, {
+	                                    styles: {
+	                                        transform: 'translateX(0)'
+	                                    },
+	                                    duration: 10, //ms
+	                                    timingFunction: 'ease-in-out', //350 duration配合这个效果目前较好
+	                                    //                      timingFunction: 'ease-out',
+	                                    needLayout: false,
+	                                    delay: 0 //ms
+	                                });
+	                            }
+	                            _weex.event.toast('删除成功');
+	                            _this.articleList.splice(index, 1);
+	                        } else {
+	                            _weex.event.toast(data.content);
+	                        }
+	                    });
+	                } else {
+	                    _weex.event.toast(e.content);
+	                }
+	                _this.clicked = false;
+	            }, function (err) {
+	                _this.clicked = false;
+	                _weex.event.toast(err.content);
+	            });
+	        },
+	        //            彻底删除
+	        jumpDelAll: function jumpDelAll(item, index) {
+	            var _this = this;
+	            modal.confirm({
+	                message: '彻底删除后将无法恢复',
+	                duration: 0.3,
+	                okTitle: '删除',
+	                cancelTitle: '取消'
+	            }, function (value) {
+	                if (value == '删除') {
+	                    _this.deleteAfter(item, index);
+	                }
+	            });
+	        },
+	        //            彻底删除的删除逻辑
+	        deleteAfter: function deleteAfter(item, index) {
+	            var _this = this;
+	            var option = {
+	                type: item.type,
+	                key: item.key
+	                //            清除缓存
+	            };_weex.event.delete(option, function (data) {
+	                if (data.type == 'success') {
+	                    //                            把动画收回来。
+	                    if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
+	                        _weex.animation.transition(animationPara, {
+	                            styles: {
+	                                transform: 'translateX(0)'
+	                            },
+	                            duration: 10, //ms
+	                            timingFunction: 'ease-in-out', //350 duration配合这个效果目前较好
+	                            //                      timingFunction: 'ease-out',
+	                            needLayout: false,
+	                            delay: 0 //ms
+	                        });
+	                    }
+	                    _this.articleList.splice(index, 1);
+	                } else {
 	                    _weex.event.toast(data.content);
 	                }
-	            }, function (err) {
-	                _this.refreshing = false;
-	                _this.refreshState = "松开刷新数据";
-	                _weex.event.toast("网络不稳定");
 	            });
+	        },
+
+	        //            置顶
+	        jumpTop: function jumpTop(item, index) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var saveSort;
+	            if (item.sort.substring(0, 1) == '0') {
+	                saveSort = '1,' + item.sort.substring(2);
+	            } else {
+	                saveSort = '0,' + item.sort.substring(2);
+	            }
+
+	            var _this = this;
+	            var saveData = {
+	                type: item.type,
+	                key: item.key,
+	                value: (0, _stringify2.default)(item.value),
+	                sort: saveSort,
+	                keyword: ',[' + item.value.articleOption.articleCatalog.id + '],' + item.value.title + ','
+	            };
+	            _weex.event.save(saveData, function (data) {
+	                if (data.type == 'success') {
+
+	                    var option = {
+	                        type: item.type,
+	                        key: item.key
+	                    };
+	                    _weex.event.find(option, function (e) {
+	                        if (e.type == 'success') {
+	                            //                                    把动画收回来
+	                            if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
+	                                _weex.animation.transition(animationPara, {
+	                                    styles: {
+	                                        transform: 'translateX(0)'
+	                                    },
+	                                    duration: 10, //ms
+	                                    timingFunction: 'ease-in-out', //350 duration配合这个效果目前较好
+	                                    //                      timingFunction: 'ease-out',
+	                                    needLayout: false,
+	                                    delay: 0 //ms
+	                                });
+	                            }
+	                            e.data.value = JSON.parse(e.data.value);
+	                            if (item.sort.substring(0, 1) == '0') {
+	                                _this.articleList.splice(index, 1);
+	                                _this.articleList.splice(0, 0, e.data);
+	                                _weex.event.toast('置顶成功');
+	                            } else {
+	                                //                                        _this.articleList.splice(index,1);
+	                                //                                        _this.articleList.splice(index,0,e.data);
+
+	                                _this.getAllArticle();
+	                                _weex.event.toast('取消成功');
+	                            }
+	                        }
+	                    });
+	                    _this.clicked = false;
+	                } else {
+	                    _this.clicked = false;
+	                    _weex.event.toast(data.content);
+	                }
+	            });
+	            //                event.toast('文章置顶');
+	        },
+
+	        //            触碰遮罩层
+	        maskTouch: function maskTouch() {
+	            this.showMenu = false;
 	        }
 	    }
 	};
 	module.exports = exports['default'];
 
 /***/ }),
-/* 221 */
+/* 306 */
 /***/ (function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -4020,9 +5923,11 @@
 	    attrs: {
 	      "showScrollbar": "false",
 	      "offsetAccuracy": "0",
+	      "loadmoreoffset": "50",
 	      "scrollable": _vm.canScroll
 	    },
 	    on: {
+	      "loadmore": _vm.onloading,
 	      "scroll": _vm.scrollHandler
 	    }
 	  }, [_c('div', {
@@ -4038,18 +5943,18 @@
 	      "appear": _vm.toponappear
 	    }
 	  }), _c('div', [_c('div', {
-	    staticClass: ["header"],
-	    class: [_vm.opacityNum == 0 ? 'novisible' : 'isvisible'],
+	    staticClass: ["header", "headerMore", "bkg-primary"],
+	    class: [_vm.classHeader(), _vm.opacityNum == 0 ? 'novisible' : 'isvisible'],
 	    style: {
 	      opacity: _vm.opacityNum
 	    }
 	  }, [_c('div', {
-	    staticClass: ["nav"]
+	    staticClass: ["nav", "nw"]
 	  }, [_c('div', {
 	    staticStyle: {
 	      width: "50px"
 	    }
-	  }), (_vm.settingColor == 'black') ? _c('div', {
+	  }), (_vm.settingColor == 'white') ? _c('div', {
 	    staticClass: ["userBox"],
 	    on: {
 	      "click": function($event) {
@@ -4068,11 +5973,8 @@
 	      width: "50px"
 	    }
 	  })])]), _c('div', {
-	    staticStyle: {
-	      position: "fixed",
-	      top: "63px",
-	      right: "30px"
-	    },
+	    staticClass: ["rightTop"],
+	    class: [_vm.classTop()],
 	    on: {
 	      "click": function($event) {
 	        _vm.goManage()
@@ -4080,21 +5982,17 @@
 	    }
 	  }, [_c('text', {
 	    staticStyle: {
-	      fontSize: "50px"
+	      fontSize: "50px",
+	      color: "#fff"
 	    },
 	    style: {
-	      fontFamily: 'iconfont',
-	      color: _vm.settingColor
+	      fontFamily: 'iconfont'
 	    }
 	  }, [_vm._v("")])]), _c('div', {
-	    staticClass: ["corpusBox"],
-	    class: [_vm.twoTop ? 'isvisible' : 'novisible'],
-	    staticStyle: {
-	      top: "136px",
-	      position: "fixed"
-	    }
+	    staticClass: ["corpusBox", "hideCorpus"],
+	    class: [_vm.hideCorpus(), _vm.twoTop ? 'isvisible' : 'novisible']
 	  }, [_c('scroller', {
-	    staticClass: ["corpusScroll"],
+	    staticClass: ["corpusScroll", "boder-bottom"],
 	    attrs: {
 	      "scrollDirection": "horizontal"
 	    }
@@ -4103,7 +6001,7 @@
 	  }, _vm._l((_vm.corpusList), function(item, index) {
 	    return _c('text', {
 	      staticClass: ["allArticle"],
-	      class: [_vm.whichCorpus == index ? 'active' : 'noActive'],
+	      class: [_vm.whichCorpus == index ? 'corpusActive' : 'noActive'],
 	      on: {
 	        "click": function($event) {
 	          _vm.corpusChange(index, item.id)
@@ -4124,9 +6022,11 @@
 	    }
 	  }, [_vm._v("")])])])]), _c('div', {
 	    ref: "topBox",
-	    staticClass: ["topBox"]
+	    staticClass: ["topBox", "bkg-primary"],
+	    class: [_vm.headerInfo()]
 	  }, [_c('image', {
 	    staticClass: ["backgroundImage"],
+	    class: [_vm.headerBgImg()],
 	    attrs: {
 	      "src": _vm.bgImgUrl
 	    }
@@ -4139,7 +6039,8 @@
 	    }
 	  }), _c('div', {
 	    staticStyle: {
-	      alignItems: "center"
+	      alignItems: "center",
+	      paddingBottom: "20px"
 	    },
 	    on: {
 	      "click": function($event) {
@@ -4154,12 +6055,12 @@
 	    staticClass: ["topBtnBox"]
 	  }, [_c('div', {
 	    staticClass: ["topBtnSmallBox"],
-	    staticStyle: {
-	      minWidth: "120px"
+	    style: {
+	      minWidth: _vm.topMWidth + 'px'
 	    },
 	    on: {
 	      "click": function($event) {
-	        _vm.jump()
+	        _vm.goCollect()
 	      }
 	    }
 	  }, [_c('text', {
@@ -4170,7 +6071,7 @@
 	    staticClass: ["topBtnSmallBox", "walletLayout"],
 	    on: {
 	      "click": function($event) {
-	        _vm.jump()
+	        _vm.goWallet()
 	      }
 	    }
 	  }, [_c('div', {
@@ -4187,8 +6088,13 @@
 	    staticClass: ["topBtn"]
 	  }, [_vm._v("钱包")])]), _c('div', {
 	    staticClass: ["topBtnSmallBox"],
-	    staticStyle: {
-	      minWidth: "120px"
+	    style: {
+	      minWidth: _vm.topMWidth + 'px'
+	    },
+	    on: {
+	      "click": function($event) {
+	        _vm.goFocus()
+	      }
 	    }
 	  }, [_c('text', {
 	    staticClass: ["topBtn", "topBtnBigFont"]
@@ -4206,7 +6112,7 @@
 	  }, _vm._l((_vm.corpusList), function(item, index) {
 	    return _c('text', {
 	      staticClass: ["allArticle"],
-	      class: [_vm.whichCorpus == index ? 'active' : 'noActive'],
+	      class: [_vm.whichCorpus == index ? 'corpusActive' : 'noActive'],
 	      on: {
 	        "click": function($event) {
 	          _vm.corpusChange(index, item.id)
@@ -4225,18 +6131,17 @@
 	    style: {
 	      fontFamily: 'iconfont'
 	    }
-	  }, [_vm._v("")])])]), _c('div', [_c('transition-group', {
-	    attrs: {
-	      "name": "paraTransition",
-	      "tag": "div"
+	  }, [_vm._v("")])])]), _c('div', {
+	    style: {
+	      minHeight: _vm.screenHeight + 'px'
 	    }
-	  }, _vm._l((_vm.articleList), function(item, index) {
+	  }, [_vm._l((_vm.articleList), function(item, index) {
 	    return _c('div', {
 	      key: index,
 	      staticClass: ["articleBox"],
 	      on: {
 	        "click": function($event) {
-	          _vm.goArticle(item.key)
+	          _vm.goArticle(item, index)
 	        },
 	        "touchstart": function($event) {
 	          _vm.ontouchstart($event, index)
@@ -4248,20 +6153,31 @@
 	    }, [_c('div', {
 	      staticClass: ["atricleHead"]
 	    }, [_c('text', {
-	      staticClass: ["articleSign"]
-	    }, [_vm._v("公开")]), _c('text', {
+	      staticClass: ["articleSign"],
+	      class: [item.sort.substring(0, 1) == '1' ? 'bd-primary' : ' ', item.sort.substring(0, 1) == '1' ? 'primary' : ' ']
+	    }, [_vm._v(_vm._s(_vm._f("watchWho")(item)))]), _c('text', {
 	      staticClass: ["articleTitle"]
-	    }, [_vm._v(_vm._s(item.value.title))])]), _c('div', [_c('image', {
+	    }, [_vm._v(_vm._s(item.value.title))])]), _c('div', {
+	      staticStyle: {
+	        position: "relative"
+	      }
+	    }, [_c('image', {
 	      staticClass: ["articleCover"],
 	      attrs: {
-	        "src": item.value.thumbnail,
+	        "src": _vm._f("watchThumbnail")(item.value.thumbnail),
 	        "resize": "cover"
 	      }
 	    })]), _c('div', {
+	      staticClass: ["categoryBox"]
+	    }, [_c('text', {
+	      staticClass: ["categoryText"]
+	    }, [_vm._v(_vm._s(_vm._f("watchCatetory")(item.value.articleOption.articleCategory.name)))])]), _c('div', {
 	      staticClass: ["articleFoot"]
-	    }, [_c('div', [_c('text', {
+	    }, [_c('div', [(item.value.articleOption.articleCatalog.id != '99') ? _c('text', {
 	      staticClass: ["articleDate"]
-	    }, [_vm._v("2017-09-01")])]), (item.articleSign != '样例') ? _c('div', {
+	    }, [_vm._v(_vm._s(_vm._f("timeDatefmt")(item.sort.substring(2))))]) : _c('text', {
+	      staticClass: ["articleDate"]
+	    }, [_vm._v(_vm._s(_vm._f("timeDatefmt")(item.value.modifyDate)))])]), (item.articleSign != '样例') ? _c('div', {
 	      staticClass: ["relevantInfo"]
 	    }, [_c('text', {
 	      staticClass: ["relevantImage"],
@@ -4287,7 +6203,7 @@
 	      }
 	    }, [_vm._v("")]), _c('text', {
 	      staticClass: ["relevantText"]
-	    }, [_vm._v(_vm._s(item.value.review))])]) : _vm._e()]), _c('div', {
+	    }, [_vm._v(_vm._s(item.value.review))])]) : _vm._e()]), (item.value.articleOption.articleCatalog.id != '99') ? _c('div', {
 	      staticClass: ["rightHidden"]
 	    }, [_c('div', {
 	      staticClass: ["rightHiddenSmallBox"]
@@ -4303,13 +6219,13 @@
 	      style: {
 	        fontFamily: 'iconfont'
 	      }
-	    }, [_vm._v("")]), _c('text', {
+	    }, [_vm._v("")]), _c('text', {
 	      staticClass: ["rightHiddenText"]
 	    }, [_vm._v("编辑")])]), _c('div', {
 	      staticClass: ["rightHiddenIconBox"],
 	      on: {
 	        "click": function($event) {
-	          _vm.jumpDelete()
+	          _vm.jumpDelete(item, index)
 	        }
 	      }
 	    }, [_c('text', {
@@ -4317,7 +6233,7 @@
 	      style: {
 	        fontFamily: 'iconfont'
 	      }
-	    }, [_vm._v("")]), _c('text', {
+	    }, [_vm._v("")]), _c('text', {
 	      staticClass: ["rightHiddenText", "redColor"]
 	    }, [_vm._v("删除")])])]), _c('div', {
 	      staticClass: ["rightHiddenSmallBox"]
@@ -4325,7 +6241,7 @@
 	      staticClass: ["rightHiddenIconBox"],
 	      on: {
 	        "click": function($event) {
-	          _vm.jumpTop()
+	          _vm.jumpTop(item, index)
 	        }
 	      }
 	    }, [_c('text', {
@@ -4333,13 +6249,15 @@
 	      style: {
 	        fontFamily: 'iconfont'
 	      }
-	    }, [_vm._v("")]), _c('text', {
+	    }, [_vm._v("")]), (item.sort.substring(0, 1) != '1') ? _c('text', {
 	      staticClass: ["rightHiddenText"]
-	    }, [_vm._v("置顶")])]), _c('div', {
+	    }, [_vm._v("置顶")]) : _c('text', {
+	      staticClass: ["rightHiddenText"]
+	    }, [_vm._v("取消置顶")])]), _c('div', {
 	      staticClass: ["rightHiddenIconBox"],
 	      on: {
 	        "click": function($event) {
-	          _vm.jumpCorpus()
+	          _vm.jumpCorpus(item)
 	        }
 	      }
 	    }, [_c('text', {
@@ -4349,10 +6267,53 @@
 	      }
 	    }, [_vm._v("")]), _c('text', {
 	      staticClass: ["rightHiddenText"]
-	    }, [_vm._v("文集")])])])])])
-	  })), _vm._l((_vm.helpList), function(item) {
-	    return _c('div', {
-	      staticClass: ["articleBox"]
+	    }, [_vm._v("文集")])])])]) : _c('div', {
+	      staticClass: ["rightHidden"]
+	    }, [_c('div', {
+	      staticClass: ["rightHiddenSmallBox"]
+	    }, [_c('div', {
+	      staticClass: ["rightHiddenIconBox"],
+	      on: {
+	        "click": function($event) {
+	          _vm.jumpDelAll(item, index)
+	        }
+	      }
+	    }, [_c('text', {
+	      staticClass: ["rightHiddenIcon", "redColor"],
+	      style: {
+	        fontFamily: 'iconfont'
+	      }
+	    }, [_vm._v("")]), _c('text', {
+	      staticClass: ["rightHiddenText", "redColor"]
+	    }, [_vm._v("彻底删除")])])]), _c('div', {
+	      staticClass: ["rightHiddenSmallBox"]
+	    }, [_c('div', {
+	      staticClass: ["rightHiddenIconBox"],
+	      on: {
+	        "click": function($event) {
+	          _vm.jumpRestore(item, index)
+	        }
+	      }
+	    }, [_c('text', {
+	      staticClass: ["rightHiddenIcon"],
+	      style: {
+	        fontFamily: 'iconfont'
+	      }
+	    }, [_vm._v("")]), _c('text', {
+	      staticClass: ["rightHiddenText"]
+	    }, [_vm._v("恢复")])])])])])
+	  }), (_vm.isEmpty()) ? _c('noData', {
+	    attrs: {
+	      "noDataHint": _vm.noDataHint
+	    }
+	  }) : _vm._e(), _vm._l((_vm.helpList), function(item) {
+	    return (_vm.corpusId == '' && _vm.articleList.length < 10) ? _c('div', {
+	      staticClass: ["articleBox"],
+	      on: {
+	        "click": function($event) {
+	          _vm.goHelpArticle(item.key)
+	        }
+	      }
 	    }, [_c('div', {
 	      staticClass: ["atricleHead"]
 	    }, [_c('text', {
@@ -4362,24 +6323,14 @@
 	    }, [_vm._v(_vm._s(item.articleTitle))])]), _c('div', [_c('image', {
 	      staticClass: ["articleCover"],
 	      attrs: {
-	        "src": item.articleCoverUrl
+	        "src": _vm._f("watchCatetory")(item.articleCoverUrl)
 	      }
 	    })]), _c('div', {
 	      staticClass: ["articleFoot"]
 	    }, [_c('div', [_c('text', {
 	      staticClass: ["articleDate"]
-	    }, [_vm._v(_vm._s(item.articleDate))])])])])
-	  })], 2)]), _c('loading', {
-	    staticClass: ["loading"],
-	    attrs: {
-	      "display": _vm.showLoading
-	    },
-	    on: {
-	      "loading": _vm.onloading
-	    }
-	  }, [_c('text', {
-	    staticClass: ["indicator"]
-	  }, [_vm._v("Loading ...")])])], 1)
+	    }, [_vm._v(_vm._s(item.articleDate))])])])]) : _vm._e()
+	  })], 2)])])
 	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 

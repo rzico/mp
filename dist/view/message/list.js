@@ -41,24 +41,25 @@
 /******/ 	return __webpack_require__(0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __vue_exports__, __vue_options__
 	var __vue_styles__ = []
 
 	/* styles */
-	__vue_styles__.push(__webpack_require__(270)
+	__vue_styles__.push(__webpack_require__(376)
 	)
-	__vue_styles__.push(__webpack_require__(271)
+	__vue_styles__.push(__webpack_require__(377)
 	)
 
 	/* script */
-	__vue_exports__ = __webpack_require__(272)
+	__vue_exports__ = __webpack_require__(378)
 
 	/* template */
-	var __vue_template__ = __webpack_require__(273)
+	var __vue_template__ = __webpack_require__(379)
 	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
 	if (
 	  typeof __vue_exports__.default === "object" ||
@@ -70,10 +71,10 @@
 	if (typeof __vue_options__ === "function") {
 	  __vue_options__ = __vue_options__.options
 	}
-	__vue_options__.__file = "/Users/ke/mopian/GitHubMoPian/mp/src/view/message/list.vue"
+	__vue_options__.__file = "/Users/leistercheung/Documents/mopian/mp/src/view/message/list.vue"
 	__vue_options__.render = __vue_template__.render
 	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
-	__vue_options__._scopeId = "data-v-efbcf5fa"
+	__vue_options__._scopeId = "data-v-28c47ac4"
 	__vue_options__.style = __vue_options__.style || {}
 	__vue_styles__.forEach(function (module) {
 	  for (var name in module) {
@@ -90,13 +91,15 @@
 
 
 /***/ }),
-/* 1 */
+
+/***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = { "default": __webpack_require__(2), __esModule: true };
 
 /***/ }),
-/* 2 */
+
+/***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(3);
@@ -109,13 +112,15 @@
 
 
 /***/ }),
-/* 3 */
+
+/***/ 3:
 /***/ (function(module, exports) {
 
 	
 
 /***/ }),
-/* 4 */
+
+/***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -138,7 +143,8 @@
 
 
 /***/ }),
-/* 5 */
+
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var toInteger = __webpack_require__(6);
@@ -161,7 +167,8 @@
 
 
 /***/ }),
-/* 6 */
+
+/***/ 6:
 /***/ (function(module, exports) {
 
 	// 7.1.4 ToInteger
@@ -173,7 +180,8 @@
 
 
 /***/ }),
-/* 7 */
+
+/***/ 7:
 /***/ (function(module, exports) {
 
 	// 7.2.1 RequireObjectCoercible(argument)
@@ -184,7 +192,8 @@
 
 
 /***/ }),
-/* 8 */
+
+/***/ 8:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -260,14 +269,16 @@
 
 
 /***/ }),
-/* 9 */
+
+/***/ 9:
 /***/ (function(module, exports) {
 
 	module.exports = true;
 
 
 /***/ }),
-/* 10 */
+
+/***/ 10:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var global = __webpack_require__(11);
@@ -334,7 +345,8 @@
 
 
 /***/ }),
-/* 11 */
+
+/***/ 11:
 /***/ (function(module, exports) {
 
 	// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -346,7 +358,8 @@
 
 
 /***/ }),
-/* 12 */
+
+/***/ 12:
 /***/ (function(module, exports) {
 
 	var core = module.exports = { version: '2.5.1' };
@@ -354,7 +367,8 @@
 
 
 /***/ }),
-/* 13 */
+
+/***/ 13:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// optional / simple context binding
@@ -380,7 +394,8 @@
 
 
 /***/ }),
-/* 14 */
+
+/***/ 14:
 /***/ (function(module, exports) {
 
 	module.exports = function (it) {
@@ -390,7 +405,8 @@
 
 
 /***/ }),
-/* 15 */
+
+/***/ 15:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var dP = __webpack_require__(16);
@@ -404,7 +420,8 @@
 
 
 /***/ }),
-/* 16 */
+
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var anObject = __webpack_require__(17);
@@ -426,7 +443,8 @@
 
 
 /***/ }),
-/* 17 */
+
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(18);
@@ -437,7 +455,8 @@
 
 
 /***/ }),
-/* 18 */
+
+/***/ 18:
 /***/ (function(module, exports) {
 
 	module.exports = function (it) {
@@ -446,7 +465,8 @@
 
 
 /***/ }),
-/* 19 */
+
+/***/ 19:
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = !__webpack_require__(20) && !__webpack_require__(21)(function () {
@@ -455,7 +475,8 @@
 
 
 /***/ }),
-/* 20 */
+
+/***/ 20:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// Thank's IE8 for his funny defineProperty
@@ -465,7 +486,8 @@
 
 
 /***/ }),
-/* 21 */
+
+/***/ 21:
 /***/ (function(module, exports) {
 
 	module.exports = function (exec) {
@@ -478,7 +500,8 @@
 
 
 /***/ }),
-/* 22 */
+
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var isObject = __webpack_require__(18);
@@ -491,7 +514,8 @@
 
 
 /***/ }),
-/* 23 */
+
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.1 ToPrimitive(input [, PreferredType])
@@ -509,7 +533,8 @@
 
 
 /***/ }),
-/* 24 */
+
+/***/ 24:
 /***/ (function(module, exports) {
 
 	module.exports = function (bitmap, value) {
@@ -523,14 +548,16 @@
 
 
 /***/ }),
-/* 25 */
+
+/***/ 25:
 /***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(15);
 
 
 /***/ }),
-/* 26 */
+
+/***/ 26:
 /***/ (function(module, exports) {
 
 	var hasOwnProperty = {}.hasOwnProperty;
@@ -540,14 +567,16 @@
 
 
 /***/ }),
-/* 27 */
+
+/***/ 27:
 /***/ (function(module, exports) {
 
 	module.exports = {};
 
 
 /***/ }),
-/* 28 */
+
+/***/ 28:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -566,7 +595,8 @@
 
 
 /***/ }),
-/* 29 */
+
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
@@ -613,7 +643,8 @@
 
 
 /***/ }),
-/* 30 */
+
+/***/ 30:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var dP = __webpack_require__(16);
@@ -632,7 +663,8 @@
 
 
 /***/ }),
-/* 31 */
+
+/***/ 31:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.14 / 15.2.3.14 Object.keys(O)
@@ -645,7 +677,8 @@
 
 
 /***/ }),
-/* 32 */
+
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var has = __webpack_require__(26);
@@ -668,7 +701,8 @@
 
 
 /***/ }),
-/* 33 */
+
+/***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// to indexed object, toObject with fallback for non-array-like ES3 strings
@@ -680,7 +714,8 @@
 
 
 /***/ }),
-/* 34 */
+
+/***/ 34:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// fallback for non-array-like ES3 and non-enumerable old V8 strings
@@ -692,7 +727,8 @@
 
 
 /***/ }),
-/* 35 */
+
+/***/ 35:
 /***/ (function(module, exports) {
 
 	var toString = {}.toString;
@@ -703,7 +739,8 @@
 
 
 /***/ }),
-/* 36 */
+
+/***/ 36:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// false -> Array#indexOf
@@ -732,7 +769,8 @@
 
 
 /***/ }),
-/* 37 */
+
+/***/ 37:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.15 ToLength
@@ -744,7 +782,8 @@
 
 
 /***/ }),
-/* 38 */
+
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var toInteger = __webpack_require__(6);
@@ -757,7 +796,8 @@
 
 
 /***/ }),
-/* 39 */
+
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var shared = __webpack_require__(40)('keys');
@@ -768,7 +808,8 @@
 
 
 /***/ }),
-/* 40 */
+
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var global = __webpack_require__(11);
@@ -780,7 +821,8 @@
 
 
 /***/ }),
-/* 41 */
+
+/***/ 41:
 /***/ (function(module, exports) {
 
 	var id = 0;
@@ -791,7 +833,8 @@
 
 
 /***/ }),
-/* 42 */
+
+/***/ 42:
 /***/ (function(module, exports) {
 
 	// IE 8- don't enum bug keys
@@ -801,7 +844,8 @@
 
 
 /***/ }),
-/* 43 */
+
+/***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var document = __webpack_require__(11).document;
@@ -809,7 +853,8 @@
 
 
 /***/ }),
-/* 44 */
+
+/***/ 44:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var def = __webpack_require__(16).f;
@@ -822,7 +867,8 @@
 
 
 /***/ }),
-/* 45 */
+
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var store = __webpack_require__(40)('wks');
@@ -839,7 +885,8 @@
 
 
 /***/ }),
-/* 46 */
+
+/***/ 46:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -858,7 +905,8 @@
 
 
 /***/ }),
-/* 47 */
+
+/***/ 47:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.1.13 ToObject(argument)
@@ -869,7 +917,8 @@
 
 
 /***/ }),
-/* 48 */
+
+/***/ 48:
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(49);
@@ -894,7 +943,8 @@
 
 
 /***/ }),
-/* 49 */
+
+/***/ 49:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -934,14 +984,16 @@
 
 
 /***/ }),
-/* 50 */
+
+/***/ 50:
 /***/ (function(module, exports) {
 
 	module.exports = function () { /* empty */ };
 
 
 /***/ }),
-/* 51 */
+
+/***/ 51:
 /***/ (function(module, exports) {
 
 	module.exports = function (done, value) {
@@ -950,7 +1002,8 @@
 
 
 /***/ }),
-/* 52 */
+
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1236,7 +1289,8 @@
 
 
 /***/ }),
-/* 53 */
+
+/***/ 53:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// getting tag from 19.1.3.6 Object.prototype.toString()
@@ -1265,7 +1319,8 @@
 
 
 /***/ }),
-/* 54 */
+
+/***/ 54:
 /***/ (function(module, exports) {
 
 	module.exports = function (it, Constructor, name, forbiddenField) {
@@ -1276,7 +1331,8 @@
 
 
 /***/ }),
-/* 55 */
+
+/***/ 55:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var ctx = __webpack_require__(13);
@@ -1307,7 +1363,8 @@
 
 
 /***/ }),
-/* 56 */
+
+/***/ 56:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// call something on iterator step with safe closing on error
@@ -1325,7 +1382,8 @@
 
 
 /***/ }),
-/* 57 */
+
+/***/ 57:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// check on default Array iterator
@@ -1339,7 +1397,8 @@
 
 
 /***/ }),
-/* 58 */
+
+/***/ 58:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var classof = __webpack_require__(53);
@@ -1353,7 +1412,8 @@
 
 
 /***/ }),
-/* 59 */
+
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// 7.3.20 SpeciesConstructor(O, defaultConstructor)
@@ -1368,7 +1428,8 @@
 
 
 /***/ }),
-/* 60 */
+
+/***/ 60:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var ctx = __webpack_require__(13);
@@ -1458,7 +1519,8 @@
 
 
 /***/ }),
-/* 61 */
+
+/***/ 61:
 /***/ (function(module, exports) {
 
 	// fast apply, http://jsperf.lnkit.com/fast-apply/5
@@ -1480,7 +1542,8 @@
 
 
 /***/ }),
-/* 62 */
+
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var global = __webpack_require__(11);
@@ -1554,7 +1617,8 @@
 
 
 /***/ }),
-/* 63 */
+
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1578,7 +1642,8 @@
 
 
 /***/ }),
-/* 64 */
+
+/***/ 64:
 /***/ (function(module, exports) {
 
 	module.exports = function (exec) {
@@ -1591,7 +1656,8 @@
 
 
 /***/ }),
-/* 65 */
+
+/***/ 65:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var anObject = __webpack_require__(17);
@@ -1609,7 +1675,8 @@
 
 
 /***/ }),
-/* 66 */
+
+/***/ 66:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var hide = __webpack_require__(15);
@@ -1622,7 +1689,8 @@
 
 
 /***/ }),
-/* 67 */
+
+/***/ 67:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1642,7 +1710,8 @@
 
 
 /***/ }),
-/* 68 */
+
+/***/ 68:
 /***/ (function(module, exports, __webpack_require__) {
 
 	var ITERATOR = __webpack_require__(45)('iterator');
@@ -1670,7 +1739,8 @@
 
 
 /***/ }),
-/* 69 */
+
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://github.com/tc39/proposal-promise-finally
@@ -1696,7 +1766,8 @@
 
 
 /***/ }),
-/* 70 */
+
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1714,14 +1785,8 @@
 
 
 /***/ }),
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */
+
+/***/ 71:
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1734,8 +1799,9 @@
 	 */
 	var resLocateURL = 'file://';
 	var resRemoteURL = 'http://cdn.rzico.com/weex/';
-	var dataURL = 'http://weex.rzico.com:8088/';
-
+	var websiteURL = 'http://dev.rzico.com';
+	var event = weex.requireModule('event');
+	var _debug = true; //删掉该属性时请查找该页所有debug变量并删除变量
 	var utilsFunc = {
 	    initIconFont: function initIconFont() {
 	        var domModule = weex.requireModule('dom');
@@ -1757,9 +1823,20 @@
 	        return newUrl;
 	    },
 
+	    //获取网站资源
+	    website: function website(url) {
+	        var newUrl = websiteURL + url;
+	        return newUrl;
+	    },
+
 	    //获取URL参数
-	    getUrlParameter: function getUrlParameter(name) {
-	        var url = weex.config.bundleUrl;
+	    getUrlParameter: function getUrlParameter(name, dataUrl) {
+	        var url = void 0;
+	        if (dataUrl == null || dataUrl == undefined || dataUrl == '') {
+	            url = weex.config.bundleUrl;
+	        } else {
+	            url = dataUrl;
+	        }
 	        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 	        var r = url.slice(url.indexOf('?') + 1).match(reg);
 	        if (r != null) {
@@ -1771,21 +1848,6 @@
 	        }
 	        return null;
 	    },
-	    dayfmt: function dayfmt(value) {
-	        var date = new Date(value);
-	        var tody = new Date();
-	        var m = tody.getDay() - date.getDay();
-	        if (m < 1) {
-	            return "今天";
-	        }
-	        if (m < 3) {
-	            return "近三天";
-	        }
-	        if (m < 7) {
-	            return "近七天";
-	        }
-	        return "七天前";
-	    },
 	    message: function message(_type, _content, _data) {
 	        return {
 	            type: _type,
@@ -1796,69 +1858,40 @@
 
 	    //判空
 	    isNull: function isNull(value) {
-	        if (value == null || value == undefined || value == '') {
+	        if (value == null || value == undefined || value == '' || value == 'undefined') {
 	            return true;
 	        } else {
 	            return false;
 	        }
 	    },
 
-	    //本地缓存查找多条数据。
-	    findList: function findList(value, start, size, callback) {
-	        var partevent = weex.requireModule('event'); //在ios无法识别出该语句，考虑弃用该方法
-	        partevent.findList({
-	            type: 'article',
-	            keyword: value,
-	            orderBy: 'desc',
-	            current: start,
-	            pageSize: size
-	        }, callback);
-	    },
-	    save: function save(datatype, datakey, datavalue, datasort, datakeyword, callback) {
-	        var partevent = weex.requireModule('event');
-	        partevent.save({
-	            type: datatype,
-	            key: datakey,
-	            value: datavalue,
-	            sort: datasort,
-	            keyword: datakeyword
-	        }, callback);
+	    //获取缩略图
+	    thumbnail: function thumbnail(url, w, h) {
+	        //获取屏幕宽度计算得出比例
+	        var proportion = weex.config.env.deviceWidth / 750;
+	        //                获取缩略图的宽高
+	        w = parseInt(w * proportion);
+	        h = parseInt(h * proportion);
+	        if (url.substring(0, 11) == "http://cdnx") {
+	            return url + "?x-oss-process=image/resize,w_" + w + ",h_" + h + "";
+	        } else if (url.substring(0, 10) == "http://cdn") {
+	            return url + "@" + w + "w_" + h + "h_1e_1c_100Q";
+	        } else {
+	            return url;
+	        }
 	    },
 
-	    //时间戳
-	    timeChange: function timeChange(value) {
-	        if (value.toString().length == 10) {
-	            value = value * 1000;
-	        }
-	        var date = new Date(value);
-	        var Y = date.getFullYear();
-	        var m = date.getMonth() + 1;
-	        var d = date.getDate();
-	        var H = date.getHours();
-	        var i = date.getMinutes();
-	        var s = date.getSeconds();
-	        if (m < 10) {
-	            m = '0' + m;
-	        }
-	        if (d < 10) {
-	            d = '0' + d;
-	        }
-	        if (H < 10) {
-	            H = '0' + H;
-	        }
-	        if (i < 10) {
-	            i = '0' + i;
-	        }
-	        if (s < 10) {
-	            s = '0' + s;
-	        }
-	        var t = Y + '-' + m + '-' + d + ' ' + H + ':' + i + ':' + s;
-	        // var t = Y + '-' + m + '-' + d;
-	        return t;
+	    //获取全屏的高度尺寸,可传入父组件的导航栏高度进行适配
+	    fullScreen: function fullScreen(topHeight) {
+	        //减1是为了能触发loading，不能够高度刚刚好
+	        topHeight = topHeight == '' ? 0 : topHeight - 1;
+	        return 750 / weex.config.env.deviceWidth * weex.config.env.deviceHeight - topHeight;
 	    },
-	    thumbnail: function thumbnail(url, w, h) {
+
+	    //模糊图片，r , s  为 1-50，超大超模糊
+	    blur: function blur(url, r, s) {
 	        if (url.substring(0, 10) == "http://cdn") {
-	            return url + "@" + w + "w_" + h + "h_1e_1c_100Q";
+	            return url + "@" + r + "-" + s + "bl";
 	        } else {
 	            return url;
 	        }
@@ -1866,7 +1899,321 @@
 
 	    //获取文章URL地址
 	    articleUrl: function articleUrl(template, id) {
-	        return dataURL + "article/#/" + template + "?id=" + id;
+	        template = template == '' ? 't1001' : template;
+	        return websiteURL + "/" + template + "?id=" + id;
+	    },
+	    debug: function debug(msg) {
+	        if (_debug) {
+	            event.toast(msg);
+	        }
+	    },
+	    isRoles: function isRoles(roles, all) {
+	        for (var i = 0; i < roles.length; i++) {
+	            var role = roles.substring(i, i + 1);
+	            if (all.indexOf(role) >= 0) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    },
+
+	    //  获取字符串的字符总长度
+	    getLength: function getLength(e) {
+	        var name = e;
+	        var len = 0;
+	        for (var i = 0; i < name.length; i++) {
+	            var a = name.charAt(i);
+	            if (a.match(/[^\x00-\xff]/ig) != null) {
+	                len += 2;
+	            } else {
+	                len += 1;
+	            }
+	        }
+	        return len;
+	    },
+
+	    //    将过长的字符串换成 XXX...XXX格式
+	    changeStr: function changeStr(e) {
+	        return e.substr(0, 4) + '...' + e.substr(-4);
+	    },
+
+	    //js中用正则表达式 过滤特殊字符, 校验所有输入域是否含有特殊符号 (无法过滤 \ )
+	    //  searchFilter(s) {
+	    //         event.toast(s);
+	    //         var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）&mdash;—|{}【】‘；：”“'。，、？]");
+	    //         var rs = "";
+	    //         for (var i = 0; i < s.length; i++) {
+	    //             rs = rs + s.substr(i, 1).replace(pattern,'');
+	    //         }
+	    //         return rs;
+	    //     }
+
+	    //老的二维码转换成新格式
+	    qr2scan: function qr2scan(e) {
+	        var type = this.getUrlParameter("type", e);
+	        var code = this.getUrlParameter("no", e);
+	        if (type == "paybill") {
+	            return websiteURL + "/q/818804" + code + ".jhtml";
+	        } else if (type == "card_active") {
+	            return websiteURL + "/q/818801" + code + ".jhtml";
+	        } else {
+	            return e;
+	        }
+	    },
+
+	    //    二维码读取内容
+	    readScan: function readScan(e, callback) {
+	        e = this.qr2scan(e);
+	        var backData = {};
+	        //二维码字段截取. indexOf 没找到时返回-1， 此时如果2个indexof都没找到 那么 e.substring（-1 + 3 ，-1）,e的长度会变为2
+	        // let subData = e.substring(e.indexOf("/q/8") + 3,e.indexOf(".jhtml"));
+
+	        var start = e.indexOf("/q/8");
+	        var end = e.indexOf(".jhtml");
+	        var subData = null;
+	        if (start != -1 && end != -1) {
+	            subData = e.substring(start + 3, end);
+	        }
+	        //判断是不是web  code'000000'为无效二维码 '999999'为webView；
+	        if (subData == null) {
+	            //如果没有找到q/ 和 .jhtml中的字端，就执行该段代码
+	            if (e.substring(0, 4) == 'http' && _debug) {
+	                var data = {
+	                    type: 'webView',
+	                    code: '999999'
+	                };
+	                backData = this.message('success', 'webView', data);
+	            } else {
+	                var _data2 = {
+	                    type: 'error',
+	                    code: '000000'
+	                };
+	                backData = this.message('error', '无效二维码', _data2);
+	            }
+	            callback(backData);
+	        } else {
+	            //截取11位的判断码
+	            var type = subData.substring(0, 6);
+	            var code = subData.slice(6);
+	            var _data3 = {
+	                type: type,
+	                code: code
+	            };
+	            if (code == '000000') {
+	                backData = this.message('error', '无效二维码', _data3);
+	            } else {
+	                backData = this.message('success', '扫描成功', _data3);
+	            }
+	            callback(backData);
+	        }
+	    },
+
+	    //判断用户是否只输入了空格
+	    isAllEmpty: function isAllEmpty(str) {
+	        if (str.replace(/ /g, "").length == 0) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    },
+
+	    //判断设备型号
+	    device: function device() {
+	        var s = weex.config.env.deviceModel;
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s.indexOf("V1") > 0) {
+	                return "V1";
+	            } else if (s.indexOf("10,3") > 0 || s.indexOf("10,6") > 0) {
+	                return 'IPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+
+	    //    登录主页的轮播图控制
+	    indexMt: function indexMt() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'indexMtV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'indexMtIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+
+
+	    //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
+	    addTop: function addTop() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'addTopV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'addTopIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //   会员首页 作者专栏 顶部信息栏
+	    addInfo: function addInfo() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'addInfoV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'addInfoIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
+	    addBgImg: function addBgImg() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'addBgImgV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'addBgImgIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //    控制滑动时文集box的显示
+	    hideCorpus: function hideCorpus() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'hideCorpusV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'hideCorpusIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+	    //    控制滑动时文集box的显示
+	    pageTop: function pageTop() {
+	        var s = this.device();
+	        if (this.isNull(s)) {
+	            return "";
+	        } else {
+	            if (s == 'V1') {
+	                return 'pageTopV1';
+	            } else if (s == 'IPhoneX') {
+	                return 'pageTopIPhoneX';
+	            } else {
+	                return s;
+	            }
+	        }
+	    },
+
+	    //判断设备系统是不是ios
+	    isIosSystem: function isIosSystem() {
+	        var s = weex.config.env.osName;
+	        if (s == 'iOS') {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    },
+
+	    resolvetimefmt: function resolvetimefmt(value) {
+	        //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+	        if (value.toString().length == 10) {
+	            value = parseInt(value) * 1000;
+	        } else {
+	            value = parseInt(value);
+	        }
+	        // 返回处理后的值
+	        var date = new Date(value);
+
+	        var d2 = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+
+	        date = new Date(d2 + 28800000);
+
+	        var y = date.getUTCFullYear();
+	        var m = date.getUTCMonth() + 1;
+	        var d = date.getUTCDate();
+	        var h = date.getUTCHours();
+	        var i = date.getUTCMinutes();
+	        var s = date.getUTCSeconds();
+	        if (m < 10) {
+	            m = '0' + m;
+	        }
+	        if (d < 10) {
+	            d = '0' + d;
+	        }
+	        if (h < 10) {
+	            h = '0' + h;
+	        }
+	        if (i < 10) {
+	            i = '0' + i;
+	        }
+	        if (s < 10) {
+	            s = '0' + s;
+	        }
+	        var timeObj = {
+	            y: y,
+	            m: m,
+	            d: d,
+	            h: h,
+	            i: i,
+	            s: s
+	        };
+	        return timeObj;
+	    },
+	    //返回格式 2017-09-01
+	    ymdtimefmt: function ymdtimefmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+	        return timeObj.y + '-' + timeObj.m + '-' + timeObj.d;
+	    },
+	    //返回格式 2017-09-01 06:35:59
+	    ymdhistimefmt: function ymdhistimefmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+
+	        return timeObj.y + '-' + timeObj.m + '-' + timeObj.d + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
+	    },
+	    //返回格式 2017年09月01日 06:35:59
+	    ymdhisdayfmt: function ymdhisdayfmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+
+	        return timeObj.y + '年' + timeObj.m + '月' + timeObj.d + '日' + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
+	    },
+	    //返回格式 06:35:59
+	    histimefmt: function histimefmt(value) {
+	        if (value == '' || value == null || value == undefined) {
+	            return value;
+	        }
+	        var timeObj = this.resolvetimefmt(value);
+	        return timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
 	    }
 	};
 
@@ -1874,440 +2221,8 @@
 	module.exports = exports['default'];
 
 /***/ }),
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */
-/***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _promise = __webpack_require__(1);
-
-	var _promise2 = _interopRequireDefault(_promise);
-
-	exports.POST = POST;
-	exports.GET = GET;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var stream = weex.requireModule('stream');
-	var baseURL = '';
-
-	function POST(path, body) {
-	    return new _promise2.default(function (resolve, reject) {
-	        stream.fetch({
-	            method: 'POST',
-	            url: '' + baseURL + path,
-	            type: 'json',
-	            body: '' + body
-	        }, function (response) {
-	            if (response.status == 200) {
-	                resolve(response.data);
-	            } else {
-	                reject({
-	                    type: "error",
-	                    content: "网络不稳定"
-	                });
-	            }
-	        }, function () {});
-	    });
-	}
-
-	function GET(path, resolve, reject) {
-	    stream.fetch({
-	        method: 'GET',
-	        url: '' + baseURL + path,
-	        type: 'json'
-	    }, function (response) {
-	        //请求 type=success 或 warn 或 error（没缓存） 时返回，都能正常获取数据
-	        if (response.status == 200) {
-	            resolve(response.data);
-	        } else
-	            //请求 type= error 网络正常，但服务器返回错误，有缓存，也需要给数据，并提示出错了  statusText=服务器返回的 content
-	            //网络异常，有缓存，需要给出缓存数据，并且   statusText 固定为 "网络不稳定"
-	            if (response.status == 304) {
-	                resolve(response.data);
-	                reject({
-	                    type: "error",
-	                    content: response.statusText
-	                });
-	            } else
-	                //网络异常，没有缓存
-	                {
-	                    reject({
-	                        type: "error",
-	                        content: '网络不稳定'
-	                    });
-	                }
-	    }, function () {});
-	}
-
-/***/ }),
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var dom = weex.requireModule('dom');
-	var event = weex.requireModule('event');
-	var stream = weex.requireModule('stream');
-	var storage = weex.requireModule('storage');
-	exports.default = { dom: dom, event: event, stream: stream, storage: storage };
-	module.exports = exports['default'];
-
-/***/ }),
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */
-/***/ (function(module, exports) {
-
-	'use strict';
-
-	//时间格式化 今天 近三天 近七天  七天前
-	Vue.filter('dayfmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    var date = new Date(value);
-	    var tody = new Date();
-	    var m = tody.getDate() - date.getDate();
-	    if (m < 1) {
-	        return "今天";
-	    }
-	    if (m < 3) {
-	        return "近三天";
-	    }
-	    if (m < 7) {
-	        return "近七天";
-	    }
-	    return "七天前";
-	});
-	// 时间格式化 10:30 昨天 前天 2017-09-01 09-01
-	Vue.filter('timefmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    var date = new Date(value);
-	    var tody = new Date();
-	    var y = date.getFullYear();
-	    var nowy = tody.getFullYear();
-	    var m = date.getMonth() + 1;
-	    var w = tody.getDate() - date.getDate();
-	    if (w < 1) {
-	        var h = date.getHours();
-	        var i = date.getMinutes();
-	        if (h < 10) {
-	            h = '0' + h;
-	        }
-	        if (i < 10) {
-	            i = '0' + i;
-	        }
-	        return h + ":" + i;
-	        // return value;
-	    }
-	    if (w < 2) {
-	        return "昨天";
-	    }
-	    if (w < 3) {
-	        return "前天";
-	    }
-	    if (m < 10) {
-	        m = '0' + m;
-	    }
-	    //如果是今年 就不返回年份
-	    if (nowy != y) {
-	        return m + '月' + date.getDate() + '日';
-	    } else {
-	        return y + '年' + m + '月' + date.getDate() + '日';
-	    }
-	    // return value;
-	});
-
-	//月份格式化 本月 上月 2..12月  2016年1月..
-	Vue.filter('monthfmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    // 返回处理后的值
-	    var date = new Date(value);
-	    var tody = new Date();
-	    var m = tody.getMonth() - date.getMonth();
-	    var y = tody.getYear() - date.getYear();
-	    if (m < 1) {
-	        return "本月";
-	    }
-	    if (m < 2) {
-	        return "上月";
-	    }
-	    if (y < 1) {
-	        return date.getMonth() + "月";
-	    }
-	    return date.getYear() + "年" + date.getMonth() + "月";
-	});
-
-	//返回月份 7 8 9 单数字
-	Vue.filter('detailMonth', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    // 返回处理后的值
-	    var date = new Date(value);
-	    var m = date.getMonth() + 1;
-	    return m;
-	});
-
-	//时间格式化 返回 09-30 03:07
-	Vue.filter('datetimefmt', function (value) {
-	    //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-	    value = value + '';
-	    if (value.length == 10) {
-	        value = parseInt(value) * 1000;
-	    } else {
-	        value = parseInt(value);
-	    }
-	    // 返回处理后的值
-	    var date = new Date(value);
-	    var m = date.getMonth() + 1;
-	    var d = date.getDate();
-	    var H = date.getHours();
-	    var i = date.getMinutes();
-	    if (m < 10) {
-	        m = '0' + m;
-	    }
-	    if (d < 10) {
-	        d = '0' + d;
-	    }
-	    if (H < 10) {
-	        H = '0' + H;
-	    }
-	    if (i < 10) {
-	        i = '0' + i;
-	    }
-	    var t = m + '-' + d + '  ' + H + ':' + i;
-	    return t;
-	});
-	//金额保留两位小数点
-	Vue.filter('currencyfmt', function (value) {
-	    // 返回处理后的值
-	    if (value != null) {
-	        if (value == 0) {
-	            return value;
-	        } else {
-	            var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
-	            return price;
-	        }
-	    }
-	});
-
-/***/ }),
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */,
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */
+/***/ 98:
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -2330,8 +2245,122 @@
 	    "color": "#000000"
 	  },
 	  "sub_title": {
-	    "fontSize": 28,
-	    "color": "#bbbbbb"
+	    "fontSize": 30,
+	    "color": "#999999"
+	  },
+	  "sub_date": {
+	    "fontSize": 26,
+	    "color": "#999999"
+	  },
+	  "fz28": {
+	    "fontSize": 28
+	  },
+	  "fz30": {
+	    "fontSize": 30
+	  },
+	  "fz32": {
+	    "fontSize": 32
+	  },
+	  "fz35": {
+	    "fontSize": 35
+	  },
+	  "fz40": {
+	    "fontSize": 40
+	  },
+	  "boder-bottom": {
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-top": {
+	    "borderStyle": "solid",
+	    "borderTopWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-right": {
+	    "borderStyle": "solid",
+	    "borderRightWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-left": {
+	    "borderStyle": "solid",
+	    "borderLeftWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "pl10": {
+	    "paddingLeft": 10
+	  },
+	  "pt10": {
+	    "paddingTop": 10
+	  },
+	  "pt15": {
+	    "paddingTop": 15
+	  },
+	  "pb10": {
+	    "paddingBottom": 10
+	  },
+	  "pl20": {
+	    "paddingLeft": 20
+	  },
+	  "pt20": {
+	    "paddingTop": 20
+	  },
+	  "pb15": {
+	    "paddingBottom": 15
+	  },
+	  "pb20": {
+	    "paddingBottom": 20
+	  },
+	  "pt25": {
+	    "paddingTop": 25
+	  },
+	  "pt30": {
+	    "paddingTop": 30
+	  },
+	  "pt40": {
+	    "paddingTop": 40
+	  },
+	  "pb40": {
+	    "paddingBottom": 40
+	  },
+	  "pb30": {
+	    "paddingBottom": 30
+	  },
+	  "pb25": {
+	    "paddingBottom": 25
+	  },
+	  "pl25": {
+	    "paddingLeft": 25
+	  },
+	  "pl30": {
+	    "paddingLeft": 30
+	  },
+	  "pr10": {
+	    "paddingRight": 10
+	  },
+	  "pr20": {
+	    "paddingRight": 20
+	  },
+	  "pr25": {
+	    "paddingRight": 25
+	  },
+	  "pr30": {
+	    "paddingRight": 30
+	  },
+	  "pl35": {
+	    "paddingLeft": 35
+	  },
+	  "pr35": {
+	    "paddingRight": 35
+	  },
+	  "bgWhite": {
+	    "backgroundColor": "#ffffff"
+	  },
+	  "textActive": {
+	    "backgroundColor:active": "#cccccc"
+	  },
+	  "mt0": {
+	    "marginTop": 0
 	  },
 	  "mt10": {
 	    "marginTop": 10
@@ -2341,6 +2370,39 @@
 	  },
 	  "mt30": {
 	    "marginTop": 30
+	  },
+	  "mt50": {
+	    "marginTop": 50
+	  },
+	  "bt0": {
+	    "marginBottom": 0
+	  },
+	  "bt5": {
+	    "marginBottom": 5
+	  },
+	  "bt10": {
+	    "marginBottom": 10
+	  },
+	  "bt15": {
+	    "marginBottom": 15
+	  },
+	  "bt20": {
+	    "marginBottom": 20
+	  },
+	  "bt30": {
+	    "marginBottom": 30
+	  },
+	  "bt50": {
+	    "marginBottom": 50
+	  },
+	  "mr5": {
+	    "marginRight": 5
+	  },
+	  "mr30": {
+	    "marginRight": 30
+	  },
+	  "ml5": {
+	    "marginLeft": 5
 	  },
 	  "ml10": {
 	    "marginLeft": 10
@@ -2353,12 +2415,35 @@
 	  },
 	  "header": {
 	    "height": 136,
+	    "paddingTop": 44,
 	    "flexDirection": "row",
 	    "position": "sticky",
 	    "borderBottomWidth": 1,
 	    "borderBottomStyle": "solid",
-	    "borderBottomColor": "#bbbbbb",
-	    "backgroundColor": "#D9141E"
+	    "borderColor": "#cccccc",
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "nav": {
+	    "width": 654,
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "height": 92,
+	    "alignItems": "center",
+	    "marginTop": 0
+	  },
+	  "nav_back": {
+	    "marginTop": 0,
+	    "flexDirection": "row",
+	    "width": 92,
+	    "height": 92,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "corpusActive": {
+	    "color": "#EB4E40",
+	    "borderColor": "#EB4E40",
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 4
 	  },
 	  "footer": {
 	    "position": "fixed",
@@ -2371,6 +2456,11 @@
 	    "height": 500,
 	    "width": 750,
 	    "backgroundColor": "#eeeeee"
+	  },
+	  "iconImg": {
+	    "width": 60,
+	    "height": 60,
+	    "fontSize": 60
 	  },
 	  "cell-header": {
 	    "height": 70,
@@ -2385,12 +2475,32 @@
 	    "paddingLeft": 20,
 	    "marginTop": 20
 	  },
+	  "cell-row-row": {
+	    "minHeight": 100,
+	    "flexDirection": "row",
+	    "justifyContent": "space-between",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "paddingRight": 20,
+	    "alignItems": "center",
+	    "marginTop": 20
+	  },
 	  "cell-line": {
 	    "borderTopWidth": 1,
-	    "borderTopColor": "#bbbbbb",
+	    "borderTopColor": "#cccccc",
 	    "borderTopStyle": "solid",
 	    "borderBottomWidth": 1,
-	    "borderBottomColor": "#bbbbbb",
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "borderTop": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid"
+	  },
+	  "borderBottom": {
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
 	    "borderBottomStyle": "solid"
 	  },
 	  "cell-panel": {
@@ -2399,14 +2509,28 @@
 	    "flexDirection": "row",
 	    "alignItems": "center",
 	    "borderBottomWidth": 1,
-	    "borderBottomColor": "#bbbbbb",
+	    "borderBottomColor": "#cccccc",
 	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel-column": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "column",
+	    "justifyContent": "space-around",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid",
+	    "paddingTop": 10,
+	    "paddingBottom": 10
+	  },
+	  "cell-bottom-clear": {
+	    "borderBottomWidth": 0
 	  },
 	  "cell-clear": {
 	    "marginTop": 0,
 	    "marginBottom": 0,
-	    "borderBottomWidth": 0,
-	    "borderTopWidth": 0
+	    "borderTopWidth": 0,
+	    "borderBottomWidth": 0
 	  },
 	  "space-between": {
 	    "justifyContent": "space-between",
@@ -2456,52 +2580,79 @@
 	  "flex5": {
 	    "flex": 6
 	  },
+	  "flex6": {
+	    "flex": 6
+	  },
 	  "bkg-white": {
 	    "backgroundColor": "#FFFFFF"
 	  },
 	  "bkg-primary": {
-	    "backgroundColor": "#D9141E"
+	    "backgroundColor": "#EB4E40"
 	  },
 	  "bkg-gray": {
 	    "backgroundColor": "#eeeeee"
+	  },
+	  "bd-primary": {
+	    "borderColor": "#EB4E40"
+	  },
+	  "bkg-delete": {
+	    "backgroundColor": "#FF0000"
 	  },
 	  "white": {
 	    "color": "#FFFFFF"
 	  },
 	  "primary": {
-	    "color": "#D9141E"
+	    "color": "#EB4E40"
 	  },
 	  "gray": {
-	    "color": "#bbbbbb"
+	    "color": "#999999"
 	  },
 	  "ico": {
 	    "fontSize": 48,
-	    "color": "#D9141E"
+	    "color": "#EB4E40",
+	    "marginTop": 2
 	  },
 	  "ico_big": {
 	    "fontSize": 72,
-	    "color": "#D9141E"
+	    "color": "#EB4E40",
+	    "marginTop": 4
 	  },
 	  "ico_small": {
 	    "fontSize": 32,
-	    "color": "#D9141E"
+	    "color": "#EB4E40",
+	    "marginTop": 1
 	  },
 	  "arrow": {
 	    "fontSize": 32,
 	    "color": "#cccccc",
 	    "width": 40
 	  },
+	  "check": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40
+	  },
+	  "shopCheck": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40,
+	    "marginLeft": 150
+	  },
 	  "button": {
-	    "fontSize": 36,
+	    "fontSize": 32,
 	    "textAlign": "center",
 	    "color": "#ffffff",
-	    "paddingTop": 20,
-	    "paddingBottom": 20,
-	    "backgroundColor": "#D9141E",
+	    "paddingTop": 15,
+	    "paddingBottom": 15,
+	    "backgroundColor": "#EB4E40",
 	    "borderRadius": 15,
-	    "backgroundColor:active": "#bbbbbb",
-	    "color:active": "#D9141E",
-	    "backgroundColor:disabled": "#D9141E",
+	    "height": 80,
+	    "lineHeight": 50,
+	    "alignItems": "center",
+	    "justifyContent": "center",
+	    "backgroundColor:active": "#cccccc",
+	    "color:active": "#EB4E40",
+	    "backgroundColor:disabled": "#EB4E40",
 	    "color:disabled": "#999999"
 	  },
 	  "refresh": {
@@ -2514,13 +2665,16 @@
 	    "alignItems": "center",
 	    "paddingTop": 10
 	  },
+	  "noLoading": {
+	    "height": 999
+	  },
 	  "gif": {
 	    "width": 50,
 	    "height": 50
 	  },
 	  "indicator": {
 	    "fontSize": 36,
-	    "color": "#D9141E",
+	    "color": "#EB4E40",
 	    "width": 750,
 	    "textAlign": "center",
 	    "marginTop": 20,
@@ -2529,14 +2683,1905 @@
 	  "lines-ellipsis": {
 	    "lines": 1,
 	    "textOverflow": "ellipsis"
+	  },
+	  "V1": {
+	    "height": 146,
+	    "paddingTop": 54
+	  },
+	  "IPhoneX": {
+	    "height": 156,
+	    "paddingTop": 64
+	  },
+	  "addTopV1": {
+	    "top": 54
+	  },
+	  "addTopIPhoneX": {
+	    "top": 64
+	  },
+	  "addInfoV1": {
+	    "height": 430,
+	    "paddingTop": 50
+	  },
+	  "addInfoIPhoneX": {
+	    "height": 440,
+	    "paddingTop": 60
+	  },
+	  "addBgImgV1": {
+	    "height": 430
+	  },
+	  "addBgImgIPhoneX": {
+	    "height": 440
+	  },
+	  "hideCorpusV1": {
+	    "top": 146
+	  },
+	  "hideCorpusIPhoneX": {
+	    "top": 156
+	  },
+	  "pageTopV1": {
+	    "top": 226
+	  },
+	  "pageTopIPhoneX": {
+	    "top": 236
+	  },
+	  "maskLayer": {
+	    "position": "fixed",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "backgroundColor": "#000000",
+	    "opacity": 0.5
+	  },
+	  "showBox": {
+	    "position": "fixed",
+	    "top": 150,
+	    "right": 15,
+	    "backgroundColor": "#ffffff",
+	    "borderRadius": 20,
+	    "paddingTop": 20,
+	    "paddingBottom": 20
+	  },
+	  "arrowUp": {
+	    "position": "fixed",
+	    "top": 148,
+	    "right": 30
+	  },
+	  "refreshImg": {
+	    "width": 60,
+	    "height": 60,
+	    "borderRadius": 30
+	  },
+	  "refreshBox": {
+	    "height": 120,
+	    "width": 750,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "indexMtIPhoneX": {
+	    "marginTop": 124
 	  }
 	}
 
 /***/ }),
-/* 271 */
+
+/***/ 99:
 /***/ (function(module, exports) {
 
 	module.exports = {
+	  "noData": {
+	    "paddingTop": 250,
+	    "alignItems": "center"
+	  },
+	  "noData_ico": {
+	    "color": "#cccccc",
+	    "fontSize": 72
+	  },
+	  "noData_hint": {
+	    "color": "#cccccc",
+	    "marginTop": 30
+	  }
+	}
+
+/***/ }),
+
+/***/ 100:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
+	exports.default = {
+	    props: {
+	        ndBgColor: { default: '#eee' },
+	        noDataHint: { default: '没有数据' },
+	        pdNumber: { default: 200 }
+	    }
+	};
+	module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 101:
+/***/ (function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: ["noData"],
+	    style: {
+	      backgroundColor: _vm.ndBgColor,
+	      paddingBottom: _vm.pbNumbe + 'px'
+	    }
+	  }, [_c('text', {
+	    staticClass: ["noData_ico"],
+	    style: {
+	      fontFamily: 'iconfont'
+	    }
+	  }, [_vm._v("")]), _c('text', {
+	    staticClass: ["noData_hint"]
+	  }, [_vm._v(_vm._s(_vm.noDataHint))])])
+	},staticRenderFns: []}
+	module.exports.render._withStripped = true
+
+/***/ }),
+
+/***/ 105:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _promise = __webpack_require__(1);
+
+	var _promise2 = _interopRequireDefault(_promise);
+
+	exports.POST = POST;
+	exports.GET = GET;
+	exports.SCAN = SCAN;
+
+	var _utils = __webpack_require__(71);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var stream = weex.requireModule('stream');
+	var modal = weex.requireModule('modal');
+	var baseURL = '';
+
+	var event = weex.requireModule('event');
+	function POST(path, body) {
+	    return new _promise2.default(function (resolve, reject) {
+	        stream.fetch({
+	            method: 'POST',
+	            url: '' + baseURL + path,
+	            type: 'json',
+	            body: '' + body
+	        }, function (response) {
+	            if (response.status == 200) {
+	                resolve(response.data);
+	            } else {
+	                reject({
+	                    type: "error",
+	                    content: "网络不稳定"
+	                });
+	            }
+	        }, function () {});
+	    });
+	}
+
+	function GET(path, resolve, reject) {
+	    // let cacheParams = {
+	    //     type:'httpCache',//类型
+	    //     key:`${baseURL}${path}`,//关键址
+	    // }
+	    // event.find(cacheParams,function (cache) {
+	    //    if (cache.type=='success') {
+	    //        if (cache.data != '') {
+	    //            resolve(JSON.parse(cache.data.value));
+	    //        }
+	    //    }
+	    // })
+	    stream.fetch({
+	        method: 'GET',
+	        url: '' + baseURL + path,
+	        type: 'json'
+	    }, function (response) {
+	        //请求 type=success 或 warn 或 error（没缓存） 时返回，都能正常获取数据
+	        if (response.status == 200) {
+	            resolve(response.data);
+	        } else
+	            //请求 type= error 网络正常，但服务器返回错误，有缓存，也需要给数据，并提示出错了  statusText=服务器返回的 content
+	            //网络异常，有缓存，需要给出缓存数据，并且   statusText 固定为 "网络不稳定"
+	            if (response.status == 304) {
+	                resolve(response.data);
+	                reject({
+	                    type: "error",
+	                    content: response.statusText
+	                });
+	            } else
+	                //网络异常，没有缓存
+	                {
+	                    reject({
+	                        type: "error",
+	                        content: '网络不稳定'
+	                    });
+	                }
+	    }, function () {});
+	}
+	//二维码扫描
+	function SCAN(message, resolve, reject) {
+	    if (message.type == 'success') {
+	        _utils2.default.readScan(message.data, function (data) {
+	            if (data.type == 'success') {
+	                if (data.data.type == '865380') {
+	                    var userId = parseInt(data.data.code) - 10200;
+	                    POST('weex/member/friends/add.jhtml?friendId=' + userId).then(function (mes) {
+	                        if (mes.type == "success") {
+	                            event.toast('添加好友请求已发送,请等待对方验证');
+	                        } else {
+	                            event.toast(mes.content);
+	                        }
+	                        resolve(mes);
+	                    }, function (err) {
+	                        reject(err);
+	                        event.toast(err.content);
+	                    });
+	                } else if (data.data.type == '818803') {
+	                    GET('weex/member/couponCode/use.jhtml?code=' + data.data.code, function (mes) {
+	                        modal.alert({
+	                            message: mes.content,
+	                            duration: 0.3
+	                        }, function (value) {});
+	                    }, function (err) {
+	                        event.toast(err.content);
+	                    });
+	                } else if (data.data.type == 'webView') {
+	                    event.openURL(message.data, function () {});
+	                } else {
+	                    event.toast('无效验证码');
+	                }
+	            } else {
+	                event.toast(data.content);
+	            }
+	        });
+	    } else {}
+	}
+
+/***/ }),
+
+/***/ 112:
+/***/ (function(module, exports) {
+
+	module.exports = {
+	  "wrapper": {
+	    "position": "absolute",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "width": 750,
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "nav_title": {
+	    "fontSize": 38,
+	    "color": "#ffffff",
+	    "lineHeight": 38
+	  },
+	  "title": {
+	    "fontSize": 32,
+	    "color": "#000000"
+	  },
+	  "sub_title": {
+	    "fontSize": 30,
+	    "color": "#999999"
+	  },
+	  "sub_date": {
+	    "fontSize": 26,
+	    "color": "#999999"
+	  },
+	  "fz28": {
+	    "fontSize": 28
+	  },
+	  "fz30": {
+	    "fontSize": 30
+	  },
+	  "fz32": {
+	    "fontSize": 32
+	  },
+	  "fz35": {
+	    "fontSize": 35
+	  },
+	  "fz40": {
+	    "fontSize": 40
+	  },
+	  "boder-bottom": {
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-top": {
+	    "borderStyle": "solid",
+	    "borderTopWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-right": {
+	    "borderStyle": "solid",
+	    "borderRightWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-left": {
+	    "borderStyle": "solid",
+	    "borderLeftWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "pl10": {
+	    "paddingLeft": 10
+	  },
+	  "pt10": {
+	    "paddingTop": 10
+	  },
+	  "pt15": {
+	    "paddingTop": 15
+	  },
+	  "pb10": {
+	    "paddingBottom": 10
+	  },
+	  "pl20": {
+	    "paddingLeft": 20
+	  },
+	  "pt20": {
+	    "paddingTop": 20
+	  },
+	  "pb15": {
+	    "paddingBottom": 15
+	  },
+	  "pb20": {
+	    "paddingBottom": 20
+	  },
+	  "pt25": {
+	    "paddingTop": 25
+	  },
+	  "pt30": {
+	    "paddingTop": 30
+	  },
+	  "pt40": {
+	    "paddingTop": 40
+	  },
+	  "pb40": {
+	    "paddingBottom": 40
+	  },
+	  "pb30": {
+	    "paddingBottom": 30
+	  },
+	  "pb25": {
+	    "paddingBottom": 25
+	  },
+	  "pl25": {
+	    "paddingLeft": 25
+	  },
+	  "pl30": {
+	    "paddingLeft": 30
+	  },
+	  "pr10": {
+	    "paddingRight": 10
+	  },
+	  "pr20": {
+	    "paddingRight": 20
+	  },
+	  "pr25": {
+	    "paddingRight": 25
+	  },
+	  "pr30": {
+	    "paddingRight": 30
+	  },
+	  "pl35": {
+	    "paddingLeft": 35
+	  },
+	  "pr35": {
+	    "paddingRight": 35
+	  },
+	  "bgWhite": {
+	    "backgroundColor": "#ffffff"
+	  },
+	  "textActive": {
+	    "backgroundColor:active": "#cccccc"
+	  },
+	  "mt0": {
+	    "marginTop": 0
+	  },
+	  "mt10": {
+	    "marginTop": 10
+	  },
+	  "mt20": {
+	    "marginTop": 20
+	  },
+	  "mt30": {
+	    "marginTop": 30
+	  },
+	  "mt50": {
+	    "marginTop": 50
+	  },
+	  "bt0": {
+	    "marginBottom": 0
+	  },
+	  "bt5": {
+	    "marginBottom": 5
+	  },
+	  "bt10": {
+	    "marginBottom": 10
+	  },
+	  "bt15": {
+	    "marginBottom": 15
+	  },
+	  "bt20": {
+	    "marginBottom": 20
+	  },
+	  "bt30": {
+	    "marginBottom": 30
+	  },
+	  "bt50": {
+	    "marginBottom": 50
+	  },
+	  "mr5": {
+	    "marginRight": 5
+	  },
+	  "mr30": {
+	    "marginRight": 30
+	  },
+	  "ml5": {
+	    "marginLeft": 5
+	  },
+	  "ml10": {
+	    "marginLeft": 10
+	  },
+	  "ml20": {
+	    "marginLeft": 20
+	  },
+	  "ml30": {
+	    "marginLeft": 30
+	  },
+	  "header": {
+	    "height": 136,
+	    "paddingTop": 44,
+	    "flexDirection": "row",
+	    "position": "sticky",
+	    "borderBottomWidth": 1,
+	    "borderBottomStyle": "solid",
+	    "borderColor": "#cccccc",
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "nav": {
+	    "width": 654,
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "height": 92,
+	    "alignItems": "center",
+	    "marginTop": 0
+	  },
+	  "nav_back": {
+	    "marginTop": 0,
+	    "flexDirection": "row",
+	    "width": 92,
+	    "height": 92,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "corpusActive": {
+	    "color": "#EB4E40",
+	    "borderColor": "#EB4E40",
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 4
+	  },
+	  "footer": {
+	    "position": "fixed",
+	    "bottom": 0,
+	    "left": 0,
+	    "right": 0,
+	    "height": 100
+	  },
+	  "fill": {
+	    "height": 500,
+	    "width": 750,
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "iconImg": {
+	    "width": 60,
+	    "height": 60,
+	    "fontSize": 60
+	  },
+	  "cell-header": {
+	    "height": 70,
+	    "flexDirection": "row",
+	    "backgroundColor": "#dddddd",
+	    "paddingLeft": 20
+	  },
+	  "cell-row": {
+	    "minHeight": 100,
+	    "flexDirection": "column",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "marginTop": 20
+	  },
+	  "cell-row-row": {
+	    "minHeight": 100,
+	    "flexDirection": "row",
+	    "justifyContent": "space-between",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "paddingRight": 20,
+	    "alignItems": "center",
+	    "marginTop": 20
+	  },
+	  "cell-line": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "borderTop": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid"
+	  },
+	  "borderBottom": {
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "row",
+	    "alignItems": "center",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel-column": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "column",
+	    "justifyContent": "space-around",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid",
+	    "paddingTop": 10,
+	    "paddingBottom": 10
+	  },
+	  "cell-bottom-clear": {
+	    "borderBottomWidth": 0
+	  },
+	  "cell-clear": {
+	    "marginTop": 0,
+	    "marginBottom": 0,
+	    "borderTopWidth": 0,
+	    "borderBottomWidth": 0
+	  },
+	  "space-between": {
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-start": {
+	    "justifyContent": "flex-start",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-end": {
+	    "justifyContent": "flex-end",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-center": {
+	    "justifyContent": "center",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "space-around": {
+	    "justifyContent": "space-around",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-row": {
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-column": {
+	    "flexDirection": "column",
+	    "alignItems": "center"
+	  },
+	  "flex1": {
+	    "flex": 1
+	  },
+	  "flex2": {
+	    "flex": 2
+	  },
+	  "flex3": {
+	    "flex": 3
+	  },
+	  "flex4": {
+	    "flex": 4
+	  },
+	  "flex5": {
+	    "flex": 6
+	  },
+	  "flex6": {
+	    "flex": 6
+	  },
+	  "bkg-white": {
+	    "backgroundColor": "#FFFFFF"
+	  },
+	  "bkg-primary": {
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "bkg-gray": {
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "bd-primary": {
+	    "borderColor": "#EB4E40"
+	  },
+	  "bkg-delete": {
+	    "backgroundColor": "#FF0000"
+	  },
+	  "white": {
+	    "color": "#FFFFFF"
+	  },
+	  "primary": {
+	    "color": "#EB4E40"
+	  },
+	  "gray": {
+	    "color": "#999999"
+	  },
+	  "ico": {
+	    "fontSize": 48,
+	    "color": "#EB4E40",
+	    "marginTop": 2
+	  },
+	  "ico_big": {
+	    "fontSize": 72,
+	    "color": "#EB4E40",
+	    "marginTop": 4
+	  },
+	  "ico_small": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "marginTop": 1
+	  },
+	  "arrow": {
+	    "fontSize": 32,
+	    "color": "#cccccc",
+	    "width": 40
+	  },
+	  "check": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40
+	  },
+	  "shopCheck": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40,
+	    "marginLeft": 150
+	  },
+	  "button": {
+	    "fontSize": 32,
+	    "textAlign": "center",
+	    "color": "#ffffff",
+	    "paddingTop": 15,
+	    "paddingBottom": 15,
+	    "backgroundColor": "#EB4E40",
+	    "borderRadius": 15,
+	    "height": 80,
+	    "lineHeight": 50,
+	    "alignItems": "center",
+	    "justifyContent": "center",
+	    "backgroundColor:active": "#cccccc",
+	    "color:active": "#EB4E40",
+	    "backgroundColor:disabled": "#EB4E40",
+	    "color:disabled": "#999999"
+	  },
+	  "refresh": {
+	    "flexDirection": "column",
+	    "alignItems": "center",
+	    "paddingTop": 10
+	  },
+	  "loading": {
+	    "flexDirection": "column",
+	    "alignItems": "center",
+	    "paddingTop": 10
+	  },
+	  "noLoading": {
+	    "height": 999
+	  },
+	  "gif": {
+	    "width": 50,
+	    "height": 50
+	  },
+	  "indicator": {
+	    "fontSize": 36,
+	    "color": "#EB4E40",
+	    "width": 750,
+	    "textAlign": "center",
+	    "marginTop": 20,
+	    "marginBottom": 20
+	  },
+	  "lines-ellipsis": {
+	    "lines": 1,
+	    "textOverflow": "ellipsis"
+	  },
+	  "V1": {
+	    "height": 146,
+	    "paddingTop": 54
+	  },
+	  "IPhoneX": {
+	    "height": 156,
+	    "paddingTop": 64
+	  },
+	  "addTopV1": {
+	    "top": 54
+	  },
+	  "addTopIPhoneX": {
+	    "top": 64
+	  },
+	  "addInfoV1": {
+	    "height": 430,
+	    "paddingTop": 50
+	  },
+	  "addInfoIPhoneX": {
+	    "height": 440,
+	    "paddingTop": 60
+	  },
+	  "addBgImgV1": {
+	    "height": 430
+	  },
+	  "addBgImgIPhoneX": {
+	    "height": 440
+	  },
+	  "hideCorpusV1": {
+	    "top": 146
+	  },
+	  "hideCorpusIPhoneX": {
+	    "top": 156
+	  },
+	  "pageTopV1": {
+	    "top": 226
+	  },
+	  "pageTopIPhoneX": {
+	    "top": 236
+	  },
+	  "maskLayer": {
+	    "position": "fixed",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "backgroundColor": "#000000",
+	    "opacity": 0.5
+	  },
+	  "showBox": {
+	    "position": "fixed",
+	    "top": 150,
+	    "right": 15,
+	    "backgroundColor": "#ffffff",
+	    "borderRadius": 20,
+	    "paddingTop": 20,
+	    "paddingBottom": 20
+	  },
+	  "arrowUp": {
+	    "position": "fixed",
+	    "top": 148,
+	    "right": 30
+	  },
+	  "refreshImg": {
+	    "width": 60,
+	    "height": 60,
+	    "borderRadius": 30
+	  },
+	  "refreshBox": {
+	    "height": 120,
+	    "width": 750,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "indexMtIPhoneX": {
+	    "marginTop": 124
+	  }
+	}
+
+/***/ }),
+
+/***/ 113:
+/***/ (function(module, exports) {
+
+	module.exports = {
+	  "search": {
+	    "backgroundColor": "#eeeeee",
+	    "height": 100
+	  },
+	  "search_box": {
+	    "marginTop": 20,
+	    "marginLeft": 20,
+	    "marginRight": 20,
+	    "marginBottom": 20,
+	    "height": 60,
+	    "borderWidth": 1,
+	    "borderColor": "#cccccc",
+	    "borderStyle": "solid",
+	    "borderRadius": 8,
+	    "flexDirection": "row",
+	    "alignItems": "center",
+	    "justifyContent": "space-between",
+	    "backgroundColor": "#FFFFFF"
+	  },
+	  "scan": {
+	    "paddingRight": 20,
+	    "height": 60,
+	    "alignItems": "center"
+	  }
+	}
+
+/***/ }),
+
+/***/ 114:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
+	exports.default = {
+	    props: {
+	        keyword: { default: '搜索' }
+	    },
+	    methods: {
+	        gosearch: function gosearch(e) {
+	            this.$emit('gosearch');
+	        },
+	        scan: function scan() {
+	            this.$emit('scan');
+	        }
+	    }
+	};
+	module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 115:
+/***/ (function(module, exports) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: ["search"]
+	  }, [_c('div', {
+	    staticClass: ["search_box"],
+	    on: {
+	      "click": function($event) {
+	        _vm.gosearch()
+	      }
+	    }
+	  }, [_c('div', {
+	    staticClass: ["scan", "flex-end", "flex1"]
+	  }), _c('div', {
+	    staticClass: ["flex-center", "flex5"]
+	  }, [_c('text', {
+	    staticClass: ["ico_small", "gray"],
+	    style: {
+	      fontFamily: 'iconfont'
+	    }
+	  }, [_vm._v("")]), _c('text', {
+	    staticClass: ["sub_title"]
+	  }, [_vm._v(_vm._s(_vm.keyword))])]), _c('div', {
+	    staticClass: ["scan", "flex-end", "flex1"],
+	    on: {
+	      "click": _vm.scan
+	    }
+	  }, [_c('text', {
+	    staticClass: ["ico_small", "gray"],
+	    style: {
+	      fontFamily: 'iconfont'
+	    }
+	  }, [_vm._v("")])])])])
+	},staticRenderFns: []}
+	module.exports.render._withStripped = true
+
+/***/ }),
+
+/***/ 136:
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = { "default": __webpack_require__(137), __esModule: true };
+
+/***/ }),
+
+/***/ 137:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var core = __webpack_require__(12);
+	var $JSON = core.JSON || (core.JSON = { stringify: JSON.stringify });
+	module.exports = function stringify(it) { // eslint-disable-line no-unused-vars
+	  return $JSON.stringify.apply($JSON, arguments);
+	};
+
+
+/***/ }),
+
+/***/ 148:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = []
+
+	/* styles */
+	__vue_styles__.push(__webpack_require__(98)
+	)
+	__vue_styles__.push(__webpack_require__(99)
+	)
+
+	/* script */
+	__vue_exports__ = __webpack_require__(100)
+
+	/* template */
+	var __vue_template__ = __webpack_require__(101)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	__vue_options__.__file = "/Users/leistercheung/Documents/mopian/mp/src/include/noData.vue"
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	__vue_options__._scopeId = "data-v-562bbe74"
+	__vue_options__.style = __vue_options__.style || {}
+	__vue_styles__.forEach(function (module) {
+	  for (var name in module) {
+	    __vue_options__.style[name] = module[name]
+	  }
+	})
+	if (typeof __register_static_styles__ === "function") {
+	  __register_static_styles__(__vue_options__._scopeId, __vue_styles__)
+	}
+
+	module.exports = __vue_exports__
+
+
+/***/ }),
+
+/***/ 149:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var dom = weex.requireModule('dom');
+	var event = weex.requireModule('event');
+	var stream = weex.requireModule('stream');
+	var storage = weex.requireModule('storage');
+	var animation = weex.requireModule('animation');
+	exports.default = { dom: dom, event: event, stream: stream, storage: storage, animation: animation };
+	module.exports = exports['default'];
+
+/***/ }),
+
+/***/ 155:
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __vue_exports__, __vue_options__
+	var __vue_styles__ = []
+
+	/* styles */
+	__vue_styles__.push(__webpack_require__(112)
+	)
+	__vue_styles__.push(__webpack_require__(113)
+	)
+
+	/* script */
+	__vue_exports__ = __webpack_require__(114)
+
+	/* template */
+	var __vue_template__ = __webpack_require__(115)
+	__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+	if (
+	  typeof __vue_exports__.default === "object" ||
+	  typeof __vue_exports__.default === "function"
+	) {
+	if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+	__vue_options__ = __vue_exports__ = __vue_exports__.default
+	}
+	if (typeof __vue_options__ === "function") {
+	  __vue_options__ = __vue_options__.options
+	}
+	__vue_options__.__file = "/Users/leistercheung/Documents/mopian/mp/src/include/search.vue"
+	__vue_options__.render = __vue_template__.render
+	__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+	__vue_options__._scopeId = "data-v-7c1ae491"
+	__vue_options__.style = __vue_options__.style || {}
+	__vue_styles__.forEach(function (module) {
+	  for (var name in module) {
+	    __vue_options__.style[name] = module[name]
+	  }
+	})
+	if (typeof __register_static_styles__ === "function") {
+	  __register_static_styles__(__vue_options__._scopeId, __vue_styles__)
+	}
+
+	module.exports = __vue_exports__
+
+
+/***/ }),
+
+/***/ 173:
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _utils = __webpack_require__(71);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	//时间格式化 今天 昨天 前天  年月日
+	Vue.filter('daydayfmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+
+	    if (daySub < 1) {
+	        return "今天";
+	    } else if (daySub < 2) {
+	        return "昨天";
+	    } else if (daySub < 3) {
+	        return "前天";
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日';
+	    }
+	});
+
+	//时间格式化 今天 近三天 近七天  七天前
+	Vue.filter('dayfmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return "今天";
+	    }
+	    if (daySub < 3) {
+	        return "近三天";
+	    }
+	    if (daySub < 7) {
+	        return "近七天";
+	    }
+	    return "七天前";
+	});
+	// 时间格式化 10:30 昨天 前天 2017年09月01日 09月01日
+	Vue.filter('timefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return res.h + ":" + res.i;
+	    }
+	    if (daySub < 2) {
+	        return "昨天";
+	    }
+	    if (daySub < 3) {
+	        return "前天";
+	    }
+	    if (res.y == tds.y) {
+	        return res.m + '月' + res.d + '日';
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日';
+	    }
+	});
+
+	// 时间格式化  2017年09月01日 09月01日
+	Vue.filter('ymdtimefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+	    if (res.y == tds.y) {
+	        return res.m + '月' + res.d + '日';
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日';
+	    }
+	});
+
+	// 时间格式化 10:30 昨天10:30  2017年09月01日10:30 09月01日10:30
+	Vue.filter('timefmtMore', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return res.h + ":" + res.i;
+	    }
+	    if (daySub < 2) {
+	        return "昨天" + ' ' + res.h + ":" + res.i;
+	    }
+	    if (res.y == tds.y) {
+	        return res.m + '月' + res.d + '日' + ' ' + res.h + ":" + res.i;
+	    } else {
+	        return res.y + '年' + res.m + '月' + res.d + '日' + ' ' + res.h + ":" + res.i;
+	    }
+	});
+
+	// 时间格式化 10:30 昨天 前天 2017-09-01 09-01
+	Vue.filter('timefmtOther', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var d1 = Date.parse(_utils2.default.ymdtimefmt(value));
+	    var d2 = Date.parse(_utils2.default.ymdtimefmt(Math.round(new Date().getTime())));
+	    var span = Math.abs(d2 - d1);
+	    var daySub = Math.floor(span / (24 * 3600 * 1000));
+	    if (daySub < 1) {
+	        return res.h + ":" + res.i;
+	    }
+	    if (daySub < 2) {
+	        return "昨天";
+	    }
+	    if (daySub < 3) {
+	        return "前天";
+	    }
+	    //如果是今年 就不返回年份
+	    if (res.y == tds.y) {
+	        return res.m + '-' + res.d;
+	    } else {
+	        return res.y + '-' + res.m + '-' + res.d;
+	    }
+	});
+
+	// 时间格式化  2017-09-01
+	Vue.filter('timeDatefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.y + '-' + res.m + '-' + res.d;
+	});
+
+	//月份格式化 本月 上月 2..12月  2016年1月..
+	Vue.filter('monthfmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    var m = tds.m - res.m;
+	    var y = tds.y - tds.y;
+	    if (y < 1 && m < 1) {
+	        return "本月";
+	    }
+	    if (y < 1 && m < 2) {
+	        return "上月";
+	    }
+	    if (y < 1) {
+	        return res.m + "月";
+	    }
+	    return res.y + "年" + res.m + "月";
+	});
+
+	//2017-01-01
+	Vue.filter('datefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.y + "年" + res.m + "月" + res.d + "日";
+	});
+
+	//返回月份 7 8 9 单数字
+	Vue.filter('detailMonth', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.m;
+	});
+
+	//时间格式化 返回 09-30 03:07
+	Vue.filter('datetimefmt', function (value) {
+
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    //如果是今年 就不返回年份
+	    if (res.y == tds.y) {
+	        return res.m + '-' + res.d + '  ' + res.h + ':' + res.i;
+	    } else {
+	        return res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i;
+	    }
+	});
+
+	//时间格式化 返回 09-30 03:07:56 2017-09-30 03:07:56
+	Vue.filter('datemoretimefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    var tds = _utils2.default.resolvetimefmt(Math.round(new Date().getTime()));
+
+	    //如果是今年 就不返回年份
+	    if (res.y == tds.y) {
+	        return res.m + '-' + res.d + '  ' + res.h + ':' + res.i + ':' + res.s;
+	    } else {
+	        return res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i + ':' + res.s;
+	    }
+	});
+	//时间格式化 返回 03:07
+	Vue.filter('hitimefmt', function (value) {
+	    var res = _utils2.default.resolvetimefmt(value);
+	    return res.h + ':' + res.i;
+	});
+
+	//金额保留两位小数点
+	Vue.filter('currencyfmt', function (value) {
+	    if (value == '' || value == null || value == undefined) {
+	        return value;
+	    }
+	    // 返回处理后的值
+	    if (value != null) {
+	        if (value == 0) {
+	            return value;
+	        } else {
+	            var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
+	            return price;
+	        }
+	    }
+	});
+
+/***/ }),
+
+/***/ 376:
+/***/ (function(module, exports) {
+
+	module.exports = {
+	  "wrapper": {
+	    "position": "absolute",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "width": 750,
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "nav_title": {
+	    "fontSize": 38,
+	    "color": "#ffffff",
+	    "lineHeight": 38
+	  },
+	  "title": {
+	    "fontSize": 32,
+	    "color": "#000000"
+	  },
+	  "sub_title": {
+	    "fontSize": 30,
+	    "color": "#999999"
+	  },
+	  "sub_date": {
+	    "fontSize": 26,
+	    "color": "#999999"
+	  },
+	  "fz28": {
+	    "fontSize": 28
+	  },
+	  "fz30": {
+	    "fontSize": 30
+	  },
+	  "fz32": {
+	    "fontSize": 32
+	  },
+	  "fz35": {
+	    "fontSize": 35
+	  },
+	  "fz40": {
+	    "fontSize": 40
+	  },
+	  "boder-bottom": {
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-top": {
+	    "borderStyle": "solid",
+	    "borderTopWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-right": {
+	    "borderStyle": "solid",
+	    "borderRightWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "boder-left": {
+	    "borderStyle": "solid",
+	    "borderLeftWidth": 1,
+	    "borderColor": "#cccccc"
+	  },
+	  "pl10": {
+	    "paddingLeft": 10
+	  },
+	  "pt10": {
+	    "paddingTop": 10
+	  },
+	  "pt15": {
+	    "paddingTop": 15
+	  },
+	  "pb10": {
+	    "paddingBottom": 10
+	  },
+	  "pl20": {
+	    "paddingLeft": 20
+	  },
+	  "pt20": {
+	    "paddingTop": 20
+	  },
+	  "pb15": {
+	    "paddingBottom": 15
+	  },
+	  "pb20": {
+	    "paddingBottom": 20
+	  },
+	  "pt25": {
+	    "paddingTop": 25
+	  },
+	  "pt30": {
+	    "paddingTop": 30
+	  },
+	  "pt40": {
+	    "paddingTop": 40
+	  },
+	  "pb40": {
+	    "paddingBottom": 40
+	  },
+	  "pb30": {
+	    "paddingBottom": 30
+	  },
+	  "pb25": {
+	    "paddingBottom": 25
+	  },
+	  "pl25": {
+	    "paddingLeft": 25
+	  },
+	  "pl30": {
+	    "paddingLeft": 30
+	  },
+	  "pr10": {
+	    "paddingRight": 10
+	  },
+	  "pr20": {
+	    "paddingRight": 20
+	  },
+	  "pr25": {
+	    "paddingRight": 25
+	  },
+	  "pr30": {
+	    "paddingRight": 30
+	  },
+	  "pl35": {
+	    "paddingLeft": 35
+	  },
+	  "pr35": {
+	    "paddingRight": 35
+	  },
+	  "bgWhite": {
+	    "backgroundColor": "#ffffff"
+	  },
+	  "textActive": {
+	    "backgroundColor:active": "#cccccc"
+	  },
+	  "mt0": {
+	    "marginTop": 0
+	  },
+	  "mt10": {
+	    "marginTop": 10
+	  },
+	  "mt20": {
+	    "marginTop": 20
+	  },
+	  "mt30": {
+	    "marginTop": 30
+	  },
+	  "mt50": {
+	    "marginTop": 50
+	  },
+	  "bt0": {
+	    "marginBottom": 0
+	  },
+	  "bt5": {
+	    "marginBottom": 5
+	  },
+	  "bt10": {
+	    "marginBottom": 10
+	  },
+	  "bt15": {
+	    "marginBottom": 15
+	  },
+	  "bt20": {
+	    "marginBottom": 20
+	  },
+	  "bt30": {
+	    "marginBottom": 30
+	  },
+	  "bt50": {
+	    "marginBottom": 50
+	  },
+	  "mr5": {
+	    "marginRight": 5
+	  },
+	  "mr30": {
+	    "marginRight": 30
+	  },
+	  "ml5": {
+	    "marginLeft": 5
+	  },
+	  "ml10": {
+	    "marginLeft": 10
+	  },
+	  "ml20": {
+	    "marginLeft": 20
+	  },
+	  "ml30": {
+	    "marginLeft": 30
+	  },
+	  "header": {
+	    "height": 136,
+	    "paddingTop": 44,
+	    "flexDirection": "row",
+	    "position": "sticky",
+	    "borderBottomWidth": 1,
+	    "borderBottomStyle": "solid",
+	    "borderColor": "#cccccc",
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "nav": {
+	    "width": 654,
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "height": 92,
+	    "alignItems": "center",
+	    "marginTop": 0
+	  },
+	  "nav_back": {
+	    "marginTop": 0,
+	    "flexDirection": "row",
+	    "width": 92,
+	    "height": 92,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "corpusActive": {
+	    "color": "#EB4E40",
+	    "borderColor": "#EB4E40",
+	    "borderStyle": "solid",
+	    "borderBottomWidth": 4
+	  },
+	  "footer": {
+	    "position": "fixed",
+	    "bottom": 0,
+	    "left": 0,
+	    "right": 0,
+	    "height": 100
+	  },
+	  "fill": {
+	    "height": 500,
+	    "width": 750,
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "iconImg": {
+	    "width": 60,
+	    "height": 60,
+	    "fontSize": 60
+	  },
+	  "cell-header": {
+	    "height": 70,
+	    "flexDirection": "row",
+	    "backgroundColor": "#dddddd",
+	    "paddingLeft": 20
+	  },
+	  "cell-row": {
+	    "minHeight": 100,
+	    "flexDirection": "column",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "marginTop": 20
+	  },
+	  "cell-row-row": {
+	    "minHeight": 100,
+	    "flexDirection": "row",
+	    "justifyContent": "space-between",
+	    "backgroundColor": "#ffffff",
+	    "paddingLeft": 20,
+	    "paddingRight": 20,
+	    "alignItems": "center",
+	    "marginTop": 20
+	  },
+	  "cell-line": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "borderTop": {
+	    "borderTopWidth": 1,
+	    "borderTopColor": "#cccccc",
+	    "borderTopStyle": "solid"
+	  },
+	  "borderBottom": {
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "row",
+	    "alignItems": "center",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid"
+	  },
+	  "cell-panel-column": {
+	    "height": 98,
+	    "minHeight": 98,
+	    "flexDirection": "column",
+	    "justifyContent": "space-around",
+	    "borderBottomWidth": 1,
+	    "borderBottomColor": "#cccccc",
+	    "borderBottomStyle": "solid",
+	    "paddingTop": 10,
+	    "paddingBottom": 10
+	  },
+	  "cell-bottom-clear": {
+	    "borderBottomWidth": 0
+	  },
+	  "cell-clear": {
+	    "marginTop": 0,
+	    "marginBottom": 0,
+	    "borderTopWidth": 0,
+	    "borderBottomWidth": 0
+	  },
+	  "space-between": {
+	    "justifyContent": "space-between",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-start": {
+	    "justifyContent": "flex-start",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-end": {
+	    "justifyContent": "flex-end",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-center": {
+	    "justifyContent": "center",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "space-around": {
+	    "justifyContent": "space-around",
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-row": {
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "flex-column": {
+	    "flexDirection": "column",
+	    "alignItems": "center"
+	  },
+	  "flex1": {
+	    "flex": 1
+	  },
+	  "flex2": {
+	    "flex": 2
+	  },
+	  "flex3": {
+	    "flex": 3
+	  },
+	  "flex4": {
+	    "flex": 4
+	  },
+	  "flex5": {
+	    "flex": 6
+	  },
+	  "flex6": {
+	    "flex": 6
+	  },
+	  "bkg-white": {
+	    "backgroundColor": "#FFFFFF"
+	  },
+	  "bkg-primary": {
+	    "backgroundColor": "#EB4E40"
+	  },
+	  "bkg-gray": {
+	    "backgroundColor": "#eeeeee"
+	  },
+	  "bd-primary": {
+	    "borderColor": "#EB4E40"
+	  },
+	  "bkg-delete": {
+	    "backgroundColor": "#FF0000"
+	  },
+	  "white": {
+	    "color": "#FFFFFF"
+	  },
+	  "primary": {
+	    "color": "#EB4E40"
+	  },
+	  "gray": {
+	    "color": "#999999"
+	  },
+	  "ico": {
+	    "fontSize": 48,
+	    "color": "#EB4E40",
+	    "marginTop": 2
+	  },
+	  "ico_big": {
+	    "fontSize": 72,
+	    "color": "#EB4E40",
+	    "marginTop": 4
+	  },
+	  "ico_small": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "marginTop": 1
+	  },
+	  "arrow": {
+	    "fontSize": 32,
+	    "color": "#cccccc",
+	    "width": 40
+	  },
+	  "check": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40
+	  },
+	  "shopCheck": {
+	    "fontSize": 32,
+	    "color": "#EB4E40",
+	    "width": 40,
+	    "marginLeft": 150
+	  },
+	  "button": {
+	    "fontSize": 32,
+	    "textAlign": "center",
+	    "color": "#ffffff",
+	    "paddingTop": 15,
+	    "paddingBottom": 15,
+	    "backgroundColor": "#EB4E40",
+	    "borderRadius": 15,
+	    "height": 80,
+	    "lineHeight": 50,
+	    "alignItems": "center",
+	    "justifyContent": "center",
+	    "backgroundColor:active": "#cccccc",
+	    "color:active": "#EB4E40",
+	    "backgroundColor:disabled": "#EB4E40",
+	    "color:disabled": "#999999"
+	  },
+	  "refresh": {
+	    "flexDirection": "column",
+	    "alignItems": "center",
+	    "paddingTop": 10
+	  },
+	  "loading": {
+	    "flexDirection": "column",
+	    "alignItems": "center",
+	    "paddingTop": 10
+	  },
+	  "noLoading": {
+	    "height": 999
+	  },
+	  "gif": {
+	    "width": 50,
+	    "height": 50
+	  },
+	  "indicator": {
+	    "fontSize": 36,
+	    "color": "#EB4E40",
+	    "width": 750,
+	    "textAlign": "center",
+	    "marginTop": 20,
+	    "marginBottom": 20
+	  },
+	  "lines-ellipsis": {
+	    "lines": 1,
+	    "textOverflow": "ellipsis"
+	  },
+	  "V1": {
+	    "height": 146,
+	    "paddingTop": 54
+	  },
+	  "IPhoneX": {
+	    "height": 156,
+	    "paddingTop": 64
+	  },
+	  "addTopV1": {
+	    "top": 54
+	  },
+	  "addTopIPhoneX": {
+	    "top": 64
+	  },
+	  "addInfoV1": {
+	    "height": 430,
+	    "paddingTop": 50
+	  },
+	  "addInfoIPhoneX": {
+	    "height": 440,
+	    "paddingTop": 60
+	  },
+	  "addBgImgV1": {
+	    "height": 430
+	  },
+	  "addBgImgIPhoneX": {
+	    "height": 440
+	  },
+	  "hideCorpusV1": {
+	    "top": 146
+	  },
+	  "hideCorpusIPhoneX": {
+	    "top": 156
+	  },
+	  "pageTopV1": {
+	    "top": 226
+	  },
+	  "pageTopIPhoneX": {
+	    "top": 236
+	  },
+	  "maskLayer": {
+	    "position": "fixed",
+	    "top": 0,
+	    "left": 0,
+	    "right": 0,
+	    "bottom": 0,
+	    "backgroundColor": "#000000",
+	    "opacity": 0.5
+	  },
+	  "showBox": {
+	    "position": "fixed",
+	    "top": 150,
+	    "right": 15,
+	    "backgroundColor": "#ffffff",
+	    "borderRadius": 20,
+	    "paddingTop": 20,
+	    "paddingBottom": 20
+	  },
+	  "arrowUp": {
+	    "position": "fixed",
+	    "top": 148,
+	    "right": 30
+	  },
+	  "refreshImg": {
+	    "width": 60,
+	    "height": 60,
+	    "borderRadius": 30
+	  },
+	  "refreshBox": {
+	    "height": 120,
+	    "width": 750,
+	    "alignItems": "center",
+	    "justifyContent": "center"
+	  },
+	  "indexMtIPhoneX": {
+	    "marginTop": 124
+	  }
+	}
+
+/***/ }),
+
+/***/ 377:
+/***/ (function(module, exports) {
+
+	module.exports = {
+	  "rightTop": {
+	    "height": 96,
+	    "width": 98,
+	    "alignItems": "center",
+	    "justifyContent": "center",
+	    "marginTop": 5
+	  },
+	  "nav_ico": {
+	    "fontSize": 50,
+	    "color": "#ffffff"
+	  },
+	  "userBox": {
+	    "flexDirection": "row",
+	    "alignItems": "center"
+	  },
+	  "nw": {
+	    "width": 750
+	  },
 	  "deleteText": {
 	    "fontSize": 32,
 	    "color": "#ffffff"
@@ -2548,23 +4593,7 @@
 	    "height": 130,
 	    "alignItems": "center",
 	    "width": 130,
-	    "justifyContent": "center",
-	    "backgroundColor": "#FF0000"
-	  },
-	  "nav": {
-	    "flex": 1,
-	    "flexDirection": "row",
-	    "alignItems": "center",
-	    "justifyContent": "center",
-	    "marginTop": 40
-	  },
-	  "menu": {
-	    "marginTop": 40,
-	    "fontSize": 50,
-	    "lineHeight": 60,
-	    "height": 60,
-	    "width": 60,
-	    "color": "#FFFFFF"
+	    "justifyContent": "center"
 	  },
 	  "messageTotal": {
 	    "backgroundColor": "#FF0000",
@@ -2636,7 +4665,8 @@
 	}
 
 /***/ }),
-/* 272 */
+
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2645,20 +4675,80 @@
 	    value: true
 	});
 
+	var _stringify = __webpack_require__(136);
+
+	var _stringify2 = _interopRequireDefault(_stringify);
+
 	var _fetch = __webpack_require__(105);
 
-	var _utils = __webpack_require__(78);
+	var _utils = __webpack_require__(71);
 
 	var _utils2 = _interopRequireDefault(_utils);
 
-	var _weex2 = __webpack_require__(132);
+	var _weex2 = __webpack_require__(149);
 
-	var _filters = __webpack_require__(144);
+	var _noData = __webpack_require__(148);
+
+	var _noData2 = _interopRequireDefault(_noData);
+
+	var _search = __webpack_require__(155);
+
+	var _search2 = _interopRequireDefault(_search);
+
+	var _filters = __webpack_require__(173);
 
 	var _filters2 = _interopRequireDefault(_filters);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 	//
 	//
 	//
@@ -2816,114 +4906,29 @@
 	exports.default = {
 	    data: function data() {
 	        return {
+	            searchKeyword: '搜索',
 	            messageList: [],
-	            refreshing: false,
 	            canScroll: true,
 	            currentNum: 0,
-	            pageNum: 20
-	            //                messageList:[]
-	            //                messageList:[{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'信徒',
-	            //                    friendMessage:'怎么不回消息？',
-	            //                    messageTime:'10:07',
-	            //                    messageTotal:99
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'霍建华',
-	            //                    friendMessage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXX',
-	            //                    messageTime:'11:08',
-	            //                    messageTotal:17
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'胡歌',
-	            //                    friendMessage:'胡歌邀请你参加《琅琊榜2》的录制,点击链接即可报名！',
-	            //                    messageTime:'12:09',
-	            //                    messageTotal:1
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'Famous、库',
-	            //                    friendMessage:'哈哈哈，好无聊',
-	            //                    messageTime:'昨天',
-	            //                    messageTotal:''
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'陈小春',
-	            //                    friendMessage:'',
-	            //                    messageTime:'12:07',
-	            //                    messageTotal:''
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'番茄',
-	            //                    friendMessage:'炒蛋吗？',
-	            //                    messageTime:'9月8日',
-	            //                    messageTotal:'1'
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'豪客来',
-	            //                    friendMessage:'秋天，又到了吃货的季节。快上库鲁子网挑选吧！',
-	            //                    messageTime:'9月8日',
-	            //                    messageTotal:'1'
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'中国有嘻哈',
-	            //                    friendMessage:'你会freestyle吗？',
-	            //                    messageTime:'昨天',
-	            //                    messageTotal:''
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'那英',
-	            //                    friendMessage:'！',
-	            //                    messageTime:'昨天',
-	            //                    messageTotal:''
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'中国新歌声',
-	            //                    friendMessage:'',
-	            //                    messageTime:'昨天',
-	            //                    messageTotal:''
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'陈小春',
-	            //                    friendMessage:'',
-	            //                    messageTime:'12:07',
-	            //                    messageTotal:''
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'番茄',
-	            //                    friendMessage:'炒蛋吗？',
-	            //                    messageTime:'9月8日',
-	            //                    messageTotal:'1'
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'豪客来',
-	            //                    friendMessage:'秋天，又到了吃货的季节。快上库鲁子网挑选吧！',
-	            //                    messageTime:'9月8日',
-	            //                    messageTotal:'1'
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'中国有嘻哈',
-	            //                    friendMessage:'你会freestyle吗？',
-	            //                    messageTime:'昨天',
-	            //                    messageTotal:''
-	            //                },{
-	            //                    friendImage:'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
-	            //                    friendName:'那英',
-	            //                    friendMessage:'！',
-	            //                    messageTime:'昨天',
-	            //                    messageTotal:''
-	            //                }]
+	            pageNum: 20,
+	            selfUserId: '',
+	            pageName: '消息',
+	            showMenu: false,
+	            clicked: false
 	        };
+	    },
+	    components: {
+	        noData: _noData2.default, search: _search2.default
 	    },
 	    computed: {
 	        //            计算属性
-	        sortList: function sortList() {
-	            return this.messageList.sort(this.sortTime);
-	        }
+	        //            sortList:function() {
+	        //                return this.messageList.sort(this.sortTime);
+	        //            }
 	    },
 	    filters: {
 	        watchName: function watchName(value) {
-	            switch (value.id) {
+	            switch (value.userId) {
 	                case 'gm_10200':
 	                    return '订单提醒';
 	                    break;
@@ -2945,13 +4950,35 @@
 	                case 'gm_10206':
 	                    return '收藏提醒';
 	                    break;
+	                case 'gm_10207':
+	                    return '赞赏提醒';
+	                    break;
+	                case 'gm_10208':
+	                    return '分享提醒';
+	                    break;
+	                case 'gm_10209':
+	                    return '添加好友';
+	                    break;
+	                case 'gm_10210':
+	                    return '同意好友';
+	                    break;
+	                case 'gm_10211':
+	                    return '系统客服';
+	                    break;
+	                case 'gm_10212':
+	                    return '线下收款';
+	                    break;
 	                default:
 	                    return value.nickName;
 	                    break;
 	            }
 	        }
 	    },
+	    props: {
+	        noDataHint: { default: "没有消息，快去聊天吧" }
+	    },
 	    created: function created() {
+	        //            创建前
 	        var _this = this;
 	        _utils2.default.initIconFont();
 	        var listoption = {
@@ -2959,198 +4986,242 @@
 	            keyword: '', //关键址
 	            orderBy: 'desc', //"desc"降序 ,"asc"升序
 	            current: 0,
-	            pageSize: 20
+	            pageSize: 0
 	        };
+	        this.selfUserId = _weex2.event.getUserId();
 	        //            读取本地缓存
 	        _weex2.event.findList(listoption, function (data) {
-	            if (data.type == 'success') {
+	            if (data.type == 'success' && data.data != '') {
 	                data.data.forEach(function (item) {
+	                    //                        item.value = JSON.parse(item.value);
 	                    _this.messageList.push(JSON.parse(item.value));
+	                    //                        _this.messageList.push(item);
 	                });
 	                //                    })
-	            } else {
+	            } else if (data.type == 'success') {} else {
 	                _weex2.event.toast(data.content);
 	            }
 	        });
-	        this.hadMessage();
 	        globalEvent.addEventListener("onMessage", function (e) {
-	            _weex2.event.toast(e);
-	            //                判断是系统消息还是用户消息
-	            if (!_utils2.default.isNull(e.data.data.id) && e.data.data.id.substring(0, 1) == 'g') {
-	                _this.hadMessage();
-	            } else {
-	                //                    用户消息没有userId。只有id。
-	                e.data.data.userId = _utils2.default.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
-	                _this.addMessage(e.data, 1);
-	            }
+	            //                    用户消息没有userId。只有id。
+	            e.data.data.userId = _utils2.default.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
+	            _this.addMessage(e.data);
 	        });
+	        //           添加好友消息红点控制
+	        globalEvent.addEventListener("onNewFriendChange", function (e) {
+	            //                _this.newFriendNum = 0;
+	            _this.messageList.forEach(function (item) {
+	                if (item.id == 'gm_10209') {
+	                    item.unRead = 0;
+	                }
+	            });
+	        });
+	    },
+	    beforeMount: function beforeMount() {
+	        if (_weex2.event.getUId() != 0) {
+	            //            读取未读消息
+	            _weex2.event.getUnReadMessage();
+	        };
 	    },
 
 	    methods: {
+	        classHeader: function classHeader() {
+	            var dc = _utils2.default.device();
+	            return dc;
+	        },
+	        //            判断是否有消息
+	        isEmpty: function isEmpty() {
+	            return this.messageList.length == 0;
+	        },
+
 	        //            向消息列表填入新的消息数据并存入缓存
-	        addMessage: function addMessage(_weex, sign) {
+	        addMessage: function addMessage(_weex) {
 	            var _this = this;
 	            if (_weex.type == 'success') {
 	                //            获取当前时间戳 作为唯一标识符key
 	                var timestamp = Math.round(new Date().getTime() / 1000);
 	                //                    需要判断是否是数组。服务器返回的是数组，onmessage聊天的data是对象。
-	                if (sign == 0) {
-
-	                    _weex.data = _weex.data.reverse();
-
-	                    var _loop = function _loop(i) {
-	                        _weex.data[i].name = _utils2.default.isNull(_weex.data[i].name) ? '' : _weex.data[i].name;
+	                _weex.data.name = _utils2.default.isNull(_weex.data.name) ? '' : _weex.data.name;
+	                _weex.data.userId = _utils2.default.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
+	                var findOption = {
+	                    type: 'message',
+	                    key: _weex.data.userId
+	                    //                    event.toast(_weex);
+	                    //                        本地查找是已有消息列表还是新消息列表~
+	                };_weex2.event.find(findOption, function (data) {
+	                    if (data.type == 'success' && data.data != '') {
+	                        if (!_utils2.default.isNull(data.data.value)) {
+	                            //                        判断是否无法获取到头像跟昵称
+	                            var JSONData = JSON.parse(data.data.value);
+	                            //                                现在安卓后台数据logo nickName有误，不管有没有获取到logo、nickName 都使用本地头像;
+	                            //                                if(utils.isNull(_weex.data.logo)){
+	                            _weex.data.logo = JSONData.logo;
+	                            //                                }
+	                            //                                if(utils.isNull(_weex.data.nickName)){
+	                            _weex.data.nickName = JSONData.nickName;
+	                            //                                }
+	                        }
+	                        var storageDataNew = (0, _stringify2.default)(_weex.data);
 	                        var option = {
 	                            type: 'message',
-	                            key: _weex.data[i].userId,
-	                            value: _weex.data[i],
-	                            keyword: ',' + _weex.data[i].name + ',' + _weex.data[i].nickName + ',' + _weex.data[i].content + ',',
-	                            sort: '0' + timestamp
+	                            key: _weex.data.userId,
+	                            value: storageDataNew,
+	                            keyword: ',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content + ',',
+	                            sort: '0,' + timestamp
 	                        };
 	                        _weex2.event.save(option, function (message) {
-	                            _weex2.event.toast(message);
-	                            if (message.type == 'success' && message.content == '保存成功') {
-	                                _this.messageList.splice(0, 0, _weex.data[i]);
-	                            } else if (message.type == 'success' && message.content == '更新成功') {
+	                            if (message.type == 'success' && message.content == '更新成功') {
 	                                _this.messageList.forEach(function (nowData, nowIndex) {
-	                                    if (nowData.userId == _weex.data[i].userId) {
-
+	                                    //                                            存入缓存里的userId 会消失掉
+	                                    nowData.userId = _utils2.default.isNull(nowData.userId) ? 'u' + (10200 + parseInt(nowData.id)) : nowData.userId;
+	                                    if (nowData.userId == _weex.data.userId) {
 	                                        //                                        删除原来的对话
 	                                        _this.messageList.splice(nowIndex, 1);
+	                                        ////                                                json字符串再次转换回来
+	                                        //                                                _weex.data = JSON.parse(_weex.data);
 	                                        //                                        将新的对话push进
-	                                        _this.messageList.splice(0, 0, _weex.data[i]);
+	                                        _this.messageList.splice(0, 0, _weex.data);
 	                                    }
 	                                });
 	                            } else {
 	                                _weex2.event.toast('网络不稳定');
 	                            }
 	                        });
-	                    };
-
-	                    for (var i = 0; i < _weex.data.length - 1; i++) {
-	                        _loop(i);
+	                    } else {
+	                        //新消息
+	                        var storageData = (0, _stringify2.default)(_weex.data);
+	                        var _option = {
+	                            type: 'message',
+	                            key: _weex.data.userId,
+	                            value: storageData,
+	                            keyword: ',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content + ',',
+	                            sort: '0,' + timestamp
+	                        };
+	                        _weex2.event.save(_option, function (message) {
+	                            if (message.type == 'success' && message.content == '保存成功') {
+	                                ////                                                json字符串再次转换回来
+	                                //                                        _weex.data = JSON.parse(_weex.data);
+	                                _this.messageList.splice(0, 0, _weex.data);
+	                            } else {
+	                                _weex2.event.toast('网络不稳定');
+	                            }
+	                        });
 	                    }
-	                } else {
-	                    _weex.data.name = _utils2.default.isNull(_weex.data.name) ? '' : _weex.data.name;
-	                    //                        _weex.data.userId = utils.isNull(_weex.data.userId) ? _weex.data.id : _weex.data.userId;
-	                    var option = {
-	                        type: 'message',
-	                        key: _weex.data.userId,
-	                        value: _weex.data,
-	                        keyword: ',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content + ',',
-	                        sort: '0' + timestamp
-	                    };
-	                    _weex2.event.save(option, function (message) {
-	                        _weex2.event.toast(message);
-	                        if (message.type == 'success' && message.content == '保存成功') {
-	                            _this.messageList.splice(0, 0, _weex.data);
-	                        } else if (message.type == 'success' && message.content == '更新成功') {
-	                            _this.messageList.forEach(function (nowData, nowIndex) {
-	                                if (nowData.userId == _weex.data.userId) {
-	                                    //                                        删除原来的对话
-	                                    _this.messageList.splice(nowIndex, 1);
-	                                    //                                        将新的对话push进
-	                                    _this.messageList.splice(0, 0, _weex.data);
-	                                }
-	                            });
-	                        } else {
-	                            _weex2.event.toast('网络不稳定');
-	                        }
-	                    });
-	                }
-
-	                //                    _weex.data.forEach(function (item,index) {
-	                //                        item.name = utils.isNull(item.name) ? '' : item.name;
-	                //                        let option = {
-	                //                            type:'message',
-	                //                            key:item.userId,
-	                //                            value:item,
-	                //                            keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
-	                //                            sort:'0' + timestamp
-	                //                        }
-	                //                        event.save(option,function (message) {
-	                //                            event.toast(message);
-	                //                            if(message.type == 'success' && message.content =='保存成功'){
-	                //                                _this.messageList.splice(0,0,item);
-	                //                            }else if(message.type == 'success' && message.content =='更新成功'){
-	                ////                                event.toast('1');
-	                //                                _this.messageList.forEach(function (nowData,nowIndex) {
-	                //                                    if(nowData.userId == item.userId){
-	                ////                                        event.toast('2');
-	                ////                                        删除原来的对话
-	                //                                        _this.messageList.splice(nowIndex,1);
-	                ////                                        将新的对话push进
-	                //                                        _this.messageList.splice(0,0,item);
-	                //                                    }
-	                //                                })
-	                //                            }else{
-	                //                                event.toast('网络不稳定');
-	                //                            }
-	                //                        })
-	                //                    })
+	                });
 	            } else {
 	                _weex2.event.toast(_weex.content);
 	            }
 	        },
 
-	        //          获取服务器新数据
-	        hadMessage: function hadMessage() {
-	            var _this = this;
-	            (0, _fetch.GET)('weex/member/message/dialogue.jhtml', function (_weex) {
-	                //            向消息列表填入新的消息数据并存入缓存
-	                _this.addMessage(_weex, 0);
-	            }, function (err) {
-	                _weex2.event.toast("网络不稳定");
-	            });
-	        },
-
 	        //            根据时间排序
 	        sortTime: function sortTime(a, b) {
 	            //                将时间戳变成日期格式 "2017-05-05 09:55:56"
-	            var first = _utils2.default.timeChange(a.createDate);
-	            var second = _utils2.default.timeChange(b.createDate);
+	            var first = _utils2.default.ymdhistimefmt(a.createDate);
+	            var second = _utils2.default.ymdhistimefmt(b.createDate);
 	            //               '>'号时间越近在前面 倒序    '-'号的话是时间越久的在前面
 	            return new Date(first.replace(/-/g, "\/")) > new Date(second.replace(/-/g, "\/"));
 	        },
 	        //            下拉刷新
-	        onrefresh: function onrefresh(event) {
-	            var _this2 = this;
-
-	            modal.toast({ message: '加载中...', duration: 1 });
-	            this.refreshing = true;
-	            setTimeout(function () {
-	                _this2.refreshing = false;
-	            }, 2000);
-	        },
-
+	        //            onrefresh (event) {
+	        //                modal.toast({ message: '加载中...', duration: 1})
+	        //                this.refreshing = true
+	        //                setTimeout(() => {
+	        //                    this.refreshing = false
+	        //                }, 2000)
+	        //            },
 	        //            跳转消息列表
-	        jumpMessage: function jumpMessage(item, index) {
-	            //                event.toast(messageType);
-	            //                event.toast(isRead);
+	        jumpMessage: function jumpMessage(item) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
 	            var _this = this;
-	            _weex2.event.toast(item);
-
-	            if (!_utils2.default.isNull(item.id) && item.id.substring(0, 1) == 'g') {
+	            //                如果没有未读数就不更新缓存。直接跳转页面
+	            if (item.unRead != 0) {
 	                item.unRead = 0;
-	                var timestamp = Math.round(new Date().getTime() / 1000);
-	                var option = {
+	                var findOption = {
 	                    type: 'message',
-	                    key: item.userId,
-	                    value: item,
-	                    keyword: ',' + item.name + ',' + item.nickName + ',' + item.content + ',',
-	                    sort: '0' + timestamp
-	                    //                    更新缓存数据后，跳转到通知页面
-	                };_weex2.event.save(option, function (message) {
-	                    //                        event.openURL('http://192.168.2.157:8081/inform.weex.js?type=' + item.userId,function () {
-	                    _weex2.event.openURL(_utils2.default.locate('view/message/inform.js?type=' + item.userId), function () {});
+	                    key: item.userId
+	                };
+	                _weex2.event.find(findOption, function (data) {
+	                    if (data.type == 'success' && data.data != '') {
+	                        var option = {
+	                            type: 'message',
+	                            key: item.userId,
+	                            value: item,
+	                            keyword: ',' + item.name + ',' + item.nickName + ',' + item.content + ',',
+	                            //                            用的是原来缓存的sort。避免用户只是点击进来看一下。此时sort应该保持不变。但是unread需要置0
+	                            sort: data.data.sort
+	                        };
+	                        _weex2.event.save(option, function (message) {
+	                            if (message.type == 'success') {
+	                                if (!_utils2.default.isNull(item.userId) && item.userId.substring(0, 1) == 'g') {
+	                                    _weex2.event.setReadMessage(item.userId, function (data) {
+	                                        if (data.type == 'success') {
+	                                            _weex2.event.openURL(_utils2.default.locate('view/message/inform.js?type=' + item.userId), function () {
+	                                                _this.clicked = false;
+	                                            });
+	                                            if (item.userId == 'gm_10209') {
+	                                                var listenData = _utils2.default.message('success', '添加好友跳转', '');
+	                                                _weex2.event.sendGlobalEvent('onNewFriendChange', listenData);
+	                                            }
+	                                        } else {
+	                                            _this.clicked = false;
+	                                            _weex2.event.toast(data.content);
+	                                        }
+	                                    });
+	                                } else {
+	                                    //                                       设置已读
+	                                    _weex2.event.setReadMessage(item.userId, function (data) {
+	                                        _this.clicked = false;
+	                                        if (data.type == 'success') {
+	                                            _weex2.event.navToChat(item.userId);
+	                                        } else {
+	                                            _weex2.event.toast(data.content);
+	                                        }
+	                                    });
+	                                };
+	                            } else {
+	                                _this.clicked = false;
+	                                _weex2.event.toast(message.content);
+	                            };
+	                        });
+	                    };
 	                });
 	            } else {
-	                _weex2.event.navToChat(item.userId);
-	            }
+	                if (!_utils2.default.isNull(item.userId) && item.userId.substring(0, 1) == 'g') {
+	                    //                    item.unRead = 0;
+	                    //                    let timestamp = Math.round(new Date().getTime()/1000);
+	                    //                    let option = {
+	                    //                        type:'message',
+	                    //                        key:item.userId,
+	                    //                        value:item,
+	                    //                        keyword:',' + item.name + ',' + item.nickName + ',' + item.content +',',
+	                    //                        sort:'0,' + timestamp
+	                    //                    }
+	                    ////                    更新缓存数据后，跳转到通知页面
+	                    //                    event.save(option,function (message) {
+
+	                    _weex2.event.openURL(_utils2.default.locate('view/message/inform.js?type=' + item.userId), function () {
+	                        _this.clicked = false;
+	                    });
+	                    //                    })
+	                } else {
+	                    //                    item.unRead = 0;
+	                    //                        设置已读
+	                    //                        event.setReadMessage(item.userId,function(data){
+	                    //                            if(data.type == 'success'){
+	                    _weex2.event.navToChat(item.userId);
+	                    _this.clicked = false;
+	                    //                            }else{
+	                    //                                event.toast(data.content);
+	                    //                            }
+	                    //                    });
+	                };
+	            };
 	        },
-	        menu: function menu(page) {},
 	        //            点击屏幕时
-	        ontouchstart: function ontouchstart(e, index) {
+	        ontouchstart: function ontouchstart(e) {
 	            var _this = this;
 	            if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
 	                animation.transition(animationPara, {
@@ -3168,7 +5239,7 @@
 	            animationPara = e.currentTarget;
 	        },
 	        //            移动时
-	        onpanmove: function onpanmove(e, index) {
+	        onpanmove: function onpanmove(e) {
 	            //                获取当前点击的元素。
 	            var _this = this;
 	            if (e.direction == 'right') {
@@ -3202,62 +5273,165 @@
 	                });
 	            }
 	        },
-	        deleteMessage: function deleteMessage() {
-	            _weex2.event.toast('删除成功');
+	        //            删除会话消息；
+	        deleteMessage: function deleteMessage(userId, index) {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            //        modal.confirm({
+	            //            message: '删除后,将清空该？',
+	            //            duration: 0.3,
+	            //            okTitle:'删除',
+	            //            cancelTitle:'取消',
+	            //        }, function (value) {
+	            //            if(value == '删除'){
+	            //
+	            //            }
+	            //        })
+	            //         删除消息会话
+	            if (_weex2.event.deleteConversation(userId)) {
+	                var option = {
+	                    type: 'message',
+	                    key: userId
+	                    //            清除缓存
+	                };_weex2.event.delete(option, function (data) {
+	                    if (data.type == 'success') {
+	                        //                            把动画收回来。
+	                        if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
+	                            animation.transition(animationPara, {
+	                                styles: {
+	                                    transform: 'translateX(0)'
+	                                },
+	                                duration: 10, //ms
+	                                timingFunction: 'ease-in-out', //350 duration配合这个效果目前较好
+	                                //                      timingFunction: 'ease-out',
+	                                needLayout: false,
+	                                delay: 0 //ms
+	                            });
+	                        }
+	                        _this.messageList.splice(index, 1);
+	                    } else {
+	                        _weex2.event.toast(data.content);
+	                    }
+	                    _this.clicked = false;
+	                });
+	            } else {
+	                _this.clicked = false;
+	                _weex2.event.toast('系统繁忙');
+	            };
+	        },
+
+	        //            触发自组件的跳转方法
+	        gosearch: function gosearch() {
+
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            _weex2.event.openURL(_utils2.default.locate('widget/friMsgSearch.js'), function (message) {
+	                //                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+	                _this.clicked = false;
+	                //                    if(message.data != ''){
+	                //                        event.closeURL(message);
+	                //                    }
+	            });
+	        },
+	        //            触发自组件的二维码方法
+	        scan: function scan() {
+	            this.showMenu = false;
+	            _weex2.event.scan(function (message) {
+	                (0, _fetch.SCAN)(message, function (data) {}, function (err) {});
+	            });
+	        },
+	        //            点击右上角菜单
+	        menu: function menu() {
+	            this.showMenu = true;
+	        },
+	        //            触碰遮罩层
+	        maskTouch: function maskTouch() {
+	            this.showMenu = false;
+	        },
+
+	        //            前往添加好友
+	        goAddFriend: function goAddFriend() {
+	            if (this.clicked) {
+	                return;
+	            }
+	            this.clicked = true;
+	            var _this = this;
+	            this.showMenu = false;
+	            _weex2.event.openURL(_utils2.default.locate("view/friend/add.js"), function (message) {
+	                _this.clicked = false;
+	            });
 	        }
 	    }
 	};
 	module.exports = exports['default'];
 
 /***/ }),
-/* 273 */
+
+/***/ 379:
 /***/ (function(module, exports) {
 
 	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
 	  return _c('div', {
 	    staticClass: ["wrapper"]
 	  }, [_c('div', {
-	    staticClass: ["header"]
+	    staticClass: ["header"],
+	    class: [_vm.classHeader()]
 	  }, [_c('div', {
-	    staticClass: ["flex-center", "flex1"]
-	  }), _vm._m(0), _c('div', {
-	    staticClass: ["flex-center", "flex1"],
+	    staticClass: ["nav", "nw"]
+	  }, [_c('div', {
+	    staticStyle: {
+	      width: "100px"
+	    }
+	  }), _c('div', {
+	    staticClass: ["userBox"]
+	  }, [_c('text', {
+	    staticClass: ["nav_title"]
+	  }, [_vm._v(_vm._s(_vm.pageName))])]), _c('div', {
+	    staticClass: ["rightTop"],
 	    on: {
 	      "click": function($event) {
 	        _vm.menu()
 	      }
 	    }
 	  }, [_c('text', {
-	    staticClass: ["menu"],
+	    staticClass: ["nav_ico"],
 	    style: {
 	      fontFamily: 'iconfont'
 	    }
-	  }, [_vm._v("")])])]), _c('list', {
+	  }, [_vm._v("")])])])]), _c('search', {
+	    attrs: {
+	      "keyword": _vm.searchKeyword
+	    },
+	    on: {
+	      "gosearch": _vm.gosearch,
+	      "scan": _vm.scan
+	    }
+	  }), (_vm.isEmpty()) ? _c('noData', {
+	    attrs: {
+	      "noDataHint": _vm.noDataHint
+	    }
+	  }) : _c('list', {
 	    staticClass: ["list"],
 	    attrs: {
 	      "scrollable": _vm.canScroll
 	    }
-	  }, [_c('refresh', {
-	    staticClass: ["refresh"],
-	    attrs: {
-	      "display": _vm.refreshing ? 'show' : 'hide'
-	    },
-	    on: {
-	      "refresh": _vm.onrefresh
-	    }
-	  }, [_c('text', {
-	    staticClass: ["indicator"]
-	  }, [_vm._v("下拉刷新 ...")])]), _vm._l((_vm.messageList), function(item) {
+	  }, _vm._l((_vm.messageList), function(item, index) {
 	    return _c('cell', {
 	      appendAsTree: true,
 	      attrs: {
 	        "append": "tree"
 	      }
 	    }, [_c('div', {
-	      staticClass: ["deleteBox"],
+	      staticClass: ["deleteBox", "bkg-delete"],
 	      on: {
 	        "click": function($event) {
-	          _vm.deleteMessage()
+	          _vm.deleteMessage(item.userId, index)
 	        }
 	      }
 	    }, [_c('text', {
@@ -3266,13 +5440,13 @@
 	      staticClass: ["friendsLine"],
 	      on: {
 	        "click": function($event) {
-	          _vm.jumpMessage(item, _vm.index)
+	          _vm.jumpMessage(item)
 	        },
 	        "swipe": function($event) {
-	          _vm.onpanmove($event, _vm.index)
+	          _vm.onpanmove($event)
 	        },
 	        "touchstart": function($event) {
-	          _vm.ontouchstart($event, _vm.index)
+	          _vm.ontouchstart($event)
 	        }
 	      }
 	    }, [_c('div', {
@@ -3282,7 +5456,7 @@
 	      attrs: {
 	        "src": item.logo
 	      }
-	    })]), (item.unRead != '' || item.unRead != 0) ? _c('div', {
+	    })]), (item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined) ? _c('div', {
 	      staticClass: ["newMessage"]
 	    }, [_c('text', {
 	      staticClass: ["messageTotal"]
@@ -3312,15 +5486,61 @@
 	    }, [_c('text', {
 	      staticClass: ["friendMessage"]
 	    }, [_vm._v(_vm._s(item.content))])])])])])
-	  })], 2)])
-	},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-	  return _c('div', {
-	    staticClass: ["nav", "flex4"]
+	  })), (_vm.showMenu) ? _c('div', [_c('div', {
+	    staticClass: ["maskLayer"],
+	    on: {
+	      "touchstart": _vm.maskTouch
+	    }
+	  }), _c('div', {
+	    staticClass: ["showBox"],
+	    staticStyle: {
+	      width: "230px"
+	    }
+	  }, [_c('div', {
+	    staticClass: ["arrowUp"]
 	  }, [_c('text', {
-	    staticClass: ["nav_title"]
-	  }, [_vm._v("消息")])])
-	}]}
+	    staticClass: ["fz40"],
+	    staticStyle: {
+	      color: "#fff"
+	    },
+	    style: {
+	      fontFamily: 'iconfont'
+	    }
+	  }, [_vm._v("")])]), _c('div', {
+	    staticClass: ["flex-row", "pt25", "pb25", "pl35", "pr35", "textActive"],
+	    staticStyle: {
+	      width: "230px"
+	    },
+	    on: {
+	      "click": function($event) {
+	        _vm.goAddFriend()
+	      }
+	    }
+	  }, [_c('text', {
+	    staticClass: ["fz40"],
+	    style: {
+	      fontFamily: 'iconfont'
+	    }
+	  }, [_vm._v("")]), _c('text', {
+	    staticClass: ["fz28", "pl10"]
+	  }, [_vm._v("添加好友")])]), _c('div', {
+	    staticClass: ["flex-row", "pt25", "pb25", "pl35", "pr35", "textActive"],
+	    on: {
+	      "click": function($event) {
+	        _vm.scan()
+	      }
+	    }
+	  }, [_c('text', {
+	    staticClass: ["fz40"],
+	    style: {
+	      fontFamily: 'iconfont'
+	    }
+	  }, [_vm._v("")]), _c('text', {
+	    staticClass: ["fz28", "pl10"]
+	  }, [_vm._v("扫一扫")])])])]) : _vm._e()], 1)
+	},staticRenderFns: []}
 	module.exports.render._withStripped = true
 
 /***/ })
-/******/ ]);
+
+/******/ });

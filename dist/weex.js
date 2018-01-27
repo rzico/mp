@@ -54,7 +54,8 @@
 	var event = weex.requireModule('event');
 	var stream = weex.requireModule('stream');
 	var storage = weex.requireModule('storage');
-	exports.default = { dom: dom, event: event, stream: stream, storage: storage };
+	var animation = weex.requireModule('animation');
+	exports.default = { dom: dom, event: event, stream: stream, storage: storage, animation: animation };
 	module.exports = exports['default'];
 
 /***/ })
