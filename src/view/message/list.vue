@@ -31,7 +31,7 @@
                         </div>
                         <!--有新消息-->
                         <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
-                            <text class="messageTotal">{{item.unRead}}</text>
+                            <text class="messageTotal">{{item.unRead | watchUnRead}}</text>
                         </div>
                         <div style="flex: 5;">
                             <div style="flex-direction: row;flex: 1;" >
@@ -273,6 +273,14 @@
                     default:
                         return value.nickName;
                         break;
+                }
+            },
+//            过滤未读消息过多的情况
+            watchUnRead:function (value) {
+                if(parseInt(value) > 99){
+                    return "···"
+                }else{
+                    return value;
                 }
             }
         },
