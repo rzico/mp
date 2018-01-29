@@ -2,7 +2,7 @@
     <div class="wrapper">
         <!--导航栏-->
         <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
-        <div>
+        <scroller>
             <!--网页-->
             <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
             <!--下一步-->
@@ -121,7 +121,7 @@
             </div>
             <!--模版内容-->
             <!--</transition>-->
-        </div>
+        </scroller>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -744,7 +744,7 @@
                                     function (data) {
                                         if(data.type == 'success'){
                                             if(shareType == 'copyHref'){
-                                                event.toast('复制成功');
+                                                event.toast('文章链接已复制到剪贴板');
                                             }else{
                                                 event.toast('分享成功');
                                             }
