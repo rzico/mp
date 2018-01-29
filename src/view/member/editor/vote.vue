@@ -1,65 +1,67 @@
 <template>
-    <scroller class="wrapper">
-        <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
+    <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="goComplete"> </navbar>
-        <div class="voteBigBox" v-for="vote in voteList">
-            <!--整个的上方箱子-->
-            <div class="voteBox mt20 border-radius">
-                <!--第一行 投票描述-->
-                <div class="voteTell addBottomBorder">
-                    <text class="gray tellSize">投票描述</text>
-                    <!--多行文本-->
-                    <div class="textareaBox">
-                        <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
-                    </div>
-                </div>
-                <!--第二行开始 选项-->
-                <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in vote.pageBox">
-                    <!--勾选圆形-->
-                    <text class="circle pl10"></text>
-                    <!--多行文本-->
-                    <div class="textareaBox">
-                        <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                        <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @input="optionsOninput($event,index)"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
-                    </div>
-                    <!--删除按钮-->
-                    <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
-                    <!--当隐藏删除按钮时需要有空白区域顶起布局-->
-                    <text class="closeIcon" style="width:60px;"v-else></text>
-                </div>
-                <!--添加选项-->
-                <div class="voteTell addOptions " @click="addOptions()">
-                    <text class="addSize">+</text>
-                    <text class="addSize ml10">添加选项</text>
-                </div>
-            </div>
-            <div class="voteBox mt20 border-radius">
-                <!-- 截止时间-->
-                <div class="voteTell addBottomBorder optionsBox">
-                    <div class="flexRow">
-                        <text class="gray bottomSize">截止时间</text>
-                        <!--时间-->
-                        <div class="textareaBox ml10 flexRow"  >
-                            <!--选择日期-->
-                            <text class="bottomSize" @click="pickDate()">{{vote.chooseDate}}</text>
-                            <!--选择时间-->
-                            <text class="bottomSize ml10" @click="pickTime()">{{vote.chooseTime}}</text>
+        <scroller>
+            <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
+            <div class="voteBigBox" v-for="vote in voteList">
+                <!--整个的上方箱子-->
+                <div class="voteBox mt20 border-radius">
+                    <!--第一行 投票描述-->
+                    <div class="voteTell addBottomBorder">
+                        <text class="gray tellSize">投票描述</text>
+                        <!--多行文本-->
+                        <div class="textareaBox">
+                            <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
                         </div>
                     </div>
-                    <!--重置时间按钮-->
-                    <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="vote.chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
+                    <!--第二行开始 选项-->
+                    <div class="voteTell addBottomBorder optionsBox" v-for="(item,index) in vote.pageBox">
+                        <!--勾选圆形-->
+                        <text class="circle pl10"></text>
+                        <!--多行文本-->
+                        <div class="textareaBox">
+                            <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
+                            <textarea class="textareaClass " :placeholder='setPlaceholder(index)' v-model="item.textAreaMessage" @input="optionsOninput($event,index)"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
+                        </div>
+                        <!--删除按钮-->
+                        <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 2" @click="deleteOptions(index)">&#xe60a;</text>
+                        <!--当隐藏删除按钮时需要有空白区域顶起布局-->
+                        <text class="closeIcon" style="width:60px;"v-else></text>
+                    </div>
+                    <!--添加选项-->
+                    <div class="voteTell addOptions " @click="addOptions()">
+                        <text class="addSize">+</text>
+                        <text class="addSize ml10">添加选项</text>
+                    </div>
                 </div>
-                <!-- 投票类型-->
-                <div class="voteTell ">
-                    <text class="gray bottomSize">投票类型</text>
-                    <!--单选-->
-                    <div class="textareaBox ml10" @click="pickOptions()">
-                        <text class="bottomSize">{{chooseOptions}}</text>
+                <div class="voteBox mt20 border-radius">
+                    <!-- 截止时间-->
+                    <div class="voteTell addBottomBorder optionsBox">
+                        <div class="flexRow">
+                            <text class="gray bottomSize">截止时间</text>
+                            <!--时间-->
+                            <div class="textareaBox ml10 flexRow"  >
+                                <!--选择日期-->
+                                <text class="bottomSize" @click="pickDate()">{{vote.chooseDate}}</text>
+                                <!--选择时间-->
+                                <text class="bottomSize ml10" @click="pickTime()">{{vote.chooseTime}}</text>
+                            </div>
+                        </div>
+                        <!--重置时间按钮-->
+                        <text class="closeIcon " :style="{fontFamily:'iconfont'}" v-if="vote.chooseTime != '' "  @click="noEndTime()">&#xe60a;</text>
+                    </div>
+                    <!-- 投票类型-->
+                    <div class="voteTell ">
+                        <text class="gray bottomSize">投票类型</text>
+                        <!--单选-->
+                        <div class="textareaBox ml10" @click="pickOptions()">
+                            <text class="bottomSize">{{chooseOptions}}</text>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </scroller>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>

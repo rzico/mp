@@ -1,65 +1,67 @@
 <template>
-    <scroller class="wrapper" >
+    <div  class="wrapper">
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
-        <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="addCatagory()">
-                <text class="lineText">添加策略</text>
-                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
-            </div>
-        </div>
-        <!--分类行背景-->
-        <div class="bgWhite ">
-            <!--分类行内容-->
-            <div class="lineStyle bottomBorder" @click="noneDistribution('','')">
-                <!--左侧分类名称-->
-                <div class="flex-row">
-                    <text class="lineText">暂不用策略</text>
-                    <!--<text class="lineText">({{allTotal}})</text>-->
-                </div>
-                <div v-if="catagoryId == 0 || catagoryId == 'undefined'  || catagoryId == ''" >
-                    <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+        <scroller >
+            <div class="bgWhite addCorpus">
+                <div class="lineStyle pr30" @click="addCatagory()">
+                    <text class="lineText">添加策略</text>
+                    <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
                 </div>
             </div>
-        </div>
-        <!--绑定动画-->
-        <transition-group name="paraTransition" tag="div">
             <!--分类行背景-->
-            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)"   >
+            <div class="bgWhite ">
                 <!--分类行内容-->
-                <div class="lineStyle bottomBorder">
+                <div class="lineStyle bottomBorder" @click="noneDistribution('','')">
                     <!--左侧分类名称-->
-                    <div class="flex-row" style="width: 450px;">
-                        <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
+                    <div class="flex-row">
+                        <text class="lineText">暂不用策略</text>
+                        <!--<text class="lineText">({{allTotal}})</text>-->
                     </div>
-                    <div v-if="catagoryId == item.id" >
+                    <div v-if="catagoryId == 0 || catagoryId == 'undefined'  || catagoryId == ''" >
                         <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                     </div>
                 </div>
             </div>
-        </transition-group>
-        <div class="dialog" v-if="isShow">
-            <div class="flex-row ml30">
-                <text class="title">策略名称:</text>
-                <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
+            <!--绑定动画-->
+            <transition-group name="paraTransition" tag="div">
+                <!--分类行背景-->
+                <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)"   >
+                    <!--分类行内容-->
+                    <div class="lineStyle bottomBorder">
+                        <!--左侧分类名称-->
+                        <div class="flex-row" style="width: 450px;">
+                            <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
+                        </div>
+                        <div v-if="catagoryId == item.id" >
+                            <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+                        </div>
+                    </div>
+                </div>
+            </transition-group>
+            <div class="dialog" v-if="isShow">
+                <div class="flex-row ml30">
+                    <text class="title">策略名称:</text>
+                    <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
+                </div>
+                <div class="flex-row ml30">
+                    <text class="title">直接佣金(%):</text>
+                    <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
+                </div>
+                <div class="flex-row ml30">
+                    <text class="title">间接佣金(%):</text>
+                    <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
+                </div>
+                <div class="flex-row ml30">
+                    <text class="title">三级佣金(%):</text>
+                    <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
+                </div>
+                <div class="flex-row button_box">
+                    <text class="button no" @click="close">取消</text>
+                    <text class="button ok" @click="save">确定</text>
+                </div>
             </div>
-            <div class="flex-row ml30">
-                <text class="title">直接佣金(%):</text>
-                <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
-            </div>
-            <div class="flex-row ml30">
-                <text class="title">间接佣金(%):</text>
-                <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
-            </div>
-            <div class="flex-row ml30">
-                <text class="title">三级佣金(%):</text>
-                <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
-            </div>
-            <div class="flex-row button_box">
-                <text class="button no" @click="close">取消</text>
-                <text class="button ok" @click="save">确定</text>
-            </div>
-        </div>
-    </scroller>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>

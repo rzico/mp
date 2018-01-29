@@ -1,7 +1,7 @@
 <template>
     <div  class="wrapper" >
-            <navbar :title="title"  @goback="goback" ></navbar>
-            <scroller>
+        <navbar :title="title"  @goback="goback" ></navbar>
+        <scroller>
             <!--商品名称-->
             <div class="textareaBox boder-bottom boder-top" ref="textareaRef">
                 <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="nameUnitFirstInput"  @focus="onfocus" @blur="onblur"></textarea>
@@ -432,7 +432,7 @@
             nameUnitFirstInput(){
                 //                        临时缓存起来商品数据
                 if(utils.isNull(this.goodsId)){
-                   this.saveDraft();
+                    this.saveDraft();
                 }
             },
             drawData(data){
@@ -635,8 +635,8 @@
                     //选完图片后触发回调函数
                     true, function (mes) {
                         if (mes.type == 'success') {
-                                _this.firstParaImage = mes.data.originalPath;
-                                _this.firstThumbnailImg = mes.data.thumbnailSmallPath;
+                            _this.firstParaImage = mes.data.originalPath;
+                            _this.firstThumbnailImg = mes.data.thumbnailSmallPath;
                             //                        临时缓存起来商品数据
                             if(utils.isNull(_this.goodsId)){
                                 _this.saveDraft();
@@ -651,8 +651,8 @@
                     //选完图片后触发回调函数
                     true, function (mes) {
                         if (mes.type == 'success') {
-                                item.paraImage = mes.data.originalPath;
-                                item.thumbnail = mes.data.thumbnailSmallPath;
+                            item.paraImage = mes.data.originalPath;
+                            item.thumbnail = mes.data.thumbnailSmallPath;
                             //                        临时缓存起来商品数据
                             if(utils.isNull(_this.goodsId)){
                                 _this.saveDraft();
@@ -805,14 +805,14 @@
                     }
 //                判断是否已经是服务器图片
                     if (frontUrl == 'http') {
-                            _this.realSave();
+                        _this.realSave();
                     }else{
                         _this.proTotal++;
                         _this.toSendArticle = true;
                         event.upload(_this.firstParaImage, function (data) {
                             if (data.type == 'success') {
                                 _this.firstParaImage = data.data;
-                                    _this.realSave();
+                                _this.realSave();
                             } else {//上传失败
                                 _this.toSendArticle = false;
                                 _this.currentPro = 0;//当前进度
@@ -965,11 +965,11 @@
                 POST('weex/member/product/submit.jhtml', productData).then(
                     function (res) {
                         if (res.data != '' && res.type == 'success') {
-                                _this.currentPro = 0;//当前进度
-                                _this.proTotal = 0;//总的进度
-                                _this.processWidth = 0;//进度条宽度
-                                _this.delDraft();
-                                event.closeURL(res);
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 0;//总的进度
+                            _this.processWidth = 0;//进度条宽度
+                            _this.delDraft();
+                            event.closeURL(res);
                         } else {
                             event.toast(res.content);
                             _this.toSendArticle = false;

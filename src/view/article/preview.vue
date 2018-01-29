@@ -1,126 +1,128 @@
 <template>
-    <scroller class="wrapper">
+    <div class="wrapper">
         <!--导航栏-->
-        <navbar :title="title"  @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
-        <!--网页-->
-        <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
-        <!--下一步-->
-        <div class="footBox bkg-primary" v-if="!publish"  @click="goOption()">
-            <text class="nextStep">下一步</text>
-        </div>
-        <!--点赞 评论 分享-->
-        <div class="footBox " v-if="publish" >
-            <div class="bottomBtnBox" @click="goLaud()">
-                <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                <text class="fz26fff"  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
+        <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
+        <scroller>
+            <!--网页-->
+            <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
+            <!--下一步-->
+            <div class="footBox bkg-primary" v-if="!publish"  @click="goOption()">
+                <text class="nextStep">下一步</text>
             </div>
-            <div class="bottomBtnBox"  @click="goShare(0)">
-                <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                <text class="fz26fff">分享 {{shareNum}}</text>
+            <!--点赞 评论 分享-->
+            <div class="footBox " v-if="publish" >
+                <div class="bottomBtnBox" @click="goLaud()">
+                    <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                    <text class="fz26fff"  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
+                </div>
+                <div class="bottomBtnBox"  @click="goShare(0)">
+                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                    <text class="fz26fff">分享 {{shareNum}}</text>
+                </div>
+                <div class="bottomBtnBox" @click="goReview()">
+                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                    <text class="fz26fff">评论 {{reviewNum}}</text>
+                </div>
             </div>
-            <div class="bottomBtnBox" @click="goReview()">
-                <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                <text class="fz26fff">评论 {{reviewNum}}</text>
+            <!--模版-->
+            <div class="templateIcon "  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1" >
+                <text class="templateText" >模版</text>
             </div>
-        </div>
-        <!--模版-->
-        <div class="templateIcon "  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1" >
-            <text class="templateText" >模版</text>
-        </div>
-        <!--收藏-->
-        <div class="templateIcon "  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
-            <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
-            <text class="templateText collectText" >收藏</text>
-        </div>
-        <transition name="slide-fade" mode="out-in">
-            <!--模版内容-->
-            <div class="templateBox" v-if="isSelf == 1 && templateChoose"  key="templateContent">
-                <div class="templateBtn">
-                    <!--<div class="btnTextBox">-->
-                    <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
-                    <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
+            <!--收藏-->
+            <div class="templateIcon "  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
+                <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                <text class="templateText collectText" >收藏</text>
+            </div>
+            <transition name="slide-fade" mode="out-in">
+                <!--模版内容-->
+                <div class="templateBox" v-if="isSelf == 1 && templateChoose"  key="templateContent">
+                    <div class="templateBtn">
+                        <!--<div class="btnTextBox">-->
+                        <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
+                        <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
+                        <!--</div>-->
+                        <div class="btnTextBox"  @click="chooseComplete()">
+                            <text class="btnTextSize btnTextColor" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+                            <text class="btnTextSize btnTextColor" style="padding-left: 10px">完成</text>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <!--模版样图-->
+                            <scroller  class="templateImgBox"  scroll-direction="horizontal" >
+                                <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
+                                    <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id)"></image>
+                                </div>
+                            </scroller>
+                        </div>
+                        <div>
+                            <!--模版标题-->
+                            <scroller  class="templateTitleBox"  scroll-direction="horizontal">
+                                <text v-for="(item,index) in templateList" v-if="isNoTemplates(item.templates)" :class="[item.name == templateName ? 'titleActive': '','templateTitle']" @click="tickTitle(item.name)">{{item.name}}</text>
+                            </scroller>
+                        </div>
+                    </div>
+                </div>
+            </transition>
+            <div v-if="isOperation && isSelf == 1">
+                <div class="mask" @touchstart="maskTouch"></div>
+                <div class="operationBox"  style="width: 230px;">
+                    <div class="arrow-up" >
+                        <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
+                    </div>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                        <text class="fz28 pl10">编辑</text>
+                    </div>
+                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="copyArticle()">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                    <!--<text class="fz28 pl10">复制</text>-->
                     <!--</div>-->
-                    <div class="btnTextBox"  @click="chooseComplete()">
-                        <text class="btnTextSize btnTextColor" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
-                        <text class="btnTextSize btnTextColor" style="padding-left: 10px">完成</text>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="deleteArticle()">
+                        <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe652;</text>
+                        <text class="fz28 pl10 primary">删除</text>
                     </div>
-                </div>
-                <div>
-                    <div>
-                        <!--模版样图-->
-                        <scroller  class="templateImgBox"  scroll-direction="horizontal" >
-                            <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
-                                <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id)"></image>
-                            </div>
-                        </scroller>
+                    <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
+                        <text class="fz28 pl10">生成长图</text>
                     </div>
-                    <div>
-                        <!--模版标题-->
-                        <scroller  class="templateTitleBox"  scroll-direction="horizontal">
-                            <text v-for="(item,index) in templateList" v-if="isNoTemplates(item.templates)" :class="[item.name == templateName ? 'titleActive': '','templateTitle']" @click="tickTitle(item.name)">{{item.name}}</text>
-                        </scroller>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                        <text class="fz28 pl10">文章设置</text>
+                    </div>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                        <text class="fz28 pl10">分享</text>
                     </div>
                 </div>
             </div>
-        </transition>
-        <div v-if="isOperation && isSelf == 1">
-            <div class="mask" @touchstart="maskTouch"></div>
-            <div class="operationBox"  style="width: 230px;">
-                <div class="arrow-up" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="fz28 pl10">编辑</text>
-                </div>
-                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive">-->
-                <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
-                <!--<text class="fz28 pl10">复制</text>-->
-                <!--</div>-->
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="deleteArticle()">
-                    <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe652;</text>
-                    <text class="fz28 pl10 primary">删除</text>
-                </div>
-                <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
-                    <text class="fz28 pl10">生成长图</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                    <text class="fz28 pl10">文章设置</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                    <text class="fz28 pl10">分享</text>
+            <div v-if="isOperation  && isSelf == 0">
+                <div class="mask" @touchstart="maskTouch"></div>
+                <div class="operationBox"  style="width: 230px;">
+                    <div class="arrow-up" >
+                        <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
+                    </div>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                        <text class="fz28 pl10">作者主页</text>
+                    </div>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                        <text class="fz28 pl10">分享</text>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div v-if="isOperation  && isSelf == 0">
-            <div class="mask" @touchstart="maskTouch"></div>
-            <div class="operationBox"  style="width: 230px;">
-                <div class="arrow-up" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="fz28 pl10">作者主页</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                    <text class="fz28 pl10">分享</text>
-                </div>
+            <!--动画无效-->
+            <!--<transition name="slide-fade-share" mode="out-in">-->
+            <div v-if="showShare"  key="share" >
+                <div class="mask" @touchstart="maskTouch"></div>
+                <share @doShare="doShare" @doCancel="doCancel"></share>
             </div>
-        </div>
-        <!--动画无效-->
-        <!--<transition name="slide-fade-share" mode="out-in">-->
-        <div v-if="showShare"  key="share" >
-            <div class="mask" @touchstart="maskTouch"></div>
-            <share @doShare="doShare" @doCancel="doCancel"></share>
-        </div>
-        <!--模版内容-->
-        <!--</transition>-->
-    </scroller>
+            <!--模版内容-->
+            <!--</transition>-->
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
@@ -296,8 +298,7 @@
     .webView{
         width:750px;
         position: absolute;
-        top:136px;
-        /*bottom: 100px;*/
+        top:0;
     }
     .doOpacity{
         opacity: 0;
@@ -309,7 +310,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import navbar from '../../include/navbar.vue'
+    import navbar from './header.vue'
     import share from '../../include/share.vue'
     import utils from '../../assets/utils';
     const webview = weex.requireModule('webview');
@@ -341,6 +342,7 @@
                 showShare:false,
                 screenHeight:0,
                 clicked:false,
+                authorInfo:[]
             }
         },
         components: {
@@ -348,9 +350,10 @@
         },
         props: {
             title: { default: "预览"},
-            complete:{ default : '编辑'}
+            complete:{ default : '编辑'},
         },
         created(){
+
             var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
@@ -387,6 +390,7 @@
                     _this.isLaud = data.data.hasLaud;
                     _this.isCollect = data.data.hasFavorite;
                     _this.shareNum = data.data.share;
+                    _this.authorInfo = data.data;
                     let uId = event.getUId();
 //            判断是否作者本人
                     if(uId == _this.memberId){
@@ -420,7 +424,7 @@
                     }else if(_this.publish == 'true' && _this.isSelf == 0){
                         _this.publish = true;
                         _this.complete = 'textIcon';
-                        _this.title = '文章详情';
+                        _this.title = '';
                     }
                 }
             },function (err) {
@@ -713,7 +717,7 @@
 //                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
 //                        function (data) {
 ////                            if(data.type == 'success'){
-//                                utils.debug(data);
+//                            utils.debug(data);
 ////                            }
 //                        },
 //                        function (err) {
@@ -740,7 +744,7 @@
                                     function (data) {
                                         if(data.type == 'success'){
                                             if(shareType == 'copyHref'){
-                                                event.toast('复制成功');
+                                                event.toast('文章链接已复制到剪贴板');
                                             }else{
                                                 event.toast('分享成功');
                                             }
@@ -820,6 +824,41 @@
                     };
                 });
             },
+            //关注
+            doFocus(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                POST('weex/member/follow/add.jhtml?authorId=' + this.memberId).then(
+                    function(data){
+                        if(data.type == 'success'){
+                            _this.authorInfo.hasFollow = true;
+                            event.toast('关注成功')
+                        }else{
+                            event.toast(err.content);
+                        }
+                        _this.clicked = false;
+                    },
+                    function(err){
+                        _this.clicked = false;
+                        event.toast(err.content);
+                    }
+                )
+            },
+
+//            复制文章\
+//            copyArticle(){
+//                POST('weex/member/article/grabarticle.jhtml').then(
+//                    function (data) {
+//                        utils.debug(data);
+//                    },function (err) {
+//                        utils.debug(err);
+//                    }
+//                )
+//
+//            }
         }
     }
 </script>
