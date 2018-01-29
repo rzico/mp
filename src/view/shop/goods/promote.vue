@@ -9,7 +9,7 @@
             <text class="fz32 color999">提示:设置完成后,请添加分销政策来设置佣金比例，系统支持返现金与积分方式。</text>
             <text class="fz32 color999">通过本平台产生的店铺积分，1分=1元可在店铺内当现金消费。</text>
         </div>
-        <div class="completeButton">
+        <div class="completeButton" @click="complete()">
             <text class="fz40" style="color:white">完成</text>
         </div>
     </div>
@@ -52,7 +52,8 @@
         data: function () {
             return {
                 isobject:'点击设置',
-                begin:0
+                begin:0,
+                PromoterType:''
             }
         },
         components: {
@@ -79,20 +80,39 @@
                     if (e.result == 'success') {
                         if (e.data == 0){
                             _this.isobject = '任何人';
-                            _this.begin = e.data
+                            _this.begin = e.data;
+                            _this.PromoterType = 'any'
                         }else if(e.data == 1){
                             _this.isobject = '普通会员(VIP1)';
-                            _this.begin = e.data
+                            _this.begin = e.data;
+                            _this.PromoterType = 'vip1'
                         }else if(e.data == 2){
                             _this.isobject = '金卡会员(VIP2)';
-                            _this.begin = e.data
+                            _this.begin = e.data;
+                            _this.PromoterType = 'vip2'
                         }else{
                             _this.isobject = '钻石会员(VIP3)';
-                            _this.begin = e.data
+                            _this.begin = e.data;
+                            _this.PromoterType = 'vip3'
                         }
                     }
                 })
             },
+//            完成
+            complete:function () {
+                POST('weex/member/topic/update.jhtml?promoterType='+this.PromoterType).then(
+                    function (data) {
+                        if(data.type == 'success'){
+                            event.toast('设置成功');
+                            event.closeURL();
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+            }
         }
     }
 </script>

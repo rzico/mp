@@ -1,6 +1,13 @@
 <template>
     <scroller class="wrapper" >
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
+        <div class="setting" @click="gosetting()">
+            <div class="flex-row " style="align-items:center">
+                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                <text class="title ml20 " >设置分成推广</text>
+            </div>
+            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
         <div class="bgWhite addCorpus">
             <div class="lineStyle pr30" @click="jump()">
                 <text class="lineText">添加策略</text>
@@ -33,7 +40,7 @@
                     </div>
                     <!--右侧功能-->
                     <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3)">
+                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point)">
                             <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
                             <text class="gray fontSize30 ml5mr10">修改</text>
                         </div>
@@ -55,7 +62,7 @@
                 </div>
             </div>
         </transition-group>
-        <div class="dialog" v-if="isShow">
+        <!--<div class="dialog" v-if="isShow">
             <div class="flex-row ml30">
                 <text class="title">策略名称:</text>
                 <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
@@ -76,11 +83,24 @@
                 <text class="button no" @click="close">取消</text>
                 <text class="button ok" @click="save">确定</text>
             </div>
-        </div>
+        </div>-->
     </scroller>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .setting {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 36px;
+        padding-right: 30px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background-color: white;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #ccc;
+    }
     .button_box {
         margin-top: 20px;
         background-color: #ccc;
@@ -222,7 +242,7 @@
                 moveSign:false,
                 showSort:false,//子组件
                 catagoryList:[],
-                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false},
+                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',bgChange:false},
                 roles:'',
                 catagory:''
             }
@@ -241,6 +261,10 @@
             this.open()
         },
         methods:{
+//            设置分成推广
+            gosetting:function () {
+                event.openURL(utils.locate("view/shop/goods/promote.js"),function (e) {});
+            },
             //            获取权限
             permissions:function () {
                 var _this = this;
@@ -272,6 +296,7 @@
                                     percent1:item.percent1,
                                     percent2:item.percent2,
                                     percent3:item.percent3,
+                                    point:item.point,
                                     id:item.id,
                                     bgChange:false
                                 })
@@ -292,6 +317,7 @@
                                     percent1:item.precent1,
                                     percent2:item.precent2,
                                     percent3:item.precent3,
+                                    point:item.point,
                                     id:item.id,
                                     bgChange:false
                                 })
@@ -301,72 +327,72 @@
                     })
                 }
             },
-            save:function () {
-                var _this = this;
-                if (utils.isNull(this.item.name)) {
-                    event.toast('请输入名称');
-                    return;
-                }
-                if (utils.isNull(this.item.percent1)) {
-                    event.toast('请输入佣金比例');
-                    return;
-                }
-                if (utils.isNull(this.item.percent2)) {
-                    event.toast('请输入佣金比例');
-                    return;
-                }
-                if (utils.isNull(this.item.percent3)) {
-                    event.toast('请输入佣金比例');
-                    return;
-                }
-                if (utils.isNull(this.item.id)) {
-                    let orders = _this.catagoryList.length + 1;
-                    let name = encodeURI(_this.item.name);
-                    POST('weex/member/distribution/add.jhtml?name=' + name + '&orders=' + orders+'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3).then(
-                        function (res) {
-                            if(res.type == 'success'){
-                                _this.catagoryList.push({
-                                    name:res.data.name,
-                                    percent1:res.data.percent1,
-                                    percent2:res.data.percent2,
-                                    percent3:res.data.percent3,
-                                    bgChange:false,
-                                    id:res.data.id,
-                                });
-                                event.toast('添加成功');
-                                _this.isShow = false;
-                            }else{
-                                event.toast(res.content);
-                            }
-                        },function (err) {
-                            event.toast(err);
-                        }
-                    )
-                } else {
-                    let name = encodeURI(_this.item.name);
-                    POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name+'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3).then(
-                        function (data) {
-                            if(data.type == 'success'){
-                                _this.catagoryList.forEach( function(item) {
-                                    if (item.id==data.data.id) {
-                                        item.name = data.data.name;
-                                        item.percent1 = data.data.percent1;
-                                        item.percent2 = data.data.percent2;
-                                        item.percent3 = data.data.percent3;
-                                    }
-                                });
-                                event.toast('修改成功');
-                                _this.isShow = false;
-                            }else{
-                                event.toast(data.content);
-                            }
-                        },
-                        function (err) {
-                            event.toast(err.content);
-                        }
-                    )
-                }
-            },
+//            save:function () {
+//                var _this = this;
+//                if (utils.isNull(this.item.name)) {
+//                    event.toast('请输入名称');
+//                    return;
+//                }
+//                if (utils.isNull(this.item.percent1)) {
+//                    event.toast('请输入佣金比例');
+//                    return;
+//                }
+//                if (utils.isNull(this.item.percent2)) {
+//                    event.toast('请输入佣金比例');
+//                    return;
+//                }
+//                if (utils.isNull(this.item.percent3)) {
+//                    event.toast('请输入佣金比例');
+//                    return;
+//                }
+//                if (utils.isNull(this.item.id)) {
+//                    let orders = _this.catagoryList.length + 1;
+//                    let name = encodeURI(_this.item.name);
+//                    POST('weex/member/distribution/add.jhtml?name=' + name + '&orders=' + orders+'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3).then(
+//                        function (res) {
+//                            if(res.type == 'success'){
+//                                _this.catagoryList.push({
+//                                    name:res.data.name,
+//                                    percent1:res.data.percent1,
+//                                    percent2:res.data.percent2,
+//                                    percent3:res.data.percent3,
+//                                    bgChange:false,
+//                                    id:res.data.id,
+//                                });
+//                                event.toast('添加成功');
+//                                _this.isShow = false;
+//                            }else{
+//                                event.toast(res.content);
+//                            }
+//                        },function (err) {
+//                            event.toast(err);
+//                        }
+//                    )
+//                } else {
+//                    let name = encodeURI(_this.item.name);
+//                    POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name+'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3).then(
+//                        function (data) {
+//                            if(data.type == 'success'){
+//                                _this.catagoryList.forEach( function(item) {
+//                                    if (item.id==data.data.id) {
+//                                        item.name = data.data.name;
+//                                        item.percent1 = data.data.percent1;
+//                                        item.percent2 = data.data.percent2;
+//                                        item.percent3 = data.data.percent3;
+//                                    }
+//                                });
+//                                event.toast('修改成功');
+//                                _this.isShow = false;
+//                            }else{
+//                                event.toast(data.content);
+//                            }
+//                        },
+//                        function (err) {
+//                            event.toast(err.content);
+//                        }
+//                    )
+//                }
+//            },
 //            添加分类
             addCatagory(){
                 let _this = this;
@@ -381,7 +407,7 @@
                 _this.isShow  = true;
              },
 //            修改分类名称
-            changeName(id,name,percent1,percent2,percent3){
+            changeName(id,name,percent1,percent2,percent3,point){
                 let _this = this;
                 if (!utils.isRoles("A",_this.roles)) {
                     modal.alert({
@@ -390,7 +416,7 @@
                     })
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3),function () {
+                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point),function () {
                     _this.catagoryList =[]
                     _this.open()
                 })

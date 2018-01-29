@@ -56,8 +56,8 @@
     export default {
         data: function () {
             return {
-                item: {id: "", name: "", percent1: "", percent2: "", percent3: "",percent4: "100%", bgChange: false},
-                begin:10,
+                item: {id: "", name: "", percent1: "", percent2: "", percent3: "",percent4: "点击设置", bgChange: false},
+                begin:'',
                 initial:100,
                 pointProp:0,
             }
@@ -77,6 +77,43 @@
             this.item.percent1 = utils.getUrlParameter('percent1');
             this.item.percent2 = utils.getUrlParameter('percent2');
             this.item.percent3 = utils.getUrlParameter('percent3');
+            this.begin = utils.getUrlParameter('point');
+            if(!utils.isNull(this.begin)) {
+                if (_this.begin == 0) {
+                    _this.item.percent4 = '0%'
+                    _this.pointProp = 100
+                } else if (_this.begin == 1) {
+                    _this.item.percent4 = '10%'
+                    _this.pointProp = 90
+                } else if (_this.begin == 2) {
+                    _this.item.percent4 = '20%'
+                    _this.pointProp = 80
+                } else if (_this.begin == 3) {
+                    _this.item.percent4 = '30%'
+                    _this.pointProp = 70
+                } else if (_this.begin == 4) {
+                    _this.item.percent4 = '40%'
+                    _this.pointProp = 60
+                } else if (_this.begin == 5) {
+                    _this.item.percent4 = '50%'
+                    _this.pointProp = 50
+                } else if (_this.begin == 6) {
+                    _this.item.percent4 = '60%'
+                    _this.pointProp = 40
+                } else if (_this.begin == 7) {
+                    _this.item.percent4 = '70%'
+                    _this.pointProp = 30
+                } else if (_this.begin == 8) {
+                    _this.item.percent4 = '80%'
+                    _this.pointProp = 20
+                } else if (_this.begin == 9) {
+                    _this.item.percent4 = '90%'
+                    _this.pointProp = 10
+                }else if (_this.begin == 10) {
+                    _this.item.percent4 = '100%'
+                    _this.pointProp = 0
+                }
+            }
         },
         methods: {
             //            设置提现比例
@@ -132,7 +169,7 @@
                     event.toast('请输入名称');
                     return;
                 }
-                if (utils.isNull(this.item.percent4)) {
+                if (this.item.percent4 =='点击设置') {
                     event.toast('请输入提现比例');
                     return;
                 }
@@ -149,7 +186,7 @@
                     return;
                 }
                 if (utils.isNull(this.item.id)) {
-                    POST('weex/member/distribution/add.jhtml?name=' +encodeURI(_this.item.name) +'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3).then(
+                    POST('weex/member/distribution/add.jhtml?name=' +encodeURI(_this.item.name) +'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3+'&point='+this.begin).then(
                         function (res) {
                             if(res.type == 'success'){
                                 event.toast('添加成功');
