@@ -713,21 +713,21 @@
                         shareType = '';
                         break;
                 }
-                if(id == 4){
-                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
-                        function (data) {
-//                            if(data.type == 'success'){
-                            utils.debug(data);
-//                            }
-                        },
-                        function (err) {
-                            utils.debug(err);
-                            event.toast(err.content);
-                        }
-                    )
-                    _this.clicked = false;
-                    return;
-                }
+//                if(id == 4){
+//                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
+//                        function (data) {
+////                            if(data.type == 'success'){
+//                            utils.debug(data);
+////                            }
+//                        },
+//                        function (err) {
+//                            utils.debug(err);
+//                            event.toast(err.content);
+//                        }
+//                    )
+//                    _this.clicked = false;
+//                    return;
+//                }
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         var option = {
