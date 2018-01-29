@@ -834,8 +834,7 @@
                     this.currentPro ++ ;
                 };
             },
-
-//            设置文章标题
+            //            设置文章标题
             articleTitle:function(title){
                 //防止重复点击按钮
                 if(this.clicked) {
@@ -854,7 +853,7 @@
                     event.openURL(utils.locate('widget/autograph.js?name=articleTitle'), function (message) {
                         _this.clicked = false;
                         if (message.type == 'success' && !utils.isNull(message.data)  && !utils.isNull(message.data.text)) {
-                            _this.setTitle = message.data.text;
+                            _this.setTitle = utils.filteremoji(message.data.text,'article');
                             _this.hadChange = 1;
 //                            if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
@@ -865,7 +864,7 @@
                 })
 
             },
-//            段落里的文本编辑
+            //            段落里的文本编辑
             editorText(index){
                 //防止重复点击按钮
                 if(this.clicked) {
@@ -904,7 +903,7 @@
                     }
                 })
             },
-//            返回
+            //            返回
             goBack:function () {
                 let _this = this;
 //                判断是草稿还是已经发布文章
@@ -966,7 +965,7 @@
                     }
                 }
             },
-//            删除临时缓存和草稿缓存
+            //            删除临时缓存和草稿缓存
             deleteDraft(close){
                 let _this = this;
                 var storageType;
@@ -1012,7 +1011,7 @@
                     }
                 });
             },
-//            删除临时缓存
+            //            删除临时缓存
             delOnceDraft(close){
                 let _this = this;
 //   将临时草稿删除
@@ -1047,7 +1046,7 @@
                     }
                 });
             },
-//            完成
+            //            完成
             goComplete:function () {
                 var _this = this;
                 if(this.setTitle == '点击设置标题'){
@@ -1227,7 +1226,7 @@
                     })
                 }
             },
-//            将页面上的数据存储起来
+            //            将页面上的数据存储起来
             savePage(){
 
 //                每次保存前 将下列3个变量重新置空;
@@ -1305,7 +1304,7 @@
                     })
                 }
             },
-//            图片上传后，正式将文章数据上传服务器
+            //            图片上传后，正式将文章数据上传服务器
             realSave(){
                 var _this = this;
 //                将页面上的数据存储起来
@@ -1394,7 +1393,7 @@
                 )
             },
 
-//            点击"+"号里的文本时
+            //            点击"+"号里的文本时
             addTextPara:function(index){
                 //防止重复点击按钮
 //                if(this.clicked) {
@@ -1432,7 +1431,7 @@
                     }
                 });
             },
-//            点击"+"号里的图片时
+            //            点击"+"号里的图片时
             addImgPara:function (index) {
                 //防止重复点击按钮
 //                if(this.clicked) {
@@ -1473,7 +1472,7 @@
                     }
                 )
             },
-//            点击第一个"+"号时触发
+            //            点击第一个"+"号时触发
             firstShow:function(){
                 this.firstPlusShow = !this.firstPlusShow;
                 if(lastIndex != -1){
@@ -1485,7 +1484,7 @@
                     },60)
                 }
             },
-//            点击第2个以后的"+"号时，触发
+            //            点击第2个以后的"+"号时，触发
             showIconBox:function (index) {
                 setTimeout(()=>{
                     if(this.firstPlusShow == false){
@@ -1508,7 +1507,7 @@
                 },60)
 
             },
-//            点击空白区域时，将功能盒子隐藏，显示出"+"号
+            //            点击空白区域时，将功能盒子隐藏，显示出"+"号
             clearIconBox:function(){
                 if(lastIndex != -1){
                     if(this.paraList[lastIndex].show == false){
@@ -1520,7 +1519,7 @@
                     this.firstPlusShow = true;
                 }
             },
-//            判断是否最后一个段落来添加向下移动的箭头。
+            //            判断是否最后一个段落来添加向下移动的箭头。
             lastPara:function(index){
                 if(index != this.paraList.length-1){
                     return true;
@@ -1528,7 +1527,7 @@
                     return false;
                 }
             },
-//            上箭头
+            //            上箭头
             moveUp:function (index) {
                 let _this = this;
                 this.firstPlusShow = true;
@@ -1567,7 +1566,7 @@
                 this.saveDraft();
 //                }
             },
-//            下箭头
+            //            下箭头
             moveBottom:function (index) {
                 let _this = this;
                 this.firstPlusShow = true;
@@ -1606,7 +1605,7 @@
                 this.saveDraft();
 //                }
             },
-//            用户执行删除时触发询问。
+            //            用户执行删除时触发询问。
             showConfirm :function(index) {
                 var _this = this;
                 var imageNum = 0;
@@ -1641,7 +1640,7 @@
                     }
                 });
             },
-//            删除投票
+            //            删除投票
             closeVote:function (index) {
                 var _this = this;
                 modal.confirm({
@@ -1663,7 +1662,7 @@
                     }
                 })
             },
-//            编辑段落图片或者视频
+            //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
                 //防止重复点击按钮
                 if(this.clicked) {
@@ -1765,7 +1764,7 @@
 //                    })
                 }
             },
-//            下拉刷新
+            //            下拉刷新
             onrefresh (event) {
                 console.log('is refreshing')
                 this.refreshing = true
@@ -1773,11 +1772,11 @@
                     this.refreshing = false
                 }, 10)
             },
-//            正在下拉
+            //            正在下拉
             onpullingdown (event) {
                 console.log('is onpulling down')
             },
-//            跳转封面页面
+            //            跳转封面页面
             goCover:function () {
                 //防止重复点击按钮
 //                if(this.clicked) {
@@ -1851,7 +1850,7 @@
                     }
                 });
             },
-//            跳转音乐页面
+            //            跳转音乐页面
             goMusic:function () {
                 //防止重复点击按钮
                 if(this.clicked) {
@@ -1875,7 +1874,7 @@
                     }
                 });
             },
-//            跳转投票页面
+            //            跳转投票页面
             goVote:function () {
                 //防止重复点击按钮
                 if(this.clicked) {
@@ -1897,7 +1896,7 @@
                     }
                 });
             },
-//            编辑投票
+            //            编辑投票
             editVote:function (index) {
                 //防止重复点击按钮
                 if(this.clicked) {
@@ -1924,7 +1923,7 @@
                     }
                 });
             },
-//            点击"+"加号里的添加视频
+            //            点击"+"加号里的添加视频
             addVideoPara:function (index) {
                 //防止重复点击按钮
 //                if(this.clicked) {
@@ -1964,7 +1963,7 @@
                     }
                 })
             },
-//            点击"+"加号里的添加链接
+            //            点击"+"加号里的添加链接
             addLinkPara:function (index) {
                 //防止重复点击按钮
 //                if(this.clicked) {

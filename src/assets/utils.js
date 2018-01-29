@@ -406,6 +406,19 @@ let utilsFunc = {
         let timeObj = this.resolvetimefmt(value);
         return timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
     },
+    //过滤表情
+    filteremoji(text,type){
+        var ranges = [
+            '\ud83c[\udf00-\udfff]',
+            '\ud83d[\udc00-\ude4f]',
+            '\ud83d[\ude80-\udeff]'
+        ];
+        text = text .replace(new RegExp(ranges.join('|'), 'g'), '');
+        if(this.isNull(text) && type == 'article'){
+            return '点击设置标题'
+        }
+        return text;
+    },
 };
 
 export default utilsFunc;
