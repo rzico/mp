@@ -81,7 +81,7 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
                     <text class="menuBtn">员工</text>
                 </div>
-                <div class="menu" @click="godistribution()">
+                <div class="menu" @click="gopromote()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
                     <text class="menuBtn">分成推广</text>
                 </div>
@@ -419,7 +419,7 @@
                 }
                 event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {_this.clicked = false});
             },
-            godistribution:function () {
+            gopromote:function () {
                 if (this.clicked==true) {
                     return;
                 }
