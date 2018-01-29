@@ -1718,7 +1718,7 @@
 //                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
 //                            })
 //                        }else if(value == '裁剪'){
-                    if(mediaType == 'image' || mediaType == 'product'){
+                    if(mediaType == 'image' || mediaType == 'product' || mediaType == 'html'){
 //                                调用裁剪图片
                         album.openCrop(imgSrc,function (data) {
                             _this.clicked = false;

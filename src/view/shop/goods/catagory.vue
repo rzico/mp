@@ -1,62 +1,64 @@
 <template>
-    <scroller class="wrapper" >
+    <div class="wrapper">
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
-        <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="addCatagory()">
-                <text class="lineText">添加分类</text>
-                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
-            </div>
-        </div>
-        <div>
-            <text class="remind" >长按分类可进行排序,排序后请点击"完成"</text>
-        </div>
-        <!--分类行背景-->
-        <div class="bgWhite ">
-            <!--分类行内容-->
-            <div class="lineStyle bottomBorder">
-                <!--左侧分类名称-->
-                <div class="flex-row">
-                    <text class="lineText">全部商品</text>
-                    <!--<text class="lineText">({{allTotal}})</text>-->
+        <scroller >
+            <div class="bgWhite addCorpus">
+                <div class="lineStyle pr30" @click="addCatagory()">
+                    <text class="lineText">添加分类</text>
+                    <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
                 </div>
             </div>
-        </div>
-        <!--绑定动画-->
-        <transition-group name="paraTransition" tag="div">
+            <div>
+                <text class="remind" >长按分类可进行排序,排序后请点击"完成"</text>
+            </div>
             <!--分类行背景-->
-            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
+            <div class="bgWhite ">
                 <!--分类行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧分类名称-->
-                    <div class="flex-row" style="width: 450px;">
-                        <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
-                        <text class="lineText" :class = "[item.bgChange ? 'active' : 'noActive']">({{item.total}})</text>
-                    </div>
-                    <!--右侧功能-->
-                    <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(index,item.name,item.id)">
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
-                            <text class="gray fontSize30 ml5mr10">改名</text>
-                        </div>
-                        <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe652;</text>
-                            <text class="gray fontSize30 ml5mr10">删除</text>
-                        </div>
-                    </div>
-                    <div class="flex-row"  v-else>
-                        <div class="flex-row btnHtight"  @click="moveUp(index)" v-if="index != 0">
-                            <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe608;</text>
-                            <text class="white fontSize30 ml5mr10" >上移</text>
-                        </div>
-                        <div class="flex-row btnHtight" @click="moveBottom(index)" v-if="lastPara(index)">
-                            <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe601;</text>
-                            <text class="white fontSize30 ml5mr10">下移</text>
-                        </div>
+                    <div class="flex-row">
+                        <text class="lineText">全部商品</text>
+                        <!--<text class="lineText">({{allTotal}})</text>-->
                     </div>
                 </div>
             </div>
-        </transition-group>
-    </scroller>
+            <!--绑定动画-->
+            <transition-group name="paraTransition" tag="div">
+                <!--分类行背景-->
+                <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
+                    <!--分类行内容-->
+                    <div class="lineStyle bottomBorder">
+                        <!--左侧分类名称-->
+                        <div class="flex-row" style="width: 450px;">
+                            <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
+                            <text class="lineText" :class = "[item.bgChange ? 'active' : 'noActive']">({{item.total}})</text>
+                        </div>
+                        <!--右侧功能-->
+                        <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
+                            <div class="flex-row btnHtight" @click="changeName(index,item.name,item.id)">
+                                <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
+                                <text class="gray fontSize30 ml5mr10">改名</text>
+                            </div>
+                            <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
+                                <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe652;</text>
+                                <text class="gray fontSize30 ml5mr10">删除</text>
+                            </div>
+                        </div>
+                        <div class="flex-row"  v-else>
+                            <div class="flex-row btnHtight"  @click="moveUp(index)" v-if="index != 0">
+                                <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe608;</text>
+                                <text class="white fontSize30 ml5mr10" >上移</text>
+                            </div>
+                            <div class="flex-row btnHtight" @click="moveBottom(index)" v-if="lastPara(index)">
+                                <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe601;</text>
+                                <text class="white fontSize30 ml5mr10">下移</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition-group>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>

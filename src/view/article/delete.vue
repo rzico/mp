@@ -1,21 +1,23 @@
 <template>
-    <scroller class="wrapper">
+    <div  class="wrapper">
         <!--导航栏-->
         <navbar :title="title"  @goback="goback" ></navbar>
-        <!--网页-->
-        <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
-        <div class="bottomBtnBox">
-            <div class="bottomBtn " @click="jumpRestore()">
-                <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                <text class="fz35 ml10" >恢复</text>
-            </div>
-            <div class="rightBorder"></div>
-            <div class="bottomBtn"   @click="jumpDelAll()">
-                <text class="fz35 redColor"  :style="{fontFamily:'iconfont'}">&#xe652;</text>
-                <text class="fz35 ml10 redColor" >彻底删除</text>
+        <div>
+            <!--网页-->
+            <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
+            <div class="bottomBtnBox">
+                <div class="bottomBtn " @click="jumpRestore()">
+                    <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                    <text class="fz35 ml10" >恢复</text>
+                </div>
+                <div class="rightBorder"></div>
+                <div class="bottomBtn"   @click="jumpDelAll()">
+                    <text class="fz35 redColor"  :style="{fontFamily:'iconfont'}">&#xe652;</text>
+                    <text class="fz35 ml10 redColor" >彻底删除</text>
+                </div>
             </div>
         </div>
-    </scroller>
+    </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
@@ -56,7 +58,7 @@
     .webView{
         width:750px;
         position: absolute;
-        top:136px;
+        top:0px;
         /*bottom: 100px;*/
     }
 </style>

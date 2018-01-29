@@ -1,83 +1,87 @@
 <template>
-    <scroller class="wrapper" >
+    <div class="wrapper">
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
-        <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="jump()">
-                <text class="lineText">添加策略</text>
-                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
+
+        <scroller >
+            <div class="bgWhite addCorpus">
+                <div class="lineStyle pr30" @click="jump()">
+                    <text class="lineText">添加策略</text>
+                    <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
+                </div>
             </div>
-        </div>
-        <div>
-            <text class="remind" >长按策略可进行排序,排序后请点击"完成"</text>
-        </div>
-        <!--分类行背景-->
-        <!--<div class="bgWhite ">-->
+            <div>
+                <text class="remind" >长按策略可进行排序,排序后请点击"完成"</text>
+            </div>
+            <!--分类行背景-->
+            <!--<div class="bgWhite ">-->
             <!--&lt;!&ndash;分类行内容&ndash;&gt;-->
             <!--<div class="lineStyle bottomBorder">-->
-                <!--&lt;!&ndash;左侧分类名称&ndash;&gt;-->
-                <!--<div class="flex-row">-->
-                    <!--<text class="lineText">全部策略</text>-->
-                    <!--&lt;!&ndash;<text class="lineText">({{allTotal}})</text>&ndash;&gt;-->
-                <!--</div>-->
+            <!--&lt;!&ndash;左侧分类名称&ndash;&gt;-->
+            <!--<div class="flex-row">-->
+            <!--<text class="lineText">全部策略</text>-->
+            <!--&lt;!&ndash;<text class="lineText">({{allTotal}})</text>&ndash;&gt;-->
             <!--</div>-->
-        <!--</div>-->
-        <!--绑定动画-->
-        <transition-group name="paraTransition" tag="div">
-            <!--分类行背景-->
-            <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
-                <!--分类行内容-->
-                <div class="lineStyle bottomBorder">
-                    <!--左侧分类名称-->
-                    <div class="flex-row" style="width: 450px;">
-                        <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
-                    </div>
-                    <!--右侧功能-->
-                    <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3)">
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
-                            <text class="gray fontSize30 ml5mr10">修改</text>
+            <!--</div>-->
+            <!--</div>-->
+            <!--绑定动画-->
+            <transition-group name="paraTransition" tag="div">
+                <!--分类行背景-->
+                <div class="bgWhite " v-for="(item,index) in catagoryList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
+                    <!--分类行内容-->
+                    <div class="lineStyle bottomBorder">
+                        <!--左侧分类名称-->
+                        <div class="flex-row" style="width: 450px;">
+                            <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
                         </div>
-                        <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
-                            <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe652;</text>
-                            <text class="gray fontSize30 ml5mr10">删除</text>
+                        <!--右侧功能-->
+                        <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
+                            <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3)">
+                                <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
+                                <text class="gray fontSize30 ml5mr10">修改</text>
+                            </div>
+                            <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
+                                <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe652;</text>
+                                <text class="gray fontSize30 ml5mr10">删除</text>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex-row"  v-else>
-                        <div class="flex-row btnHtight"  @click="moveUp(index)" v-if="index != 0">
-                            <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe608;</text>
-                            <text class="white fontSize30 ml5mr10" >上移</text>
-                        </div>
-                        <div class="flex-row btnHtight" @click="moveBottom(index)" v-if="lastPara(index)">
-                            <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe601;</text>
-                            <text class="white fontSize30 ml5mr10">下移</text>
+                        <div class="flex-row"  v-else>
+                            <div class="flex-row btnHtight"  @click="moveUp(index)" v-if="index != 0">
+                                <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe608;</text>
+                                <text class="white fontSize30 ml5mr10" >上移</text>
+                            </div>
+                            <div class="flex-row btnHtight" @click="moveBottom(index)" v-if="lastPara(index)">
+                                <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe601;</text>
+                                <text class="white fontSize30 ml5mr10">下移</text>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </transition-group>
+            <div class="dialog" v-if="isShow">
+                <div class="flex-row ml30">
+                    <text class="title">策略名称:</text>
+                    <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
+                </div>
+                <div class="flex-row ml30">
+                    <text class="title">直接佣金:</text>
+                    <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
+                </div>
+                <div class="flex-row ml30">
+                    <text class="title">间接佣金:</text>
+                    <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
+                </div>
+                <div class="flex-row ml30">
+                    <text class="title">三级佣金:</text>
+                    <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
+                </div>
+                <div class="flex-row button_box">
+                    <text class="button no" @click="close">取消</text>
+                    <text class="button ok" @click="save">确定</text>
+                </div>
             </div>
-        </transition-group>
-        <div class="dialog" v-if="isShow">
-            <div class="flex-row ml30">
-                <text class="title">策略名称:</text>
-                <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
-            </div>
-            <div class="flex-row ml30">
-                <text class="title">直接佣金:</text>
-                <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
-            </div>
-            <div class="flex-row ml30">
-                <text class="title">间接佣金:</text>
-                <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
-            </div>
-            <div class="flex-row ml30">
-                <text class="title">三级佣金:</text>
-                <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
-            </div>
-            <div class="flex-row button_box">
-                <text class="button no" @click="close">取消</text>
-                <text class="button ok" @click="save">确定</text>
-            </div>
-        </div>
-    </scroller>
+        </scroller>
+    </div>
+
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
@@ -379,7 +383,7 @@
                 }
                 _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false};
                 _this.isShow  = true;
-             },
+            },
 //            修改分类名称
             changeName(id,name,percent1,percent2,percent3){
                 let _this = this;

@@ -1,16 +1,6 @@
 <template>
-    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll"  @loadmore="onloading" loadmoreoffset="50">
-        <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-        <!--<image class="gif" resize="cover"-->
-        <!--src="file://resources/image/loading.gif"></image>-->
-        <!--<text class="indicator">{{refreshState}}</text>-->
-        <!--<loading-indicator>...</loading-indicator>-->
-        <!--</refresh>-->
-        <!--<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">-->
-        <!--<text class="indicator">Refreshing ...</text>-->
-        <!--</refresh>-->
-        <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-        <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
+    <div class="wrapper">
+        <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div>
             <!--顶部白色区域-->
             <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
@@ -52,135 +42,149 @@
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <!--</transition-group>-->
-        <!--顶部个人信息栏-->
-        <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
-            <!--背景图片-->
-            <image   class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
-            <!--遮罩层-->
-            <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-            <div  class="topHead">
-                <!--用户头像-->
-                <image class="testImage" :src="imageUrl" ></image>
-                <!--个性签名 用户昵称-->
-                <div style="align-items: center;padding-bottom:20px" @click="goAttribute()">
-                    <!--用户昵称-->
-                    <text class="userName">{{userName}}</text>
-                    <!--用户签名-->
-                    <text class="userSign">{{userSign}}</text>
-                </div>
-            </div>
-            <!--功能按钮-->
-            <div class="topBtnBox">
-                <div class="topBtnSmallBox " style="min-width: 120px" @click="goFocus()">
-                    <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                    <text class=" topBtn " >关注</text>
-                </div>
-                <div class="topBtnSmallBox "  @click="goCollect()">
-                    <!--钱包两边的白色边框-->
-                    <div  class="leftBtnBorder topBtnBorder" ></div>
-                    <div  class="rightBtnBorder topBtnBorder" ></div>
-                    <text class="topBtn topBtnBigFont">{{collectNum}}</text>
-                    <text class="topBtn">收藏</text>
-                </div>
-                <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFans()">
-                    <text class="topBtn topBtnBigFont">{{fansNum}}</text>
-                    <text class="topBtn">粉丝</text>
-                </div>
-            </div>
-        </div>
-        <div >
-            <div  class="corpusBox"  >
-                <scroller scroll-direction="horizontal"  class="corpusScroll">
-                    <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
-                    </div>
-                </scroller>
-            </div>
-            <!--<noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>-->
-            <!--文章模块-->
-            <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
-            <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
-                <!--绑定动画-->
-                <!--<transition-group name="paraTransition" tag="div">-->
-                <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
-                    <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                    <div class="atricleHead">
-                        <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                        <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
-                        <text class="articleTitle">{{item.title}}</text>
-                    </div>
-                    <!--文章封面-->
-                    <div style="position: relative">
-                        <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
-                    </div>
-                    <!--文章底部-->
-                    <div class="articleFoot">
-                        <div>
-                            <text class="articleDate">{{item.createDate | timeDatefmt}}</text>
-                            <!--<text class="articleDate">{{item.createDate}}</text>-->
-                        </div>
-                        <div class="relevantInfo">
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                            <text class="relevantText">{{item.hits}}</text>
-                            <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="relevantText">{{item.laud}}</text>
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                            <text class="relevantText">{{item.review}}</text>
-                        </div>
-                    </div>
-                </div>
-                <!--<div style="height: 1300px;">-->
-                <!--</div>-->
-                <!--</transition-group>-->
-            </div>
-        </div>
-        <div class="bottomBtnBox" v-if="authorId != UId">
-            <div class="bottomBtn " v-if="!isFocus" @click="focus()">
-                <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
-                <text class="fz35 ml10" >关注</text>
-            </div>
-            <div class="bottomBtn " v-else @click="focus()">
-                <text class="fz35 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
-                <text class="fz35 ml10 gray" >已关注</text>
-            </div>
-            <div class="rightBorder"></div>
-            <div class="bottomBtn" v-if="friendStatus == 'adopt'" @click="goChat()">
-                <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62f;</text>
-                <text class="fz35 ml10" >私信</text>
-            </div>
-            <div class="bottomBtn" v-else  @click="goAddFriend()">
-                <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
-                <text class="fz35 ml10" >添加好友</text>
-            </div>
-        </div>
-        <div v-if="isOperation ">
-            <div class="mask" @touchstart="maskTouch"></div>
-            <div class="operationBox"  style="width: 230px;">
-                <div class="arrowUp" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
-                </div>
-                <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="friendStatus=='black'" @click="doBlack()">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="fz28 pl10">解除黑名单</text>
-                </div>
-                <div class="flex-row pt25 pb25  textActive " style="width: 230px;;padding-left: 21px;padding-right: 21px" v-else @click="doBlack()">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="fz28 pl10">加入黑名单</text>
-                </div>
-                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
-                <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
-                <!--<text class="fz28 pl10">举报</text>-->
-                <!--</div>-->
+        <scroller  show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll"  @loadmore="onloading" loadmoreoffset="50">
+            <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+            <!--<image class="gif" resize="cover"-->
+            <!--src="file://resources/image/loading.gif"></image>-->
+            <!--<text class="indicator">{{refreshState}}</text>-->
+            <!--<loading-indicator>...</loading-indicator>-->
+            <!--</refresh>-->
+            <!--<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">-->
+            <!--<text class="indicator">Refreshing ...</text>-->
+            <!--</refresh>-->
+            <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
+            <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
 
+            <!--</transition-group>-->
+            <!--顶部个人信息栏-->
+            <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
+                <!--背景图片-->
+                <image   class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
+                <!--遮罩层-->
+                <!--<image class="backgroundMask" :src="maskUrl"></image>-->
+                <div  class="topHead">
+                    <!--用户头像-->
+                    <image class="testImage" :src="imageUrl" ></image>
+                    <!--个性签名 用户昵称-->
+                    <div style="align-items: center;padding-bottom:20px" @click="goAttribute()">
+                        <!--用户昵称-->
+                        <text class="userName">{{userName}}</text>
+                        <!--用户签名-->
+                        <text class="userSign">{{userSign}}</text>
+                    </div>
+                </div>
+                <!--功能按钮-->
+                <div class="topBtnBox">
+                    <div class="topBtnSmallBox " style="min-width: 120px" @click="goFocus()">
+                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
+                        <text class=" topBtn " >关注</text>
+                    </div>
+                    <div class="topBtnSmallBox "  @click="goCollect()">
+                        <!--钱包两边的白色边框-->
+                        <div  class="leftBtnBorder topBtnBorder" ></div>
+                        <div  class="rightBtnBorder topBtnBorder" ></div>
+                        <text class="topBtn topBtnBigFont">{{collectNum}}</text>
+                        <text class="topBtn">收藏</text>
+                    </div>
+                    <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFans()">
+                        <text class="topBtn topBtnBigFont">{{fansNum}}</text>
+                        <text class="topBtn">粉丝</text>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!--</div>-->
-        <!--<loading class="loading" @loading="onloading" :display="showLoading">-->
-        <!--<text class="indicator">Loading ...</text>-->
-        <!--</loading>-->
-    </scroller>
+            <div >
+                <div  class="corpusBox"  >
+                    <scroller scroll-direction="horizontal"  class="corpusScroll">
+                        <div class="articleClass">
+                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+                        </div>
+                    </scroller>
+                </div>
+                <!--<noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>-->
+                <!--文章模块-->
+                <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
+                <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
+                    <!--绑定动画-->
+                    <!--<transition-group name="paraTransition" tag="div">-->
+                    <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
+                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
+                        <div class="atricleHead">
+                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
+                            <text class="articleTitle">{{item.title}}</text>
+                        </div>
+                        <!--文章封面-->
+                        <div style="position: relative">
+                            <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
+                        </div>
+                        <!--文章底部-->
+                        <div class="articleFoot">
+                            <div>
+                                <text class="articleDate">{{item.createDate | timeDatefmt}}</text>
+                                <!--<text class="articleDate">{{item.createDate}}</text>-->
+                            </div>
+                            <div class="relevantInfo">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.hits}}</text>
+                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.laud}}</text>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.review}}</text>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div style="height: 1300px;">-->
+                    <!--</div>-->
+                    <!--</transition-group>-->
+                </div>
+            </div>
+            <div class="bottomBtnBox" v-if="authorId != UId">
+                <div class="bottomBtn " v-if="!isFocus" @click="focus()">
+                    <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
+                    <text class="fz35 ml10" >关注</text>
+                </div>
+                <div class="bottomBtn " v-else @click="focus()">
+                    <text class="fz35 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
+                    <text class="fz35 ml10 gray" >已关注</text>
+                </div>
+                <div class="rightBorder"></div>
+                <div class="bottomBtn" v-if="friendStatus == 'adopt'" @click="goChat()">
+                    <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62f;</text>
+                    <text class="fz35 ml10" >私信</text>
+                </div>
+                <div class="bottomBtn" v-else  @click="goAddFriend()">
+                    <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
+                    <text class="fz35 ml10" >添加好友</text>
+                </div>
+            </div>
+            <div v-if="isOperation ">
+                <div class="mask" @touchstart="maskTouch"></div>
+                <div class="operationBox"  style="width: 230px;">
+                    <div class="arrowUp" >
+                        <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
+                    </div>
+                    <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="friendStatus=='black'" @click="doBlack()">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                        <text class="fz28 pl10">解除黑名单</text>
+                    </div>
+                    <div class="flex-row pt25 pb25  textActive " style="width: 230px;;padding-left: 21px;padding-right: 21px" v-else @click="doBlack()">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                        <text class="fz28 pl10">加入黑名单</text>
+                    </div>
+                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                    <!--<text class="fz28 pl10">举报</text>-->
+                    <!--</div>-->
+
+                </div>
+            </div>
+            <!--</div>-->
+            <!--<loading class="loading" @loading="onloading" :display="showLoading">-->
+            <!--<text class="indicator">Loading ...</text>-->
+            <!--</loading>-->
+        </scroller>
+    </div>
 </template>
 
 <style lang="less" src="../../style/wx.less"/>

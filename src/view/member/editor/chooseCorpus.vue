@@ -1,43 +1,45 @@
 <template>
-    <scroller class="wrapper" >
+    <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
-        <div class="bgWhite addCorpus "  @click="addCorpus()">
-            <div class="lineStyle pr30" >
-                <text class="lineText">添加文集</text>
-                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
-            </div>
-        </div>
-        <!--文集行背景-->
-        <div class="bgWhite">
-            <!--文集行内容-->
-            <div class="lineStyle bottomBorder">
-                <!--左侧文集名称-->
-                <div class="flex-row">
-                    <text class="lineText">全部文章</text>
-                </div>
-                <div v-if="corpusId == 0 || corpusId == 'undefined'" >
-                    <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+        <scroller>
+            <div class="bgWhite addCorpus "  @click="addCorpus()">
+                <div class="lineStyle pr30" >
+                    <text class="lineText">添加文集</text>
+                    <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
                 </div>
             </div>
-        </div>
-        <!--绑定动画-->
-        <transition-group name="paraTransition" tag="div">
             <!--文集行背景-->
-            <div class="bgWhite changeCorpus" v-for="(item,index) in corpusList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
+            <div class="bgWhite">
                 <!--文集行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧文集名称-->
-                    <div class="flex-row" style="width: 450px;" >
-                        <text class="lineText limitWidth"  >{{item.name}}</text>
-                        <text class="lineText">({{item.count}})</text>
+                    <div class="flex-row">
+                        <text class="lineText">全部文章</text>
                     </div>
-                    <div v-if="corpusId == item.id" >
+                    <div v-if="corpusId == 0 || corpusId == 'undefined'" >
                         <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                     </div>
                 </div>
             </div>
-        </transition-group>
-    </scroller>
+            <!--绑定动画-->
+            <transition-group name="paraTransition" tag="div">
+                <!--文集行背景-->
+                <div class="bgWhite changeCorpus" v-for="(item,index) in corpusList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
+                    <!--文集行内容-->
+                    <div class="lineStyle bottomBorder">
+                        <!--左侧文集名称-->
+                        <div class="flex-row" style="width: 450px;" >
+                            <text class="lineText limitWidth"  >{{item.name}}</text>
+                            <text class="lineText">({{item.count}})</text>
+                        </div>
+                        <div v-if="corpusId == item.id" >
+                            <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+                        </div>
+                    </div>
+                </div>
+            </transition-group>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
@@ -56,21 +58,21 @@
         transition: all 0.2s;
     }
     /*.paraTransition-enter{*/
-        /*transform: translateY(-300px);*/
-        /*opacity: 1;*/
+    /*transform: translateY(-300px);*/
+    /*opacity: 1;*/
     /*}*/
     /*.paraTransition-enter-to{*/
-        /*transform: translateY(0px);*/
-        /*opacity: 1;*/
+    /*transform: translateY(0px);*/
+    /*opacity: 1;*/
     /*}*/
 
     /*.paraTransition-leave{*/
-        /*transform: translateY(0px);*/
-        /*opacity: 1;*/
+    /*transform: translateY(0px);*/
+    /*opacity: 1;*/
     /*}*/
     /*.paraTransition-leave-to{*/
-        /*transform: translateY(0px);*/
-        /*opacity: 1;*/
+    /*transform: translateY(0px);*/
+    /*opacity: 1;*/
     /*}*/
 
     .pr30{
@@ -129,7 +131,7 @@
             utils.initIconFont();
             this.getCorpus();
             this.articleId = utils.getUrlParameter('articleId');
-             let urlId = utils.getUrlParameter('corpusId');
+            let urlId = utils.getUrlParameter('corpusId');
             if(utils.isNull(urlId)){
 
             }else{

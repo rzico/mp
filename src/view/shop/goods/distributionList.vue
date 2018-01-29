@@ -1,11 +1,11 @@
 <template>
     <div class="wrapper">
-    <navbar :title="title" :complete="complete" @goback="goback"  @goComplete="goComplete"> </navbar>
+        <navbar :title="title" :complete="complete" @goback="goback"  @goComplete="goComplete"> </navbar>
         <scroller>
-        <div class="cell-panel ml30">
-            <text class="title">策略名称:</text>
-            <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
-        </div>
+            <div class="cell-panel ml30">
+                <text class="title">策略名称:</text>
+                <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
+            </div>
             <div class="cell-panel ml30" @click="withdrawalsetup()">
                 <text class="title">可提现比例:</text>
                 <text class="title ml20">{{item.percent4}}</text>
@@ -13,18 +13,18 @@
             <div class="info ml30" >
                 <text class="">可提现比例为:{{item.percent4}},转换积分比例为{{pointProp}}%</text>
             </div>
-        <div class="cell-panel ml30">
-            <text class="title">直接佣金:</text>
-            <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
-        </div>
-        <div class="cell-panel ml30">
-            <text class="title">间接佣金:</text>
-            <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
-        </div>
-        <div class="cell-panel ml30">
-            <text class="title">三级佣金:</text>
-            <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
-        </div>
+            <div class="cell-panel ml30">
+                <text class="title">直接佣金:</text>
+                <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
+            </div>
+            <div class="cell-panel ml30">
+                <text class="title">间接佣金:</text>
+                <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
+            </div>
+            <div class="cell-panel ml30">
+                <text class="title">三级佣金:</text>
+                <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
+            </div>
         </scroller>
     </div>
 </template>

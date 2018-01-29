@@ -1,13 +1,8 @@
 <template>
-    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
-        <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >-->
-        <!--<image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>-->
-        <!--</refresh>-->
-        <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-        <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear" ></div>
+    <div class="wrapper">
+        <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div >
             <!--顶部白色区域 classHeader(), -->
-            <!--<div class="header  bkg-primary" :style="{opacity: opacityNum}" :class="[opacityNum == 0 ? 'novisible' : 'isvisible']" >-->
             <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw" >
@@ -28,7 +23,6 @@
                 <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
             </div>
             <!--绑定动画-->
-            <!--<transition-group name="navTransition" tag="div">-->
             <!--只能多写一个顶部栏。否则无法适应-->
             <div  class="corpusBox hideCorpus" :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
                 <scroller scroll-direction="horizontal" class="corpusScroll boder-bottom">
@@ -44,183 +38,158 @@
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <!--</transition-group>-->
-        <!--顶部个人信息栏-->
-        <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
-            <!--背景图片-->
-            <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
-            <!--遮罩层-->
-            <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-            <div class="topHead" >
-                <!--用户头像-->
-                <image class="testImage" :src="imageUrl" ></image>
-                <!--个性签名 用户昵称-->
-                <div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >
-                    <!--用户昵称-->
-                    <text class="userName">{{userName}}</text>
-                    <!--用户签名-->
-                    <text class="userSign">{{userSign}}</text>
-                </div>
-            </div>
-            <!--功能按钮-->
-            <div class="topBtnBox">
-                <div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">
-                    <text class="topBtn topBtnBigFont">{{collectNum}}</text>
-                    <text class=" topBtn " >收藏</text>
-                </div>
-                <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
-                    <!--钱包两边的白色边框-->
-                    <div  class="leftBtnBorder topBtnBorder" ></div>
-                    <div  class="rightBtnBorder topBtnBorder" ></div>
-                    <div class="moneyFormat">
-                        <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
-                        <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
+        <scroller  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+            <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
+            <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
+            <!--顶部个人信息栏-->
+            <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
+                <!--背景图片-->
+                <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
+                <!--遮罩层-->
+                <!--<image class="backgroundMask" :src="maskUrl"></image>-->
+                <div class="topHead" >
+                    <!--用户头像-->
+                    <image class="testImage" :src="imageUrl" ></image>
+                    <!--个性签名 用户昵称-->
+                    <div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >
+                        <!--用户昵称-->
+                        <text class="userName">{{userName}}</text>
+                        <!--用户签名-->
+                        <text class="userSign">{{userSign}}</text>
                     </div>
-                    <text class="topBtn" >钱包</text>
                 </div>
-                <div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">
-                    <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                    <text class="topBtn">关注</text>
+                <!--功能按钮-->
+                <div class="topBtnBox">
+                    <div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">
+                        <text class="topBtn topBtnBigFont">{{collectNum}}</text>
+                        <text class=" topBtn " >收藏</text>
+                    </div>
+                    <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
+                        <!--钱包两边的白色边框-->
+                        <div  class="leftBtnBorder topBtnBorder" ></div>
+                        <div  class="rightBtnBorder topBtnBorder" ></div>
+                        <div class="moneyFormat">
+                            <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
+                            <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
+                        </div>
+                        <text class="topBtn" >钱包</text>
+                    </div>
+                    <div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">
+                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
+                        <text class="topBtn">关注</text>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div>
-            <!--<div v-if="isAllArticle" v-cloak >-->
-            <!--<div>-->
-            <!--<text v-if="isNoArticle" class="tipsText">您还没有文章</text>-->
-            <!--</div>-->
 
-            <!--全部文章、回收站栏-->
-            <!--<div class="articleClass">-->
-            <!--<text @click="allArticle()" class="allArticle" :class = "[isAllArticle ? 'active' : 'noActive']">全部文章</text>-->
-            <!--<text @click="recycleSite()" class="recycleSite" :class = "[!isAllArticle ? 'active' : 'noActive']">回收站</text>-->
-            <!--</div>-->
-            <!--<div  class="corpusBox"  :class = "[isTop  ? 'posFixed' : 'posRelative']">-->
-            <div  class="corpusBox" >
-                <scroller scroll-direction="horizontal"  class="corpusScroll">
-                    <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
-
-                    </div>
-                </scroller>
-                <div class="corpusIconBox" @click="goCorpus()"  >
-                    <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
-                </div>
-                <!--文集前后白色遮罩层-->
-                <!--<div class="blur leftBlur" >-->
-                <!--<image src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg" style="width: 20px;height:79px;"></image>-->
-                <!--</div>-->
-                <!--<div class="blur rightBlur"  >-->
-                <!--<image :src="testaaa" style="width: 20px;height:79px;"></image>-->
-                <!--</div>-->
             </div>
-            <!--文章模块-->
-            <div :style="{minHeight:screenHeight + 'px'}" >
-                <!--绑定动画-->
-                <!--<transition-group name="paraTransition" tag="div">-->
-                <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                <div class="articleBox"  v-for="(item,index) in articleList" :key="index" @click="goArticle(item,index)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
-                    <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                    <div class="atricleHead" >
-                        <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                        <text class="articleSign" :class="[item.sort.substring(0,1) == '1' ? 'bd-primary' : ' ',item.sort.substring(0,1) == '1' ? 'primary' : ' ']">{{item | watchWho}}</text>
-                        <text class="articleTitle">{{item.value.title}}</text>
+            <div>
+                <div  class="corpusBox" >
+                    <scroller scroll-direction="horizontal"  class="corpusScroll">
+                        <div class="articleClass">
+                            <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+
+                        </div>
+                    </scroller>
+                    <div class="corpusIconBox" @click="goCorpus()"  >
+                        <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
                     </div>
-                    <!--文章封面-->
-                    <div style="position: relative">
-                        <image :src="item.value.thumbnail | watchThumbnail" resize="cover" class="articleCover"></image>
+                </div>
+                <!--文章模块-->
+                <div :style="{minHeight:screenHeight + 'px'}" >
+                    <!--绑定动画-->
+                    <div class="articleBox"  v-for="(item,index) in articleList" :key="index" @click="goArticle(item,index)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
+                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
+                        <div class="atricleHead" >
+                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                            <text class="articleSign" :class="[item.sort.substring(0,1) == '1' ? 'bd-primary' : ' ',item.sort.substring(0,1) == '1' ? 'primary' : ' ']">{{item | watchWho}}</text>
+                            <text class="articleTitle">{{item.value.title}}</text>
+                        </div>
+                        <!--文章封面-->
+                        <div style="position: relative">
+                            <image :src="item.value.thumbnail | watchThumbnail" resize="cover" class="articleCover"></image>
+                        </div>
+                        <div class="categoryBox">
+                            <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
+                        </div>
+                        <!--文章底部-->
+                        <div class="articleFoot">
+                            <div>
+                                <!--<text class="articleDate">{{item.articleDate}}</text>-->
+                                <text class="articleDate"v-if="item.value.articleOption.articleCatalog.id != '99'">{{item.sort.substring(2) | timeDatefmt}}</text>
+                                <text class="articleDate" v-else>{{item.value.modifyDate | timeDatefmt}}</text>
+                            </div>
+                            <div class="relevantInfo" v-if="item.articleSign != '样例'">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.value.hits}}</text>
+                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.value.laud}}</text>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.value.review}}</text>
+                            </div>
+                        </div>
+                        <!--右侧隐藏栏-->
+                        <div class="rightHidden" v-if="item.value.articleOption.articleCatalog.id != '99'">
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                                    <text class="rightHiddenText">编辑</text>
+                                </div>
+                                <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
+                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
+                                    <text class="rightHiddenText redColor" >删除</text>
+                                </div>
+                            </div>
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox"  @click="jumpTop(item,index)">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>
+                                    <text class="rightHiddenText" v-if="item.sort.substring(0,1) != '1'">置顶</text>
+                                    <text class="rightHiddenText" v-else>取消置顶</text>
+                                </div>
+                                <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                                    <text class="rightHiddenText">文集</text>
+                                </div>
+                            </div>
+                        </div>
+                        <!--右侧隐藏栏-->
+                        <div class="rightHidden" v-else>
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox" @click="jumpDelAll(item,index)">
+                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
+                                    <text class="rightHiddenText redColor" >彻底删除</text>
+                                </div>
+                            </div>
+                            <div class="rightHiddenSmallBox">
+                                <div class="rightHiddenIconBox" @click="jumpRestore(item,index)">
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
+                                    <text class="rightHiddenText">恢复</text>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="categoryBox">
-                        <text class="categoryText">{{item.value.articleOption.articleCategory.name | watchCatetory}}</text>
-                    </div>
-                    <!--文章底部-->
-                    <div class="articleFoot">
+
+                    <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
+                    <!--帮助使用文章-->
+                    <div class="articleBox" v-for="item in helpList" v-if="corpusId == '' && articleList.length < 10" @click="goHelpArticle(item.key)">
+                        <div class="atricleHead">
+                            <text class="articleSign">{{item.articleSign}}</text>
+                            <text class="articleTitle">{{item.articleTitle}}</text>
+                        </div>
+                        <!--文章封面-->
                         <div>
-                            <!--<text class="articleDate">{{item.articleDate}}</text>-->
-                            <text class="articleDate"v-if="item.value.articleOption.articleCatalog.id != '99'">{{item.sort.substring(2) | timeDatefmt}}</text>
-                            <text class="articleDate" v-else>{{item.value.modifyDate | timeDatefmt}}</text>
+                            <image :src="item.articleCoverUrl | watchCatetory" class="articleCover"></image>
                         </div>
-                        <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                            <text class="relevantText">{{item.value.hits}}</text>
-                            <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="relevantText">{{item.value.laud}}</text>
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                            <text class="relevantText">{{item.value.review}}</text>
-                        </div>
-                    </div>
-                    <!--右侧隐藏栏-->
-                    <div class="rightHidden" v-if="item.value.articleOption.articleCatalog.id != '99'">
-                        <div class="rightHiddenSmallBox">
-                            <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
-                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                                <text class="rightHiddenText">编辑</text>
-                            </div>
-                            <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
-                                <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
-                                <text class="rightHiddenText redColor" >删除</text>
-                            </div>
-                        </div>
-                        <div class="rightHiddenSmallBox">
-                            <div class="rightHiddenIconBox"  @click="jumpTop(item,index)">
-                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>
-                                <text class="rightHiddenText" v-if="item.sort.substring(0,1) != '1'">置顶</text>
-                                <text class="rightHiddenText" v-else>取消置顶</text>
-                            </div>
-                            <!--<div class="rightHiddenIconBox" v-else @click="jumpTop(item,index)">-->
-                            <!--<text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>-->
-                            <!--<text class="rightHiddenText">取消置顶</text>-->
-                            <!--</div>-->
-                            <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
-                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                                <text class="rightHiddenText">文集</text>
+                        <!--文章底部-->
+                        <div class="articleFoot">
+                            <div>
+                                <text class="articleDate">{{item.articleDate}}</text>
                             </div>
                         </div>
                     </div>
-                    <!--右侧隐藏栏-->
-                    <div class="rightHidden" v-else>
-                        <div class="rightHiddenSmallBox">
-                            <div class="rightHiddenIconBox" @click="jumpDelAll(item,index)">
-                                <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
-                                <text class="rightHiddenText redColor" >彻底删除</text>
-                            </div>
-                        </div>
-                        <div class="rightHiddenSmallBox">
-                            <div class="rightHiddenIconBox" @click="jumpRestore(item,index)">
-                                <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                                <text class="rightHiddenText">恢复</text>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--</transition-group>-->
 
-                <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-                <!--帮助使用文章-->
-                <div class="articleBox" v-for="item in helpList" v-if="corpusId == '' && articleList.length < 10" @click="goHelpArticle(item.key)">
-                    <div class="atricleHead">
-                        <text class="articleSign">{{item.articleSign}}</text>
-                        <text class="articleTitle">{{item.articleTitle}}</text>
-                    </div>
-                    <!--文章封面-->
-                    <div>
-                        <image :src="item.articleCoverUrl | watchCatetory" class="articleCover"></image>
-                    </div>
-                    <!--文章底部-->
-                    <div class="articleFoot">
-                        <div>
-                            <text class="articleDate">{{item.articleDate}}</text>
-                        </div>
-                    </div>
                 </div>
-
             </div>
-        </div>
-        <!--</div>-->
-        <!--<loading class="loading" @loading="onloading"  :display="showLoading">-->
-        <!--<text class="indicator">Loading ...</text>-->
-        <!--</loading>-->
-    </scroller>
+        </scroller>
+    </div>
 </template>
 
 <style lang="less" src="../../style/wx.less"/>
@@ -1315,7 +1284,7 @@
                 this.opacityNum = 0 ;
 //                this.settingColor = 'white';
                 this.settingColor = '';
-                event.changeWindowsBar("false");
+//                event.changeWindowsBar("false");
             },
 //            onrefresh:function () {
 //                var _this = this;
