@@ -501,7 +501,7 @@
                 if (mes.type == 'success') {
                     if (_this.pageStart==0) {
                         mes.data.data.forEach(function(item){
-                            item.isShow = false
+                            item.isShow = true
                             if(item.shopName == '未分配'){
                                 item.shopName ='请分配店铺'
                             }
@@ -509,7 +509,7 @@
                         _this.lists = mes.data.data;
                     } else {
                         mes.data.data.forEach(function(item){
-                            item.isShow = false
+                            item.isShow = true
                             if(item.shopName == '未分配'){
                                 item.shopName ='请分配店铺'
                             }
