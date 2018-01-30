@@ -157,6 +157,8 @@
         /*justify-content: space-between;*/
         height: 230px;
         margin-left: 20px;
+        flex-direction: column;
+        justify-content: center;
     }
     .fullName{
         font-weight: bold;
@@ -176,7 +178,7 @@
     }
     .shopNameDiv{
         flex-direction: row;
-        margin-top: 10px;
+
     }
     .shopNameDivthree{
         flex-direction: row;

@@ -256,7 +256,7 @@
                     items:_this.rolePicker()
                 }, e => {
                     if (e.result == 'success') {
-                        POST('weex/member/admin/update.jhtml?id=' +_this.id+'&shopId='+_this.shopId+'&roleId='+_this.roles[e.data].id).then(
+                        POST('weex/member/admin/update.jhtml?id=' +_this.id+'&roleId='+_this.roles[e.data].id).then(
                             function (mes) {
                                 if (mes.type == "success") {
                                     _this.lists.forEach(function(item){
