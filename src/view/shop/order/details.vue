@@ -111,7 +111,7 @@
                     <div class="priceLine flex-end">
                         <div class="flex-row">
                             <text class="title mr20">{{item.status | watchStatus}}:</text>
-                            <text class="title" style="color: red">¥{{item.price | currencyfmt}}</text>
+                            <text class="title" style="color: red">¥{{item.amount | currencyfmt}}</text>
                         </div>
                     </div>
                 </div>
