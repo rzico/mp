@@ -86,11 +86,34 @@
         },
         created() {
             utils.initIconFont();
-
+            this.getTopic()
         },
         methods: {
             goback(){
                 event.closeURL();
+            },
+//            获取专栏信息
+            getTopic:function () {
+                let _this = this
+                GET("weex/member/topic/option.jhtml",function (res) {
+                    if (res.type=='success') {
+                        if(res.data.promoterType == 'any'){
+                            _this.isobject = '任何人';
+                            _this.begin = 0
+                        }else if(res.data.promoterType == 'vip1'){
+                            _this.isobject = '普通会员(VIP1)';
+                            _this.begin = 1
+                        }else if(res.data.promoterType == 'vip2'){
+                            _this.isobject = '金卡会员(VIP2)';
+                            _this.begin = 2
+                        }else if(res.data.promoterType == 'vip3'){
+                            _this.isobject = '钻石会员(VIP3)';
+                            _this.begin = 3
+                        }
+                    } else {
+                        event.toast(res.content);
+                    }
+                })
             },
 //            设置对象
             pickObject:function () {
