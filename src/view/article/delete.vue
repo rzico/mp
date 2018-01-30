@@ -2,7 +2,7 @@
     <div  class="wrapper">
         <!--导航栏-->
         <navbar :title="title"  @goback="goback" ></navbar>
-        <div>
+        <scroller>
             <!--网页-->
             <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
             <div class="bottomBtnBox">
@@ -16,7 +16,7 @@
                     <text class="fz35 ml10 redColor" >彻底删除</text>
                 </div>
             </div>
-        </div>
+        </scroller>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>

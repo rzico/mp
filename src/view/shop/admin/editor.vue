@@ -2,24 +2,49 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback"  > </navbar>
             <div style="background-color: white">
-                <div class="headTitle">
-                    <text class="">管理员工职位与所属店铺</text>
+                <div class="cell-panel space-between">
+                    <div class="flex-row">
+                        <text class="title ml10">管理员工职位与所属店铺</text>
+                    </div>
+                    <div class="flex-row flex-end">
+
+                    </div>
                 </div>
-                <div class="name">
-                    <text class="fz32" >姓名:</text>
-                    <text class="fz32 ml20">{{name}}</text>
+                <div class="cell-panel space-between">
+                    <div class="flex-row">
+                        <text class="title ml10">姓名</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{name}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
+                    </div>
                 </div>
-                <div class="cell">
-                    <text class="fz32" >联系方式:</text>
-                    <text class="fz32 ml20">{{mobile}}</text>
+                <div class="cell-panel space-between">
+                    <div class="flex-row">
+                        <text class="title ml10">联系方式</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{mobile}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
+                    </div>
                 </div>
-                <div class="cell" @click="popup()">
-                    <text class="fz32" >设置店铺:</text>
-                    <text class="fz32 ml20">{{shopName}}</text>
+                <div class="cell-panel space-between" @click="popup()">
+                    <div class="flex-row">
+                        <text class="title ml10">设置店铺:</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{shopName}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                 </div>
-                <div class="cell" @click="selectPosition()">
-                    <text class="fz32" >设置职位:</text>
-                    <text class="fz32 ml20">{{roleName}}</text>
+                <div class="cell-panel space-between" @click="selectPosition()">
+                    <div class="flex-row">
+                        <text class="title ml10">设置职位:</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{roleName}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                 </div>
             </div>
         <div class="shareBox" v-if="isPopup">
@@ -60,30 +85,10 @@
         height: 50px;
         flex-direction: row;
         align-items: center;
-        margin-left: 20px;
+        margin-left: 10px;
         margin-bottom: 20px;
         margin-top: 20px;
     }
-    .name{
-        flex-direction: row;
-        align-items: center;
-        border-top-width: 1px;
-        border-bottom-width: 1px;
-        border-color: #cccccc;
-        background-color: white;
-        height: 100px;
-        padding-left: 20px;
-    }
-    .cell{
-        flex-direction: row;
-        align-items: center;
-        border-bottom-width: 1px;
-        border-color: #cccccc;
-        background-color: white;
-        height: 100px;
-        padding-left: 20px;
-    }
-
     /*店铺选择样式*/
     .shareBox{
         height:750px;
@@ -251,7 +256,7 @@
                     items:_this.rolePicker()
                 }, e => {
                     if (e.result == 'success') {
-                        POST('weex/member/admin/update.jhtml?id=' +_this.id+'&shopId='+_this.shopId+'&roleId='+_this.roles[e.data].id).then(
+                        POST('weex/member/admin/update.jhtml?id=' +_this.id+'&roleId='+_this.roles[e.data].id).then(
                             function (mes) {
                                 if (mes.type == "success") {
                                     _this.lists.forEach(function(item){

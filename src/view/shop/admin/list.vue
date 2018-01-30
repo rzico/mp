@@ -23,8 +23,8 @@
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
-                    <div class="addFriendsBorder"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-                        <div class="friendsLine" @click="goeditor(num.id,num.shopId,num.shopName,num.roleName,num.mobile,num.roleId,num.name)">
+                    <div class="addFriendsBorder" @click="goeditor(num.id,num.shopId,num.shopName,num.roleName,num.mobile,num.roleId,num.name)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                        <div class="friendsLine">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
                             </div>
@@ -501,7 +501,7 @@
                 if (mes.type == 'success') {
                     if (_this.pageStart==0) {
                         mes.data.data.forEach(function(item){
-                            item.isShow = false
+                            item.isShow = true
                             if(item.shopName == '未分配'){
                                 item.shopName ='请分配店铺'
                             }
@@ -509,7 +509,7 @@
                         _this.lists = mes.data.data;
                     } else {
                         mes.data.data.forEach(function(item){
-                            item.isShow = false
+                            item.isShow = true
                             if(item.shopName == '未分配'){
                                 item.shopName ='请分配店铺'
                             }
