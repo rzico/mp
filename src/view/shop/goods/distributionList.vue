@@ -2,29 +2,35 @@
     <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback"  @goComplete="goComplete"> </navbar>
         <scroller>
-            <div class="cell-panel ml30">
+            <div class="cell-row cell-line">
+            <div class="cell-panel cell-clear ">
                 <text class="title">策略名称:</text>
                 <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
             </div>
-            <div class="cell-panel ml30" @click="withdrawalsetup()">
-                <text class="title">可提现比例:</text>
-                <text class="title ml20">{{item.percent4}}</text>
             </div>
-            <div class="info ml30" >
-                <text class="">可提现比例为:{{item.percent4}},转换积分比例为{{pointProp}}%</text>
-            </div>
-            <div class="cell-panel ml30">
+            <div class="cell-row cell-line">
+            <div class="cell-panel ">
                 <text class="title">直接佣金:</text>
                 <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
             </div>
-            <div class="cell-panel ml30">
+            <div class="cell-panel ">
                 <text class="title">间接佣金:</text>
                 <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
             </div>
-            <div class="cell-panel ml30">
+            <div class="cell-panel cell-clear ">
                 <text class="title">三级佣金:</text>
                 <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
             </div>
+            </div>
+            <div class="cell-row cell-line">
+                <div class="cell-panel cell-clear " @click="withdrawalsetup()">
+                    <text class="title">可提现比例:</text>
+                    <text class="title ml20">{{item.percent4}}</text>
+                </div>
+            </div>
+                <div class="info" >
+                    <text class="infoText">可提现比例为:{{item.percent4}},转换积分比例为{{pointProp}}%</text>
+                </div>
         </scroller>
     </div>
 </template>
@@ -39,9 +45,14 @@
     .info{
         height: 80px;
         min-height: 80px;
+        padding-left: 20px;
         flex-direction: row;
         align-items: center;
-        background-color: #cccccc;
+        background-color: #eeeeee;
+    }
+    .infoText{
+        font-size: 28px;
+        color: #999999;
     }
 </style>
 <script>
