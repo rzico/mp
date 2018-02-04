@@ -3,7 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weixin.rzico.com';
+const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
 const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
@@ -62,6 +62,13 @@ let utilsFunc = {
         } else {
             return false
         }
+    },
+    //把缩略图过滤为原图
+    filterThumbnail(url){
+        if(url.indexOf('?x-oss-') != -1){
+            url = url.substring(0,url.indexOf('?x-oss-'));
+        }
+        return url;
     },
     //获取缩略图
     thumbnail(url,w,h) {

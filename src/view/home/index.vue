@@ -4,7 +4,9 @@
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="testRef" @corpusChange="corpusChange"></tabNav>
         <div  class="pageBox"  :class="[pageTop()]"   :style="{width:pageWidth + 'px'}" ref="contentBox">
             <div v-for="(item,index) in corpusList" v-if="item.load == 1" :style="{left: index * 750 + 'px'}" class="categoryBox">
-                <hotCategory  @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></hotCategory>
+                <hotsCategory  v-if="item.name == '热点'" @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></hotsCategory>
+                <circleCategory v-else-if="item.name == '圈子'"   @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></circleCategory>
+                <othersCategory v-else   @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></othersCategory>
             </div>
         </div>
         <div v-if="showMenu" >
@@ -21,7 +23,6 @@
                 <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe607;</text>
                 <text class="fz28 pl10">扫一扫</text>
                 </div>
-
             </div>
         </div>
     </div>
@@ -42,7 +43,9 @@
 <script>
     const dom = weex.requireModule('dom')
     import headerNav from './header.vue';
-    import hotCategory from './hotCategory.vue';
+    import circleCategory from './circle.vue';
+    import othersCategory from './others.vue';
+    import hotsCategory from './hots.vue';
     import tabNav from '../../include/tabNav.vue';
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
@@ -63,7 +66,7 @@
             }
         },
         components: {
-            headerNav,tabNav,hotCategory
+            headerNav,tabNav,othersCategory,hotsCategory,circleCategory
         },
         props:{
             corpusList:{
@@ -79,14 +82,23 @@
             GET('article_category/list.jhtml',function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (item,index) {
-                        if(index == 0){
-                            item.load = 1
-                        }else{
+//                        if(index == 0){
+//                            item.load = 1
+//                        }else{
                             item.load = 0
-                        }
+//                        }
                     })
                     _this.corpusList = data.data;
-                    _this.pageWidth = data.data.length * 750;
+                    _this.corpusList.splice(0,0,{
+                        id:'',
+                        name:"热点",
+                        load:1
+                    },{
+                        id:'',
+                        name:"圈子",
+                        load:0
+                    })
+                    _this.pageWidth = _this.corpusList.length * 750;
                 }
             },function (err) {
                 event.toast(err.content);

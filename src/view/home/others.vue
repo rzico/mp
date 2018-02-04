@@ -16,12 +16,14 @@
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
+                    <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
                     <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
-                    <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
-                        <image :src="item.logo" resize="cover" class="authorImg"></image>
+                    <div class="flex-row" @click="goAuthor(item.authorId)">
+                        <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
+                        <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName">{{item.author}}</text>
                     </div>
                     <div class="relevantInfo" v-if="item.articleSign != '样例'">
@@ -43,7 +45,7 @@
         margin-top: 20px;
     }
     .articleContent{
-        lines: 2;width: 690px;text-overflow: ellipsis;
+        lines: 2;width: 710px;text-overflow: ellipsis;
         font-size: 32px;
         color: #888;
     }
@@ -72,8 +74,8 @@
     .articleFoot {
         flex-direction: row;
         justify-content: space-between;
-        width: 690px;
-        margin-left: 30px;
+        width: 710px;
+        margin-left: 20px;
         align-items: center;
     }
     .authorName {
@@ -103,11 +105,11 @@
     .atricleHead {
         flex-direction: row;
         align-items: center;
-        margin-left: 30px;
+        margin-left: 20px;
     }
     .articleTitle {
         font-size: 38px;
-        lines: 1;width: 690px;text-overflow: ellipsis;
+        lines: 1;width: 710px;text-overflow: ellipsis;
     }
     .articleSign {
         border-radius: 10px;
@@ -169,20 +171,19 @@
                 let _this = this;
                 GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
-                        if (_this.pageStart == 0) {
-                            data.data.data.forEach(function (item) {
-                                if(!utils.isNull(item.thumbnail)){
-                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                                }
-                            })
-                            _this.articleList = data.data.data;
-                        }else{
-                            data.data.data.forEach(function (item) {
-                                if(!utils.isNull(item.thumbnail)){
-                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                                }
+                        data.data.data.forEach(function (item) {
+                            if(!utils.isNull(item.thumbnail)){
+                                item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                            }
+                            if(!utils.isNull(item.logo)){
+                                item.logo = utils.thumbnail(item.logo,60,60);
+                            }
+                            if(_this.pageStart != 0){
                                 _this.articleList.push(item);
-                            })
+                            }
+                        })
+                        if (_this.pageStart == 0) {
+                            _this.articleList = data.data.data;
                         }
                         _this.pageStart = data.data.start + data.data.data.length;
                     }else  if(data.type == 'success' && data.data.data == '' ){
