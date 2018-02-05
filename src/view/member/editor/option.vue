@@ -235,11 +235,8 @@
         },
         methods: {
             goback: function (e) {
-//                navigator.pop({
-//                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-//                    animated: "true"
-//                })
                 event.closeURL();
+//                event.closeRouter();
             },
             setup: function (e) {
             },

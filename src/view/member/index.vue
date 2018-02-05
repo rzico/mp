@@ -802,8 +802,15 @@
                             item.value = JSON.parse(item.value);
 //                            将封面转为缩略图
 //                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
-//                        把读取到的文章push进去文章列表
-                            _this.articleList.push(item);
+
+
+//                          在全部文章里过滤掉已删除的文章
+                            if(utils.isNull(_this.corpusId) && item.value.articleOption.articleCatalog.id == 99){
+                            }else{
+                                //                              把读取到的文章push进去文章列表
+                                _this.articleList.push(item);
+                            }
+
                         })
 //                        当选择全部文章并且全部文章低于10篇时 显示帮助文档。写在这边可以避免渲染小闪屏问题。写死在data里每次切换会先闪一下帮助List再变成文章List
                         if(utils.isNull(_this.corpusId) && data.data.length < 10){
@@ -1099,8 +1106,12 @@
 //                        event.toast(item);
 //                    将value json化
                                 item.value = JSON.parse(item.value);
-//                        把读取到的文章push进去文章列表
-                                _this.articleList.push(item);
+                                //                          在全部文章里过滤掉已删除的文章
+                                if(utils.isNull(_this.corpusId) && item.value.articleOption.articleCatalog.id == 99){
+                                }else{
+                                    //                              把读取到的文章push进去文章列表
+                                    _this.articleList.push(item);
+                                }
                             })
                             _this.listCurrent = _this.listCurrent + _this.listPageSize;
 //                            utils.debug('当前行:' + _this.listCurrent);
