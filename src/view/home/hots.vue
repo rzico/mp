@@ -3,9 +3,6 @@
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <cell @swipe="onpanmove($event)" >
-            <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
-        </cell>
         <cell v-if="hasImageList()">
             <div class="bt10">
                 <slider class="slider" interval="3000" auto-play="true">
@@ -15,6 +12,9 @@
                     <indicator class="indicatorSlider"></indicator>
                 </slider>
             </div>
+        </cell>
+        <cell @swipe="onpanmove($event)" >
+            <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
         <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
             <!--    排版一 采取左右布局。封面较小-->
@@ -603,12 +603,18 @@
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
-                GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/hot.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
+                        let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
                             if(!utils.isNull(item.logo)){
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                                 item.logo = utils.thumbnail(item.logo,60,60);
+                            }else{
+                                item.logo = utils.locate('resources/images/background.png');
+                            }
+                            if(utils.isNull(item.nickName)){
+                                item.nickName = 'author';
                             }
                             if(_this.templateIndexList.length == 0){
                                 _this.templateIndexList = _this.shuffle([0,1,5,6,7]);
@@ -650,6 +656,7 @@
                                 _this.articleList.push(item);
                             }
                         })
+
 //                        假如没有精选文章，就从获取到的所有文章里取出
                         if (_this.pageStart == 0) {
                             while(_this.imageList.length < 5){
@@ -665,7 +672,7 @@
                             }
                             _this.articleList = data.data.data;
                         }
-                        _this.pageStart = data.data.start + data.data.data.length;
+                        _this.pageStart = data.data.start + dataLength;
                     }else  if(data.type == 'success' && data.data.data == '' ){
                     }else{
                         event.toast(data.content);
@@ -729,7 +736,8 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    _this.refreshing = false
+                    _this.refreshing = false;
+                    _this.imageList = [];
                     _this.getAllArticle();
                 }, 1000)
             },

@@ -117,7 +117,7 @@
             <!--<transition name="slide-fade-share" mode="out-in">-->
             <div v-if="showShare"  key="share" >
                 <div class="mask" @touchstart="maskTouch"></div>
-                <share @doShare="doShare" @doCancel="doCancel"></share>
+                <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
             <!--模版内容-->
             <!--</transition>-->
@@ -546,9 +546,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-//                event.openURL(utils.locate('view/member/editor/option.js),
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
-//                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                         let E = {
                             isDone : 'complete'
@@ -557,6 +555,8 @@
                         event.closeURL(backData);
                     }
                 });
+//                event.router(utils.locate('view/member/editor/option.js?articleId=' + _this.articleId));
+
             },
 //            判断是否有模版，控制是否显示模版标题
             isNoTemplates(value){
@@ -713,21 +713,23 @@
                         shareType = '';
                         break;
                 }
-//                if(id == 4){
-//                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
-//                        function (data) {
-////                            if(data.type == 'success'){
-//                            utils.debug(data);
-////                            }
-//                        },
-//                        function (err) {
-//                            utils.debug(err);
-//                            event.toast(err.content);
-//                        }
-//                    )
-//                    _this.clicked = false;
-//                    return;
-//                }
+//                分享到公众号
+                if(id == 4){
+                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
+                        function (data) {
+                            _this.showShare = false;
+                            if(data.type == 'success'){
+                                event.toast('已成功分享到公众号');
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },
+                        function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                    return;
+                }
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         var option = {
@@ -745,10 +747,13 @@
                                         if(data.type == 'success'){
                                             if(shareType == 'copyHref'){
                                                 event.toast('文章链接已复制到剪贴板');
+                                            }else if(shareType == 'browser'){
                                             }else{
                                                 event.toast('分享成功');
                                             }
-
+                                            _this.shareNum ++ ;
+                                        }else{
+                                            event.toast(data.content);
                                         }
                                     },
                                     function (err) {

@@ -13,9 +13,9 @@
                 </slider>
             </div>
         </header>
-        <cell @swipe="onpanmove($event)" >
+        <header @swipe="onpanmove($event)" >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
-        </cell>
+        </header>
         <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
             <div>
                 <div  class="articleBox">
@@ -41,7 +41,7 @@
                     <div class="flex-row ml20 bt20" @click="goAuthor(item.authorId)">
                         <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author}}哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</text>
+                        <text class="authorName">{{item.author}}</text>
                     </div>
                     <!--文章底部-->
                     <div class="articleFoot">
@@ -228,12 +228,18 @@
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
-                GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/circle.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
+                        let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
                             if(!utils.isNull(item.logo)){
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                                 item.logo = utils.thumbnail(item.logo,60,60);
+                            }else{
+                                item.logo = utils.locate('resources/images/background.png');
+                            }
+                            if(utils.isNull(item.nickName)){
+                                item.nickName = 'author';
                             }
 //                          填充轮播图
                             if(!utils.isNull(item.tags) && _this.imageList.length < 5){
@@ -268,7 +274,7 @@
                             }
                             _this.articleList = data.data.data;
                         }
-                        _this.pageStart = data.data.start + data.data.data.length;
+                        _this.pageStart = data.data.start + dataLength;
                     }else  if(data.type == 'success' && data.data.data == '' ){
                     }else{
                         event.toast(data.content);
@@ -332,7 +338,8 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    this.refreshing = false
+                    this.refreshing = false;
+                    _this.imageList = [];
                     _this.getAllArticle();
                 }, 1000)
             },
