@@ -385,7 +385,7 @@
                     this.bgWhite = true;
                     break;
                 case 'gm_10212':
-                    this.title =  '线下收单';
+                    this.title =  '线下收款';
                     this.bgWhite = false;
                     break;
                 default:

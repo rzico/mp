@@ -76,6 +76,7 @@
                         <div class="flex-row">
                             <!--<text class="title footText">查看物流</text>-->
                             <!--<text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>-->
+                            <text class="title footText " @click="confirmRefund(item.sn)">退款</text>
                             <text class="title footText " @click="sendGoods(item.sn)">发货</text>
                         </div>
                     </div>
@@ -89,7 +90,16 @@
                             <text class="title footText " @click="returnGoods(item.sn)">确认退货</text>
                         </div>
                     </div>
-
+                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'shipped'">
+                        <div class="footMore">
+                            <!--<text class="sub_title">删除</text>-->
+                        </div>
+                        <div class="flex-row">
+                            <!--<text class="title footText">查看物流</text>-->
+                            <!--<text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>-->
+                            <text class="title footText " @click="returnGoods(item.sn)">退货</text>
+                        </div>
+                    </div>
                 </div>
             </cell>
         </list>
