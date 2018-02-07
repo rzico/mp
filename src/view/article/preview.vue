@@ -25,11 +25,12 @@
                 </div>
             </div>
             <!--模版-->
-            <div class="templateIcon "  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1" >
-                <text class="templateText" >模版</text>
+            <div  v-if="!templateChoose && isSelf == 1" >
+                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
+                <text class="templateText templateIcon textTemplateIcon" @click="chooseTemplate()">模版</text>
             </div>
             <!--收藏-->
-            <div class="templateIcon "  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
+            <div class="templateIcon templateIconWH"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
                 <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
                 <text class="templateText collectText" >收藏</text>
             </div>
@@ -41,10 +42,13 @@
                         <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
                         <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
                         <!--</div>-->
-                        <div class="btnTextBox"  @click="chooseComplete()">
-                            <text class="btnTextSize btnTextColor" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
-                            <text class="btnTextSize btnTextColor" style="padding-left: 10px">完成</text>
-                        </div>
+
+
+                        <!--<div class="btnTextBox"  @click="chooseComplete()">-->
+                        <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
+                            <text class=" btnTextBox btnTextSize btnTextColor"  @click="chooseComplete()" :style="{fontFamily:'iconfont'}">&#xe64d; 完成</text>
+                            <!--<text class="btnTextSize btnTextColor" style="padding-left: 10px"></text>-->
+                        <!--</div>-->
                     </div>
                     <div>
                         <div>
@@ -263,6 +267,7 @@
     .templateText{
         color: #444;
         font-size: 28px;
+        line-height:28px;
     }
     .templateIcon{
         position: fixed;
@@ -271,13 +276,22 @@
         justify-content: center;
         border-radius: 45px;
         right: 30px;
-        width:90px;
-        height:90px;
         background-color: #fff;
         border-style:solid;
         border-width: 1px;
         border-color: #ccc;
     }
+    .templateIconWH{
+        width:90px;
+        height:90px;
+    }
+    .textTemplateIcon{
+        padding-left: 18px;
+        padding-right: 18px;
+        padding-top:31px;
+        padding-bottom:31px;
+    }
+
     .nextStep{
         color: #fff;
         font-size: 38px;
