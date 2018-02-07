@@ -12,6 +12,7 @@
         <div v-if="showMenu" >
             <div class="maskLayer" @touchstart="maskTouch"></div>
             <div class="showBox"  style="width: 230px;">
+                <text class="showBg"></text>
                 <div class="arrowUp" >
                     <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                 </div>

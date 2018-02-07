@@ -69,12 +69,13 @@
                 </div>
             </transition>
             <div v-if="isOperation && isSelf == 1">
-                <div class="mask" @touchstart="maskTouch"></div>
-                <div class="operationBox"  style="width: 230px;">
-                    <div class="arrow-up" >
+                <div class="maskLayer" @touchstart="maskTouch"></div>
+                <div class="showBox"  style="width: 230px;">
+                    <text class="showBg"></text>
+                    <div class="arrowUp" >
                         <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                     </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive "  @click="operationEditor">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                         <text class="fz28 pl10">编辑</text>
                     </div>
@@ -102,12 +103,13 @@
                 </div>
             </div>
             <div v-if="isOperation  && isSelf == 0">
-                <div class="mask" @touchstart="maskTouch"></div>
-                <div class="operationBox"  style="width: 230px;">
-                    <div class="arrow-up" >
+                <div class="maskLayer" @touchstart="maskTouch"></div>
+                <div class="showBox"  style="width: 230px;">
+                    <text class="showBg"></text>
+                    <div class="arrowUp" >
                         <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                     </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " @click="goAuthor">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                         <text class="fz28 pl10">作者主页</text>
                     </div>
@@ -120,7 +122,7 @@
             <!--动画无效-->
             <!--<transition name="slide-fade-share" mode="out-in">-->
             <div v-if="showShare"  key="share" >
-                <div class="mask" @touchstart="maskTouch"></div>
+                <div class="maskLayer" @touchstart="maskTouch"></div>
                 <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
             <!--模版内容-->
@@ -136,17 +138,8 @@
     .collectIcon{
         font-size: 35px;line-height: 35px;margin-bottom: 2px;
     }
-    .mask{
-        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
-    }
     .laudActive{
         color: #888;
-    }
-    .arrow-up {
-        position: fixed;top: 146px;right:30px;
-    }
-    .operationBox{
-        position: fixed;top: 150px;right: 15px;background-color:#fff;border-radius: 20px;padding-top: 20px;padding-bottom: 20px;
     }
     .bottomBtnBox{
         flex: 1;align-items: center;justify-content: center;
