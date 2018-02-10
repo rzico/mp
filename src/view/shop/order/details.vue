@@ -33,6 +33,7 @@
                         <div class="flex-row">
                             <text class="title">{{item.receiver.consignee}}</text>
                             <text class="title ml20">{{item.receiver.phone}}</text>
+                            <text class="sub_title copyBtn copyBorder ml20"  @click="callPhone(item.receiver.phone)">拨号</text>
                         </div>
                         <div class="mt10">
                             <text class="sub_title" style="line-height: 42px">地址: {{item.receiver.areaName}}{{item.receiver.address}}</text>
@@ -80,7 +81,7 @@
                     <div class="infoLines boder-bottom">
                         <div class="flex-row">
                             <text class="sub_title">订单编号: {{item.sn}}</text>
-                            <text class="sub_title copyBtn border ml20"  @click="copyCode(item.sn)">复制</text>
+                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.sn)">复制</text>
                         </div>
                         <div class="mt10 ">
                             <text class="sub_title">下单时间: {{item.createDate | watchCreateDate}}</text>
@@ -163,6 +164,11 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .copyBorder{
+        border-color: #ccc;
+        border-width: 1px;
+        border-style: solid;
+    }
     .logBox{
         display:flex;
         flex-direction: row;
@@ -305,6 +311,7 @@
 
 </style>
 <script>
+    const phone = weex.requireModule('phone');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     import {dom,event,animation,storage} from '../../../weex.js';
@@ -578,6 +585,12 @@
             },
             goback:function () {
                 event.closeURL();
+            },
+//            联系收货人
+            callPhone:function (telPhone) {
+                phone.tel(telPhone,function(){
+                    return;
+                })
             }
         }
     }

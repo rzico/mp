@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div>
         <!--<div class="mask" @click="maskTouch"></div>-->
         <div class="shareBox">
             <div style="width: 750px;align-items: center">
@@ -35,6 +35,13 @@
                             <image class="shareImg" :src="browserImg" ></image>
                         </div>
                         <text class="fz28 mt20 color444">浏览器打开</text>
+                    </div>
+                    <div class="singleBox"  @click="doShare(4)" v-if="isSelf == 1">
+                        <div class="imgBox" @click="doShare(4)">
+                            <!--<text class="shareImg " style="font-size: 90px;color:#858F9A;"  :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
+                            <image class="shareImg" :src="publicImg"></image>
+                        </div>
+                        <text class="fz28 mt20 color444">公众号</text>
                     </div>
                     <!--<div class="singleBox">-->
                     <!--<div class="imgBox">-->
@@ -95,10 +102,19 @@
 <style lang="less" src="../style/wx.less"/>
 <style scoped>
     .singleBox{
-        align-items: center;margin-right: 15px;
+        align-items: center;
+        /*margin-right: 15px;*/
+        margin-right: 12px;
     }
     .shareLineBox{
-        width: 730px;margin-left: 20px;padding-right: 20px;flex-direction: row;padding-top: 30px;padding-bottom: 30px;
+        /*width: 730px;*/
+        width: 710px;
+        margin-left: 20px;
+        margin-right: 20px;
+        /*padding-right: 20px;*/
+        flex-direction: row;
+        padding-top: 30px;
+        padding-bottom: 30px;
     }
     .bottomBorder{
         border-style: solid;border-color: gainsboro;border-bottom-width: 1px;
@@ -146,6 +162,9 @@
                 isOperation:false,
             }
         },
+        props:{
+            isSelf:{default:0}
+        },
         computed:{
             timeLineImg:function(){
                 return utils.locate('resources/images/timeLine.png');
@@ -167,6 +186,9 @@
             },
             browserImg:function () {
                 return utils.locate('resources/images/browser.png');
+            },
+            publicImg:function () {
+                return utils.locate('resources/images/public.png');
             }
         },
         methods:{

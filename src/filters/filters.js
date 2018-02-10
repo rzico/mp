@@ -192,9 +192,47 @@ Vue.filter('datemoretimefmt', function (value) {
     }else{
         return  res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i + ':' + res.s;
     }
+})
+//时间格式化 返回 09-30 03:07周日 2017-09-30 03:07周日
+Vue.filter('dateweektimefmt', function (value) {
+    let res = utils.resolvetimefmt(value);
+    let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+// 返回处理后的值
+    var    date = new Date(value);
+    var    d2 = Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate(),date.getUTCHours(),date.getUTCMinutes(),date.getUTCSeconds());
+    date = new Date(d2+28800000);
+    var    day = date.getUTCDay();
+    switch(day){
+        case 0:
+            day = "周日";
+            break;
+        case 1:
+            day = "周一";
+            break;
+        case 2:
+            day = "周二";
+            break;
+        case 3:
+            day = "周三";
+            break;
+        case 4:
+            day = "周四";
+            break;
+        case 5:
+            day = "周五";
+            break;
+        case 6:
+            day = "周六";
+            break;
+    }
 
 
-
+    //如果是今年 就不返回年份
+    if(res.y == tds.y){
+        return res.m + '-' + res.d + '  ' + res.h + ':' + res.i + day;
+    }else{
+        return  res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i + day;
+    }
 })
 //时间格式化 返回 03:07
 Vue.filter('hitimefmt', function (value) {

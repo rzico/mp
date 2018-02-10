@@ -446,6 +446,7 @@
     const album = weex.requireModule('album');
     var modal = weex.requireModule('modal');
     const stream = weex.requireModule('stream');
+    const clipboard = weex.requireModule('clipboard');
     var lastIndex = -1;
     var musicId = -1 ;
     export default {
@@ -539,49 +540,82 @@
 //          创建文章编辑（首次）
             if(utils.isNull(getVal)){
 
-                //       多选图片
-                //      调用安卓的相册
-                var _this = this;
-                //判断是否第一次编辑该文章
-                var findDelete = {
-                    type:'articleDraft',
-                    key:'0'
-                }
-                event.find(findDelete,function (delData) {
-                    if(delData.type == 'success' && delData.data != ''){
-                        //从缓存读取数据 写入界面
-                        _this.readData(findDelete);
-                    }else{
-                        album.openAlbumMuti(
-                            //选完图片后触发回调函数
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.coverImage =  data.data[0].originalPath;
-//                    data.data里存放的是用户选取的图片路径
-                                    for(let i = 0;i < data.data.length;i++){
-                                        _this.paraList.push({
-                                            //原图
-                                            paraImage: data.data[i].originalPath,
-                                            //小缩略图
-                                            thumbnailImage: data.data[i].thumbnailSmallPath,
-                                            mediaType: "image",
-                                            paraText:'',
-                                            show:true,
-                                            serveThumbnail:'',
-//                                            对象id
-                                            id:0,
-//                                            第三方链接
-                                            url:'',
-                                        });
-                                        _this.saveDraft();
+//                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
+                clipboard.getString(ret => {
+                   if(ret.data.indexOf('://mp.weixin.qq.com/s/') != -1){
+                       modal.confirm({
+                           message: '是否生成公众号复制的文章?',
+                           duration: 0.3,
+                           okTitle:'生成',
+                           cancelTitle:'取消',
+                       }, function (value) {
+                           if(value == '生成'){
+                               _this.toSendArticle = true;
+                               _this.currentPro = 0;//当前进度
+                               _this.proTotal = 1;//总的进度
+                               _this.processWidth = 0;//进度条宽度
+
+                               _this.processWidth = _this.processWidth  + (50 * Math.random());
+//                                  利用定时器 模拟进度条效果
+                               var timer = setInterval(function () {
+                                   if(_this.processWidth < 500){
+                                       let middle = _this.processWidth  + (50 * Math.random()) ;
+                                       if(middle > 500){
+                                           _this.processWidth = 500;
+                                       }else{
+                                           _this.processWidth = middle;
+                                       }
+                                   }
+                               },500);
+
+//                               调用接口 获取公众号文章内容(仅支持图文)
+                                GET('weex/member/article/grabarticle.jhtml?articlePath=' + encodeURIComponent(ret.data),function (data) {
+                                    if(data.type == 'success' && !utils.isNull(data.data)){
+                                        _this.processWidth = 500;//进度条宽度
+                                        setTimeout(function () {
+//                                        清空剪贴板
+                                            clipboard.setString('');
+//                                        清空假进度条，关闭定时器
+                                            _this.clearDummyProcess(timer);
+//                                       将数据填充进页面
+                                            _this.templateGroup(data.data,1);
+//                                           存储页面数据
+                                            _this.saveDraft();
+                                        },10)
+                                    }else if(data.type == 'success' && utils.isNull(data.data)){
+                                        event.toast('生成的文章内容为空,请换篇文章');
+//                                        清空剪贴板
+                                        clipboard.setString('');
+//                                        清空假进度条，关闭定时器
+                                        _this.clearDummyProcess(timer);
+                                        event.closeURL();
+                                    }else{
+//                                        清空假进度条，关闭定时器
+                                        _this.clearDummyProcess(timer);
+                                        event.toast(data.content);
+                                        event.closeURL();
                                     }
-                                }else{
+                                },function (err) {
+                                    event.toast(err.content);
+//                                        清空假进度条，关闭定时器
+                                    _this.clearDummyProcess(timer);
                                     event.closeURL();
-                                }
-                            }
-                        )
-                    }
-                });
+                                })
+                                return;
+                           }else{
+                               clipboard.setString('');
+//                              进行原本逻辑。
+                               _this.firstEdit();
+                           }
+                       })
+                   }else{
+//                       进行原本逻辑。
+                       _this.firstEdit();
+                   }
+                })
+
+
+
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
                 var op = getVal.split('=');
@@ -635,7 +669,101 @@
                 };
             };
         },
-        methods:{
+        methods: {
+//            清楚掉假的进度条。清空假进度条，关闭定时器.
+            clearDummyProcess(timer){
+//                                        解除定时器
+                if (!utils.isNull(timer))  {
+                    clearInterval(timer);
+//                  此处的timer虽然是参数传过来，在js里还是有把整个变量地址传过来.所以可以更改为null;
+                    timer = null;
+                }
+                this.toSendArticle = false;
+                this.currentPro = 0;//当前进度
+                this.proTotal = 0;//总的进度
+                this.processWidth = 0;//进度条宽度
+
+            },
+//            第一次编辑
+            firstEdit(){
+                //       多选图片
+                //      调用安卓的相册
+                var _this = this;
+                //判断是否第一次编辑该文章
+                var findDelete = {
+                    type:'articleDraft',
+                    key:'0'
+                }
+                event.find(findDelete,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        //从缓存读取数据 写入界面
+                        _this.readData(findDelete);
+                    }else{
+                        album.openAlbumMuti(
+                            //选完图片后触发回调函数
+                            function (data) {
+                                if(data.type == 'success'){
+                                    _this.coverImage =  data.data[0].originalPath;
+//                    data.data里存放的是用户选取的图片路径
+                                    for(let i = 0;i < data.data.length;i++){
+                                        _this.paraList.push({
+                                            //原图
+                                            paraImage: data.data[i].originalPath,
+                                            //小缩略图
+                                            thumbnailImage: data.data[i].thumbnailSmallPath,
+                                            mediaType: "image",
+                                            paraText:'',
+                                            show:true,
+                                            serveThumbnail:'',
+//                                            对象id
+                                            id:0,
+//                                            第三方链接
+                                            url:'',
+                                        });
+                                        _this.saveDraft();
+                                    }
+                                }else{
+                                    event.closeURL();
+                                }
+                            }
+                        )
+                    }
+                });
+            },
+
+//            根据数据组装成页面所需要的格式
+            templateGroup(templatesData,groupCommon){
+                let _this = this;
+                for(let i = 0;i < templatesData.length;i++){
+                    let paraId = utils.isNull(templatesData[i].id) ? 0 : templatesData[i].id;
+                    let paraUrl = utils.isNull(templatesData[i].url) ? '' : templatesData[i].url;
+//                    判断公众号返回的缩略图是否为空
+                    if(groupCommon &&  !utils.isNull(templatesData[i].original) && utils.isNull(templatesData[i].thumbnail)){
+                        templatesData[i].thumbnail = utils.isNull(templatesData[i].thumbnail) ? templatesData[i].original : templatesData[i].thumbnail;
+                    }
+//                    若是公众号获取下来的文章,将封面放上去;
+                    if(groupCommon && !utils.isNull(templatesData[i].original) && (utils.isNull(_this.coverImage) || _this.coverImage == utils.locate('resources/images/background.png'))){
+                        _this.coverImage = templatesData[i].original;
+                    }
+
+                    _this.paraList.push({
+                        //原图
+                        paraImage:templatesData[i].original,
+                        //小缩略图
+                        thumbnailImage: templatesData[i].thumbnail,
+                        paraText:templatesData[i].content,
+                        show:true,
+                        mediaType:templatesData[i].mediaType,
+                        serveThumbnail:'', //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                        //          对象id
+                        id:paraId,
+//                        第三方链接
+                        url:paraUrl,
+                    })
+                }
+
+            },
+
             //从缓存读取数据 写入界面
             readData(options){
                 let _this =this;
@@ -659,24 +787,8 @@
                             _this.review = articleData.isReview,
                             musicId = articleData.music.id;
                         let templatesData = articleData.templates;
-                        for(let i = 0;i < templatesData.length;i++){
-                            let paraId = utils.isNull(templatesData[i].id) ? 0 : templatesData[i].id;
-                            let paraUrl = utils.isNull(templatesData[i].url) ? '' : templatesData[i].url;
-                            _this.paraList.push({
-                                //原图
-                                paraImage:templatesData[i].original,
-                                //小缩略图
-                                thumbnailImage: templatesData[i].thumbnail,
-                                paraText:templatesData[i].content,
-                                show:true,
-                                mediaType:templatesData[i].mediaType,
-                                serveThumbnail:'', //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
-                                //          对象id
-                                id:paraId,
-//                                            第三方链接
-                                url:paraUrl,
-                            })
-                        }
+//                        根据数据组装成页面所需要的格式
+                        _this.templateGroup(templatesData);
 //                            投票
                         if(!utils.isNull(articleData.votes)){
                             articleData.votes.forEach(function (item) {
@@ -810,7 +922,6 @@
                 }
                 event.save(draftOptions,function(data){
                     if(data.type == 'success' && !utils.isNull(_this.articleId)){
-
 //                                    全局监听文章变动
                         let listenData = utils.message('success','文章改变','')
                         event.sendGlobalEvent('onArticleChange',listenData);
@@ -1352,7 +1463,7 @@
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 0;//总的进度
                                         _this.processWidth = 0;//进度条宽度
-//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == ''){
                                         let E = {
                                             isDone : 'complete'
                                         }
@@ -1396,13 +1507,13 @@
             //            点击"+"号里的文本时
             addTextPara:function(index){
                 //防止重复点击按钮
-//                if(this.clicked) {
-//                    return;
-//                }
-//                this.clicked = true;
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openEditor('',function (data) {
-//                    _this.clicked = false;
+                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         let textImg = utils.locate('resources/images/text.png');
 //                    将返回回来的html数据赋值进
@@ -1434,15 +1545,15 @@
             //            点击"+"号里的图片时
             addImgPara:function (index) {
                 //防止重复点击按钮
-//                if(this.clicked) {
-//                    return;
-//                }
-//                this.clicked = true;
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
-//                        _this.clicked = false;
+                        _this.clicked = false;
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
@@ -1689,8 +1800,8 @@
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
+                        _this.clicked = false;
                         if(data.type == 'success'){
-                            _this.clicked = false;
                             _this.paraList[index].paraImage = data.data.originalPath;
                             _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
@@ -1779,76 +1890,78 @@
             //            跳转封面页面
             goCover:function () {
                 //防止重复点击按钮
-//                if(this.clicked) {
-//                    return;
-//                }
-//                this.clicked = true;
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
 
 //                ***** 单选裁剪 *****
-//                var _this = this;
-//                album.openAlbumSingle(
-//                    //选完图片后触发回调函数
-//                    true,function (data) {
-//                        utils.debug(data);
-//                        if(data.type == 'success'){
-//                            _this.coverImage = data.data.originalPath;
-//////                    添加修改标志
-//                            _this.hadChange = 1;
-////                        临时保存到缓存
-//                            _this.saveDraft();
-//                        }else{
-//                            if(data.content.indexOf('取消') != -1){
-//                            }else{
-//                                event.toast(data.content);
-//                            }
-//                        }
-//                    })
-//                ***** 单选裁剪 *****
-
-
-
                 var _this = this;
-                let paraLength =  _this.paraList.length;
-                var uploadLength = 0;
-                let imgList = [];
-//                控制最多只传6张图
-                for(let i = 0;i < paraLength; i++){
-                    if(uploadLength < 6){
-//                        区分字体 图像 视频
-                        if(_this.paraList[i].paraImage != '' && (_this.paraList[i].mediaType == 'image' || _this.paraList[i].mediaType == 'product')){
-                            imgList.push({
-                                path:_this.paraList[i].paraImage
-                            });
-                            uploadLength ++ ;
-                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video' ){
-                            imgList.push({
-                                path:_this.paraList[i].thumbnailImage
-                            });
-                            uploadLength ++ ;
-                        }
-                    }
-                }
-                var  coverData = {
-                    image : imgList,
-                    cover : _this.coverImage
-                }
-                coverData = JSON.stringify(coverData);
-                storage.setItem('coverImage', coverData);
-                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
-                    _this.clicked = false;
-//                event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
-//                    let jsonData = JSON.parse(data);
-//                    modal.toast({message:message,duration:1});
-                    if(message.type == 'success' && message.data != ''){
-                        _this.coverImage = message.data;
-//                    添加修改标志
-                        _this.hadChange = 1;
-//                        if(utils.isNull(_this.articleId)){
+                let option = {
+                    isCrop:true,
+                    width:2,
+                    height:1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    option,function (data) {
+                        _this.clicked = false;
+                        if(data.type == 'success'){
+                            _this.coverImage = data.data.originalPath;
+////                    添加修改标志
+                            _this.hadChange = 1;
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
+                        }else{
+                            if(data.content.indexOf('取消') != -1){
+                            }else{
+                                event.toast(data.content);
+                            }
+                        }
+                    })
+//                ***** 单选裁剪 *****
+
+
+
+//                ***** 跳转拼图封面页面 *****
+//                var _this = this;
+//                let paraLength =  _this.paraList.length;
+//                var uploadLength = 0;
+//                let imgList = [];
+////                控制最多只传6张图
+//                for(let i = 0;i < paraLength; i++){
+//                    if(uploadLength < 6){
+////                        区分字体 图像 视频
+//                        if(_this.paraList[i].paraImage != '' && (_this.paraList[i].mediaType == 'image' || _this.paraList[i].mediaType == 'product')){
+//                            imgList.push({
+//                                path:_this.paraList[i].paraImage
+//                            });
+//                            uploadLength ++ ;
+//                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video' ){
+//                            imgList.push({
+//                                path:_this.paraList[i].thumbnailImage
+//                            });
+//                            uploadLength ++ ;
 //                        }
-                    }
-                });
+//                    }
+//                }
+//                var  coverData = {
+//                    image : imgList,
+//                    cover : _this.coverImage
+//                }
+//                coverData = JSON.stringify(coverData);
+//                storage.setItem('coverImage', coverData);
+//                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
+//                    _this.clicked = false;
+//                    if(message.type == 'success' && message.data != ''){
+//                        _this.coverImage = message.data;
+////                    添加修改标志
+//                        _this.hadChange = 1;
+////                        临时保存到缓存
+//                        _this.saveDraft();
+//                    }
+//                });
+//                ***** 跳转拼图封面页面 *****
             },
             //            跳转音乐页面
             goMusic:function () {
@@ -1926,13 +2039,13 @@
             //            点击"+"加号里的添加视频
             addVideoPara:function (index) {
                 //防止重复点击按钮
-//                if(this.clicked) {
-//                    return;
-//                }
-//                this.clicked = true;
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 album.openVideo(function (data) {
-//                    _this.clicked = false;
+                    _this.clicked = false;
                     if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                         let newPara = {
@@ -1966,13 +2079,13 @@
             //            点击"+"加号里的添加链接
             addLinkPara:function (index) {
                 //防止重复点击按钮
-//                if(this.clicked) {
-//                    return;
-//                }
-//                this.clicked = true;
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
-//                    _this.clicked = false;
+                    _this.clicked = false;
                     if(data.type == 'success'){
                         let newPara = {
                             //原图
