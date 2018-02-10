@@ -16,7 +16,7 @@
         </header>
         <!--相关用户-->
         <header v-if="userList.length > 3">
-            <transverse :userList="userList" @goAuthor="goAuthor"></transverse>
+            <transverse :userList="userList" title="我的圈子" @goAuthor="goAuthor"></transverse>
         </header>
         <!--无数据时显示-->
         <header @swipe="onpanmove($event)" >
@@ -268,7 +268,7 @@
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
-                GET('weex/article/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/circle.jhtml?id=' + this.UId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
                         let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
