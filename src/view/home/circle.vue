@@ -208,15 +208,7 @@
                 imageList: [],
                 userList:[],
                 UId:0,
-                corpusList:[{
-                    name:'哈哈哈',
-                },{
-                    name:'哈哈哈1',
-                },{
-                    name:'哈哈哈2',
-                },{
-                    name:'哈哈哈3',
-                }]
+                isInit:true,
             }
         },
         components: {
@@ -249,7 +241,7 @@
         },
         methods:{
             hasImageList(){
-              if(utils.isNull(this.imageList)){
+              if(utils.isNull(this.imageList) && this.isInit){
                   return false;
               }  else{
                   return true;
@@ -260,6 +252,11 @@
               let _this = this;
               GET('weex/circle/list.jhtml?id=' + this.UId,function(data){
                   if(data.type == 'success'){
+                      data.data.forEach(function(item){
+                          if(!utils.isNull(item.logo)){
+                              item.logo = utils.thumbnail(item.logo,100,100);
+                          }
+                      })
                       _this.userList = data.data;
                   }else{
                       event.toast(data.content);
@@ -361,6 +358,12 @@
             onrefresh:function () {
                 var _this = this;
                 _this.pageStart = 0;
+//                避免下拉刷新时触发 轮播图的v-if时间 避免销毁,页面跳动
+                if(!utils.isNull(this.imageList)){
+                    this.isInit = false;
+                }else{
+                    this.isInit = true;
+                }
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
@@ -384,6 +387,7 @@
                     this.refreshing = false;
                     _this.imageList = [];
                     _this.getAllArticle();
+                    _this.getUserList();
                 }, 1000)
             },
         }

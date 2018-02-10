@@ -559,7 +559,8 @@
                 screenHeight:0,
                 clicked:false,
                 imageList: [],
-                templateIndexList:[0,1,5,6,7]
+                templateIndexList:[0,1,5,6,7],
+                isInit:true,
             }
         },
         components: {
@@ -582,7 +583,7 @@
         },
         methods:{
             hasImageList(){
-              if(utils.isNull(this.imageList)){
+              if(utils.isNull(this.imageList) && this.isInit){
                   return false;
               }else{
                   return true;
@@ -722,6 +723,12 @@
             onrefresh:function () {
                 var _this = this;
                 _this.pageStart = 0;
+//                避免下拉刷新时触发 轮播图的v-if时间 避免销毁,页面跳动
+                if(!utils.isNull(this.imageList)){
+                    this.isInit = false;
+                }else{
+                    this.isInit = true;
+                }
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
