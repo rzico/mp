@@ -3,9 +3,6 @@
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <cell @swipe="onpanmove($event)" >
-            <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
-        </cell>
         <cell v-if="hasImageList()">
             <div class="bt10">
                 <slider class="slider" interval="3000" auto-play="true">
@@ -15,6 +12,9 @@
                     <indicator class="indicatorSlider"></indicator>
                 </slider>
             </div>
+        </cell>
+        <cell @swipe="onpanmove($event)" >
+            <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
         <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
             <!--    排版一 采取左右布局。封面较小-->
@@ -559,7 +559,8 @@
                 screenHeight:0,
                 clicked:false,
                 imageList: [],
-                templateIndexList:[0,1,5,6,7]
+                templateIndexList:[0,1,5,6,7],
+                isInit:true,
             }
         },
         components: {
@@ -582,7 +583,7 @@
         },
         methods:{
             hasImageList(){
-              if(utils.isNull(this.imageList)){
+              if(utils.isNull(this.imageList) && this.isInit){
                   return false;
               }else{
                   return true;
@@ -603,22 +604,35 @@
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
-                GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
+                        var transitArr = data.data.data;
+
+                        let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
                             if(!utils.isNull(item.logo)){
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                                 item.logo = utils.thumbnail(item.logo,60,60);
+//                                transitArr[index].logo = utils.thumbnail(item.logo,60,60);
+                            }else{
+                                item.logo = utils.locate('resources/images/background.png');
+//                                transitArr[index].logo = utils.locate('resources/images/background.png');
                             }
+                            if(utils.isNull(item.nickName)){
+                                item.nickName = 'author';
+//                                transitArr[index].nickName = 'author';
+                            }
+//                            模版id重新填充打乱
                             if(_this.templateIndexList.length == 0){
                                 _this.templateIndexList = _this.shuffle([0,1,5,6,7]);
                             }
 //                          填充轮播图
-                            if(!utils.isNull(item.tags) && _this.imageList.length < 5){
+                            if(_this.pageStart == 0 && !utils.isNull(item.tags) && _this.imageList.length < 5){
                                 for(var i = 0;i < item.tags.length; i ++){
                                     if(item.tags[i].id == 5){
                                         _this.imageList.push(item);
                                         data.data.data.splice(index,1);
+//                                        transitArr.splice(index,1);
                                         break;
                                     }
                                 }
@@ -665,7 +679,7 @@
                             }
                             _this.articleList = data.data.data;
                         }
-                        _this.pageStart = data.data.start + data.data.data.length;
+                        _this.pageStart = data.data.start + dataLength;
                     }else  if(data.type == 'success' && data.data.data == '' ){
                     }else{
                         event.toast(data.content);
@@ -709,6 +723,12 @@
             onrefresh:function () {
                 var _this = this;
                 _this.pageStart = 0;
+//                避免下拉刷新时触发 轮播图的v-if时间 避免销毁,页面跳动
+                if(!utils.isNull(this.imageList)){
+                    this.isInit = false;
+                }else{
+                    this.isInit = true;
+                }
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
@@ -729,7 +749,8 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    _this.refreshing = false
+                    _this.refreshing = false;
+                    _this.imageList = [];
                     _this.getAllArticle();
                 }, 1000)
             },

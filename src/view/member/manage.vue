@@ -280,7 +280,7 @@
                         _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.logo)){
-                                _this.member.logo = utils.thumbnail(data.data.logo,120,120);
+                                _this.member.logo = data.data.logo;
                             }
                             if(!utils.isNull(data.data.nickName)){
                                 _this.member.nickName = data.data.nickName;

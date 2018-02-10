@@ -55,6 +55,7 @@
         <div v-if="showMenu" >
             <div class="maskLayer" @touchstart="maskTouch"></div>
             <div class="showBox"  style="width: 230px;">
+                <text class="showBg"></text>
                 <div class="arrowUp" >
                     <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                 </div>
@@ -367,6 +368,12 @@
 //                                现在安卓后台数据logo nickName有误，不管有没有获取到logo、nickName 都使用本地头像;
 //                                if(utils.isNull(_weex.data.logo)){
                                     _weex.data.logo = JSONData.logo;
+//                                    2.1号 21：16 所改
+//                                    if(_weex.data.logo.indexOf(_weex.data.userId) == -1){
+//                                        let indexNum = parseInt(_weex.data.logo.indexOf('/gm_1')) + 1;
+//                                        _weex.data.logo = _weex.data.logo.substring(0,indexNum) + _weex.data.userId;
+//                                    }
+
 //                                }
 //                                if(utils.isNull(_weex.data.nickName)){
                                     _weex.data.nickName = JSONData.nickName;

@@ -25,11 +25,12 @@
                 </div>
             </div>
             <!--模版-->
-            <div class="templateIcon "  @click="chooseTemplate()" key="templateIcon" v-if="!templateChoose && isSelf == 1" >
-                <text class="templateText" >模版</text>
+            <div  v-if="!templateChoose && isSelf == 1" >
+                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
+                <text class="templateText templateIcon textTemplateIcon" @click="chooseTemplate()">模版</text>
             </div>
             <!--收藏-->
-            <div class="templateIcon "  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
+            <div class="templateIcon templateIconWH"  @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
                 <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
                 <text class="templateText collectText" >收藏</text>
             </div>
@@ -41,10 +42,13 @@
                         <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
                         <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
                         <!--</div>-->
-                        <div class="btnTextBox"  @click="chooseComplete()">
-                            <text class="btnTextSize btnTextColor" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
-                            <text class="btnTextSize btnTextColor" style="padding-left: 10px">完成</text>
-                        </div>
+
+
+                        <!--<div class="btnTextBox"  @click="chooseComplete()">-->
+                        <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
+                            <text class=" btnTextBox btnTextSize btnTextColor"  @click="chooseComplete()" :style="{fontFamily:'iconfont'}">&#xe64d; 完成</text>
+                            <!--<text class="btnTextSize btnTextColor" style="padding-left: 10px"></text>-->
+                        <!--</div>-->
                     </div>
                     <div>
                         <div>
@@ -65,12 +69,13 @@
                 </div>
             </transition>
             <div v-if="isOperation && isSelf == 1">
-                <div class="mask" @touchstart="maskTouch"></div>
-                <div class="operationBox"  style="width: 230px;">
-                    <div class="arrow-up" >
+                <div class="maskLayer" @touchstart="maskTouch"></div>
+                <div class="showBox"  style="width: 230px;">
+                    <text class="showBg"></text>
+                    <div class="arrowUp" >
                         <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                     </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="operationEditor">
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive "  @click="operationEditor">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                         <text class="fz28 pl10">编辑</text>
                     </div>
@@ -98,12 +103,13 @@
                 </div>
             </div>
             <div v-if="isOperation  && isSelf == 0">
-                <div class="mask" @touchstart="maskTouch"></div>
-                <div class="operationBox"  style="width: 230px;">
-                    <div class="arrow-up" >
+                <div class="maskLayer" @touchstart="maskTouch"></div>
+                <div class="showBox"  style="width: 230px;">
+                    <text class="showBg"></text>
+                    <div class="arrowUp" >
                         <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                     </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAuthor">
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " @click="goAuthor">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                         <text class="fz28 pl10">作者主页</text>
                     </div>
@@ -116,8 +122,8 @@
             <!--动画无效-->
             <!--<transition name="slide-fade-share" mode="out-in">-->
             <div v-if="showShare"  key="share" >
-                <div class="mask" @touchstart="maskTouch"></div>
-                <share @doShare="doShare" @doCancel="doCancel"></share>
+                <div class="maskLayer" @touchstart="maskTouch"></div>
+                <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
             <!--模版内容-->
             <!--</transition>-->
@@ -132,17 +138,8 @@
     .collectIcon{
         font-size: 35px;line-height: 35px;margin-bottom: 2px;
     }
-    .mask{
-        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
-    }
     .laudActive{
         color: #888;
-    }
-    .arrow-up {
-        position: fixed;top: 146px;right:30px;
-    }
-    .operationBox{
-        position: fixed;top: 150px;right: 15px;background-color:#fff;border-radius: 20px;padding-top: 20px;padding-bottom: 20px;
     }
     .bottomBtnBox{
         flex: 1;align-items: center;justify-content: center;
@@ -263,6 +260,7 @@
     .templateText{
         color: #444;
         font-size: 28px;
+        line-height:28px;
     }
     .templateIcon{
         position: fixed;
@@ -271,13 +269,22 @@
         justify-content: center;
         border-radius: 45px;
         right: 30px;
-        width:90px;
-        height:90px;
         background-color: #fff;
         border-style:solid;
         border-width: 1px;
         border-color: #ccc;
     }
+    .templateIconWH{
+        width:90px;
+        height:90px;
+    }
+    .textTemplateIcon{
+        padding-left: 18px;
+        padding-right: 18px;
+        padding-top:31px;
+        padding-bottom:31px;
+    }
+
     .nextStep{
         color: #fff;
         font-size: 38px;
@@ -546,9 +553,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-//                event.openURL(utils.locate('view/member/editor/option.js),
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
-//                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                         let E = {
                             isDone : 'complete'
@@ -557,6 +562,8 @@
                         event.closeURL(backData);
                     }
                 });
+//                event.router(utils.locate('view/member/editor/option.js?articleId=' + _this.articleId));
+
             },
 //            判断是否有模版，控制是否显示模版标题
             isNoTemplates(value){
@@ -713,21 +720,23 @@
                         shareType = '';
                         break;
                 }
-//                if(id == 4){
-//                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
-//                        function (data) {
-////                            if(data.type == 'success'){
-//                            utils.debug(data);
-////                            }
-//                        },
-//                        function (err) {
-//                            utils.debug(err);
-//                            event.toast(err.content);
-//                        }
-//                    )
-//                    _this.clicked = false;
-//                    return;
-//                }
+//                分享到公众号
+                if(id == 4){
+                    POST('weex/member/share/platform.jhtml?articleId=' + this.articleId).then(
+                        function (data) {
+                            _this.showShare = false;
+                            if(data.type == 'success'){
+                                event.toast('已成功分享到公众号');
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },
+                        function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                    return;
+                }
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
                     if(data.type == 'success' && data.data != ''){
                         var option = {
@@ -745,10 +754,13 @@
                                         if(data.type == 'success'){
                                             if(shareType == 'copyHref'){
                                                 event.toast('文章链接已复制到剪贴板');
+                                            }else if(shareType == 'browser'){
                                             }else{
                                                 event.toast('分享成功');
                                             }
-
+                                            _this.shareNum ++ ;
+                                        }else{
+                                            event.toast(data.content);
                                         }
                                     },
                                     function (err) {

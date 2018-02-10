@@ -7,8 +7,8 @@
         <div class="nav">
             <text class="nav_title">{{title}}</text>
             <div class="flex-row" v-if="isSelf == 0">
-                <image :src="authorInfo.logo" class="articleLogo"></image>
-                <text class="ml10 mr10 articleAuthorName" >{{authorInfo.nickName}}</text>
+                <image :src="authorInfo.logo | watchLogo" class="articleLogo"></image>
+                <text class="ml10 mr10 articleAuthorName" >{{authorInfo.nickName | watchNickName}}</text>
                 <text class="articleFocus  primary" v-if="!authorInfo.hasFollow" @click="doFocus()">关注</text>
             </div>
             <div class="navRightBox"  v-if="showComplete" @click="goComplete('/')">
@@ -87,7 +87,7 @@
             title: { default: "" },
             complete:{default:''},
             showComplete:{default:true},
-            border:{default:true},
+            border:{default:false},
             authorInfo:{
                 default: function () {
                     return {logo: utils.locate('resources/images/background.png'), title: "", nickName: "author", createDate: null }
@@ -95,6 +95,22 @@
             },
             isSelf:{
                 default:0
+            }
+        },
+        filters:{
+            watchLogo:function (value) {
+                if(utils.isNull(value)){
+                    return utils.locate('resources/images/background.png');
+                }else {
+                    return utils.thumbnail(value,54,54);
+                }
+            },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    return value;
+                }
             }
         },
         methods: {
