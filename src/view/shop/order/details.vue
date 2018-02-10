@@ -51,19 +51,25 @@
                         <!--<text class="sub_title" style="color: #666" :style="{fontFamily:'iconfont'}">联系卖家 </text>-->
                         <!--<text class="sub_title primary"  :style="{fontFamily:'iconfont'}">&#xe628;</text>-->
                         <!--</div>-->
+
+
+
                     </div>
                     <div class="flex-row goodsBody " v-for="goods in item.orderItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
                         <div class="goodsInfo" >
                             <text class="title goodsName">{{goods.name}}</text>
-                            <text class="sub_title mt10">规格:{{goods.spec | watchSpec}}</text>
-                        </div>
-                        <div class="goodsPriceNum">
-                            <text class="title ">¥ {{goods.price | currencyfmt}}</text>
-                            <text class="sub_title">x{{goods.quantity}}</text>
-                            <!--<text class="sub_title border shopCar" >加购物车</text>-->
+                            <text class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                            <div class="goodsPriceNum">
+                                <text class="title ">¥ {{goods.price | currencyfmt}}</text>
+                                <text class="sub_title">x{{goods.quantity}}</text>
+                                <!--<text class="sub_title border shopCar" >加购物车</text>-->
+                            </div>
                         </div>
                     </div>
+
+
+
                     <!--<div class="flex-row goodsBody">-->
                     <!--<image :src="refreshImg" class="goodsImg"></image>-->
                     <!--<div class="goodsInfo " >-->
@@ -87,11 +93,18 @@
                             <text class="sub_title">下单时间: {{item.createDate | watchCreateDate}}</text>
                         </div>
                     </div>
-                    <div class="infoLines boder-bottom">
-                        <text class="sub_title fz32">支付方式: {{item.paymentMethod | watchPayMethod}}</text>
+                    <div class="infoLines pb10">
+                        <text class="sub_title ">支付方式: {{item.paymentMethod | watchPayMethod}}</text>
                     </div>
-                    <div class="infoLines">
-                        <text class="sub_title fz32">配送方式: 普通快递</text>
+                    <div class="infoLines boder-bottom pt0">
+                        <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
+                    </div>
+                    <div class="infoLines pb10">
+                        <text class="sub_title ">配送方式: 普通快递</text>
+                    </div>
+
+                    <div class="infoLines pt0">
+                        <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
                     </div>
                 </div>
                 <div class="mt20  infoWhiteColor" >
@@ -100,7 +113,7 @@
                             <text class="sub_title">商品总额</text>
                             <text class="sub_title">¥{{item.orderItems[0].price | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between">
+                        <div class=" space-between mt10 bt10">
                             <text class="sub_title">优惠折扣</text>
                             <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
                         </div>
@@ -266,15 +279,21 @@
         text-overflow: ellipsis;
     }
     .goodsPriceNum{
-        height: 160px;
-        align-items: flex-end;
+        /*height: 160px;*/
+        align-items: center;
         justify-content: space-between;
-        width: 150px;
+        /*width: 150px;*/
+        flex-direction: row;
+        width: 510px;
     }
     .goodsInfo{
+
+        display: flex;flex-direction: column;justify-content: space-between;
         height: 160px;
-        width: 380px;
+        /*width: 380px;*/
+        width: 530px;
         padding-left: 20px;
+
     }
     .goodsBody{
         padding-top: 20px;
@@ -370,6 +389,44 @@
                         break;
                     default:
                         return '实付款';
+                        break;
+                }
+            },
+            watchPaymentStatus:function (value) {
+                switch (value){
+                    case 'unpaid':
+                        return '未支付';
+                        break;
+                    case 'paid':
+                        return '已支付';
+                        break;
+                    case 'refunding':
+                        return '退款中';
+                        break;
+                    case 'refunded':
+                        return '已退款';
+                        break;
+                    default:
+                        return '暂无状态';
+                        break;
+                }
+            },
+            watchShippingStatus:function (value) {
+                switch (value){
+                    case 'unshipped':
+                        return '未发货';
+                        break;
+                    case 'shipped':
+                        return '已发货';
+                        break;
+                    case 'returning':
+                        return '退货中';
+                        break;
+                    case 'returned':
+                        return '已退货';
+                        break;
+                    default:
+                        return '暂无状态';
                         break;
                 }
             },
