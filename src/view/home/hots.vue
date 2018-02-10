@@ -603,28 +603,35 @@
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
-                GET('weex/article/hot.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
+                        var transitArr = data.data.data;
+
                         let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
                             if(!utils.isNull(item.logo)){
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                                 item.logo = utils.thumbnail(item.logo,60,60);
+//                                transitArr[index].logo = utils.thumbnail(item.logo,60,60);
                             }else{
                                 item.logo = utils.locate('resources/images/background.png');
+//                                transitArr[index].logo = utils.locate('resources/images/background.png');
                             }
                             if(utils.isNull(item.nickName)){
                                 item.nickName = 'author';
+//                                transitArr[index].nickName = 'author';
                             }
+//                            模版id重新填充打乱
                             if(_this.templateIndexList.length == 0){
                                 _this.templateIndexList = _this.shuffle([0,1,5,6,7]);
                             }
 //                          填充轮播图
-                            if(!utils.isNull(item.tags) && _this.imageList.length < 5){
+                            if(_this.pageStart == 0 && !utils.isNull(item.tags) && _this.imageList.length < 5){
                                 for(var i = 0;i < item.tags.length; i ++){
                                     if(item.tags[i].id == 5){
                                         _this.imageList.push(item);
                                         data.data.data.splice(index,1);
+//                                        transitArr.splice(index,1);
                                         break;
                                     }
                                 }
@@ -656,7 +663,6 @@
                                 _this.articleList.push(item);
                             }
                         })
-
 //                        假如没有精选文章，就从获取到的所有文章里取出
                         if (_this.pageStart == 0) {
                             while(_this.imageList.length < 5){
