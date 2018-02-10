@@ -604,7 +604,7 @@
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
-                GET('weex/article/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/hot.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
                         var transitArr = data.data.data;
 

@@ -1,7 +1,7 @@
 <template>
     <div class="aboutUserBox bt10"  >
         <div class="ml20">
-            <text class="title fz32">相关用户</text>
+            <text class="title fz32">{{showTitle}}</text>
         </div>
         <scroller scroll-direction="horizontal" class="corpusScroll" show-scrollbar="false">
             <div  v-for="user in arrayList">
@@ -52,10 +52,12 @@
         data:function () {
             return{
                 arrayList:this.userList,
+                showTitle:this.title
             }
         },
         props:{
             userList:{default:[]},
+            title:{default:''},
         },
         methods:{
             goAuthor(id){
