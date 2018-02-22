@@ -5,7 +5,7 @@
         <div  class="pageBox"  :class="[pageTop()]"   :style="{width:pageWidth + 'px'}" ref="contentBox">
             <div v-for="(item,index) in corpusList" v-if="item.load == 1" :style="{left: index * 750 + 'px'}" class="categoryBox">
                 <hotsCategory  v-if="item.name == '热点'" @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></hotsCategory>
-                <circleCategory v-else-if="item.name == '圈子'"   @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></circleCategory>
+                <circleCategory v-else-if="item.name == '圈子' && uId != 0"   @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></circleCategory>
                 <othersCategory v-else   @onpanmove="onpanmove" :articleCategoryId="item.id" :scrollable="canScroll"></othersCategory>
             </div>
         </div>
@@ -64,6 +64,7 @@
                 pageWidth:750,
                 showMenu:false,
                 clicked:false,
+                uId:0
             }
         },
         components: {
@@ -79,6 +80,7 @@
 
         created(){
             utils.initIconFont();
+            this.uId = event.getUId();
             var _this = this;
             GET('article_category/list.jhtml',function (data) {
                 if(data.type == 'success' && data.data != ''){
@@ -94,11 +96,14 @@
                         id:'',
                         name:"热点",
                         load:1
-                    },{
-                        id:'',
-                        name:"圈子",
-                        load:0
                     })
+                    if(_this.uId != 0){
+                        _this.corpusList.splice(1,0,{
+                            id:'',
+                            name:"圈子",
+                            load:0
+                        })
+                    }
                     _this.pageWidth = _this.corpusList.length * 750;
                 }
             },function (err) {

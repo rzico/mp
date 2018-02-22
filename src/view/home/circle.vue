@@ -3,7 +3,8 @@
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <header>
+        <header v-if="hasImageList()">
+            <!--轮播图-->
             <div class="bt10">
                 <slider class="slider" interval="3000" auto-play="true">
                     <div class="frame" v-for="img in imageList">
@@ -13,9 +14,15 @@
                 </slider>
             </div>
         </header>
+        <!--相关用户-->
+        <header v-if="userList.length > 3">
+            <transverse :userList="userList" title="我的圈子" @goAuthor="goAuthor"></transverse>
+        </header>
+        <!--无数据时显示-->
         <header @swipe="onpanmove($event)" >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </header>
+        <!--文章列表-->
         <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
             <div>
                 <div  class="articleBox">
@@ -61,8 +68,6 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
-
-
     /*<!--轮播图-->*/
     .indicatorSlider{
         position: absolute;
@@ -102,7 +107,8 @@
     }
     .articleContent{
         lines: 3;text-overflow: ellipsis;
-        font-size: 32px;
+        /*font-size: 32px;*/
+        font-size:30px;
         color: #888;
     }
     .activeClass{
@@ -165,7 +171,8 @@
         margin-left: 20px;
     }
     .articleTitle {
-        font-size: 38px;
+        /*font-size: 38px;*/
+        font-size:36px;
         lines: 2;
         text-overflow: ellipsis;
     }
@@ -184,6 +191,8 @@
     import {dom,event,animation} from '../../weex.js';
     import { POST, GET } from '../../assets/fetch';
     import noData from '../../include/noData.vue';
+    import transverse from '../../widget/transverseList.vue';
+    import tabNav from '../../include/tabNav.vue';
     export default {
         data(){
             return{
@@ -197,10 +206,13 @@
                 screenHeight:0,
                 clicked:false,
                 imageList: [],
+                userList:[],
+                UId:0,
+                isInit:true,
             }
         },
         components: {
-            noData
+            noData,transverse,tabNav
         },
         props:{
 //            whichCorpus:{default:0}
@@ -219,16 +231,44 @@
         created(){
             utils.initIconFont();
             var _this = this;
+            this.UId = event.getUId();
             this.getAllArticle();
-
+            this.getUserList();
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
+            utils.initIconFont();
+
         },
         methods:{
+            hasImageList(){
+              if(utils.isNull(this.imageList) && this.isInit){
+                  return false;
+              }  else{
+                  return true;
+              }
+            },
+//            获取推荐用户列表
+            getUserList(){
+              let _this = this;
+              GET('weex/circle/list.jhtml?id=' + this.UId,function(data){
+                  if(data.type == 'success'){
+                      data.data.forEach(function(item){
+                          if(!utils.isNull(item.logo)){
+                              item.logo = utils.thumbnail(item.logo,100,100);
+                          }
+                      })
+                      _this.userList = data.data;
+                  }else{
+                      event.toast(data.content);
+                  }
+              },function(err){
+                  event.toast(err.content);
+              })
+            },
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
-                GET('weex/article/circle.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/article/circle.jhtml?id=' + this.UId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
                         let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
@@ -318,6 +358,12 @@
             onrefresh:function () {
                 var _this = this;
                 _this.pageStart = 0;
+//                避免下拉刷新时触发 轮播图的v-if时间 避免销毁,页面跳动
+                if(!utils.isNull(this.imageList)){
+                    this.isInit = false;
+                }else{
+                    this.isInit = true;
+                }
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
@@ -341,6 +387,7 @@
                     this.refreshing = false;
                     _this.imageList = [];
                     _this.getAllArticle();
+                    _this.getUserList();
                 }, 1000)
             },
         }

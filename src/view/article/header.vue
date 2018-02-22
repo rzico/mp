@@ -87,7 +87,7 @@
             title: { default: "" },
             complete:{default:''},
             showComplete:{default:true},
-            border:{default:true},
+            border:{default:false},
             authorInfo:{
                 default: function () {
                     return {logo: utils.locate('resources/images/background.png'), title: "", nickName: "author", createDate: null }
