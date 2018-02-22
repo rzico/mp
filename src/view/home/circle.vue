@@ -35,17 +35,16 @@
                     <!--文章封面-->
                     <div style="position: relative">
                         <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
-                        <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
+                        <image  :src="item.thumbnail "  resize="cover" class="articleCover bt15"></image>
                     </div>
 
-                    <div class="flex-row bt20" >
+                    <div class="flex-row bt15" >
                         <text class="articleTitle tempOneWidth" >{{item.title}}</text>
                     </div>
-                    <div class="flex-row bt20"  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                    <div class="flex-row bt15"  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
                         <text class="articleContent tempOneWidth" >{{item.htmlTag}}</text>
                     </div>
-
-                    <div class="flex-row ml20 bt20" @click="goAuthor(item.authorId)">
+                    <div class="flex-row ml20 bt15" @click="goAuthor(item.authorId)">
                         <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName">{{item.author}}</text>
@@ -108,7 +107,9 @@
     .articleContent{
         lines: 3;text-overflow: ellipsis;
         /*font-size: 32px;*/
-        font-size:30px;
+        /*font-size:30px;*/
+        font-size:28px;
+        line-height:34px;
         color: #888;
     }
     .activeClass{
@@ -156,7 +157,7 @@
         height: 370px;
         /*width:690px;*/
         /*border-radius: 5px;*/
-        margin-bottom: 20px;
+        /*margin-bottom: 20px;*/
     }
     .articleBox {
         background-color: #ffffff;
@@ -172,7 +173,8 @@
     }
     .articleTitle {
         /*font-size: 38px;*/
-        font-size:36px;
+        /*font-size:36px;*/
+        font-size:34px;
         lines: 2;
         text-overflow: ellipsis;
     }
