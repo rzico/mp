@@ -504,7 +504,6 @@
                     if(value == '确定'){
                         POST('weex/member/order/refunds.jhtml?sn=' + sn).then(
                             function (data) {
-                                event.toast(data);
                                 if(data.type == 'success'){
                                     _this.pageStart = 0;
                                     _this.open();
@@ -561,7 +560,6 @@
                     if(value == '确认'){
                         POST('weex/member/order/confirm.jhtml?sn=' + sn).then(
                             function (data) {
-                                event.toast(data);
                                 if(data.type == 'success'){
                                     _this.pageStart = 0;
                                     _this.open();
@@ -588,7 +586,6 @@
                     if(value == '确认'){
                         POST('weex/member/order/shipping.jhtml?sn=' + sn).then(
                             function (data) {
-                                event.toast(data);
                                 if(data.type == 'success'){
                                     _this.pageStart = 0;
                                     _this.open();
