@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goBack" @goComplete="goComplete"> </navbar>
-        <list class="wrapperBox" >
+        <navbar :title="title" :complete="complete" @goback="goBack" @goComplete="goComplete" border="false"> </navbar>
+        <list class="wrapperBox">
             <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <cell>
                 <div >
@@ -585,7 +585,7 @@
 //                                            _this.templateGroup(data.data.templates,1);
                                             _this.templateGroup(data.data,1);
 //                                           存储页面数据
-                                            _this.saveDraft();
+//                                            _this.saveDraft();
                                         },10)
                                     }else if(data.type == 'success' && utils.isNull(data.data)){
                                         event.toast('生成的文章内容为空,请换篇文章');
@@ -1438,11 +1438,9 @@
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
-//                utils.debug(articleData);
 //                网络请求，保存文章
                 POST('weex/member/article/submit.jhtml',articleData).then(
                     function (res) {
-//                        utils.debug(res);
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
                             let resDataStr = JSON.stringify(res.data);
@@ -1837,7 +1835,6 @@
 //                                调用裁剪图片
                         album.openCrop(imgSrc,function (data) {
                             _this.clicked = false;
-//                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.originalPath;
                                 _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;

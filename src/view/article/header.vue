@@ -78,11 +78,6 @@
 <script>
     import utils from '../../assets/utils'
     export default {
-        data(){
-          return{
-              authorLogo:utils.locate('resources/images/background.png'),
-          }
-        },
         props: {
             title: { default: "" },
             complete:{default:''},
@@ -90,7 +85,7 @@
             border:{default:false},
             authorInfo:{
                 default: function () {
-                    return {logo: utils.locate('resources/images/background.png'), title: "", nickName: "author", createDate: null }
+                    return { title: '', logo:'initLogoDefault',nickName:'initNickDefault', createDate: null,hasFollow:true }
                 }
             },
             isSelf:{

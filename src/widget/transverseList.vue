@@ -17,7 +17,8 @@
 <style>
     /*<!--相关用户-->*/
     .aboutUserBox{
-        width:750px;
+        /*width:750px;*/
+        width:730px;
         padding-top: 30px;
         padding-bottom: 30px;
         background-color: #fff;
@@ -28,8 +29,8 @@
     .aboutImgName{
         width:130px;
         align-items: center;
-        margin-left: 20px;
-        margin-right: 20px;
+        margin-left: 18px;
+        margin-right: 18px;
     }
     .userName{
         lines:1;

@@ -1,5 +1,5 @@
 <template>
-    <waterfall class="wrapper" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="300" column-gap="10" column-width="auto" column-count="2">
+    <waterfall class="wrapper pl10 pr10" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="300" column-gap="10" column-width="auto" column-count="2">
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
@@ -19,11 +19,11 @@
             <transverse :userList="userList" title="我的圈子" @goAuthor="goAuthor"></transverse>
         </header>
         <!--无数据时显示-->
-        <header @swipe="onpanmove($event)" >
+        <header  >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </header>
         <!--文章列表-->
-        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
+        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" >
             <div>
                 <div  class="articleBox">
                     <!--<div class="atricleHead">-->
@@ -35,8 +35,14 @@
                     <!--文章封面-->
                     <div style="position: relative">
                         <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
-                        <image  :src="item.thumbnail "  resize="cover" class="articleCover bt15"></image>
+                        <image  :src="item.thumbnail "  resize="cover" class="articleCover bt45"></image>
                     </div>
+
+                    <!--<div class="flex-row ml20 bt15" @click="goAuthor(item.authorId)">-->
+                        <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
+                        <image :src="item.logo " resize="cover" class="authorImg"></image>
+                        <!--<text class="authorName">{{item.author}}</text>-->
+                    <!--</div>-->
 
                     <div class="flex-row bt15" >
                         <text class="articleTitle tempOneWidth" >{{item.title}}</text>
@@ -44,22 +50,18 @@
                     <div class="flex-row bt15"  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
                         <text class="articleContent tempOneWidth" >{{item.htmlTag}}</text>
                     </div>
-                    <div class="flex-row ml20 bt15" @click="goAuthor(item.authorId)">
-                        <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
-                        <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author}}</text>
-                    </div>
+
                     <!--文章底部-->
-                    <div class="articleFoot">
+                    <!--<div class="articleFoot">-->
                         <div class="relevantInfo" v-if="item.articleSign != '样例'">
                             <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                             <text class="relevantText">{{item.hits}}</text>
-                            <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="relevantText">{{item.laud}}</text>
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                            <text class="relevantText">{{item.review}}</text>
+                            <!--<text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                            <!--<text class="relevantText">{{item.laud}}</text>-->
+                            <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                            <!--<text class="relevantText">{{item.review}}</text>-->
                         </div>
-                    </div>
+                    <!--</div>-->
                 </div>
             </div>
         </cell>
@@ -133,6 +135,9 @@
     .relevantInfo {
         flex-direction: row;
         align-items: center;
+        position: absolute;
+        top: 467px;
+        right: 20px;
     }
     .articleFoot {
         flex-direction: row;
@@ -151,10 +156,17 @@
     }
     .authorImg{
         width: 60px;height: 60px;border-radius: 30px;
+        border-width: 3px;
+        border-style: solid;
+        border-color: #fff;
+        position: absolute;
+        top: 430px;
+        left: 20px;
     }
     .articleCover {
         width: 370px;
-        height: 370px;
+        /*height: 370px;*/
+        height: 460px;
         /*width:690px;*/
         /*border-radius: 5px;*/
         /*margin-bottom: 20px;*/
@@ -164,7 +176,9 @@
         /*padding-left: 30px;*/
         /*padding-right: 30px;*/
         padding-bottom: 20px;
+        /*padding-top: 20px;*/
         margin-bottom: 10px;
+        border-radius: 10px;
     }
     .atricleHead {
         flex-direction: row;
@@ -348,9 +362,6 @@
                         _this.clicked = false;
                     }
                 )
-            },
-            onpanmove(e){
-                this.$emit('onpanmove',e.direction);
             },
 
             onloading:function () {

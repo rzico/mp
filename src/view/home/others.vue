@@ -3,10 +3,10 @@
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <cell @swipe="onpanmove($event)" >
+        <cell >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
-        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
+        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"   >
             <div  class="articleBox">
                 <div class="atricleHead">
                     <text class="articleTitle">{{item.title}}</text>
@@ -217,9 +217,6 @@
                         _this.clicked = false;
                     }
                 )
-            },
-            onpanmove(e){
-                this.$emit('onpanmove',e.direction);
             },
 
             onloading:function () {

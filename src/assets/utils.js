@@ -3,6 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
+// const websiteURL = 'http://mopian.1xx.me';
 const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
 const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
@@ -246,6 +247,24 @@ let utilsFunc = {
                 return s;
             }
         }
+    },
+
+    //    登录主页的轮播图slider控制
+    indexMtSlider(){
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'IPhoneX'){
+                return 'indexSliderMtIPhoneX';
+            }else if(this.isIosSystem()){
+                return 'indexSliderMtIPhone'
+            } else{
+                return s;
+            }
+        }
+
+
     },
 
 //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)

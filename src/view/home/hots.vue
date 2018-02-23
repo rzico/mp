@@ -13,10 +13,10 @@
                 </slider>
             </div>
         </cell>
-        <cell @swipe="onpanmove($event)" >
+        <cell >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
-        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
+        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"   >
             <!--    排版一 采取左右布局。封面较小-->
             <div v-if="item.templateIndex == 0" class="tempPdBox">
                 <div class="flex-row">
@@ -28,7 +28,7 @@
                 <div class="flex-row" >
                     <div class="tempOneContent" >
                         <div class="flex-row">
-                            <text class="articleTitle">{{item.title}}</text>
+                            <text class="articleTitle tempOneWidth">{{item.title}}</text>
                             <!--<text class="articleTitle tempOneWidth" >用折纸做出的北欧范花瓶-1</text>-->
                         </div>
                         <!--<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
@@ -48,7 +48,7 @@
                     </div>
                     <!--文章封面-->
                     <div style="position: relative">
-                        <image  :src="item.thumbnail | watchOneThumbnail"  resize="cover" class="tempOneImg"></image>
+                        <image  :src="item.thumbnail "  resize="cover" class="tempOneImg"></image>
                     </div>
                 </div>
             </div>
@@ -710,9 +710,6 @@
                         _this.clicked = false;
                     }
                 )
-            },
-            onpanmove(e){
-                this.$emit('onpanmove',e.direction);
             },
 
             onloading:function () {
