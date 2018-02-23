@@ -818,7 +818,7 @@
                             _this.helpList.push({
                                 key:2,
                                 articleSign:'样例',
-                                articleTitle:'我在微信有了自己的专栏！',
+                                articleTitle:'如何开通专栏',
                                 articleCoverUrl:utils.locate('resources/images/column.jpg'),
                                 articleDate:'2017-10-19'
                             },{
@@ -837,7 +837,7 @@
                             _this.helpList.push({
                                 key:2,
                                 articleSign:'样例',
-                                articleTitle:'我在微信有了自己的专栏！',
+                                articleTitle:'如何开通专栏',
                                 articleCoverUrl:utils.locate('resources/images/column.jpg'),
                                 articleDate:'2017-10-19'
                             },{
@@ -1010,12 +1010,19 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/article/preview.js?articleId=' + key  + '&publish=true'),
+                if(key == 2){
+                    event.openURL(utils.locate('view/member/guide/index.js'),
+                        function () {
+                            _this.clicked = false;
+                        })
+                }else {
+                    event.openURL(utils.locate('view/article/preview.js?articleId=' + key + '&publish=true'),
 //                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
-                    function () {
-                        _this.clicked = false;
+                        function () {
+                            _this.clicked = false;
 //                    _this.updateArticle();
-                    })
+                        })
+                }
             },
             corpusChange:function(index,id){
 //                event.toast(id);

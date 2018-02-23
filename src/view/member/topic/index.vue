@@ -333,6 +333,7 @@
                 var _this = this;
                 POST('weex/member/topic/activate.jhtml').then(
                     function (mes) {
+                        _this.clicked = false;
                         if (mes.type == "success") {
                             if (utils.isNull(mes.data)) {
                                 _this.load();
@@ -343,6 +344,7 @@
                             event.toast(mes.content);
                         }
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )
