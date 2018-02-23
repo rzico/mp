@@ -632,7 +632,6 @@
                                     if(item.tags[i].id == 5){
                                         _this.imageList.push(item);
                                         data.data.data.splice(index,1);
-//                                        transitArr.splice(index,1);
                                         break;
                                     }
                                 }
