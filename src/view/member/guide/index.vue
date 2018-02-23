@@ -198,13 +198,15 @@
                         message: '请先完成第一步',
                         okTitle: '知道了'
                     })
-                    _this.clicked = false
+                    _this.clicked = false;
+                    return
                 } if(this.steped2 !== true) {
                     modal.alert({
                         message: '请先完成第二步',
                         okTitle: '知道了'
                     })
-                    _this.clicked = false
+                    _this.clicked = false;
+                    return
                 }else{
                     var _this = this;
                     if (_this.steped3 == false) {
@@ -229,19 +231,22 @@
                         message: '请先完成第一步',
                         okTitle: '知道了'
                     })
-                    _this.clicked = false
+                    _this.clicked = false;
+                    return
                 } if(this.steped2 !== true) {
                     modal.alert({
                         message: '请先完成第二步',
                         okTitle: '知道了'
                     })
-                    _this.clicked = false
+                    _this.clicked = false;
+                    return
                 }if(this.steped3 !== true) {
                     modal.alert({
                         message: '请先完成第三步',
                         okTitle: '知道了'
                     })
-                    _this.clicked = false
+                    _this.clicked = false;
+                    return
                 }else {
                     var _this = this;
                     if (_this.steped4 == false) {
