@@ -577,15 +577,14 @@
                                             clipboard.setString('');
 //                                        清空假进度条，关闭定时器
                                             _this.clearDummyProcess(timer);
-////                                            判断是否有封面
-//                                            if(!utils.isNull(data.data.thumbnail)){
-//                                                _this.coverImage = data.data.thumbnail;
-//                                            }
+////                                            判断是否有封面 后台返回的空会有空格。标题也要注意过滤空格
+                                            if(!utils.isNull(data.data.thumbnail) && !utils.isAllEmpty(data.data.thumbnail)){
+                                                _this.coverImage = data.data.thumbnail;
+                                            }
 //                                       将数据填充进页面
-//                                            _this.templateGroup(data.data.templates,1);
-                                            _this.templateGroup(data.data,1);
+                                            _this.templateGroup(data.data.templates,1);
 //                                           存储页面数据
-//                                            _this.saveDraft();
+                                            _this.saveDraft();
                                         },10)
                                     }else if(data.type == 'success' && utils.isNull(data.data)){
                                         event.toast('生成的文章内容为空,请换篇文章');
