@@ -11,7 +11,7 @@
                     <!--导航栏名字头像-->
                     <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'white'" >
                         <image class="headImg" :src="imageUrl"></image>
-                        <text class="navText" >{{userName}}</text>
+                        <text class="navText" >{{userName | watchNickName}}</text>
                     </div>
                     <div style="width: 50px;">
                     </div>
@@ -700,6 +700,14 @@
 //                    没过滤前是原图
                 return utils.thumbnail(value,690,345);
             },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    //              如果用户名称过长，便截取拼成名字
+                    return utils.changeStrLast(value,5);
+                }
+            }
         },
         created:function () {
             let _this = this;
@@ -815,13 +823,15 @@
 //                        当选择全部文章并且全部文章低于10篇时 显示帮助文档。写在这边可以避免渲染小闪屏问题。写死在data里每次切换会先闪一下帮助List再变成文章List
                         if(utils.isNull(_this.corpusId) && data.data.length < 10){
                             _this.helpList = [];//在push前要清空list
-                            _this.helpList.push({
+                            _this.helpList.push(
+                                {
                                 key:2,
                                 articleSign:'样例',
                                 articleTitle:'如何开通专栏',
                                 articleCoverUrl:utils.locate('resources/images/column.jpg'),
                                 articleDate:'2017-10-19'
-                            },{
+                            },
+                                {
                                 key:1,
                                 articleSign:'样例',
                                 articleTitle:'新手使用帮助！',
@@ -829,18 +839,19 @@
                                 articleDate:'2017-10-19'
                             })
                         }
-
                         _this.listCurrent = _this.listCurrent + _this.listPageSize;
                     }else{
                         if(utils.isNull(_this.corpusId)){
                             _this.helpList = [];
-                            _this.helpList.push({
+                            _this.helpList.push(
+                                {
                                 key:2,
                                 articleSign:'样例',
                                 articleTitle:'如何开通专栏',
                                 articleCoverUrl:utils.locate('resources/images/column.jpg'),
                                 articleDate:'2017-10-19'
-                            },{
+                            },
+                          {
                                 key:1,
                                 articleSign:'样例',
                                 articleTitle:'新手使用帮助！',
