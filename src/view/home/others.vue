@@ -160,7 +160,7 @@
                 if(utils.isNull(value)){
                     return 'author';
                 }else{
-                    return utils.changeStrLast(value);;
+                    return utils.changeStrLast(value);
                 }
             }
         },

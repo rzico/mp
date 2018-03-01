@@ -105,10 +105,7 @@
                     return 'author';
                 }else{
                     //              如果用户名称过长，便截取拼成名字
-                    if((utils.getLength(value) > 12)){
-                        value = value.substr(0,5) + '...'
-                    }
-                    return value;
+                    return utils.changeStrLast(value,5);
                 }
             }
         },
