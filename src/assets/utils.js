@@ -135,6 +135,16 @@ let utilsFunc = {
         }
         return len;
     },
+//    将过长的字符串换成 XXX...格式 默认取前7个字符
+    changeStrLast(value,length){
+        length = this.isNull(length) ? 7 : length;
+        //              如果用户名称过长，便截取拼成名字
+        if((this.getLength(value) > 16)){
+            value = value.substr(0,length) + '...'
+        }
+        return value;
+    },
+
 //    将过长的字符串换成 XXX...XXX格式
     changeStr(e){
         return e.substr(0,4) + '...' + e.substr(-4);

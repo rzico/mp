@@ -24,7 +24,7 @@
                     <div class="flex-row" @click="goAuthor(item.authorId)">
                         <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author}}</text>
+                        <text class="authorName">{{item.author | watchNickName}}</text>
                     </div>
                     <div class="relevantInfo" v-if="item.articleSign != '样例'">
                         <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
@@ -156,6 +156,13 @@
             watchlogo:function (value) {
                 return utils.thumbnail(value,60,60);
             },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    return utils.changeStrLast(value);;
+                }
+            }
         },
         created(){
             utils.initIconFont();
