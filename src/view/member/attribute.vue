@@ -277,7 +277,10 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入昵称',duration:1})
                         }else{
-
+                            if(utils.getLength(value.data) > 32){
+                                event.toast('输入的昵称不能超过16个字,请重试。');
+                                return;
+                            }
                             POST('weex/member/update.jhtml?nickName=' +encodeURI(value.data)).then(
                                 function (mes) {
                                     if (mes.type == "success") {

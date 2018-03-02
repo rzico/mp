@@ -12,8 +12,9 @@
                 <div class="searchBox bt20"  v-if="historyList != ''">
                     <div class="space-between searchHead" >
                         <text class="gray fz28">搜索历史</text>
-                        <text class="ico gray cleanHistory" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
+                        <text class="ico gray cleanHistory fz28" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
                     </div>
+                    <div class="borderBottom searchBorder"></div>
                     <div class="searchContentBox flex-row " >
                         <div v-for="(item,index) in historyList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
@@ -29,6 +30,7 @@
                     <div class="space-between searchHead" >
                         <text class="gray fz28">搜索发现</text>
                     </div>
+                    <div class="borderBottom searchBorder"></div>
                     <div class="searchContentBox flex-row " >
                         <div v-for="(item,index) in hotList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
@@ -119,9 +121,10 @@
                 <div  v-for="(item,index) in searchList.article" >
                     <!--类别-->
                     <div  v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
-                        <div class="typeTextBox boder-bottom" >
+                        <div class="typeTextBox " >
                             <text class="sub_title fz32 pb10" >相关文章</text>
                         </div>
+                        <div class="borderBottom"></div>
                     </div>
                     <div class="contentBox">
                         <!--文章-->
@@ -226,9 +229,10 @@
         height: 80px;
         margin-left: 25px;
         background-color: #fff;
-        border-bottom-style: solid;
-        border-bottom-color: gainsboro;
-        border-bottom-width: 1px;
+    }
+    .searchBorder{
+        width: 700px;
+        margin-left: 25px;
     }
     .searchContentText{
         height: 90px;

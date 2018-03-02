@@ -22,7 +22,7 @@
                 <div class="flex-row">
                     <div class="bt20 flex-row" @click="goAuthor(item.authorId)">
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author}}</text>
+                        <text class="authorName">{{item.author }}</text>
                     </div>
                 </div>
                 <div class="flex-row" >
@@ -579,7 +579,6 @@
 
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
-
         },
         methods:{
             hasImageList(){
@@ -618,9 +617,11 @@
                                 item.logo = utils.locate('resources/images/background.png');
 //                                transitArr[index].logo = utils.locate('resources/images/background.png');
                             }
-                            if(utils.isNull(item.nickName)){
-                                item.nickName = 'author';
+                            if(utils.isNull(item.author)){
+                                item.author = 'author';
 //                                transitArr[index].nickName = 'author';
+                            }else{
+                                item.author = utils.changeStrLast(item.author);
                             }
 //                            模版id重新填充打乱
                             if(_this.templateIndexList.length == 0){

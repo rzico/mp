@@ -41,7 +41,8 @@
         line-height: 26px;
     }
     .corpusScroll{
-        flex-direction: row;width: 730px;
+        flex-direction: row;
+        /*width: 730px;*/
         margin-left:20px;
         background-color: #fff;
         height:180px;

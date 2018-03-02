@@ -104,7 +104,8 @@
                 if(utils.isNull(value)){
                     return 'author';
                 }else{
-                    return value;
+                    //              如果用户名称过长，便截取拼成名字
+                    return utils.changeStrLast(value,5);
                 }
             }
         },
