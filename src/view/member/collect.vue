@@ -20,7 +20,7 @@
                     <div class="nameDate">
                         <div class="nameImg" @click="goAuthor(item.authorId)">
                             <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
-                            <text class="authorName ml10">{{item.author}}</text>
+                            <text class="authorName ml10">{{item.author | watchNickName}}</text>
                         </div>
                         <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                     </div>
@@ -154,6 +154,13 @@
             },
             watchLogo:function (value) {
                 return utils.thumbnail(value,40,40);
+            },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    return utils.changeStrLast(value,8);
+                }
             }
         },
         props:{

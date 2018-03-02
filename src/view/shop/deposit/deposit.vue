@@ -341,7 +341,7 @@
                                 okTitle: '知道了'
                             })
                         }
-                        event.sendGlobalEvent('onCashierChange',res);
+                        event.sendGlobalEvent('onCashierChange',mes);
                     } else {
                         _this.isPopup = false;
                         modal.alert({

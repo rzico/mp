@@ -100,7 +100,7 @@
                         <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
                     </div>
                     <div class="infoLines pb10">
-                        <text class="sub_title ">配送方式: 普通快递</text>
+                        <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
 
                     <div class="infoLines pt0">
@@ -118,7 +118,7 @@
                             <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
                         </div>
                         <div class=" space-between">
-                            <text class="sub_title">+运费</text>
+                            <text class="sub_title">+ 运费</text>
                             <text class="sub_title">¥0.00</text>
                         </div>
                     </div>
@@ -376,6 +376,28 @@
                         break;
                     default:
                         return '在线支付';
+                        break;
+                }
+            },
+            watchShippingMethod:function (value) {
+                switch (value){
+                    case "shipping":
+                        return '普通快递 ';
+                        break;
+                    case 'pickup':
+                        return '线下提货';
+                        break;
+                    case 'warehouse':
+                        return '统仓统配';
+                        break;
+                    case 'ecard':
+                        return '存入卡包';
+                        break;
+                    case 'virtual':
+                        return '虚拟货品';
+                        break;
+                    default:
+                        return '普通快递';
                         break;
                 }
             },

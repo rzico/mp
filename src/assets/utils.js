@@ -3,6 +3,7 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
+// const websiteURL = 'http://mopian.1xx.me';
 const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
 const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
@@ -134,6 +135,16 @@ let utilsFunc = {
         }
         return len;
     },
+//    将过长的字符串换成 XXX...格式 默认取前7个字符
+    changeStrLast(value,length){
+        length = this.isNull(length) ? 7 : length;
+        //              如果用户名称过长，便截取拼成名字
+        if((this.getLength(value) > 16)){
+            value = value.substr(0,length) + '...'
+        }
+        return value;
+    },
+
 //    将过长的字符串换成 XXX...XXX格式
     changeStr(e){
         return e.substr(0,4) + '...' + e.substr(-4);
@@ -246,6 +257,24 @@ let utilsFunc = {
                 return s;
             }
         }
+    },
+
+    //    登录主页的轮播图slider控制
+    indexMtSlider(){
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'IPhoneX'){
+                return 'indexSliderMtIPhoneX';
+            }else if(this.isIosSystem()){
+                return 'indexSliderMtIPhone'
+            } else{
+                return s;
+            }
+        }
+
+
     },
 
 //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)

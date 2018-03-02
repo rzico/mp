@@ -2,15 +2,17 @@
     <div class="wrapper">
         <!--导航栏-->
         <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
-        <scroller>
+        <div  :style="{height:scrollHeight}" >
             <!--网页-->
-            <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
+            <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl" ></web>
             <!--下一步-->
-            <div class="footBox bkg-primary" v-if="!publish"  @click="goOption()">
-                <text class="nextStep">下一步</text>
+            <div v-if="!publish" >
+                <div class="footBox bkg-primary cb-top " @click="goOption()">
+                    <text class="nextStep">下一步</text>
+                </div>
             </div>
             <!--点赞 评论 分享-->
-            <div class="footBox " v-if="publish" >
+            <div class="footBox bkg-white" v-if="publish" >
                 <div class="bottomBtnBox" @click="goLaud()">
                     <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                     <text class="fz26fff"  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
@@ -127,7 +129,7 @@
             </div>
             <!--模版内容-->
             <!--</transition>-->
-        </scroller>
+        </div>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -297,10 +299,14 @@
         height:100px;
         background-color: #fff;
         position: fixed;
-        bottom: 0;
+        bottom: 0px;
+        /*bottom: 68px;*/
         border-style:solid;
         border-top-width: 1px;
         border-color: #ccc;
+    }
+    .cb-top{
+        border-top-width: 0px;
     }
     .webView{
         width:750px;
@@ -349,22 +355,26 @@
                 showShare:false,
                 screenHeight:0,
                 clicked:false,
-                authorInfo:[]
+                authorInfo:[],
+                scrollHeight:0,
             }
         },
         components: {
             navbar,share
         },
         props: {
-            title: { default: "预览"},
-            complete:{ default : '编辑'},
+            title: { default: ""},
+            complete:{ default : ''},
         },
         created(){
-
+//            let a = event.deviceInfo();
+//            utils.debug(a);
             var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
+//            this.screenHeight = utils.fullScreen(305 );
             this.screenHeight = utils.fullScreen(237);
+            this.scrollHeight = utils.fullScreen(137);
             var isPublish = utils.getUrlParameter('publish');
 //            如果不传就是null
             if(!utils.isNull(isPublish)){
@@ -374,7 +384,6 @@
 //            获取该文章的模版
             POST('weex/article/template.jhtml?id=' + this.articleId).then(
                 function (data) {
-//                    utils.debug(data);
                     if(data.type == 'success'){
                         _this.templateId = 't' + data.data;
                         _this.initTemplateSn = data.data;

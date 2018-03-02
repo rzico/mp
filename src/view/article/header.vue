@@ -78,11 +78,6 @@
 <script>
     import utils from '../../assets/utils'
     export default {
-        data(){
-          return{
-              authorLogo:utils.locate('resources/images/background.png'),
-          }
-        },
         props: {
             title: { default: "" },
             complete:{default:''},
@@ -90,7 +85,7 @@
             border:{default:false},
             authorInfo:{
                 default: function () {
-                    return {logo: utils.locate('resources/images/background.png'), title: "", nickName: "author", createDate: null }
+                    return { title: '', logo:'initLogoDefault',nickName:'initNickDefault', createDate: null,hasFollow:true }
                 }
             },
             isSelf:{
@@ -109,7 +104,8 @@
                 if(utils.isNull(value)){
                     return 'author';
                 }else{
-                    return value;
+                    //              如果用户名称过长，便截取拼成名字
+                    return utils.changeStrLast(value,5);
                 }
             }
         },
