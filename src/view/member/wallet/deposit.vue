@@ -33,7 +33,7 @@
                         </div>
                         <div class="content flex5">
                             <div class="flex-row space-between align-bottom">
-                                <text class="title lines-ellipsis">{{deposit.memo}}</text>
+                                <text class="title lines-ellipsis width400">{{deposit.memo}}</text>
                                 <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
                             </div>
                             <div class="flex-row space-between align-bottom">
@@ -59,6 +59,9 @@
     .sub_title {
         color:#444;
         font-size: 30px;
+    }
+    .width400{
+        width: 400px;
     }
     .total {
         width:750px;
