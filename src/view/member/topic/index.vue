@@ -65,21 +65,21 @@
             </div>
             </div>
             <!--小程序设置-->
-            <!--<div class="cell-row cell-line">-->
-                <!--<div class="cell-panel space-between cell-clear"  @click="linkman()">-->
-                    <!--<div class="flex-row">-->
-                        <!--<text class="title ml10">小程序设置</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between cell-clear"  @click="appletCopy()">
+                    <div class="flex-row">
+                        <text class="title ml10">小程序设置</text>
+                    </div>
+                    <div class="flex-row flex-end">
                         <!--<text class="sub_title">未设置 </text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="sub-panel">-->
-                <!--<text class="sub_title">一键完成小程序部署,快速上架</text>-->
-                <!--&lt;!&ndash;<text class="sub_title" style="color:blue">《操作手册》</text>&ndash;&gt;-->
-            <!--</div>-->
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-panel">
+                <text class="sub_title">复制专栏链接并设置为小程序自定义菜单</text>
+                <!--<text class="sub_title" style="color:blue">《操作手册》</text>-->
+            </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear" @click="copy()">
                     <div class="flex-row">
@@ -204,7 +204,8 @@
               noJob:true,
               isOwner:false,
               showShare:false,
-              copyPublic:''
+              copyPublic:'',
+              copyApplet:''
           }
         },
         components: {
@@ -497,13 +498,28 @@
                     event.toast(err.content);
                 })
             },
-            //            点击复制
+            //            公众号点击复制
             copy(){
-                let _this =this
+                let _this =this;
                 GET('weex/topic/menu.jhtml',function (data) {
                     if(data.type = 'success'){
                         _this.copyPublic = data.data;
                         clipboard.setString(_this.copyPublic);
+                        event.toast('复制成功');
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+            //            小程序点击复制
+            appletCopy(){
+                let _this =this;
+                GET('weex/topic/menu.jhtml?type=applet',function (data) {
+                    if(data.type = 'success'){
+                        _this.copyApplet = data.data;
+                        clipboard.setString(_this.copyApplet);
                         event.toast('复制成功');
                     }else{
                         event.toast(data.content);
