@@ -30,7 +30,7 @@
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">商品说明:</text>
-                        <text class=" fz30 gray ml10">{{item.ext.orderItems[0].name}}{{item.ext.orderItems[0].spec}}</text>
+                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.orderItems[0].name}}{item.ext.orderItems[0].spec}}</text>
                     </div>
                     <div class="bottomBtn">
                         <text class="title">查看详情</text>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">商品说明:</text>
-                        <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
+                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.memo}}</text>
                     </div>
                     <div class="bottomBtn">
                         <text class="title">查看详情</text>
@@ -86,7 +86,7 @@
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">交易说明:</text>
-                        <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
+                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.memo}}</text>
                     </div>
                     <div class="bottomBtn">
                         <text class="title">查看详情</text>
@@ -168,6 +168,12 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .contentLimit{
+        width:450px;
+        lines:2;
+        text-overflow: ellipsis;
+        line-height:40px;
+    }
     .black{
         color: #444;
     }
