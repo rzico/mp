@@ -3,8 +3,8 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-// const websiteURL = 'http://mopian.1xx.me';
-const websiteURL = 'http://dev.rzico.com';
+const websiteURL = 'http://mopian.1xx.me';
+// const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
 const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
@@ -68,6 +68,8 @@ let utilsFunc = {
     filterThumbnail(url){
         if(url.indexOf('?x-oss-') != -1){
             url = url.substring(0,url.indexOf('?x-oss-'));
+        }else if(url.indexOf('@') != -1){
+            url = url.substring(0,url.indexOf('@'));
         }
         return url;
     },
@@ -93,7 +95,7 @@ let utilsFunc = {
         topHeight = topHeight == '' ? 0 : topHeight - 1;
         return 750/weex.config.env.deviceWidth * weex.config.env.deviceHeight - topHeight;
     },
-    //模糊图片，r , s  为 1-50，超大超模糊
+    //模糊图片，r, s  为 1-50，超大超模糊
     blur(url,r,s) {
         if (url.substring(0,10) == "http://cdn") {
             return url+"@"+r+"-"+s+"bl";
@@ -352,6 +354,20 @@ let utilsFunc = {
             }
         }
     },
+    //    控制预览文章页底部栏的bottom高度
+    previewBottom:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ''
+        } else {
+            if(s == 'IPhoneX'){
+                return s;
+            }else{
+                return '';
+            }
+        }
+    },
+
 
 //判断设备系统是不是ios
     isIosSystem:function () {
