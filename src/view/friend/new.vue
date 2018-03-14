@@ -52,12 +52,6 @@
         padding-top: 30px;
         padding-bottom: 30px;
         background-color: white;
-        border-top-width: 1px;
-        border-top-style: solid;
-        border-top-color: #ccc;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
     }
     .friendsName{
         height:90px;
