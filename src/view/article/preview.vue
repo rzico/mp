@@ -2,9 +2,10 @@
     <div class="wrapper">
         <!--导航栏-->
         <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
-        <div  :style="{height:scrollHeight}" >
-            <!--网页-->
-            <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl" ></web>
+        <!--<div  :style="{height:scrollHeight}" >-->
+        <div class="articleOutBox" :class="[articleOutBoxTop()]">
+            <!--网页:style="{height:screenHeight}"-->
+            <web class="webView" ref="webView" :style="{bottom:bottomNum + 100}"  :src="webUrl" ></web>
             <!--下一步-->
             <div v-if="!publish" >
                 <div class="footBox bkg-primary cb-top " :style="{height:bottomNum + 100}" @click="goOption()">
@@ -128,6 +129,9 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .articleOutBox{
+        position:absolute;bottom: 0;width: 750px;  top: 136px;
+    }
     .collectText{
         font-size: 24px;line-height:24px;
     }
@@ -393,7 +397,6 @@
 
                             if(data.type == 'success' && data.data != ''){
                                 _this.templateList = data.data;
-//                                utils.debug(_this.templateList);
                                 _this.templateList.forEach(function (item) {
                                     if(item.templates.sn == data.data){
                                         _this.templateName = item.name;
@@ -428,6 +431,10 @@
 
         },
         methods:{
+            articleOutBoxTop:function () {
+                let dc = utils.artOutTop();
+                return dc
+            },
 //            发布后直接跳出分享
             relaseShare(){
                 let doneEdit = utils.getUrlParameter('showShare');

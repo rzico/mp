@@ -100,10 +100,10 @@
                         </div>
                     </scroller>
                 </div>
-                <!--<noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>-->
+                <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--文章模块-->
                 <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
-                <div :style="{minHeight:screenHeight + 'px',paddingBottom:bottomNum + 100}" >
+                <div v-else :style="{minHeight:screenHeight + 'px',paddingBottom:bottomNum + 100}" >
                     <!--绑定动画-->
                     <!--<transition-group name="paraTransition" tag="div">-->
                     <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
@@ -578,6 +578,7 @@
 <script>
     import {dom,event,storage,stream,animation} from '../../weex.js';
     const modal = weex.requireModule('modal');
+    import noData from '../../include/noData.vue';
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
     import filters from '../../filters/filters.js'
@@ -610,8 +611,10 @@
                 }],
                 listCurrent:0,
                 listPageSize:10,
-//                文章
-                articleList: [],
+//                文章 赋予一个值避免页面闪烁
+                articleList: [''],
+//		设置一个变量来记录获取到的变量
+                middleList:[],
                 isFocus:false,
                 UId:'',
                 screenHeight:'',
@@ -621,6 +624,8 @@
                 authorId:0,
                 clicked:false,
                 bottomNum:0,
+                noDataHint:"暂无文章",
+
             }
         },
         filters:{
@@ -631,6 +636,9 @@
                     return value;
                 }
             }
+        },
+        components: {
+            noData
         },
         created:function () {
             utils.initIconFont();
@@ -712,18 +720,22 @@
             addArticle:function () {
                 let _this = this;
 //                this.listCurrent = this.listPageSize + this.listCurrent;
+
                 GET('weex/article/list.jhtml?authorId='+ this.UId + '&articleCatalogId=' + this.corpusId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
                     if(data.type == 'success'){
                         if (data.data.start==0) {
-                            _this.articleList = [];
+//                            _this.articleList = [];
+//                            利用一个变量来嫁接数组。
+                            _this.middleList = [];
                         }
                         data.data.data.forEach(function (item) {
                             if(utils.isNull(item.thumbnail)){
                             }else{
                                 item.thumbnail = utils.thumbnail(item.thumbnail,690,345);
                             }
-                            _this.articleList.push(item);
+                            _this.middleList.push(item);
                         });
+                        _this.articleList = _this.middleList;
                         _this.listCurrent = data.data.start+data.data.data.length;
                     }
                     else{

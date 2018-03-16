@@ -332,13 +332,13 @@
             sortLetter:function (a,b) {
                 var _this = this;
 //                判空
-                if(utils.isNull(a)){
+                if(utils.isNull(a) || utils.isNull(a.name)){
                     a = '#';
                 }else{
 //                分别获取昵称中的首字母
                     a = getLetter.getFirstLetter(a.name.substring(0,1));
                 }
-                if(utils.isNull(b)){
+                if(utils.isNull(b.name || utils.isNull(b.name))){
                     b = '#'
                 }else {
                     b = getLetter.getFirstLetter(b.name.substring(0,1));

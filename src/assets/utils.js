@@ -6,7 +6,7 @@ const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://mopian.1xx.me';
 // const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
-const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -66,6 +66,10 @@ let utilsFunc = {
     },
     //把缩略图过滤为原图
     filterThumbnail(url){
+
+        if(this.isNull(url)){
+            return url;
+        }
         if(url.indexOf('?x-oss-') != -1){
             url = url.substring(0,url.indexOf('?x-oss-'));
         }else if(url.indexOf('@') != -1){
@@ -75,6 +79,9 @@ let utilsFunc = {
     },
     //获取缩略图
     thumbnail(url,w,h) {
+        if(this.isNull(url)){
+            return url;
+        }
         //获取屏幕宽度计算得出比例
         let proportion = weex.config.env.deviceWidth/750;
 //                获取缩略图的宽高
@@ -97,6 +104,9 @@ let utilsFunc = {
     },
     //模糊图片，r, s  为 1-50，超大超模糊
     blur(url,r,s) {
+        if(this.isNull(url)){
+            return url;
+        }
         if (url.substring(0,10) == "http://cdn") {
             return url+"@"+r+"-"+s+"bl";
         } else {
@@ -354,6 +364,21 @@ let utilsFunc = {
             }
         }
     },
+    //    控制preview文章box的top
+    artOutTop:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'artOutBoxTopV1';
+            }else if(s == 'IPhoneX'){
+                return 'artOutBoxTopIPhoneX';
+            }else{
+                return s;
+            }
+        }
+    },
     //    控制预览文章页底部栏的bottom高度
     previewBottom:function () {
         let s = this.device();
@@ -380,6 +405,9 @@ let utilsFunc = {
     },
 
     resolvetimefmt:function (value) {
+        if(this.isNull(value)){
+            return value;
+        }
 //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
         if(value.toString().length == 10){
             value = parseInt(value) * 1000;
