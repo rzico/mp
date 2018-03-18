@@ -24,8 +24,8 @@
         flex-direction: row;
         padding-left: 10px;
         border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
+        border-bottom-style: solid;
+        border-bottom-color: gainsboro;
         height:80px;
         background-color: #fff;
     }
@@ -57,6 +57,9 @@
             corpusChange:function(index,id){
                 let loca = index - 3;
                 if(loca < 0){
+//                            控制顶部导航的滑动
+                    const el = this.$refs['corpus0'][0];
+                    dom.scrollToElement(el, { offset: 0 });
                 }else {
 //                            控制顶部导航的滑动
                     const el = this.$refs['corpus' + loca][0];

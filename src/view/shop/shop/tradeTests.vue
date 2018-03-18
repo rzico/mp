@@ -104,6 +104,7 @@
         data: function () {
             return{
                 prompting:'点击测试',
+                clicked:false
             }
         },
         components: {
@@ -126,21 +127,27 @@
                 event.closeURL(message);
             },
             scan:function() {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this
                 event.scan(function (message) {
+                    _this.clicked = false
                     if (message.type=='error') {
+                        _this.clicked =false
                         return;
                     }
                     utils.readScan(message.data,function (data) {
                         if(data.type == 'success'){
                             if (data.data.type!='818804') {
                                 event.toast("无效收钱码");
+                                _this.clicked =false
                                 return;
                             }
                             _this.code = data.data.code
                             POST('weex/member/shop/test.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
                                 function (mes) {
-                                    utils.debug(mes)
                                     if (mes.type == "success") {
                                         event.closeURL(mes);
                                     } else {
@@ -153,10 +160,7 @@
                         } else {
                             event.toast(data.content);
                         }
-
-
                     })
-
                 });
             }
         }

@@ -1,6 +1,7 @@
 <template>
     <div class="wrapper">
         <navbar :title="title"  @goback="goback"  > </navbar>
+        <scroller>
         <div style="background-color: white">
             <div class="titleOne">
                 <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
@@ -47,6 +48,8 @@
                 <textarea rows="2" maxlength="80" placeholder="请输入使用规则(不超过80个汉字)" class="input" v-model="rule" @change="" @input=""/>
             </div>
         </div>
+        <div style="height: 600px"></div>
+        </scroller>
         <div class="button bw bottom" @click="complete">
             <text class="bottonText">完成</text>
         </div>
@@ -235,31 +238,6 @@
             }
         },
         methods: {
-            // 时间格式化  2017-09-01
-            timeDatefmt:function (value) {
-            if(value == '' || value == null || value == undefined){
-                return value;
-            }
-            //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
-            value = value + '';
-            if(value.length == 10){
-                value = parseInt(value) * 1000;
-            }else{
-                value = parseInt(value);
-            }
-            let    date = new Date(value);
-            let    tody = new Date();
-            let    y = date.getFullYear();
-            let    m = date.getMonth() + 1;
-            let    d = date.getDate();
-            if (m < 10) {
-                m = '0' + m;
-            }
-            if (d < 10) {
-                d = '0' + d;
-            }
-            return y + '-' + m + '-' + d;
-        },
             modification:function () {
                 var _this = this;
                 GET('weex/member/coupon/view.jhtml?id='+_this.id,function (mes) {
@@ -279,8 +257,8 @@
                         _this.number = mes.data.stock;
                         _this.money = mes.data.amount;
                         _this.rule = mes.data.introduction;
-                        _this.endDate = _this.timeDatefmt(mes.data.endDate);
-                        _this.beginDate = _this.timeDatefmt(mes.data.beginDate);
+                        _this.endDate = utils.ymdtimefmt(mes.data.endDate);
+                        _this.beginDate = utils.ymdtimefmt(mes.data.beginDate);
                         _this.codeName = mes.data.type;
                         _this.scene = mes.data.scope;
                         _this.conditions =mes.data.minimumPrice

@@ -3,9 +3,10 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weixin.rzico.com';
+const websiteURL = 'http://mopian.1xx.me';
+// const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
-const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -63,8 +64,24 @@ let utilsFunc = {
             return false
         }
     },
+    //把缩略图过滤为原图
+    filterThumbnail(url){
+
+        if(this.isNull(url)){
+            return url;
+        }
+        if(url.indexOf('?x-oss-') != -1){
+            url = url.substring(0,url.indexOf('?x-oss-'));
+        }else if(url.indexOf('@') != -1){
+            url = url.substring(0,url.indexOf('@'));
+        }
+        return url;
+    },
     //获取缩略图
     thumbnail(url,w,h) {
+        if(this.isNull(url)){
+            return url;
+        }
         //获取屏幕宽度计算得出比例
         let proportion = weex.config.env.deviceWidth/750;
 //                获取缩略图的宽高
@@ -85,8 +102,11 @@ let utilsFunc = {
         topHeight = topHeight == '' ? 0 : topHeight - 1;
         return 750/weex.config.env.deviceWidth * weex.config.env.deviceHeight - topHeight;
     },
-    //模糊图片，r , s  为 1-50，超大超模糊
+    //模糊图片，r, s  为 1-50，超大超模糊
     blur(url,r,s) {
+        if(this.isNull(url)){
+            return url;
+        }
         if (url.substring(0,10) == "http://cdn") {
             return url+"@"+r+"-"+s+"bl";
         } else {
@@ -96,12 +116,21 @@ let utilsFunc = {
     //获取文章URL地址
     articleUrl(template,id) {
         template = template == '' ? 't1001' : template;
-        return websiteURL + "/" + template + "?id=" + id;
+        return websiteURL + "/#/" + template + "?id=" + id;
     },
     debug(msg) {
         if (debug) {
             event.toast(msg);
         }
+    },
+    isRoles(roles,all) {
+        for (var i=0;i<roles.length;i++) {
+            let role = roles.substring(i,i+1);
+            if (all.indexOf(role)>=0) {
+                return true;
+            }
+        }
+        return false;
     },
     //  获取字符串的字符总长度
     getLength(e){
@@ -118,6 +147,16 @@ let utilsFunc = {
         }
         return len;
     },
+//    将过长的字符串换成 XXX...格式 默认取前7个字符
+    changeStrLast(value,length){
+        length = this.isNull(length) ? 7 : length;
+        //              如果用户名称过长，便截取拼成名字
+        if((this.getLength(value) > 16)){
+            value = value.substr(0,length) + '...'
+        }
+        return value;
+    },
+
 //    将过长的字符串换成 XXX...XXX格式
     changeStr(e){
         return e.substr(0,4) + '...' + e.substr(-4);
@@ -232,6 +271,24 @@ let utilsFunc = {
         }
     },
 
+    //    登录主页的轮播图slider控制
+    indexMtSlider(){
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'IPhoneX'){
+                return 'indexSliderMtIPhoneX';
+            }else if(this.isIosSystem()){
+                return 'indexSliderMtIPhone'
+            } else{
+                return s;
+            }
+        }
+
+
+    },
+
 //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addTop:function () {
         let s = this.device();
@@ -307,6 +364,35 @@ let utilsFunc = {
             }
         }
     },
+    //    控制preview文章box的top
+    artOutTop:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'artOutBoxTopV1';
+            }else if(s == 'IPhoneX'){
+                return 'artOutBoxTopIPhoneX';
+            }else{
+                return s;
+            }
+        }
+    },
+    //    控制预览文章页底部栏的bottom高度
+    previewBottom:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ''
+        } else {
+            if(s == 'IPhoneX'){
+                return s;
+            }else{
+                return '';
+            }
+        }
+    },
+
 
 //判断设备系统是不是ios
     isIosSystem:function () {
@@ -319,6 +405,9 @@ let utilsFunc = {
     },
 
     resolvetimefmt:function (value) {
+        if(this.isNull(value)){
+            return value;
+        }
 //value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
         if(value.toString().length == 10){
             value = parseInt(value) * 1000;
@@ -380,6 +469,15 @@ let utilsFunc = {
 
         return timeObj.y + '-' + timeObj.m + '-' + timeObj.d + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
     },
+    //返回格式 2017年09月01日 06:35:59
+    ymdhisdayfmt:function(value){
+        if(value == '' || value == null || value == undefined){
+            return value;
+        }
+        let timeObj = this.resolvetimefmt(value);
+
+        return timeObj.y + '年' + timeObj.m + '月' + timeObj.d + '日' + ' ' + timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
+    },
     //返回格式 06:35:59
     histimefmt:function(value){
         if(value == '' || value == null || value == undefined){
@@ -387,6 +485,19 @@ let utilsFunc = {
         }
         let timeObj = this.resolvetimefmt(value);
         return timeObj.h + ':' + timeObj.i + ':' + timeObj.s;
+    },
+    //过滤表情
+    filteremoji(text,type){
+        var ranges = [
+            '\ud83c[\udf00-\udfff]',
+            '\ud83d[\udc00-\ude4f]',
+            '\ud83d[\ude80-\udeff]'
+        ];
+        text = text .replace(new RegExp(ranges.join('|'), 'g'), '');
+        if(this.isNull(text) && type == 'article'){
+            return '点击设置标题'
+        }
+        return text;
     },
 };
 

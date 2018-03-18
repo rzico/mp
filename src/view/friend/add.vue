@@ -82,7 +82,8 @@
                 value:"",
                 logo:"",
                 nickName:"",
-                id:""
+                id:"",
+                clicked:false,
             }
         },
         props: {
@@ -103,15 +104,27 @@
 //                    event.closeURL();
 //                });
 //                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/friend/search.js"),function (message) {
+                    _this.clicked = false;
                     if(message.data != ''){
                         event.closeURL(message);
                     }
                 });
             },
             goMobile:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
 //                event.openURL('http://192.168.2.157:8081/mobile.weex.js',function (message) {
                 event.openURL(utils.locate("view/friend/mobile.js"),function (message) {
+                    _this.clicked = false;
 //                    event.closeURL();
                 })
             },

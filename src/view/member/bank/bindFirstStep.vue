@@ -15,7 +15,7 @@
                     <text class="title" >开户人</text>
                 </div>
                 <div class="twoA">
-                    <input type="text" placeholder="" class="input" :autofocus="true" value="" @input="oninput"/>
+                    <input type="text" placeholder="持卡人姓名" class="input" :autofocus="true" value="" @input="oninput"/>
                 </div>
                 <div class="font">
                     <text class="title2" :style="{fontFamily:'iconfont'}" @click="showAlert">&#xe620;</text>
@@ -152,7 +152,8 @@
             return {
                 txtInput: '',
                 accountName:'',
-                autofocus: false
+                autofocus: false,
+                clicked:false
             };
         },
         components: {
@@ -207,12 +208,17 @@
                 event.closeURL()
             },
             goComplete: function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this;
                 if (utils.isNull(this.txtInput)) {
                     modal.alert({
                         message: "请输入卡号",
                         okTitle: '知道了'
                     })
+                    _this.clicked =false
                     return;
                 }
                 if (utils.isNull(this.accountName)) {
@@ -220,6 +226,7 @@
                         message: "请输入开户名",
                         okTitle: '知道了'
                     })
+                    _this.clicked =false
                     return;
                 }
                 let  twodata = {
@@ -232,6 +239,7 @@
                         if (res.type=="success") {
                             event.closeURL(res);
                         }
+                        _this.clicked =false
                     })
                 });
         }

@@ -1,16 +1,6 @@
 <template>
-    <scroller class="wrapper" show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll"  @loadmore="onloading" loadmoreoffset="50">
-        <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-        <!--<image class="gif" resize="cover"-->
-        <!--src="file://resources/image/loading.gif"></image>-->
-        <!--<text class="indicator">{{refreshState}}</text>-->
-        <!--<loading-indicator>...</loading-indicator>-->
-        <!--</refresh>-->
-        <!--<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">-->
-        <!--<text class="indicator">Refreshing ...</text>-->
-        <!--</refresh>-->
-        <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-        <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
+    <div class="wrapper">
+        <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div>
             <!--顶部白色区域-->
             <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
@@ -52,135 +42,149 @@
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <!--</transition-group>-->
-        <!--顶部个人信息栏-->
-        <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
-            <!--背景图片-->
-            <image   class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
-            <!--遮罩层-->
-            <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-            <div  class="topHead">
-                <!--用户头像-->
-                <image class="testImage" :src="imageUrl" ></image>
-                <!--个性签名 用户昵称-->
-                <div style="align-items: center;padding-bottom:20px" @click="goAttribute()">
-                    <!--用户昵称-->
-                    <text class="userName">{{userName}}</text>
-                    <!--用户签名-->
-                    <text class="userSign">{{userSign}}</text>
-                </div>
-            </div>
-            <!--功能按钮-->
-            <div class="topBtnBox">
-                <div class="topBtnSmallBox " style="min-width: 120px" @click="goFocus()">
-                    <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                    <text class=" topBtn " >关注</text>
-                </div>
-                <div class="topBtnSmallBox "  @click="goCollect()">
-                    <!--钱包两边的白色边框-->
-                    <div  class="leftBtnBorder topBtnBorder" ></div>
-                    <div  class="rightBtnBorder topBtnBorder" ></div>
-                    <text class="topBtn topBtnBigFont">{{collectNum}}</text>
-                    <text class="topBtn">收藏</text>
-                </div>
-                <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFans()">
-                    <text class="topBtn topBtnBigFont">{{fansNum}}</text>
-                    <text class="topBtn">粉丝</text>
-                </div>
-            </div>
-        </div>
-        <div >
-            <div  class="corpusBox"  >
-                <scroller scroll-direction="horizontal"  class="corpusScroll">
-                    <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
-                    </div>
-                </scroller>
-            </div>
-            <!--<noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>-->
-            <!--文章模块-->
-            <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
-            <div :style="{minHeight:screenHeight + 'px'}" style="padding-bottom: 100px">
-                <!--绑定动画-->
-                <!--<transition-group name="paraTransition" tag="div">-->
-                <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
-                <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
-                    <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
-                    <div class="atricleHead">
-                        <!--<text class="articleSign">{{item.articleSign}}</text>-->
-                        <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
-                        <text class="articleTitle">{{item.title}}</text>
-                    </div>
-                    <!--文章封面-->
-                    <div style="position: relative">
-                        <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
-                    </div>
-                    <!--文章底部-->
-                    <div class="articleFoot">
-                        <div>
-                            <text class="articleDate">{{item.createDate | timeDatefmt}}</text>
-                            <!--<text class="articleDate">{{item.createDate}}</text>-->
-                        </div>
-                        <div class="relevantInfo">
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                            <text class="relevantText">{{item.hits}}</text>
-                            <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="relevantText">{{item.laud}}</text>
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                            <text class="relevantText">{{item.review}}</text>
-                        </div>
-                    </div>
-                </div>
-                <!--<div style="height: 1300px;">-->
-                <!--</div>-->
-                <!--</transition-group>-->
-            </div>
-        </div>
-        <div class="bottomBtnBox" v-if="authorId != UId">
-            <div class="bottomBtn " v-if="!isFocus" @click="focus()">
-                <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
-                <text class="fz35 ml10" >关注</text>
-            </div>
-            <div class="bottomBtn " v-else @click="focus()">
-                <text class="fz35 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
-                <text class="fz35 ml10 gray" >已关注</text>
-            </div>
-            <div class="rightBorder"></div>
-            <div class="bottomBtn" v-if="friendStatus == 'adopt'" @click="goChat()">
-                <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62f;</text>
-                <text class="fz35 ml10" >私信</text>
-            </div>
-            <div class="bottomBtn" v-else  @click="goAddFriend()">
-                <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
-                <text class="fz35 ml10" >添加好友</text>
-            </div>
-        </div>
-        <div v-if="isOperation ">
-            <div class="mask" @touchstart="maskTouch"></div>
-            <div class="operationBox"  style="width: 230px;">
-                <div class="arrowUp" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
-                </div>
-                <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="friendStatus=='black'" @click="doBlack()">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="fz28 pl10">解除黑名单</text>
-                </div>
-                <div class="flex-row pt25 pb25  textActive " style="width: 230px;;padding-left: 21px;padding-right: 21px" v-else @click="doBlack()">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="fz28 pl10">加入黑名单</text>
-                </div>
-                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
-                <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
-                <!--<text class="fz28 pl10">举报</text>-->
-                <!--</div>-->
+        <scroller  show-scrollbar="false"  offset-accuracy="0" @scroll="scrollHandler" :scrollable="canScroll"  @loadmore="onloading" loadmoreoffset="50">
+            <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+            <!--<image class="gif" resize="cover"-->
+            <!--src="file://resources/image/loading.gif"></image>-->
+            <!--<text class="indicator">{{refreshState}}</text>-->
+            <!--<loading-indicator>...</loading-indicator>-->
+            <!--</refresh>-->
+            <!--<refresh class="refresh" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">-->
+            <!--<text class="indicator">Refreshing ...</text>-->
+            <!--</refresh>-->
+            <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
+            <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
 
+            <!--</transition-group>-->
+            <!--顶部个人信息栏-->
+            <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
+                <!--背景图片-->
+                <image   class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
+                <!--遮罩层-->
+                <!--<image class="backgroundMask" :src="maskUrl"></image>-->
+                <div  class="topHead">
+                    <!--用户头像-->
+                    <image class="testImage" :src="imageUrl" ></image>
+                    <!--个性签名 用户昵称-->
+                    <div style="align-items: center;padding-bottom:20px" @click="goAttribute()">
+                        <!--用户昵称-->
+                        <text class="userName">{{userName}}</text>
+                        <!--用户签名-->
+                        <text class="userSign">{{userSign}}</text>
+                    </div>
+                </div>
+                <!--功能按钮-->
+                <div class="topBtnBox">
+                    <div class="topBtnSmallBox " style="min-width: 120px" @click="goFocus()">
+                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
+                        <text class=" topBtn " >关注</text>
+                    </div>
+                    <div class="topBtnSmallBox "  @click="goCollect()">
+                        <!--钱包两边的白色边框-->
+                        <div  class="leftBtnBorder topBtnBorder" ></div>
+                        <div  class="rightBtnBorder topBtnBorder" ></div>
+                        <text class="topBtn topBtnBigFont">{{collectNum}}</text>
+                        <text class="topBtn">收藏</text>
+                    </div>
+                    <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFans()">
+                        <text class="topBtn topBtnBigFont">{{fansNum}}</text>
+                        <text class="topBtn">粉丝</text>
+                    </div>
+                </div>
             </div>
-        </div>
-        <!--</div>-->
-        <!--<loading class="loading" @loading="onloading" :display="showLoading">-->
-        <!--<text class="indicator">Loading ...</text>-->
-        <!--</loading>-->
-    </scroller>
+            <div >
+                <div  class="corpusBox"  >
+                    <scroller scroll-direction="horizontal"  class="corpusScroll">
+                        <div class="articleClass">
+                            <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+                        </div>
+                    </scroller>
+                </div>
+                <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
+                <!--文章模块-->
+                <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
+                <div v-else :style="{minHeight:screenHeight + 'px',paddingBottom:bottomNum + 100}" >
+                    <!--绑定动画-->
+                    <!--<transition-group name="paraTransition" tag="div">-->
+                    <!--<div class="articleBox" v-for="(item,index) in articleList" :key="index" v-if="switchArticle(item.corpus)" @click="goArticle(item.id)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">-->
+                    <div class="articleBox" v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)" @swipe="onpanmove()">
+                        <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
+                        <div class="atricleHead">
+                            <!--<text class="articleSign">{{item.articleSign}}</text>-->
+                            <!--<text class="articleSign">{{item.value.articleOption.authority | watchWho}}</text>-->
+                            <text class="articleTitle">{{item.title}}</text>
+                        </div>
+                        <!--文章封面-->
+                        <div style="position: relative">
+                            <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
+                        </div>
+                        <!--文章底部-->
+                        <div class="articleFoot">
+                            <div>
+                                <text class="articleDate">{{item.createDate | timeDatefmt}}</text>
+                                <!--<text class="articleDate">{{item.createDate}}</text>-->
+                            </div>
+                            <div class="relevantInfo">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.hits}}</text>
+                                <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.laud}}</text>
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.review}}</text>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div style="height: 1300px;">-->
+                    <!--</div>-->
+                    <!--</transition-group>-->
+                </div>
+            </div>
+            <div class="bottomBtnBox" v-if="authorId != UId" :style="{height:bottomNum + 100,paddingBottom:bottomNum}">
+                <div class="bottomBtn " v-if="!isFocus" @click="focus()">
+                    <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe606;</text>
+                    <text class="fz35 ml10" >关注</text>
+                </div>
+                <div class="bottomBtn " v-else @click="focus()">
+                    <text class="fz35 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
+                    <text class="fz35 ml10 gray" >已关注</text>
+                </div>
+                <div class="rightBorder"></div>
+                <div class="bottomBtn" v-if="friendStatus == 'adopt'" @click="goChat()">
+                    <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62f;</text>
+                    <text class="fz35 ml10" >私信</text>
+                </div>
+                <div class="bottomBtn" v-else  @click="goAddFriend()">
+                    <text class="fz35"  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
+                    <text class="fz35 ml10" >添加好友</text>
+                </div>
+            </div>
+            <div v-if="isOperation ">
+                <div class="mask" @touchstart="maskTouch"></div>
+                <div class="operationBox"  style="width: 230px;">
+                    <div class="arrowUp" >
+                        <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
+                    </div>
+                    <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="friendStatus=='black'" @click="doBlack()">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                        <text class="fz28 pl10">解除黑名单</text>
+                    </div>
+                    <div class="flex-row pt25 pb25  textActive " style="width: 230px;;padding-left: 21px;padding-right: 21px" v-else @click="doBlack()">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                        <text class="fz28 pl10">加入黑名单</text>
+                    </div>
+                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="report">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                    <!--<text class="fz28 pl10">举报</text>-->
+                    <!--</div>-->
+
+                </div>
+            </div>
+            <!--</div>-->
+            <!--<loading class="loading" @loading="onloading" :display="showLoading">-->
+            <!--<text class="indicator">Loading ...</text>-->
+            <!--</loading>-->
+        </scroller>
+    </div>
 </template>
 
 <style lang="less" src="../../style/wx.less"/>
@@ -238,7 +242,7 @@
         bottom: 0;
         left:0;
         right: 0;
-        height: 100px;
+        /*height: 100px;*/
     }
     .categoryBox{
         position: absolute;background-color: #888;left: 650px;bottom: 100px;opacity: 0.4;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
@@ -574,6 +578,7 @@
 <script>
     import {dom,event,storage,stream,animation} from '../../weex.js';
     const modal = weex.requireModule('modal');
+    import noData from '../../include/noData.vue';
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
     import filters from '../../filters/filters.js'
@@ -606,15 +611,21 @@
                 }],
                 listCurrent:0,
                 listPageSize:10,
-//                文章
-                articleList: [],
+//                文章 赋予一个值避免页面闪烁
+                articleList: [''],
+//		设置一个变量来记录获取到的变量
+                middleList:[],
                 isFocus:false,
                 UId:'',
                 screenHeight:'',
                 corpusId:'',
                 isOperation:false,
                 friendStatus:'',
-                authorId:0
+                authorId:0,
+                clicked:false,
+                bottomNum:0,
+                noDataHint:"暂无文章",
+
             }
         },
         filters:{
@@ -626,11 +637,21 @@
                 }
             }
         },
+        components: {
+            noData
+        },
         created:function () {
             utils.initIconFont();
             var _this = this;
             this.UId = utils.getUrlParameter('id');
             this.authorId = event.getUId();
+
+            //            判断是iponex就动态获取底部上弹高度
+            if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
+                this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
+            }
+
+
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(216)  ;
             GET('weex/topic/view.jhtml?id=' + this.UId,function (data) {
@@ -699,18 +720,22 @@
             addArticle:function () {
                 let _this = this;
 //                this.listCurrent = this.listPageSize + this.listCurrent;
+
                 GET('weex/article/list.jhtml?authorId='+ this.UId + '&articleCatalogId=' + this.corpusId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
                     if(data.type == 'success'){
                         if (data.data.start==0) {
-                            _this.articleList = [];
+//                            _this.articleList = [];
+//                            利用一个变量来嫁接数组。
+                            _this.middleList = [];
                         }
                         data.data.data.forEach(function (item) {
                             if(utils.isNull(item.thumbnail)){
                             }else{
                                 item.thumbnail = utils.thumbnail(item.thumbnail,690,345);
                             }
-                            _this.articleList.push(item);
+                            _this.middleList.push(item);
                         });
+                        _this.articleList = _this.middleList;
                         _this.listCurrent = data.data.start+data.data.data.length;
                     }
                     else{
@@ -722,9 +747,15 @@
             },
 //            前往文章
             goArticle(id){
-                var _this = this;
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id + '&publish=true'),
                     function () {
+                        _this.clicked = false;
                     })
             },
             corpusChange:function(index,id){
@@ -814,24 +845,45 @@
             },
 //            我的关注
             goFocus(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/focus.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
+                        _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            我的收藏
             goCollect(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/collect.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
+                        _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            粉丝
             goFans(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId + '&name=' + encodeURI(this.userName)),
                     function (data) {
+                        _this.clicked = false;
                         return ;
                     }
                 );
@@ -878,6 +930,11 @@
             },
 //            关注
             focus:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 if(this.isFocus){
                     POST('weex/member/follow/delete.jhtml?authorId=' + this.UId).then(
@@ -888,7 +945,9 @@
                             }else{
                                 event.toast(data.content);
                             }
+                            _this.clicked = false;
                         },function (err) {
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -901,7 +960,9 @@
                             }else{
                                 event.toast(data.content);
                             }
+                            _this.clicked = false;
                         },function (err) {
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -913,19 +974,27 @@
             },
 //            拉黑
             doBlack(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //                解除
                 if(this.friendStatus == 'black'){
-                    POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
+                    POST('weex/member/friends/delete.jhtml?friendId=' + this.UId).then(
                         function(data){
                             if(data.type == 'success'){
                                 _this.friendStatus = 'ask';
                                 event.toast('已解除黑名单');
+                                _this.clicked = false;
                             }else{
+                                _this.clicked = false;
                                 event.toast(err.content);
                             }
                         },
                         function(err){
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -935,9 +1004,11 @@
                             if(data.type == 'success'){
                                 _this.friendStatus = 'black';
                                 event.toast('已加入黑名单');
+                                _this.clicked = false;
                             }
                         },
                         function (err) {
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )
@@ -950,17 +1021,25 @@
             },
 //            添加好友
             goAddFriend(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 POST('weex/member/friends/add.jhtml?friendId='+  this.UId).then(
                     function (weex) {
                         if (weex.type == "success") {
                             event.toast('请求已发送,请等待对方验证');
+                            _this.clicked = false;
 //                            let backData = utils.message('success','成功','请求已发送,请等待对方验证');
 //                            event.closeURL(backData);
                         } else {
+                            _this.clicked = false;
                             event.toast(weex.content);
                         }
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast("网络不稳定请重试");
                     }
                 )

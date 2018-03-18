@@ -1,12 +1,12 @@
 <template>
-    <list class="wrapper" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="50" >
+    <list class="wrapper" show-scrollbar="false" ref="listDom"  @loadmore="onloading" loadmoreoffset="300" >
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <cell @swipe="onpanmove($event)" >
+        <cell >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
-        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"  @swipe="onpanmove($event)" >
+        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"   >
             <div  class="articleBox">
                 <div class="atricleHead">
                     <text class="articleTitle">{{item.title}}</text>
@@ -16,13 +16,20 @@
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
-                    <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
+                    <!--配合图片懒加载，先显示一个本地图片-->
+                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--&lt;!&ndash;不能用过滤器,在上啦加载push时 会渲染不出来&ndash;&gt;-->
+                    <!--<image  :src="item.thumbnail"  resize="cover" class="articleCover"></image>-->
+
+                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                    <image  :src="item.loadingImg" @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
-                    <div style="flex-direction: row;align-items: center" @click="goAuthor(item.authorId)">
-                        <image :src="item.logo" resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author}}</text>
+                    <div class="flex-row" @click="goAuthor(item.authorId)">
+                        <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
+                        <image :src="item.logo " resize="cover" class="authorImg"></image>
+                        <text class="authorName">{{item.author | watchNickName}}</text>
                     </div>
                     <div class="relevantInfo" v-if="item.articleSign != '样例'">
                         <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
@@ -43,7 +50,7 @@
         margin-top: 20px;
     }
     .articleContent{
-        lines: 2;width: 690px;text-overflow: ellipsis;
+        lines: 2;width: 710px;text-overflow: ellipsis;
         font-size: 32px;
         color: #888;
     }
@@ -72,8 +79,8 @@
     .articleFoot {
         flex-direction: row;
         justify-content: space-between;
-        width: 690px;
-        margin-left: 30px;
+        width: 710px;
+        margin-left: 20px;
         align-items: center;
     }
     .authorName {
@@ -92,6 +99,10 @@
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    .coverAbsoTop{
+        position: absolute;
+        top:0;
+    }
     .articleBox {
         background-color: #ffffff;
         /*padding-left: 30px;*/
@@ -103,11 +114,11 @@
     .atricleHead {
         flex-direction: row;
         align-items: center;
-        margin-left: 30px;
+        margin-left: 20px;
     }
     .articleTitle {
         font-size: 38px;
-        lines: 1;width: 690px;text-overflow: ellipsis;
+        lines: 1;width: 710px;text-overflow: ellipsis;
     }
     .articleSign {
         border-radius: 10px;
@@ -134,7 +145,9 @@
                 articleList:[],
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
-                screenHeight:0
+                screenHeight:0,
+                clicked:false,
+                loadingImg:utils.locate('resources/images/loading1.gif'),
             }
         },
         components: {
@@ -153,35 +166,63 @@
             watchlogo:function (value) {
                 return utils.thumbnail(value,60,60);
             },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    return utils.changeStrLast(value);
+                }
+            }
         },
         created(){
             utils.initIconFont();
             var _this = this;
             this.getAllArticle();
-
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
         },
         methods:{
+//            封面显示出来
+            onImageAppear(item){
+                if(utils.isNull(item.loadingImg)){
+                    item.loadingImg = item.thumbnail;
+                }
+            },
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
                 GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
-                        if (_this.pageStart == 0) {
-                            data.data.data.forEach(function (item) {
-                                if(!utils.isNull(item.thumbnail)){
-                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                                }
-                            })
-                            _this.articleList = data.data.data;
-                        }else{
-                            data.data.data.forEach(function (item) {
-                                if(!utils.isNull(item.thumbnail)){
-                                    item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
-                                }
+                        data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                            item.loading = false;
+//                             （配合懒加载）
+                            item.loadingImg = '';
+                            if(!utils.isNull(item.thumbnail)){
+                                item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                            }
+                            if(!utils.isNull(item.logo)){
+                                item.logo = utils.thumbnail(item.logo,60,60);
+                            }else{
+                                item.logo = utils.locate('resources/images/background.png');
+                            }
+                            if(_this.pageStart != 0){
                                 _this.articleList.push(item);
-                            })
+                            }
+                        })
+                        if (_this.pageStart == 0) {
+//                            下拉刷新后文章的前2个组件无法触发appear事件，此时手动进行更新 （配合懒加载）
+                            if(!utils.isNull(data.data.data[0])){
+                                _this.onImageAppear(data.data.data[0]);
+                            }
+                            if(!utils.isNull(data.data.data[1])){
+                                _this.onImageAppear(data.data.data[1]);
+                            }
+                            _this.articleList = data.data.data;
                         }
                         _this.pageStart = data.data.start + data.data.data.length;
                     }else  if(data.type == 'success' && data.data.data == '' ){
@@ -194,22 +235,34 @@
             },
 //            前往作者专栏
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
             },
             goArticle(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {}
+                    function () {
+                        _this.clicked = false;
+                    }
                 )
-            },
-            onpanmove(e){
-                this.$emit('onpanmove',e.direction);
             },
 
             onloading:function () {
 ////            获取文章列表
                 this.getAllArticle();
+//                强制触发上啦加载
+                this.$refs.listDom.resetLoadmore();
             },
             onrefresh:function () {
                 var _this = this;

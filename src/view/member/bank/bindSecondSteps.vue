@@ -151,7 +151,8 @@
               bankimage:'',
               province:'',
               city:'',
-                autofocus: false
+                autofocus: false,
+              clicked:false
           }
         },
         components: {
@@ -219,12 +220,17 @@
                 event.closeURL()
             },
            goComplete: function () {
+               if (this.clicked==true) {
+                   return;
+               }
+               this.clicked = true;
                 var _this=this;
                if (utils.isNull(this.phone)) {
                    modal.alert({
                        message: "请输入手机号",
                        okTitle: '知道了'
                    })
+                   _this.clicked =false
                    return;
                }
                if (this.phone.length!=11) {
@@ -232,6 +238,7 @@
                        message: "请输入11位手机号",
                        okTitle: '知道了'
                    })
+                   _this.clicked =false
                    return;
                }
                if (utils.isNull(this.idno)) {
@@ -239,6 +246,7 @@
                        message: "请输入证件号",
                        okTitle: '知道了'
                    })
+                   _this.clicked =false
                    return;
                }
 
@@ -262,6 +270,7 @@
                         if (mes.type=="success") {
                             event.closeURL(mes);
                         }
+                        _this.clicked =false
                     })
                 });
 

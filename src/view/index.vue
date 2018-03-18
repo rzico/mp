@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper bkg-white">
-        <slider class="slider" interval="3000" auto-play="true">
+        <slider class="slider" :class="[indexSliderMt()]" interval="3000" auto-play="true">
             <div class="frame" v-for="img in imageList">
                 <image class="image"   :class="[indexMt()]" resize="cover" :src="img.src"></image>
             </div>
@@ -101,6 +101,11 @@
             event.changeWindowsBar(true);
         },
         methods: {
+//    登录主页的轮播图slider控制
+            indexSliderMt:function () {
+                let dc = utils.indexMtSlider();
+                return dc;
+            },
 //    登录主页的轮播图控制
             indexMt:function () {
                 let dc = utils.indexMt();
@@ -110,7 +115,6 @@
                 return utils.device()!="V1";
             },
             weixin: function (e) {
-                var _this = this;
                 event.wxAuth(
                     function (message) {
                         if (message.type=="success") {
@@ -129,7 +133,6 @@
                                 )
                         } else {
                             event.toast(message.content);
-                            _this.login();
                         }
 
                     }

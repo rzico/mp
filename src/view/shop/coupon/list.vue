@@ -214,6 +214,7 @@
                 id:'',
                 canScroll:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
+                roles:''
             }
         },
         props: {
@@ -222,9 +223,8 @@
         },
         created() {
             utils.initIconFont();
-            this.open(function () {
-
-            });
+            this.open(function () {});
+            this.permissions()
         },
         filters:{
             judgment:function (data) {
@@ -239,6 +239,19 @@
             }
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             vipClass:function (v) {
                 if (v=='vip3') {
                     return "vip3";
@@ -261,6 +274,13 @@
             },
             add:function() {
                 let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate("view/shop/coupon/add.js"),function (mes) {
                     if(mes.type == 'success')
                         _this.lists.splice(0,0,mes.data);
@@ -296,6 +316,14 @@
             },
 //            触发自组件的二维码方法
             scan:function () {
+                let _this = this
+                if (!utils.isRoles("15",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.scan(function (message) {
                     SCAN(message,function (data) {
                     },function (err) {
@@ -422,6 +450,13 @@
             },
             modification:function (id) {
                 let _this =this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate('view/shop/coupon/add.js?id='+id),function (message) {
                     if(message.type == 'success'){
                         _this.onrefresh()

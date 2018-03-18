@@ -31,7 +31,7 @@
                         </div>
                         <!--有新消息-->
                         <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
-                            <text class="messageTotal">{{item.unRead}}</text>
+                            <text class="messageTotal">{{item.unRead | watchUnRead}}</text>
                         </div>
                         <div style="flex: 5;">
                             <div style="flex-direction: row;flex: 1;" >
@@ -55,6 +55,7 @@
         <div v-if="showMenu" >
             <div class="maskLayer" @touchstart="maskTouch"></div>
             <div class="showBox"  style="width: 230px;">
+                <text class="showBg"></text>
                 <div class="arrowUp" >
                     <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                 </div>
@@ -216,6 +217,7 @@
                 selfUserId:'',
                 pageName:'消息',
                 showMenu:false,
+                clicked:false,
             }
         },
         components: {
@@ -272,6 +274,14 @@
                     default:
                         return value.nickName;
                         break;
+                }
+            },
+//            过滤未读消息过多的情况
+            watchUnRead:function (value) {
+                if(parseInt(value) > 99){
+                    return "···"
+                }else{
+                    return value;
                 }
             }
         },
@@ -351,22 +361,29 @@
 //                    event.toast(_weex);
 //                        本地查找是已有消息列表还是新消息列表~
                     event.find(findOption,function (data) {
-                        var storageData = JSON.stringify(_weex.data);
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.value)){
 //                        判断是否无法获取到头像跟昵称
                                 let JSONData = JSON.parse(data.data.value);
-                                if(!utils.isNull(_weex.data.logo)){
+//                                现在安卓后台数据logo nickName有误，不管有没有获取到logo、nickName 都使用本地头像;
+//                                if(utils.isNull(_weex.data.logo)){
                                     _weex.data.logo = JSONData.logo;
-                                }
-                                if(!utils.isNull(_weex.data.nickName)){
+//                                    2.1号 21：16 所改
+//                                    if(_weex.data.logo.indexOf(_weex.data.userId) == -1){
+//                                        let indexNum = parseInt(_weex.data.logo.indexOf('/gm_1')) + 1;
+//                                        _weex.data.logo = _weex.data.logo.substring(0,indexNum) + _weex.data.userId;
+//                                    }
+
+//                                }
+//                                if(utils.isNull(_weex.data.nickName)){
                                     _weex.data.nickName = JSONData.nickName;
-                                }
+//                                }
                             }
+                            var storageDataNew = JSON.stringify(_weex.data);
                             let option = {
                                 type:'message',
                                 key:_weex.data.userId,
-                                value:storageData,
+                                value:storageDataNew,
                                 keyword:',' + _weex.data.name + ',' + _weex.data.nickName + ',' + _weex.data.content +',',
                                 sort:'0,' + timestamp
                             }
@@ -389,6 +406,7 @@
                                 }
                             })
                         }else{//新消息
+                            var storageData = JSON.stringify(_weex.data);
                             let option = {
                                 type:'message',
                                 key:_weex.data.userId,
@@ -429,6 +447,10 @@
 //            },
 //            跳转消息列表
             jumpMessage:function(item){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 //                如果没有未读数就不更新缓存。直接跳转页面
                 if(item.unRead != 0){
@@ -453,18 +475,21 @@
                                         event.setReadMessage(item.userId,function(data) {
                                             if (data.type == 'success') {
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
+                                                    _this.clicked = false;
                                                 });
                                                 if(item.userId == 'gm_10209'){
                                                     let listenData = utils.message('success','添加好友跳转','');
                                                     event.sendGlobalEvent('onNewFriendChange',listenData);
                                                 }
                                             } else {
+                                                _this.clicked = false;
                                                 event.toast(data.content);
                                             }
                                         })
                                     }else{
 //                                       设置已读
                                         event.setReadMessage(item.userId,function(data){
+                                            _this.clicked = false;
                                             if(data.type == 'success'){
                                                 event.navToChat(item.userId);
                                             }else{
@@ -473,6 +498,7 @@
                                         });
                                     };
                                 }else{
+                                    _this.clicked = false;
                                     event.toast(message.content);
                                 };
                             });
@@ -493,6 +519,7 @@
 //                    event.save(option,function (message) {
 
                         event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
+                            _this.clicked = false;
                         });
 //                    })
 
@@ -502,6 +529,7 @@
 //                        event.setReadMessage(item.userId,function(data){
 //                            if(data.type == 'success'){
                         event.navToChat(item.userId);
+                        _this.clicked = false;
 //                            }else{
 //                                event.toast(data.content);
 //                            }
@@ -566,6 +594,10 @@
             },
 //            删除会话消息；
             deleteMessage(userId,index){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //        modal.confirm({
 //            message: '删除后,将清空该？',
@@ -604,18 +636,27 @@
                         }else{
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     })
                 }else{
+                    _this.clicked = false;
                     event.toast('系统繁忙');
                 };
             },
             //            触发自组件的跳转方法
             gosearch:function () {
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
 //                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
+                    _this.clicked = false;
+//                    if(message.data != ''){
+//                        event.closeURL(message);
+//                    }
                 });
             },
             //            触发自组件的二维码方法
@@ -637,8 +678,14 @@
             },
 //            前往添加好友
             goAddFriend(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 this.showMenu = false;
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
+                    _this.clicked = false;
                 })
 
             },

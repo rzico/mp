@@ -94,6 +94,7 @@
             pageSize:15,
             reviewNum:0,
             refreshImg:utils.locate('resources/images/loading.png'),
+            clicked:false,
         },
         props:{
             noDataHint:{default:'暂无评论'},
@@ -168,7 +169,13 @@
             },
 //            前往作者专栏
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
             },

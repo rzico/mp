@@ -11,155 +11,190 @@
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
                 <cell v-for="(num,index) in lists" >
+                    <!--如果店铺名重复，则不渲染该区域-->
+                    <div class="headShopName" v-if="isRepeat(index)" @click="isScaling(num.shopName)">
+                        <div style="flex-direction: row;align-items: center">
+                        <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
+                        <text class="name">{{num.shopName}}</text>
+                        </div>
+                        <text class="xiajiantou" :style="{fontFamily:'iconfont'}">&#xe601;</text>
+                    </div>
+                    <div v-if="num.isShow">
                     <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                         <text class="deleteText">删除</text>
                     </div>
-                    <div class="addFriendsBorder"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                    <div class="addFriendsBorder" @click="goeditor(num.id,num.shopId,num.shopName,num.roleName,num.mobile,num.roleId,num.name)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
                         <div class="friendsLine">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
                             </div>
+                            <div style="flex-direction: row;justify-content: space-between;align-items:center;width:610px">
                             <div class="friendsName">
                                 <text class="lineTitle ">{{num.name}}:{{num.mobile}}</text>
-
                                 <text class="realName">店铺:{{num.shopName}}</text>
                                 <text class="realName">职位:{{num.roleName}}</text>
-
+                            </div>
+                            <text class="youjiantou" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                             </div>
                         </div>
-                        <div class="bottomBotton">
-                            <div class="button" @click="popup(num.id,num.shopId)">
-                                <text class="sub_title">设置店铺</text>
-                            </div>
-                            <div class="button"@click="selectPosition(num.id,num.shopId,num.roleId)">
-                                <text class="sub_title">设置职位</text>
-                            </div>
-                        </div>
+                        <!--<div class="bottomBotton">-->
+                            <!--<div class="button" @click="popup(num.id,num.shopId)">-->
+                                <!--<text style="color:#ffffff;font-size: 30px">设置店铺</text>-->
+                            <!--</div>-->
+                            <!--<div class="button"@click="selectPosition(num.id,num.shopId,num.roleId)">-->
+                                <!--<text style="color:#ffffff;font-size: 30px">设置职位</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
                     </div>
                 </cell>
         </list>
-        <div class="shareBox" v-if="isPopup">
-            <div style="width: 750px;align-items: center;justify-content: center;height: 70px">
-                <text class="fz30 " style="color: #444">选择所在店铺</text>
-            </div>
-            <list>
-                <cell  class="message" v-for="num in shops" @click="allotment(num.id)">
-                    <div class="shopLogo" >
-                        <text class="shopCheck" :style="{fontFamily:'iconfont'}" v-if="storeId == num.id">&#xe64d;</text>
-                        <image style="width: 150px;height: 150px;"  class="img" :src="num.thedoor "></image>
-                    </div>
-                    <div class="shopInformation">
-                        <div class="shopNameDiv">
-                            <text class="shopName">店名：</text>
-                            <text class="fullName">{{num.name}}</text>
-                        </div>
-                        <div class="shopAddressDiv">
-                            <text class="shopAddress">地址：</text>
-                            <text class="concretely">{{num.address}}</text>
-                        </div>
-                        <div class="shopAddressDiv">
-                            <text class="shopAddress">负责人：</text>
-                            <text class="concretely">{{num.linkman}}</text>
-                        </div>
-                    </div>
-                </cell>
-            </list>
-            <div class="cancelBox" @click="doCancel()">
-                <text class="fz32">取消</text>
-            </div>
-        </div>
+        <!--<div class="shareBox" v-if="isPopup">-->
+            <!--<div style="width: 750px;align-items: center;justify-content: center;height: 70px">-->
+                <!--<text class="fz30 " style="color: #444">选择所在店铺</text>-->
+            <!--</div>-->
+            <!--<list>-->
+                <!--<cell  class="message" v-for="num in shops" @click="allotment(num.id)">-->
+                    <!--<div class="shopLogo" >-->
+                        <!--<text class="shopCheck" :style="{fontFamily:'iconfont'}" v-if="storeId == num.id">&#xe64d;</text>-->
+                        <!--<image style="width: 150px;height: 150px;"  class="img" :src="num.thedoor "></image>-->
+                    <!--</div>-->
+                    <!--<div class="shopInformation">-->
+                        <!--<div class="shopNameDiv">-->
+                            <!--<text class="shopName">店名：</text>-->
+                            <!--<text class="fullName">{{num.name}}</text>-->
+                        <!--</div>-->
+                        <!--<div class="shopAddressDiv">-->
+                            <!--<text class="shopAddress">地址：</text>-->
+                            <!--<text class="concretely">{{num.address}}</text>-->
+                        <!--</div>-->
+                        <!--<div class="shopAddressDiv">-->
+                            <!--<text class="shopAddress">负责人：</text>-->
+                            <!--<text class="concretely">{{num.linkman}}</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</cell>-->
+            <!--</list>-->
+            <!--<div class="cancelBox" @click="doCancel()">-->
+                <!--<text class="fz32">取消</text>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
-<style>
-    .bottomBotton{
-        flex-direction: row;justify-content: flex-end;align-items:flex-end;
-        padding-right: 30px;
-    }
-    .button {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        margin-right: 20px;
-        border-width: 1px;
-        border-radius: 5px;
-        border-color: #ccc;
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        background-color:#EB4E40;
-
-        height:50px;
-        line-height: 50px;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .cancelBox{
-        width: 730px;align-items: center;height:100px;background-color: #eee;justify-content: center;
-    }
-    .shareBox{
-        height:750px;
-        border-top-right-radius: 15px;
-        border-top-left-radius: 15px;
-        border-width: 1px;
-        border-color: #cccccc;
-        background-color:#F5F4F5;
-        position: fixed;
-        bottom:0px ;
-        left: 10px;
-        right:10px
-    }
-    .shopInformation{
-        /*justify-content: space-between;*/
-        height: 170px;
-        margin-left: 20px;
-    }
-    .shopNameDiv{
-        flex-direction: row;
-        margin-top: 10px;
-    }
-    .shopAddressDiv{
-        flex-direction: row;
-        margin-top: 10px;
-    }
-    .shopName{
-        font-weight: bold;
-        font-size: 32px;
-    }
-    .shopCheck {
-        font-size: 48px;
-        color:red;
-    }
-    .fullName{
-        font-size: 32px;
-    }
-    .shopAddress{
-        font-weight: bold;
-        font-size: 32px;
-    }
-    .concretely{
-        font-size: 32px;
-    }
-    .message{
-        flex-direction: row;
-        align-items: center;
+<style scoped>
+    .headShopName{
+        height: 100px;
         width: 750px;
-        background-color: white;
-        border-color: #cccccc;
-        border-bottom-width: 1px;
-    }
-    .shopLogo{
-        margin-left: 20px;
+        padding-left: 20px;
+        padding-right: 10px;
         flex-direction: row;
+        justify-content: space-between;
         align-items: center;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: rgba(153,153,153,0.2);
     }
+     .name{
+        font-size: 32px;
+        margin-left: 20px;
+         font-weight: bold;
+    }
+     .youjiantou{
+         color: #cccccc;
+         font-size: 40px;
+     }
+    .xiajiantou{
+        color:#ccc;
+        font-size: 60px;
+    }
+    /*.bottomBotton{*/
+        /*flex-direction: row;justify-content: flex-end;align-items:flex-end;*/
+        /*padding-right: 30px;*/
+    /*}*/
+    /*.button {*/
+        /*margin-top: 10px;*/
+        /*margin-bottom: 10px;*/
+        /*margin-right: 20px;*/
+        /*border-width: 1px;*/
+        /*border-radius: 5px;*/
+        /*border-color: #ccc;*/
+        /*padding-left: 10px;*/
+        /*padding-right: 10px;*/
+        /*padding-top: 10px;*/
+        /*padding-bottom: 10px;*/
+        /*background-color:#EB4E40;*/
+        /*height:50px;*/
+        /*line-height: 50px;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+    /*}*/
+
+    /*.cancelBox{*/
+        /*width: 730px;align-items: center;height:100px;background-color: #eee;justify-content: center;*/
+    /*}*/
+    /*.shareBox{*/
+        /*height:750px;*/
+        /*border-top-right-radius: 15px;*/
+        /*border-top-left-radius: 15px;*/
+        /*border-width: 1px;*/
+        /*border-color: #cccccc;*/
+        /*background-color:#F5F4F5;*/
+        /*position: fixed;*/
+        /*bottom:0px ;*/
+        /*left: 10px;*/
+        /*right:10px*/
+    /*}*/
+    /*.shopInformation{*/
+        /*!*justify-content: space-between;*!*/
+        /*height: 170px;*/
+        /*margin-left: 20px;*/
+    /*}*/
+    /*.shopNameDiv{*/
+        /*flex-direction: row;*/
+        /*margin-top: 10px;*/
+    /*}*/
+    /*.shopAddressDiv{*/
+        /*flex-direction: row;*/
+        /*margin-top: 10px;*/
+    /*}*/
+    /*.shopName{*/
+        /*font-weight: bold;*/
+        /*font-size: 32px;*/
+    /*}*/
+    /*.shopCheck {*/
+        /*font-size: 48px;*/
+        /*color:red;*/
+    /*}*/
+    /*.fullName{*/
+        /*font-size: 32px;*/
+    /*}*/
+    /*.shopAddress{*/
+        /*font-weight: bold;*/
+        /*font-size: 32px;*/
+    /*}*/
+    /*.concretely{*/
+        /*font-size: 32px;*/
+    /*}*/
+    /*.message{*/
+        /*flex-direction: row;*/
+        /*align-items: center;*/
+        /*width: 750px;*/
+        /*background-color: white;*/
+        /*border-color: #cccccc;*/
+        /*border-bottom-width: 1px;*/
+    /*}*/
+    /*.shopLogo{*/
+        /*margin-left: 20px;*/
+        /*flex-direction: row;*/
+        /*align-items: center;*/
+    /*}*/
     .deleteText{
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 0px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
+        position: absolute;right: 0px;top: 0px;height: 160px;align-items: center;width: 130px;justify-content: center;
     }
     .iconfont{
         color: #cccccc;
@@ -187,7 +222,6 @@
 
     .friendsName{
         height:130px;
-        margin-top: 15px;
         justify-content: space-between;
     }
     .realName{
@@ -210,14 +244,12 @@
         border-color: rgba(153,153,153,0.2);
         justify-content: space-between;
         flex-direction: column;
-        justify-content: space-between;
     }
     .friendsLine{
         padding-left: 30px;
-        height:140px;
+        height:160px;
         background-color: #fff;
         flex-direction: row;
-        flex:5;
     }
     .lineTitle{
         font-size: 34px;
@@ -273,101 +305,115 @@
         },
         created() {
             utils.initIconFont();
-//            获取屏幕的高度
             this.open();
-            this.openTwo()
-            this.huoqu()
         },
 
         filters:{
 
         },
         methods: {
-            roleof:function(id) {
-                var _this = this;
-              for (var i=0;i<_this.roles.length;i++) {
-                  if (_this.roles[i].id==id) {
-                      return i;
-                  }
-              }
-              return -1;
-            },
-            rolePicker:function() {
-                var _this = this;
-                var rs = [];
-                for (var i=0;i<this.roles.length;i++) {
-                   rs.push(_this.roles[i].name);
+            //判断所属店铺是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if((this.lists[index].shopName) == (this.lists[index - 1].shopName)){
+                        return false;
+                    }
                 }
-
-                return rs;
+                return true;
             },
-//            获取员工职位
-            huoqu:function(){
-                var _this = this;
-                GET('weex/member/role/list.jhtml', function (mes) {
-                    if (mes.type == 'success') {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content)
-                })
-            },
-//            选择职位
-            selectPosition:function (id,shopId,roleId) {
-                var _this = this;
-                picker.pick({
-                    index:_this.roleof(roleId),
-                    items:_this.rolePicker()
-                }, e => {
-                    if (e.result == 'success') {
-                        POST('weex/member/admin/update.jhtml?id=' +id+'&shopId='+shopId+'&roleId='+_this.roles[e.data].id).then(
-                            function (mes) {
-
-                                if (mes.type == "success") {
-                                    _this.lists.forEach(function(item){
-                                        if (item.id==mes.data.id) {
-                                            item.roleId = mes.data.roleId;
-                                            item.roleName = mes.data.roleName;
-                                        }
-                                    })
-                                } else {
-                                    event.toast(mes.content);
-                                }
-                            }, function (err) {
-                                event.toast("网络不稳定");
-                            }
-                        )
+//            控制店铺伸缩
+            isScaling:function(shopName){
+                this.lists.forEach(function (item) {
+                    if(item.shopName == shopName){
+                        item.isShow = !item.isShow
                     }
                 })
             },
-//            分配店铺
-            allotment:function (id) {
-                let _this =this;
-
-                POST('weex/member/admin/update.jhtml?id='+_this.memberId+'&shopId='+id).then(
-                    function (mes) {
-                        if (mes.type == "success") {
-                            _this.lists.forEach(function(item){
-                                if (item.id==mes.data.id) {
-                                    item.shopName  = mes.data.shopName;
-                                }
-                            });
-                            _this.onrefresh()
-                            _this.isPopup =false;
-                            modal.alert({
-                                message: mes.content,
-                                okTitle: '知道了'
-                            })
-                        } else {
-                            event.toast(mes.content);
-                        }
-                    }, function (err) {
-                        event.toast("网络不稳定");
-                    }
-                )
-            },
+//            roleof:function(id) {
+//                var _this = this;
+//              for (var i=0;i<_this.roles.length;i++) {
+//                  if (_this.roles[i].id==id) {
+//                      return i;
+//                  }
+//              }
+//              return -1;
+//            },
+//            rolePicker:function() {
+//                var _this = this;
+//                var rs = [];
+//                for (var i=0;i<this.roles.length;i++) {
+//                   rs.push(_this.roles[i].name);
+//                }
+//
+//                return rs;
+//            },
+////            获取员工职位
+//            huoqu:function(){
+//                var _this = this;
+//                GET('weex/member/role/list.jhtml', function (mes) {
+//                    if (mes.type == 'success') {
+//                        _this.roles = mes.data;
+//                    } else {
+//                        event.toast(mes.content);
+//                    }
+//                }, function (err) {
+//                    event.toast(err.content)
+//                })
+//            },
+////            选择职位
+//            selectPosition:function (id,shopId,roleId) {
+//                var _this = this;
+//                picker.pick({
+//                    index:_this.roleof(roleId),
+//                    items:_this.rolePicker()
+//                }, e => {
+//                    if (e.result == 'success') {
+//                        POST('weex/member/admin/update.jhtml?id=' +id+'&shopId='+shopId+'&roleId='+_this.roles[e.data].id).then(
+//                            function (mes) {
+//
+//                                if (mes.type == "success") {
+//                                    _this.lists.forEach(function(item){
+//                                        if (item.id==mes.data.id) {
+//                                            item.roleId = mes.data.roleId;
+//                                            item.roleName = mes.data.roleName;
+//                                        }
+//                                    })
+//                                } else {
+//                                    event.toast(mes.content);
+//                                }
+//                            }, function (err) {
+//                                event.toast("网络不稳定");
+//                            }
+//                        )
+//                    }
+//                })
+//            },
+////            分配店铺
+//            allotment:function (id) {
+//                let _this =this;
+//
+//                POST('weex/member/admin/update.jhtml?id='+_this.memberId+'&shopId='+id).then(
+//                    function (mes) {
+//                        if (mes.type == "success") {
+//                            _this.lists.forEach(function(item){
+//                                if (item.id==mes.data.id) {
+//                                    item.shopName  = mes.data.shopName;
+//                                }
+//                            });
+//                            _this.onrefresh()
+//                            _this.isPopup =false;
+//                            modal.alert({
+//                                message: mes.content,
+//                                okTitle: '知道了'
+//                            })
+//                        } else {
+//                            event.toast(mes.content);
+//                        }
+//                    }, function (err) {
+//                        event.toast("网络不稳定");
+//                    }
+//                )
+//            },
             onpanmove:function (e,index) {
 //                获取当前点击的元素。
                 var _this = this;
@@ -455,15 +501,17 @@
                 if (mes.type == 'success') {
                     if (_this.pageStart==0) {
                         mes.data.data.forEach(function(item){
+                            item.isShow = true
                             if(item.shopName == '未分配'){
-                                item.shopName ='点击分配店铺'
+                                item.shopName ='请分配店铺'
                             }
                         });
                         _this.lists = mes.data.data;
                     } else {
                         mes.data.data.forEach(function(item){
+                            item.isShow = true
                             if(item.shopName == '未分配'){
-                                item.shopName ='点击分配店铺'
+                                item.shopName ='请分配店铺'
                             }
                             _this.lists.push(item);
                         })
@@ -476,31 +524,31 @@
                 event.toast(err.content)
             })
     },
-//            店铺列表
-            openTwo:function () {
-                let _this = this;
-                GET('weex/member/shop/list.jhtml?pageStart=0&pageSize=500',function (mes) {
-                    if (mes.type == 'success') {
-                        _this.shops = mes.data.data
-                    } else {
-                        event.toast(res.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content)
-                })
-            },
-//            触发店铺列表
-            popup:function (id,shopId) {
-                this.memberId = id;
-                this.storeId = shopId
-                if (this.isPopup==false) {
-                    this.isPopup = true;
-                }
-            },
-//            关闭店铺列表
-            doCancel:function () {
-                this.isPopup = false;
-            },
+////            店铺列表
+//            openTwo:function () {
+//                let _this = this;
+//                GET('weex/member/shop/list.jhtml?pageStart=0&pageSize=500',function (mes) {
+//                    if (mes.type == 'success') {
+//                        _this.shops = mes.data.data
+//                    } else {
+//                        event.toast(res.content);
+//                    }
+//                }, function (err) {
+//                    event.toast(err.content)
+//                })
+//            },
+////            触发店铺列表
+//            popup:function (id,shopId) {
+//                this.memberId = id;
+//                this.storeId = shopId
+//                if (this.isPopup==false) {
+//                    this.isPopup = true;
+//                }
+//            },
+////            关闭店铺列表
+//            doCancel:function () {
+//                this.isPopup = false;
+//            },
 //            触发自组件的二维码方法
             scan:function () {
                 let _this=this
@@ -568,21 +616,12 @@
                 event.closeURL();
             },
 
-//            jump:function (id) {
-//                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
-//
-//                })
-//            },
-//            add:function() {
-//                event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
-//
-//                })
-//            },
-//            setting:function () {
-//                event.openURL(utils.locate('view/shop/card/setting.js'),function () {
-//
-//                })
-//            }
+            goeditor:function (id,shopId,shopName,roleName,mobile,roleId,name) {
+                let _this =this
+                event.openURL(utils.locate('view/shop/admin/editor.js?id='+id+'&shopId='+shopId+'&shopName='+encodeURI(shopName)+'&roleName='+encodeURI(roleName)+'&mobile='+mobile+'&roleId='+roleId+'&name='+encodeURI(name)), function (message) {
+                        _this.onrefresh()
+                })
+            },
 
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper" >
+    <div class="wrapper">
         <!--<navbar :title="title"  @goback="goback" ></navbar>-->
         <!--<div style="min-height: 136px">-->
         <div class="header"  :class="[classHeader()]">
@@ -55,7 +55,7 @@
                 <div class="goodsLine boder-bottom" :class="[item.id == goodsId ? 'bgActive' : '']" @click="popup(item,index)">
                     <image class="goodsImg" :src="item.thumbnail | watchThumbnail"></image>
                     <div class="infoBox">
-                        <div class="flex1 ">
+                        <div class="flex1">
                             <text class="linesCtrl title">{{item.name}}</text>
                         </div>
                         <div class="flex1 " >
@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="button bw bkg-primary" v-if="!doSearch" @click="addGoods()">
-            <text class="buttonText ">添加商品</text>
+            <text class="buttonText ">新增商品</text>
         </div>
     </div>
 </template>
@@ -349,6 +349,8 @@
             searchHint: "输入商品名",
             searchOrCancel:'取消',
             keyword:'',
+            clicked:false,
+            roles:''
         },
         props:{
             noDataHint:{default:'暂无商品'},
@@ -365,6 +367,7 @@
             }
         },
         created(){
+            this.permissions()
             utils.initIconFont();
 //            获取分类列表
             this.getCatagory();
@@ -375,6 +378,19 @@
             }
         },
         methods:{
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc
@@ -466,18 +482,38 @@
                 }
             },
             addGoods(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate('view/shop/goods/edit.js?type=add'), function (res) {
+                    _this.clicked = false;
                     if(res.type == 'success'){
 //                        res.data.sales = 0;
                         _this.goodsList.splice(0,0,res.data);
+//                                此时自己手动添加的数据，pagestart如果没有自增,用户触发上啦加载时，会多返回一条数据来
+                        _this.pageStart ++;
                     }
                 });
             },
 //            分类
             goCatagory(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/shop/goods/catagory.js?name=catagoryList'), function (data) {
+                    _this.clicked = false;
                     _this.getCatagory();
                 });
             },
@@ -531,6 +567,10 @@
             },
 //            发布商品
             doPublish(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //                        如果没有历史记录就新添加一个缓存
                 var goodsPublish =  this.goodsList[this.goodsIndex];
@@ -539,6 +579,7 @@
                     if(e.result == 'success'){
                         event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish'), function (data) {
                             _this.doReset();
+                            _this.clicked = false;
                             if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                                 let E = {
                                     isDone : 'complete'
@@ -548,14 +589,20 @@
                             }
                         });
                     }else{
+                        _this.clicked = false;
                         event.toast('网络不稳定');
                     }
                 });
             },
 //            编辑商品
             doEdit(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/edit.js?id=' + this.goodsId), function (res) {
+                    _this.clicked = false;
                     _this.doReset();
                     if(res.type == 'success'){
                         _this.goodsList.splice(_this.goodsIndex,1);

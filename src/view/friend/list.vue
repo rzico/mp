@@ -414,7 +414,8 @@
                     letter:'#',
                     name:[]
                 }],
-                allLetter:['||','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#']
+                allLetter:['||','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'],
+                clicked:false
             }
         },
         props: {
@@ -541,7 +542,7 @@
                                                     item.name.push(friend);
                                                     _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
-                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp);
+                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp.toString());
                                                 }else if(message.type == 'success' && message.content =='更新成功'){
                                                 }else{
                                                     event.toast(message.content);
@@ -564,7 +565,7 @@
                                                     item.name.push(friend);
                                                     _this.friendTotal ++;
 //                                            将本次时间戳缓存起来
-                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp);
+                                                    storage.setItem('lastTimestamp' + _this.UId, timestamp.toString());
                                                 }else if(message.type == 'success' && message.content =='更新成功'){
                                                 }else{
                                                     event.toast(message.content);
@@ -585,7 +586,14 @@
                 })
             },
             goAddFriend:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
+                    _this.clicked = false;
 //                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
                 });
             },
@@ -599,7 +607,14 @@
             },
 //            作者主页
             goAuthor:function (id) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             onlongpress :function(count) {
@@ -685,6 +700,11 @@
             },
             //功能页面点击跳转
             openPage(index){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 //            获取当前时间戳 作为唯一标识符key
                 let timestamp = Math.round(new Date().getTime()/1000);
                 let _this = this;
@@ -692,6 +712,7 @@
                     case 0:
                         event.setReadMessage('gm_10209',function(data) {});
                         event.openURL(utils.locate('view/friend/new.js?id='+ this.UId),function (message) {
+                            _this.clicked = false;
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                             //            读取本地朋友未读消息
@@ -731,18 +752,21 @@
                         break;
                     case 1:
                         event.openURL(utils.locate('view/member/focus.js?id='+ this.UId),function (message) {
+                            _this.clicked = false;
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });
                         break;
                     case 2:
                         event.openURL(utils.locate('view/friend/fans.js?id='+ this.UId),function (message) {
+                            _this.clicked = false;
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });
                         break;
                     case 3:
                         event.openURL(utils.locate('view/member/collect.js?id='+ this.UId),function (message) {
+                            _this.clicked = false;
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
 //                            event.toast(message);
                         });
@@ -753,11 +777,17 @@
             },
 //            触发自组件的跳转方法
             gosearch:function () {
+                if(this.clicked){
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('widget/friMsgSearch.js'),function (message) {
+                    _this.clicked = false;
 //                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
-                    if(message.data != ''){
-                        event.closeURL(message);
-                    }
+//                    if(message.data != ''){
+//                        event.closeURL(message);
+//                    }
                 });
             },
 //            触发自组件的二维码方法

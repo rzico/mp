@@ -20,7 +20,7 @@
                     <div class="nameDate">
                         <div class="nameImg" @click="goAuthor(item.authorId)">
                             <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
-                            <text class="authorName ml10">{{item.author}}</text>
+                            <text class="authorName ml10">{{item.author | watchNickName}}</text>
                         </div>
                         <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                     </div>
@@ -145,6 +145,7 @@
                 isSelf:false,
                 userName:'我',
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         filters:{
@@ -153,6 +154,13 @@
             },
             watchLogo:function (value) {
                 return utils.thumbnail(value,40,40);
+            },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    return utils.changeStrLast(value,8);
+                }
             }
         },
         props:{
@@ -247,12 +255,25 @@
                 event.closeURL();
             },
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             goArticle(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {}
+                    function () {
+                        _this.clicked = false;
+                    }
                 )
             },
             //            点击屏幕时
@@ -312,6 +333,10 @@
 //            取消收藏
             deleteMessage(id,index){
                 let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 POST('weex/member/favorite/delete.jhtml?articleId=' + id).then(
                     function(data){
                         if(data.type == 'success'){
@@ -335,7 +360,9 @@
                         }else{
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     },function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )

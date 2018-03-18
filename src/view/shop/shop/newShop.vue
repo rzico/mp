@@ -252,13 +252,7 @@
 
               category:1,
               industryName:'',
-//              id:'',
-//
-//              shopName:'',
-//              shopareaName:'',
-//              shopAddress:'',
-//              shopLinkman:'',
-//              shoptel:''
+              clicked:false
 
           }
         },
@@ -340,30 +334,41 @@
                 })
             },
             goComplete:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this;
                 if(_this.vendorName ==''){
                     event.toast('商家名称未填写');
+                    _this.clicked =false
                     return
                 }if(_this.industryName == ''){
                     event.toast('所属行业未选择');
+                    _this.clicked =false
                     return
                 }if(_this.addressName == ''){
                     event.toast('商家区位未选择');
+                    _this.clicked =false
                     return
                 }if(_this.detailedAddress == ''){
                     event.toast('商家地址未填写');
+                    _this.clicked =false
                     return
                 }
                 if(_this.contactName == ''){
                     event.toast('联系姓名未填写');
+                    _this.clicked =false
                     return
                 }if(_this.contactNumber == ''){
                     event.toast('联系电话未填写');
+                    _this.clicked =false
                     return
                 }
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
                     '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
+                        _this.clicked =false
                         if (mes.type == "success") {
                             _this.shopId = mes.data.id;
                             let  elevendata = {
@@ -383,6 +388,7 @@
                             elevendata = JSON.stringify(elevendata);
                             storage.setItem('elevennumber', elevendata,e=> {
                                 event.openURL(utils.locate('view/shop/shop/materialLaying.js?name=elevennumber'), function (message) {
+                                    _this.clicked =false;
                                     if (message.type == "success") {
                                         event.closeURL(message);
                                     }
@@ -393,6 +399,7 @@
                         }
                     }, function (err) {
                         event.toast("网络不稳定");
+                        _this.clicked =false
                     }
                 )
     }

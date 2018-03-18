@@ -259,6 +259,7 @@
                 friendsList:[],
                 singeType:'',
                 hadUpdate:false,
+                clicked:false,
             }
         },
         filters:{
@@ -440,7 +441,13 @@
             },
 //            作者主页
             goAuthor:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             //            前往聊天
@@ -449,8 +456,15 @@
             },
 //                      前往文章
             goArticle(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {}
+                    function () {
+                        _this.clicked = false;
+                    }
                 )
             },
             onloading:function () {

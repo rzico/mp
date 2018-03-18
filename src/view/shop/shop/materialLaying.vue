@@ -228,7 +228,8 @@
                 addressName:'',
                 originalone:'',
                 originaltwo:'',
-                originalthree:''
+                originalthree:'',
+                clicked:false
         }
         },
         components: {
@@ -316,23 +317,31 @@
                     })
             },
             goComplete:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this;
                 if(_this.logo ==''){
                     event.toast('门头照未选择');
+                    _this.clicked =false
                     return
                 }if(_this.palcePhoto == ''){
                     event.toast('经营场所照未选择');
+                    _this.clicked =false
                     return
                 }if(_this.licensePhoto == ''){
                     event.toast('营业执照未选择');
+                    _this.clicked =false
                     return
                 }
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
                     '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
                     function (mes) {
+                        _this.clicked =false
                         if (mes.type == "success") {
-                            var _this =this
                                 event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code), function (message) {
+                                    _this.clicked =false
                                     if (message.type == "success") {
                                         event.closeURL(message);
                                     }
@@ -342,6 +351,7 @@
                         }
                     }, function (err) {
                         event.toast("网络不稳定");
+                        _this.clicked =false
                     }
                 )
             }

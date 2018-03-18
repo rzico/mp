@@ -157,6 +157,7 @@
                 dataNum:0,
                 currentNum:0,
                 pageNum:20,
+                clicked:false,
 //                refreshImg:utils.locate('resources/images/loading.png'),
 //                hadUpdate:false,
             }
@@ -304,12 +305,16 @@
                 var _this = this;
                 var timestamp = Math.round(new Date().getTime()/1000);
                 data.data.forEach(function (contactItem) {
+                    var nameSub = '';
+                    if(!utils.isNull(contactItem.name)){
+                        nameSub = getLetter.getFirstLetter(contactItem.name.substring(0,1));
+                    }
                     let option = {
                         type:'contact',
                         key:contactItem.numberMd5,
                         value:contactItem,
                         keyword:','+ contactItem.name + ',' + contactItem.nickName + ',',
-                        sort:  getLetter.getFirstLetter(contactItem.name.substring(0,1)) + ',' + timestamp
+                        sort:  nameSub + ',' + timestamp
                     }
 //                                将数据缓存起来，用于搜索时的模糊查询
                     event.save(option,function (message) {})
@@ -326,9 +331,18 @@
 //            根据字母排序
             sortLetter:function (a,b) {
                 var _this = this;
+//                判空
+                if(utils.isNull(a) || utils.isNull(a.name)){
+                    a = '#';
+                }else{
 //                分别获取昵称中的首字母
-                a = getLetter.getFirstLetter(a.name.substring(0,1));
-                b = getLetter.getFirstLetter(b.name.substring(0,1));
+                    a = getLetter.getFirstLetter(a.name.substring(0,1));
+                }
+                if(utils.isNull(b.name || utils.isNull(b.name))){
+                    b = '#'
+                }else {
+                    b = getLetter.getFirstLetter(b.name.substring(0,1));
+                }
 //                    遍历字母表获取下标进行比较大小。
                 _this.allLetter.forEach(function (item,index) {
                     if(a == item){
@@ -420,6 +434,11 @@
             },
             //添加好友
             adopt:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 POST('weex/member/friends/add.jhtml?friendId='+id).then(
                     function (data) {
                         if (data.type == "success") {
@@ -428,7 +447,9 @@
                         } else {
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     },function(err) {
+                        _this.clicked = false;
                         event.showToast("网络不稳定");
                     }
                 )

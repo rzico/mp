@@ -1,10 +1,10 @@
 <template>
     <div  class="wrapper" >
+        <navbar :title="title"  @goback="goback" ></navbar>
         <scroller>
-            <navbar :title="title"  @goback="goback" ></navbar>
             <!--商品名称-->
             <div class="textareaBox boder-bottom boder-top" ref="textareaRef">
-                <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="oninput" @change="onchange" @focus="onfocus" @blur="onblur"></textarea>
+                <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="nameUnitFirstInput"  @focus="onfocus" @blur="onblur"></textarea>
             </div>
             <!--<div class="onlyPriceNum boder-top boder-bottom mt30">-->
             <!--<div class="inputLine flex-row boder-bottom">-->
@@ -19,7 +19,7 @@
             <div style="width: 750px;background-color: #fff" class="mt30 boder-bottom boder-top" >
                 <div class="inputLine flex-row" >
                     <text class="title">单位</text>
-                    <input type="text" v-model="goodsUnit" return-key-type="next"class="lineContent goodsAdress" placeholder="个、件、袋等" />
+                    <input type="text" v-model="goodsUnit" return-key-type="next"class="lineContent goodsAdress"  @input="nameUnitFirstInput"  placeholder="个、件、袋等" />
                 </div>
             </div>
             <transition name="paraTransition" tag="div">
@@ -31,11 +31,11 @@
                     <div class="topPriceNum " >
                         <div class="inputLine flex-row boder-bottom ">
                             <text class="title">价格</text>
-                            <input type="number" v-model="topLinePrice" return-key-type="next"class="lineContent toplineContentHeight" placeholder="给商品定个好价格" />
+                            <input type="number" v-model="topLinePrice" return-key-type="next"class="lineContent toplineContentHeight"  @input="nameUnitFirstInput" placeholder="给商品定个好价格" />
                         </div>
                         <div class="inputLine flex-row ">
                             <text class="title">库存</text>
-                            <input type="number" v-model="topLineNum"  return-key-type="next" class="lineContent toplineContentHeight" placeholder="设置合理库存避免超卖" />
+                            <input type="number" v-model="topLineNum"  return-key-type="next" class="lineContent toplineContentHeight"  @input="nameUnitFirstInput" placeholder="设置合理库存避免超卖" />
                         </div>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                 <text class="fz35 primary" style="margin-top: 3px" :style="{fontFamily:'iconfont'}">&#xe6b5;</text>
                 <text class="fz35 ml10">添加商品规格</text>
             </div>
-            <div class="sub-panel ml20">
+            <div class="sub-panel ml20 ">
                 <text class="sub_title">通过分类有效管理不同类型的商品</text>
             </div>
             <div class="cell-row cell-line mt10" @click="goChooseCatagory()">
@@ -109,6 +109,22 @@
                     </div>
                 </div>
             </div>
+
+            <div class="sub-panel ml20 mt10">
+                <text class="sub_title">设置你的专属销售策略</text>
+            </div>
+            <div class="cell-row cell-line mt10" @click="goChooseDistri()">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title">销售策略</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{distributionName}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+
             <div style="height: 400px"></div>
         </scroller>
         <div class="button bw bkg-primary" @click="goComplete()">
@@ -339,12 +355,15 @@
     import {dom,event,animation} from '../../../weex.js';
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
+    const storage = weex.requireModule('storage');
     export default {
         data:{
             list:[],
             goodsName:'',
             catagoryName:'全部商品',
             catagoryId:'',
+            distributionId:'',
+            distributionName:'',
             topLinePrice:'',
             topLineNum:'',
             firstThumbnailImg:'',
@@ -357,6 +376,8 @@
             goodsUnit:'',
             productTemplates:[],
             goodsId:'',
+            clicked:false,
+            roles:''
         },
         props:{
             title:{default:'新增商品'}
@@ -366,42 +387,136 @@
         },
         created(){
             let _this = this;
+            this.permissions();
             utils.initIconFont();
             if(!utils.isNull(utils.getUrlParameter('id'))){
                 this.title = '编辑商品';
                 this.goodsId = utils.getUrlParameter('id');
                 GET('weex/member/product/view.jhtml?id=' + this.goodsId,function (data) {
                     if(data.type == 'success'){
-                        _this.goodsName = data.data.name;
-                        _this.goodsUnit = data.data.unit;
-                        if(!utils.isNull(data.data.productCategory.id)){
-                            _this.catagoryId = data.data.productCategory.id;
-                        }
-                        if(!utils.isNull(data.data.productCategory.name)){
-                            _this.catagoryName = data.data.productCategory.name;
-                        }
-                        if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1)){
-                            _this.firstProductId = data.data.products[0].productId;
-                            _this.firstThumbnailImg = data.data.products[0].thumbnail;
-                            _this.firstParaImage = data.data.products[0].thumbnail;
-                            _this.topLinePrice = data.data.products[0].price;
-                            _this.topLineNum = data.data.products[0].stock;
-                        }else{
-                            data.data.products.forEach(function (item) {
-                                item.paraImage = item.thumbnail;
-                                item.isNew = false;
-                                _this.list.push(item);
-                            })
-                        }
+                        _this.drawData(data);
                     }else{
                         event.toast(data.content);
                     }
                 },function (err) {
                     event.toast(err.content);
                 })
+            }else{
+                var findDelete = {
+                    type:'goodsDraft',
+                    key:'0'
+                }
+                event.find(findDelete,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        modal.confirm({
+                            message: '是否恢复上一次已填写的内容?',
+                            duration: 0.3,
+                            okTitle:'恢复',
+                            cancelTitle:'取消',
+                        }, function (value) {
+                            if(value == '恢复'){
+                                var goodsInfo = JSON.parse(delData.data.value);
+                                let a = {
+                                    data : goodsInfo,
+                                }
+                                _this.drawData(a);
+                            }else if(value == '取消'){
+                                _this.delDraft();
+                            }
+                        })
+                    }
+                })
             }
         },
         methods: {
+            nameUnitFirstInput(){
+                //                        临时缓存起来商品数据
+                if(utils.isNull(this.goodsId)){
+                    this.saveDraft();
+                }
+            },
+            drawData(data){
+                let _this = this;
+//                        商品名称
+                let goodName =  data.data.name;
+                if(!utils.isNull(goodName)){
+                    _this.goodsName = goodName;
+                }
+//                        商品单位
+                let goodUnit =  data.data.unit;
+                if(!utils.isNull(goodUnit)){
+                    _this.goodsUnit = goodUnit;
+                }
+//                        分类
+                if(!utils.isNull(data.data.productCategory.id)){
+                    _this.catagoryId = data.data.productCategory.id;
+                }
+                if(!utils.isNull(data.data.productCategory.name)){
+                    _this.catagoryName = data.data.productCategory.name;
+                }
+//                        策略
+                if(!utils.isNull(data.data.distribution.id)){
+                    _this.distributionId = data.data.distribution.id;
+                }
+                if(!utils.isNull(data.data.distribution.name)){
+                    _this.distributionName = data.data.distribution.name;
+                }
+                if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1) &&  utils.isNull(data.data.products[0].isNew)){
+
+//                        无多规格时的商品id
+                    let productId =  data.data.products[0].productId;
+                    if(!utils.isNull(productPrice)){
+                        _this.firstProductId = productPrice;
+                    }
+
+//                        无多规格时的原图、缩略图
+                    let productParaImg =  data.data.products[0].thumbnail;
+                    if(!utils.isNull(productParaImg)){
+//                    data.data.products里只有thumbnail字段，没有paraImg字段，所以这边缩略图和原图都用的thumbnail
+                        _this.firstParaImage = productParaImg;
+                        _this.firstThumbnailImg = productParaImg;
+                    }
+
+//                        无多规格时的价格
+                    let productPrice =  data.data.products[0].price;
+                    if(!utils.isNull(productPrice)){
+                        _this.topLinePrice = productPrice;
+                    }
+
+//                        无多规格时的数量
+                    let productNum =  data.data.products[0].stock;
+                    if(!utils.isNull(productNum)){
+                        _this.topLineNum = productNum;
+                    }
+                }else{
+                    data.data.products.forEach(function (item) {
+                        item.paraImage = item.thumbnail;
+//                        判断是否新增的
+                        if(utils.isNull(item.isNew)){
+                            item.isNew = false;
+                        }
+                        if(utils.isNull(item.stock)){
+                            item.stock = '';
+                        }
+
+                        _this.list.push(item);
+                    })
+                }
+            },
+
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
 //            添加商品规格行
             addLines() {
                 if (this.list.length == 0) {
@@ -422,6 +537,10 @@
                         const el = _this.$refs.textareaRef//跳转到相应的cell
                         dom.scrollToElement(el, {})
                     }, 200)
+                    //                        临时缓存起来商品数据
+                    if(utils.isNull(_this.goodsId)){
+                        _this.saveDraft();
+                    }
                 } else {
                     let goodsIndex = this.list.length - 1;
 //                    新加的商品规格默认为上一个物品的商品规格
@@ -443,7 +562,10 @@
                             offset: 100
                         })
                     }, 200)
-
+//                        临时缓存起来商品数据
+                    if(utils.isNull(_this.goodsId)){
+                        _this.saveDraft();
+                    }
                 }
             },
 //            删除商品规格行
@@ -460,6 +582,10 @@
                     }, function (value) {
                         if (value == '删除') {
                             _this.list.splice(index, 1);
+                            //                        临时缓存起来商品数据
+                            if(utils.isNull(_this.goodsId)){
+                                _this.saveDraft();
+                            }
                         }
                     })
                 }
@@ -486,6 +612,11 @@
                 } else {
                     item.isNew = false;
                 }
+
+                //                        临时缓存起来商品数据
+                if(utils.isNull(this.goodsId)){
+                    this.saveDraft();
+                }
 //                    if(item.specificationFirst != this.list[index - 1].spec1 && item.sepcificationSecond != this.list[index - 1].sepcificationSecond){
 //                        item.isNew = false;
 //                    }
@@ -504,8 +635,12 @@
                     //选完图片后触发回调函数
                     true, function (mes) {
                         if (mes.type == 'success') {
-                                _this.firstParaImage = mes.data.originalPath;
-                                _this.firstThumbnailImg = mes.data.thumbnailSmallPath;
+                            _this.firstParaImage = mes.data.originalPath;
+                            _this.firstThumbnailImg = mes.data.thumbnailSmallPath;
+                            //                        临时缓存起来商品数据
+                            if(utils.isNull(_this.goodsId)){
+                                _this.saveDraft();
+                            }
                         }
                     })
             },
@@ -516,8 +651,12 @@
                     //选完图片后触发回调函数
                     true, function (mes) {
                         if (mes.type == 'success') {
-                                item.paraImage = mes.data.originalPath;
-                                item.thumbnail = mes.data.thumbnailSmallPath;
+                            item.paraImage = mes.data.originalPath;
+                            item.thumbnail = mes.data.thumbnailSmallPath;
+                            //                        临时缓存起来商品数据
+                            if(utils.isNull(_this.goodsId)){
+                                _this.saveDraft();
+                            }
                         }
                     })
             },
@@ -529,6 +668,32 @@
                     if(data.type == 'success' && data.data != ''){
                         _this.catagoryId = parseInt(data.data.catagoryId);
                         _this.catagoryName = data.data.catagoryName;
+
+//                        临时缓存起来商品数据
+                        if(utils.isNull(_this.goodsId)){
+                            _this.saveDraft();
+                        }
+                    }
+                });
+            },
+//            选择营销策略
+            goChooseDistri(){
+                let _this = this;
+                if (!utils.isRoles("A",_this.roles)) {
+                    modal.alert({
+                        message: '请点亮专栏',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                event.openURL(utils.locate('view/shop/goods/chooseDistribution.js?catagoryId=' + this.distributionId), function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        _this.distributionId = parseInt(data.data.catagoryId);
+                        _this.distributionName = data.data.catagoryName;
+                        //                        临时缓存起来商品数据
+                        if(utils.isNull(_this.goodsId)){
+                            _this.saveDraft();
+                        }
                     }
                 });
             },
@@ -570,6 +735,10 @@
                 this.list[index - 1].thumbnail = f;
                 this.list[index - 1].paraImage = g;
                 this.list[index - 1].productId = h;
+                //                        临时缓存起来商品数据
+                if(utils.isNull(_this.goodsId)){
+                    _this.saveDraft();
+                }
             },
 //            下箭头
             moveBottom: function (index) {
@@ -599,14 +768,25 @@
                 this.list[index + 1].thumbnail = f;
                 this.list[index + 1].paraImage = g;
                 this.list[index + 1].productId = h;
+                //                        临时缓存起来商品数据
+                if(utils.isNull(_this.goodsId)){
+                    _this.saveDraft();
+                }
             },
 //            完成
             goComplete: function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+
                 if(utils.isNull(this.goodsName)){
                     event.toast('请完善商品名称');
+                    this.clicked = false;
                     return;
                 }else if(utils.isNull(this.goodsUnit)){
                     event.toast('单位不能为空');
+                    this.clicked = false;
                     return;
                 }
 
@@ -616,6 +796,7 @@
                 if(this.list.length == 0){
                     if(utils.isNull(this.topLinePrice) || utils.isNull(this.topLineNum) || utils.isNull(this.firstParaImage)){
                         event.toast('请完善商品信息');
+                        this.clicked = false;
                         return;
                     }
                     var frontUrl = '';
@@ -624,21 +805,24 @@
                     }
 //                判断是否已经是服务器图片
                     if (frontUrl == 'http') {
-                            _this.realSave();
+                        _this.realSave();
                     }else{
                         _this.proTotal++;
+                        _this.toSendArticle = true;
                         event.upload(_this.firstParaImage, function (data) {
                             if (data.type == 'success') {
                                 _this.firstParaImage = data.data;
-                                    _this.realSave();
+                                _this.realSave();
                             } else {//上传失败
                                 _this.toSendArticle = false;
                                 _this.currentPro = 0;//当前进度
                                 _this.proTotal = 0;//总的进度
                                 _this.processWidth = 0;//进度条宽度
                                 event.toast(data.content);
+                                _this.clicked = false;
                                 return;
                             }
+                            _this.toSendArticle = false;
                         }, function (data) {
 //                    上传进度
                             _this.ctrlProcess(data);
@@ -648,12 +832,46 @@
                     var sign = 0;
 //                    判断规格有没有完整
                     this.list.forEach(function (item) {
-                        if(item.isNew || utils.isNull(item.paraImage)  || utils.isNull(item.price) || utils.isNull(item.stock)){
+                        if(item.isNew ){
                             sign ++ ;
                         }
                     })
                     if(sign > 0){
-                        event.toast('请完善规格或规格不能重复');
+                        event.toast('商品规格1不能为空或重复');
+                        this.clicked = false;
+                        return;
+                    }
+//                    判断规格有没有完整
+                    this.list.forEach(function (item) {
+                        if(utils.isNull(item.paraImage) ){
+                            sign ++ ;
+                        }
+                    })
+                    if(sign > 0){
+                        event.toast('请添加商品图片');
+                        this.clicked = false;
+                        return;
+                    }
+//                    判断规格有没有完整
+                    this.list.forEach(function (item) {
+                        if(utils.isNull(item.price)){
+                            sign ++ ;
+                        }
+                    })
+                    if(sign > 0){
+                        event.toast('商品价格不能为空');
+                        this.clicked = false;
+                        return;
+                    }
+//                    判断规格有没有完整
+                    this.list.forEach(function (item) {
+                        if(utils.isNull(item.stock)){
+                            sign ++ ;
+                        }
+                    })
+                    if(sign > 0){
+                        event.toast('商品库存不能为空');
+                        this.clicked = false;
                         return;
                     }
 //                判断段落图片是否已上传
@@ -704,6 +922,7 @@
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
                             event.toast(data.content);
+                            _this.clicked = false;
                             return;
                         }
                     }, function (data) {
@@ -716,30 +935,41 @@
             realSave() {
                 var _this = this;
 //                将页面上的数据存储起来
-                this.savePage();
+                this.savePage('real');
 //                判断是再次编辑还是初次编辑;
                 let sendId = utils.isNull(_this.goodsId) ? '' : _this.goodsId;
                 let categoryTemplate = {
                     id:_this.catagoryId,
                     name:_this.catagoryName
                 }
+//               ''值被parseInt后会变成NaN
+                _this.distributionId = _this.distributionId == 'NaN' ? '' : _this.distributionId;
+//                销售策略
+                let distributionTemplate = {
+                    id:_this.distributionId,
+                    name:_this.distributionName
+                }
                 let productData = {
                     id: sendId,
                     name: _this.goodsName,
                     unit: _this.goodsUnit,
                     productCategory: categoryTemplate,
+                    distribution:distributionTemplate,
                     products: _this.productTemplates,
                 };
+
+//                utils.debug(productData);
 //                转成json字符串后上传服务器
                 productData = JSON.stringify(productData);
-//                网络请求，保存文章
+//                网络请求，保存商品
                 POST('weex/member/product/submit.jhtml', productData).then(
                     function (res) {
                         if (res.data != '' && res.type == 'success') {
-                                _this.currentPro = 0;//当前进度
-                                _this.proTotal = 0;//总的进度
-                                _this.processWidth = 0;//进度条宽度
-                                event.closeURL(res);
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 0;//总的进度
+                            _this.processWidth = 0;//进度条宽度
+                            _this.delDraft();
+                            event.closeURL(res);
                         } else {
                             event.toast(res.content);
                             _this.toSendArticle = false;
@@ -747,6 +977,8 @@
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
                         }
+
+                        _this.clicked = false;
                     },
                     function (err) {
                         event.toast(err.content);
@@ -754,12 +986,13 @@
                         _this.currentPro = 0;//当前进度
                         _this.proTotal = 0;//总的进度
                         _this.processWidth = 0;//进度条宽度
+                        _this.clicked = false;
                     }
                 )
             },
 
 //            将页面上的数据存储起来
-            savePage() {
+            savePage(isReal) {
                 let _this = this;
 //                每次保存前 将下列3个变量重新置空;
                 this.productTemplates = [];//文章段落数组
@@ -770,24 +1003,92 @@
                         thumbnail:this.firstParaImage,
                         spec1: '',
                         spec2: '',
-                        price: parseInt(_this.topLinePrice),
-                        stock: parseInt(_this.topLineNum)
+                        price:_this.topLinePrice,
+                        stock: parseInt(_this.topLineNum),
+//                        distribution:0
                     })
                 }else{
                     this.list.forEach(function (item) {
-                        _this.productTemplates.push({
+                        var pushData = {
                             productId:item.productId,
                             thumbnail: item.paraImage,
                             spec1: item.spec1,
                             spec2: item.spec2,
-                            price: parseInt(item.price),
-                            stock: parseInt(item.stock)
-                        })
+                            price: item.price,
+                            stock: parseInt(item.stock),
+//                          distribution:0
+                        }
+//                        临时缓存需要用到isNew         ***.由于安卓每次进入页面,渲染表单数据时也会触发oninput,所以会重新检测isNew是否准确,当2个规格的规格1相同时，此时2个规格的isNew都会被置成true***
+                        if(utils.isNull(_this.goodsId) && utils.isNull(isReal)){
+                            pushData.isNew = item.isNew;
+                        }
+                        _this.productTemplates.push(pushData)
                     })
                 }
-
-
             },
+
+
+//            保存临时草稿
+            saveDraft(){
+                let _this = this;
+//                将数据保存到变量里
+                this.savePage();
+//                判断是再次编辑还是初次编辑;
+//                let saveGoodId = utils.isNull(_this.goodsId) ? '' : _this.goodsId;
+                var allPageData = {
+                    id:'',
+                    name: _this.goodsName,
+                    unit:_this.goodsUnit,
+                    productCategory:{
+                        id:_this.catagoryId,
+                        name:_this.catagoryName
+                    },
+                    distribution:{
+                        id:_this.distributionId,
+                        name:_this.distributionName
+                    },
+                    products:_this.productTemplates
+                }
+                allPageData = JSON.stringify(allPageData);
+                let draftOptions = {
+                    type:'goodsDraft',
+                    key:'0',
+                    value:allPageData,
+                    sort:'0',
+                    keyword:''
+                }
+                event.save(draftOptions,function(data){
+                    if(data.type == 'success' && !utils.isNull(_this.articleId)){
+                    }else if(data.type == 'success'){
+
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+            },
+
+//            删除临时缓存
+            delDraft(){
+                let _this = this;
+//   将临时草稿删除
+                let findDel = {
+                    type:'goodsDraft',
+                    key:'0'
+                }
+                event.find(findDel,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        //  将临时缓存删除;
+                        event.delete(findDel,function (data) {
+                            if(data.type == 'success' ){
+                            }else{
+                                event.toast(data.content);
+                            }
+                        });
+                    }
+                });
+            },
+
+
 
             //            控制进度条
             ctrlProcess(data){

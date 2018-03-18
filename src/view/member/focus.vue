@@ -130,6 +130,7 @@
                 isSelf:false,
                 userName:'我',
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         props:{
@@ -246,6 +247,10 @@
                             }
                         })
                     }else{
+                        if (this.clicked) {
+                            return;
+                        }
+                        this.clicked = true;
                         POST('weex/member/follow/add.jhtml?authorId=' + item.id).then(
                             function(data){
                                 if(data.type == 'success'){
@@ -253,8 +258,10 @@
                                 }else{
                                     event.toast(err.content);
                                 }
+                                _this.clicked = false;
                             },
                             function(err){
+                                _this.clicked = false;
                                 event.toast(err.content);
                             }
                         )

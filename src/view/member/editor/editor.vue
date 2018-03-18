@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goBack" @goComplete="goComplete"> </navbar>
-        <list class="wrapperBox" >
+        <navbar :title="title" :complete="complete" @goback="goBack" @goComplete="goComplete" border="false"> </navbar>
+        <list class="wrapperBox">
             <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <cell>
                 <div >
@@ -131,10 +131,10 @@
                         </div>
                     </div>
                 </div>
-                <!--添加投票-->
-                <div class="paraBox flexRow " @click="goVote()">
-                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                    <text class="addVote">添加投票</text>
+                <!--添加商品-->
+                <div class="paraBox flexRow " @click="addLinkPara(paraList.length)">
+                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe640;</text>
+                    <text class="addVote">添加商品</text>
                 </div>
             </cell>
             <!--用来撑起底部空白区域-->
@@ -239,6 +239,7 @@
     }
     .addVoteIcon{
         font-size: 39px;
+        padding-top:3px;
     }
     .addVote{
         color: #A89F95;
@@ -445,11 +446,13 @@
     const album = weex.requireModule('album');
     var modal = weex.requireModule('modal');
     const stream = weex.requireModule('stream');
+    const clipboard = weex.requireModule('clipboard');
     var lastIndex = -1;
     var musicId = -1 ;
     export default {
         data:function(){
             return{
+                showStore:'',
                 toSendArticle:false,//控制进度条 遮罩显示
                 currentPro:0,//当前进度
                 proTotal:0,//总的进度
@@ -478,14 +481,15 @@
                     articleCatalog:{count:0},
                     articleCategory:{},
                     authority:'draft',
-                    pitch:false,
-                    publish:false,
-                    top:false,
+                    isPitch:false,
+                    isPublish:false,
+                    isTop:false,
                 },
                 hits:0,
                 laud:0,
                 products:[],
-                review:0,
+                isReview:0,
+                clicked:false
             }
         },
         filters:{
@@ -536,49 +540,86 @@
 //          创建文章编辑（首次）
             if(utils.isNull(getVal)){
 
-                //       多选图片
-                //      调用安卓的相册
-                var _this = this;
-                //判断是否第一次编辑该文章
-                var findDelete = {
-                    type:'articleDraft',
-                    key:'0'
-                }
-                event.find(findDelete,function (delData) {
-                    if(delData.type == 'success' && delData.data != ''){
-                        //从缓存读取数据 写入界面
-                        _this.readData(findDelete);
-                    }else{
-                        album.openAlbumMuti(
-                            //选完图片后触发回调函数
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.coverImage =  data.data[0].originalPath;
-//                    data.data里存放的是用户选取的图片路径
-                                    for(let i = 0;i < data.data.length;i++){
-                                        _this.paraList.push({
-                                            //原图
-                                            paraImage: data.data[i].originalPath,
-                                            //小缩略图
-                                            thumbnailImage: data.data[i].thumbnailSmallPath,
-                                            mediaType: "image",
-                                            paraText:'',
-                                            show:true,
-                                            serveThumbnail:'',
-//                                            对象id
-                                            id:0,
-//                                            第三方链接
-                                            url:'',
-                                        });
-                                        _this.saveDraft();
+//                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
+                clipboard.getString(ret => {
+                   if(ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 ){
+                       modal.confirm({
+                           message: '是否生成已复制链接的文章?',
+                           duration: 0.3,
+                           okTitle:'生成',
+                           cancelTitle:'取消',
+                       }, function (value) {
+                           if(value == '生成'){
+                               _this.toSendArticle = true;
+                               _this.currentPro = 0;//当前进度
+                               _this.proTotal = 1;//总的进度
+                               _this.processWidth = 0;//进度条宽度
+
+                               _this.processWidth = _this.processWidth  + (50 * Math.random());
+//                                  利用定时器 模拟进度条效果
+                               var timer = setInterval(function () {
+                                   if(_this.processWidth < 500){
+                                       let middle = _this.processWidth  + (50 * Math.random()) ;
+                                       if(middle > 500){
+                                           _this.processWidth = 500;
+                                       }else{
+                                           _this.processWidth = middle;
+                                       }
+                                   }
+                               },500);
+
+//                               调用接口 获取公众号文章内容(仅支持图文)
+                                GET('weex/member/article/grabarticle.jhtml?articlePath=' + encodeURIComponent(ret.data),function (data) {
+                                    if(data.type == 'success' && !utils.isNull(data.data)){
+                                        _this.processWidth = 500;//进度条宽度
+                                        setTimeout(function () {
+//                                        清空剪贴板
+                                            clipboard.setString('');
+//                                        清空假进度条，关闭定时器
+                                            _this.clearDummyProcess(timer);
+////                                            判断是否有封面 后台返回的空会有空格。标题也要注意过滤空格
+                                            if(!utils.isNull(data.data.thumbnail) && !utils.isAllEmpty(data.data.thumbnail)){
+                                                _this.coverImage = data.data.thumbnail;
+                                            }
+//                                       将数据填充进页面
+                                            _this.templateGroup(data.data.templates,1);
+//                                           存储页面数据
+                                            _this.saveDraft();
+                                        },10)
+                                    }else if(data.type == 'success' && utils.isNull(data.data)){
+                                        event.toast('生成的文章内容为空,请换篇文章');
+//                                        清空剪贴板
+                                        clipboard.setString('');
+//                                        清空假进度条，关闭定时器
+                                        _this.clearDummyProcess(timer);
+                                        event.closeURL();
+                                    }else{
+//                                        清空假进度条，关闭定时器
+                                        _this.clearDummyProcess(timer);
+                                        event.toast(data.content);
+                                        event.closeURL();
                                     }
-                                }else{
+                                },function (err) {
+                                    event.toast(err.content);
+//                                        清空假进度条，关闭定时器
+                                    _this.clearDummyProcess(timer);
                                     event.closeURL();
-                                }
-                            }
-                        )
-                    }
-                });
+                                })
+                                return;
+                           }else{
+                               clipboard.setString('');
+//                              进行原本逻辑。
+                               _this.firstEdit();
+                           }
+                       })
+                   }else{
+//                       进行原本逻辑。
+                       _this.firstEdit();
+                   }
+                })
+
+
+
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
                 var op = getVal.split('=');
@@ -632,7 +673,101 @@
                 };
             };
         },
-        methods:{
+        methods: {
+//            清楚掉假的进度条。清空假进度条，关闭定时器.
+            clearDummyProcess(timer){
+//                                        解除定时器
+                if (!utils.isNull(timer))  {
+                    clearInterval(timer);
+//                  此处的timer虽然是参数传过来，在js里还是有把整个变量地址传过来.所以可以更改为null;
+                    timer = null;
+                }
+                this.toSendArticle = false;
+                this.currentPro = 0;//当前进度
+                this.proTotal = 0;//总的进度
+                this.processWidth = 0;//进度条宽度
+
+            },
+//            第一次编辑
+            firstEdit(){
+                //       多选图片
+                //      调用安卓的相册
+                var _this = this;
+                //判断是否第一次编辑该文章
+                var findDelete = {
+                    type:'articleDraft',
+                    key:'0'
+                }
+                event.find(findDelete,function (delData) {
+                    if(delData.type == 'success' && delData.data != ''){
+                        //从缓存读取数据 写入界面
+                        _this.readData(findDelete);
+                    }else{
+                        album.openAlbumMuti(
+                            //选完图片后触发回调函数
+                            function (data) {
+                                if(data.type == 'success'){
+                                    _this.coverImage =  data.data[0].originalPath;
+//                    data.data里存放的是用户选取的图片路径
+                                    for(let i = 0;i < data.data.length;i++){
+                                        _this.paraList.push({
+                                            //原图
+                                            paraImage: data.data[i].originalPath,
+                                            //小缩略图
+                                            thumbnailImage: data.data[i].thumbnailSmallPath,
+                                            mediaType: "image",
+                                            paraText:'',
+                                            show:true,
+                                            serveThumbnail:'',
+//                                            对象id
+                                            id:0,
+//                                            第三方链接
+                                            url:'',
+                                        });
+                                        _this.saveDraft();
+                                    }
+                                }else{
+                                    event.closeURL();
+                                }
+                            }
+                        )
+                    }
+                });
+            },
+
+//            根据数据组装成页面所需要的格式
+            templateGroup(templatesData,groupCommon){
+                let _this = this;
+                for(let i = 0;i < templatesData.length;i++){
+                    let paraId = utils.isNull(templatesData[i].id) ? 0 : templatesData[i].id;
+                    let paraUrl = utils.isNull(templatesData[i].url) ? '' : templatesData[i].url;
+//                    判断公众号返回的缩略图是否为空
+                    if(groupCommon &&  !utils.isNull(templatesData[i].original) && utils.isNull(templatesData[i].thumbnail)){
+                        templatesData[i].thumbnail = utils.isNull(templatesData[i].thumbnail) ? templatesData[i].original : templatesData[i].thumbnail;
+                    }
+//                    若是公众号获取下来的文章,将封面放上去;
+                    if(groupCommon && !utils.isNull(templatesData[i].original) && (utils.isNull(_this.coverImage) || _this.coverImage == utils.locate('resources/images/background.png'))){
+                        _this.coverImage = templatesData[i].original;
+                    }
+
+                    _this.paraList.push({
+                        //原图
+                        paraImage:templatesData[i].original,
+                        //小缩略图
+                        thumbnailImage: templatesData[i].thumbnail,
+                        paraText:templatesData[i].content,
+                        show:true,
+                        mediaType:templatesData[i].mediaType,
+                        serveThumbnail:'', //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
+                        //          对象id
+                        id:paraId,
+//                        第三方链接
+                        url:paraUrl,
+                    })
+                }
+
+            },
+
             //从缓存读取数据 写入界面
             readData(options){
                 let _this =this;
@@ -648,32 +783,16 @@
                         if(!utils.isNull(articleData.music.name)){
                             _this.musicName = articleData.music.name;
                         }
-                        _this.publish = articleData.articleOption.publish;
+                        _this.publish = articleData.articleOption.isPublish;
                         _this.articleOption = articleData.articleOption,
                             _this.hits = articleData.hits,
                             _this.laud = articleData.laud,
                             _this.products = articleData.products,
-                            _this.review = articleData.review,
+                            _this.review = articleData.isReview,
                             musicId = articleData.music.id;
                         let templatesData = articleData.templates;
-                        for(let i = 0;i < templatesData.length;i++){
-                            let paraId = utils.isNull(templatesData[i].id) ? 0 : templatesData[i].id;
-                            let paraUrl = utils.isNull(templatesData[i].url) ? '' : templatesData[i].url;
-                            _this.paraList.push({
-                                //原图
-                                paraImage:templatesData[i].original,
-                                //小缩略图
-                                thumbnailImage: templatesData[i].thumbnail,
-                                paraText:templatesData[i].content,
-                                show:true,
-                                mediaType:templatesData[i].mediaType,
-                                serveThumbnail:'', //用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
-                                //          对象id
-                                id:paraId,
-//                                            第三方链接
-                                url:paraUrl,
-                            })
-                        }
+//                        根据数据组装成页面所需要的格式
+                        _this.templateGroup(templatesData);
 //                            投票
                         if(!utils.isNull(articleData.votes)){
                             articleData.votes.forEach(function (item) {
@@ -778,7 +897,7 @@
                     hits:this.hits,
                     laud:this.laud,
                     products:this.products,
-                    review:this.review,
+                    review:this.isReview,
                     id:this.articleId,
                     isDraft:true,
                     modifyDate:this.timestamp,
@@ -807,7 +926,6 @@
                 }
                 event.save(draftOptions,function(data){
                     if(data.type == 'success' && !utils.isNull(_this.articleId)){
-
 //                                    全局监听文章变动
                         let listenData = utils.message('success','文章改变','')
                         event.sendGlobalEvent('onArticleChange',listenData);
@@ -831,9 +949,13 @@
                     this.currentPro ++ ;
                 };
             },
-
-//            设置文章标题
+            //            设置文章标题
             articleTitle:function(title){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 if(title == '点击设置标题'){
                     title = '';
@@ -844,8 +966,9 @@
                 textData = JSON.stringify(textData);
                 storage.setItem('articleTitle', textData,e=> {
                     event.openURL(utils.locate('widget/autograph.js?name=articleTitle'), function (message) {
-                        if (message.type == 'success' && message.data != ''   && message.data.text != '') {
-                            _this.setTitle = message.data.text;
+                        _this.clicked = false;
+                        if (message.type == 'success' && !utils.isNull(message.data)  && !utils.isNull(message.data.text)) {
+                            _this.setTitle = utils.filteremoji(message.data.text,'article');
                             _this.hadChange = 1;
 //                            if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
@@ -856,8 +979,13 @@
                 })
 
             },
-//            段落里的文本编辑
+            //            段落里的文本编辑
             editorText(index){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 
 //                if(_this.paraList[index].mediaType == 'product'){
@@ -878,6 +1006,7 @@
 //                }
 
                 event.openEditor(_this.paraList[index].paraText,function (data) {
+                    _this.clicked = false;
                     if(data.data != '') {
 //                    将返回回来的html数据赋值进去
                         _this.paraList[index].paraText = data.data;
@@ -889,7 +1018,7 @@
                     }
                 })
             },
-//            返回
+            //            返回
             goBack:function () {
                 let _this = this;
 //                判断是草稿还是已经发布文章
@@ -951,7 +1080,7 @@
                     }
                 }
             },
-//            删除临时缓存和草稿缓存
+            //            删除临时缓存和草稿缓存
             deleteDraft(close){
                 let _this = this;
                 var storageType;
@@ -997,7 +1126,7 @@
                     }
                 });
             },
-//            删除临时缓存
+            //            删除临时缓存
             delOnceDraft(close){
                 let _this = this;
 //   将临时草稿删除
@@ -1032,7 +1161,7 @@
                     }
                 });
             },
-//            完成
+            //            完成
             goComplete:function () {
                 var _this = this;
                 if(this.setTitle == '点击设置标题'){
@@ -1056,6 +1185,13 @@
                     event.toast('至少要有一张图片');
                     return;
                 }
+
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+
                 this.toSendArticle = true;
                 this.proTotal = 0;
 //                判断封面图片是否已上传过
@@ -1091,6 +1227,8 @@
                             _this.sendImage(0);
                         }else{
                             _this.toSendArticle = false;
+//                防止重复点击
+                            _this.clicked = false;
                             event.toast(data.content);
                             return;
                         }
@@ -1189,6 +1327,8 @@
                             }
                         }else{//上传失败
                             _this.toSendArticle = false;
+//                防止重复点击
+                            _this.clicked = false;
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
@@ -1201,7 +1341,7 @@
                     })
                 }
             },
-//            将页面上的数据存储起来
+            //            将页面上的数据存储起来
             savePage(){
 
 //                每次保存前 将下列3个变量重新置空;
@@ -1279,7 +1419,7 @@
                     })
                 }
             },
-//            图片上传后，正式将文章数据上传服务器
+            //            图片上传后，正式将文章数据上传服务器
             realSave(){
                 var _this = this;
 //                将页面上的数据存储起来
@@ -1297,11 +1437,9 @@
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
-//                utils.debug(articleData);
 //                网络请求，保存文章
                 POST('weex/member/article/submit.jhtml',articleData).then(
                     function (res) {
-//                        utils.debug(res);
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
                             let resDataStr = JSON.stringify(res.data);
@@ -1318,6 +1456,8 @@
                                     _this.deleteDraft('noclose');
 //                                    event.closeURL();
                                     _this.toSendArticle = false;
+//                                  防止重复点击
+                                    _this.clicked = false;
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','');
                                     event.sendGlobalEvent('onArticleChange',listenData);
@@ -1325,7 +1465,7 @@
                                         _this.currentPro = 0;//当前进度
                                         _this.proTotal = 0;//总的进度
                                         _this.processWidth = 0;//进度条宽度
-//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == ''){
                                         let E = {
                                             isDone : 'complete'
                                         }
@@ -1333,8 +1473,11 @@
                                         event.closeURL(backData);
 //                                        }
                                     })
+//                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish));
                                 }else{
                                     _this.toSendArticle = false;
+//                防止重复点击
+                                    _this.clicked = false;
                                     _this.currentPro = 0;//当前进度
                                     _this.proTotal = 0;//总的进度
                                     _this.processWidth = 0;//进度条宽度
@@ -1344,6 +1487,8 @@
                         }else{
                             event.toast(res.content);
                             _this.toSendArticle = false;
+//                防止重复点击
+                            _this.clicked = false;
                             _this.currentPro = 0;//当前进度
                             _this.proTotal = 0;//总的进度
                             _this.processWidth = 0;//进度条宽度
@@ -1351,6 +1496,8 @@
                     },
                     function (err) {
                         event.toast(err.content);
+//                防止重复点击
+                        _this.clicked = false;
                         _this.toSendArticle = false;
                         _this.currentPro = 0;//当前进度
                         _this.proTotal = 0;//总的进度
@@ -1359,13 +1506,19 @@
                 )
             },
 
-//            点击"+"号里的文本时
+            //            点击"+"号里的文本时
             addTextPara:function(index){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openEditor('',function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' && data.data != ''){
                         let textImg = utils.locate('resources/images/text.png');
-//                    将返回回来的html数据赋值进去
+//                    将返回回来的html数据赋值进
                         let newPara = {
                             //原图
                             paraImage:'',
@@ -1391,12 +1544,18 @@
                     }
                 });
             },
-//            点击"+"号里的图片时
+            //            点击"+"号里的图片时
             addImgPara:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 album.openAlbumMuti(
                     //选完图片后触发回调函数
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                             for(let i = 0;i < data.data.length;i++){
@@ -1426,7 +1585,7 @@
                     }
                 )
             },
-//            点击第一个"+"号时触发
+            //            点击第一个"+"号时触发
             firstShow:function(){
                 this.firstPlusShow = !this.firstPlusShow;
                 if(lastIndex != -1){
@@ -1438,7 +1597,7 @@
                     },60)
                 }
             },
-//            点击第2个以后的"+"号时，触发
+            //            点击第2个以后的"+"号时，触发
             showIconBox:function (index) {
                 setTimeout(()=>{
                     if(this.firstPlusShow == false){
@@ -1461,7 +1620,7 @@
                 },60)
 
             },
-//            点击空白区域时，将功能盒子隐藏，显示出"+"号
+            //            点击空白区域时，将功能盒子隐藏，显示出"+"号
             clearIconBox:function(){
                 if(lastIndex != -1){
                     if(this.paraList[lastIndex].show == false){
@@ -1473,7 +1632,7 @@
                     this.firstPlusShow = true;
                 }
             },
-//            判断是否最后一个段落来添加向下移动的箭头。
+            //            判断是否最后一个段落来添加向下移动的箭头。
             lastPara:function(index){
                 if(index != this.paraList.length-1){
                     return true;
@@ -1481,7 +1640,7 @@
                     return false;
                 }
             },
-//            上箭头
+            //            上箭头
             moveUp:function (index) {
                 let _this = this;
                 this.firstPlusShow = true;
@@ -1520,7 +1679,7 @@
                 this.saveDraft();
 //                }
             },
-//            下箭头
+            //            下箭头
             moveBottom:function (index) {
                 let _this = this;
                 this.firstPlusShow = true;
@@ -1559,7 +1718,7 @@
                 this.saveDraft();
 //                }
             },
-//            用户执行删除时触发询问。
+            //            用户执行删除时触发询问。
             showConfirm :function(index) {
                 var _this = this;
                 var imageNum = 0;
@@ -1594,7 +1753,7 @@
                     }
                 });
             },
-//            删除投票
+            //            删除投票
             closeVote:function (index) {
                 var _this = this;
                 modal.confirm({
@@ -1616,8 +1775,13 @@
                     }
                 })
             },
-//            编辑段落图片或者视频
+            //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
 //                if(mediaType == 'product'){
 //                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
@@ -1638,14 +1802,17 @@
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
                     album.openAlbumSingle(false, function(data){
-                        _this.paraList[index].paraImage = data.data.originalPath;
-                        _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
+                        _this.clicked = false;
+                        if(data.type == 'success'){
+                            _this.paraList[index].paraImage = data.data.originalPath;
+                            _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
 //                    添加修改标志
-                        _this.hadChange = 1;
+                            _this.hadChange = 1;
 //                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
-                        _this.saveDraft();
+                            _this.saveDraft();
 //                        }
+                        }
                     })
                     return;
                 }else{
@@ -1663,10 +1830,10 @@
 //                                _this.paraList[index].thumbnailImage ='file:/' + data.data.thumbnailSmallPath;
 //                            })
 //                        }else if(value == '裁剪'){
-                    if(mediaType == 'image' || mediaType == 'product'){
+                    if(mediaType == 'image' || mediaType == 'product' || mediaType == 'html'){
 //                                调用裁剪图片
                         album.openCrop(imgSrc,function (data) {
-//                            utils.debug(data);
+                            _this.clicked = false;
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.originalPath;
                                 _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
@@ -1677,7 +1844,7 @@
                                 _this.saveDraft();
 //                                }
                             }else{
-                                if(data.content == '用户取消'){
+                                if(data.content.indexOf('取消') != -1){
                                 }else{
                                     event.toast(data.content);
                                 }
@@ -1685,6 +1852,7 @@
                         })
                     }else if(mediaType == 'video'){
                         album.openVideo(function (data) {
+                            _this.clicked = false;
                             if(data.type == 'success'){
                                 _this.paraList[index].paraImage = data.data.videoPath;
                                 _this.paraList[index].thumbnailImage = data.data.coverImagePath;
@@ -1694,12 +1862,13 @@
 //                        临时保存到缓存
                                 _this.saveDraft();
 //                                }
-                            }else{
-                                if(data.content == '用户取消'){
-                                }else{
-                                    event.toast(data.content);
-                                }
                             }
+//                            else{
+//                                if(data.content == '用户取消'){
+//                                }else{
+//                                    event.toast(data.content);
+//                                }
+//                            }
                         })
                     }
 //                        }else{
@@ -1708,7 +1877,7 @@
 //                    })
                 }
             },
-//            下拉刷新
+            //            下拉刷新
             onrefresh (event) {
                 console.log('is refreshing')
                 this.refreshing = true
@@ -1716,13 +1885,47 @@
                     this.refreshing = false
                 }, 10)
             },
-//            正在下拉
+            //            正在下拉
             onpullingdown (event) {
                 console.log('is onpulling down')
             },
-//            跳转封面页面
+            //            跳转封面页面
             goCover:function () {
-//                event.openURL('file://assets/member/editor/cover.js');
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+
+//                ***** 单选裁剪 *****
+//                var _this = this;
+//                let option = {
+//                    isCrop:true,
+//                    width:2,
+//                    height:1
+//                };
+//                album.openAlbumSingle(
+//                    //选完图片后触发回调函数
+//                    option,function (data) {
+//                        _this.clicked = false;
+//                        if(data.type == 'success'){
+//                            _this.coverImage = data.data.originalPath;
+//////                    添加修改标志
+//                            _this.hadChange = 1;
+////                        临时保存到缓存
+//                            _this.saveDraft();
+//                        }else{
+//                            if(data.content.indexOf('取消') != -1){
+//                            }else{
+//                                event.toast(data.content);
+//                            }
+//                        }
+//                    })
+//                ***** 单选裁剪 *****
+
+
+
+//                ***** 跳转拼图封面页面 *****
                 var _this = this;
                 let paraLength =  _this.paraList.length;
                 var uploadLength = 0;
@@ -1731,12 +1934,12 @@
                 for(let i = 0;i < paraLength; i++){
                     if(uploadLength < 6){
 //                        区分字体 图像 视频
-                        if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'image'){
+                        if(_this.paraList[i].paraImage != '' && (_this.paraList[i].mediaType == 'image' || _this.paraList[i].mediaType == 'product')){
                             imgList.push({
                                 path:_this.paraList[i].paraImage
                             });
                             uploadLength ++ ;
-                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video'){
+                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video' ){
                             imgList.push({
                                 path:_this.paraList[i].thumbnailImage
                             });
@@ -1751,30 +1954,29 @@
                 coverData = JSON.stringify(coverData);
                 storage.setItem('coverImage', coverData);
                 event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
-//                event.openURL('http://192.168.2.157:8081/cover.weex.js?name=coverImage',function (message) {
-//                    let jsonData = JSON.parse(data);
-//                    modal.toast({message:message,duration:1});
+                    _this.clicked = false;
                     if(message.type == 'success' && message.data != ''){
                         _this.coverImage = message.data;
 //                    添加修改标志
                         _this.hadChange = 1;
-//                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
                         _this.saveDraft();
-//                        }
                     }
                 });
+//                ***** 跳转拼图封面页面 *****
             },
-//            跳转音乐页面
+            //            跳转音乐页面
             goMusic:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
 //                event.openURL('file://assets/member/editor/music.js');
                 let _this = this;
 //                event.toast(musicId);
                 event.openURL(utils.locate('view/member/editor/music.js?musicId=' + musicId),function (message) {
-//                event.openURL('http://192.168.2.157:8081/music.weex.js?musicId=' + musicId,function (message) {
-//                    event.toast(message);
-//                    let jsonData = JSON.parse(data);
-//                    modal.toast({message:message,duration:1});
+                    _this.clicked = false;
                     if(message.type == 'success' && message.data != ''){
                         _this.musicName = message.data.chooseMusicName;
                         musicId = message.data.chooseMusicId;
@@ -1787,11 +1989,17 @@
                     }
                 });
             },
-//            跳转投票页面
+            //            跳转投票页面
             goVote:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js'),function (message) {
+                    _this.clicked = false;
                     if(message.type == 'success' &&  message.data != '') {
                         _this.voteList.push(message.data);
 //                    添加修改标志
@@ -1803,13 +2011,19 @@
                     }
                 });
             },
-//            编辑投票
+            //            编辑投票
             editVote:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 let voteData = JSON.stringify(_this.voteList[index]);
                 storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/vote.js?name=voteData'),function (message) {
+                    _this.clicked = false;
                     if(message.type=='success' && message.data != '') {
 //                        直接=无法重新渲染页面。需要push后才可以
 //                        _this.voteList[index] = message.data;
@@ -1824,10 +2038,16 @@
                     }
                 });
             },
-//            点击加号里的添加视频
+            //            点击"+"加号里的添加视频
             addVideoPara:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 album.openVideo(function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success'){
 //                    data.data里存放的是用户选取的图片路径
                         let newPara = {
@@ -1858,10 +2078,16 @@
                     }
                 })
             },
-//            点击加号里的添加链接
+            //            点击"+"加号里的添加链接
             addLinkPara:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success'){
                         let newPara = {
                             //原图

@@ -23,6 +23,14 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <div class="cell-panel space-between">
+                    <div class="flex-row">
+                        <text class="title ml10">登录名</text>
+                    </div>
+                    <div class="flex-row flex-end" >
+                        <text class="sub_title" style="margin-right:40px">{{userId}}</text>
+                    </div>
+                </div>
                 <div class="cell-panel space-between" @click="pick">
                     <div class="flex-row">
                          <text class="title ml10">性别</text>
@@ -160,6 +168,7 @@
         },
         data() {
             return {
+                userId:"",
                 attribute:{},
                 bindWeiXin:"未绑定",
                 bindMobile:"未绑定",
@@ -174,8 +183,9 @@
                 occupation:"未设置",
                 category:1,
                 sex:'',
-                begin:'',
-                tel:''
+                begin:2,
+                tel:'',
+                clicked:false,
             }
         },
         props: {
@@ -199,10 +209,16 @@
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
+                this.clicked = false
             },
             profession: function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=occupation'), function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' ) {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
@@ -224,8 +240,13 @@
 
             areaChoose:function () {
 //                event.openURL('http://192.168.2.108:8081/city.weex.js?type=0',function (data) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('widget/city.js?type=0'),function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success' && !utils.isNull(data.data) ){
                         POST('weex/member/update.jhtml?areaId=' + data.data.chooseId).then(
                             function (mes) {
@@ -256,7 +277,10 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入昵称',duration:1})
                         }else{
-
+                            if(utils.getLength(value.data) > 32){
+                                event.toast('输入的昵称不能超过16个字,请重试。');
+                                return;
+                            }
                             POST('weex/member/update.jhtml?nickName=' +encodeURI(value.data)).then(
                                 function (mes) {
                                     if (mes.type == "success") {
@@ -297,6 +321,7 @@
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
                     true,function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success') {
 //                            _this.logo = data.data.thumbnailSmallPath;
 //                    data.data里存放的是用户选取的图片路
@@ -310,7 +335,7 @@
                                         function (mes) {
                                             if (mes.type == "success") {
 //                                                将服务器上的路径写入页面中
-                                                _this.logo = data.data;
+                                                _this.logo = utils.thumbnail(data.data,120,120);
 //                                              event.toast(data);
                                             } else {
                                                 event.toast(mes.content);
@@ -333,22 +358,22 @@
                     items:['男','女','保密']
                 }, e => {
                     if (e.result == 'success') {
-                        if (e.data == 0){
+                        if (e.data == 0) {
                             _this.gender = '男'
                             _this.sex = 'male'
-                            _this.begin =e.data
+                            _this.begin = e.data
 
-                        }else if(e.data == 1){
+                        } else if (e.data == 1) {
                             _this.gender = '女'
                             _this.sex = 'female'
-                            _this.begin =e.data
+                            _this.begin = e.data
                         }
-                        else{
+                        else {
                             _this.gender = '保密'
                             _this.sex = 'secrecy'
-                            _this.begin =e.data
+                            _this.begin = e.data
                         }
-                        POST('weex/member/update.jhtml?gender=' +this.sex).then(
+                        POST('weex/member/update.jhtml?gender=' + this.sex).then(
                             function (mes) {
                                 if (mes.type == "success") {
 
@@ -363,6 +388,10 @@
                 })
             },
             goAutograph:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 let senfData = this.autograph;
                 let textData = {
@@ -371,7 +400,8 @@
                 textData = JSON.stringify(textData);
                 storage.setItem('oneNumber', textData,e=>{
                 event.openURL(utils.locate('widget/autograph.js?name=oneNumber'), function (message) {
-                    if(message.data != ''){
+                    _this.clicked = false;
+                    if(message.type == 'success'){
                         POST('weex/member/update.jhtml?autograph=' +encodeURI(message.data.text)).then(
                             function (mes) {
                                 if (mes.type == "success") {
@@ -392,6 +422,7 @@
                 var _this = this;
                 _this.logo = attr.logo;
                 _this.nickName = attr.nickName;
+                _this.userId = attr.userId;
                 if (attr.autograph!=null && attr.autograph!="") {
                     _this.autograph = attr.autograph;
                 } else {
@@ -467,9 +498,14 @@
             },
             updatePassword: function (e) {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 if (!_this.attribute.bindMobile) {
                     event.openURL(utils.locate("view/member/password/index.js"),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type=='success') {
                                 _this.attribute.bindMobile = true;
                                 _this.attribute.hasPassword = true;
@@ -480,6 +516,7 @@
                 } else {
                     event.openURL(utils.locate("view/member/password/captcha.js?telNum=" +_this.tel),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type=='success') {
                                 _this.attribute.hasPassword = true;
                             }
@@ -490,9 +527,14 @@
             },
             doBindMobile: function (e) {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 if (_this.attribute.bindMobile!=null && _this.attribute.bindMobile!='') {
                     event.openURL(utils.locate("view/member/mobile/unbind.js?mobile=" +_this.tel),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type == "success") {
                                _this.open();
                             }
@@ -501,6 +543,7 @@
                 }else {
                     event.openURL(utils.locate("view/member/mobile/index.js"),
                         function (res) {
+                        _this.clicked = false;
                             if (res.type == "success") {
                                 _this.open();
                             }
@@ -509,8 +552,13 @@
                 }
             },
             doBindWeiXin: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 if (_this.attribute.bindWeiXin) {
+                    _this.clicked = false;
                     return;
                 }
                 event.wxAuth(function (msg) {
@@ -523,12 +571,15 @@
                                } else {
                                    event.toast(data.content);
                                }
+                               _this.clicked = false;
                            },
                            function (err) {
+                               _this.clicked = false;
                                event.toast(err.content);
                            }
                        )
                    } else {
+                       _this.clicked = false;
                        event.toast(msg.content);
                    }
                 })
@@ -552,7 +603,13 @@
 //                    event.toast(err.content);
 //                }
 //                )
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.logout(function (e) {
+                    _this.clicked = false;
                     if(e.type == 'success'){
                         let E = utils.message('success','关闭','')
                         event.closeURL(E);

@@ -341,7 +341,7 @@
                                 okTitle: '知道了'
                             })
                         }
-                        event.sendGlobalEvent('onCashierChange',res);
+                        event.sendGlobalEvent('onCashierChange',mes);
                     } else {
                         _this.isPopup = false;
                         modal.alert({
@@ -489,15 +489,17 @@
             getDate: function(value) {
                 let res = utils.resolvetimefmt(value);
                 let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
-                let span = Math.abs(Math.round(new Date().getTime())-value);
-                let w = Math.floor(span / (24 * 3600 * 1000));
-                if (w<1) {
+                let d1 = Date.parse(utils.ymdtimefmt(value));
+                let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+                let span = Math.abs(d2-d1);
+                let daySub = Math.floor(span / (24 * 3600 * 1000));
+                if (daySub<1) {
                     return "今天"
                 } else
-                if (w<2) {
+                if (daySub<2) {
                     return "昨天"
                 } else
-                if (w<3) {
+                if (daySub<3) {
                     return "前天"
                 } else {
                     var    y = res.y;

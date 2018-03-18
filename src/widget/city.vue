@@ -61,7 +61,8 @@
                 dataList:[],
                 typeArr:['pro','city','country'],
                 typeId:0,
-                urlType:'pro'
+                urlType:'pro',
+                clicked:false,
             }
         },
         components: {
@@ -71,6 +72,7 @@
             title: { default: "文章类别" }
         },
         created(){
+
             var _this = this;
             this.listId = utils.isNull(utils.getUrlParameter('listId')) ? '' : utils.getUrlParameter('listId');
             let a =  utils.getUrlParameter('type');
@@ -105,6 +107,10 @@
             },
 //            选择相应数据时触发。
             checkChange:function (id,name,city) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 this.listId = id;
 //                判断是否选择到区县或者该省/市没有下一级地区时，结束城市选择。
@@ -119,6 +125,7 @@
                 }else{
                     let typeId = parseInt(this.typeId) + 1;
                         event.openURL(utils.locate('widget/city.js?type=' + typeId + '&listId=' + this.listId),function (data) {
+                            _this.clicked = false;
                         if(data.type == 'success' && !utils.isNull(data.data) ){
 //                            当选择完毕后，一级一级的把名字拼凑起来返回到页面去，并记录下最后一级的id跟名字 用于传给服务器。
                             let  E = {

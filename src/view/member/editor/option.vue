@@ -13,9 +13,9 @@
                     </div>
                 </div>
             </div>
-                <div class="sub-panel">
-                    <text class="sub_title">可自行控制文章展示范围</text>
-                </div>
+            <div class="sub-panel">
+                <text class="sub_title">可自行控制文章展示范围</text>
+            </div>
             <div class="cell-row cell-line" @click="goCategory()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -26,7 +26,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-             </div>
+            </div>
             <div class="sub-panel">
                 <text class="sub_title">正确设置分类的文章将展示在“身边”栏目</text>
             </div>
@@ -89,7 +89,7 @@
 
         </scroller>
         <!--<div class="footer button-panel" @click="goDone()">-->
-            <!--<text class="button">完成</text>-->
+        <!--<text class="button">完成</text>-->
         <!--</div>-->
         <div  class="footer button-panel">
             <text class="button" @click="goDone()">完成</text>
@@ -135,6 +135,7 @@
                 isPublish:false,
                 categoryName:'生活',
                 category:7,
+                clicked:false,
             }
 
         },
@@ -234,20 +235,22 @@
         },
         methods: {
             goback: function (e) {
-//                navigator.pop({
-//                    url: 'http://cdn.rzico.com/weex/app/member/setup.js',
-//                    animated: "true"
-//                })
                 event.closeURL();
+//                event.closeRouter();
             },
             setup: function (e) {
             },
 //            跳转至选择范围
             goScope:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/scope.js?checkId=' + this.scope),
 //                event.openURL('http://192.168.2.157:8081/scope.weex.js?checkId=' + _this.scope,
                     function (data) {
+                    _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.scope = parseInt(data.data.checkId);
                             if (data.data.checkId == 2 && !utils.isNull(data.data.password)) {
@@ -259,10 +262,15 @@
             },
 //            跳转至选择类别
             goCategory:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=article_category'),
 //                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
                     function (data) {
+                    _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.category = parseInt(data.data.listId);
                             _this.categoryName = data.data.listName;
@@ -273,9 +281,14 @@
 //            跳转至选择文集
             goChooseCorpus:function () {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + this.corpusId  + '&articleId=' +  this.articleId),
 //                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + _this.corpusId,
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             _this.corpusId = parseInt(data.data.corpusId);
                             _this.corpusName = data.data.corpusName;
@@ -297,7 +310,11 @@
             },
 //            点击完成，进行发布
             goDone:function () {
-                var _this =this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
                 var authorityData ='';
                 switch (this.scope){
                     case 0 ://公开
@@ -355,11 +372,19 @@
 //                                全局监听 文章变动
                                 let listenData = utils.message('success','文章改变','')
                                 event.sendGlobalEvent('onArticleChange',listenData);
-                                let E = {
-                                    isDone : 'complete'
-                                }
-                                let backData = utils.message('success','成功',E);
-                                event.closeURL(backData);
+//                                let E = {
+//                                    isDone : 'complete'
+//                                }
+//                                let backData = utils.message('success','成功',E);
+//                                event.closeURL(backData);
+                                event.openURL(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=true'),
+                                    function () {
+                                        let E = {
+                                            isDone : 'complete'
+                                        }
+                                        let backData = utils.message('success','成功',E);
+                                        event.closeURL(backData);
+                                    })
                             } else {
                                 event.toast(data.content);
                             }
@@ -367,7 +392,9 @@
                     }else{
                         event.toast(data.content);
                     }
+                    _this.clicked = false;
                 },function (err) {
+                    _this.clicked = false;
                     event.toast(err.content);
                 })
             },

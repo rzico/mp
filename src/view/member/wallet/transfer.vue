@@ -196,7 +196,6 @@
     import filters from '../../../filters/filters.js'
     export default {
         data() {
-
             return {
                 quota:'0',
                 message:'单笔最大额度 5万元',
@@ -208,7 +207,8 @@
                 service:'0',
                 hide:'hidden',
                 wdata:{bankname:"",cardno:""},
-                timer:null
+                timer:null,
+                clicked:false
             }
         },
         components: {
@@ -271,6 +271,10 @@
             },
             withdrawals:function () {
                 var _this = this;
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 POST('weex/member/transfer/submit.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
                     function (data) {
                         if (data.type == "success") {
@@ -283,8 +287,10 @@
                         } else {
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     }, function (err) {
                         event.toast(err.content);
+                        _this.clicked = false;
                     }
                 )
             },

@@ -8,34 +8,63 @@
             <cell>
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" v-if="dataList.length == 0"></noData>
             </cell>
-            <cell  v-if="messageType == 'gm_10201' || messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
-                    <div class="dateBox">
-                        <text class="dateText">{{item.createDate | timefmtMore}}</text>
+            <cell  v-if="messageType == 'gm_10200'"  v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="dateBox">
+                    <text class="dateText">{{item.createDate | timefmtMore}}</text>
+                </div>
+                <div class="contentBox">
+                    <text class="fz45 black">{{item.ext.orderItems[0].name}}</text>
+                    <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
+                    <div class="moneyBox">
+                        <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
+                        <text class="fz30" >元</text>
+
                     </div>
-                    <div class="contentBox">
-                        <text class="fz45 black">{{item.title}}</text>
-                        <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
-                        <div class="moneyBox">
-                            <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
-                            <text class="fz30">元</text>
-                        </div>
-                        <div class="contentLine">
-                            <text class="fz30 black">付款方式:</text>
-                            <text class="fz30 gray ml10">{{item.ext.method}}</text>
-                        </div>
-                        <div class="contentLine">
-                            <text class="fz30 black">交易对象:</text>
-                            <text class="fz30 gray ml10">{{item.nickName}}</text>
-                        </div>
-                        <div class="contentLine">
-                            <text class="fz30 black">商品说明:</text>
-                            <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
-                        </div>
-                        <div class="bottomBtn">
-                            <text class="title">查看详情</text>
-                        </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">订单号:</text>
+                        <text class="fz30 gray ml10">{{item.ext.sn}}</text>
                     </div>
-                </cell>
+                    <div class="contentLine">
+                        <text class="fz30 black">订单状态:</text>
+                        <text class="fz30 gray ml10">{{item.ext.statusDescr}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">商品说明:</text>
+                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.orderItems[0].name}}{item.ext.orderItems[0].spec}}</text>
+                    </div>
+                    <div class="bottomBtn">
+                        <text class="title">查看详情</text>
+                    </div>
+                </div>
+            </cell>
+            <cell  v-if="messageType == 'gm_10201'"   v-for="item in dataList"  @click="goLink(item.id)">
+                <div class="dateBox">
+                    <text class="dateText">{{item.createDate | timefmtMore}}</text>
+                </div>
+                <div class="contentBox">
+                    <text class="fz45 black">{{item.title}}</text>
+                    <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
+                    <div class="moneyBox">
+                        <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
+                        <text class="fz30" >元</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">付款方式:</text>
+                        <text class="fz30 gray ml10">{{item.ext.method}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">交易对象:</text>
+                        <text class="fz30 gray ml10">{{item.ext.nickName}}</text>
+                    </div>
+                    <div class="contentLine">
+                        <text class="fz30 black">商品说明:</text>
+                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.memo}}</text>
+                    </div>
+                    <div class="bottomBtn">
+                        <text class="title">查看详情</text>
+                    </div>
+                </div>
+            </cell>
             <cell  v-if="messageType == 'gm_10212'"  v-for="item in dataList"  @click="goLink(item.id)">
                 <div class="dateBox">
                     <text class="dateText">{{item.createDate | timefmtMore}}</text>
@@ -57,7 +86,7 @@
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">交易说明:</text>
-                        <text class=" fz30 gray ml10">{{item.ext.memo}}</text>
+                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.memo}}</text>
                     </div>
                     <div class="bottomBtn">
                         <text class="title">查看详情</text>
@@ -70,7 +99,7 @@
                     <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
                         <div class="commentsInfo">
-                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text class="fz30 nameColor" >{{item.nickName }}</text>
                             <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
@@ -120,12 +149,13 @@
                 </div>
             </cell>
             <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
+
                 <!--收藏--> <!--分享提醒--><!--赞赏-->
                 <div class="lineBox pt20 pb20">
                     <div style="flex-direction: row">
                         <image class="headImg" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
                         <div class="commentsInfo">
-                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text class="fz30 nameColor" >{{item.nickName }}</text>
                             <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
@@ -138,6 +168,12 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .contentLimit{
+        width:450px;
+        lines:2;
+        text-overflow: ellipsis;
+        line-height:40px;
+    }
     .black{
         color: #444;
     }
@@ -280,6 +316,7 @@
                 pageStart:0,
                 pageSize:15,
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         components: {
@@ -354,7 +391,7 @@
                     this.bgWhite = true;
                     break;
                 case 'gm_10212':
-                    this.title =  '线下收单';
+                    this.title =  '线下收款';
                     this.bgWhite = false;
                     break;
                 default:
@@ -376,7 +413,16 @@
                                     if (!utils.isNull(item.ext)) {
                                         item.ext = JSON.parse(item.ext);
                                     }
+//                                    手机用户登录可能未设置logo和nickName
+                                    if(utils.isNull(item.nickName)){
+                                        item.nickName = '未填写';
+                                    }
+                                    //                                    手机用户登录可能未设置logo和nickName
+                                    if(utils.isNull(item.logo)){
+                                        item.logo = utils.locate('resources/images/background.png');
+                                    }
                                 })
+
                                 _this.dataList = data.data.data;
                             }else{
                                 data.data.data.forEach(function(item){
@@ -400,8 +446,14 @@
             },
             //            作者主页
             goAuthor:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 id = parseInt(id.substr(-5)) - 10200;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             onrefresh:function () {
@@ -437,6 +489,11 @@
             },
 //            前往链接
             goLink(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 POST('weex/member/message/go.jhtml?id='+ id).then(function(data){
                     if(data.type == 'success'){
                         event.openURL(data.data,function(){
@@ -445,8 +502,9 @@
                     }else{
                         event.toast(data.content);
                     }
-
+                    _this.clicked = false;
                 },function(err){
+                    _this.clicked = false;
                     event.toast(err.content);
                 })
             }

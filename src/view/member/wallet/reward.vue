@@ -7,7 +7,7 @@
             </refresh>
             <cell >
                 <div class="cumulative">
-                    <text class="cumulativeMoney primary">累计赞金：{{total}}元</text>
+                    <text class="cumulativeMoney primary">累计赏金：{{total}}元</text>
                 </div>
                 <noData :ndBgColor="'#fff'"  v-if="noData()"> </noData>
             </cell>

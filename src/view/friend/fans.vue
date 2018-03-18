@@ -125,6 +125,7 @@
                 isSelf:false,
                 userName:'我',
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false,
             }
         },
         components: {
@@ -190,7 +191,13 @@
             },
 //            前往作者主页
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
 //            关注
@@ -218,6 +225,11 @@
                         }
                     })
                 }else{
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
                     POST('weex/member/follow/add.jhtml?authorId=' + item.id).then(
                         function(data){
                             if(data.type == 'success'){
@@ -225,8 +237,10 @@
                             }else{
                                 event.toast(err.content);
                             }
+                            _this.clicked = false;
                         },
                         function(err){
+                            _this.clicked = false;
                             event.toast(err.content);
                         }
                     )

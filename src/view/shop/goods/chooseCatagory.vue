@@ -1,43 +1,45 @@
 <template>
-    <scroller class="wrapper" >
+    <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
-        <div class="bgWhite addCorpus "  @click="addCorpus()">
-            <div class="lineStyle pr30" >
-                <text class="lineText">添加分类</text>
-                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
-            </div>
-        </div>
-        <!--文集行背景-->
-        <div class="bgWhite">
-            <!--文集行内容-->
-            <div class="lineStyle bottomBorder">
-                <!--左侧文集名称-->
-                <div class="flex-row">
-                    <text class="lineText">全部商品</text>
-                </div>
-                <div v-if="catagoryId == 0 || catagoryId == 'undefined'" >
-                    <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+        <scroller>
+            <div class="bgWhite addCorpus "  @click="addCorpus()">
+                <div class="lineStyle pr30" >
+                    <text class="lineText">添加分类</text>
+                    <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
                 </div>
             </div>
-        </div>
-        <!--绑定动画-->
-        <transition-group name="paraTransition" tag="div">
             <!--文集行背景-->
-            <div class="bgWhite changeCorpus" v-for="(item,index) in catagoryList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
+            <div class="bgWhite">
                 <!--文集行内容-->
                 <div class="lineStyle bottomBorder">
                     <!--左侧文集名称-->
-                    <div class="flex-row" style="width: 450px;" >
-                        <text class="lineText limitWidth"  >{{item.name}}</text>
-                        <text class="lineText">({{item.count}})</text>
+                    <div class="flex-row">
+                        <text class="lineText">全部商品</text>
                     </div>
-                    <div v-if="catagoryId == item.id" >
+                    <div v-if="catagoryId == 0 || catagoryId == 'undefined'" >
                         <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                     </div>
                 </div>
             </div>
-        </transition-group>
-    </scroller>
+            <!--绑定动画-->
+            <transition-group name="paraTransition" tag="div">
+                <!--文集行背景-->
+                <div class="bgWhite changeCorpus" v-for="(item,index) in catagoryList" :key="index"   @click="chooseCorpus(item.id,item.name,item.count)">
+                    <!--文集行内容-->
+                    <div class="lineStyle bottomBorder">
+                        <!--左侧文集名称-->
+                        <div class="flex-row" style="width: 450px;" >
+                            <text class="lineText limitWidth"  >{{item.name}}</text>
+                            <text class="lineText">({{item.count}})</text>
+                        </div>
+                        <div v-if="catagoryId == item.id" >
+                            <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+                        </div>
+                    </div>
+                </div>
+            </transition-group>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
@@ -55,14 +57,14 @@
     .paraTransition-enter-active, .paraTransition-leave-active {
         transition: all 0.2s;
     }
-    .paraTransition-enter{
-        transform: translateY(-300px);
-        opacity: 1;
-    }
-    .paraTransition-enter-to{
-        transform: translateY(0px);
-        opacity: 1;
-    }
+    /*.paraTransition-enter{*/
+    /*transform: translateY(-300px);*/
+    /*opacity: 1;*/
+    /*}*/
+    /*.paraTransition-enter-to{*/
+    /*transform: translateY(0px);*/
+    /*opacity: 1;*/
+    /*}*/
     .pr30{
         padding-right: 30px;
     }
@@ -105,7 +107,6 @@
                 catagoryList:[],
                 catagoryId:0,
                 catagoryName:'全部商品',
-                articleId:''
             }
         },
         components: {
@@ -118,7 +119,6 @@
             var _this = this;
             utils.initIconFont();
             this.getCatagory();
-            this.articleId = utils.getUrlParameter('articleId');
             let urlId = utils.getUrlParameter('catagoryId');
             if(utils.isNull(urlId)){
 

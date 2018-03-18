@@ -52,12 +52,6 @@
         padding-top: 30px;
         padding-bottom: 30px;
         background-color: white;
-        border-top-width: 1px;
-        border-top-style: solid;
-        border-top-color: #ccc;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
     }
     .friendsName{
         height:90px;
@@ -156,6 +150,7 @@
                 refreshImg:utils.locate('resources/images/loading.png'),
                 pageSize:20,
                 searchKeyword:'手机号/登录名',
+                clicked:false,
             }
         },
         props: {
@@ -182,11 +177,23 @@
         methods: {
 //            作者主页
             goAuthor:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
             },
             goComplete:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
+                    _this.clicked = false;
 //                event.openURL('http://192.168.2.157:8081/add.weex.js',function (message) {
                     if(message.data != ''){
                         event.closeURL(message);
@@ -197,7 +204,13 @@
             },
 //            触发自组件的跳转方法
             gosearch:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/friend/search.js'),function (message) {
+                    _this.clicked = false;
 //                event.openURL('http://192.168.2.157:8081/search.weex.js',function (message) {
                     if(message.data != ''){
                         event.closeURL(message);
@@ -320,6 +333,10 @@
             },
             //同意添加好友
             adopt:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 POST('weex/member/friends/adopt.jhtml?friendId='+id).then(
                     function (data) {
@@ -330,7 +347,9 @@
                         } else {
                             event.toast(data.content);
                         }
+                        _this.clicked = false;
                     },function(err) {
+                        _this.clicked = false;
                         event.showToast("网络不稳定");
                     }
                 )

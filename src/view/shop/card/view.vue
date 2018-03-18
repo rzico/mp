@@ -12,10 +12,10 @@
             <div class="flex-center">
                 <text class="label" @click="deposit()">消费记录</text>
                 <text class="label" >|</text>
-                <text class="label" @click="vipsetup()" >设置等级</text>
+                <text class="label" @click="vipsetup()" >会员详情</text>
             </div>
         </div>
-        <image class="logo" resize="cover" :src="data.card.logo"></image>
+        <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
         <div class="bbox">
             <text class="button bw" @click="fill()">充值</text>
             <text class="button bw" @click="refund()">退款</text>
@@ -128,6 +128,7 @@
     const event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue'
     const picker = weex.requireModule('picker')
+    const modal = weex.requireModule('modal');
     var he = require('he');
     export default {
         components: {
@@ -150,15 +151,31 @@
                 id:"",
                 qrcode:"",
                 data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,code:'392203232323'},},
-                begin:0
+                begin:0,
+                roles:'',
+                clicked:false
             }
         },
         created(){
             utils.initIconFont();
             this.id = utils.getUrlParameter("id");
             this.load();
+            this.permissions()
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             vipClass:function (v) {
                 if (v=='vip3') {
                     return "vip3";
@@ -183,46 +200,35 @@
                 event.closeURL();
             },
             deposit:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate("view/shop/card/deposit.js?id="+this.id),function (data) {
-
+                    _this.clicked =false
                 })
             },
             vipsetup:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
-                picker.pick({
-                    index:_this.begin,
-                    items:['VIP1','VIP2','VIP3']
-                }, e => {
-                    if (e.result == 'success') {
-                        let vp = 'vip1';
-                        if (e.data == 0){
-                           vp = 'vip1';
-                            _this.begin = e.data
-                        }else if(e.data == 1){
-                           vp = 'vip2';
-                            _this.begin = e.data
-                        }
-                        else{
-                           vp = 'vip3';
-                            _this.begin = e.data
-                        }
-                        POST('weex/member/card/update.jhtml?id='+_this.id+'&vip=' +vp).then(
-                            function (mes) {
-                                if (mes.type == "success") {
-                                    _this.data.card.vip = vp;
-                                } else {
-                                    event.toast(mes.content);
-                                }
-                            }, function (err) {
-                                event.toast("网络不稳定");
-                            }
-                        )
-                    }
+                event.openURL(utils.locate("view/shop/card/memberInfo.js?id="+this.id),function (data) {
+                    _this.load()
+                    _this.clicked =false
                 })
             },
             fill: function () {
                 var _this = this;
+                if (!utils.isRoles("15",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate("view/shop/card/fill.js?id="+this.id),function (data) {
                     if (data.type=='success') {
                         _this.load();
@@ -231,6 +237,13 @@
             },
             refund: function () {
                 var _this = this;
+                if (!utils.isRoles("15",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 event.openURL(utils.locate("view/shop/card/refund.js?id="+this.id),function (data) {
                     if (data.type=='success') {
                         _this.load();

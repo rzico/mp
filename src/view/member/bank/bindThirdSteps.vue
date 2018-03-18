@@ -122,7 +122,8 @@
                 city:'',
                 time:59,
                 textList:['','','','','',''],
-                verification:''
+                verification:'',
+                clicked:false
             }
         },
         components: {
@@ -169,12 +170,17 @@
         methods: {
 
             binding:function (e){
-                var _this=this;
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
                 if (utils.isNull(this.verification)) {
                     modal.alert({
                         message: "请输入验证码",
                         okTitle: '知道了'
                     })
+                    _this.clicked =false
                     return;
                 }
                 var  threedata = {
@@ -195,7 +201,6 @@
                         if (message.type == "success") {
                             POST('weex/member/bankcard/submit.jhtml?captcha=' +_this.verification,message.data).then(
                                 function (data) {
-                                    utils.debug(data)
                                     if (data.type == "success") {
                                         modal.alert({
                                             message: data.content,
@@ -216,7 +221,7 @@
                             event.toast(message.content);
                         }
                 });
-
+                    _this.clicked =false
             },
 
             onSend: function (e) {
@@ -264,7 +269,8 @@
                     timer = null;
                 }
                 _this.captcha = '';
-                this.retry = true;
+                _this.clicked =false;
+                _this.retry = true;
             },
             statusStyle: function () {
                 if (this.retry) {

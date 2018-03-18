@@ -144,7 +144,8 @@
             selfId:'',
             refreshImg:utils.locate('resources/images/loading.png'),
             hadUpdate:false,
-            authorId:''
+            authorId:'',
+            clicked:false
         },
         props:{
             noDataHint:{default:'暂无评论'},
@@ -184,7 +185,9 @@
 //            刷新和获取数据
             getAllReview(){
                 let _this = this;
+//                utils.debug('weex/review/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize);
                 GET('weex/review/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+//                    utils.debug(data);
                     if(data.type == 'success' && data.data.data != '' ){
                         if (_this.pageStart == 0) {
                             _this.reviewList = data.data.data;
@@ -209,6 +212,13 @@
             },
             sendReview(){
                 let _this = this;
+                if (this.clicked) {
+                return;
+               }
+                this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
 //                判断是否输入内容为空
                 if(utils.isAllEmpty(this.reviewWord)){
                     event.toast('请输入评论内容');
@@ -219,12 +229,16 @@
                                 _this.reviewList.splice(0,0,data.data);
                                 _this.reviewWord = '';
                                 _this.reviewNum ++;
+//                                此时自己手动添加的数据，pagestart如果没有自增,用户触发上啦加载时，会多返回一条数据来
+                                _this.pageStart ++;
                             }else{
                                 event.toast(data.content);
                             }
+                            _this.clicked = false;
                         },
                         function (err) {
                             event.toast(err.content);
+                            _this.clicked = false;
                         }
                     )
                 }
@@ -261,7 +275,13 @@
             },
 //            前往作者专栏
             goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
                 });
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
             },
@@ -279,7 +299,7 @@
                             function (data) {
                                 if(data.type == 'success'){
                                     _this.reviewList.splice(index,1);
-                                    _this.reviewNum ++;
+                                    _this.reviewNum --;
                                 }else{
                                     event.toast(data.content);
                                 }

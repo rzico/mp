@@ -49,25 +49,37 @@
                 </div>
             </div>
             <div class="menubox">
-                <div class="menu" @click="shop()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
-                    <text class="menuBtn" value="刷卡">店铺</text>
+                <div class="menu" @click="goods()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
+                    <text class="menuBtn">商品</text>
                 </div>
-                <div class="menu" @click="employee()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
-                    <text class="menuBtn" value="刷卡">员工</text>
+                <div class="menu" @click="order()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
+                    <text class="menuBtn">订单</text>
                 </div>
                 <div class="menu" @click="deposit()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn" value="刷卡">账单</text>
+                    <text class="menuBtn">账单</text>
                 </div>
                 <div class="menu" @click="gocard()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="menuBtn" value="刷卡">会员卡</text>
+                    <text class="menuBtn">会员卡</text>
                 </div>
                 <div class="menu" @click="gocoupon()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="menuBtn" value="刷卡">优惠券</text>
+                    <text class="menuBtn">优惠券</text>
+                </div>
+                <div class="menu" @click="godistribution()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
+                    <text class="menuBtn">新营销</text>
+                </div>
+                <div class="menu" @click="shop()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
+                    <text class="menuBtn">店铺</text>
+                </div>
+                <div class="menu" @click="employee()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
+                    <text class="menuBtn">员工</text>
                 </div>
                 <div class="content">
                     <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
@@ -289,6 +301,7 @@
     export default {
         data() {
             return {
+                roles:"",
                 isIndex:false,
                 refreshing:false,
                 id:0,
@@ -303,6 +316,7 @@
                 isSubmit:false,
                 plugId:"",
                 refreshImg:utils.locate('resources/images/loading.png'),
+                clicked:false
             }
         },
         components: {
@@ -324,24 +338,122 @@
                     _this.view();
                 }
             });
+            this.permissions()
         },
         methods: {
+//            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             employee:function () {
-                event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
             },
             shop:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
                     if(mes.type =='success'&&mes.data==''){
                         event.closeURL(mes)
                     }
-
+                    _this.clicked =false
                 });
             },
             gocard:function () {
-                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {_this.clicked = false});
             },
             gocoupon:function () {
-                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {_this.clicked = false});
+            },
+            godistribution:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {_this.clicked = false});
+            },
+            goods:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/goods/manage.js"),function (e) {_this.clicked = false});
+            },
+            order:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/order/list.js"),function (e) {_this.clicked = false});
             },
             objHeader:function () {
                 if (utils.device()=='V1') {
@@ -351,7 +463,12 @@
                 }
             },
             hasShop:function () {
-                return (this.shopId>0 && this.shopId!="");
+                let _this = this
+                if (utils.isRoles("15",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
+                    return true
+                }else {
+                    return false
+                }
             },
             hasInput:function () {
                 return utils.isNull(this.amount)==false;
@@ -404,7 +521,20 @@
                 event.closeURL();
             },
             deposit:function () {
-                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {});
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {_this.clicked =false});
             },
             goIndex:function () {
                 GET("weex/member/topic/owner.jhtml",function (res) {

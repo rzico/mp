@@ -4,8 +4,11 @@ Vue.filter('daydayfmt', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
+
     if (daySub<1) {
         return "今天"
     } else
@@ -24,7 +27,9 @@ Vue.filter('dayfmt', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
     if (daySub<1) {
         return "今天"
@@ -42,7 +47,9 @@ Vue.filter('timefmt', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
     if (daySub<1) {
         return res.h +":"+ res.i ;
@@ -76,7 +83,9 @@ Vue.filter('timefmtMore', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
     if (daySub<1) {
         return res.h +":"+ res.i ;
@@ -97,9 +106,10 @@ Vue.filter('timefmtOther', function (value) {
     let res = utils.resolvetimefmt(value);
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
-    let span = Math.abs(Math.round(new Date().getTime())-value);
+    let d1 = Date.parse(utils.ymdtimefmt(value));
+    let d2 = Date.parse(utils.ymdtimefmt(Math.round(new Date().getTime())));
+    let span = Math.abs(d2-d1);
     let daySub = Math.floor(span / (24 * 3600 * 1000));
-
     if (daySub<1) {
         return res.h +":"+res.i ;
     }
@@ -120,6 +130,9 @@ Vue.filter('timefmtOther', function (value) {
 
 // 时间格式化  2017-09-01
 Vue.filter('timeDatefmt', function (value) {
+    if(utils.isNull(value)){
+        return value;
+    }
     let res = utils.resolvetimefmt(value);
         return res.y + '-' + res.m + '-' + res.d;
 })
@@ -182,9 +195,47 @@ Vue.filter('datemoretimefmt', function (value) {
     }else{
         return  res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i + ':' + res.s;
     }
+})
+//时间格式化 返回 09-30 03:07周日 2017-09-30 03:07周日
+Vue.filter('dateweektimefmt', function (value) {
+    let res = utils.resolvetimefmt(value);
+    let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+// 返回处理后的值
+    var    date = new Date(value);
+    var    d2 = Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate(),date.getUTCHours(),date.getUTCMinutes(),date.getUTCSeconds());
+    date = new Date(d2+28800000);
+    var    day = date.getUTCDay();
+    switch(day){
+        case 0:
+            day = "周日";
+            break;
+        case 1:
+            day = "周一";
+            break;
+        case 2:
+            day = "周二";
+            break;
+        case 3:
+            day = "周三";
+            break;
+        case 4:
+            day = "周四";
+            break;
+        case 5:
+            day = "周五";
+            break;
+        case 6:
+            day = "周六";
+            break;
+    }
 
 
-
+    //如果是今年 就不返回年份
+    if(res.y == tds.y){
+        return res.m + '-' + res.d + '  ' + res.h + ':' + res.i + day;
+    }else{
+        return  res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i + day;
+    }
 })
 //时间格式化 返回 03:07
 Vue.filter('hitimefmt', function (value) {

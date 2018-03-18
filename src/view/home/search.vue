@@ -12,8 +12,9 @@
                 <div class="searchBox bt20"  v-if="historyList != ''">
                     <div class="space-between searchHead" >
                         <text class="gray fz28">搜索历史</text>
-                        <text class="ico gray cleanHistory" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
+                        <text class="ico gray cleanHistory fz28" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
                     </div>
+                    <div class="borderBottom searchBorder"></div>
                     <div class="searchContentBox flex-row " >
                         <div v-for="(item,index) in historyList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
@@ -29,6 +30,7 @@
                     <div class="space-between searchHead" >
                         <text class="gray fz28">搜索发现</text>
                     </div>
+                    <div class="borderBottom searchBorder"></div>
                     <div class="searchContentBox flex-row " >
                         <div v-for="(item,index) in hotList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
@@ -73,7 +75,7 @@
                             <div class="singleUserBox"  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div >
-                                    <text class="title fz28 bt15">{{item.name}}</text>
+                                    <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +97,7 @@
                             <div class="flex-row "  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div style="width: 460px;">
-                                    <text class="title ml20">{{item.nickName}}</text>
+                                    <text class="title ml20">{{item.nickName | watchNickName}}</text>
                                     <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
                                 </div>
                                 <div style="width: 130px;">
@@ -119,9 +121,10 @@
                 <div  v-for="(item,index) in searchList.article" >
                     <!--类别-->
                     <div  v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
-                        <div class="typeTextBox boder-bottom" >
+                        <div class="typeTextBox " >
                             <text class="sub_title fz32 pb10" >相关文章</text>
                         </div>
+                        <div class="borderBottom"></div>
                     </div>
                     <div class="contentBox">
                         <!--文章-->
@@ -130,7 +133,7 @@
                             <div class="nameDate">
                                 <div class="nameImg" @click="goAuthor(item.authorId)">
                                     <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
-                                    <text class="authorName ml10">{{item.author}}</text>
+                                    <text class="authorName ml10">{{item.author | watchNickName}}</text>
                                 </div>
                                 <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                             </div>
@@ -226,9 +229,10 @@
         height: 80px;
         margin-left: 25px;
         background-color: #fff;
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
+    }
+    .searchBorder{
+        width: 700px;
+        margin-left: 25px;
     }
     .searchContentText{
         height: 90px;
@@ -376,7 +380,7 @@
                 historyList:[],
                 hotList:[
                     {
-                        history:'儿童安全椅'
+                        history:'儿童安全座椅'
                     },{
                         history:'北航校花'
                     },{
@@ -410,7 +414,17 @@
                 return utils.thumbnail(value,250,150);
             },
             watchLogo:function (value) {
+                if(utils.isNull(value)){
+                    return utils.locate('resources/images/background.png');
+                }
                 return utils.thumbnail(value,40,40);
+            },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    return value;
+                }
             },
             watchFriendLogo:function (value) {
                 return utils.thumbnail(value,100,100);
@@ -469,7 +483,6 @@
                     this.getHistory();
                 };
                 this.pageStart=0;
-                this.pageSize=15;
             },
 //            读取缓存的搜索历史
             getHistory:function () {
@@ -621,7 +634,6 @@
                     article:[]
                 };
                 this.pageStart=0;
-                this.pageSize=15;
                 switch (itemType){
                     case 1:
                         this.articleSearch();
@@ -642,28 +654,38 @@
             },
 //            修改搜索分类时触发
             typeChange(index,id){
+                if(this.whichCorpus == index){
+                    return;
+                }
                 this.whichCorpus = index;
-                this.searchList = {
-                    friend:[],
-                    article:[]
-                };
-                this.pageStart=0;
-                this.pageSize=15;
                 switch (index){
                     case 0 :
+                        this.pageStart=0;
                         this.articleSearch();
                         this.userSearch();
                         break;
                     case 1:
-                        this.articleSearch();
+//                        避免数据闪屏 刷新
+                        if(utils.isNull(this.searchList.article)){
+                            this.pageStart=0;
+                            this.articleSearch();
+                        }else{
+                            this.pageStart = this.searchList.article.length;
+                        }
+                        this.searchList.friend = [];
                         break;
                     case 2:
-                        this.userSearch();
+                        if(utils.isNull(this.searchList.friend)){
+                            this.pageStart=0;
+                            this.userSearch();
+                        }else{
+                            this.pageStart = this.searchList.article.length;
+                        }
+                        this.searchList.article = [];
                         break;
                     default:
                         break;
                 }
-
             },
 //            点击搜索历史或者热点时触发
             helpSearch(val){

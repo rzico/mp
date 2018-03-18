@@ -9,9 +9,9 @@
             <text class="sub_title">(中国)</text>
         </div>
 
-        <div class="mobile-row">
-            <text class="flex1 title">+86</text>
-            <input class="flex5" type="tel" style="height:45px;" v-model="vm" maxlength="11" @input="onInput" autofocus="true" placeholder="请输入手机号"/>
+        <div class="mobile-row ">
+            <text class="flex1 title " >+86</text>
+            <input class="flex5 " type="tel" style="height:45px;" v-model="vm" maxlength="11" @input="onInput" autofocus="true" placeholder="请输入手机号"/>
         </div>
 
         <div class="mobile-row clear">
@@ -41,6 +41,7 @@
         height: 100px;
         flex-direction: row;
         background-color: #ffffff;
+        border-right-width:0px !important;
         border-bottom-width: 1px;
         border-bottom-color: #ccc;
         border-bottom-style: solid;

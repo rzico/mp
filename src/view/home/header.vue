@@ -1,6 +1,6 @@
 <template>
     <div >
-        <div class="header" :class="[classHeader()]">
+        <div class="header cell-bottom-clear" :class="[classHeader()]">
             <div class="nav" style="width:750px;">
                 <!--<div class="flex-center flex1" >-->
                     <!--<image class="logo" :src="'file://resources/logoWhite.png'" ></image>-->

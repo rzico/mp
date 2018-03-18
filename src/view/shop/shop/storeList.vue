@@ -1,39 +1,37 @@
 <template>
     <div  class="bkg-primary">
         <navbar :title="title" :complete="complete" @goback="goback" border=false></navbar>
-        <div class="shopstwo bkg-primary">
-            <div class="deleteBoxTwo bkg-delete" @click="out()">
-                <text class="deleteText">离职</text>
-            </div>
-            <div style="height: 475px;align-items: center" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
-            <div  class="messageTwo " >
-                <div  style="flex-direction: column;align-items: center">
-                    <div class="shopNameDivthree">
-                        <text style="font-size: 32px">{{name}}</text>
-                    </div>
-                    <div class="shopNameDivone">
-                        <text style="font-size: 32px">所在店铺：</text>
-                        <text style="font-size: 32px">{{shopName}}</text>
-                    </div>
-                    <div class="shopNameDivtwo">
-                        <text style="font-size: 32px">职位：</text>
-                        <text style="font-size: 32px">{{roleName}}</text>
-                    </div>
-                </div>
-            </div>
-            <div class="shopLogotwo" >
-                <image style="width: 100px;height: 100px;border-radius: 100px"  class="img" :src="logo"></image>
-            </div>
-            </div>
-        </div>
-        <div style="background-color: #eeeeee" v-if="isOwner">
+        <!--<div class="shopstwo bkg-primary">-->
+            <!--<div class="deleteBoxTwo bkg-delete" @click="out()">-->
+                <!--<text class="deleteText">离职</text>-->
+            <!--</div>-->
+            <!--<div style="height: 475px;align-items: center" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">-->
+            <!--<div  class="messageTwo " >-->
+                <!--<div  style="flex-direction: column;align-items: center">-->
+                    <!--<div class="shopNameDivthree">-->
+                        <!--<text style="font-size: 32px">{{name}}</text>-->
+                    <!--</div>-->
+                    <!--<div class="shopNameDivone">-->
+                        <!--<text style="font-size: 32px">所在店铺：</text>-->
+                        <!--<text style="font-size: 32px">{{shopName}}</text>-->
+                    <!--</div>-->
+                    <!--<div class="shopNameDivtwo">-->
+                        <!--<text style="font-size: 32px">职位：</text>-->
+                        <!--<text style="font-size: 32px">{{roleName}}</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="shopLogotwo" >-->
+                <!--<image style="width: 100px;height: 100px;border-radius: 100px"  class="img" :src="logo"></image>-->
+            <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
             <div class="head" @click="add" >
                 <text class="clickAdd" >+点击添加商铺</text>
             </div>
-        </div>
-        <div class="outtwo bkg-primary"  @click="outtwo" v-else>
-            <text style="font-size: 32px;color:#ffffff;">点我离职</text>
-        </div>
+        <!--<div class="outtwo bkg-primary"  @click="outtwo" v-else>-->
+            <!--<text style="font-size: 32px;color:#ffffff;">点我离职</text>-->
+        <!--</div>-->
         <noData :noDataHint="noDataHint" v-if="isEmpty()&&isOwner" :style="{minHeight:screenHeight + 'px'}"></noData>
 
         <list style="background-color: #eeeeee" v-if="isNoEmpty()&&isOwner" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
@@ -50,7 +48,6 @@
             </div>
             <div class="shopInformation">
                 <div class="shopNameDiv">
-                <text class="shopName">店铺名：</text>
                 <text class="fullName">{{num.name}}</text>
                 </div>
                 <div class="shopAddressDiv">
@@ -61,6 +58,10 @@
                     <text class="shopAddress">负责人：</text>
                     <text class="concretely">{{num.linkman}}</text>
                 </div>
+                <div class="shopAddressDiv">
+                    <text class="shopAddress">收款码：</text>
+                    <text class="shopCode">{{num.code}}</text>
+                </div>
             </div>
             </div>
         </cell>
@@ -70,7 +71,7 @@
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
-<style>
+<style scoped>
     .message{
         flex-direction: row;
         align-items: center;
@@ -156,24 +157,28 @@
         /*justify-content: space-between;*/
         height: 230px;
         margin-left: 20px;
+        flex-direction: column;
+        justify-content: center;
     }
-    .shopName{
+    .fullName{
         font-weight: bold;
         font-size: 32px;
     }
-    .fullName{
+    .shopCode{
         font-size: 32px;
     }
     .shopAddress{
-        font-weight: bold;
         font-size: 32px;
     }
     .concretely{
         font-size: 32px;
+        width: 350px;
+        lines:1;
+        text-overflow: ellipsis;
     }
     .shopNameDiv{
         flex-direction: row;
-        margin-top: 20px;
+
     }
     .shopNameDivthree{
         flex-direction: row;
@@ -189,10 +194,8 @@
     }
     .shopAddressDiv{
         flex-direction: row;
-        margin-top: 30px;
-    }
-    .concretely{
-        width: 350px;
+        align-items: center;
+        margin-top: 10px;
     }
 </style>
 <script>
@@ -219,6 +222,8 @@ export default {
             roleName:'',
             canScroll:true,
             refreshImg:utils.locate('resources/images/loading.png'),
+            clicked:false,
+            screenHeight:0
         }
     },
     components: {
@@ -231,7 +236,8 @@ export default {
     created() {
         utils.initIconFont();
         this.open(function () {});
-        this.openTwo(function () {});
+//        this.openTwo(function () {});
+        this.screenHeight = utils.fullScreen(256);
     },
     filters:{
         filterHead:function (value) {
@@ -241,11 +247,16 @@ export default {
     },
     methods:{
         modification:function (id) {
-                    let _this =this;
+            if (this.clicked==true) {
+                return;
+            }
+            this.clicked = true;
+            let _this = this
                     event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
                         if(message.type == 'success'){
                             _this.onrefresh()
                         }
+                        _this.clicked =false
                     })
         },
         open:function () {
@@ -260,22 +271,22 @@ export default {
                 event.toast(err.content)
             })
         },
-        openTwo:function () {
-            let _this = this;
-            GET('weex/member/enterprise/view.jhtml',function (mes) {
-                if (mes.type == 'success') {
-                    _this.isOwner = mes.data.isOwner;
-                    _this.logo = mes.data.logo;
-                    _this.shopName =mes.data.shopName;
-                    _this.name = mes.data.name;
-                    _this.roleName =mes.data.roleName
-                } else {
-                    event.toast(res.content);
-                }
-            }, function (err) {
-                event.toast(err.content)
-            })
-        },
+//        openTwo:function () {
+//            let _this = this;
+//            GET('weex/member/enterprise/view.jhtml',function (mes) {
+//                if (mes.type == 'success') {
+//                    _this.isOwner = mes.data.isOwner;
+//                    _this.logo = mes.data.logo;
+//                    _this.shopName =mes.data.shopName;
+//                    _this.name = mes.data.name;
+//                    _this.roleName =mes.data.roleName
+//                } else {
+//                    event.toast(res.content);
+//                }
+//            }, function (err) {
+//                event.toast(err.content)
+//            })
+//        },
         isNoEmpty:function() {
             return this.lists.length!=0;
         },
@@ -319,9 +330,13 @@ export default {
         },
 
         add:function () {
+            if (this.clicked==true) {
+                return;
+            }
+            this.clicked = true;
             let _this= this;
             event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
-
+                _this.clicked =false
                 if(message.type == 'success'){
                     _this.onrefresh()
                 }
@@ -410,59 +425,59 @@ export default {
             )
         },
         //        退出
-        out:function (id,index) {
-            let _this =this
-            POST('weex/member/enterprise/delete.jhtml').then(
-                function (mes) {
-                    if (mes.type == "success") {
-                        //                            把动画收回来。
-                        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
-                        }else{
-                            animation.transition(animationPara, {
-                                styles: {
-                                    transform: 'translateX(0)',
-                                },
-                                duration: 10, //ms
-                                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
-//                      timingFunction: 'ease-out',
-                                needLayout:false,
-                                delay: 0 //ms
-                            })
-                        }
-                        event.closeURL(mes)
-                        } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    event.toast("网络不稳定");
-                }
-            )
-        },
-        outtwo:function (id,index) {
-            let _this =this
-            modal.confirm({
-                message: '确认离职?',
-                okTitle:'确认',
-                cancelTitle:'取消',
-                duration: 0.3
-            }, function (value) {
-                console.log(value);
-                if(value == '确认'){
-                    POST('weex/member/enterprise/delete.jhtml').then(
-                        function (mes) {
-                            if (mes.type == "success") {
-                                event.toast('离职成功');
-                                event.closeURL(mes)
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast("网络不稳定");
-                        }
-                    )
-                }
-            })
-        }
+//        out:function (id,index) {
+//            let _this =this
+//            POST('weex/member/enterprise/delete.jhtml').then(
+//                function (mes) {
+//                    if (mes.type == "success") {
+//                        //                            把动画收回来。
+//                        if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+//                        }else{
+//                            animation.transition(animationPara, {
+//                                styles: {
+//                                    transform: 'translateX(0)',
+//                                },
+//                                duration: 10, //ms
+//                                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+////                      timingFunction: 'ease-out',
+//                                needLayout:false,
+//                                delay: 0 //ms
+//                            })
+//                        }
+//                        event.closeURL(mes)
+//                        } else {
+//                        event.toast(mes.content);
+//                    }
+//                }, function (err) {
+//                    event.toast("网络不稳定");
+//                }
+//            )
+//        },
+//        outtwo:function (id,index) {
+//            let _this =this
+//            modal.confirm({
+//                message: '确认离职?',
+//                okTitle:'确认',
+//                cancelTitle:'取消',
+//                duration: 0.3
+//            }, function (value) {
+//                console.log(value);
+//                if(value == '确认'){
+//                    POST('weex/member/enterprise/delete.jhtml').then(
+//                        function (mes) {
+//                            if (mes.type == "success") {
+//                                event.toast('离职成功');
+//                                event.closeURL(mes)
+//                            } else {
+//                                event.toast(mes.content);
+//                            }
+//                        }, function (err) {
+//                            event.toast("网络不稳定");
+//                        }
+//                    )
+//                }
+//            })
+//        }
     }
 }
 </script>

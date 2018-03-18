@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="cell-row cell-line"  v-if="member.useCashier">
+            <div class="cell-row cell-line"  v-if="hastopic()">
                 <div class="cell-panel space-between cell-clear" @click="store">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
@@ -51,21 +51,21 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <!--<div class="cell-panel space-between cell-clear" @click="orderManage()">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>-->
-                        <!--<text class="title ml10">订单管理</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title"></text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
 
 
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between " @click="goodsManage()">
+                <div class="cell-panel space-between " @click="orderManage()" v-if="hasuseCashier()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="title ml10">订单管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between " @click="goodsManage()" v-if="hasuseCashier()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
                         <text class="title ml10">商品管理</text>
@@ -75,7 +75,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between" @click="goReviewManage()">
+                <div class="cell-panel space-between cell-clear" @click="goReviewManage()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
                         <text class="title ml10">评价管理</text>
@@ -85,22 +85,23 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between  cell-clear">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
-                        <text class="title ml10">投票管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--投票管理暂未开发，关闭连接-->
+                <!--<div class="cell-panel space-between  cell-clear">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
+                        <!--<text class="title ml10">投票管理</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title"></text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between" @click="beginShare()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
-                        <text class="title ml10">推荐给好友</text>
+                        <text class="title ml10">推荐好友下载APP</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -165,6 +166,7 @@
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
     const event = weex.requireModule('event');
+    const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue';
     import share from '../../include/share.vue'
     export default {
@@ -174,7 +176,10 @@
         data() {
             return {
                 member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false},
-                showShare:false
+                showShare:false,
+                clicked:false,
+                isuseCashier:false,
+                roles:''
             }
         },
         props: {
@@ -184,8 +189,39 @@
             utils.initIconFont();
             var _this = this;
             _this.open();
+            this.permissions()
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
+//            判断是否点亮专栏
+            hastopic:function () {
+                let _this = this
+                if (utils.isRoles("A",_this.roles)) {
+                    return true
+                }else {
+                    return false
+                }
+            },
+//            判断是否开启商户模式
+            hasuseCashier:function () {
+                if(!this.isuseCashier == true){
+                    return true
+                }else{
+                    return false
+                }
+            },
             maskTouch(){
                 this.showShare = false;
             },
@@ -194,8 +230,13 @@
                 this.showShare = false;
             },
             store:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/cashier/index.js'),function (mes) {
+                    _this.clicked = false;
                     if(mes.type == 'success') {
                         _this.member.useCashier = false;
                         _this.open();
@@ -208,6 +249,7 @@
                     function (data) {
                         if (data.type=="success") {
                             _this.member = data.data;
+                            _this.isuseCashier = data.data.useCashier
                         } else {
                             event.toast(data.content);
                         }
@@ -228,9 +270,14 @@
                 event.closeURL(backData);
             },
             attribute:function (e) {
-                let _this = this
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             if(!utils.isNull(data.data.logo)){
                                 _this.member.logo = data.data.logo;
@@ -245,35 +292,56 @@
                         }else if(data.type == 'success' && data.content == '关闭'){
                             event.closeURL();
                         }
+
                     }
                 );
             },
             option: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate('view/member/option.js'),
                     function (data) {
+                    _this.clicked = false;
                         _this.open();
                         return ;
                     }
                 );
             },
             topic: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate('view/member/topic/index.js'), function (mes) {
                         _this.open();
+                        _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            评论管理
             goReviewManage:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
                 event.openURL(utils.locate('view/member/reviewManage.js'),
                     function (data) {
+                    _this.clicked = false;
                         return ;
                     }
                 );
             },
             doShare(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var shareType;
                 let _this = this;
                 switch(id){
@@ -301,6 +369,7 @@
                 _this.showShare = false;
                 event.share(option,function (data) {
                     event.toast(data.content);
+                    _this.clicked = false;
                 })
             },
             beginShare:function () {
@@ -311,16 +380,44 @@
             },
 //            前往商品管理
             goodsManage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate('view/shop/goods/manage.js'),
                     function (data) {
+                    _this.clicked = false;
                         return ;
                     }
                 );
             },
 //            前往订单管理
             orderManage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
+                    _this.clicked = false;
                         return ;
                     }
                 );

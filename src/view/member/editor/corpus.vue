@@ -1,73 +1,75 @@
 <template>
-    <scroller class="wrapper" >
+    <div class="wrapper" >
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
-        <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="addCorpus()">
-                <text class="lineText">添加文集</text>
-                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
-            </div>
-        </div>
-        <div>
-            <text class="remind" >长按文集可进行排序,排序后请点击"完成"</text>
-        </div>
-        <!--文集行背景-->
-        <div class="bgWhite ">
-            <!--文集行内容-->
-            <div class="lineStyle bottomBorder">
-                <!--左侧文集名称-->
-                <div class="flex-row">
-                    <text class="lineText">全部文章</text>
-                    <!--<text class="lineText">({{allTotal}})</text>-->
+        <scroller >
+            <div class="bgWhite addCorpus">
+                <div class="lineStyle pr30" @click="addCorpus()">
+                    <text class="lineText">添加文集</text>
+                    <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
                 </div>
             </div>
-        </div>
-        <!--绑定动画-->
-        <transition-group name="paraTransition" tag="div">
-        <!--文集行背景-->
-        <div class="bgWhite " v-for="(item,index) in corpusList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
-            <!--文集行内容-->
-            <div class="lineStyle bottomBorder">
-                <!--左侧文集名称-->
-                <div class="flex-row" style="width: 450px;">
-                    <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
-                    <text class="lineText" :class = "[item.bgChange ? 'active' : 'noActive']">({{item.total}})</text>
-                </div>
-                <!--右侧功能-->
-                <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                    <div class="flex-row btnHtight" @click="changeName(index,item.name,item.id)">
-                        <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe607;</text>
-                        <text class="gray fontSize30 ml5mr10">改名</text>
-                    </div>
-                    <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
-                        <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe615;</text>
-                        <text class="gray fontSize30 ml5mr10">删除</text>
-                    </div>
-                </div>
-                <div class="flex-row"  v-else>
-                    <div class="flex-row btnHtight"  @click="moveUp(index)" v-if="index != 0">
-                        <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe608;</text>
-                        <text class="white fontSize30 ml5mr10" >上移</text>
-                    </div>
-                    <div class="flex-row btnHtight" @click="moveBottom(index)" v-if="lastPara(index)">
-                        <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe601;</text>
-                        <text class="white fontSize30 ml5mr10">下移</text>
+            <div>
+                <text class="remind" >长按文集可进行排序,排序后请点击"完成"</text>
+            </div>
+            <!--文集行背景-->
+            <div class="bgWhite ">
+                <!--文集行内容-->
+                <div class="lineStyle bottomBorder">
+                    <!--左侧文集名称-->
+                    <div class="flex-row">
+                        <text class="lineText">全部文章</text>
+                        <!--<text class="lineText">({{allTotal}})</text>-->
                     </div>
                 </div>
             </div>
-        </div>
-        </transition-group>
-        <!--文集行背景-->
-        <div class="bgWhite ">
-            <!--文集行内容-->
-            <div class="lineStyle bottomBorder">
-                <!--左侧文集名称-->
-                <div class="flex-row">
-                    <text class="lineText">回收站</text>
-                    <!--<text class="lineText">({{recycle}})</text>-->
+            <!--绑定动画-->
+            <transition-group name="paraTransition" tag="div">
+                <!--文集行背景-->
+                <div class="bgWhite " v-for="(item,index) in corpusList" :key="index" :class = "[item.bgChange ? 'active' : 'noActive']"  @longpress="onlongpress(index)"   >
+                    <!--文集行内容-->
+                    <div class="lineStyle bottomBorder">
+                        <!--左侧文集名称-->
+                        <div class="flex-row" style="width: 450px;">
+                            <text class="lineText limitWidth"  :class = "[item.bgChange ? 'active' : 'noActive']">{{item.name}}</text>
+                            <text class="lineText" :class = "[item.bgChange ? 'active' : 'noActive']">({{item.total}})</text>
+                        </div>
+                        <!--右侧功能-->
+                        <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
+                            <div class="flex-row btnHtight" @click="changeName(index,item.name,item.id)">
+                                <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
+                                <text class="gray fontSize30 ml5mr10">改名</text>
+                            </div>
+                            <div class="flex-row btnHtight" @click="deleteCorpus(index,item.id)" >
+                                <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe652;</text>
+                                <text class="gray fontSize30 ml5mr10">删除</text>
+                            </div>
+                        </div>
+                        <div class="flex-row"  v-else>
+                            <div class="flex-row btnHtight"  @click="moveUp(index)" v-if="index != 0">
+                                <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe608;</text>
+                                <text class="white fontSize30 ml5mr10" >上移</text>
+                            </div>
+                            <div class="flex-row btnHtight" @click="moveBottom(index)" v-if="lastPara(index)">
+                                <text  :style="{fontFamily:'iconfont'}" class="white fontSize30">&#xe601;</text>
+                                <text class="white fontSize30 ml5mr10">下移</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition-group>
+            <!--文集行背景-->
+            <div class="bgWhite ">
+                <!--文集行内容-->
+                <div class="lineStyle bottomBorder">
+                    <!--左侧文集名称-->
+                    <div class="flex-row">
+                        <text class="lineText">回收站</text>
+                        <!--<text class="lineText">({{recycle}})</text>-->
+                    </div>
                 </div>
             </div>
-        </div>
-    </scroller>
+        </scroller>
+    </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
@@ -92,8 +94,8 @@
         transition: all 0.2s;
     }
     /*.paraTransition-leave-to{*/
-        /*transform: translateX(300px);*/
-        /*opacity: 0;*/
+    /*transform: translateX(300px);*/
+    /*opacity: 0;*/
     /*}*/
 
     .paraTransition-enter{
@@ -172,13 +174,13 @@
     import navbar from '../../../include/navbar.vue'
     const animation = weex.requireModule('animation')
     const modal = weex.requireModule('modal');
-//    var timer = null;//定时器
-//    var pressPoint = -1;//手指按压
-//    var movePoint;//手机按压后移动
-//    var beforePointPoor = -1; //前一次手机按压时与移动后的字母数量
-//    var upMove = 0;//向上移动几个位置
-//    var bottomMove = 0;//向下移动几个位置
-//    var moveContent;//移动的文集内容
+    //    var timer = null;//定时器
+    //    var pressPoint = -1;//手指按压
+    //    var movePoint;//手机按压后移动
+    //    var beforePointPoor = -1; //前一次手机按压时与移动后的字母数量
+    //    var upMove = 0;//向上移动几个位置
+    //    var bottomMove = 0;//向下移动几个位置
+    //    var moveContent;//移动的文集内容
 
     export default {
         data:function () {

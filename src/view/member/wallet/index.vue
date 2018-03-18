@@ -120,7 +120,8 @@
         data() {
             return {
                 wallet:{balance:0,bankinfo:"未绑定",binded:true},
-                bankinfo:''
+                bankinfo:'',
+                clicked:false
             }
         },
         components: {
@@ -139,21 +140,31 @@
                 event.closeURL();
             },
             cashCard:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 if (this.wallet.binded==false) {
+                    _this.clicked = false
                     event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+                        _this.clicked = false
                         if (message.type=='success') {
                             _this.wallet.binded = true;
                             _this.wallet.bankinfo = "已绑定";
                             event.openURL(utils.locate('view/member/wallet/transfer.js', function () {
+                                _this.clicked = false
                                     if (message.type=='success') {
                                         _this.load();
                                     }
                                 })
                             )
                         }
+                        _this.clicked =false
                     })
                 }  else {
+                    let _this = this
+                    _this.clicked = false
                     event.openURL(utils.locate('view/member/wallet/transfer.js', function (message) {
                             if (message.type=='success') {
                                 _this.load();
@@ -163,37 +174,55 @@
                 }
             },
             bindingCard:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 if(_this.wallet.bankinfo!='未绑定'){
                     event.openURL(utils.locate("view/member/bank/unbingBank.js?banknum="+encodeURI(_this.bankinfo)), function (message) {
                         if (message.type=='success') {
                             _this.load();
                         }
+                        _this.clicked = false
                     })
                 }else {
                     event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
                         if (message.type == 'success') {
                             _this.load();
                         }
+                        _this.clicked =false
                     })
                 }
             },
             reward:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/wallet/reward.js'),function (message) {
-
+                    _this.clicked =false
                 })
             },
             rebate:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/wallet/rebate.js'),function (message) {
-
+                    _this.clicked =false
                 })
             },
             deposit:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('view/member/wallet/deposit.js'),function (message) {
-
+                    _this.clicked =false
                 })
             },
             load:function () {

@@ -111,7 +111,8 @@
             return{
                 prompting:'点击扫码',
                 shopId:'',
-                code:''
+                code:'',
+                clicked:false
             }
         },
         components: {
@@ -145,26 +146,31 @@
                 }
             },
             scan:function() {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
                 var _this=this
                 event.scan(function (message) {
+                    _this.clicked =false
                     if (message.type=='error') {
+                        _this.clicked =false
                         return;
                     }
                     utils.readScan(message.data,function (data) {
                         if (data.type == 'success'){
                             if (data.data.type!='818804') {
                                 event.toast("无效收钱码");
+                                _this.clicked =false
                                 return;
                             }
                             _this.code = data.data.code
                             POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
                                 function (mes) {
                                     if (mes.type == "success") {
-                                        utils.debug(mes)
                                         event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
-                                          utils.debug(message)
+                                            _this.clicked =false
                                             if (message.type == "success") {
-
                                                 event.closeURL(message);
                                             }
                                         })
@@ -178,9 +184,7 @@
                         } else {
                             event.toast(data.content);
                         }
-
                     })
-
                 });
             }
         }

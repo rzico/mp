@@ -70,14 +70,13 @@
     border-left-width: 1px;
     border-color: #ccc;
 }
-.border{
-    border-style: solid;
-    border-width: 1px;
-    border-color: #ccc;
-}
 .pl10{
      padding-left: 10px;
  }
+.pt0{
+    padding-top: 0px;
+}
+
 .pt10{
     padding-top: 10px;
 }
@@ -163,6 +162,9 @@
 .mt30 {
     margin-top: 30px;
 }
+.mt40 {
+    margin-top: 40px;
+}
 .mt50 {
     margin-top: 50px;
 }
@@ -186,15 +188,18 @@
 .bt30 {
     margin-bottom: 30px;
 }
+.bt45 {
+    margin-bottom: 45px;
+}
 .bt50 {
     margin-bottom: 50px;
 }
 .mr5 {
      margin-right: 5px;
  }
-.mr20 {
-    margin-right: 20px;
-}
+.mr10 {
+      margin-right: 10px;
+  }
 .mr30 {
     margin-right: 30px;
 }
@@ -217,9 +222,11 @@
     padding-top: 44px;
     flex-direction: row;
     position:sticky;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-color: @border-gray;
+    //border-bottom-width: 1px;
+    //border-bottom-style: solid;
+    //border-color: @border-gray;
+
+
     //border-bottom-color: @border-gray;
     background-color: @baseColor;
 }
@@ -586,12 +593,21 @@
 
 //遮罩层
 .maskLayer{
-    position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.5;
+    position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.4;
 }
 //遮罩前的操作组
 .showBox{
-    position: fixed;top: 150px;right: 15px;background-color:#fff;border-radius: 20px;padding-top: 20px;padding-bottom: 20px;
+    position: fixed;top: 150px;right: 15px;
+    //*02.07 20:34*/
+    //background-color:#fff;border-radius: 20px;
+    padding-top: 20px;padding-bottom: 20px;
 }
+//遮罩层的底部背景
+//*02.07 17:25*/
+.showBg{
+    position: absolute;top: 0;bottom: 0;left: 0;right: 0;background-color: #fff;border-radius: 20px;
+}
+
 //遮罩前的上箭头
 .arrowUp{
     position: fixed;top: 148px;right:30px;
@@ -603,6 +619,7 @@
 }
 //下拉刷新盒子
 .refreshBox{
+        //可控制下拉刷新的触发距离
         height: 120px;
         //background-color: #fff;
         width:750px;
@@ -612,4 +629,17 @@
 //    登录主页的轮播图控制
 .indexMtIPhoneX{
     margin-top: 124px;
+}
+
+//    登录主页的轮播图slider控制
+.indexSliderMtIPhone{
+    margin-top: 44px;
+}
+// .indexMtIPhoneX类向上top多少 这边就要多少。否则会出现滑动上移现象
+.indexSliderMtIPhoneX{
+    margin-top: 124px;
+}
+//preview 文章box的top，初始化137
+.artOutBoxTopIPhoneX{
+    top:156px;
 }
