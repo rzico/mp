@@ -1,5 +1,5 @@
 <template>
-    <list class="wrapper" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="300" >
+    <list class="wrapper" show-scrollbar="false" ref="listDom"  @loadmore="onloading" loadmoreoffset="300" >
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
@@ -7,7 +7,10 @@
             <div class="bt10">
                 <slider class="slider" interval="3000" auto-play="true">
                     <div class="frame" v-for="img in imageList">
-                        <image class="slideImage" resize="cover" :src="img.thumbnail"  @click="goArticle(img.id)"></image>
+                        <!--配合图片懒加载，先显示一个本地图片-->
+                        <image  :src="loadingImg"  v-if="!img.loading"  resize="cover" class="slideImage coverAbsoTop" ></image>
+                        <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                        <image class="slideImage" resize="cover"  @appear="onImageAppear(img)"  @load="onImageLoad(img)"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
                     </div>
                     <indicator class="indicatorSlider"></indicator>
                 </slider>
@@ -16,7 +19,7 @@
         <cell >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
-        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"   >
+        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)">
             <!--    排版一 采取左右布局。封面较小-->
             <div v-if="item.templateIndex == 0" class="tempPdBox">
                 <div class="flex-row">
@@ -48,7 +51,10 @@
                     </div>
                     <!--文章封面-->
                     <div style="position: relative">
-                        <image  :src="item.thumbnail "  resize="cover" class="tempOneImg"></image>
+                        <!--配合图片懒加载，先显示一个本地图片-->
+                        <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempOneImg coverAbsoTop" ></image>
+                        <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                        <image  :src="item.thumbnail"  @appear="onImageAppear(item)"  @load="onImageLoad(item)"  resize="cover" class="tempOneImg"></image>
                     </div>
                 </div>
             </div>
@@ -56,7 +62,10 @@
             <div v-else-if="item.templateIndex == 1" class="bt10 positionRelative">
                 <!--文章封面-->
                 <div class="positionRelative">
-                    <image  :src="item.thumbnail "  resize="cover" class="tempTwoCover" ></image>
+                    <!--配合图片懒加载，先显示一个本地图片-->
+                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempTwoCover coverAbsoTop" ></image>
+                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                    <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)"  resize="cover" class="tempTwoCover" ></image>
                     <div class="tempTwoMask"></div>
                     <div class="tempTwoAuthor" @click="goAuthor(item.authorId)">
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
@@ -85,7 +94,7 @@
                                     <text class="relevantText white">{{item.review}}</text>
                                 </div>
                                 <div>
-                                    <text class="relevantText white">{{item.createDate | dateweektimefmt}}</text>
+                                    <text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>
                                 </div>
                             </div>
                         </div>
@@ -223,7 +232,10 @@
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
-                    <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
+                    <!--配合图片懒加载，先显示一个本地图片-->
+                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                    <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
                 <div  class="tempThreeContent ml20" >
                     <div class="flex-row bt20">
@@ -271,7 +283,10 @@
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
-                    <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
+                    <!--配合图片懒加载，先显示一个本地图片-->
+                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                    <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
                 <div  class="tempThreeContent ml20" >
                     <div class="space-between">
@@ -294,7 +309,10 @@
             <div v-else-if="item.templateIndex == 7" class="bt10">
                 <!--文章封面-->
                 <div class="positionRelative">
-                    <image  :src="item.thumbnail"  resize="cover" class="tempEightCover" ></image>
+                    <!--配合图片懒加载，先显示一个本地图片-->
+                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>
+                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                    <image  :src="item.thumbnail"  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="tempEightCover" ></image>
                     <div class="tempTwoMask"></div>
                     <div class="tempTwoAuthor" @click="goAuthor(item.authorId)">
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
@@ -324,7 +342,7 @@
                                     <text class="relevantText white">{{item.review}}</text>
                                 </div>
                                 <div>
-                                    <text class="relevantText white">{{item.createDate | dateweektimefmt}}</text>
+                                    <text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>
                                 </div>
                             </div>
                         </div>
@@ -342,7 +360,10 @@
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
-                    <image  :src="item.thumbnail"  resize="cover" class="articleCover"></image>
+                    <!--配合图片懒加载，先显示一个本地图片-->
+                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>
+                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                    <image  :src="item.thumbnail"  resize="cover" @appear="onImageAppear(item)"  @load="onImageLoad(item)"  class="articleCover"></image>
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
@@ -430,6 +451,10 @@
         width: 750px;padding-left: 20px;padding-right: 20px;padding-top: 20px;padding-bottom: 20px;margin-bottom:10px;background-color:#fff;
     }
 
+    .coverAbsoTop{
+        position: absolute;
+        top:0;
+    }
 
     /*<!--轮播图-->*/
     .indicatorSlider{
@@ -560,7 +585,8 @@
                 clicked:false,
                 imageList: [],
                 templateIndexList:[0,1,5,6,7],
-                isInit:true,
+//                isInit:true,
+                loadingImg:utils.locate('resources/images/loading1.gif'),
             }
         },
         components: {
@@ -581,8 +607,19 @@
             this.screenHeight = utils.fullScreen(316);
         },
         methods:{
+//            封面显示出来
+            onImageAppear(item){
+                if(utils.isNull(item.loadingImg)){
+                    item.loadingImg = item.thumbnail;
+                }
+            },
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
+
             hasImageList(){
-              if(utils.isNull(this.imageList) && this.isInit){
+              if(utils.isNull(this.imageList)){
                   return false;
               }else{
                   return true;
@@ -605,41 +642,46 @@
                 let _this = this;
                 GET('weex/article/hot.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
-                        var transitArr = data.data.data;
-
                         let dataLength = data.data.data.length;
+//                      此处用了2个foreach 是由于在js中 使用变量来嫁接data.data.data 也是一样的内存地址。
+                        data.data.data.forEach(function (item,index) {
+//                             （配合懒加载）
+                            item.loading = false;
+//                             （配合懒加载）
+                            item.loadingImg = '';
+
+//                            模版id重新填充打乱
+                            if(_this.templateIndexList.length == 0 ){
+                                _this.templateIndexList = _this.shuffle([0,1,5,6,7]);
+                            }
+//                            获取当前元素的模版id
+                            item.templateIndex = _this.templateIndexList[0];
+                            _this.templateIndexList.splice(0,1);
+                        })
+//                        定义一个变量来接收轮播图数组。避免页面轮播图置空[]再次渲染。
+                        var middleList = [];
                         data.data.data.forEach(function (item,index) {
                             if(!utils.isNull(item.logo)){
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                                 item.logo = utils.thumbnail(item.logo,60,60);
-//                                transitArr[index].logo = utils.thumbnail(item.logo,60,60);
                             }else{
                                 item.logo = utils.locate('resources/images/background.png');
-//                                transitArr[index].logo = utils.locate('resources/images/background.png');
                             }
                             if(utils.isNull(item.author)){
                                 item.author = 'author';
-//                                transitArr[index].nickName = 'author';
                             }else{
                                 item.author = utils.changeStrLast(item.author);
                             }
-//                            模版id重新填充打乱
-                            if(_this.templateIndexList.length == 0){
-                                _this.templateIndexList = _this.shuffle([0,1,5,6,7]);
-                            }
-//                          填充轮播图
+////                          填充轮播图
                             if(_this.pageStart == 0 && !utils.isNull(item.tags) && _this.imageList.length < 5){
                                 for(var i = 0;i < item.tags.length; i ++){
                                     if(item.tags[i].id == 5){
-                                        _this.imageList.push(item);
+                                        middleList.push(item);
                                         data.data.data.splice(index,1);
                                         break;
                                     }
                                 }
                             }
-//                            获取当前元素的模版id
-                            item.templateIndex = _this.templateIndexList[0];
-                            _this.templateIndexList.splice(0,1);
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                             if(!utils.isNull(item.thumbnail)) {
                                 switch (item.templateIndex) {
@@ -666,7 +708,7 @@
                         })
 //                        假如没有精选文章，就从获取到的所有文章里取出
                         if (_this.pageStart == 0) {
-                            while(_this.imageList.length < 5){
+                            while(middleList.length < 5){
                                 if(data.data.data.length == 0){
                                     break;
                                 }
@@ -674,9 +716,18 @@
                                 data.data.data[0].thumbnail = utils.filterThumbnail(data.data.data[0].thumbnail);
 //                                获取需要的比例缩略图
                                 data.data.data[0].thumbnail = utils.thumbnail(data.data.data[0].thumbnail,750, 375);
-                                _this.imageList.push(data.data.data[0]);
+                                middleList.push(data.data.data[0]);
                                 data.data.data.splice(0,1);
                             }
+
+//                            下拉刷新后文章的前2个组件无法触发appear事件，此时手动进行更新 （配合懒加载）
+                            if(!utils.isNull(data.data.data[0])){
+                                _this.onImageAppear(data.data.data[0]);
+                            }
+                            if(!utils.isNull(data.data.data[1])){
+                                _this.onImageAppear(data.data.data[1]);
+                            }
+                            _this.imageList = middleList;
                             _this.articleList = data.data.data;
                         }
                         _this.pageStart = data.data.start + dataLength;
@@ -716,16 +767,18 @@
             onloading:function () {
 ////            获取文章列表
                 this.getAllArticle();
+//                强制触发上啦加载
+                this.$refs.listDom.resetLoadmore();
             },
             onrefresh:function () {
                 var _this = this;
                 _this.pageStart = 0;
-//                避免下拉刷新时触发 轮播图的v-if时间 避免销毁,页面跳动
-                if(!utils.isNull(this.imageList)){
-                    this.isInit = false;
-                }else{
-                    this.isInit = true;
-                }
+//                避免下拉刷新时触发 轮播图的v-if事件 避免销毁,页面跳动
+//                if(!utils.isNull(this.imageList)){
+//                    this.isInit = false;
+//                }else{
+//                    this.isInit = true;
+//                }
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
@@ -747,7 +800,7 @@
                         delay: 0 //ms
                     })
                     _this.refreshing = false;
-                    _this.imageList = [];
+//                    _this.imageList = [];
                     _this.getAllArticle();
                 }, 1000)
             },

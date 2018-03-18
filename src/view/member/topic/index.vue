@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">一键完成小程序部署,快速上架</text>
+                <text class="sub_title">复制专栏链接并设置为小程序自定义菜单</text>
                 <!--<text class="sub_title" style="color:blue">《操作手册》</text>-->
             </div>
             <div class="cell-row cell-line">

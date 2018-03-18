@@ -130,6 +130,9 @@ Vue.filter('timefmtOther', function (value) {
 
 // 时间格式化  2017-09-01
 Vue.filter('timeDatefmt', function (value) {
+    if(utils.isNull(value)){
+        return value;
+    }
     let res = utils.resolvetimefmt(value);
         return res.y + '-' + res.m + '-' + res.d;
 })

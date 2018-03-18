@@ -75,7 +75,7 @@
                             <div class="singleUserBox"  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div >
-                                    <text class="title fz28 bt15">{{item.name}}</text>
+                                    <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                             <div class="flex-row "  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div style="width: 460px;">
-                                    <text class="title ml20">{{item.nickName}}</text>
+                                    <text class="title ml20">{{item.nickName | watchNickName}}</text>
                                     <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
                                 </div>
                                 <div style="width: 130px;">
@@ -133,7 +133,7 @@
                             <div class="nameDate">
                                 <div class="nameImg" @click="goAuthor(item.authorId)">
                                     <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
-                                    <text class="authorName ml10">{{item.author}}</text>
+                                    <text class="authorName ml10">{{item.author | watchNickName}}</text>
                                 </div>
                                 <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                             </div>
@@ -380,7 +380,7 @@
                 historyList:[],
                 hotList:[
                     {
-                        history:'儿童安全椅'
+                        history:'儿童安全座椅'
                     },{
                         history:'北航校花'
                     },{
@@ -414,7 +414,17 @@
                 return utils.thumbnail(value,250,150);
             },
             watchLogo:function (value) {
+                if(utils.isNull(value)){
+                    return utils.locate('resources/images/background.png');
+                }
                 return utils.thumbnail(value,40,40);
+            },
+            watchNickName:function (value) {
+                if(utils.isNull(value)){
+                    return 'author';
+                }else{
+                    return value;
+                }
             },
             watchFriendLogo:function (value) {
                 return utils.thumbnail(value,100,100);
@@ -473,7 +483,6 @@
                     this.getHistory();
                 };
                 this.pageStart=0;
-                this.pageSize=15;
             },
 //            读取缓存的搜索历史
             getHistory:function () {
@@ -625,7 +634,6 @@
                     article:[]
                 };
                 this.pageStart=0;
-                this.pageSize=15;
                 switch (itemType){
                     case 1:
                         this.articleSearch();
@@ -646,28 +654,38 @@
             },
 //            修改搜索分类时触发
             typeChange(index,id){
+                if(this.whichCorpus == index){
+                    return;
+                }
                 this.whichCorpus = index;
-                this.searchList = {
-                    friend:[],
-                    article:[]
-                };
-                this.pageStart=0;
-                this.pageSize=15;
                 switch (index){
                     case 0 :
+                        this.pageStart=0;
                         this.articleSearch();
                         this.userSearch();
                         break;
                     case 1:
-                        this.articleSearch();
+//                        避免数据闪屏 刷新
+                        if(utils.isNull(this.searchList.article)){
+                            this.pageStart=0;
+                            this.articleSearch();
+                        }else{
+                            this.pageStart = this.searchList.article.length;
+                        }
+                        this.searchList.friend = [];
                         break;
                     case 2:
-                        this.userSearch();
+                        if(utils.isNull(this.searchList.friend)){
+                            this.pageStart=0;
+                            this.userSearch();
+                        }else{
+                            this.pageStart = this.searchList.article.length;
+                        }
+                        this.searchList.article = [];
                         break;
                     default:
                         break;
                 }
-
             },
 //            点击搜索历史或者热点时触发
             helpSearch(val){

@@ -1,5 +1,5 @@
 <template>
-    <list class="wrapper" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="300" >
+    <list class="wrapper" show-scrollbar="false" ref="listDom"  @loadmore="onloading" loadmoreoffset="300" >
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
@@ -16,8 +16,13 @@
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
-                    <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
-                    <image  :src="item.thumbnail "  resize="cover" class="articleCover"></image>
+                    <!--配合图片懒加载，先显示一个本地图片-->
+                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--&lt;!&ndash;不能用过滤器,在上啦加载push时 会渲染不出来&ndash;&gt;-->
+                    <!--<image  :src="item.thumbnail"  resize="cover" class="articleCover"></image>-->
+
+                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                    <image  :src="item.loadingImg" @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
@@ -94,6 +99,10 @@
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    .coverAbsoTop{
+        position: absolute;
+        top:0;
+    }
     .articleBox {
         background-color: #ffffff;
         /*padding-left: 30px;*/
@@ -138,6 +147,7 @@
                 hadUpdate:false,
                 screenHeight:0,
                 clicked:false,
+                loadingImg:utils.locate('resources/images/loading1.gif'),
             }
         },
         components: {
@@ -168,28 +178,50 @@
             utils.initIconFont();
             var _this = this;
             this.getAllArticle();
-
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
         },
         methods:{
+//            封面显示出来
+            onImageAppear(item){
+                if(utils.isNull(item.loadingImg)){
+                    item.loadingImg = item.thumbnail;
+                }
+            },
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
 //            获取文章列表
             getAllArticle(){
                 let _this = this;
                 GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
                         data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                            item.loading = false;
+//                             （配合懒加载）
+                            item.loadingImg = '';
                             if(!utils.isNull(item.thumbnail)){
                                 item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
                             }
                             if(!utils.isNull(item.logo)){
                                 item.logo = utils.thumbnail(item.logo,60,60);
+                            }else{
+                                item.logo = utils.locate('resources/images/background.png');
                             }
                             if(_this.pageStart != 0){
                                 _this.articleList.push(item);
                             }
                         })
                         if (_this.pageStart == 0) {
+//                            下拉刷新后文章的前2个组件无法触发appear事件，此时手动进行更新 （配合懒加载）
+                            if(!utils.isNull(data.data.data[0])){
+                                _this.onImageAppear(data.data.data[0]);
+                            }
+                            if(!utils.isNull(data.data.data[1])){
+                                _this.onImageAppear(data.data.data[1]);
+                            }
                             _this.articleList = data.data.data;
                         }
                         _this.pageStart = data.data.start + data.data.data.length;
@@ -229,6 +261,8 @@
             onloading:function () {
 ////            获取文章列表
                 this.getAllArticle();
+//                强制触发上啦加载
+                this.$refs.listDom.resetLoadmore();
             },
             onrefresh:function () {
                 var _this = this;

@@ -85,9 +85,21 @@
             utils.initIconFont();
             this.item.id = utils.getUrlParameter('id');
             this.item.name = utils.getUrlParameter('name');
+            if(utils.isNull(this.item.name)){
+                _this.item.name = ''
+            }
             this.item.percent1 = utils.getUrlParameter('percent1');
+            if(utils.isNull(this.item.percent1)){
+                _this.item.percent1 = ''
+            }
             this.item.percent2 = utils.getUrlParameter('percent2');
+            if(utils.isNull(this.item.percent2)){
+                _this.item.percent2 = ''
+            }
             this.item.percent3 = utils.getUrlParameter('percent3');
+            if(utils.isNull(this.item.percent3)){
+                _this.item.percent3 = ''
+            }
             this.begin = utils.getUrlParameter('point');
             if(!utils.isNull(this.begin)) {
                 if (_this.begin == 0) {
