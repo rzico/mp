@@ -247,6 +247,7 @@
                 _this.isPwd = false;
                 _this.clearPwd();
                 GET("payment/view.jhtml?sn="+sn,function (res) {
+                    utils.debug(res);
                     _this.info = res.data;
                     _this.isShow = true;
                 },function (err) {

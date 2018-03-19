@@ -15,8 +15,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "less": "^2.7.2",
-    "less-loader": "^4.0.5",
+    "less": "^2.7.3",
+    "less-loader": "^4.1.0",
     "natjs": "^0.0.9",
     "vue": "^2.1.8",
     "vue-router": "^2.1.1",

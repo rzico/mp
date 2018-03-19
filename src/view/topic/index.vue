@@ -29,7 +29,7 @@
             <!--<transition-group name="navTransition" tag="div">-->
             <!--只能多写一个顶部栏。否则无法适应-->
             <div  class="corpusBox hideCorpus"   :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
-                <scroller scroll-direction="horizontal" class="corpusScroll">
+                <scroller scroll-direction="horizontal"  show-scrollbar="false"  class="corpusScroll">
                     <div class="articleClass">
                         <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
@@ -94,7 +94,7 @@
             </div>
             <div >
                 <div  class="corpusBox"  >
-                    <scroller scroll-direction="horizontal"  class="corpusScroll">
+                    <scroller scroll-direction="horizontal"  show-scrollbar="false"  class="corpusScroll">
                         <div class="articleClass">
                             <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                         </div>
@@ -473,9 +473,9 @@
     .articleClass{
         flex-direction: row;
         padding-left: 10px;
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
+        /*border-bottom-width: 1px;*/
+        /*border-style: solid;*/
+        /*border-color: gainsboro;*/
         height:80px;
         background-color: #fff;
     }
