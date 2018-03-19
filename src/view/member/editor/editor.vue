@@ -458,6 +458,7 @@
                 proTotal:0,//总的进度
                 processWidth:0,//进度条宽度
                 articleId:'',
+                goodsId:'', //商品发布时，保留 id 需传入后台
                 refreshing: false,
                 firstPlusShow:true,
                 coverImage:utils.locate('resources/images/background.png'),
@@ -648,6 +649,7 @@
                             var goodsInfo = JSON.parse(e.data);
                             _this.coverImage =  goodsInfo.thumbnail;
                             _this.setTitle = goodsInfo.name;
+                            _this.goodsId = goodsInfo.id;
 //                    data.data里存放的是用户选取的图片路径
                             _this.paraList.push({
                                 //原图
@@ -1438,7 +1440,7 @@
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
-                POST('weex/member/article/submit.jhtml',articleData).then(
+                POST('weex/member/article/submit.jhtml?goodsId='+_this.goodsId,articleData).then(
                     function (res) {
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
