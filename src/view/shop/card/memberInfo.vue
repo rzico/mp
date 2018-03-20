@@ -1,6 +1,7 @@
 <template>
     <div class="wrapper">
         <navbar :title="title"  @goback="goback"  > </navbar>
+        <scroller class="scroller">
         <div class="cell-row cell-line">
             <div class="cell-logo">
                 <div class="flex-row flex-start">
@@ -39,13 +40,33 @@
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
             </div>
+            <div class="cell-panel space-between " @click="typesetup()" :class="[data.card.type == 'member' ? 'cell-clear' : '',data.card.type == 'team' ? 'cell-clear' : '']">
+                <div class="flex-row">
+                    <text class="title ml10">会员类型</text>
+                </div>
+                <div class="flex-row flex-end" >
+                    <text class="sub_title">{{data.card.type | watchType}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+            </div>
+            <div class="cell-panel space-between cell-clear" @click="petdividend()" v-if="data.card.type == 'partner'">
+                <div class="flex-row">
+                    <text class="title ml10">股东比例</text>
+                </div>
+                <div class="flex-row flex-end" >
+                    <text class="sub_title">{{data.card.bonus}}%</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+            </div>
+        </div>
+        <div class="cell-row cell-line">
             <div class="cell-panel space-between">
                 <div class="flex-row">
                     <text class="title ml10">卡号</text>
                 </div>
                 <div class="flex-row flex-end" >
                     <text class="sub_title">NO.{{data.card.code | codefmt}}</text>
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
                 </div>
             </div>
             <div class="cell-panel space-between ">
@@ -54,7 +75,7 @@
                 </div>
                 <div class="flex-row flex-end" >
                     <text class="sub_title">{{data.card.balance}}元</text>
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
                 </div>
             </div>
             <div class="cell-panel space-between ">
@@ -63,19 +84,31 @@
                 </div>
                 <div class="flex-row flex-end" >
                     <text class="sub_title">{{data.card.point}}</text>
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
                 </div>
             </div>
+            <div class="cell-panel space-between ">
+                <div class="flex-row">
+                    <text class="title ml10">推荐人</text>
+                </div>
+                <div class="flex-row flex-end" >
+                    <text class="sub_title">{{data.card.promoter | watchName}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
+                </div>
+            </div>
+
             <div class="cell-panel space-between cell-clear">
                 <div class="flex-row">
                     <text class="title ml10">办卡店铺</text>
                 </div>
                 <div class="flex-row flex-end" >
                     <text class="sub_title">{{data.card.shopName}}</text>
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
                 </div>
             </div>
         </div>
+            <div style="min-height: 300px"></div>
+        </scroller>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -119,13 +152,30 @@
                 } else {
                     return val.substr(0, 11) + "  " + val.substr(11);
                 }
-            }
+            },
+            watchName: function (val) {
+                if (utils.isNull(val)) {
+                    return '无';
+                }else{
+                    return
+                }
+            },
+            watchType:function (data) {
+                if(data == 'partner'){
+                    return '股东'
+                }else if(data == 'team'){
+                    return '团队'
+                }else{
+                    return '普通'
+                }
+            },
         },
         data() {
             return {
                 id: "",
                 begin:0,
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:''},},
+                typebegin:0,
+                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:''},},
                 roles:"",
             }
         },
@@ -190,6 +240,48 @@
                     }
                 })
             },
+            //            设置会员类型
+           typesetup:function () {
+                var _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                picker.pick({
+                    index:_this.typebegin,
+                    items:['普通','团队','股东']
+                }, e => {
+                    if (e.result == 'success') {
+                        let type = 'member';
+                        if (e.data == 0){
+                                type = 'member';
+                                _this.typebegin = e.data
+                        }else if(e.data == 1){
+                                type = 'team';
+                                _this.typebegin = e.data
+                        }
+                        else{
+                            type = 'partner';
+                            _this.typebegin = e.data
+                        }
+                        POST('weex/member/card/update.jhtml?id='+_this.id+'&type=' +type).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+                                    _this.data.card.type = type;
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
+                    }
+                })
+            },
+
 //            设置昵称
             petname:function () {
                 let _this = this;
@@ -264,6 +356,43 @@
                     }
                 })
             },
+            //            设置股东比例
+            petdividend:function () {
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                modal.prompt({
+                    message: '设置股东比例',
+                    duration: 0.3,
+                    okTitle:'确定',
+                    cancelTitle:'取消',
+                    default:_this.data.card.bonus,
+                    placeholder:'请输入股东比例（%）'
+                }, function (value) {
+                    if(value.result == '确定'){
+                        if(value.data == '' || value.data == null ){
+                            modal.toast({message:'请输入股东比例（%）',duration:1})
+                        }else{
+                            POST('weex/member/card/update.jhtml?id='+_this.id+'&bonus=' +value.data).then(
+                                function (mes) {
+                                    if (mes.type == "success") {
+                                        _this.data.card.bonus = value.data
+                                    } else {
+                                        event.toast(mes.content);
+                                    }
+                                }, function (err) {
+                                    event.toast("网络不稳定");
+                                }
+                            )
+                        }
+                    }
+                })
+            },
             goback: function (e) {
                 event.closeURL();
             },
@@ -273,10 +402,16 @@
                     if (res.type=='success') {
                         if(res.data.card.vip == 'vip1'){
                             _this.begin =0
-                        }else if(res.data.card.vip == 'vip2'){
+                        }if(res.data.card.vip == 'vip2'){
                             _this.begin =1
-                        }else {
+                        }if(res.data.card.vip == 'vip3'){
                             _this.begin =2
+                        }if(res.data.card.type == 'member'){
+                            _this.typebegin =0
+                        }if(res.data.card.type == 'team'){
+                            _this.typebegin =1
+                        }if(res.data.card.type == 'partner'){
+                            _this.typebegin =2
                         }
                         _this.data = res.data;
                     } else {

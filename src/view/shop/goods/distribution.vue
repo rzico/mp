@@ -40,7 +40,7 @@
                     </div>
                     <!--右侧功能-->
                     <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point)">
+                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point,item.tota)">
                             <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
                             <text class="gray fontSize30 ml5mr10">修改</text>
                         </div>
@@ -242,7 +242,7 @@
                 moveSign:false,
                 showSort:false,//子组件
                 catagoryList:[],
-                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',bgChange:false},
+                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',tota:'',bgChange:false},
                 roles:'',
                 catagory:''
             }
@@ -297,6 +297,7 @@
                                     percent2:item.percent2,
                                     percent3:item.percent3,
                                     point:item.point,
+                                    tota:item.dividend,
                                     id:item.id,
                                     bgChange:false
                                 })
@@ -318,6 +319,7 @@
                                     percent2:item.precent2,
                                     percent3:item.precent3,
                                     point:item.point,
+                                    tota:item.dividend,
                                     id:item.id,
                                     bgChange:false
                                 })
@@ -403,11 +405,11 @@
                     })
                     return
                 }
-                _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false};
+                _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",point:"",tota:"",bgChange:false};
                 _this.isShow  = true;
              },
 //            修改分类名称
-            changeName(id,name,percent1,percent2,percent3,point){
+            changeName(id,name,percent1,percent2,percent3,point,tota){
                 let _this = this;
                 if (!utils.isRoles("A",_this.roles)) {
                     modal.alert({
@@ -416,7 +418,7 @@
                     })
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point),function () {
+                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota),function () {
                     _this.catagoryList =[]
                     _this.open()
                 })
@@ -522,18 +524,24 @@
                 let c1 = this.catagoryList[index].percent1;
                 let c2 = this.catagoryList[index].percent2;
                 let c3 = this.catagoryList[index].percent3;
+                let c4 = this.catagoryList[index].tota;
+                let c5 = this.catagoryList[index].point;
                 let d = this.catagoryList[index].bgChange;
                 this.catagoryList[index].name = this.catagoryList[index - 1].name;
                 this.catagoryList[index].id = this.catagoryList[index - 1].id;
                 this.catagoryList[index].percent1 = this.catagoryList[index - 1].percent1;
                 this.catagoryList[index].percent2 = this.catagoryList[index - 1].percent2;
                 this.catagoryList[index].percent3 = this.catagoryList[index - 1].percent3;
+                this.catagoryList[index].tota = this.catagoryList[index - 1].tota;
+                this.catagoryList[index].point = this.catagoryList[index - 1].point;
                 this.catagoryList[index].bgChange = this.catagoryList[index - 1].bgChange;
                 this.catagoryList[index - 1].name = a;
                 this.catagoryList[index - 1].id = b;
                 this.catagoryList[index - 1].percent1 = c1;
                 this.catagoryList[index - 1].percent2 = c2;
                 this.catagoryList[index - 1].percent3 = c3;
+                this.catagoryList[index - 1].tota = c4;
+                this.catagoryList[index - 1].point = c5;
                 this.catagoryList[index - 1].bgChange = d;
             },
             //向下移动，下箭头
@@ -545,18 +553,24 @@
                 let c1 = this.catagoryList[index].percent1;
                 let c2 = this.catagoryList[index].percent2;
                 let c3 = this.catagoryList[index].percent3;
+                let c4 = this.catagoryList[index].tota;
+                let c5 = this.catagoryList[index].point;
                 let d = this.catagoryList[index].bgChange;
                 this.catagoryList[index].name = this.catagoryList[index + 1].name;
                 this.catagoryList[index].id = this.catagoryList[index + 1].id;
                 this.catagoryList[index].percent1 = this.catagoryList[index + 1].percent1;
                 this.catagoryList[index].percent2 = this.catagoryList[index + 1].percent2;
                 this.catagoryList[index].percent3 = this.catagoryList[index + 1].percent3;
+                this.catagoryList[index].tota = this.catagoryList[index + 1].tota;
+                this.catagoryList[index].point = this.catagoryList[index + 1].point;
                 this.catagoryList[index].bgChange = this.catagoryList[index + 1].bgChange;
                 this.catagoryList[index + 1].name = a;
                 this.catagoryList[index + 1].id = b;
                 this.catagoryList[index + 1].percent1 = c1;
                 this.catagoryList[index + 1].percent2 = c2;
                 this.catagoryList[index + 1].percent3 = c3;
+                this.catagoryList[index + 1].tota = c4;
+                this.catagoryList[index + 1].point = c5;
                 this.catagoryList[index + 1].bgChange = d;
             },
             jump:function () {
