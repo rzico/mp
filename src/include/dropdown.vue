@@ -1,6 +1,5 @@
 <template>
     <div class="dropdown" >
-
         <div class="select" @click="switchView">
             <div class="left">
                 <text class="ico" :style="{fontFamily:'iconfont'}">{{getIco}}</text>
@@ -11,7 +10,6 @@
                 <text class="icon-arrow" :style="{fontFamily:'iconfont'}" ref="arrow">&#xe630;</text>
             </div>
         </div>
-
         <!--添加动画-->
         <transition-group name="paraTransition" tag="div">
         <div class="options" id="options" key="optionsBox" ref="options" v-if="showOptions">
@@ -20,7 +18,8 @@
                 <text class="name ml10" :class = "[item.id==id ? 'current' : '']">{{item.name}}</text>
                 <text class="icon-curr-flag" :style="{fontFamily:'iconfont' }" v-if="item.id == id">&#xe64d;</text>
             </div>
-            <div class="option-cell" style="border-bottom-width: 0px;"></div>
+            <!--3.20 柯志杰 注释。-->
+            <!--<div class="option-cell" style="border-bottom-width: 0px;"></div>-->
         </div>
         </transition-group>
 
@@ -111,6 +110,7 @@
 
 </style>
 <script>
+    const event = weex.requireModule('event');
     const animation = weex.requireModule('animation')
     var he = require('he');
     export default{
@@ -159,6 +159,10 @@
             },
 
             updateStatus: function(id) {
+                if(id == 1){
+                    event.toast('该方式暂未开通');
+                    return;
+                }
                 this.id = id;
                 this.$emit('onchange',this.id);
             },
