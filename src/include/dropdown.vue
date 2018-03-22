@@ -139,6 +139,7 @@
             },
             getIco: function() {
                 return he.decode(this.ico)
+
             }
         },
         methods: {

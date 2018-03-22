@@ -194,6 +194,7 @@
     import navbar from '../../../include/navbar.vue';
     import { POST, GET } from '../../../assets/fetch'
     import filters from '../../../filters/filters.js'
+    import utils from '../../../assets/utils';
     export default {
         data() {
             return {
@@ -277,13 +278,14 @@
                 this.clicked = true;
                 POST('weex/member/transfer/submit.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
                     function (data) {
-
                         if (data.type == "success") {
-                            modal.alert({
-                                message: '提交成功，请注意到账情况',
-                                okTitle: '知道了'
-                            })
                             event.sendGlobalEvent('onUserInfoChange',data);
+//                            modal.alert({
+//                                message: '提交成功，请注意到账情况',
+//                                okTitle: '知道了'
+//                            }, function (value) {
+//                            })
+                            event.toast('提交成功，请注意到账情况');
                             event.closeURL(data);
                         } else {
                             event.toast(data.content);
@@ -313,7 +315,7 @@
                 }
             },
             goback: function () {
-                event.closeURL()
+                event.closeURL();
             },
             load:function () {
                 var _this = this;
