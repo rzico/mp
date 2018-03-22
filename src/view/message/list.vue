@@ -21,35 +21,34 @@
             <cell v-for="(item,index) in messageList" >
                 <!--左滑删除时如果是直接在cell下 而没有多一个div包住的话 第一次要点删除的文字才能触发。-->
                 <!--<div>-->
-                    <div class="deleteBox bkg-delete" @click="deleteMessage(item.userId,index)">
-                        <text class="deleteText">删除</text>
+                <div class="deleteBox bkg-delete" @click="deleteMessage(item.userId,index)">
+                    <text class="deleteText">删除</text>
+                </div>
+                <div class="friendsLine" @click="jumpMessage(item)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">
+                    <!--头像-->
+                    <div class="friendsImageBox">
+                        <image :src="item.logo" class="friendsImage"></image>
                     </div>
-                    <div class="friendsLine " @click="jumpMessage(item)" @swipe="onpanmove($event)" @touchstart="ontouchstart($event)">
-                        <!--头像-->
-                        <div class="friendsImageBox">
-                            <image :src="item.logo" class="friendsImage"></image>
-                        </div>
-                        <!--有新消息-->
-                        <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
-                            <text class="messageTotal">{{item.unRead | watchUnRead}}</text>
-                        </div>
-                        <div style="flex: 5;">
-                            <div style="flex-direction: row;flex: 1;" >
-                                <!--名字与内容-->
-                                <div class="messageText">
-                                    <text class="friendName">{{item | watchName}}</text>
-                                </div>
-                                <!--消息时间-->
-                                <div class="messageTimeBox">
-                                    <text class="messageTime">{{item.createDate | timefmt}}</text>
-                                </div>
+                    <!--有新消息-->
+                    <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
+                        <text class="messageTotal">{{item.unRead | watchUnRead}}</text>
+                    </div>
+                    <div style="flex: 5;">
+                        <div style="flex-direction: row;flex: 1;" >
+                            <!--名字与内容-->
+                            <div class="messageText">
+                                <text class="friendName">{{item | watchName}}</text>
                             </div>
-                            <div style="flex: 2;height: 45px;justify-content: center;">
-                                <text class="friendMessage">{{item.content}}</text>
+                            <!--消息时间-->
+                            <div class="messageTimeBox">
+                                <text class="messageTime">{{item.createDate | timefmt}}</text>
                             </div>
                         </div>
+                        <div style="flex: 2;height: 50px;justify-content: center;">
+                            <text class="friendMessage">{{item.content}}</text>
+                        </div>
                     </div>
-                    <div class="friendsBorder"></div>
+                </div>
                 <!--</div>-->
             </cell>
         </list>
@@ -105,7 +104,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 0px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
+        position: absolute;right: 0px;top: 0px;height: 130px;align-items: center;width: 130px;justify-content: center;
     }
     /*.nav {*/
     /*flex:1;*/
@@ -142,7 +141,7 @@
         align-items: center;
     }
     .messageTimeBox{
-        height: 45px;
+        height: 50px;
         justify-content: center;
         flex: 2;
         align-items: flex-end;
@@ -156,14 +155,14 @@
     .friendName{
         lines:1;
         text-overflow: ellipsis;
-        font-size: 32px;
+        font-size: 34px;
     }
     .messageText{
         /*padding-top: 8px;*/
         /*padding-bottom: 8px;*/
         flex:4;
         /*height: 100px;*/
-        height: 45px;
+        height: 50px;
         justify-content: center;
         /*margin-left: 20px;*/
     }
@@ -171,15 +170,15 @@
         lines:1;
         text-overflow:ellipsis;
         color: #999;
-        font-size: 26px;
+        font-size: 28px;
         padding-right: 20px;
     }
     .friendsImageBox{
         flex: 1;
     }
     .friendsImage{
-        height: 90px;
-        width:90px;
+        height: 100px;
+        width:100px;
     }
     .friendsLine{
         padding-left: 30px;
@@ -189,8 +188,6 @@
         width:750px;
         background-color: #fff;
         flex-direction: row;
-    }
-    .friendsBorder{
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.2);
@@ -368,15 +365,9 @@
                             if(!utils.isNull(data.data.value)){
 //                        判断是否无法获取到头像跟昵称
                                 let JSONData = JSON.parse(data.data.value);
-//                                现在安卓后台数据logo nickName有误，不管有没有获取到logo、nickName 都使用本地头像;
-//                              安卓软件重启后 推送未读消息时logo和nickName推送不对
+
                                 if(utils.isNull(_weex.data.logo)){
                                     _weex.data.logo = JSONData.logo;
-//                                    2.1号 21：16 所改
-//                                    if(_weex.data.logo.indexOf(_weex.data.userId) == -1){
-//                                        let indexNum = parseInt(_weex.data.logo.indexOf('/gm_1')) + 1;
-//                                        _weex.data.logo = _weex.data.logo.substring(0,indexNum) + _weex.data.userId;
-//                                    }
                                 }
                                 if(utils.isNull(_weex.data.nickName)){
                                     _weex.data.nickName = JSONData.nickName;
