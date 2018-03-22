@@ -108,7 +108,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 60px;top: 0px;height: 100px;align-items: center;width: 130px;justify-content: center;
+        position: absolute;right: 60px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
     }
     .messageTotal{
         background-color: red;
@@ -190,8 +190,8 @@
     .friendTotalBox{
         width:750px;
         align-items: center;
-        padding-top: 30px;
-        padding-bottom: 30px;
+        padding-top: 40px;
+        padding-bottom: 40px;
         background-color: #F2F3F8;
     }
     .friendTotalText{
@@ -217,8 +217,8 @@
         align-items: center;
     }
     .friendsName{
-        height:84px;
-        margin-top: 8px;
+        height:90px;
+        margin-top: 15px;
         justify-content: space-between;
     }
     .letterBox{
@@ -239,11 +239,11 @@
     }
     .realName{
         color: #888;
-        font-size: 28px;
+        font-size: 30px;
         margin-left: 20px;
     }
     .friendsImage{
-        margin-top: 10px ;
+        margin-top: 20px ;
         height: 80px;
         width:80px;
     }
@@ -254,7 +254,7 @@
     }
     .friendsLine{
         padding-left: 30px;
-        height:100px;
+        height:120px;
         width:690px;
         /*width:750px;*/
         background-color: #fff;
@@ -266,8 +266,8 @@
     .topLine{
         flex-direction: row;
         width:660px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: 20px;
+        padding-bottom: 20px;
         padding-left: 30px;
         align-items: center;
         background-color: #fff;
@@ -278,7 +278,7 @@
         font-size: 80px;
     }
     .lineTitle{
-        font-size: 32px;
+        font-size: 34px;
         margin-left: 20px;
     }
 </style>
