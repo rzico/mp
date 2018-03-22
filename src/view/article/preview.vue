@@ -130,9 +130,6 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
-    .bottomBtnBox:active {
-        background-color: #eee;
-    }
     .articleOutBox{
         position:absolute;bottom: 0;width: 750px;  top: 136px;
     }
