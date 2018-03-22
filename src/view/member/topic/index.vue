@@ -21,13 +21,13 @@
             <div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">
                 <text class="vip">开通店铺，体验众卖新营销模式</text>
             </div>
-            <div class="cell-row cell-line">
+            <div class="cell-row cell-line" @click="goTemplate()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
                         <text class="title ml10">专栏模板</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <text class="sub_title">标准模版</text>
+                        <text class="sub_title">{{templateName}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -205,7 +205,9 @@
               isOwner:false,
               showShare:false,
               copyPublic:'',
-              copyApplet:''
+              copyApplet:'',
+              templateId:'',
+              templateName:'默认'
           }
         },
         components: {
@@ -230,6 +232,27 @@
                 let _this = this;
                 if(_this.isOwner == true)
                     return true
+            },
+//            修改模版
+            goTemplate:function () {
+                let _this = this;
+                event.openURL(utils.locate('widget/list.js?listId=' + this.templateId + '&type=template'),function (data) {
+                    if(data.type == 'success' && !utils.isNull(data.data) ) {
+                        _this.templateId = data.data.listId;
+                        _this.templateName = data.data.listName;
+                        POST('weex/member/topic/update.jhtml?templateId=' + _this.templateId ).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+                                    event.toast(mes.content);
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast(err.content);
+                            }
+                        )
+                    }
+                })
             },
 //            修改头像
             changeLogo: function () {

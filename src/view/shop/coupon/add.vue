@@ -6,36 +6,43 @@
             <div class="titleOne">
                 <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
             </div>
-            <div class="name">
-                <text class="nameText flex1" style="font-size: 32px">优惠券类型</text>
-                <text class="nameText flex3" style="font-size: 32px;padding-left: 60px;color: #999999" @click="typesetting">{{codeName | strainer}}</text>
+            <div class="name" @click="typesetting">
+                <text class="nameText" style="font-size: 32px">优惠类型</text>
+                <text class="nameText" style="font-size: 32px;color: #999999;margin-left: 30px" >{{codeName | strainer}}</text>
             </div>
-            <div class="scope">
-                <text class="scopeText flex1" style="font-size: 32px">适用范围</text>
-                <text class="scopeText flex3" style="font-size: 32px;padding-left: 60px;color: #999999" @click="scopesetting">{{scene | judgment}}</text>
+            <div class="scope" @click="scopesetting">
+                <text class="scopeText" style="font-size: 32px">适用范围</text>
+                <text class="scopeText" style="font-size: 32px;color: #999999;margin-left: 30px" >{{scene | judgment}}</text>
             </div>
             <div class="scope">
                 <text class="scopeText" style="font-size: 32px">剩余张数</text>
                 <input type="number" placeholder="" class="inputMoney" v-model="number" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">张</text>
             </div>
-            <div class="money">
+            <div class="money" v-if="codeName =='fullcut' || codeName =='discount'">
                 <text class="moneyText" style="font-size: 32px">{{frontTransfrom}}</text>
                 <input type="number" placeholder="" class="inputMoney" v-model="money" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">{{transform}}</text>
+            </div>
+            <div class="goods" v-if="codeName == 'exchange'" @click="goGoods()">
+                <div style="flex-direction: row;align-items: center">
+                <text class="moneyText" style="font-size: 32px">兑换商品</text>
+                <text class="goodsName">{{goodsName}}</text>
+                </div>
+                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
             <div class="inputPrompt">
                 <text class="inputPromptText" style="font-size: 28px;color:#888">{{bottomTransform}}</text>
             </div>
             <div class="conditions">
                 <text class="conditionsText" style="font-size: 32px">使用条件</text>
-                <text class="man" style="padding-left: 100px;font-size: 32px">满</text>
+                <text class="man" style="padding-left: 30px;font-size: 32px">满</text>
                 <input type="number" placeholder="0为无门槛" class="inputconditions" v-model="conditions" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">元使用</text>
             </div>
             <div class="time" >
                 <text class="textTime" style="font-size: 32px">使用时间</text>
-                <div  style="padding-left: 100px"@click="date" >
+                <div  style="padding-left: 30px"@click="date" >
                     <text class="begindate" >{{beginDate}}</text>
                 </div>
                 <text class="textTime" style="font-size: 32px">一</text>
@@ -45,10 +52,10 @@
             </div>
             <div class="introduced">
                 <text class="introducedText" style="font-size: 32px">规则介绍</text>
-                <textarea rows="2" maxlength="80" placeholder="请输入使用规则(不超过80个汉字)" class="input" v-model="rule" @change="" @input=""/>
+                <input type="text" placeholder="请输入使用规则(不超过80个汉字)" class="input" v-model="rule" />
             </div>
         </div>
-        <div style="height: 600px"></div>
+        <div style="height: 700px"></div>
         </scroller>
         <div class="button bw bottom" @click="complete">
             <text class="bottonText">完成</text>
@@ -57,6 +64,25 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .goods{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom-width: 1px;
+        border-bottom-color: #cccccc;
+        background-color: white;
+        height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .goodsName{
+        font-size: 28px;
+        color: #888;
+        width: 300px;
+        lines:1;
+        text-overflow: ellipsis;
+        margin-left: 30px;
+    }
     .bottom{
         position: absolute;
         bottom: 40px;
@@ -95,9 +121,9 @@
         padding-left: 20px;
     }
     .input{
-        padding-left: 90px;
+        padding-left: 30px;
         font-size: 28px;
-        height: 80px;
+        height: 60px;
         width: 550px;
     }
     .inputconditions{
@@ -111,7 +137,7 @@
         font-size: 28px;
         color: red;
         height: 50px;
-        margin-left: 100px;
+        margin-left: 30px;
         width: 200px;
     }
     .scope{
@@ -197,7 +223,9 @@
                 frontTransfrom:'优惠面额',
                 bottomTransform:'请输入优惠金额',
                 begin:0,
-                beginTwo:0
+                beginTwo:0,
+                goodsId:'',
+                goodsName:''
             }
         },
         components: {
@@ -224,7 +252,7 @@
                 }if(data == 'discount'){
                     return '满折'
                 } else {
-                    return '满减'
+                    return '兑换'
                 }
             },
             judgment:function (data) {
@@ -250,9 +278,13 @@
                             _this.begin =2
                         };
                         if(mes.data.type =='fullcut'){
-                            _this.beginTwo =0
-                        }else {
-                            _this.beginTwo =1
+                            _this.beginTwo =0;
+                        }else if(mes.data.type =='discount'){
+                            _this.beginTwo =1;
+                            _this.bottomTransform = '请输入优惠折扣(输入0-10之间自然数)'
+                        }else{
+                            _this.beginTwo =2;
+                            _this.bottomTransform = '请选择兑换商品';
                         };
                         _this.number = mes.data.stock;
                         _this.money = mes.data.amount;
@@ -261,7 +293,9 @@
                         _this.beginDate = utils.ymdtimefmt(mes.data.beginDate);
                         _this.codeName = mes.data.type;
                         _this.scene = mes.data.scope;
-                        _this.conditions =mes.data.minimumPrice
+                        _this.conditions =mes.data.minimumPrice,
+                            _this.goodsId = mes.data.goodsId,
+                            _this.goodsName = mes.data.name
 
                     } else {
                         event.toast(res.content);
@@ -303,23 +337,26 @@
                 var _this = this;
                 picker.pick({
                     index:_this.beginTwo,
-                    items:['满减','满折']
+                    items:['满减','满折','兑换']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.type = '满减';
                             _this.codeName = 'fullcut';
                             _this.transform ='元';
                             _this.frontTransfrom = '优惠面额';
                             _this.bottomTransform = '请输入优惠金额'
                             _this.beginTwo =e.data
                         }else if(e.data == 1){
-                            _this.type = '满折';
                             _this.codeName = 'discount';
                             _this.transform = '折';
                             _this.frontTransfrom = '优惠折扣';
                             _this.bottomTransform = '请输入优惠折扣(输入0-10之间自然数)'
                             _this.beginTwo =e.data
+                        }else if(e.data == 2){
+                            _this.codeName = 'exchange';
+                            _this.bottomTransform = '请选择兑换商品';
+                            _this.beginTwo =e.data
+
                         }
                     }
                 })
@@ -345,7 +382,24 @@
                     }
                 })
             },
-
+            goGoods:function () {
+                let _this = this
+                event.openURL(utils.locate("view/shop/coupon/goodsList.js"),function (data) {
+                    if(!utils.isNull(data.data)&& data.type == 'success') {
+                        _this.goodsId = data.data;
+                        event.toast('选择成功')
+                        GET('weex/member/product/view.jhtml?id=' + _this.goodsId, function (mes) {
+                            if (mes.type == 'success') {
+                                _this.goodsName = mes.data.name
+                            } else {
+                                event.toast(res.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                    }
+                })
+            },
             complete:function () {
                 let _this = this;
                 if(_this.beginDate=='点击设置'){
@@ -356,9 +410,17 @@
                     event.toast('结束时间未设置')
                     return
                 }
+                if( _this.codeName =='fullcut' || _this.codeName =='discount'){
                 if(_this.money==''){
                     event.toast('优惠面额未设置')
                     return
+                }}
+                if(_this.codeName =='exchange'){
+                    _this.money=0;
+                    if(_this.goodsName==''){
+                        event.toast('兑换商品未设置')
+                        return
+                    }
                 }
                 if(_this.conditions==''){
                     event.toast('使用条件未设置')
@@ -373,15 +435,16 @@
                     return
                 }
                 POST('weex/member/coupon/submit.jhtml?type='+_this.codeName+'&scope='+_this.scene+'&beginDate='+_this.beginDate
-                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id+'&stock='+_this.number).then(
+                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id+'&stock='+_this.number +'&goodsId='
+                +this.goodsId).then(
                     function (mes) {
                         if (mes.type == "success") {
                             event.closeURL(mes)
                         } else {
-                            event.toast(mes.content);
+//                            event.toast(mes.content);
                         }
                     }, function (err) {
-                        event.toast(err.content);
+//                        event.toast(err.content);
                     }
                 )
             }
