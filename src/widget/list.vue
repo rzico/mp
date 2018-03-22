@@ -50,8 +50,10 @@
             else if(urlType == 'category'){
                 this.title = '职业选择';
             }
+            else if(urlType == 'template'){
+                this.title = '模版选择';
+            }
             GET(urlType + '/list.jhtml',function (data) {
-//                event.toast(data);
                 if(data.type == 'success' && data.data != ''){
                     _this.dataList = data.data;
                     data.data.forEach(function (item) {
