@@ -321,6 +321,8 @@
                         _this.noJob = data.data.noJob;
                         _this.isOwner =data.data.isOwner;
                         _this.topic = data.data;
+                        _this.templateId = data.data.templateId;
+                        _this.templateName = data.data.templateName
                     } else {
                         event.toast(err.content)
                     }
