@@ -741,6 +741,7 @@
                     return;
                 }
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
+
                     if(data.type == 'success' && data.data != ''){
                         var option = {
                             title:data.data.title,
@@ -752,6 +753,16 @@
                         _this.showShare = false;
                         event.share(option,function (data) {
                             if(data.type == 'success'){
+//                                如果是作者本人就不推送分享。
+                                if(_this.isSelf == 1){
+                                    if(shareType == 'copyHref'){
+                                        event.toast('文章链接已复制到剪贴板');
+                                    }else if(shareType == 'browser'){
+                                    }else{
+                                        event.toast('分享成功');
+                                    }
+                                    return;
+                                }
                                 POST('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType).then(
                                     function (data) {
                                         if(data.type == 'success'){

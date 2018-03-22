@@ -3,7 +3,7 @@
             <navbar :title="title" :complete="complete" @goback="goback" > </navbar>
     <div class="big">
         <div class="bankWechat">
-        <div class="bank" @click="bankmessage()">
+        <div class="bank bd-primary" @click="bankmessage()">
                 <text class="bankIconFont primary" :style="{fontFamily:'iconfont'}" >&#xe64f;</text>
             <div class="bankInformation">
                 <text class="bankName">{{wdata.bankName}}</text>
@@ -52,7 +52,7 @@
         border-top-width:1px;
         border-top-color:#CCC;
         border-bottom-width: 2px;
-        border-bottom-color:#D9141E ;
+        /*border-bottom-color:#D9141E ;*/
         /*border-right-style: dashed;*/
         border-right-width: 1px;
         border-right-color:#CCC;
@@ -277,6 +277,7 @@
                 this.clicked = true;
                 POST('weex/member/transfer/submit.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
                     function (data) {
+
                         if (data.type == "success") {
                             modal.alert({
                                 message: '提交成功，请注意到账情况',

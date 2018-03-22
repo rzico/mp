@@ -93,6 +93,7 @@
                         <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
                     </div>
                 </div>
+                <div class="boder-bottom" style="width: 750px"></div>
                 <!--文章模块-->
                 <div :style="{minHeight:screenHeight + 'px'}" >
                     <!--绑定动画-->
@@ -329,12 +330,14 @@
         flex-direction: row;
         /*background-color:#F8F9FC;*/
         height:80px;
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
         background-color: #fff;
 
     }
+    /*.corpusBoxBorder{*/
+        /*border-bottom-width: 1px;*/
+        /*border-style: solid;*/
+        /*border-color: gainsboro;*/
+    /*}*/
     .redColor{
         color: #D9141E;
     }

@@ -100,6 +100,7 @@
                         </div>
                     </scroller>
                 </div>
+                <div class="boder-bottom" style="width: 750px"></div>
                 <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                 <!--文章模块-->
                 <!--<div :style="{minHeight:screenHeight + 'px'}" v-else style="padding-bottom: 100px">-->
@@ -370,9 +371,9 @@
         flex-direction: row;
         /*background-color:#F8F9FC;*/
         height:80px;
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
+        /*border-bottom-width: 1px;*/
+        /*border-style: solid;*/
+        /*border-color: gainsboro;*/
         background-color: #fff;
 
     }
