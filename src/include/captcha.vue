@@ -108,6 +108,7 @@
             captcha: {default:""},
             status:{default:"点击重新发送"},
             retry:{default:false},
+            tel:{default:''}
         },
         beforeDestory() {
             var _this = this;
@@ -119,7 +120,9 @@
         },
         created(){
             this.beginTimer();
-            this.tel = utils.getUrlParameter("telNum");
+            if(!utils.isNull(utils.getUrlParameter("telNum"))){
+                this.tel = utils.getUrlParameter("telNum");
+            }
         },
         methods:{
             beginTimer:function () {

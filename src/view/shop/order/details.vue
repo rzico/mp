@@ -169,7 +169,11 @@
                         <text class="title footText " @click="returnGoods(item.sn)">确认退货</text>
                     </div>
                 </div>
-
+                <div class="flex-row flex-center goodsFoot boder-top" v-else>
+                    <div>
+                        <text class="title  " @click="returnGoods(item.sn)">该订单已关闭</text>
+                    </div>
+                </div>
             </div>
         </scroller>
 

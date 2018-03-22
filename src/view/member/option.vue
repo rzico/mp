@@ -38,19 +38,20 @@
                     </div>
                 </div>
             </div>
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">免费开通专栏</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <switch class="switch" :checked="hasTopic" @change="create()"></switch>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-panel">
-                <text class="sub_title">你有了自已的微信、小程序专栏</text>
-            </div>
+            <!--上架注释的-->
+            <!--<div class="cell-row cell-line">-->
+                <!--<div class="cell-panel space-between cell-clear">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">免费开通专栏</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<switch class="switch" :checked="hasTopic" @change="create()"></switch>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sub-panel">-->
+                <!--<text class="sub_title">你有了自已的微信、小程序专栏</text>-->
+            <!--</div>-->
 
             <div class="cell-row cell-line" @click="sendQrcode()">
                 <div class="cell-panel space-between cell-clear">

@@ -565,34 +565,50 @@
                     event.toast(err.content);
                 })
             },
-//            发布商品
+//            发布商品weex/member/product/article.jhtml?id=goodsId
             doPublish(){
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
+//                utils.debug('weex/member/product/article.jhtml?id=' + this.goodsId);
+//                判断是否已发布过的商品，是就跳转编辑旧文章，不是就编辑新的文章
+//                GET('weex/member/product/article.jhtml?id=' + this.goodsId,function (data) {
+//                    if(data.type == 'success'){
+//                        if(data.data == 0){
 //                        如果没有历史记录就新添加一个缓存
-                var goodsPublish =  this.goodsList[this.goodsIndex];
-                goodsPublish = JSON.stringify(goodsPublish);
-                storage.setItem('goodsPublish', goodsPublish , e => {
-                    if(e.result == 'success'){
-                        event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish'), function (data) {
-                            _this.doReset();
-                            _this.clicked = false;
-                            if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                                let E = {
-                                    isDone : 'complete'
+                            var goodsPublish =  this.goodsList[this.goodsIndex];
+                            goodsPublish = JSON.stringify(goodsPublish);
+                            storage.setItem('goodsPublish', goodsPublish , e => {
+                                if(e.result == 'success'){
+                                    event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish'), function (data) {
+                                        _this.doReset();
+                                        _this.clicked = false;
+                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                                            let E = {
+                                                isDone : 'complete'
+                                            }
+                                            let backData = utils.message('success','成功',E);
+                                            event.closeURL(backData);
+                                        }
+                                    });
+                                }else{
+                                    _this.clicked = false;
+                                    event.toast('网络不稳定');
                                 }
-                                let backData = utils.message('success','成功',E);
-                                event.closeURL(backData);
-                            }
-                        });
-                    }else{
-                        _this.clicked = false;
-                        event.toast('网络不稳定');
-                    }
-                });
+                            });
+//                        }else{
+//                            event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + data.data),function (data) {})
+//                        }
+//                    }else{
+//                        event.toast(data.content);
+//                    }
+//                },function (err) {
+//                    event.toast(err.content);
+//                })
+
+
             },
 //            编辑商品
             doEdit(){

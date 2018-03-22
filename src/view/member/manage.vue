@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
         <scroller class="scroller">
-            <div class="cell-row cell-line">
+            <div class="cell-row ">
                 <div class="cell-logo" @click="attribute()">
                     <div class="flex-start">
                         <image class="logo" resize="cover"
@@ -18,7 +18,9 @@
                     </div>
                 </div>
             </div>
-            <div class="cell-row cell-line">
+            <!--芸店-->
+            <!--cell-line-->
+            <div class="cell-row ">
                 <div class="cell-panel space-between" :class="[member.hasTopic?'':'cell-clear']" @click="option()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
@@ -28,10 +30,21 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">
+                <!--上架注释的-->
+                <!--<div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>-->
+                        <!--<text class="title ml10">我的专栏</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{member.topic}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="activate()">
                     <div class="flex-row">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
-                        <text class="title ml10">我的专栏</text>
+                        <text class="title ml10">开通专栏</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title">{{member.topic}}</text>
@@ -39,22 +52,36 @@
                     </div>
                 </div>
             </div>
+            <!--魔篇-->
+            <!--<div class="cell-row">-->
+                <!--<div class="cell-panel space-between cell-clear" @click="option()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>-->
+                        <!--<text class="title ml10">通用设置</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
-            <div class="cell-row cell-line"  v-if="hastopic()">
-                <div class="cell-panel space-between cell-clear" @click="store">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
-                        <text class="title ml10">店铺管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-            </div>
+            <!--上架注释的-->
+            <!--<div class="cell-row cell-line"  v-if="hastopic()">-->
+                <!--<div class="cell-panel space-between cell-clear" @click="store">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>-->
+                        <!--<text class="title ml10">店铺管理</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title"></text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
 
-            <div class="cell-row cell-line">
+            <div class="cell-row ">
+                <!--上架注释的-->
                 <div class="cell-panel space-between " @click="orderManage()" v-if="hasuseCashier()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
@@ -97,7 +124,7 @@
                     <!--</div>-->
                 <!--</div>-->
             </div>
-            <div class="cell-row cell-line">
+            <div class="cell-row ">
                 <div class="cell-panel space-between" @click="beginShare()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>
@@ -107,7 +134,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="gmchat()">
+                <div class="cell-panel space-between cell-clear\" @click="gmchat()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
                         <text class="title ml10">联系客服</text>
@@ -116,9 +143,29 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <!--<div class="cell-panel space-between " >-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>-->
+                        <!--<text class="title ml10">检查更新</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="cell-panel space-between cell-clear" @click="subQuestion()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
+                        <text class="title ml10">问题反馈</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
             </div>
 
         </scroller>
+
+        <payment ref="payment" @notify="notify"></payment>
         <div v-if="showShare"  key="share">
             <div class="mask" @touchstart="maskTouch"></div>
             <share @doShare="doShare" @doCancel="doCancel"></share>
@@ -165,13 +212,14 @@
 <script>
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
+    import payment from '../../include/payment.vue'
     const event = weex.requireModule('event');
     const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue';
     import share from '../../include/share.vue'
     export default {
         components: {
-            navbar,share
+            navbar,share,payment
         },
         data() {
             return {
@@ -266,7 +314,6 @@
                     autograph :this.member.autograph
                 }
                 let backData = utils.message('success','成功',E);
-//                utils.debug(E)
                 event.closeURL(backData);
             },
             attribute:function (e) {
@@ -275,6 +322,13 @@
                 }
                 this.clicked = true;
                 let _this = this;
+
+//                storage.setItem('catagoryList',data.data);
+//                storage.getItem(autotext, e => {
+//                    let textData = JSON.parse(e.data);
+//                    _this.autograph = textData.autograph;
+//                    storage.removeItem(autotext);
+//                })
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
                         _this.clicked = false;
@@ -322,6 +376,28 @@
                         return ;
                     }
                 );
+
+            },
+            activate:function (e) {
+                var _this = this;
+                POST('weex/member/topic/activate.jhtml').then(
+                    function (mes) {
+                        _this.clicked = false;
+                        if (mes.type == "success") {
+                            if (utils.isNull(mes.data)) {
+                                _this.load();
+                            } else {
+                                _this.$refs.payment.show(mes.data);
+                            }
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        _this.clicked = false;
+                        event.toast(err.content);
+                    }
+                )
+
             },
 //            评论管理
             goReviewManage:function (e) {
@@ -418,6 +494,20 @@
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
                     _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+//            前往问题反馈
+            subQuestion:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/member/questionSubmit.js'),
+                    function (data) {
+                        _this.clicked = false;
                         return ;
                     }
                 );

@@ -68,9 +68,12 @@
         },
         methods: {
             goback: function (e) {
-                let E = {
-                    listId : this.listId,
-                    listName : this.listName
+                var E = '';
+                if(!utils.isNull(this.listId)){
+                     E = {
+                        listId : this.listId,
+                        listName : this.listName
+                    }
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
