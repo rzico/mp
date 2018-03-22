@@ -110,20 +110,20 @@
                 </div>
             </div>
 
-            <!--<div class="sub-panel ml20 mt10">-->
-                <!--<text class="sub_title">设置你的专属销售策略</text>-->
-            <!--</div>-->
-            <!--<div class="cell-row cell-line mt10" @click="goChooseDistri()">-->
-                <!--<div class="cell-panel space-between cell-clear">-->
-                    <!--<div class="flex-row">-->
-                        <!--<text class="title">销售策略</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title">{{distributionName}}</text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="sub-panel ml20 mt10">
+                <text class="sub_title">设置你的专属销售策略</text>
+            </div>
+            <div class="cell-row cell-line mt10" @click="goChooseDistri()">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title">销售策略</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{distributionName}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
 
             <div style="height: 400px"></div>
         </scroller>
@@ -677,26 +677,26 @@
                 });
             },
 //            选择营销策略
-//            goChooseDistri(){
-//                let _this = this;
-//                if (!utils.isRoles("A",_this.roles)) {
-//                    modal.alert({
-//                        message: '请点亮专栏',
-//                        okTitle: 'OK'
-//                    })
-//                    return
-//                }
-//                event.openURL(utils.locate('view/shop/goods/chooseDistribution.js?catagoryId=' + this.distributionId), function (data) {
-//                    if(data.type == 'success' && data.data != ''){
-//                        _this.distributionId = parseInt(data.data.catagoryId);
-//                        _this.distributionName = data.data.catagoryName;
-//                        //                        临时缓存起来商品数据
-//                        if(utils.isNull(_this.goodsId)){
-//                            _this.saveDraft();
-//                        }
-//                    }
-//                });
-//            },
+            goChooseDistri(){
+                let _this = this;
+                if (!utils.isRoles("A",_this.roles)) {
+                    modal.alert({
+                        message: '请点亮专栏',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                event.openURL(utils.locate('view/shop/goods/chooseDistribution.js?catagoryId=' + this.distributionId), function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        _this.distributionId = parseInt(data.data.catagoryId);
+                        _this.distributionName = data.data.catagoryName;
+                        //                        临时缓存起来商品数据
+                        if(utils.isNull(_this.goodsId)){
+                            _this.saveDraft();
+                        }
+                    }
+                });
+            },
 
 //            判断是否最后一个段落来添加向下移动的箭头。
             lastPara: function (index) {
