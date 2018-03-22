@@ -26,10 +26,6 @@
                     <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                     <text class="fz26fff ">评论 {{reviewNum}}</text>
                 </div>
-                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goReward()">
-                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="fz26fff ">赞赏</text>
-                </div>
             </div>
             <!--模版-->
             <div  v-if="!templateChoose && isSelf == 1" >
@@ -129,7 +125,6 @@
                 <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
 
-            <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
     </div>
 </template>
@@ -307,7 +302,6 @@
     import navbar from './header.vue'
     import share from '../../include/share.vue'
     import utils from '../../assets/utils';
-    import reward from '../../widget/rewardDialog.vue'
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch'
@@ -340,11 +334,10 @@
                 authorInfo:[],
                 scrollHeight:0,
                 bottomNum:0,
-                rewardShow:false,
             }
         },
         components: {
-            navbar,share,reward
+            navbar,share
         },
         props: {
             title: { default: ""},
@@ -872,82 +865,6 @@
                         event.toast(err.content);
                     }
                 )
-            },
-//            赞赏
-            goReward(){
-                this.rewardShow = true;
-            },
-            sendReward(m,id){
-                let _this = this;
-                POST("website/member/reward/submit.jhtml?amount="+m+"&articleId="+_this.articleId).then(
-                    function (data) {
-                        if (data.type=="success") {
-                            if (id == 0) {
-                                _this.payment(data.data,"weixinAppPlugin");
-                            }else if (id == 1) {
-                                _this.payment(data.data,"alipayH5Plugin");
-                            }
-                        } else {
-                            event.toast(data.content);
-                        }
-                    },
-                    function (err) {
-                        event.toast(err.content);
-                    }
-                )
-            },
-
-            payment (sn,plugId) {
-                var _this = this;
-                POST("payment/submit.jhtml?sn="+ sn +"&paymentPluginId="+plugId).then(
-                    function (data) {
-                        if (data.type=="success") {
-                            event.wxAppPay(data.data,function (e) {
-                                if (e.type=='success') {
-                                    POST("payment/query.jhtml?sn="+ sn).then(
-                                        function (mes) {
-                                            if (mes.type=="success") {
-                                                if (mes.data=="0000") {
-                                                    _this.close(utils.message("success","success"));
-                                                } else
-                                                if (mes.data=="0001") {
-                                                    _this.close(utils.message("error","error"));
-                                                }
-                                                else {
-                                                    _this.close(utils.message("error","error"));
-                                                }
-                                            } else {
-                                                _this.close(utils.message("error","error"));
-                                            }
-                                        },
-                                        function (err) {
-                                            _this.close(utils.message("error","error"));
-                                        }
-                                    )
-                                } else {
-                                    _this.close(utils.message("error","error"));
-                                }
-                            })
-                        } else {
-                            event.toast(data.content);
-                            _this.close("error");
-                        }
-                    },
-                    function (err) {
-                        event.toast("网络不稳定");
-                    }
-                )
-            },
-            close (e) {
-                this.rewardShow = false;
-                if(utils.isNull(e)){
-                    return;
-                }
-                if(e.type == 'success'){
-                    event.toast('赞赏成功');
-                }else{
-                    event.toast('网络不稳定');
-                }
             },
 //            复制文章\
 //            copyArticle(){
