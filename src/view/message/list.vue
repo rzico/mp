@@ -260,7 +260,7 @@
                         return '赞赏提醒';
                         break;
                     case 'gm_10208':
-                        return  '分享提醒';
+                        return  '文章提醒';
                         break;
                     case 'gm_10209':
                         return  '添加好友';

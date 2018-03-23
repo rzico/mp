@@ -153,7 +153,6 @@
                 <div class="lineBoxBorder"></div>
             </cell>
             <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
-
                 <!--收藏--> <!--分享提醒--><!--赞赏-->
                 <div class="lineBox pt20 pb20">
                     <div style="flex-direction: row">
@@ -164,7 +163,7 @@
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail"></image>
+                    <image class="coverImg" resize="cover" :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>
@@ -385,7 +384,7 @@
                     this.bgWhite = true;
                     break;
                 case 'gm_10208':
-                    this.title =  '分享提醒';
+                    this.title =  '文章提醒';
                     this.bgWhite = true;
                     break;
                 case 'gm_10209':

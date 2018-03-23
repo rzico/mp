@@ -403,7 +403,7 @@
                     name:'文章'
                 },{
                     id:'2',
-                    name:'商家'
+                    name:'用户'
                 }],
                 whichCorpus:0,
                 screenHeight:0,
