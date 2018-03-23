@@ -14,17 +14,17 @@
             </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
-                <div class="bottomBtnBox" @click="goLaud()">
+                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goLaud()">
                     <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="fz26fff"  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
+                    <text class="fz26fff "  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
                 </div>
-                <div class="bottomBtnBox"  @click="goShare(0)">
+                <div class="bottomBtnBox"  :style="{height:bottomNum + 100}" @click="goShare(0)">
                     <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                    <text class="fz26fff">分享 {{shareNum}}</text>
+                    <text class="fz26fff ">分享 {{shareNum}}</text>
                 </div>
-                <div class="bottomBtnBox" @click="goReview()">
+                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goReview()">
                     <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                    <text class="fz26fff">评论 {{reviewNum}}</text>
+                    <text class="fz26fff ">评论 {{reviewNum}}</text>
                 </div>
             </div>
             <!--模版-->
@@ -124,6 +124,7 @@
                 <div class="maskLayer" @touchstart="maskTouch"></div>
                 <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
+
         </div>
     </div>
 </template>
@@ -340,8 +341,7 @@
             complete:{ default : ''},
         },
         created(){
-//            let a = event.deviceInfo();
-//            utils.debug(a);bottomHeight
+
             var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
@@ -731,6 +731,7 @@
                     return;
                 }
                 GET('share/article.jhtml?articleId=' + this.articleId + '&shareType=' +  shareType ,function (data) {
+
                     if(data.type == 'success' && data.data != ''){
                         var option = {
                             title:data.data.title,
@@ -742,6 +743,16 @@
                         _this.showShare = false;
                         event.share(option,function (data) {
                             if(data.type == 'success'){
+//                                如果是作者本人就不推送分享。
+                                if(_this.isSelf == 1){
+                                    if(shareType == 'copyHref'){
+                                        event.toast('文章链接已复制到剪贴板');
+                                    }else if(shareType == 'browser'){
+                                    }else{
+                                        event.toast('分享成功');
+                                    }
+                                    return;
+                                }
                                 POST('weex/member/share/add.jhtml?articleId='+ _this.articleId + '&shareType=' + shareType).then(
                                     function (data) {
                                         if(data.type == 'success'){
@@ -852,7 +863,6 @@
                     }
                 )
             },
-
 //            复制文章\
 //            copyArticle(){
 //                POST('weex/member/article/grabarticle.jhtml').then(
@@ -865,5 +875,6 @@
 //
 //            }
         }
+
     }
 </script>

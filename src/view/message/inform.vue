@@ -106,6 +106,7 @@
                     </div>
                     <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
+                <div class="lineBoxBorder"></div>
             </cell>
             <cell v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--评论-->
@@ -120,6 +121,7 @@
                     </div>
                     <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail" ></image>
                 </div>
+                <div class="lineBoxBorder"></div>
             </cell>
             <cell v-if="messageType == 'gm_10204'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--点赞-->
@@ -134,6 +136,7 @@
                     </div>
                     <image class="coverImg"  :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
+                <div class="lineBoxBorder"></div>
             </cell>
             <cell  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--关注-->
@@ -147,6 +150,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="lineBoxBorder"></div>
             </cell>
             <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
 
@@ -160,8 +164,9 @@
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail"></image>
+                    <image class="coverImg" resize="cover" :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
+                <div class="lineBoxBorder"></div>
             </cell>
         </list>
     </div>
@@ -222,9 +227,14 @@
         width: 725px;
         margin-left: 25px;
         background-color: #fff;
+    }
+    .lineBoxBorder{
+
         border-color: gainsboro;
         border-style: solid;
         border-bottom-width:1px;
+        width: 725px;
+        margin-left: 25px;
     }
     .lineBoxHeight{
         height: 150px;

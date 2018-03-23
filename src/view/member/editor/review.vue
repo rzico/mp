@@ -29,6 +29,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="reviewBorder"></div>
             </cell>
         </list>
     </div>
@@ -70,6 +71,13 @@
         border-radius: 5px;
         padding-left: 20px;
     }
+    .reviewBorder{
+        border-color: gainsboro;
+        border-style: solid;
+        border-bottom-width:1px;
+        width: 725px;
+        margin-left: 25px;
+    }
     .reviewContent{
         border-color: #ccc;
         border-style: solid;
@@ -90,9 +98,9 @@
         width: 725px;
         margin-left: 25px;
         background-color: #fff;
-        border-color: gainsboro;
-        border-style: solid;
-        border-bottom-width:1px;
+        /*border-color: gainsboro;*/
+        /*border-style: solid;*/
+        /*border-bottom-width:1px;*/
     }
     .infoText{
         font-size: 32px;

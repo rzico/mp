@@ -71,7 +71,7 @@
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName white">{{item.author}}</text>
                     </div>
-                    <div class="tempTwoContent">
+                    <div class="tempTwoContent" @click="goArticle(item.id)">
                         <!--只会显示出一个div,所以需要用个大div包住,-->
                         <div>
                             <div class="flex-row bt20">
@@ -318,7 +318,7 @@
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName white">{{item.author}}</text>
                     </div>
-                    <div class="tempTwoContent">
+                    <div class="tempTwoContent" @click="goArticle(item.id)">
                         <!--只会显示出一个div,所以需要用个大div包住,-->
                         <div>
                             <div class="flex-row bt20">

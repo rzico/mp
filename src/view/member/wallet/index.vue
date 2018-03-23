@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <div class="cell-row cell-line">
+            <div class="cell-row boder-top">
                 <div class="cell-panel space-between" @click="deposit()">
                     <div class="flex-row flex-start" >
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
@@ -52,7 +52,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="rebate()">
+                <div class="noBorderCell space-between " @click="rebate()">
                     <div class="flex-row flex-start" >
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                         <text class="title ml10">我的奖励</text>
@@ -61,6 +61,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <div class="boder-bottom"></div>
             </div>
         </scroller>
     </div>
@@ -68,7 +69,12 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-
+    .noBorderCell{
+        height: 98px;
+        min-height: 98px;
+        flex-direction: row;
+        align-items: center;
+    }
     .wallet-title {
         margin-top: 70px;
         flex:1;
@@ -165,12 +171,11 @@
                 }  else {
                     let _this = this
                     _this.clicked = false
-                    event.openURL(utils.locate('view/member/wallet/transfer.js', function (message) {
+                    event.openURL(utils.locate('view/member/wallet/transfer.js'), function (message) {
                             if (message.type=='success') {
                                 _this.load();
                             }
                         })
-                    )
                 }
             },
             bindingCard:function () {

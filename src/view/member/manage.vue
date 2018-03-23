@@ -87,14 +87,14 @@
                 </div>
                 <!--投票管理暂未开发，关闭连接-->
                 <!--<div class="cell-panel space-between  cell-clear">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
-                        <!--<text class="title ml10">投票管理</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title"></text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-row flex-start">-->
+                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
+                <!--<text class="title ml10">投票管理</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                <!--<text class="sub_title"></text>-->
+                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
             <div class="cell-row cell-line">
@@ -304,7 +304,7 @@
                 let _this = this
                 event.openURL(utils.locate('view/member/option.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         _this.open();
                         return ;
                     }
@@ -332,7 +332,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/reviewManage.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         return ;
                     }
                 );
@@ -344,6 +344,9 @@
                 this.clicked = true;
                 var shareType;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 switch(id){
                     case 0 :
                         shareType = 'timeline';
@@ -368,8 +371,15 @@
                 }
                 _this.showShare = false;
                 event.share(option,function (data) {
-                    event.toast(data.content);
-                    _this.clicked = false;
+                    if(data.type == 'success') {
+                        if (shareType == 'copyHref') {
+                            event.toast('链接已复制到剪贴板');
+                        } else if (shareType == 'browser') {
+                        } else {
+                            event.toast('分享成功');
+                        }
+                        return;
+                    }
                 })
             },
             beginShare:function () {
@@ -395,7 +405,7 @@
                 }
                 event.openURL(utils.locate('view/shop/goods/manage.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         return ;
                     }
                 );
@@ -417,7 +427,7 @@
                 }
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         return ;
                     }
                 );
