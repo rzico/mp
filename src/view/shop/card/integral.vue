@@ -6,7 +6,7 @@
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-if="noData()" >
-                   <noData > </noData>
+                <noData > </noData>
             </cell>
             <cell v-for="(deposit,index) in depositList"  >
                 <!--如果月份重复就不渲染该区域-->
@@ -28,7 +28,7 @@
                         </div>
                         <div class="content flex5">
                             <div class="flex-row space-between align-bottom">
-                                <text class="title lines-ellipsis memo">{{deposit.memo}}</text>
+                                <text class="title lines-ellipsis memo" :style="memoColor(deposit.memo)">积分:{{deposit.memo}}</text>
                                 <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
                             </div>
                             <div class="flex-row space-between align-bottom">
@@ -110,15 +110,23 @@
                 pageSize:20,
                 noLoading:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
+                type:'获得积分:'
             }
         },
         components: {
             navbar,noData
         },
         props: {
-            title: { default: "消费记录" }
+            title: { default: "积分记录" }
         },
         methods: {
+            memoColor:function (memo) {
+                if (memo<0) {
+                    return {color:'red'}
+                }  else {
+                    return {color:'#000'}
+                }
+            },
             moneyColor:function (amount) {
                 if (amount<0) {
                     return {color:'red'}
@@ -164,22 +172,22 @@
             open (pageStart,callback) {
                 this.pageStart = pageStart;
                 var _this = this;
-                GET('weex/member/card/bill.jhtml?id='+this.id+'&billDate='+this.billDate+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
-                   if (res.type=="success") {
-                       if (res.data.start==0) {
-                          _this.depositList = res.data.data;
-                       } else {
-                           res.data.data.forEach(function (item) {
-                               _this.depositList.push(item);
-                           })
-                       }
-                       _this.pageStart = res.data.start+res.data.data.length;
-                       _this.noLoading = res.data.data.length<_this.pageSize;
-                   } else {
-                       event.toast(res.content);
-                   }
+                GET('weex/member/card/point_bill.jhtml?id='+this.id+'&billDate='+this.billDate+'&pageNumber=' + this.pageStart +'&pageSize='+this.pageSize,function (res) {
+                    if (res.type=="success") {
+                        if (res.data.start==0) {
+                            _this.depositList = res.data.data;
+                        } else {
+                            res.data.data.forEach(function (item) {
+                                _this.depositList.push(item);
+                            })
+                        }
+                        _this.pageStart = res.data.start+res.data.data.length;
+                        _this.noLoading = res.data.data.length<_this.pageSize;
+                    } else {
+                        event.toast(res.content);
+                    }
                     callback();
-                 }, function (err) {
+                }, function (err) {
                     callback();
                     event.toast(err.content);
                 })
@@ -187,8 +195,8 @@
 //            上拉加载
             onloading (event) {
                 var _this = this;
-                  _this.open(_this.pageStart,function () {
-                  })
+                _this.open(_this.pageStart,function () {
+                })
             },
 //            下拉刷新
             onrefresh:function (event) {
@@ -257,7 +265,7 @@
             utils.initIconFont();
             this.id = utils.getUrlParameter("id");
             this.open(0,function () {
-                
+
             });
         }
     }

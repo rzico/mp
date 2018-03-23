@@ -88,6 +88,7 @@
             },
             clearBuf:function () {
                 this.keyword = "";
+                this.$emit('oninput',this.keyword);
             },
             noSearch:function () {
                 this.$emit('noSearch');

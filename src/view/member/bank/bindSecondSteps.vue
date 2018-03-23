@@ -191,14 +191,17 @@
                                     _this.city =data.data.city;
                                 } else {
                                     event.toast(data.content);
+                                    event.closeURL()
                                 }
                             }, function (err) {
                                 event.toast(err.content);
+                            event.closeURL()
                             }
                         )
                     }
                     else {
                         event.toast(message.content);
+                        event.closeURL()
                     }
                 })
             },
