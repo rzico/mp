@@ -14,19 +14,19 @@
             </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
-                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goLaud()">
+                <div class="bottomBtnBox"  @click="goLaud()">
                     <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                     <text class="fz26fff "  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
                 </div>
-                <div class="bottomBtnBox"  :style="{height:bottomNum + 100}" @click="goShare(0)">
+                <div class="bottomBtnBox"  @click="goShare(0)">
                     <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                     <text class="fz26fff ">分享 {{shareNum}}</text>
                 </div>
-                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goReview()">
+                <div class="bottomBtnBox" @click="goReview()">
                     <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                     <text class="fz26fff ">评论 {{reviewNum}}</text>
                 </div>
-                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goReward()">
+                <div class="bottomBtnBox"  @click="goReward()">
                     <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                     <text class="fz26fff ">赞赏</text>
                 </div>
@@ -151,6 +151,7 @@
         color: #888;
     }
     .bottomBtnBox{
+        height: 100px;
         flex: 1;align-items: center;justify-content: center;
     }
     .fz26fff{

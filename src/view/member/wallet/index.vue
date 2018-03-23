@@ -171,12 +171,11 @@
                 }  else {
                     let _this = this
                     _this.clicked = false
-                    event.openURL(utils.locate('view/member/wallet/transfer.js', function (message) {
+                    event.openURL(utils.locate('view/member/wallet/transfer.js'), function (message) {
                             if (message.type=='success') {
                                 _this.load();
                             }
                         })
-                    )
                 }
             },
             bindingCard:function () {

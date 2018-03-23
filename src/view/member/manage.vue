@@ -32,14 +32,14 @@
                 </div>
                 <!--上架注释的-->
                 <!--<div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">-->
-                    <!--<div class="flex-row">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>-->
-                        <!--<text class="title ml10">我的专栏</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title">{{member.topic}}</text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>-->
+                <!--<text class="title ml10">我的专栏</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                <!--<text class="sub_title">{{member.topic}}</text>-->
+                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
                 <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="activate()">
                     <div class="flex-row">
@@ -54,29 +54,29 @@
             </div>
             <!--魔篇-->
             <!--<div class="cell-row">-->
-                <!--<div class="cell-panel space-between cell-clear" @click="option()">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>-->
-                        <!--<text class="title ml10">通用设置</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<div class="cell-panel space-between cell-clear" @click="option()">-->
+            <!--<div class="flex-row flex-start">-->
+            <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>-->
+            <!--<text class="title ml10">通用设置</text>-->
+            <!--</div>-->
+            <!--<div class="flex-row flex-end">-->
+            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</div>-->
 
             <!--上架注释的-->
             <!--<div class="cell-row cell-line"  v-if="hastopic()">-->
-                <!--<div class="cell-panel space-between cell-clear" @click="store">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>-->
-                        <!--<text class="title ml10">店铺管理</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title"></text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<div class="cell-panel space-between cell-clear" @click="store">-->
+            <!--<div class="flex-row flex-start">-->
+            <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>-->
+            <!--<text class="title ml10">店铺管理</text>-->
+            <!--</div>-->
+            <!--<div class="flex-row flex-end">-->
+            <!--<text class="sub_title"></text>-->
+            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</div>-->
 
 
@@ -114,14 +114,14 @@
                 </div>
                 <!--投票管理暂未开发，关闭连接-->
                 <!--<div class="cell-panel space-between  cell-clear">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
-                        <!--<text class="title ml10">投票管理</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title"></text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-row flex-start">-->
+                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
+                <!--<text class="title ml10">投票管理</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                <!--<text class="sub_title"></text>-->
+                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
             <div class="cell-row ">
@@ -144,13 +144,13 @@
                     </div>
                 </div>
                 <!--<div class="cell-panel space-between " >-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>-->
-                        <!--<text class="title ml10">检查更新</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-row flex-start">-->
+                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>-->
+                <!--<text class="title ml10">检查更新</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
                 <div class="cell-panel space-between cell-clear" @click="subQuestion()">
                     <div class="flex-row flex-start">
@@ -358,7 +358,7 @@
                 let _this = this
                 event.openURL(utils.locate('view/member/option.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         _this.open();
                         return ;
                     }
@@ -408,7 +408,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/reviewManage.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         return ;
                     }
                 );
@@ -420,6 +420,10 @@
                 this.clicked = true;
                 var shareType;
                 let _this = this;
+
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 switch(id){
                     case 0 :
                         shareType = 'timeline';
@@ -444,8 +448,16 @@
                 }
                 _this.showShare = false;
                 event.share(option,function (data) {
-                    event.toast(data.content);
-                    _this.clicked = false;
+
+                    if(data.type == 'success') {
+                        if (shareType == 'copyHref') {
+                            event.toast('链接已复制到剪贴板');
+                        } else if (shareType == 'browser') {
+                        } else {
+                            event.toast('分享成功');
+                        }
+                        return;
+                    }
                 })
             },
             beginShare:function () {
@@ -471,7 +483,7 @@
                 }
                 event.openURL(utils.locate('view/shop/goods/manage.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         return ;
                     }
                 );
@@ -493,7 +505,7 @@
                 }
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         return ;
                     }
                 );

@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="flex-row" >
-                    <div class="tempOneContent" >
+                    <div class="tempOneContent">
                         <div class="flex-row">
                             <text class="articleTitle tempOneWidth">{{item.title}}</text>
                             <!--<text class="articleTitle tempOneWidth" >用折纸做出的北欧范花瓶-1</text>-->
@@ -71,7 +71,7 @@
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName white">{{item.author}}</text>
                     </div>
-                    <div class="tempTwoContent">
+                    <div class="tempTwoContent"  @click="goArticle(item.id)">
                         <!--只会显示出一个div,所以需要用个大div包住,-->
                         <div>
                             <div class="flex-row bt20">
@@ -84,7 +84,7 @@
                             <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
                                 <text class="articleContent white" >{{item.htmlTag}}</text>
                             </div>
-                            <div class="space-between">
+                            <div class="space-between" >
                                 <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                     <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                     <text class="relevantText white">{{item.hits}}</text>
@@ -237,7 +237,7 @@
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
-                <div  class="tempThreeContent ml20" >
+                <div  class="tempThreeContent ml20">
                     <div class="flex-row bt20">
                         <!--<text class="articleTitle">{{item.title}}</text>-->
                         <text class="articleTitle" >{{item.title}}</text>
@@ -288,7 +288,7 @@
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
-                <div  class="tempThreeContent ml20" >
+                <div  class="tempThreeContent ml20"  >
                     <div class="space-between">
                         <div>
                             <text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>
@@ -318,7 +318,7 @@
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName white">{{item.author}}</text>
                     </div>
-                    <div class="tempTwoContent">
+                    <div class="tempTwoContent"@click="goArticle(item.id)">
                         <!--只会显示出一个div,所以需要用个大div包住,-->
                         <div>
                             <div class="flex-row bt20">
@@ -332,7 +332,7 @@
                                 <text class="articleContent white" >{{item.htmlTag}}</text>
                             </div>
 
-                            <div class="space-between">
+                            <div class="space-between" >
                                 <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                     <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                     <text class="relevantText white">{{item.hits}}</text>
@@ -355,7 +355,7 @@
                 <div class="atricleHead">
                     <text class="articleTitle">{{item.title}}</text>
                 </div>
-                <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined" >
                     <text class="articleContent">{{item.htmlTag}}</text>
                 </div>
                 <!--文章封面-->
