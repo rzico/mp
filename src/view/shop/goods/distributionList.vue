@@ -9,6 +9,12 @@
             </div>
             </div>
             <div class="cell-row cell-line">
+                <div class="cell-panel cell-clear ">
+                    <text class="title">利润分红:</text>
+                    <input type="number" v-model="item.tota" return-key-type="next" class="lineContent pr20"  placeholder="利润分红比例（%）" />
+                </div>
+            </div>
+            <div class="cell-row cell-line">
             <div class="cell-panel ">
                 <text class="title">直接佣金:</text>
                 <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
@@ -36,6 +42,13 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .cell-rowTwo {
+        min-height: 100px;
+        flex-direction: column;
+        background-color: #ffffff;
+        padding-left: 20px;
+        margin-bottom: 20px;
+    }
     .lineContent{
         height: 80px;
         font-size: 32px;
@@ -67,7 +80,7 @@
     export default {
         data: function () {
             return {
-                item: {id: "", name: "", percent1: "", percent2: "", percent3: "",percent4: "点击设置", bgChange: false},
+                item: {id: "", name: "",tota:'', percent1: "", percent2: "", percent3: "",percent4: "点击设置", bgChange: false},
                 begin:'',
                 initial:100,
                 pointProp:0,
@@ -101,6 +114,10 @@
                 _this.item.percent3 = ''
             }
             this.begin = utils.getUrlParameter('point');
+            this.item.tota = utils.getUrlParameter('tota');
+            if(utils.isNull(this.item.tota)){
+                _this.item.tota = ''
+            }
             if(!utils.isNull(this.begin)) {
                 if (_this.begin == 0) {
                     _this.item.percent4 = '0%'
@@ -192,6 +209,10 @@
                     event.toast('请输入名称');
                     return;
                 }
+                if (utils.isNull(this.item.tota)) {
+                    event.toast('请输入利润分红比例');
+                    return;
+                }
                 if (this.item.percent4 =='点击设置') {
                     event.toast('请输入提现比例');
                     return;
@@ -208,8 +229,19 @@
                     event.toast('请输入佣金比例');
                     return;
                 }
+//                把字符串转换成整型
+                this.item.percent1 = parseInt(this.item.percent1)
+                this.item.percent2 = parseInt(this.item.percent2)
+                this.item.percent3 = parseInt(this.item.percent3)
+                if (this.item.percent1+this.item.percent2+this.item.percent3 > this.item.tota){
+                    modal.alert({
+                        message: '佣金比例总和不能大于利润分红比例',
+                        okTitle: '知道了'
+                    })
+                    return;
+                }
                 if (utils.isNull(this.item.id)) {
-                    POST('weex/member/distribution/add.jhtml?name=' +encodeURI(_this.item.name) +'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3+'&point='+this.begin).then(
+                    POST('weex/member/distribution/add.jhtml?name=' +encodeURI(_this.item.name) +'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3+'&point='+this.begin+'&dividend='+this.item.tota).then(
                         function (res) {
                             if(res.type == 'success'){
                                 event.toast('添加成功');
@@ -223,7 +255,7 @@
                     )
                 } else {
                     let name = encodeURI(_this.item.name);
-                    POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name+'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3+'&point='+this.begin).then(
+                    POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name+'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3+'&point='+this.begin+'&dividend='+this.item.tota).then(
                         function (data) {
                             if(data.type == 'success'){
                                 event.toast('修改成功');

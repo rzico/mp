@@ -5,9 +5,23 @@
             <text class="fz32 color999">开通分成推广,让推广者帮你推广商品,获得更多订单。</text>
             <text class="fz32 color999">推广者包含个人以及芸店合作渠道。</text>
             <text class="fz32 color999">你只需为因推广者而成功售出的商品付出佣金,交易不成功无需支付任何费用。</text>
+            <div class="setting" @click="pickPattern()">
+                <div class="flex-row">
+                    <text class="fz32 colorRed">分润模式:  {{isPattern}}</text>
+                </div>
+                <div class="flex-row flex-end">
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+            </div>
+            <div class="setting" v-if="isMoney()">
+                <div class="flex-row">
+                    <text class="fz32 colorRed">指定金额:  </text>
+                    <input class="input"   placeholder="请输入金额" type="number" v-model="amount"/>
+                </div>
+            </div>
             <div class="setting" @click="pickObject()">
                 <div class="flex-row">
-                    <text class="fz32 colorRed">分成对象:  {{isobject}}</text>
+                    <text class="fz32 colorRed">分润对象:  {{isobject}}</text>
                 </div>
                 <div class="flex-row flex-end">
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -62,6 +76,13 @@
     .colorRed{
         color:#EB4E40
     }
+    .input{
+        font-size: 32px;
+        color:#EB4E40;
+        width: 450px;
+        height: 80px;
+        margin-top: 5px;
+    }
 </style>
 <script>
     import {dom,event,stream,storage} from '../../../weex.js'
@@ -73,16 +94,20 @@
     export default {
         data: function () {
             return {
-                isobject:'任何人',
+                isobject:'任何用户',
                 begin:0,
-                PromoterType:''
+                beginPattern:0,
+                PromoterType:'',
+                Pattern:'',
+                isPattern:'无门槛',
+                amount:''
             }
         },
         components: {
             navbar
         },
         props: {
-            title: {default: "分成推广"},
+            title: {default: "分润设置"},
         },
         created() {
             utils.initIconFont();
@@ -92,26 +117,81 @@
             goback(){
                 event.closeURL();
             },
+//            控制指定金额是否渲染
+            isMoney:function () {
+              if(this.isPattern == '单次消费满指定金额' || this.isPattern == '累计消费满指定金额'){
+                  return true
+              }else{
+                  return false
+              }
+            },
 //            获取专栏信息
             getTopic:function () {
                 let _this = this
                 GET("weex/member/topic/option.jhtml",function (res) {
                     if (res.type=='success') {
                         if(res.data.promoterType == 'any'){
-                            _this.isobject = '任何人';
-                            _this.begin = 0
-                        }else if(res.data.promoterType == 'vip1'){
-                            _this.isobject = '普通会员(VIP1)';
-                            _this.begin = 1
-                        }else if(res.data.promoterType == 'vip2'){
-                            _this.isobject = '金卡会员(VIP2)';
+                            _this.isobject = '任何用户';
+                            _this.begin = 0;
+                            _this.isPattern = '无门槛'
+                        }if(res.data.promoterType == 'team'){
+                            _this.isobject = '团队成员';
+                            _this.begin = 1;
+                            _this.isPattern = '无门槛'
+                        }if(res.data.promoterType == 'partenr'){
+                            _this.isobject = '分红股东';
                             _this.begin = 2
-                        }else if(res.data.promoterType == 'vip3'){
-                            _this.isobject = '钻石会员(VIP3)';
-                            _this.begin = 3
+                        }if(res.data.pattern == 'pattern1'){
+                            _this.isPattern = '无门槛';
+                            _this.beginPattern = 0
+                        }if(res.data.pattern == 'pattern2'){
+                            _this.isPattern = '购买任意商品';
+                            _this.beginPattern = 1
+                        }if(res.data.pattern == 'pattern3'){
+                            _this.isPattern = '购买分销商品';
+                            _this.beginPattern = 2
+                        }if(res.data.pattern == 'pattern4'){
+                            _this.isPattern = '单次消费满指定金额';
+                            _this.beginPattern = 3
+                        }if(res.data.pattern == 'pattern5'){
+                            _this.isPattern = '累计消费满指定金额';
+                            _this.beginPattern = 4
                         }
+                        _this.amount =res.data.amount
                     } else {
                         event.toast(res.content);
+                    }
+                })
+            },
+            //            设置门槛
+            pickPattern:function () {
+                let _this = this
+                picker.pick({
+                    index:_this.beginPattern,
+                    items:['无门槛','购买任意商品','购买分销商品','单次消费满指定金额','累计消费满指定金额']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.isPattern = '无门槛';
+                            _this.beginPattern = e.data;
+                            _this.Pattern = 'pattern1'
+                        }else if(e.data == 1){
+                            _this.isPattern = '购买任意商品';
+                            _this.beginPattern = e.data;
+                            _this.Pattern = 'pattern2'
+                        }else if(e.data == 2){
+                            _this.isPattern = '购买分销商品';
+                            _this.beginPattern = e.data;
+                            _this.Pattern = 'pattern3'
+                        }else if(e.data == 3){
+                            _this.isPattern = '单次消费满指定金额';
+                            _this.beginPattern = e.data;
+                            _this.Pattern = 'pattern4'
+                        }else if(e.data == 4){
+                            _this.isPattern = '累计消费满指定金额';
+                            _this.beginPattern = e.data;
+                            _this.Pattern = 'pattern5'
+                        }
                     }
                 })
             },
@@ -120,32 +200,28 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['任何人','普通会员(VIP1)','金卡会员(VIP2)','钻石会员(VIP3)']
+                    items:['任何用户','团队成员','分红股东']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.isobject = '任何人';
+                            _this.isobject = '任何用户';
                             _this.begin = e.data;
                             _this.PromoterType = 'any'
                         }else if(e.data == 1){
-                            _this.isobject = '普通会员(VIP1)';
+                            _this.isobject = '团队成员';
                             _this.begin = e.data;
-                            _this.PromoterType = 'vip1'
+                            _this.PromoterType = 'team'
                         }else if(e.data == 2){
-                            _this.isobject = '金卡会员(VIP2)';
+                            _this.isobject = '分红股东';
                             _this.begin = e.data;
-                            _this.PromoterType = 'vip2'
-                        }else{
-                            _this.isobject = '钻石会员(VIP3)';
-                            _this.begin = e.data;
-                            _this.PromoterType = 'vip3'
+                            _this.PromoterType = 'partenr'
                         }
                     }
                 })
             },
 //            完成
             complete:function () {
-                POST('weex/member/topic/update.jhtml?promoterType='+this.PromoterType).then(
+                POST('weex/member/topic/update.jhtml?promoterType='+this.PromoterType+'&pattern='+this.Pattern+'&amount='+this.amount).then(
                     function (data) {
                         if(data.type == 'success'){
                             event.toast('设置成功');

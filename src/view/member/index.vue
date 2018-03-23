@@ -25,7 +25,7 @@
             <!--绑定动画-->
             <!--只能多写一个顶部栏。否则无法适应-->
             <div  class="corpusBox hideCorpus" :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
-                <scroller scroll-direction="horizontal" class="corpusScroll ">
+                <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll ">
                     <div class="articleClass">
                         <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
@@ -83,7 +83,7 @@
             </div>
             <div>
                 <div  class="corpusBox" >
-                    <scroller scroll-direction="horizontal"  class="corpusScroll">
+                    <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
                         <div class="articleClass">
                             <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
 
@@ -93,6 +93,7 @@
                         <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
                     </div>
                 </div>
+                <div class="boder-bottom" style="width: 750px"></div>
                 <!--文章模块-->
                 <div :style="{minHeight:screenHeight + 'px'}" >
                     <!--绑定动画-->
@@ -329,12 +330,14 @@
         flex-direction: row;
         /*background-color:#F8F9FC;*/
         height:80px;
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
         background-color: #fff;
 
     }
+    /*.corpusBoxBorder{*/
+        /*border-bottom-width: 1px;*/
+        /*border-style: solid;*/
+        /*border-color: gainsboro;*/
+    /*}*/
     .redColor{
         color: #D9141E;
     }
@@ -789,7 +792,8 @@
 
 
             getAllArticle(){
-                this.articleList = [];
+                var middleList = [];
+                this.listCurrent = 0;
                 var articleClass = '';
                 if(!utils.isNull(this.corpusId)){
                     articleClass = '['+this.corpusId + ']';
@@ -816,10 +820,12 @@
                             if(utils.isNull(_this.corpusId) && item.value.articleOption.articleCatalog.id == 99){
                             }else{
                                 //                              把读取到的文章push进去文章列表
-                                _this.articleList.push(item);
+                                middleList.push(item);
                             }
 
                         })
+
+                        _this.articleList = middleList;
 //                        当选择全部文章并且全部文章低于10篇时 显示帮助文档。写在这边可以避免渲染小闪屏问题。写死在data里每次切换会先闪一下帮助List再变成文章List
                         if(utils.isNull(_this.corpusId) && data.data.length < 10){
                             _this.helpList = [];//在push前要清空list
