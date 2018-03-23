@@ -344,6 +344,9 @@
                 this.clicked = true;
                 var shareType;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 switch(id){
                     case 0 :
                         shareType = 'timeline';
@@ -368,8 +371,15 @@
                 }
                 _this.showShare = false;
                 event.share(option,function (data) {
-                    event.toast(data.content);
-                    _this.clicked = false;
+                    if(data.type == 'success') {
+                        if (shareType == 'copyHref') {
+                            event.toast('链接已复制到剪贴板');
+                        } else if (shareType == 'browser') {
+                        } else {
+                            event.toast('分享成功');
+                        }
+                        return;
+                    }
                 })
             },
             beginShare:function () {
