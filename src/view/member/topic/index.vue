@@ -257,9 +257,14 @@
 //            修改头像
             changeLogo: function () {
                 var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (ablum) {
+                    options,function (ablum) {
                         if(ablum.type == 'success') {
                             event.upload(ablum.data.originalPath,function (message) {
                                 if (message.type == 'success') {
