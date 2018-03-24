@@ -2,9 +2,9 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback"  > </navbar>
         <scroller>
-        <div style="background-color: white">
+        <div style="background-color: #eee">
             <div class="titleOne">
-                <text class="titleText" style="font-size: 32px">填写优惠券信息:</text>
+                <text class="titleText" style="font-size: 32px;color: #888">填写优惠券信息:</text>
             </div>
             <div class="name" @click="typesetting">
                 <text class="nameText" style="font-size: 32px">优惠类型</text>
@@ -20,9 +20,12 @@
                 <text class="conditionsText" style="font-size: 32px">张</text>
             </div>
             <div class="money" v-if="codeName =='fullcut' || codeName =='discount'">
+                <div style="flex-direction: row;align-items: center;">
                 <text class="moneyText" style="font-size: 32px">{{frontTransfrom}}</text>
                 <input type="number" placeholder="" class="inputMoney" v-model="money" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">{{transform}}</text>
+                </div>
+                <text class="inputPromptText">{{bottomTransform}}</text>
             </div>
             <div class="goods" v-if="codeName == 'exchange'" @click="goGoods()">
                 <div style="flex-direction: row;align-items: center">
@@ -30,9 +33,6 @@
                 <text class="goodsName">{{goodsName}}</text>
                 </div>
                 <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-            </div>
-            <div class="inputPrompt">
-                <text class="inputPromptText" style="font-size: 28px;color:#888">{{bottomTransform}}</text>
             </div>
             <div class="conditions">
                 <text class="conditionsText" style="font-size: 32px">使用条件</text>
@@ -54,8 +54,26 @@
                 <text class="introducedText" style="font-size: 32px">规则介绍</text>
                 <input type="text" placeholder="请输入使用规则(不超过80个汉字)" class="input" v-model="rule" />
             </div>
+            <div class="name" @click="activitysetting()">
+                <text class="nameText" style="font-size: 32px">活动类型</text>
+                <text class="nameText" style="font-size: 32px;color: #999999;margin-left: 30px" >{{activityName | activityWatch}}</text>
+            </div>
+            <div class="conditions" v-if="activityName == 1">
+                <text class="conditionsText" style="font-size: 32px">使用条件</text>
+                <text class="man" style="padding-left: 30px;font-size: 32px">满</text>
+                <input type="number" placeholder="" class="inputMoney" v-model="activitConditions" />
+                <text class="conditionsText" style="font-size: 32px">元,送</text>
+                <input type="number" placeholder="" class="inputMoney" v-model="activitynum" />
+                <text class="conditionsText" style="font-size: 32px">张</text>
+            </div>
+            <div class="conditions"  v-if="activityName == 2">
+                <text class="conditionsText" style="font-size: 32px">使用条件</text>
+                <text class="man" style="padding-left: 30px;font-size: 32px">领卡送</text>
+                <input type="number" placeholder="" class="inputMoney" v-model="activitynum"/>
+                <text class="conditionsText" style="font-size: 32px">张</text>
+            </div>
         </div>
-        <div style="height: 700px"></div>
+        <div style="min-height: 900px"></div>
         </scroller>
         <div class="button bw bottom" @click="complete">
             <text class="bottonText">完成</text>
@@ -64,6 +82,11 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .inputPromptText{
+        font-size: 25px;
+        color: #888;
+
+    }
     .goods{
         flex-direction: row;
         align-items: center;
@@ -74,6 +97,7 @@
         height: 100px;
         padding-left: 20px;
         padding-right: 20px;
+        margin-bottom: 10px;
     }
     .goodsName{
         font-size: 28px;
@@ -95,12 +119,11 @@
         padding-left: 20px;
     }
     .titleOne{
-        height: 50px;
+        background-color: #ddd;
+        height: 80px;
         flex-direction: row;
         align-items: center;
-        margin-left: 20px;
-        margin-bottom: 20px;
-        margin-top: 20px;
+        padding-left: 20px;
     }
     .begindate{
         color: #888;
@@ -138,7 +161,7 @@
         color: red;
         height: 50px;
         margin-left: 30px;
-        width: 200px;
+        width: 100px;
     }
     .scope{
         flex-direction: row;
@@ -152,11 +175,14 @@
     .money{
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         border-bottom-width: 1px;
         border-bottom-color: #cccccc;
         background-color: white;
         height: 100px;
         padding-left: 20px;
+        padding-right:20px ;
+        margin-bottom: 10px;
     }
     .conditions{
         flex-direction: row;
@@ -166,6 +192,7 @@
         background-color: white;
         height: 100px;
         padding-left: 20px;
+
     }
     .time{
         flex-direction: row;
@@ -185,6 +212,7 @@
         background-color: white;
         height: 120px;
         padding-left: 20px;
+        margin-bottom: 10px;
     }
     .bw {
         width:650px;
@@ -224,8 +252,12 @@
                 bottomTransform:'请输入优惠金额',
                 begin:0,
                 beginTwo:0,
+                beginThree:0,
                 goodsId:'',
-                goodsName:''
+                goodsName:'',
+                activitConditions:0,
+                activitynum:0,
+                activityName:0
             }
         },
         components: {
@@ -263,6 +295,15 @@
                 } else {
                     return '商城'
                 }
+            },
+            activityWatch:function (data) {
+                if(data == 0){
+                    return '无门槛'
+                }if(data == 1){
+                    return '消费送'
+                } else {
+                    return '领卡送'
+                }
             }
         },
         methods: {
@@ -293,10 +334,13 @@
                         _this.beginDate = utils.ymdtimefmt(mes.data.beginDate);
                         _this.codeName = mes.data.type;
                         _this.scene = mes.data.scope;
-                        _this.conditions =mes.data.minimumPrice,
-                            _this.goodsId = mes.data.goodsId,
-                            _this.goodsName = mes.data.name
-
+                        _this.conditions =mes.data.minimumPrice;
+                            _this.goodsId = mes.data.goodsId;
+                            _this.goodsName = mes.data.name;
+                            _this.beginThree = mes.data.activity.atveType;
+                        _this.activityName = mes.data.activity.atveType;
+                        _this.activitConditions = mes.data.activity.atveMinPrice;
+                        _this.activitynum = mes.data.activity.atveAmount;
                     } else {
                         event.toast(res.content);
                     }
@@ -356,6 +400,28 @@
                             _this.codeName = 'exchange';
                             _this.bottomTransform = '请选择兑换商品';
                             _this.beginTwo =e.data
+
+                        }
+                    }
+                })
+            },
+            //            活动类型选择
+            activitysetting:function () {
+                var _this = this;
+                picker.pick({
+                    index:_this.beginThree,
+                    items:['无门槛','消费送','领卡送']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.activityName = 0;
+                            _this.beginThree =e.data
+                        }else if(e.data == 1){
+                            _this.activityName = 1;
+                            _this.beginThree =e.data
+                        }else if(e.data == 2){
+                            _this.activityName = 2;
+                            _this.beginThree =e.data
 
                         }
                     }
@@ -434,17 +500,23 @@
                     event.toast('新增数量未设置')
                     return
                 }
+                if(_this.activityName != 0){
+                    if(_this.activitConditions == '' || _this.activitynum =='') {
+                        event.toast('活动未设置')
+                        return
+                    }
+                }
                 POST('weex/member/coupon/submit.jhtml?type='+_this.codeName+'&scope='+_this.scene+'&beginDate='+_this.beginDate
                     +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id+'&stock='+_this.number +'&goodsId='
-                +this.goodsId).then(
+                +_this.goodsId+'&atveType='+_this.activityName+'&atveMinPrice='+_this.activitConditions +'&atveAmount='+_this.activitynum).then(
                     function (mes) {
                         if (mes.type == "success") {
                             event.closeURL(mes)
                         } else {
-//                            event.toast(mes.content);
+                            event.toast(mes.content);
                         }
                     }, function (err) {
-//                        event.toast(err.content);
+                        event.toast(err.content);
                     }
                 )
             }
