@@ -2,7 +2,7 @@
     <div class="wrapper">
         <!--输入栏-->
         <searchNav  :searchHint="searchHint" @oninput="oninput" :keyword="keyword" @search="search"  ref="childFind"> </searchNav><!--搜索栏-->
-        <div  class="confm boder-bottom bt20" v-if="isInput() && !isSearch" @click="search(keyword)">
+        <div  class="confm  bt20" v-if="isInput() && !isSearch" @click="search(keyword)">
             <text class="ico " :style="{fontFamily:'iconfont'}">&#xe611;</text>
             <text class="title">搜索: {{keyword}} </text>
         </div>
@@ -11,7 +11,7 @@
                 <!--搜索历史-->
                 <div class="searchBox bt20"  v-if="historyList != ''">
                     <div class="space-between searchHead" >
-                        <text class="gray fz28">搜索历史</text>
+                        <text class="gray fz26">搜索历史</text>
                         <text class="ico gray cleanHistory fz28" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
                     </div>
                     <div class="borderBottom searchBorder"></div>
@@ -19,7 +19,7 @@
                         <div v-for="(item,index) in historyList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
                             <div class="searchContent" :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
-                                <text class=" searchContentText boder-bottom fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
+                                <text class=" searchContentText boder-bottom fz28" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
                                 <!--,index != historyList.history.length - 2 || index != historyList.history.length-1 ? 'boder-bottom' : ''-->
                             </div>
                         </div>
@@ -28,14 +28,14 @@
                 <!--搜索热点-->
                 <div class="searchBox " v-if="hotList != ''">
                     <div class="space-between searchHead" >
-                        <text class="gray fz28">搜索发现</text>
+                        <text class="gray fz26">搜索发现</text>
                     </div>
                     <div class="borderBottom searchBorder"></div>
                     <div class="searchContentBox flex-row " >
                         <div v-for="(item,index) in hotList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
                             <div class="searchContent  " :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
-                                <text class="boder-bottom searchContentText fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
+                                <text class="boder-bottom searchContentText fz28" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
             <div class="mt20" :style="{minHeight:screenHeight + 'px'}">
                 <!--无数据提示-->
                 <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
-                <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30">
+                <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30 ">
                     <!--朋友-->
                     <div  v-for="(item,index) in searchList.friend" v-if="index <= 9" class="cell-line">
                         <!--类别-->
@@ -168,6 +168,9 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .fz26{
+        font-size: 26px;
+    }
     .moreArticle{
         width: 690px;
     }
@@ -471,6 +474,7 @@
             },
 //            输入时
             oninput:function (val) {
+                utils.debug(val);
                 let _this = this;
                 this.keyword = val;
                 _this.searchList = {

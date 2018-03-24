@@ -209,7 +209,7 @@
         justify-content: center;
     }
     .categoryBox{
-        position: absolute;background-color: rgba(136,136,136,0.1);left: 650px;bottom: 100px;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
+        position: absolute;background-color: rgba(136,136,136,0.1);left: 670px;bottom: 120px;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
     }
     .categoryText{
         color: #fff;
@@ -405,6 +405,7 @@
         justify-content: space-between;
         width: 690px;
         align-items: center;
+        margin-left: 30px;
     }
 
     .articleDate {
@@ -414,16 +415,18 @@
 
     .articleCover {
         /*height: 300px;*/
-        height: 345px;
-        width:690px;
-        border-radius: 5px;
+        /*height: 345px;*/
+        height: 375px;
+        /*width:690px;*/
+        width: 750px;
+        /*border-radius: 5px;*/
         margin-top: 30px;
         margin-bottom: 30px;
     }
 
     .articleBox {
         background-color: #ffffff;
-        padding-left: 30px;
+        /*padding-left: 30px;*/
         padding-top: 30px;
         padding-right: 30px;
         padding-bottom: 30px;
@@ -436,6 +439,7 @@
     .atricleHead {
         flex-direction: row;
         align-items: center;
+        margin-left: 30px;
     }
     .articleTitle {
         width:600px;
@@ -701,7 +705,7 @@
             },
             watchThumbnail:function (value) {
 //                    没过滤前是原图
-                return utils.thumbnail(value,690,345);
+                return utils.thumbnail(value,750,375);
             },
             watchNickName:function (value) {
                 if(utils.isNull(value)){

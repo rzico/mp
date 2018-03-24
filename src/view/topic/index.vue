@@ -403,6 +403,7 @@
         flex-direction: row;
         justify-content: space-between;
         width: 690px;
+        margin-left: 30px;
         align-items: center;
     }
 
@@ -412,18 +413,20 @@
     }
 
     .articleCover {
-        height: 345px;
-        width:690px;
-        border-radius: 5px;
+        /*height: 345px;*/
+        /*width:690px;*/
+        height: 375px;
+        width:750px;
+        /*border-radius: 5px;*/
         margin-top: 30px;
         margin-bottom: 30px;
     }
 
     .articleBox {
         background-color: #ffffff;
-        padding-left: 30px;
+        /*padding-left: 30px;*/
         padding-top: 30px;
-        padding-right: 30px;
+        /*padding-right: 30px;*/
         padding-bottom: 30px;
         margin-bottom: 10px;
     }
@@ -431,6 +434,7 @@
     .atricleHead {
         flex-direction: row;
         align-items: center;
+        margin-left: 30px;
     }
 
     .articleTitle {
@@ -687,7 +691,6 @@
             })
         },
         methods: {
-
 // /            监听设备型号,控制隐藏的文集高度
             hideCorpus:function () {
                 let dc = utils.hideCorpus();
@@ -732,7 +735,7 @@
                         data.data.data.forEach(function (item) {
                             if(utils.isNull(item.thumbnail)){
                             }else{
-                                item.thumbnail = utils.thumbnail(item.thumbnail,690,345);
+                                item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
                             }
                             _this.middleList.push(item);
                         });
