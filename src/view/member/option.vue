@@ -225,11 +225,12 @@
                             _this.toSendArticle = true;
                             _this.proTotal = data.data.recordsTotal;
                             data.data.data.forEach(function (item,index) {
+                                var sortStatus = item.articleOption.isTop  == true ? '1,' : '0,';
                                 let saveData = {
                                     type:"article",
                                     key:item.id,
                                     value:item,
-                                    sort:'0,'+ item.modifyDate +'',
+                                    sort:sortStatus + item.modifyDate +'',
                                     keyword:',['+ item.articleOption.articleCatalog.id + '],' + item.title + ','
                                 }
                                 event.save(saveData,function(e){
