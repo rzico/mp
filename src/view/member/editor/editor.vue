@@ -440,7 +440,8 @@
                 laud:0,
                 products:[],
                 isReview:0,
-                clicked:false
+                clicked:false,
+                goodsId:''
             }
         },
         filters:{
@@ -594,6 +595,11 @@
                     //从缓存读取数据 写入界面
                     _this.readData(options);
                 }else if(op[0] == 'goodsStorageName'){//读取商品缓存并写入页面之中。
+
+//                  第一次发布的商品  记录商品id
+                    if(!utils.getUrlParameter('goodsId')){
+                        this.goodsId = utils.getUrlParameter('goodsId');
+                    }
                     storage.getItem(op[1], function (e) {
                         if (e.result == 'success') {
                             var goodsInfo = JSON.parse(e.data);
@@ -1378,13 +1384,6 @@
 //                判断是再次编辑还是初次编辑;
                 let sendId =  utils.isNull(_this.articleId) ? _this.timestamp : _this.articleId;
 
-//                记录商品id，记录商品发布。
-//                var goodIdList = [];
-//                this.paraList.forEach(function(item){
-//                  if(item.mediaType == 'product')  {
-//                      goodIdList.push(item.id);
-//                  }
-//                })
                 let articleData = {
                     thumbnail:this.serveCover,
                     music:_this.musicData,
@@ -1393,7 +1392,7 @@
                     title:_this.setTitle,
                     votes:_this.voteData,
                     isDraft:false,
-//                    goodsId:goodIdList
+                    goodsId:_this.goodsId
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
