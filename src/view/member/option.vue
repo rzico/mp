@@ -148,22 +148,22 @@
     const album = weex.requireModule('album');
     export default {
         data:function () {
-          return{
-              listCurrent:0,
-              pageSize:20,
-              toSendArticle:false,
-              currentPro:0,//当前进度
-              proTotal:0,//总的进度
-              processWidth:0,//进度条宽度
-              UId:0,
-              lastDownLoadtamp:'',
-              timestamp:'',
-              blackNum:0,
-              setQrcode:'未设置',
-              storageNum:'0M',
-              hasTopic:false,
-              clicked:false,
-          }
+            return{
+                listCurrent:0,
+                pageSize:20,
+                toSendArticle:false,
+                currentPro:0,//当前进度
+                proTotal:0,//总的进度
+                processWidth:0,//进度条宽度
+                UId:0,
+                lastDownLoadtamp:'',
+                timestamp:'',
+                blackNum:0,
+                setQrcode:'未设置',
+                storageNum:'0M',
+                hasTopic:false,
+                clicked:false,
+            }
         },
         components: {
             navbar
@@ -216,50 +216,50 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                    GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
-                        if(data.type == 'success' && data.data.data != ''){
-                            if(data.data.start == 0 ){
+                GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.pageSize,function (data) {
+                    if(data.type == 'success' && data.data.data != ''){
+                        if(data.data.start == 0 ){
 //                           将本次时间戳缓存起来
-                                storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate.toString());
-                            }
-                            _this.toSendArticle = true;
-                            _this.proTotal = data.data.recordsTotal;
-                            data.data.data.forEach(function (item,index) {
-                                var sortStatus = item.articleOption.isTop  == true ? '1,' : '0,';
-                                let saveData = {
-                                    type:"article",
-                                    key:item.id,
-                                    value:item,
-                                    sort:sortStatus + item.modifyDate +'',
-                                    keyword:',['+ item.articleOption.articleCatalog.id + '],' + item.title + ','
-                                }
-                                event.save(saveData,function(e){
-                                    _this.ctrlProcess();
-                                    if(e.type == 'success'){
-                                        if(index == 19){
-                                            _this.listCurrent = _this.listCurrent + _this.pageSize;
-                                            _this.downloadArticle();
-                                        }else if(index == data.data.data.length - 1){
-                                            _this.doneDown();
-                                        }
-                                    }else{
-                                    }
-                                })
-                            })
-                        }else if(data.type == 'success' && data.data.data == ''){
-                            if(data.data.recordsTotal == 0){
-                                event.toast('您还没有发布过文章。');
-                            }else{
-                               _this.doneDown();
-                            }
-                        }else{
-                            event.toast(data.content);
+                            storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate.toString());
                         }
-                        _this.clicked = false;
-                    },function (err) {
-                        _this.clicked = false;
-                        event.toast(err.content);
-                    })
+                        _this.toSendArticle = true;
+                        _this.proTotal = data.data.recordsTotal;
+                        data.data.data.forEach(function (item,index) {
+                            var sortStatus = item.articleOption.isTop  == true ? '1,' : '0,';
+                            let saveData = {
+                                type:"article",
+                                key:item.id,
+                                value:item,
+                                sort:sortStatus + item.modifyDate +'',
+                                keyword:',['+ item.articleOption.articleCatalog.id + '],' + item.title + ','
+                            }
+                            event.save(saveData,function(e){
+                                _this.ctrlProcess();
+                                if(e.type == 'success'){
+                                    if(index == 19){
+                                        _this.listCurrent = _this.listCurrent + _this.pageSize;
+                                        _this.downloadArticle();
+                                    }else if(index == data.data.data.length - 1){
+                                        _this.doneDown();
+                                    }
+                                }else{
+                                }
+                            })
+                        })
+                    }else if(data.type == 'success' && data.data.data == ''){
+                        if(data.data.recordsTotal == 0){
+                            event.toast('您还没有发布过文章。');
+                        }else{
+                            _this.doneDown();
+                        }
+                    }else{
+                        event.toast(data.content);
+                    }
+                    _this.clicked = false;
+                },function (err) {
+                    _this.clicked = false;
+                    event.toast(err.content);
+                })
             },
 //            下载完成后执行
             doneDown(){
@@ -309,8 +309,14 @@
                 }
                 this.clicked = true;
                 let _this = this;
+
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
 //                调用单选
-                album.openAlbumSingle(true, function(data){
+                album.openAlbumSingle(options, function(data){
 //                    _this.paraList[index].paraImage = data.data.originalPath;
 //                    _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
                     if(data.type == 'success'){

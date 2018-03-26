@@ -493,31 +493,31 @@
 
 //                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
                 clipboard.getString(ret => {
-                   if(ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 ){
-                       modal.confirm({
-                           message: '是否生成已复制链接的文章?',
-                           duration: 0.3,
-                           okTitle:'生成',
-                           cancelTitle:'取消',
-                       }, function (value) {
-                           if(value == '生成'){
-                               _this.toSendArticle = true;
-                               _this.currentPro = 0;//当前进度
-                               _this.proTotal = 1;//总的进度
-                               _this.processWidth = 0;//进度条宽度
+                    if(ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 ){
+                        modal.confirm({
+                            message: '是否生成已复制链接的文章?',
+                            duration: 0.3,
+                            okTitle:'生成',
+                            cancelTitle:'取消',
+                        }, function (value) {
+                            if(value == '生成'){
+                                _this.toSendArticle = true;
+                                _this.currentPro = 0;//当前进度
+                                _this.proTotal = 1;//总的进度
+                                _this.processWidth = 0;//进度条宽度
 
-                               _this.processWidth = _this.processWidth  + (50 * Math.random());
+                                _this.processWidth = _this.processWidth  + (50 * Math.random());
 //                                  利用定时器 模拟进度条效果
-                               var timer = setInterval(function () {
-                                   if(_this.processWidth < 500){
-                                       let middle = _this.processWidth  + (50 * Math.random()) ;
-                                       if(middle > 500){
-                                           _this.processWidth = 500;
-                                       }else{
-                                           _this.processWidth = middle;
-                                       }
-                                   }
-                               },500);
+                                var timer = setInterval(function () {
+                                    if(_this.processWidth < 500){
+                                        let middle = _this.processWidth  + (50 * Math.random()) ;
+                                        if(middle > 500){
+                                            _this.processWidth = 500;
+                                        }else{
+                                            _this.processWidth = middle;
+                                        }
+                                    }
+                                },500);
 
 //                               调用接口 获取公众号文章内容(仅支持图文)
                                 GET('weex/member/article/grabarticle.jhtml?articlePath=' + encodeURIComponent(ret.data),function (data) {
@@ -557,16 +557,16 @@
                                     event.closeURL();
                                 })
                                 return;
-                           }else{
-                               clipboard.setString('');
+                            }else{
+                                clipboard.setString('');
 //                              进行原本逻辑。
-                               _this.firstEdit();
-                           }
-                       })
-                   }else{
+                                _this.firstEdit();
+                            }
+                        })
+                    }else{
 //                       进行原本逻辑。
-                       _this.firstEdit();
-                   }
+                        _this.firstEdit();
+                    }
                 })
 
 
@@ -1759,7 +1759,12 @@
 //                }
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
-                    album.openAlbumSingle(false, function(data){
+                    var options = {
+                        isCrop:false,
+                        width:1,
+                        height:1
+                    };
+                    album.openAlbumSingle(options, function(data){
                         if(data.type == 'success'){
                             _this.paraList[index].paraImage = data.data.originalPath;
                             _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
@@ -1856,14 +1861,14 @@
                     _this.clicked = false;
                 },1500)
 //                ***** 单选裁剪 *****
-                let option = {
+                var options = {
                     isCrop:true,
                     width:2,
                     height:1
                 };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    option,function (data) {
+                    options,function (data) {
                         _this.clicked = false;
                         if(data.type == 'success'){
                             _this.coverImage = data.data.originalPath;
@@ -2087,6 +2092,7 @@
         }
     }
 </script>
+
 
 
 

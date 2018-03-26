@@ -1,3 +1,4 @@
+
 <template>
     <div style="background-color: white">
         <navbar :title="title"  @goback="goback"  > </navbar>
@@ -8,45 +9,45 @@
             <text class="four">④ 交易测试</text>
         </div>
         <scroller class="scroller">
-        <div class="material">
-            <text class="materialText">铺设基础物料</text>
-        </div>
-        <div class="facade">
-            <text class="number">①</text>
-            <text class="facadeText">拍摄门头照</text>
-        </div>
-        <div class="iconfontOne">
-            <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="logo"></image>
+            <div class="material">
+                <text class="materialText">铺设基础物料</text>
             </div>
-            <div class="iconfont" >
-                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facelogo" >&#xe618;</text>
+            <div class="facade">
+                <text class="number">①</text>
+                <text class="facadeText">拍摄门头照</text>
             </div>
-        </div>
-        <div class="place">
-            <text class="number">②</text>
-            <text class="placeText">拍摄经营场所照</text>
-        </div>
-        <div class="iconfontTwo">
-            <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="palcePhoto"></image>
+            <div class="iconfontOne">
+                <div class="image">
+                    <image style="width: 200px;height: 200px;"  class="img" :src="logo"></image>
+                </div>
+                <div class="iconfont" >
+                    <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facelogo" >&#xe618;</text>
+                </div>
             </div>
-            <div class="iconfont">
-                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palcelogo" >&#xe618;</text>
+            <div class="place">
+                <text class="number">②</text>
+                <text class="placeText">拍摄经营场所照</text>
             </div>
-        </div>
-        <div class="license">
-            <text class="number">③</text>
-            <text class="licenseText">拍摄营业执照</text>
-        </div>
-        <div class="iconfontThree">
-            <div class="image">
-                <image style="width: 200px;height: 200px;"  class="img" :src="licensePhoto"></image>
+            <div class="iconfontTwo">
+                <div class="image">
+                    <image style="width: 200px;height: 200px;"  class="img" :src="palcePhoto"></image>
+                </div>
+                <div class="iconfont">
+                    <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palcelogo" >&#xe618;</text>
+                </div>
             </div>
-            <div class="iconfont">
-                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
+            <div class="license">
+                <text class="number">③</text>
+                <text class="licenseText">拍摄营业执照</text>
             </div>
-        </div>
+            <div class="iconfontThree">
+                <div class="image">
+                    <image style="width: 200px;height: 200px;"  class="img" :src="licensePhoto"></image>
+                </div>
+                <div class="iconfont">
+                    <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
+                </div>
+            </div>
         </scroller>
         <div class="button bkg-primary" @click="goComplete">
             <text class="buttonText">下一步</text>
@@ -230,7 +231,7 @@
                 originaltwo:'',
                 originalthree:'',
                 clicked:false
-        }
+            }
         },
         components: {
             navbar
@@ -272,14 +273,19 @@
 //          拍摄照片上传
             facelogo:function () {
                 var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (mes) {
+                    options,function (mes) {
                         if(mes.type == 'success') {
                             event.upload(mes.data.originalPath,function (data) {
                                 _this.originalone =data.data
                             },function () {
-                                
+
                             });
                             _this.logo = mes.data.thumbnailSmallPath;
 
@@ -288,9 +294,14 @@
             },
             palcelogo:function () {
                 var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (mes) {
+                    options,function (mes) {
                         if(mes.type == 'success') {
                             event.upload(mes.data.originalPath,function (data) {
                                 _this.originaltwo =data.data
@@ -303,9 +314,14 @@
             },
             licenselogo:function () {
                 var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (mes) {
+                    options,function (mes) {
                         if(mes.type == 'success') {
                             event.upload(mes.data.originalPath,function (data) {
                                 _this.originalthree =data.data
@@ -340,12 +356,12 @@
                     function (mes) {
                         _this.clicked =false
                         if (mes.type == "success") {
-                                event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code), function (message) {
-                                    _this.clicked =false
-                                    if (message.type == "success") {
-                                        event.closeURL(message);
-                                    }
-                                })
+                            event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code), function (message) {
+                                _this.clicked =false
+                                if (message.type == "success") {
+                                    event.closeURL(message);
+                                }
+                            })
                         } else {
                             event.toast(mes.content);
                         }

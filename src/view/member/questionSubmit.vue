@@ -190,7 +190,12 @@
 //            提交图片
             addPhotos(){
                 let _this = this;
-                album.openAlbumSingle(false, function(data){
+                var options = {
+                    isCrop:false,
+                    width:1,
+                    height:1
+                };
+                album.openAlbumSingle(options, function(data){
                     if(data.type == 'success'){
                         let item = {
                             paraImage : data.data.originalPath,
