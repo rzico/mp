@@ -3,7 +3,7 @@
         <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div >
             <!--顶部白色区域 classHeader(), -->
-            <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" @click="doNothing()" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw" >
                     <div style="width: 50px;">
@@ -763,7 +763,9 @@
 //            }
 //        },
         methods: {
-
+            doNothing:function () {
+              return;
+            },
             isEmpty:function () {
                 return this.articleList.length==0 && this.corpusId != '';
 //                return this.articleList.length==0 ;

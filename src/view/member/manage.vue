@@ -464,7 +464,7 @@
                 this.showShare = true;
             },
             gmchat:function () {
-                event.navToChat("u10201");
+                event.navToChat("u10491");
             },
 //            前往商品管理
             goodsManage:function () {

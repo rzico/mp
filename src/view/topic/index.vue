@@ -3,7 +3,7 @@
         <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div>
             <!--顶部白色区域-->
-            <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore bkg-primary" @click="doNothing" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw">
                     <div style="width: 50px;">
@@ -691,6 +691,9 @@
             })
         },
         methods: {
+            doNothing:function () {
+                return;
+            },
 // /            监听设备型号,控制隐藏的文集高度
             hideCorpus:function () {
                 let dc = utils.hideCorpus();
