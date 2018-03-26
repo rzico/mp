@@ -571,6 +571,9 @@
                     return;
                 }
                 this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 let _this = this;
 //                判断是否已发布过的商品，是就跳转编辑旧文章，不是就编辑新的文章
                 GET('weex/member/product/article.jhtml?id=' + this.goodsId,function (data) {
@@ -583,7 +586,6 @@
                                 if(e.result == 'success'){
                                     event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish' + '&goodsId=' + _this.goodsId ), function (data) {
                                         _this.doReset();
-                                        _this.clicked = false;
                                         if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
                                             let E = {
                                                 isDone : 'complete'
@@ -593,7 +595,6 @@
                                         }
                                     });
                                 }else{
-                                    _this.clicked = false;
                                     event.toast('网络不稳定');
                                 }
                             });
