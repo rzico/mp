@@ -25,7 +25,7 @@
                 <text class="fz35 ml10">添加照片</text>
             </div>
             <div class="button bw bkg-primary ml30 mr30 mt40" @click="submitNow()">
-                <text class="buttonText fz32">立即提交</text>
+                <text class="buttonText fz32 white">立即提交</text>
             </div>
         </scroller>
         <!--遮罩-->
