@@ -318,9 +318,14 @@
             },
             headLogo: function () {
                 var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (data) {
+                    options,function (data) {
                         _this.clicked = false;
                         if(data.type == 'success') {
 //                            _this.logo = data.data.thumbnailSmallPath;
