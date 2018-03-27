@@ -205,7 +205,7 @@
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -246,7 +246,7 @@
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -288,7 +288,7 @@
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -325,7 +325,7 @@
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle: '确定'
                     })
                     return
                 }
@@ -362,7 +362,7 @@
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle: '确定'
                     })
                     return
                 }
