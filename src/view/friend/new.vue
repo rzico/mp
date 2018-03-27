@@ -342,7 +342,8 @@
                     function (data) {
                         if (data.type == "success") {
                             event.toast(data.content);
-                            storage.setItem('hadNew','1');
+                            var listenData = utils.message('success','有新朋友','');
+                            event.sendGlobalEvent('onNewFriendChange',listenData);
                             _this.onrefresh();
                         } else {
                             event.toast(data.content);
