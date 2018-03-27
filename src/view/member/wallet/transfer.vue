@@ -104,7 +104,7 @@
     }
     .wechatIconFont{
         font-size: 80px;
-        color: chartreuse;
+        color: #62b900;
         margin-left: 30px;
         margin-top:5px;
     }

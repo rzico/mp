@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper sendMask"  @click="closeReward()">
-        <div  style="position: fixed;bottom: 0;" >
+        <div  style="position: fixed;bottom: 0;" @click="returnFunc()">
             <div class="box">
                 <div style="width: 750px;flex-direction: row;align-items: center;justify-content: center;height: 100px;background-color: #eee">
                     <text class="title">赞赏金额将全数转入作者钱包</text>
@@ -145,6 +145,9 @@
             onchange:function (id) {
                 this.id = id;
             },
+            returnFunc:function () {
+                return;
+            }
         }
 
     }
