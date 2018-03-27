@@ -440,7 +440,8 @@
                 laud:0,
                 products:[],
                 isReview:0,
-                clicked:false
+                clicked:false,
+                goodsId:''
             }
         },
         filters:{
@@ -573,13 +574,14 @@
 
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
-                var op = getVal.split('=');
-                if(op[0] == 'articleId') {
+//                var op = getVal.split('=');
+                var urlId = utils.getUrlParameter('articleId');
+                if(!utils.isNull(urlId)) {
                     let options = {
                         type:'article',
-                        key:op[1]
+                        key:urlId
                     };
-                    _this.articleId = op[1];
+                    _this.articleId = urlId;
                     if(_this.articleId.length == 19){//19位的id为草稿文章
                     }else{
                         GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
@@ -591,10 +593,19 @@
                             return;
                         });
                     };
+
+//                  第一次发布的商品  记录商品id
+                    if(!utils.isNull(utils.getUrlParameter('goodsId'))){
+                        this.goodsId = utils.getUrlParameter('goodsId');
+                    }
                     //从缓存读取数据 写入界面
                     _this.readData(options);
-                }else if(op[0] == 'goodsStorageName'){//读取商品缓存并写入页面之中。
-                    storage.getItem(op[1], function (e) {
+                }else if(utils.getUrlParameter('goodsStorageName') == 'goodsPublish'){//读取商品缓存并写入页面之中。
+//                  第一次发布的商品  记录商品id
+                    if(!utils.isNull(utils.getUrlParameter('goodsId'))){
+                        this.goodsId = utils.getUrlParameter('goodsId');
+                    }
+                    storage.getItem('goodsPublish', function (e) {
                         if (e.result == 'success') {
                             var goodsInfo = JSON.parse(e.data);
                             _this.coverImage =  goodsInfo.thumbnail;
@@ -617,7 +628,7 @@
 //                            存储页面数据
                             _this.saveDraft();
 //                          把缓存删除
-                            storage.removeItem(op[1], e => {
+                            storage.removeItem('goodsPublish', e => {
                             })
                         }
                     });
@@ -1378,13 +1389,6 @@
 //                判断是再次编辑还是初次编辑;
                 let sendId =  utils.isNull(_this.articleId) ? _this.timestamp : _this.articleId;
 
-//                记录商品id，记录商品发布。
-//                var goodIdList = [];
-//                this.paraList.forEach(function(item){
-//                  if(item.mediaType == 'product')  {
-//                      goodIdList.push(item.id);
-//                  }
-//                })
                 let articleData = {
                     thumbnail:this.serveCover,
                     music:_this.musicData,
@@ -1392,13 +1396,12 @@
                     id:sendId,
                     title:_this.setTitle,
                     votes:_this.voteData,
-                    isDraft:false,
-//                    goodsId:goodIdList
+                    isDraft:false
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
-                POST('weex/member/article/submit.jhtml',articleData).then(
+                POST('weex/member/article/submit.jhtml?goodsId='+_this.goodsId,articleData).then(
                     function (res) {
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
