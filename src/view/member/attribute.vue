@@ -399,7 +399,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                let senfData = this.autograph;
+                let senfData = this.autograph == '未填写' ? '' : this.autograph;
                 let textData = {
                     autograph:senfData
                 };

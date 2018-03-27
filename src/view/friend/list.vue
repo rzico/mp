@@ -497,7 +497,11 @@
             });
 //            消息红点控制
             globalEvent.addEventListener("onNewFriendChange", function (e) {
-                _this.newFriendNum = 0;
+                if(e.data.content == '有新朋友'){
+                    _this.hadFriend();
+                }else{
+                    _this.newFriendNum = 0;
+                }
             });
         },
         methods: {
@@ -740,12 +744,6 @@
                                     }
                                 })
                             }
-                            storage.getItem('hadNew', e => {
-                                if(e.data != 'undefined'){
-                                    _this.hadFriend();
-                                }
-                                storage.removeItem('hadNew');
-                            })
 
 
                         });
