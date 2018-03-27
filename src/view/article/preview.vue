@@ -926,7 +926,7 @@
                                         }
                                     )
                                 } else {
-                                    _this.close(utils.message("error","error"));
+                                    _this.close();
                                 }
                             })
                         } else {

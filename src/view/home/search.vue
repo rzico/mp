@@ -54,33 +54,34 @@
         <!--数据显示-->
         <scroller v-if="isSearch"  @loadmore="onloading" loadmoreoffset="50" >
             <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-                <!--<text class="indicator">{{refreshState}}</text>-->
+            <!--<text class="indicator">{{refreshState}}</text>-->
             <!--</refresh>-->
             <!--顶部标题分类栏-->
             <div class="mt20" :style="{minHeight:screenHeight + 'px'}">
                 <!--无数据提示-->
                 <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
                 <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30 ">
-                    <!--朋友-->
-                    <div  v-for="(item,index) in searchList.friend" v-if="index <= 9" class="cell-line">
-                        <!--类别-->
-                        <div  v-if="isRepeat(index)" class="pl30 pr30  bgWhite">
-                            <div class="typeTextBox  space-between">
-                                <text class="title fz28 pb15" >相关专栏</text>
-                                <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(2)" v-if="searchList.length > 10">更多&#xe630;</text>
-                            </div>
+                    <!--类别-->
+                    <div   class="pl30 pr30  bgWhite">
+                        <div class="typeTextBox  space-between">
+                            <text class="title fz28 pb15" >相关专栏</text>
+                            <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(2)" v-if="searchList.length > 10">更多&#xe630;</text>
                         </div>
-                        <div class="contentBox pb15">
-                            <!--好友-->
-                            <div class="singleUserBox"  @click="goAuthor(item.id)">
-                                <image class="logo" :src="item.logo | watchFriendLogo"></image>
-                                <div >
-                                    <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
+                        <!--朋友-->
+                        <div  class="cell-line">
+                            <div class="contentBox pb15">
+                                <!--好友-->
+                                <div class="singleUserBox"  v-for="(item,index) in searchList.friend" v-if="index <= 9" @click="goAuthor(item.id)">
+                                    <image class="logo" :src="item.logo | watchFriendLogo"></image>
+                                    <div >
+                                        <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
                 </div>
                 <!--更多专栏搜索-->
                 <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 2" class="bt30">
@@ -161,7 +162,7 @@
                 </div>
             </div>
             <!--<loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">-->
-                <!--<text class="indicator">加载中...</text>-->
+            <!--<text class="indicator">加载中...</text>-->
             <!--</loading>-->
         </scroller>
     </div>
@@ -474,7 +475,6 @@
             },
 //            输入时
             oninput:function (val) {
-                utils.debug(val);
                 let _this = this;
                 this.keyword = val;
                 _this.searchList = {
@@ -774,7 +774,7 @@
                                 data.data.data.forEach(function (item) {
                                     _this.searchList.friend.push(item);
                                 });
-                           _this.pageStart = data.data.start + data.data.data.length;
+                                _this.pageStart = data.data.start + data.data.data.length;
                             }else if(data.type == 'success' && data.data.data == ''){
                             }else{
                                 event.toast(data.content);
