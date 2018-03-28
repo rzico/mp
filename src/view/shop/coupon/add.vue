@@ -152,9 +152,10 @@
     .inputconditions{
         font-size: 32px;
         color: red;
-        height: 60px;
+        height: 50px;
         margin-left: 20px;
-        width: 150px;
+        margin-right: 20px;
+        width: 180px;
     }
     .inputMoney{
         font-size: 28px;
@@ -167,7 +168,7 @@
         font-size: 32px;
         color: red;
         height: 50px;
-        margin-left: 30px;
+        margin-left: 10px;
         margin-right: 20px;
         width: 250px;
         text-align: right;
