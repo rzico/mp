@@ -156,6 +156,7 @@
         margin-left: 20px;
         margin-right: 20px;
         width: 180px;
+        margin-top: 5px;
     }
     .inputMoney{
         font-size: 28px;
@@ -168,6 +169,7 @@
         font-size: 32px;
         color: red;
         height: 50px;
+        margin-top: 5px;
         margin-left: 10px;
         margin-right: 20px;
         width: 250px;
