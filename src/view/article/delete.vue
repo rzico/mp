@@ -4,7 +4,7 @@
         <navbar :title="title"  @goback="goback" ></navbar>
         <scroller>
             <!--网页-->
-            <web class="webView" ref="webView" :style="{height:screenHeight}" :src="webUrl"></web>
+            <web class="webView" ref="webView":style="{bottom:bottomNum + 100}"  :src="webUrl"></web>
             <div class="bottomBtnBox">
                 <div class="bottomBtn " @click="jumpRestore()">
                     <text class="fz35" :style="{fontFamily:'iconfont'}">&#xe633;</text>
@@ -76,6 +76,7 @@
                 webUrl:'',
                 articleId:'',
                 screenHeight:0,
+                bottomNum:0,
             }
         },
         components: {
@@ -86,6 +87,10 @@
         },
         created(){
             var _this = this;
+//            判断是iponex就动态获取底部上弹高度
+            if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
+                this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
+            }
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
             this.screenHeight = utils.fullScreen(237);
