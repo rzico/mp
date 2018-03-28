@@ -631,9 +631,14 @@
 //            初始商品选择图片
             firstImg() {
                 let _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true, function (mes) {
+                    options, function (mes) {
                         if (mes.type == 'success') {
                             _this.firstParaImage = mes.data.originalPath;
                             _this.firstThumbnailImg = mes.data.thumbnailSmallPath;
@@ -647,9 +652,14 @@
 //            新增的商品行选择图片
             goodsImg(item) {
                 let _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true, function (mes) {
+                    options, function (mes) {
                         if (mes.type == 'success') {
                             item.paraImage = mes.data.originalPath;
                             item.thumbnail = mes.data.thumbnailSmallPath;

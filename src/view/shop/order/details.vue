@@ -1,13 +1,13 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
-        <scroller   @loadmore="onloading" loadmoreoffset="50" style="padding-bottom:100px">
+        <scroller   @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
-            <div v-else v-for="(item,index) in ordersList">
+            <div v-else v-for="(item,index) in ordersList" :class="[item.status == 'unpaid' || item.status == 'refunding' || item.status ==  'unshipped' || item.status ==  'returning' ? 'hasPb100' : '']" >
                 <!--<div class="flex-row infoLines mt20 infoWhiteColor" >-->
                 <!--<text class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe604;</text>-->
                 <!--<text class="title">感谢您在xxx购物,欢迎您再次光临!</text>-->
@@ -169,11 +169,11 @@
                         <text class="title footText " @click="returnGoods(item.sn)">确认退货</text>
                     </div>
                 </div>
-                <div class="flex-row flex-center goodsFoot boder-top" v-else>
-                    <div>
-                        <text class="title  " @click="returnGoods(item.sn)">该订单已关闭</text>
-                    </div>
-                </div>
+                <!--<div class="flex-row flex-center goodsFoot boder-top" v-else>-->
+                    <!--<div>-->
+                        <!--<text class="title  " @click="returnGoods(item.sn)">该订单已关闭</text>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </scroller>
 
@@ -181,6 +181,9 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .hasPb100{
+        padding-bottom: 100px;
+    }
     .copyBorder{
         border-color: #ccc;
         border-width: 1px;

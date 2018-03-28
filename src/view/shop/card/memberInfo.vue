@@ -51,7 +51,7 @@
             </div>
             <div class="cell-panel space-between cell-clear" @click="petdividend()" v-if="data.card.type == 'partner'">
                 <div class="flex-row">
-                    <text class="title ml10">股东比例</text>
+                    <text class="title ml10">分红比例</text>
                 </div>
                 <div class="flex-row flex-end" >
                     <text class="sub_title">{{data.card.bonus}}%</text>
@@ -205,7 +205,7 @@
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -246,7 +246,7 @@
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -288,7 +288,7 @@
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -325,7 +325,7 @@
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle: '确定'
                     })
                     return
                 }
@@ -362,7 +362,7 @@
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle: '确定'
                     })
                     return
                 }
