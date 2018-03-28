@@ -17,7 +17,8 @@
                 <!--文章封面-->
                 <div style="position: relative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
                     <!--&lt;!&ndash;不能用过滤器,在上啦加载push时 会渲染不出来&ndash;&gt;-->
                     <!--<image  :src="item.thumbnail"  resize="cover" class="articleCover"></image>-->
 
@@ -102,6 +103,7 @@
     .coverAbsoTop{
         position: absolute;
         top:0;
+        background-color: rgba(136,136,136,0.1);
     }
     .articleBox {
         background-color: #ffffff;

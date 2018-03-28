@@ -8,7 +8,8 @@
                 <slider class="slider" interval="3000" auto-play="true">
                     <div class="frame" v-for="img in imageList">
                         <!--配合图片懒加载，先显示一个本地图片-->
-                        <image  :src="loadingImg"  v-if="!img.loading"  resize="cover" class="slideImage coverAbsoTop" ></image>
+                        <!--<image  :src="loadingImg"  v-if="!img.loading"  resize="cover" class="slideImage coverAbsoTop" ></image>-->
+                        <div  v-if="!img.loading"  class="slideImage coverAbsoTop "></div>
                         <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                         <image class="slideImage" resize="cover"  @appear="onImageAppear(img)"  @load="onImageLoad(img)"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
                     </div>
@@ -52,7 +53,8 @@
                     <!--文章封面-->
                     <div style="position: relative">
                         <!--配合图片懒加载，先显示一个本地图片-->
-                        <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempOneImg coverAbsoTop" ></image>
+                        <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempOneImg coverAbsoTop" ></image>-->
+                        <div  v-if="!item.loading"  class="tempOneImg coverAbsoTop "></div>
                         <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                         <image  :src="item.thumbnail"  @appear="onImageAppear(item)"  @load="onImageLoad(item)"  resize="cover" class="tempOneImg"></image>
                     </div>
@@ -63,7 +65,8 @@
                 <!--文章封面-->
                 <div class="positionRelative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempTwoCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempTwoCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="tempTwoCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)"  resize="cover" class="tempTwoCover" ></image>
                     <div class="tempTwoMask"></div>
@@ -233,7 +236,8 @@
                 <!--文章封面-->
                 <div style="position: relative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
@@ -284,7 +288,8 @@
                 <!--文章封面-->
                 <div style="position: relative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
@@ -310,7 +315,8 @@
                 <!--文章封面-->
                 <div class="positionRelative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="tempEightCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail"  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="tempEightCover" ></image>
                     <div class="tempTwoMask"></div>
@@ -361,7 +367,8 @@
                 <!--文章封面-->
                 <div style="position: relative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>-->
+                    <div v-if="!item.loading"  class="tempEightCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail"  resize="cover" @appear="onImageAppear(item)"  @load="onImageLoad(item)"  class="articleCover"></image>
                 </div>
@@ -454,6 +461,7 @@
     .coverAbsoTop{
         position: absolute;
         top:0;
+        background-color: rgba(136,136,136,0.1);
     }
 
     /*<!--轮播图-->*/
