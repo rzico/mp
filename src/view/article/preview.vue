@@ -500,15 +500,17 @@
                     setTimeout(function () {
                         _this.clicked = false;
                     },1500)
-                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                            let E = {
-                                isDone : 'complete'
-                            }
-                            let backData = utils.message('success','成功',E);
-                            event.closeURL(backData);
-                        }
-                    })
+//                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+//                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                            let E = {
+//                                isDone : 'complete'
+//                            }
+//                            let backData = utils.message('success','成功',E);
+//                            event.closeURL(backData);
+//                        }
+//                    })
+                    event.router(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId));
+
                 }else{
                     this.isOperation = true;
                 }
@@ -516,13 +518,12 @@
 //            点击操作里的编辑
             operationEditor(){
                 this.isOperation = false;
-                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
-//                    _this.updateArticle();
-                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                        event.closeURL();
-                    }
-                })
+//                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+//                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                        event.closeURL();
+//                    }
+//                })
+                event.router(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId));
             },
 //            点击操作里的设置
             operationSet(){
@@ -544,8 +545,8 @@
             },
 //            点击返回
             goback(){
-                event.closeURL();
-//                event.closeRouter();
+//                event.closeURL();
+                event.closeRouter();
             },
 //            点击下一步 跳转文章设置。
             goOption(){

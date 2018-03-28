@@ -1011,18 +1011,13 @@
                         })
                 }else if(item.value.isDraft){
                     event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + item.key),
-//                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
                         function () {
                             _this.clicked = false;
-//                    _this.updateArticle();
                         })
                 }else{
-//                    utils.debug('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish);
                     event.openURL(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish ),
-//                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
                         function () {
                             _this.clicked = false;
-//                    _this.updateArticle();
                         })
                 }
             },
