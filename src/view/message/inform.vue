@@ -30,7 +30,7 @@
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">商品说明:</text>
-                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.orderItems[0].name}}{item.ext.orderItems[0].spec}}</text>
+                        <text class=" fz30 gray ml10 contentLimit">{{item.ext.orderItems[0].name}}{{item.ext.orderItems[0].spec}}</text>
                     </div>
                     <div class="bottomBtn">
                         <text class="title">查看详情</text>

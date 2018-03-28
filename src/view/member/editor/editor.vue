@@ -1174,6 +1174,8 @@
                         if(data.type == 'success'){
                             //这边会由于避免重复渲染而需要再次向服务器上传该图片
                             _this.serveCover = data.data;
+//                           存储页面数据
+                            _this.saveDraft();
 //                        上传段落图片
                             _this.sendImage(0);
                         }else{
@@ -1213,6 +1215,7 @@
                     }else if(mediaType == 'video'){//如果是视频就将缩略图进行赋值
                         _this.paraList[sendIndex].serveThumbnail = _this.paraList[sendIndex].thumbnailImage;
                     }
+
                     sendIndex ++ ;
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){
@@ -1239,6 +1242,9 @@
                             if(mediaType == 'image' || mediaType == 'product'){
                                 //                            向后台获取缩略图
                                 _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
+
+//                                      保存缓存
+                                _this.saveDraft();
 //                                    因为异步操作,所以要分别在if elseif里写下列代码
                                 sendIndex ++ ;
 //                        判断是否最后一张图
@@ -1254,6 +1260,9 @@
                                     if(e.type == 'success'){
                                         //                            向后台获取缩略图 (视频不需要获取缩略图)
                                         _this.paraList[sendIndex].serveThumbnail = e.data;
+
+//                                      保存缓存
+                                        _this.saveDraft();
 //                                        event.toast(_this.paraList[sendIndex].serveThumbnail);
                                     }else{//上传失败
                                         _this.toSendArticle = false;

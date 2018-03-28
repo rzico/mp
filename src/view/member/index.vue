@@ -129,7 +129,7 @@
                         </div>
                         <!--右侧隐藏栏-->
                         <div class="rightHidden" v-if="item.value.articleOption.articleCatalog.id != '99'">
-                            <div class="rightHiddenSmallBox">
+                            <div class="rightHiddenSmallBox pt40">
                                 <div class="rightHiddenIconBox" @click="jumpEditor(item.key)">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                                     <text class="rightHiddenText">编辑</text>
@@ -139,7 +139,7 @@
                                     <text class="rightHiddenText redColor" >删除</text>
                                 </div>
                             </div>
-                            <div class="rightHiddenSmallBox">
+                            <div class="rightHiddenSmallBox pb40">
                                 <div class="rightHiddenIconBox"  @click="jumpTop(item,index)">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>
                                     <text class="rightHiddenText" v-if="item.sort.substring(0,1) != '1'">置顶</text>
@@ -322,7 +322,7 @@
         position: absolute;
         height: 79px;
         width:20px;
-        /*background-color: #F8F9FC;*/
+           /*background-color: #F8F9FC;*/
         top:0;
         opacity: 0.7;
     }
@@ -347,7 +347,8 @@
     }
     .rightHiddenSmallBox{
         flex-direction: row;
-        flex: 1;
+        height: 304px;
+        /*flex: 1;*/
         justify-content: space-around;
         align-items: center;
     }
@@ -375,7 +376,9 @@
         top: 0;
         background-color: #f4f4f4;
         width: 330px;
-        height:533px ;
+        /*height:533px ;*/
+        height: 608px;
+
         /*height:457px ;*/
         /*height:502px ;*/
         /*align-items: center;*/
