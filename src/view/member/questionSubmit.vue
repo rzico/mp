@@ -12,7 +12,7 @@
             </div>
             <div  class="imageBox mt40 ml30" v-if="hasImage()" >
                 <div v-for="(item,index) in imageList">
-                    <image class="goodsImg "  :src="item.thumbnailImage"></image>
+                    <image class="goodsImg " resize="cover" :src="item.thumbnailImage"></image>
                     <!--右上角关闭按钮"x"-->
                     <div class="paraClose bkg-primary" @click="delImage(index)" >
                         <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
@@ -196,7 +196,6 @@
 
                         }
                     },function (data) {
-                        utils.debug(data);
                         _this.ctrlProcess(data);
                     })
                 }
@@ -211,7 +210,6 @@
                 }
                 POST('weex/member/feedback/add.jhtml?content=' + encodeURIComponent(this.questionContent) + '&imgs=' + imgsList ).then(
                     function (data) {
-                        utils.debug(data);
                         if(data.type == 'success'){
                             utils.debug('提交成功');
                             event.closeURL();
