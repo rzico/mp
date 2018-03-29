@@ -377,14 +377,13 @@
 //                                }
 //                                let backData = utils.message('success','成功',E);
 //                                event.closeURL(backData);
-                                event.openURL(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=true'),
-                                    function () {
+
                                         let E = {
                                             isDone : 'complete'
                                         }
                                         let backData = utils.message('success','成功',E);
                                         event.closeURL(backData);
-                                    })
+//                              event.router(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=true'));
                             } else {
                                 event.toast(data.content);
                             }

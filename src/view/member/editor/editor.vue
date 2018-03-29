@@ -1421,19 +1421,19 @@
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','');
                                     event.sendGlobalEvent('onArticleChange',listenData);
-                                    event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
-                                        _this.currentPro = 0;//当前进度
-                                        _this.proTotal = 0;//总的进度
-                                        _this.processWidth = 0;//进度条宽度
-//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == ''){
-                                        let E = {
-                                            isDone : 'complete'
-                                        }
-                                        let backData = utils.message('success','成功',E);
-                                        event.closeURL(backData);
+//                                    event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
+//                                        _this.currentPro = 0;//当前进度
+//                                        _this.proTotal = 0;//总的进度
+//                                        _this.processWidth = 0;//进度条宽度
+////                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == ''){
+//                                        let E = {
+//                                            isDone : 'complete'
 //                                        }
-                                    })
-//                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish));
+//                                        let backData = utils.message('success','成功',E);
+//                                        event.closeURL(backData);
+////                                        }
+//                                    })
+                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish + '&isRouter=1'));
                                 }else{
                                     _this.toSendArticle = false;
 //                防止重复点击

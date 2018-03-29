@@ -997,6 +997,9 @@
                 this.clicked = true;
 //                utils.debug(item);
                 var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if(item.value.articleOption.articleCatalog.id == '99'){
                     event.openURL(utils.locate('view/article/delete.js?articleId=' + item.key),
                         function (data) {
@@ -1010,20 +1013,17 @@
                             }
                         })
                 }else if(item.value.isDraft){
-                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + item.key),
-//                    event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,
-                        function () {
-                            _this.clicked = false;
-//                    _this.updateArticle();
-                        })
+                    event.router(utils.locate('view/member/editor/editor.js?articleId=' + item.key));
+//                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + item.key),
+//                        function () {
+//                            _this.clicked = false;
+//                        })
                 }else{
-//                    utils.debug('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish);
-                    event.openURL(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish ),
-//                    event.openURL('http://192.168.2.157:8081/preview.weex.js?articleId=' + id + '&publish=' + publish,
-                        function () {
-                            _this.clicked = false;
-//                    _this.updateArticle();
-                        })
+                    event.router(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish));
+//                    event.openURL(utils.locate('view/article/preview.js?articleId=' + item.key  + '&publish=' + item.value.articleOption.isPublish ),
+//                        function () {
+//                            _this.clicked = false;
+//                        })
                 }
             },
 //            跳转帮助文章
