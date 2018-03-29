@@ -546,7 +546,11 @@
 //            点击返回
             goback(){
 //                event.closeURL();
-                event.closeRouter();
+                if(utils.isNull(utils.getUrlParameter('isRouter'))){
+                    event.closeURL();
+                }else{
+                    event.closeRouter();
+                }
             },
 //            点击下一步 跳转文章设置。
             goOption(){
@@ -560,11 +564,15 @@
                 },1500)
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                        let E = {
-                            isDone : 'complete'
-                        }
-                        let backData = utils.message('success','成功',E);
-                        event.closeURL(backData);
+//                        let E = {
+//                            isDone : 'complete'
+//                        }
+//                        let backData = utils.message('success','成功',E);
+//                        event.closeURL(backData);
+                            _this.publish = true;
+                            _this.showShare = true;
+                            _this.complete = '操作';
+                            _this.title = '文章详情';
                     }
                 });
 //                event.router(utils.locate('view/member/editor/option.js?articleId=' + _this.articleId));

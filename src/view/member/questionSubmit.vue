@@ -136,58 +136,116 @@
         methods:{
 //            立即提交
             submitNow(){
-                this.proTotal = this.imageList.length;
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 this.toSendArticle = true;
-                this.sendImage(0);
-
+                //                判断段落图片是否已上传
+                this.imageList.forEach(function (item) {
+                    if(!utils.isNull(item.paraImage) && item.paraImage.substring(0,4) != 'http'){
+                        _this.proTotal ++;
+                    }
+                });
+                if(this.imageList.length > 0){
+                    this.sendImage(0);
+                }else{
+                    this.realSave();
+                }
             },
             sendImage(sendIndex){
                 let _this = this;
                 let sendLength = _this.imageList.length;//获取图片数组总长度
-                event.upload(_this.imageList[sendIndex].paraImage,function (data) {
-                    if (data.type == 'success') {
-                        _this.imageList[sendIndex].paraImage = data.data;
-                        sendIndex ++ ;
+                var frontUrl = '';
+                if(!utils.isNull(_this.imageList[sendIndex].paraImage)){
+                    frontUrl = _this.imageList[sendIndex].paraImage.substring(0,4);
+                }
+//                判断是否已经是服务器图片
+                if(frontUrl == 'http'){
+                    sendIndex ++ ;
 //                        判断是否最后一张图
-                        if(sendIndex < sendLength){
+                    if(sendIndex < sendLength){
 //                            回调自己自己
-                            _this.sendImage(sendIndex)
-                        }else{//进行上传文章
-                            _this.realSave();
-                        }
-                    } else {
-                        //上传失败
-                        _this.toSendArticle = false;
-//                防止重复点击
-                        _this.clicked = false;
-                        _this.currentPro = 0;//当前进度
-                        _this.proTotal = 0;//总的进度
-                        _this.processWidth = 0;//进度条宽度
-                        event.toast(data.content);
-                        return;
-
+                        _this.sendImage(sendIndex)
+                    }else{//进行上传文章
+                        _this.realSave();
                     }
-                },function (data) {
-                    _this.ctrlProcess(data);
-                })
+                }else{
+                    event.upload(_this.imageList[sendIndex].paraImage,function (data) {
+                        if (data.type == 'success') {
+                            _this.imageList[sendIndex].paraImage = data.data;
+                            sendIndex ++ ;
+//                        判断是否最后一张图
+                            if(sendIndex < sendLength){
+//                            回调自己自己
+                                _this.sendImage(sendIndex)
+                            }else{//进行上传文章
+                                _this.realSave();
+                            }
+                        } else {
+                            //上传失败
+                            _this.toSendArticle = false;
+//                防止重复点击
+                            _this.clicked = false;
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 0;//总的进度
+                            _this.processWidth = 0;//进度条宽度
+                            event.toast(data.content);
+                            return;
+
+                        }
+                    },function (data) {
+                        utils.debug(data);
+                        _this.ctrlProcess(data);
+                    })
+                }
             },
             realSave(){
                 let _this = this;
-                _this.toSendArticle = false;
-              utils.debug('提交成功');
-              event.closeURL();
+                var imgsList = [];
+                if(this.imageList.length > 0){
+                    this.imageList.forEach(function (item) {
+                        imgsList.push(item.paraImage);
+                    })
+                }
+                POST('weex/member/feedback/add.jhtml?content=' + encodeURIComponent(this.questionContent) + '&imgs=' + imgsList ).then(
+                    function (data) {
+                        utils.debug(data);
+                        if(data.type == 'success'){
+                            utils.debug('提交成功');
+                            event.closeURL();
+                        }else{
+                            event.toast(data.content);
+                            //上传失败
+                            _this.toSendArticle = false;
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 0;//总的进度
+                            _this.processWidth = 0;//进度条宽度
+                        }
+
+                    },function (err) {
+                        event.toast(err.content);
+                        //上传失败
+                        _this.toSendArticle = false;
+                        _this.currentPro = 0;//当前进度
+                        _this.proTotal = 0;//总的进度
+                        _this.processWidth = 0;//进度条宽度
+                    }
+                )
+
             },
             hasImage(){
               return this.imageList.length > 0;
             },
             imageLength(){
-                return this.imageList.length < 10;
+                return this.imageList.length < 5;
             },
 //            删除图片
             delImage(index){
                 this.imageList.splice(index,1);
             },
-//            提交图片
+//            添加图片
             addPhotos(){
                 let _this = this;
                 var options = {

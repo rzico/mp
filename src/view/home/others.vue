@@ -253,11 +253,15 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
                     function () {
-                        _this.clicked = false;
                     }
                 )
+//                event.router(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true'));
+
             },
 
             onloading:function () {

@@ -1433,7 +1433,7 @@
 //                                        event.closeURL(backData);
 ////                                        }
 //                                    })
-                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish));
+                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish + '&isRouter=1'));
                                 }else{
                                     _this.toSendArticle = false;
 //                防止重复点击
