@@ -15,19 +15,19 @@
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
                 <div class="bottomBtnBox"  @click="goLaud()">
-                    <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                    <text class="fz26fff fzz45 " :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                     <text class="fz26fff "  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
                 </div>
                 <div class="bottomBtnBox"  @click="goShare(0)">
-                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                     <text class="fz26fff ">分享 {{shareNum}}</text>
                 </div>
                 <div class="bottomBtnBox" @click="goReview()">
-                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                     <text class="fz26fff ">评论 {{reviewNum}}</text>
                 </div>
                 <div class="bottomBtnBox"  @click="goReward()">
-                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
+                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
                     <text class="fz26fff ">赞赏</text>
                 </div>
             </div>
@@ -153,15 +153,18 @@
     .bottomBtnBox{
         height: 100px;
         flex: 1;align-items: center;justify-content: center;
+        padding-top:5px;
+        padding-bottom:5px;
     }
     .fz26fff{
         font-size: 26px;
         line-height: 26px;
         color: #444;
     }
-    .fz45{
-        font-size: 50px;
-        line-height:50px;
+    .fzz45{
+        font-size: 38px;
+        line-height:38px;
+        padding-bottom:10px;
     }
     .btnTextColor{
         color:#F0AD3C;

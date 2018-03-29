@@ -6,7 +6,7 @@
         </div>
         <div class="nav">
             <text class="nav_title">{{title}}</text>
-            <div class="flex-row" v-if="isSelf == 0">
+            <div class="flex-row" v-if="isSelf == 0 ">
                 <image :src="authorInfo.logo | watchLogo" class="articleLogo"></image>
                 <text class="ml10 mr10 articleAuthorName" >{{authorInfo.nickName | watchNickName}}</text>
                 <text class="articleFocus  primary" v-if="!authorInfo.hasFollow" @click="doFocus()">关注</text>
