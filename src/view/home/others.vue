@@ -8,6 +8,7 @@
         </cell>
         <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"   >
             <div  class="articleBox">
+                <!--文章头部-->
                 <div class="atricleHead">
                     <text class="articleTitle">{{item.title}}</text>
                 </div>

@@ -39,8 +39,11 @@
             </div>
         </div>
         <scroller  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
+            </refresh>
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-            <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
+            <div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
             <!--顶部个人信息栏-->
             <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
                 <!--背景图片-->
@@ -623,7 +626,7 @@
                 userSign:'未填写',
                 whichCorpus:0,
                 isNoArticle:false,
-//                refreshing:false,
+                refreshing:false,
 //                refreshState:'',
                 fontName: '&#xe685;',
                 collectNum:0,
@@ -723,7 +726,8 @@
             let _this = this;
             utils.initIconFont();
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(316);
+//            this.screenHeight = utils.fullScreen(316);
+            this.screenHeight = utils.fullScreen(216);
             this.UId = event.getUId();
 //           获取用户信息;
             this.updateUserInfo();
@@ -747,24 +751,23 @@
                     _this.updateUserInfo();
                 }
             });
-
         },
 
-////        dom呈现完执行滚动一下
-//        updated(){
-////            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-//            if(this.hadUpdate){
-//                return;
-//            }
-//            this.hadUpdate = true;
-////            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-//            if(!utils.isIosSystem()){
-//                const el = this.$refs.topBox//跳转到相应的cell
-//                dom.scrollToElement(el, {
-//                    offset: -119
-//                })
-//            }
-//        },
+//        dom呈现完执行滚动一下
+        updated(){
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            if(this.hadUpdate){
+                return;
+            }
+            this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+            if(!utils.isIosSystem()){
+                const el = this.$refs.topBox//跳转到相应的cell
+                dom.scrollToElement(el, {
+                    offset: -119
+                })
+            }
+        },
         methods: {
             doNothing:function () {
               return;
@@ -1327,32 +1330,33 @@
                 this.settingColor = '';
 //                event.changeWindowsBar("false");
             },
-//            onrefresh:function () {
-//                var _this = this;
-//                _this.refreshing = true;
-//                animation.transition(_this.$refs.refreshImg, {
-//                    styles: {
-//                        transform: 'rotate(360deg)',
-//                    },
-//                    duration: 1000, //ms
-//                    timingFunction: 'linear',//350 duration配合这个效果目前较好
-//                    needLayout:false,
-//                    delay: 0 //ms
-//                });
-//                setTimeout(() => {
-//                    animation.transition(_this.$refs.refreshImg, {
-//                        styles: {
-//                            transform: 'rotate(0)',
-//                        },
-//                        duration: 10, //ms
-//                        timingFunction: 'linear',//350 duration配合这个效果目前较好
-//                        needLayout:false,
-//                        delay: 0 //ms
-//                    })
-//                    _this.refreshing = false
+            onrefresh:function () {
+                var _this = this;
+                _this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                });
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    _this.refreshing = false
 //                    _this.getAllArticle();
-//                }, 1000);
-//            },
+                    _this.updateUserInfo();
+                }, 1000);
+            },
 //            还原
             jumpRestore(item,index){
                 if (this.clicked) {

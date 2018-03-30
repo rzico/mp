@@ -3,7 +3,7 @@
         <!--导航栏-->
         <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
         <!--<div  :style="{height:scrollHeight}" >-->
-        <div class="articleOutBox" :class="[articleOutBoxTop()]">
+        <div class="articleOutBox" :class="[articleOutBoxTop()]" >
             <!--网页:style="{height:screenHeight}"-->
             <web class="webView" ref="webView" :style="{bottom:bottomNum + 100}"  :src="webUrl" ></web>
             <!--下一步-->
@@ -284,7 +284,7 @@
         width:750px;
         /*height:100px;*/
         background-color: #fff;
-        position: fixed;
+        position: absolute;
         border-style:solid;
         border-top-width: 1px;
         border-color: #ccc;
@@ -341,7 +341,9 @@
                 showShare:false,
                 screenHeight:0,
                 clicked:false,
-                authorInfo:[],
+                authorInfo:{
+                    nickName:'initNickDefault'
+                },
                 scrollHeight:0,
                 bottomNum:0,
                 rewardShow:false,
@@ -355,7 +357,6 @@
             complete:{ default : ''},
         },
         created(){
-
             var _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
