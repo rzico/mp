@@ -1333,6 +1333,7 @@
             onrefresh:function () {
                 var _this = this;
                 _this.refreshing = true;
+                _this.canScroll = false;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
                         transform: 'rotate(360deg)',
@@ -1352,7 +1353,8 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    _this.refreshing = false
+                    _this.refreshing = false;
+                    _this.canScroll = true;
 //                    _this.getAllArticle();
                     _this.updateUserInfo();
                 }, 1000);

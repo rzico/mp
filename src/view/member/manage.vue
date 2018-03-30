@@ -134,7 +134,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear\" @click="gmchat()">
+                <div class="cell-panel space-between " @click="gmchat()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
                         <text class="title ml10">联系客服</text>
@@ -212,7 +212,7 @@
 <script>
     import { POST, GET } from '../../assets/fetch';
     import utils from '../../assets/utils';
-    import payment from '../../include/payment.vue'
+    import payment from '../../include/payment.vue';
     const event = weex.requireModule('event');
     const modal = weex.requireModule('modal');
     import navbar from '../../include/navbar.vue';
@@ -523,7 +523,7 @@
                         return ;
                     }
                 );
-            }
+            },
 
         }
     }

@@ -91,11 +91,13 @@
         <!--<div class="footer button-panel" @click="goDone()">-->
         <!--<text class="button">完成</text>-->
         <!--</div>-->
-        <div  class="footer button-panel">
+        <div  class="footer button-panel" style="position: absolute">
             <text class="button" @click="goDone()">完成</text>
         </div>
-    </div>
+        <!--遮罩-->
+        <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
 
+    </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 
@@ -114,6 +116,7 @@
     }
 </style>
 <script>
+    import process from '../../../widget/process.vue';
     import {dom,event,stream,storage} from '../../../weex.js';
     var navigator = weex.requireModule('navigator');
     import { POST, GET } from '../../../assets/fetch';
@@ -123,6 +126,10 @@
     export default {
         data(){
             return{
+                toSendArticle:false,//控制进度条 遮罩显示
+                currentPro:0,//当前进度
+                proTotal:0,//总的进度
+                processWidth:0,//进度条宽度
                 scope:0,
                 password:'',
                 corpusName:'全部文章',
@@ -228,7 +235,7 @@
             },
         },
         components: {
-            navbar
+            navbar,process
         },
         props: {
             title: { default: "选项" }
@@ -308,6 +315,19 @@
             contributeChange:function (e) {
                 this.contributeSwitch = e.value;
             },
+//            清楚掉假的进度条。清空假进度条，关闭定时器.
+            clearDummyProcess(timer){
+//                                        解除定时器
+                if (!utils.isNull(timer))  {
+                    clearInterval(timer);
+//                  此处的timer虽然是参数传过来，在js里还是有把整个变量地址传过来.所以可以更改为null;
+                    timer = null;
+                }
+                this.currentPro = 0;//当前进度
+                this.proTotal = 0;//总的进度
+                this.processWidth = 0;//进度条宽度
+                this.toSendArticle = false;
+            },
 //            点击完成，进行发布
             goDone:function () {
                 if (this.clicked) {
@@ -315,6 +335,25 @@
                 }
                 this.clicked = true;
                 var _this = this;
+
+                _this.toSendArticle = true;
+                _this.currentPro = 0;//当前进度
+                _this.proTotal = 1;//总的进度
+                _this.processWidth = 0;//进度条宽度
+                _this.processWidth = _this.processWidth  + (70 * Math.random());
+//                                  利用定时器 模拟进度条效果
+                var timer = setInterval(function () {
+                    if(_this.processWidth < 500){
+                        let middle = _this.processWidth  + (70 * Math.random()) ;
+                        if(middle > 500){
+                            _this.processWidth = 500;
+                        }else{
+                            _this.processWidth = middle;
+                        }
+                    }
+                },200);
+
+
                 var authorityData ='';
                 switch (this.scope){
                     case 0 ://公开
@@ -368,6 +407,7 @@
 //                1是置顶（默认倒序）  keyword ",[1],文章title,"
                         event.save(saveData,function(data) {
                             if (data.type == 'success') {
+                                _this.processWidth = 500;//进度条宽度
 //                                event.toast('设置成功');
 //                                全局监听 文章变动
                                 let listenData = utils.message('success','文章改变','')
@@ -378,23 +418,33 @@
 //                                let backData = utils.message('success','成功',E);
 //                                event.closeURL(backData);
 
-                                        let E = {
-                                            isDone : 'complete'
-                                        }
-                                        let backData = utils.message('success','成功',E);
-                                        event.closeURL(backData);
+                                if (!utils.isNull(timer))  {
+                                    clearInterval(timer);
+//                  此处的timer虽然是参数传过来，在js里还是有把整个变量地址传过来.所以可以更改为null;
+                                    timer = null;
+                                }
+
+                                let E = {
+                                    isDone : 'complete'
+                                }
+                                let backData = utils.message('success','成功',E);
+                                event.closeURL(backData);
+
 //                              event.router(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=true'));
                             } else {
                                 event.toast(data.content);
+                                _this.clearDummyProcess(timer);
                             }
                         })
                     }else{
                         event.toast(data.content);
+                        _this.clearDummyProcess(timer);
                     }
                     _this.clicked = false;
                 },function (err) {
                     _this.clicked = false;
                     event.toast(err.content);
+                    _this.clearDummyProcess(timer);
                 })
             },
         }

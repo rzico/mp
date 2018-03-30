@@ -7,11 +7,12 @@
             <!--网页:style="{height:screenHeight}"-->
             <web class="webView" ref="webView" :style="{bottom:bottomNum + 100}"  :src="webUrl" ></web>
             <!--下一步-->
-            <div v-if="!publish" >
-                <div class="footBox bkg-primary cb-top " :style="{height:bottomNum + 100}" @click="goOption()">
-                    <text class="nextStep">下一步</text>
+                <div class="footBox bkg-primary cb-top " v-if="!publish" :style="{height:bottomNum + 100}" @click="goOption()">
+                    <!--这边要兼容ipone7plus-->
+                    <div class="bkg-primary">
+                        <text class="nextStep">下一步</text>
+                    </div>
                 </div>
-            </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
                 <div class="bottomBtnBox"  @click="goLaud()">
