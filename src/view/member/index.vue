@@ -45,7 +45,7 @@
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
             <!--顶部个人信息栏-->
-            <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
+            <div class="topBox bkg-primary"  :class="[headerInfo()]"  ref='topBox'>
                 <!--背景图片-->
                 <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
                 <!--遮罩层-->
@@ -325,7 +325,7 @@
         position: absolute;
         height: 79px;
         width:20px;
-           /*background-color: #F8F9FC;*/
+        /*background-color: #F8F9FC;*/
         top:0;
         opacity: 0.7;
     }
@@ -337,9 +337,9 @@
 
     }
     /*.corpusBoxBorder{*/
-        /*border-bottom-width: 1px;*/
-        /*border-style: solid;*/
-        /*border-color: gainsboro;*/
+    /*border-bottom-width: 1px;*/
+    /*border-style: solid;*/
+    /*border-color: gainsboro;*/
     /*}*/
     .redColor{
         color: #D9141E;
@@ -723,6 +723,7 @@
             }
         },
         created:function () {
+
             let _this = this;
             utils.initIconFont();
 //            获取屏幕的高度
@@ -752,7 +753,6 @@
                 }
             });
         },
-
 //        dom呈现完执行滚动一下
         updated(){
 //            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
@@ -770,7 +770,7 @@
         },
         methods: {
             doNothing:function () {
-              return;
+                return;
             },
             isEmpty:function () {
                 return this.articleList.length==0 && this.corpusId != '';
@@ -822,11 +822,11 @@
                     if( data.type == "success") {
                         if(!utils.isNull(data.data)){
                             data.data.forEach(function (item) {
-    //                            将value json化
+                                //                            将value json化
                                 item.value = JSON.parse(item.value);
-    //                            将封面转为缩略图
-    //                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
-    //                          在全部文章里过滤掉已删除的文章
+                                //                            将封面转为缩略图
+                                //                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
+                                //                          在全部文章里过滤掉已删除的文章
                                 if(utils.isNull(_this.corpusId) && item.value.articleOption.articleCatalog.id == 99){
                                 }else{
                                     //                              把读取到的文章push进去文章列表
@@ -840,19 +840,19 @@
                             _this.helpList = [];//在push前要清空list
                             _this.helpList.push(
                                 {
-                                key:2,
-                                articleSign:'样例',
-                                articleTitle:'如何开通专栏',
-                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                                articleDate:'2017-10-19'
-                            },
+                                    key:2,
+                                    articleSign:'样例',
+                                    articleTitle:'如何开通专栏',
+                                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
+                                    articleDate:'2017-10-19'
+                                },
                                 {
-                                key:1,
-                                articleSign:'样例',
-                                articleTitle:'新手使用帮助！',
-                                articleCoverUrl:utils.locate('resources/images/help.jpg'),
-                                articleDate:'2017-10-19'
-                            })
+                                    key:1,
+                                    articleSign:'样例',
+                                    articleTitle:'新手使用帮助！',
+                                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
+                                    articleDate:'2017-10-19'
+                                })
                         }
                         _this.listCurrent = _this.listCurrent + _this.listPageSize;
                     }else{
@@ -860,19 +860,19 @@
                             _this.helpList = [];
                             _this.helpList.push(
                                 {
-                                key:2,
-                                articleSign:'样例',
-                                articleTitle:'如何开通专栏',
-                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                                articleDate:'2017-10-19'
-                            },
-                          {
-                                key:1,
-                                articleSign:'样例',
-                                articleTitle:'新手使用帮助！',
-                                articleCoverUrl:utils.locate('resources/images/help.jpg'),
-                                articleDate:'2017-10-19'
-                            })
+                                    key:2,
+                                    articleSign:'样例',
+                                    articleTitle:'如何开通专栏',
+                                    articleCoverUrl:utils.locate('resources/images/column.jpg'),
+                                    articleDate:'2017-10-19'
+                                },
+                                {
+                                    key:1,
+                                    articleSign:'样例',
+                                    articleTitle:'新手使用帮助！',
+                                    articleCoverUrl:utils.locate('resources/images/help.jpg'),
+                                    articleDate:'2017-10-19'
+                                })
                         }
                         return;
                     }
@@ -1333,7 +1333,6 @@
             onrefresh:function () {
                 var _this = this;
                 _this.refreshing = true;
-                _this.canScroll = false;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
                         transform: 'rotate(360deg)',
@@ -1353,8 +1352,7 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    _this.refreshing = false;
-                    _this.canScroll = true;
+                    _this.refreshing = false
 //                    _this.getAllArticle();
                     _this.updateUserInfo();
                 }, 1000);
