@@ -9,7 +9,10 @@
         </div>
         <div class="appellation">
             <text class="vendorName">商家名称</text>
+            <div style="flex-direction: row;align-items: center">
             <input type="text" placeholder="请输入商家名称" class="input" v-model="vendorName" @change="" @input="oninput"/>
+            <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+            </div>
         </div>
         <div class="industry" @click="industry">
             <div class="left">
@@ -29,21 +32,26 @@
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="address">
-            <div class="left">
+        <div class="appellation">
             <text class="detailedAddress">详细地址</text>
-            </div>
-            <div class="right">
-                <input type="text" placeholder="请输入详细地址" class="addressInput"  v-model="detailedAddress" @change="" @input="oninput4"/>
+            <div style="flex-direction: row;align-items: center">
+            <input type="text" placeholder="请输入详细地址" class="addressInput"  v-model="detailedAddress" @change="" @input="oninput4"/>
+            <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="name">
+        <div class="appellation">
             <text class="contactName">联系姓名</text>
+            <div style="flex-direction: row;align-items: center">
             <input type="text" placeholder="请输入联系姓名" class="input" v-model="contactName" @change="" @input="oninput2"/>
+            <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+            </div>
         </div>
-        <div class="call">
+        <div class="appellation">
             <text class="contactNumber">联系电话</text>
+            <div style="flex-direction: row;align-items: center">
             <input type="number" placeholder="请输入联系电话"  maxlength="11" class="input" v-model="contactNumber" @change="" @input="oninput3"/>
+            <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+            </div>
         </div>
         <div class="button bkg-primary" @click="goComplete">
             <text class="buttonText">下一步</text>
@@ -89,6 +97,7 @@
     .appellation{
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         border-bottom-width: 1px;
         border-bottom-color: #cccccc;
         background-color: white;
@@ -119,7 +128,7 @@
         font-size: 32px;
     }
     .industryName{
-        font-size: 28px;
+        font-size: 32px;
         color: #999;
     }
     /*商家区位*/
@@ -138,7 +147,7 @@
         font-size: 32px;
     }
     .generalLocation{
-        font-size: 28px;
+        font-size: 32px;
         color: #999;
     }
     /*详细地址*/
@@ -178,11 +187,13 @@
         padding-left: 100px;
         font-size: 32px;
         line-height: 32px;
+        text-align: right;
         height: 100px;
         width: 500px;
+        color: #999;
     }
     .addressInput{
-        padding-left: 100px;
+        text-align: right;
         font-size: 32px;
         line-height: 32px;
         width: 500px;
