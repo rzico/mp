@@ -3,10 +3,10 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://mopian.1xx.me';
+const websiteURL = 'http://weixin.rzico.com';
 // const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
-const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -88,7 +88,7 @@ let utilsFunc = {
         w = parseInt(w * proportion);
         h = parseInt(h * proportion);
         if (url.substring(0,11) == "http://cdnx") {
-            return url+"?x-oss-process=image/resize,w_"+w+",h_"+h+"";
+            return url+"?x-oss-process=image/resize,m_fill,w_"+w+",h_"+h+"";
         } else
         if (url.substring(0,10) == "http://cdn") {
             return url+"@"+w+"w_"+h+"h_1e_1c_100Q";

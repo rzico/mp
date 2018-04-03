@@ -16,16 +16,16 @@
             </div>
             <div class="scope">
                 <text class="scopeText" style="font-size: 32px">剩余张数</text>
-                <input type="number" placeholder="" class="inputMoney" v-model="number" @change="" @input=""/>
+                <input type="number" placeholder="请输入剩余张数" class="inputMoneyTwo" v-model="number" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">张</text>
             </div>
             <div class="money" v-if="codeName =='fullcut' || codeName =='discount'">
                 <div style="flex-direction: row;align-items: center;">
                 <text class="moneyText" style="font-size: 32px">{{frontTransfrom}}</text>
-                <input type="number" placeholder="" class="inputMoney" v-model="money" @change="" @input=""/>
+                <input type="number" :placeholder="bottomTransform" class="inputMoneyTwo" v-model="money" @change="" @input=""/>
                 <text class="conditionsText" style="font-size: 32px">{{transform}}</text>
                 </div>
-                <text class="inputPromptText">{{bottomTransform}}</text>
+                <!--<text class="inputPromptText">{{}}</text>-->
             </div>
             <div class="goods" v-if="codeName == 'exchange'" @click="goGoods()">
                 <div style="flex-direction: row;align-items: center">
@@ -145,16 +145,18 @@
     }
     .input{
         padding-left: 30px;
-        font-size: 28px;
+        font-size: 32px;
         height: 60px;
         width: 550px;
     }
     .inputconditions{
-        font-size: 28px;
+        font-size: 32px;
         color: red;
-        height: 60px;
+        height: 50px;
         margin-left: 20px;
-        width: 150px;
+        margin-right: 20px;
+        width: 180px;
+        margin-top: 5px;
     }
     .inputMoney{
         font-size: 28px;
@@ -162,6 +164,16 @@
         height: 50px;
         margin-left: 30px;
         width: 100px;
+    }
+    .inputMoneyTwo{
+        font-size: 32px;
+        color: red;
+        height: 50px;
+        margin-top: 5px;
+        margin-left: 10px;
+        margin-right: 20px;
+        width: 250px;
+        text-align: right;
     }
     .scope{
         flex-direction: row;
