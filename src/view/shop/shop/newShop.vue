@@ -108,7 +108,7 @@
     .vendorName{
         font-size: 32px;
     }
-    .fontsIcon{
+    .fontsIcon{ 
         font-size: 28px;
         color: #999;
     }
