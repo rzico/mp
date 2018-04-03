@@ -1,6 +1,6 @@
 <template>
     <!--<div  style="position: fixed;bottom: 0;background-color: rgba(0, 0, 0, 0.5);" v-if="isShow" >-->
-    <div   style="position: fixed;top: 0;bottom: 0;left: 0;right: 0;background-color: rgba(0, 0, 0, 0.5);" v-if="isShow" @click="maskHide()">
+    <div   style="position: fixed;top: 0;bottom: 0;left: 0;right: 0;background-color: rgba(0, 0, 0, 0.5);"  @click="maskHide()">
         <div class="maskHide" @click="maskHide()"></div>
         <div class="bigBox"  v-for="item in goodsData" @click="returnFunc()">
             <div class="box" >
@@ -73,7 +73,7 @@
                 </div>
             </div>
         </div>
-        <!--<AddressList ref="address" @selectAddress="selectAddress" @addressAdd="addressAdd" @toastShow="toastShow"></AddressList>-->
+        <!--<AddressList ref="address" v-if="addressListShow"></AddressList>-->
         <!--<AddressAdd ref="addressAdd" @selectAddress="selectAddress" @toastShow="toastShow"></AddressAdd>-->
         <!--免密支付-->
         <!--<weui-dialog ref="dialog" type="confirm" title="免密支付" confirmButton="确认支付" cancelButton="取消"-->
@@ -355,16 +355,15 @@
 </style>
 <script>
 
-    //    import AddressList from './addressList.vue';
     //    import AddressAdd from './addressAdd.vue';
     import {dom,event} from '../weex.js'
     import { POST, GET } from '../assets/fetch.js';
     import utils from '../assets/utils';
     import filters from '../filters/filters.js';
+
     //    import Dialog from './dialog.vue';
     export default {
         components: {
-//            AddressList,
 //            AddressAdd,
 //            'weui-dialog':Dialog,
         },
@@ -394,6 +393,7 @@
                 clicked:false,
                 previewList:[],
                 payMemo:'',
+                addressListShow:false,
             }
         },
 
@@ -410,6 +410,7 @@
         },
         created(){
 //          this.show(goodId,articleId);
+            this.show();
         },
         methods: {
             hasReceiver:function () {
@@ -431,22 +432,22 @@
                 },1500)
 
                 if(utils.isNull(this.buyNum) || this.buyNum <= 0){
-                    this.$refs.toast.show('请添加数量');
+                    event.toast('请添加数量');
                     return;
                 }
                 if(this.hasSpecOne && utils.isNull(this.spec1Name)){
-                    this.$refs.toast.show('请选择规格1');
+                    event.toast('请选择规格1');
                     return ;
                 }
                 if(this.hasSpecTwo && utils.isNull(this.spec2Name)){
-                    this.$refs.toast.show('请选择规格2');
+                    event.toast('请选择规格2');
                     return ;
                 }
                 if(utils.isNull(this.receiverList[0].id) || utils.isNull(this.receiverList[0].id)){
-                    this.$refs.toast.show('请选择地址');
+                    event.toast('请选择地址');
                     return ;
                 }
-                POST("website/member/order/create.jhtml?id=" + this.productId + '&quantity=' + this.buyNum + '&receiverId=' + this.receiverList[0].id+'&xuid='+utils.getUrlParameter("xuid")).then(
+                POST("website/member/order/create.jhtml?id=" + this.productId + '&quantity=' + this.buyNum + '&receiverId=' + this.receiverList[0].id).then(
                     function (data) {
                         if (data.type=="success") {
                             _this.goPay(data.data.sn);
@@ -457,7 +458,7 @@
                     },
                     function (err) {
                         _this.disabledButton = false;
-                        _this.close(utils.message("error","网络不稳定"));
+                        _this.close(err);
                     }
                 )
             },
@@ -508,7 +509,7 @@
                                 _this.payMemo = data.data.memo;
                                 _this.$refs.dialog.show();
                             }else{
-                                _this.close(utils.message("error","网络不稳定"));
+                                _this.close(data);
                             }
                         } else {
                             _this.close(data);
@@ -519,7 +520,7 @@
 //            err = JSON.stringify(err);
 //            alert(err);
                         _this.disabledButton = false;
-                        _this.close(utils.message("error","网络不稳定"));
+                        _this.close(err);
                     }
                 )
             },
@@ -697,7 +698,7 @@
                             _this.close(data);
                         }
                     },function (err) {
-                        _this.close(utils.message("error","网络不稳定"));
+                        _this.close(err);
                     }
                 )
             },
@@ -791,8 +792,7 @@
 
 //       开始时触发
             show:function (id,articleId) {
-                this.isShow = true;
-                this.articleId = articleId;
+                id = this.goodId;
                 let _this = this;
                 GET('website/product/view.jhtml?id='+id,
                     function (data) {
@@ -831,13 +831,11 @@
                             }
 
                         }else{
-//                            this.$emit("maskHide");
-                            this.isShow = false;
+                            this.$emit("maskHide");
                             _this.close(data);
                         }
                     },function (err) {
-//                        this.$emit("maskHide");
-                        this.isShow = false;
+                        this.$emit("maskHide");
                         _this.close(err);
                     })
             },
@@ -845,14 +843,14 @@
                 this.close(utils.message("error","取消支付"));
             },
             close (e) {
+                event.toast(e.content);
                 this.$emit("maskHide");
             },
             hide(){
-                this.isShow = false;
+                this.$emit("maskHide");
             },
             maskHide:function () {
-//                this.$emit("maskHide");
-                this.isShow = false;
+                this.$emit("maskHide");
             },
             numInput:function () {
                 if(!utils.isNull(this.buyNum) && this.buyNum != 0){
@@ -860,7 +858,9 @@
                 }
             },
             goAddress:function () {
-                this.$refs.address.show();
+                event.openURL(utils.locate('widget/addressList.js?id=' + this.articleId),function (data) {
+
+                })
 //        this.$router.push({
 //          name: "receiverList",
 //          query: {type:'buyGoods'}
@@ -875,7 +875,8 @@
                 this.receiverList.push(address);
             },
             toastShow:function (msg) {
-                this.$refs.toast.show(msg);
+//                this.$refs.toast.show(msg);
+                event.toast(msg);
             },
             returnFunc:function () {
                 return;

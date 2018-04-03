@@ -9,7 +9,7 @@
             <div class="flex-row" v-if="isSelf == 0 && authorInfo.nickName != 'initNickDefault'">
                 <image :src="authorInfo.logo | watchLogo" class="articleLogo"></image>
                 <text class="ml10 mr10 articleAuthorName" >{{authorInfo.nickName | watchNickName}}</text>
-                <text class="articleFocus  primary" v-if="!authorInfo.hasFollow" @click="doFocus()">关注</text>
+                <text class="articleFocus  " v-if="!authorInfo.hasFollow" @click="doFocus()">关注</text>
             </div>
             <div class="navRightBox"  v-if="showComplete" @click="goComplete('/')">
                 <text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>
@@ -35,6 +35,7 @@
         padding-bottom: 7px;
         padding-left: 20px;
         padding-right: 20px;
+        color:#444;
     }
     .cb {
         border-bottom-width: 0px;

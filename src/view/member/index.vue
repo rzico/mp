@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <!--此处div 不能注释...否则ios某些机型无法置顶-->
-        <div >
+        <div>
             <!--顶部白色区域 classHeader(), -->
             <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" @click="doNothing()" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
@@ -38,53 +38,55 @@
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <scroller  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+        <list  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-            <div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
-            <!--顶部个人信息栏-->
-            <div class="topBox bkg-primary"  :class="[headerInfo()]"  ref='topBox'>
-                <!--背景图片-->
-                <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
-                <!--遮罩层-->
-                <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-                <div class="topHead" >
-                    <!--用户头像-->
-                    <image class="testImage" :src="imageUrl" ></image>
-                    <!--个性签名 用户昵称-->
-                    <div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >
-                        <!--用户昵称-->
-                        <text class="userName">{{userName}}</text>
-                        <!--用户签名-->
-                        <text class="userSign">{{userSign}}</text>
-                    </div>
-                </div>
-                <!--功能按钮-->
-                <div class="topBtnBox">
-                    <div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">
-                        <text class="topBtn topBtnBigFont">{{collectNum}}</text>
-                        <text class=" topBtn " >收藏</text>
-                    </div>
-                    <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
-                        <!--钱包两边的白色边框-->
-                        <div  class="leftBtnBorder topBtnBorder" ></div>
-                        <div  class="rightBtnBorder topBtnBorder" ></div>
-                        <div class="moneyFormat">
-                            <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
-                            <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
+            <cell style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></cell>
+            <cell>
+                <!--顶部个人信息栏-->
+                <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
+                    <!--背景图片-->
+                    <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
+                    <!--遮罩层-->
+                    <!--<image class="backgroundMask" :src="maskUrl"></image>-->
+                    <div class="topHead" >
+                        <!--用户头像-->
+                        <image class="testImage" :src="imageUrl" ></image>
+                        <!--个性签名 用户昵称-->
+                        <div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >
+                            <!--用户昵称-->
+                            <text class="userName">{{userName}}</text>
+                            <!--用户签名-->
+                            <text class="userSign">{{userSign}}</text>
                         </div>
-                        <text class="topBtn" >钱包</text>
                     </div>
-                    <div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">
-                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                        <text class="topBtn">关注</text>
+                    <!--功能按钮-->
+                    <div class="topBtnBox">
+                        <div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">
+                            <text class="topBtn topBtnBigFont">{{collectNum}}</text>
+                            <text class=" topBtn " >收藏</text>
+                        </div>
+                        <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
+                            <!--钱包两边的白色边框-->
+                            <div  class="leftBtnBorder topBtnBorder" ></div>
+                            <div  class="rightBtnBorder topBtnBorder" ></div>
+                            <div class="moneyFormat">
+                                <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
+                                <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
+                            </div>
+                            <text class="topBtn" >钱包</text>
+                        </div>
+                        <div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">
+                            <text class="topBtn topBtnBigFont">{{focusNum}}</text>
+                            <text class="topBtn">关注</text>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div>
+                </div>
+            </cell>
+            <cell>
                 <div  class="corpusBox" >
                     <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
                         <div class="articleClass">
@@ -191,8 +193,8 @@
                     </div>
 
                 </div>
-            </div>
-        </scroller>
+            </cell>
+        </list>
     </div>
 </template>
 
@@ -723,7 +725,6 @@
             }
         },
         created:function () {
-
             let _this = this;
             utils.initIconFont();
 //            获取屏幕的高度
@@ -753,6 +754,7 @@
                 }
             });
         },
+
 //        dom呈现完执行滚动一下
         updated(){
 //            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
@@ -764,7 +766,7 @@
             if(!utils.isIosSystem()){
                 const el = this.$refs.topBox//跳转到相应的cell
                 dom.scrollToElement(el, {
-                    offset: -119
+                    offset: 1
                 })
             }
         },
@@ -1150,12 +1152,11 @@
 //                            utils.debug('当前行:' + _this.listCurrent);
                         }else if( data.type == "success" && data.data == '' ){
 //                            utils.debug('触发强制加载');
-//                            _this.$refs.scrollerRef.resetLoadmore();
                         }else{
                             event.toast(data.content);
                         }
                     })
-
+                    _this.$refs.scrollerRef.resetLoadmore();
                     this.showLoading = 'hide'
                 }, 1500)
             },
@@ -1190,8 +1191,13 @@
 //                    event.changeWindowsBar("false");
 //                }
 
+                var scrollNum = 284;
+                if(!utils.isIosSystem()){
+                    scrollNum = 404;
+                }
+
 //                if(scrollTop >=284){
-                if(scrollTop >= 284){
+                if(scrollTop >= scrollNum){
                     this.twoTop = true;
 //                    this.corpusScrollTop = 136;
 
@@ -1333,6 +1339,7 @@
             onrefresh:function () {
                 var _this = this;
                 _this.refreshing = true;
+                _this.canScroll = false;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
                         transform: 'rotate(360deg)',
@@ -1352,7 +1359,8 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    _this.refreshing = false
+                    _this.refreshing = false;
+                    _this.canScroll = true;
 //                    _this.getAllArticle();
                     _this.updateUserInfo();
                 }, 1000);
@@ -1617,6 +1625,8 @@
         }
     }
 </script>
+
+
 
 
 

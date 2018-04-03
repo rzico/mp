@@ -1,8 +1,8 @@
 <template>
-    <div class="corpusBox"  >
+    <div class="corpusBox" :style="{height:heightNum}">
         <scroller scroll-direction="horizontal" class="corpusScroll" show-scrollbar="false">
-            <div class="articleClass">
-                <text @click="corpusChange(index,item.id)"class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index && corpusList.length != 0 ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+            <div class="articleClass" :style="{height:heightNum}">
+                <text @click="corpusChange(index,item.id)" :style="{lineHeight:heightNum}" class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index && corpusList.length != 0 ? 'corpusActive' : 'noActive']">{{item.name}}</text>
             </div>
         </scroller>
     </div>
@@ -14,7 +14,7 @@
     }
     .corpusBox{
         flex-direction: row;
-        height:80px;
+        /*height:80px;*/
         /*border-bottom-width: 1px;*/
         /*border-style: solid;*/
         /*border-color: gainsboro;*/
@@ -26,12 +26,12 @@
         /*border-bottom-width: 1px;*/
         /*border-bottom-style: solid;*/
         /*border-bottom-color: gainsboro;*/
-        height:80px;
+        /*height:80px;*/
         background-color: #fff;
     }
     .allArticle{
         font-size: 29px;
-        line-height: 80px;
+        /*line-height: 80px;*/
         padding-left: 20px;
         padding-right: 20px;
     }
@@ -50,7 +50,8 @@
         },
         props:{
             corpusList:{default:[]},
-            whichCorpus: {default:0}
+            whichCorpus: {default:0},
+            heightNum:{default:80}
         },
         methods:{
 //            点击导航栏时

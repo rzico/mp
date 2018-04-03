@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <headerNav @search="gosearch" @menu="menu"></headerNav>
-        <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="tabRef" @corpusChange="corpusChange"></tabNav>
+        <tabNav heightNum="66" :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="tabRef" @corpusChange="corpusChange"></tabNav>
         <slider class="pageBox" style="width: 750px" infinite="false"  :class="[pageTop()]" @change="onSliderChange" :index="whichCorpus">
             <div v-for="(item,index) in corpusList" class="categoryBox">
                 <hotsCategory  v-if="item.name == '热点' && item.load == 1"  :articleCategoryId="item.id" ></hotsCategory>
@@ -32,7 +32,7 @@
 <style>
     .pageBox{
         position: fixed;
-        top: 216px;left: 0;bottom: 0;
+        top: 202px;left: 0;bottom: 0;
     }
     .categoryBox{
         width: 750px;

@@ -9,15 +9,18 @@
             <!--下一步-->
                 <div class="footBox bkg-primary cb-top " v-if="!publish" :style="{height:bottomNum + 100}" @click="goOption()">
                     <!--这边要兼容ipone7plus-->
-                    <div class="bkg-primary">
+                    <div class="bkg-primary fullWidth flex-center" :style="{height:bottomNum + 100}"  @click="goOption()">
                         <text class="nextStep">下一步</text>
                     </div>
                 </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
-                <div class="bottomBtnBox"  @click="goLaud()">
+                <div class="bottomBtnBox" style="flex-direction: column"   @click="goLaud()">
+                    <div>
                     <text class="fz26fff fzz45 " :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="fz26fff "  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
+                    </div>
+                    <div>
+                    <text class="fz26fff ">点赞 {{laudNum}}</text></div>
                 </div>
                 <div class="bottomBtnBox"  @click="goShare(0)">
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe67d;</text>
@@ -29,7 +32,7 @@
                 </div>
                 <div class="bottomBtnBox"  @click="goReward()">
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="fz26fff ">赞赏</text>
+                    <text class="fz26fff ">购买</text>
                 </div>
             </div>
             <!--模版-->
@@ -132,10 +135,14 @@
 
             <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
+        <buyGoods  ref="buy" v-if="buyShow" @maskHide="maskHide" :goodId="goodId" :articleId="articleId" ></buyGoods>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .fullWidth{
+        width: 750px;
+    }
     .bottomBtnBox:active {
         background-color: #eee;
     }
@@ -312,7 +319,8 @@
     import navbar from './header.vue'
     import share from '../../include/share.vue'
     import utils from '../../assets/utils';
-    import reward from '../../widget/rewardDialog.vue'
+    import reward from '../../widget/rewardDialog.vue';
+    import buyGoods from '../../widget/buyGoods.vue';
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch'
@@ -348,10 +356,11 @@
                 scrollHeight:0,
                 bottomNum:0,
                 rewardShow:false,
+                buyShow:false,
             }
         },
         components: {
-            navbar,share,reward
+            navbar,share,reward,buyGoods
         },
         props: {
             title: { default: ""},
@@ -890,7 +899,11 @@
             },
 //            赞赏
             goReward(){
-                this.rewardShow = true;
+//                this.$refs.buy.show(55,342);
+                this.goodId = 55;
+                this.articleId = 342;
+                this.buyShow = true;
+//                this.rewardShow = true;
             },
             sendReward(m,id){
                 let _this = this;
@@ -964,6 +977,9 @@
                     event.toast('网络不稳定');
                 }
             },
+            maskHide(){
+                this.buyShow = false;
+            }
 //            复制文章\
 //            copyArticle(){
 //                POST('weex/member/article/grabarticle.jhtml').then(

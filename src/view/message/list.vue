@@ -10,7 +10,7 @@
                     <text class=" nav_title">{{pageName}}</text>
                 </div>
                 <div class="rightTop" @click="menu()" >
-                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe72b;</text>
+                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
                 </div>
             </div>
         </div>
@@ -53,23 +53,23 @@
                 <!--</div>-->
             </cell>
         </list>
-        <div v-if="showMenu" >
-            <div class="maskLayer" @touchstart="maskTouch"></div>
-            <div class="showBox"  style="width: 230px;">
-                <text class="showBg"></text>
-                <div class="arrowUp" >
-                    <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAddFriend()">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
-                    <text class="fz28 pl10">添加好友</text>
-                </div>
-                <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="scan()">
-                    <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe607;</text>
-                    <text class="fz28 pl10">扫一扫</text>
-                </div>
-            </div>
-        </div>
+        <!--<div v-if="showMenu" >-->
+            <!--<div class="maskLayer" @touchstart="maskTouch"></div>-->
+            <!--<div class="showBox"  style="width: 230px;">-->
+                <!--<text class="showBg"></text>-->
+                <!--<div class="arrowUp" >-->
+                    <!--<text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive " style="width: 230px;" @click="goAddFriend()">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62a;</text>-->
+                    <!--<text class="fz28 pl10">添加好友</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="scan()">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe607;</text>-->
+                    <!--<text class="fz28 pl10">扫一扫</text>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </template>
 
@@ -219,7 +219,7 @@
                 pageNum:20,
                 selfUserId:'',
                 pageName:'消息',
-                showMenu:false,
+//                showMenu:false,
                 clicked:false,
             }
         },
@@ -664,7 +664,7 @@
             },
             //            触发自组件的二维码方法
             scan:function () {
-                this.showMenu = false;
+//                this.showMenu = false;
                 event.scan(function (message) {
                     SCAN(message, function (data) {
                     }, function (err) {
@@ -673,25 +673,34 @@
             },
 //            点击右上角菜单
             menu:function () {
-                this.showMenu = true;
-            },
-//            触碰遮罩层
-            maskTouch(){
-                this.showMenu = false;
-            },
-//            前往添加好友
-            goAddFriend(){
-                if (this.clicked) {
+                //防止重复点击按钮
+                if(this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                this.showMenu = false;
                 event.openURL(utils.locate("view/friend/add.js"),function (message) {
                     _this.clicked = false;
-                })
-
+                });
+//                this.showMenu = true;
             },
+//            触碰遮罩层
+//            maskTouch(){
+//                this.showMenu = false;
+//            },
+//            前往添加好友
+//            goAddFriend(){
+//                if (this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
+//                let _this = this;
+//                this.showMenu = false;
+//                event.openURL(utils.locate("view/friend/add.js"),function (message) {
+//                    _this.clicked = false;
+//                })
+//
+//            },
         }
     }
 </script>
