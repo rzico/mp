@@ -377,7 +377,11 @@
 //                                }
 //                                let backData = utils.message('success','成功',E);
 //                                event.closeURL(backData);
-                                event.openURL(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=true'),
+                                var s = true;
+                                if(!utils.isNull(utils.getUrlParameter('publish'))){
+                                    s = '';
+                                }
+                                event.openURL(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=' + s),
                                     function () {
                                         let E = {
                                             isDone : 'complete'
