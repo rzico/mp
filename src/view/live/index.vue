@@ -1,0 +1,288 @@
+<template>
+    <div class="wrapper bgWhite">
+        <div class="header  "  :class="[classHeader()]">
+            <!--顶部导航-->
+            <div class="nav nw">
+                <div class="nav_back" @click="goback('/')">
+                    <text class="nav_ico"   :style="{fontFamily:'iconfont'}">&#xe669;</text>
+                </div>
+                <!--页面名称-->
+                <div class="userBox" >
+                    <text class="nav_title">{{pageName}}</text>
+                </div>
+                <div class="rightTop" @click="goAddFriend()">
+                </div>
+            </div>
+        </div>
+        <waterfall   show-scrollbar="false"   @loadmore="onloading" ref="listDom" loadmoreoffset="300" column-gap="10" column-width="370" left-gap="10" column-count="2" >
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
+            </refresh>
+            <header v-if="hasImageList()">
+                <div class="bt10">
+                    <slider class="slider" interval="3000" auto-play="true">
+                        <div class="frame" v-for="img in imageList">
+                            <!--配合图片懒加载，先显示一个本地图片-->
+                            <image  :src="loadingImg"  v-if="!img.loading"  resize="cover" class="slideImage coverAbsoTop" ></image>
+                            <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
+                            <image class="slideImage" resize="cover"  @appear="onImageAppear(img)"  @load="onImageLoad(img)"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
+                        </div>
+                        <indicator class="indicatorSlider"></indicator>
+                    </slider>
+                </div>
+            </header>
+            <header >
+                <noData :noDataHint="noDataHint" v-if="liveList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
+            </header>
+            <header  v-if="liveList.length > 0" >
+                <div class="bkg-white pt20 pb20 pl20 pr20 flex-row" >
+                    <text class="fz40 " style="color: #EB4E40" :style="{fontFamily:'iconfont'}" >&#xe653;</text>
+                    <text class="title ml10">直播推荐</text>
+                </div>
+            </header>
+            <cell v-for="item in liveList">
+                <div class="bt30">
+                    <div>
+                        <image :src="item.thumbnail" class="liveCover"></image>
+                        <div class="space-between coverInfo">
+                            <text class="sub_title white">{{item.author | watchAuthor}}</text>
+                            <text class="sub_title white fzz24"  :style="{fontFamily:'iconfont'}" >&#xe653; 34.4万</text>
+                        </div>
+                    </div>
+                    <div class="pl10 pr10">
+                        <text class="liveTitle gameTitle mt10 bt10 ">{{item.title}}</text>
+                        <text class="liveName">{{item.name}}</text>
+                    </div>
+                </div>
+            </cell>
+        </waterfall>
+    </div>
+</template>
+<style lang="less" src="../../style/wx.less"/>
+<style>
+    .coverAbsoTop{
+        position: absolute;
+        top:0;
+    }
+
+    /*直播列表*/
+    .fzz24{
+        font-size: 24px;
+    }
+    .liveTitle{
+        font-size: 28px;
+        color: #444;
+    }
+    .liveName{
+        font-size: 26px;
+        color: #F0AD3C;
+    }
+    .gameTitle{
+        lines:1;
+        text-overflow: ellipsis;
+        width: 350px;
+    }
+    .coverInfo{
+        position: absolute;
+        bottom:10px;
+        left: 10px;
+        right: 10px;
+    }
+    .liveCover{
+        border-radius: 5px;
+        width: 370px;
+        height: 270px;
+    }
+    /*直播列表*/
+
+    /*顶部导航栏*/
+    .rightTop{
+        height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
+    }
+    .nav_ico {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
+    }
+    .userBox{
+        flex-direction: row;
+        align-items: center;
+    }
+    .nw{
+        width: 750px;
+    }
+    /*顶部导航栏*/
+
+    /*<!--轮播图-->*/
+    .indicatorSlider{
+        position: absolute;
+        bottom: 10px;
+        width:750px;
+        /*height为10时 底下的点会变成椭圆，20会变成圆 */
+        height: 10px;
+        align-items: center;
+        item-selected-color:#fff;
+        item-size:15px;
+    }
+    .slideImage {
+        width: 750px;
+        height: 280px;
+        /*height: 375px;*/
+    }
+    .slider {
+        width: 750px;
+        /*height: 375px;*/
+        height: 280px;
+    }
+    .frame {
+        width: 750px;
+        height: 280px;
+        /*height: 375px;*/
+        position: relative;
+    }
+    /*轮播图*/
+</style>
+<script>
+    import filters from '../../filters/filters';
+    import utils from '../../assets/utils';
+    import {dom,event,animation} from '../../weex.js';
+    import { POST, GET } from '../../assets/fetch';
+    import noData from '../../include/noData.vue';
+    export default {
+        data(){
+            return{
+                refreshing:false,
+                showLoading: 'hide',
+                pageStart:0,
+                pageSize:10,
+                liveList:[{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629642&di=9671800c4b314f94a4d76931b824b34d&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fecd8b4dad519e8635c4d1c5dcf738061ab9cad71.jpg',
+                    title:'第一画质~4K原画 加油～',
+                    name:'绝地求生',
+                    author:'狐狸不太Sao'
+                },{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837714199&di=8247f9f422403c2019ff62b0561f3799&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2F200482cfd57bf9805d276cde6cee5b9fc70fb7c8.jpg',
+                    title:'青蛙：CD锤石创始人 平行四边形对角开大',
+                    name:'英雄联盟',
+                    author:'CD锤石创始人青蛙'
+                },{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837743206&di=39be23646c219e97bd18c1d089a0a287&imgtype=0&src=http%3A%2F%2Fa.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F0b46f21fbe096b635676cb8f0a338744eaf8ac86.jpg',
+                    title:'马妞妞：今天生日,大家快乐开party～',
+                    name:'美女直播',
+                    author:'47号Gamer'
+                },{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837714200&di=53d79d1ebd04aef8dbf07986ea08dd6e&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F950a062f2f375b1c89fd075a087fe6129b4fbd68.jpg',
+                    title:'[DSL]赛事重播',
+                    name:'热门网游',
+                    author:'DSL斗鱼超级联赛'
+                },{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629390&di=c49380998b1ae953727b9026cfbfc1d3&imgtype=0&src=http%3A%2F%2Fwww.xbxmw.com%2Fxyy-xbxmwcom%2Fallimg%2F171127%2F001H2J13-6.jpg',
+                    title:'胡戈单人4排',
+                    name:'绝地求生',
+                    author:'胡戈'
+                }],
+                refreshImg:utils.locate('resources/images/loading.png'),
+                hadUpdate:false,
+                screenHeight:0,
+                clicked:false,
+                imageList: [{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522832892881&di=c13229432ab1f9a63a12d64b2e0fae04&imgtype=0&src=http%3A%2F%2Fscimg.jb51.net%2Fallimg%2F160918%2F102-16091Q14543I9.jpg',
+                },{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1523427589&di=3fefbd5f9ea5a1ba3b661b1de4063a68&imgtype=jpg&er=1&src=http%3A%2F%2Fscimg.jb51.net%2Fallimg%2F170217%2F102-1F21G01513Z5.jpg',
+                },{
+                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522832892878&di=2052c72e96d6e2bdfcf6fedd8b8c4485&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F85%2F29%2F50t58PICuba_1024.jpg',
+                }],
+//                isInit:true,
+                pageName:'直播'
+            }
+        },
+        components: {
+            noData
+        },
+        props:{
+//            whichCorpus:{default:0}
+            noDataHint:{default:'暂无直播'},
+            articleCategoryId:{default:'0'}
+        },
+        filters:{
+            watchAuthor:function (value) {
+                if(utils.isNull(value)){
+                    return value;
+                }else{
+                    //              如果用户名称过长，便截取拼成名字
+                    return utils.changeStrLast(value,7,15);
+                }
+            }
+        },
+        created(){
+            utils.initIconFont();
+            var _this = this;
+
+//            获取屏幕的高度
+            this.screenHeight = utils.fullScreen(316);
+        },
+        methods:{
+            classHeader:function () {
+                let dc = utils.device();
+                return dc
+            },
+//            封面显示出来
+            onImageAppear(item){
+                if(utils.isNull(item.loadingImg)){
+                    item.loadingImg = item.thumbnail;
+                }
+            },
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
+
+            hasImageList(){
+                if(utils.isNull(this.imageList)){
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+
+
+            onloading:function () {
+////            获取文章列表
+//                强制触发上啦加载
+                this.$refs.listDom.resetLoadmore();
+            },
+            onrefresh:function () {
+                var _this = this;
+                _this.pageStart = 0;
+//                避免下拉刷新时触发 轮播图的v-if事件 避免销毁,页面跳动
+//                if(!utils.isNull(this.imageList)){
+//                    this.isInit = false;
+//                }else{
+//                    this.isInit = true;
+//                }
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    _this.refreshing = false;
+                }, 1000)
+            },
+        }
+    }
+</script>

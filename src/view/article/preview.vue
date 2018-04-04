@@ -518,7 +518,7 @@
                 var _this = this;
                 this.isOperation = false;
 //                event.openURL(utils.locate('view/member/editor/option.js),
-                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
+                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId + '&publish=1'),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                 });
             },

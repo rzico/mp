@@ -357,11 +357,12 @@
                         //            获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         let resDataStr = JSON.stringify(data.data);
+                        var sortStatus = data.data.articleOption.isTop  == true ? '1,' : '0,';
                         let saveData = {
                             type:'article',
                             key:_this.articleId,
                             value:resDataStr,
-                            sort:'0,'+ timestamp +'',
+                            sort:sortStatus + timestamp +'',
                             keyword:',['+ _this.corpusId + '],' + data.data.title + ','
                         }
 //                        event.toast(saveData);
@@ -377,7 +378,11 @@
 //                                }
 //                                let backData = utils.message('success','成功',E);
 //                                event.closeURL(backData);
-                                event.openURL(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=true'),
+                                var s = true;
+                                if(!utils.isNull(utils.getUrlParameter('publish'))){
+                                    s = '';
+                                }
+                                event.openURL(utils.locate('view/article/preview.js?articleId=' + _this.articleId  + '&publish=true' + '&showShare=' + s),
                                     function () {
                                         let E = {
                                             isDone : 'complete'
