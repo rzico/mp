@@ -158,23 +158,16 @@
                         if (message.type=='success') {
                             _this.wallet.binded = true;
                             _this.wallet.bankinfo = "已绑定";
-                            event.openURL(utils.locate('view/member/wallet/transfer.js', function () {
+                            event.openURL(utils.locate('view/member/wallet/transfer.js'), function () {
                                 _this.clicked = false
-                                    if (message.type=='success') {
                                         _this.load();
-                                    }
                                 })
-                            )
                         }
-                        _this.clicked =false
                     })
                 }  else {
-                    let _this = this
                     _this.clicked = false
                     event.openURL(utils.locate('view/member/wallet/transfer.js'), function (message) {
-                            if (message.type=='success') {
                                 _this.load();
-                            }
                         })
                 }
             },
