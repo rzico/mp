@@ -1170,7 +1170,11 @@
                 scrollTop =Math.abs(e.contentOffset.y);
 //                modal.toast({message:scrollTop});8
 
-                let opacityDegree = Math.floor(scrollTop/14)/10;
+                var scrollTopNum = 0;
+                if(!utils.isIosSystem()){
+                    scrollTopNum = 120;
+                }
+                let opacityDegree = Math.floor((scrollTop - scrollTopNum)/14)/10;
 //                modal.toast({message:opacityDegree,duration:0.1});
                 if(opacityDegree > 1){
                     opacityDegree = 1;
