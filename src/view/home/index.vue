@@ -116,11 +116,14 @@
                 if(loca < 0){
 //                            控制顶部导航的滑动
                     const el = this.$refs.tabRef.$refs['corpus0'][0];
-                    dom.scrollToElement(el, { offset: 0 });
+                    dom.scrollToElement(el, { offset: -10 });
                 }else {
 //                            控制顶部导航的滑动
                     const el = this.$refs.tabRef.$refs['corpus' + loca][0];
                     dom.scrollToElement(el, { offset: 0 });
+                }
+                if(e.index == this.corpusList.length - 1){
+                    this.$refs.tabRef.rightHide();
                 }
             },
             //            监听设备型号,控制导航栏高度
