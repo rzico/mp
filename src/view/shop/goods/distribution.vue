@@ -40,7 +40,7 @@
                     </div>
                     <!--右侧功能-->
                     <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point,item.tota)">
+                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point,item.tota,item.type)">
                             <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
                             <text class="gray fontSize30 ml5mr10">修改</text>
                         </div>
@@ -242,7 +242,7 @@
                 moveSign:false,
                 showSort:false,//子组件
                 catagoryList:[],
-                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',tota:'',bgChange:false},
+                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',tota:'',type:'',bgChange:false},
                 roles:'',
                 catagory:''
             }
@@ -299,6 +299,7 @@
                                     point:item.point,
                                     tota:item.dividend,
                                     id:item.id,
+                                    type:item.type,
                                     bgChange:false
                                 })
                             })
@@ -321,6 +322,7 @@
                                     point:item.point,
                                     tota:item.dividend,
                                     id:item.id,
+                                    type:item.type,
                                     bgChange:false
                                 })
                             })
@@ -395,21 +397,21 @@
 //                    )
 //                }
 //            },
-//            添加分类
-            addCatagory(){
-                let _this = this;
-                if (!utils.isRoles("A",_this.roles)) {
-                    modal.alert({
-                        message: '请点亮专栏',
-                        okTitle: 'OK'
-                    })
-                    return
-                }
-                _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",point:"",tota:"",bgChange:false};
-                _this.isShow  = true;
-             },
+////            添加分类
+//            addCatagory(){
+//                let _this = this;
+//                if (!utils.isRoles("A",_this.roles)) {
+//                    modal.alert({
+//                        message: '请点亮专栏',
+//                        okTitle: 'OK'
+//                    })
+//                    return
+//                }
+//                _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",point:"",tota:"",bgChange:false};
+//                _this.isShow  = true;
+//             },
 //            修改分类名称
-            changeName(id,name,percent1,percent2,percent3,point,tota){
+            changeName(id,name,percent1,percent2,percent3,point,tota,type){
                 let _this = this;
                 if (!utils.isRoles("A",_this.roles)) {
                     modal.alert({
@@ -418,7 +420,7 @@
                     })
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota),function () {
+                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota+'&type='+type),function () {
                     _this.catagoryList =[]
                     _this.open()
                 })
@@ -471,6 +473,7 @@
             },
 //            点击完成时、上传排序后的数组
             cleanbgChange:function () {
+                var _this = this;
 //                关闭所有的分类背景变化
                 this.catagoryList.forEach(function (item) {
                     if(item.bgChange == true){
@@ -495,6 +498,8 @@
                         function (data) {
                             if(data.type == 'success'){
                                 event.toast('排序成功');
+                                _this.catagoryList =[]
+                                _this.open()
                             }else{
                                 event.toast(data.content);
                             }
