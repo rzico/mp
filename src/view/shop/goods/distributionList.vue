@@ -11,40 +11,46 @@
             <div class="cell-row cell-line"  @click="changeType()">
                 <div class="cell-panel cell-clear ">
                     <text class="title">策略类型:</text>
-                    <text class="title">{{typeName}}</text>
+                    <text class="title" style="margin-left: 20px">{{typeName}}</text>
                 </div>
             </div>
             <!--类型为股东分红时渲染-->
             <div class="cell-row cell-line" v-if="item.type == 'dividend'">
                 <div class="cell-panel cell-clear ">
                     <text class="title">利润分红:</text>
-                    <input type="number" v-model="item.tota" return-key-type="next" class="lineContent pr20"  placeholder="利润分红比例（%）" />
+                    <input type="number" v-model="item.tota" return-key-type="next" class="lineContent pr20"  placeholder="利润分红比例"/>
+                    <text class="title">%</text>
                 </div>
             </div>
             <!--类型为股东分红时渲染-->
             <div class="cell-row cell-line" v-if="item.type == 'dividend'">
                 <div class="cell-panel ">
                     <text class="title">直接佣金:</text>
-                    <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
+                    <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例" />
+                    <text class="title">%</text>
                 </div>
                 <div class="cell-panel ">
                     <text class="title">间接佣金:</text>
-                    <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
+                    <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例" />
+                    <text class="title">%</text>
                 </div>
                 <div class="cell-panel cell-clear ">
                     <text class="title">三级佣金:</text>
-                    <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
+                    <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例" />
+                    <text class="title">%</text>
                 </div>
             </div>
             <!--类型为消费返现时渲染-->
             <div class="cell-row cell-line" v-if="item.type == 'global'">
             <div class="cell-panel ">
                 <text class="title">返现基数:</text>
-                <input type="number" v-model="item.dividend" return-key-type="next" class="lineContent pr20"  placeholder="返现基数比例（%）" />
+                <input type="number" v-model="item.dividend" return-key-type="next" class="lineContent pr20"  placeholder="返现基数比例" />
+                <text class="title">%</text>
             </div>
             <div class="cell-panel cell-clear">
                 <text class="title">返现比例:</text>
-                <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="返现比例（%）" />
+                <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="返现比例" />
+                <text class="title">%</text>
             </div>
             </div>
             <div class="cell-row cell-line">
@@ -71,8 +77,9 @@
     .lineContent{
         height: 80px;
         font-size: 32px;
-        width: 346px;
+        width: 250px;
         margin-left: 20px;
+        margin-top:5px
     }
     .info{
         height: 80px;
@@ -140,6 +147,11 @@
                 _this.item.tota = ''
             }
             this.item.type = utils.getUrlParameter('type');
+            if(utils.isNull(this.item.type)){
+                _this.item.type = 'dividend';
+                _this.typeName = '股东分红';
+                _this.typeBegin =0
+            }
             if(this.item.type == 'dividend'){
                 _this.typeName = '股东分红';
                 _this.typeBegin =0
@@ -280,6 +292,7 @@
                         event.toast('请输入佣金比例');
                         return;
                     }
+                    this.item.tota =str.replace("%","");
 //                把字符串转换成整型
                     this.item.percent1 = parseInt(this.item.percent1)
                     this.item.percent2 = parseInt(this.item.percent2)
