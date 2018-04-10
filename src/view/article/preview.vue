@@ -937,6 +937,7 @@
                 var _this = this;
                 POST("payment/submit.jhtml?sn="+ sn +"&paymentPluginId="+plugId).then(
                     function (data) {
+//                        _this.$refs.buy.waitHide();
                         if (data.type=="success") {
                             event.wxAppPay(data.data,function (e) {
                                 if (e.type=='success') {

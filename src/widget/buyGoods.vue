@@ -73,6 +73,10 @@
                 </div>
             </div>
         </div>
+
+        <!--等待遮罩-->
+        <waiting  v-if="waitShow"></waiting>
+
         <!--<AddressList ref="address" v-if="addressListShow"></AddressList>-->
         <!--<AddressAdd ref="addressAdd" @selectAddress="selectAddress" @toastShow="toastShow"></AddressAdd>-->
         <!--免密支付-->
@@ -360,12 +364,13 @@
     import { POST, GET } from '../assets/fetch.js';
     import utils from '../assets/utils';
     import filters from '../filters/filters.js';
-
+    import waiting from './waiting.vue'
     //    import Dialog from './dialog.vue';
     export default {
         components: {
 //            AddressAdd,
 //            'weui-dialog':Dialog,
+            waiting
         },
         data: function () {
             return {
@@ -394,6 +399,7 @@
                 previewList:[],
                 payMemo:'',
                 addressListShow:false,
+                waitShow:false,
             }
         },
 
@@ -447,20 +453,27 @@
                     event.toast('请选择地址');
                     return ;
                 }
+//                this.waitShow = true;
+//                return;
                 POST("website/member/order/create.jhtml?id=" + this.productId + '&quantity=' + this.buyNum + '&receiverId=' + this.receiverList[0].id).then(
                     function (data) {
                         if (data.type=="success") {
                             _this.goPay(data.data.sn);
                         } else {
                             _this.close(data);
+                            _this.waitHide();
                         }
                         _this.disabledButton = false;
                     },
                     function (err) {
+                        _this.waitHide();
                         _this.disabledButton = false;
                         _this.close(err);
                     }
                 )
+            },
+            waitHide(){
+              this.waitShow = false;
             },
 //      发起支付
             goPay(sn){
