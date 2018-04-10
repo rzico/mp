@@ -15,12 +15,9 @@
                 </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
-                <div class="bottomBtnBox" style="flex-direction: column"   @click="goLaud()">
-                    <div>
+                <div class="bottomBtnBox"  @click="goLaud()">
                     <text class="fz26fff fzz45 " :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    </div>
-                    <div>
-                    <text class="fz26fff ">点赞 {{laudNum}}</text></div>
+                    <text class="fz26fff ">点赞 {{laudNum}}</text>
                 </div>
                 <div class="bottomBtnBox"  @click="goShare(0)">
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe67d;</text>
@@ -135,7 +132,7 @@
 
             <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
-        <buyGoods  ref="buy" v-if="buyShow" @maskHide="maskHide" :goodId="goodId" :articleId="articleId" ></buyGoods>
+        <buyGoods  ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId" :articleId="articleId" ></buyGoods>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -161,6 +158,7 @@
     .bottomBtnBox{
         height: 100px;
         flex: 1;align-items: center;justify-content: center;
+        flex-direction: column;
         padding-top:5px;
         padding-bottom:5px;
     }
@@ -357,6 +355,8 @@
                 bottomNum:0,
                 rewardShow:false,
                 buyShow:false,
+//                isReview:false,
+//                isReward:false,
             }
         },
         components: {
@@ -411,6 +411,8 @@
                     _this.isCollect = data.data.hasFavorite;
                     _this.shareNum = data.data.share;
                     _this.authorInfo = data.data;
+//                    _this.isReward = data.data.isReward;
+//                    _this.isReview = data.data.isReview;
                     let uId = event.getUId();
 //            判断是否作者本人
                     if(uId == _this.memberId){
@@ -447,6 +449,8 @@
                         _this.complete = 'textIcon';
                         _this.title = '';
                     }
+                }else{
+                    event.toast(data.content);
                 }
             },function (err) {
                 event.toast(err.content);
@@ -668,6 +672,10 @@
 //            前往评论
             goReview(){
                 let _this = this;
+//                if(!this.isReview){
+//                    event.toast('该文章未开通评论功能');
+//                    return;
+//                }
                 if (this.clicked) {
                     return;
                 }
@@ -958,7 +966,6 @@
                             })
                         } else {
                             event.toast(data.content);
-                            _this.close("error");
                         }
                     },
                     function (err) {
@@ -979,6 +986,9 @@
             },
             maskHide(){
                 this.buyShow = false;
+            },
+            goPay(id){
+                this.payment(id,"weixinAppPlugin");
             }
 //            复制文章\
 //            copyArticle(){

@@ -169,21 +169,21 @@
                         }
                     }
 //                    投稿
-                    if(data.data.pitch  != null){
-                        _this.contributeSwitch = data.data.pitch;
+                    if(data.data.isPitch  != null){
+                        _this.contributeSwitch = data.data.isPitch;
                     }
                     //                    置顶
-                    if(data.data.top != null){
-                        _this.topData = data.data.top;
+                    if(data.data.isTop != null){
+                        _this.topData = data.data.isTop;
                     }
 
                     //                    打赏
-                    if(data.data.reward != null){
-                        _this.rewardSwitch = data.data.reward;
+                    if(data.data.isReward != null){
+                        _this.rewardSwitch = data.data.isReward;
                     }
                     //                    评论
-                    if(data.data.review != null){
-                        _this.commentsSwitch = data.data.review;
+                    if(data.data.isReview != null){
+                        _this.commentsSwitch = data.data.isReview;
                     }
 //                    谁可以看
                     if(!utils.isNull(data.data.authority)){
@@ -206,8 +206,8 @@
                         }
                     }
                     //                    是否发布
-                    if(data.data.publish != null){
-                        _this.isPublish = data.data.publish;
+                    if(data.data.isPublish != null){
+                        _this.isPublish = data.data.isPublish;
                     }
                 }
             },function (err) {

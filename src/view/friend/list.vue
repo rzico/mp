@@ -21,8 +21,8 @@
         <list class="listBody"  :scrollable="canScroll">
             <cell ref="linkref" >
                 <!--新的朋友-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(0)">
+                <!--<div class="">-->
+                    <div class="topLine addBorder" @click="openPage(0)">
                         <!--<image :src="item.lineImage" class="lineImage"></image>-->
                         <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
                         <!--有新消息-->
@@ -31,31 +31,31 @@
                         </div>
                         <text class="lineTitle">新的朋友</text>
                     </div>
-                </div>
+                <!--</div>-->
                 <!--我关注的-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(1)">
+                <!--<div class="">-->
+                    <div class="topLine addBorder" @click="openPage(1)">
                         <!--<image :src="item.lineImage" class="lineImage"></image>-->
                         <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
                         <text class="lineTitle">我关注的</text>
                     </div>
-                </div>
+                <!--</div>-->
                 <!--顶部功能栏-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(2)">
+                <!--<div class="">-->
+                    <div class="topLine addBorder" @click="openPage(2)">
                         <!--<image :src="item.lineImage" class="lineImage"></image>-->
                         <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
                         <text class="lineTitle">我的粉丝</text>
                     </div>
-                </div>
+                <!--</div>-->
                 <!--我收藏的-->
-                <div class="addBorder">
+                <!--<div class="">-->
                     <div class="topLine " @click="openPage(3)">
                         <!--<image :src="item.lineImage" class="lineImage"></image>-->
                         <text class="lineImage" style="color:#D85C87" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
                         <text class="lineTitle">我收藏的</text>
                     </div>
-                </div>
+                <!--</div>-->
             </cell>
             <cell v-for="friend in friendsList" ref="listref" >
                 <!--姓氏首字母-->
@@ -108,7 +108,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 60px;top: 0px;height: 100px;align-items: center;width: 130px;justify-content: center;
+        position: absolute;right: 0px;top: 0px;height: 100px;align-items: center;width: 130px;justify-content: center;
     }
     .messageTotal{
         background-color: red;
@@ -251,11 +251,13 @@
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.2);
+        width:670px;
+        margin-left:20px;
     }
     .friendsLine{
-        padding-left: 30px;
+        /*padding-left: 30px;*/
         height:100px;
-        width:690px;
+        width:670px;
         /*width:750px;*/
         background-color: #fff;
         flex-direction: row;
@@ -265,10 +267,12 @@
     }
     .topLine{
         flex-direction: row;
-        width:660px;
+        /*width:660px;*/
         padding-top: 10px;
         padding-bottom: 10px;
-        padding-left: 30px;
+        /*padding-left: 30px;*/
+        width:670px;
+        margin-left:20px;
         align-items: center;
         background-color: #fff;
     }

@@ -399,7 +399,7 @@
 
         filters:{
             watchGoodsImg:function (value) {
-                return utils.thumbnail(value,90,90);
+                return utils.thumbnail(value,160,160);
             },
         },
         props: {
@@ -468,6 +468,9 @@
                 POST('website/member/order/payment.jhtml?sn=' + sn).then(
                     function (data) {
                         if (data.type=="success") {
+                            _this.$emit("goPay",data.data.sn);
+                            return;
+
 //              判断支付方式,为null值时就是微信支付或者支付宝支付
                             if(utils.isNull(data.data.paymentPluginId)){
                                 if(utils.isweixin()){
@@ -858,9 +861,18 @@
                 }
             },
             goAddress:function () {
-                event.openURL(utils.locate('widget/addressList.js?id=' + this.articleId),function (data) {
-
+                let _this = this;
+                event.openURL(utils.locate('widget/addressList.js?from=buyGoods&id=' + this.receiverList[0].id),function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        var a = [];
+                        a.push(data.data);
+                        _this.receiverList = a;
+                    }else{
+                        _this.onecReceiver = false;
+                        _this.calcPrice();
+                    }
                 })
+
 //        this.$router.push({
 //          name: "receiverList",
 //          query: {type:'buyGoods'}
