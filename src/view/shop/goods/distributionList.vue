@@ -292,7 +292,6 @@
                         event.toast('请输入佣金比例');
                         return;
                     }
-                    this.item.tota =str.replace("%","");
 //                把字符串转换成整型
                     this.item.percent1 = parseInt(this.item.percent1)
                     this.item.percent2 = parseInt(this.item.percent2)
@@ -338,7 +337,6 @@
 //                    类型为消费返现时走这接口
                     _this.item.percent2 = 0;
                     _this.item.percent3 = 0;
-                    _this.begin = 0;
                     _this.item.tota = 0;
                     if (utils.isNull(_this.item.dividend)) {
                         event.toast('请输入返现基数比例');
