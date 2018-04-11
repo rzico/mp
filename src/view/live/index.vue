@@ -40,18 +40,18 @@
                     <text class="title ml10">直播推荐</text>
                 </div>
             </header>
-            <cell v-for="item in liveList">
+            <cell v-for="item in liveList" @click="seeLive(item.id)">
                 <div class="bt30">
                     <div>
-                        <image :src="item.thumbnail" class="liveCover"></image>
+                        <image :src="item.frontcover" class="liveCover"></image>
                         <div class="space-between coverInfo">
-                            <text class="sub_title white">{{item.author | watchAuthor}}</text>
-                            <text class="sub_title white fzz24"  :style="{fontFamily:'iconfont'}" >&#xe653; 34.4万</text>
+                            <text class="sub_title white">{{item.nickname | watchAuthor}}</text>
+                            <text class="sub_title white fzz24"  :style="{fontFamily:'iconfont'}" >&#xe653; {{item.viewerCount | watchOnline}}</text>
                         </div>
                     </div>
                     <div class="pl10 pr10">
-                        <text class="liveTitle gameTitle mt10 bt10 ">{{item.title}}</text>
-                        <text class="liveName">{{item.name}}</text>
+                        <text class="liveTitle gameTitle mt10  ">{{item.title}}</text>
+                        <!--<text class="liveName">{{item.name}}</text>-->
                     </div>
                 </div>
             </cell>
@@ -143,6 +143,7 @@
     /*轮播图*/
 </style>
 <script>
+    const livePlayer = weex.requireModule('livePlayer');
     import filters from '../../filters/filters';
     import utils from '../../assets/utils';
     import {dom,event,animation} from '../../weex.js';
@@ -155,32 +156,34 @@
                 showLoading: 'hide',
                 pageStart:0,
                 pageSize:10,
-                liveList:[{
-                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629642&di=9671800c4b314f94a4d76931b824b34d&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fecd8b4dad519e8635c4d1c5dcf738061ab9cad71.jpg',
-                    title:'第一画质~4K原画 加油～',
-                    name:'绝地求生',
-                    author:'狐狸不太Sao'
-                },{
-                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837714199&di=8247f9f422403c2019ff62b0561f3799&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2F200482cfd57bf9805d276cde6cee5b9fc70fb7c8.jpg',
-                    title:'青蛙：CD锤石创始人 平行四边形对角开大',
-                    name:'英雄联盟',
-                    author:'CD锤石创始人青蛙'
-                },{
-                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837743206&di=39be23646c219e97bd18c1d089a0a287&imgtype=0&src=http%3A%2F%2Fa.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F0b46f21fbe096b635676cb8f0a338744eaf8ac86.jpg',
-                    title:'马妞妞：今天生日,大家快乐开party～',
-                    name:'美女直播',
-                    author:'47号Gamer'
-                },{
-                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837714200&di=53d79d1ebd04aef8dbf07986ea08dd6e&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F950a062f2f375b1c89fd075a087fe6129b4fbd68.jpg',
-                    title:'[DSL]赛事重播',
-                    name:'热门网游',
-                    author:'DSL斗鱼超级联赛'
-                },{
-                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629390&di=c49380998b1ae953727b9026cfbfc1d3&imgtype=0&src=http%3A%2F%2Fwww.xbxmw.com%2Fxyy-xbxmwcom%2Fallimg%2F171127%2F001H2J13-6.jpg',
-                    title:'胡戈单人4排',
-                    name:'绝地求生',
-                    author:'胡戈'
-                }],
+                liveList:[
+//                    {
+//                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629642&di=9671800c4b314f94a4d76931b824b34d&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fecd8b4dad519e8635c4d1c5dcf738061ab9cad71.jpg',
+//                    title:'第一画质~4K原画 加油～',
+//                    name:'绝地求生',
+//                    author:'狐狸不太Sao'
+//                },{
+//                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837714199&di=8247f9f422403c2019ff62b0561f3799&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2F200482cfd57bf9805d276cde6cee5b9fc70fb7c8.jpg',
+//                    title:'青蛙：CD锤石创始人 平行四边形对角开大',
+//                    name:'英雄联盟',
+//                    author:'CD锤石创始人青蛙'
+//                },{
+//                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837743206&di=39be23646c219e97bd18c1d089a0a287&imgtype=0&src=http%3A%2F%2Fa.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F0b46f21fbe096b635676cb8f0a338744eaf8ac86.jpg',
+//                    title:'马妞妞：今天生日,大家快乐开party～',
+//                    name:'美女直播',
+//                    author:'47号Gamer'
+//                },{
+//                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837714200&di=53d79d1ebd04aef8dbf07986ea08dd6e&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Farchive%2F950a062f2f375b1c89fd075a087fe6129b4fbd68.jpg',
+//                    title:'[DSL]赛事重播',
+//                    name:'热门网游',
+//                    author:'DSL斗鱼超级联赛'
+//                },{
+//                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629390&di=c49380998b1ae953727b9026cfbfc1d3&imgtype=0&src=http%3A%2F%2Fwww.xbxmw.com%2Fxyy-xbxmwcom%2Fallimg%2F171127%2F001H2J13-6.jpg',
+//                    title:'胡戈单人4排',
+//                    name:'绝地求生',
+//                    author:'胡戈'
+//                }
+                ],
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
                 screenHeight:0,
@@ -193,7 +196,9 @@
                     thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522832892878&di=2052c72e96d6e2bdfcf6fedd8b8c4485&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F85%2F29%2F50t58PICuba_1024.jpg',
                 }],
 //                isInit:true,
-                pageName:'直播'
+                pageName:'直播',
+                pageStart:0,
+                pageSize:10
             }
         },
         components: {
@@ -212,6 +217,10 @@
                     //              如果用户名称过长，便截取拼成名字
                     return utils.changeStrLast(value,7,15);
                 }
+            },
+            watchOnline:function (value) {
+//                if(value)
+                 return value > 9999 ? parseFloat(utils.currencyfmt(value/10000)) + "万" : value;
             }
         },
         created(){
@@ -220,8 +229,30 @@
 
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
+//            this.getLiveList();
         },
         methods:{
+            getLiveList:function () {
+                let _this = this;
+              GET('weex/live/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                  if(data.type == 'success' && data.data != ''){
+                      if (_this.pageStart == 0) {
+                          _this.liveList = data.data.data;
+                      }else{
+                          data.data.data.forEach(function (item) {
+                              _this.liveList.push(item);
+                          })
+                      }
+                      _this.pageStart = data.data.start + data.data.data.length;
+                  }else if(data.type == 'success' && data.data == ''){
+
+                  }else{
+                      event.toast(data.content);
+                  }
+              },function (err) {
+                  event.toast(err.content);
+              })
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc
@@ -247,6 +278,7 @@
 
 
             onloading:function () {
+                this.getLiveList();
 ////            获取文章列表
 //                强制触发上啦加载
                 this.$refs.listDom.resetLoadmore();
@@ -281,8 +313,12 @@
                         delay: 0 //ms
                     })
                     _this.refreshing = false;
+                    _this.getLiveList();
                 }, 1000)
             },
+            seeLive(id){
+                livePlayer.toLookLiveRoom(id);
+            }
         }
     }
 </script>
