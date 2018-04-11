@@ -10,7 +10,7 @@
                 <div class="userBox" >
                     <text class="nav_title">{{pageName}}</text>
                 </div>
-                <div class="rightTop" @click="goAddFriend()">
+                <div class="rightTop" >
                 </div>
             </div>
         </div>
@@ -318,6 +318,9 @@
             },
             seeLive(id){
                 livePlayer.toLookLiveRoom(id);
+            },
+            goback(){
+                event.closeURL();
             }
         }
     }
