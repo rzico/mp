@@ -175,7 +175,7 @@
                 id: "",
                 begin:0,
                 typebegin:0,
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:''},},
+                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:'',bindMobile:false,bindName:false},},
                 roles:"",
             }
         },
@@ -285,6 +285,9 @@
 //            设置昵称
             petname:function () {
                 let _this = this;
+                if(this.data.card.bindName == true){
+                    return
+                }
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
@@ -322,6 +325,9 @@
             //            设置手机
             pettel:function () {
                 let _this = this;
+                if(this.data.card.bindMobile == true){
+                    return
+                }
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
@@ -399,6 +405,7 @@
             open:function () {
                 var _this = this;
                 GET("weex/member/card/info.jhtml?id="+_this.id,function (res) {
+                    utils.debug(res)
                     if (res.type=='success') {
                         if(res.data.card.vip == 'vip1'){
                             _this.begin =0

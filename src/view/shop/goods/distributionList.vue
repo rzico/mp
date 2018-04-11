@@ -8,24 +8,49 @@
                 <input type="text" autofocus="true" v-model="item.name" return-key-type="next" class="lineContent pr20"  placeholder="请输入策略名称" />
             </div>
             </div>
-            <div class="cell-row cell-line">
+            <div class="cell-row cell-line"  @click="changeType()">
                 <div class="cell-panel cell-clear ">
-                    <text class="title">利润分红:</text>
-                    <input type="number" v-model="item.tota" return-key-type="next" class="lineContent pr20"  placeholder="利润分红比例（%）" />
+                    <text class="title">策略类型:</text>
+                    <text class="title" style="margin-left: 20px">{{typeName}}</text>
                 </div>
             </div>
-            <div class="cell-row cell-line">
-            <div class="cell-panel ">
-                <text class="title">直接佣金:</text>
-                <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例（%）" />
+            <!--类型为股东分红时渲染-->
+            <div class="cell-row cell-line" v-if="item.type == 'dividend'">
+                <div class="cell-panel cell-clear ">
+                    <text class="title">利润分红:</text>
+                    <input type="number" v-model="item.tota" return-key-type="next" class="lineContent pr20"  placeholder="利润分红比例"/>
+                    <text class="title">%</text>
+                </div>
             </div>
-            <div class="cell-panel ">
-                <text class="title">间接佣金:</text>
-                <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例（%）" />
+            <!--类型为股东分红时渲染-->
+            <div class="cell-row cell-line" v-if="item.type == 'dividend'">
+                <div class="cell-panel ">
+                    <text class="title">直接佣金:</text>
+                    <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="直接佣金比例" />
+                    <text class="title">%</text>
+                </div>
+                <div class="cell-panel ">
+                    <text class="title">间接佣金:</text>
+                    <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例" />
+                    <text class="title">%</text>
+                </div>
+                <div class="cell-panel cell-clear ">
+                    <text class="title">三级佣金:</text>
+                    <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例" />
+                    <text class="title">%</text>
+                </div>
             </div>
-            <div class="cell-panel cell-clear ">
-                <text class="title">三级佣金:</text>
-                <input type="number" v-model="item.percent3" return-key-type="next" class="lineContent pr20"  placeholder="三级佣金比例（%）" />
+            <!--类型为消费返现时渲染-->
+            <div class="cell-row cell-line" v-if="item.type == 'global'">
+            <div class="cell-panel ">
+                <text class="title">返现基数:</text>
+                <input type="number" v-model="item.dividend" return-key-type="next" class="lineContent pr20"  placeholder="返现基数比例" />
+                <text class="title">%</text>
+            </div>
+            <div class="cell-panel cell-clear">
+                <text class="title">返现比例:</text>
+                <input type="number" v-model="item.percent1" return-key-type="next" class="lineContent pr20"  placeholder="返现比例" />
+                <text class="title">%</text>
             </div>
             </div>
             <div class="cell-row cell-line">
@@ -52,8 +77,9 @@
     .lineContent{
         height: 80px;
         font-size: 32px;
-        width: 346px;
+        width: 250px;
         margin-left: 20px;
+        margin-top:5px
     }
     .info{
         height: 80px;
@@ -80,8 +106,10 @@
     export default {
         data: function () {
             return {
-                item: {id: "", name: "",tota:'', percent1: "", percent2: "", percent3: "",percent4: "点击设置", bgChange: false},
+                item: {id: "", name: "",tota:'', percent1: "", percent2: "", percent3: "",percent4: "点击设置",type:'dividend',dividend:'', bgChange: false},
                 begin:'',
+                typeBegin:'',
+                typeName:'股东分红',
                 initial:100,
                 pointProp:0,
             }
@@ -117,6 +145,20 @@
             this.item.tota = utils.getUrlParameter('tota');
             if(utils.isNull(this.item.tota)){
                 _this.item.tota = ''
+            }
+            this.item.type = utils.getUrlParameter('type');
+            if(utils.isNull(this.item.type)){
+                _this.item.type = 'dividend';
+                _this.typeName = '股东分红';
+                _this.typeBegin =0
+            }
+            if(this.item.type == 'dividend'){
+                _this.typeName = '股东分红';
+                _this.typeBegin =0
+            }else{
+                _this.typeName = '消费返现';
+                _this.typeBegin =1;
+                _this.item.dividend = _this.item.tota
             }
             if(!utils.isNull(this.begin)) {
                 if (_this.begin == 0) {
@@ -156,6 +198,26 @@
             }
         },
         methods: {
+//            设置策略类型
+            changeType:function () {
+                var _this = this;
+                picker.pick({
+                    index:_this.typeBegin,
+                    items:['股东分红','消费返现']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.item.type = 'dividend';
+                            _this.typeName = '股东分红';
+                            _this.typeBegin = e.data
+                        }else if(e.data == 1){
+                            _this.item.type = 'global';
+                            _this.typeName = '消费返现';
+                            _this.typeBegin = e.data
+                        }
+                    }
+                })
+            },
             //            设置提现比例
             withdrawalsetup:function () {
                 var _this = this;
@@ -205,70 +267,118 @@
             },
             goComplete:function () {
                 var _this = this;
-                if (utils.isNull(this.item.name)) {
-                    event.toast('请输入名称');
-                    return;
-                }
-                if (utils.isNull(this.item.tota)) {
-                    event.toast('请输入利润分红比例');
-                    return;
-                }
-                if (this.item.percent4 =='点击设置') {
-                    event.toast('请输入提现比例');
-                    return;
-                }
-                if (utils.isNull(this.item.percent1)) {
-                    event.toast('请输入佣金比例');
-                    return;
-                }
-                if (utils.isNull(this.item.percent2)) {
-                    event.toast('请输入佣金比例');
-                    return;
-                }
-                if (utils.isNull(this.item.percent3)) {
-                    event.toast('请输入佣金比例');
-                    return;
-                }
+                if (this.item.type == 'dividend') {
+                    if (utils.isNull(this.item.name)) {
+                        event.toast('请输入名称');
+                        return;
+                    }
+                    if (utils.isNull(this.item.tota)) {
+                        event.toast('请输入利润分红比例');
+                        return;
+                    }
+                    if (this.item.percent4 == '点击设置') {
+                        event.toast('请设置提现比例');
+                        return;
+                    }
+                    if (utils.isNull(this.item.percent1)) {
+                        event.toast('请输入佣金比例');
+                        return;
+                    }
+                    if (utils.isNull(this.item.percent2)) {
+                        event.toast('请输入佣金比例');
+                        return;
+                    }
+                    if (utils.isNull(this.item.percent3)) {
+                        event.toast('请输入佣金比例');
+                        return;
+                    }
 //                把字符串转换成整型
-                this.item.percent1 = parseInt(this.item.percent1)
-                this.item.percent2 = parseInt(this.item.percent2)
-                this.item.percent3 = parseInt(this.item.percent3)
-                if (this.item.percent1+this.item.percent2+this.item.percent3 > this.item.tota){
-                    modal.alert({
-                        message: '佣金比例总和不能大于利润分红比例',
-                        okTitle: '知道了'
-                    })
-                    return;
-                }
-                if (utils.isNull(this.item.id)) {
-                    POST('weex/member/distribution/add.jhtml?name=' +encodeURI(_this.item.name) +'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3+'&point='+this.begin+'&dividend='+this.item.tota).then(
-                        function (res) {
-                            if(res.type == 'success'){
-                                event.toast('添加成功');
-                                event.closeURL();
-                            }else{
-                                event.toast(res.content);
+                    this.item.percent1 = parseInt(this.item.percent1)
+                    this.item.percent2 = parseInt(this.item.percent2)
+                    this.item.percent3 = parseInt(this.item.percent3)
+                    if (this.item.percent1 + this.item.percent2 + this.item.percent3 > this.item.tota) {
+                        modal.alert({
+                            message: '佣金比例总和不能大于利润分红比例',
+                            okTitle: '知道了'
+                        })
+                        return;
+                    }
+                    if (utils.isNull(_this.item.id)) {
+                        POST('weex/member/distribution/add.jhtml?name=' + encodeURI(_this.item.name) + '&percent1=' + _this.item.percent1 + '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.tota).then(
+                            function (res) {
+                                if (res.type == 'success') {
+                                    event.toast('添加成功');
+                                    event.closeURL();
+                                } else {
+                                    event.toast(res.content);
+                                }
+                            }, function (err) {
+                                event.toast(err);
                             }
-                        },function (err) {
-                            event.toast(err);
-                        }
-                    )
-                } else {
-                    let name = encodeURI(_this.item.name);
-                    POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name+'&percent1=' + this.item.percent1+'&percent2=' + this.item.percent2+'&percent3=' + this.item.percent3+'&point='+this.begin+'&dividend='+this.item.tota).then(
-                        function (data) {
-                            if(data.type == 'success'){
-                                event.toast('修改成功');
-                                event.closeURL();
+                        )
+                    } else {
+                        let name = encodeURI(_this.item.name);
+                        POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name + '&percent1=' + _this.item.percent1 + '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.tota).then(
+                            function (data) {
+                                if (data.type == 'success') {
+                                    event.toast('修改成功');
+                                    event.closeURL();
 
-                            }else{
-                                event.toast(data.content);
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                event.toast(err.content);
                             }
-                        },
-                        function (err) {
-                            event.toast(err.content);
-                        }
-                    )
+                        )
+                    }
+                } else {
+//                    类型为消费返现时走这接口
+                    _this.item.percent2 = 0;
+                    _this.item.percent3 = 0;
+                    _this.item.tota = 0;
+                    if (utils.isNull(_this.item.dividend)) {
+                        event.toast('请输入返现基数比例');
+                        return;
+                    }
+                    if (utils.isNull(_this.item.percent1)) {
+                        event.toast('请输入返现比例');
+                        return;
+                    }
+                    if (_this.item.percent4 == '点击设置') {
+                        event.toast('请设置提现比例');
+                        return;
+                    }
+                    if (utils.isNull(_this.item.id)) {
+                        POST('weex/member/distribution/add.jhtml?name=' + encodeURI(_this.item.name) + '&percent1=' + _this.item.percent1 + '&type=' + _this.item.type+ '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.dividend).then(
+                            function (res) {
+                                if (res.type == 'success') {
+                                    event.toast('添加成功');
+                                    event.closeURL();
+                                } else {
+                                    event.toast(res.content);
+                                }
+                            }, function (err) {
+                                event.toast(err);
+                            }
+                        )
+                    } else {
+                        let name = encodeURI(_this.item.name);
+                        POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name + '&percent1=' + _this.item.percent1 + '&type=' + _this.item.type+ '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.dividend).then(
+                            function (data) {
+                                if (data.type == 'success') {
+                                    event.toast('修改成功');
+                                    event.closeURL();
+                                } else {
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                event.toast(err.content);
+                            }
+                        )
+                    }
                 }
             },
             goback(){
