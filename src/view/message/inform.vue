@@ -447,7 +447,7 @@
                             event.toast(data.content);
                         }
                     },function (err) {
-                        event.toast('网络不稳定');
+                        event.toast(err.content);
                     })
             },
             goback(){

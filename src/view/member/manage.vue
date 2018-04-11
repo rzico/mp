@@ -124,7 +124,7 @@
                 <!--</div>-->
                 <!--</div>-->
             </div>
-            <div class="cell-row ">
+            <div class="cell-row">
                 <div class="cell-panel space-between" @click="beginShare()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe633;</text>

@@ -1,38 +1,38 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper bgWhite" >
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="addressBox" >
             <div class="name">
                 <div class="leftWidth">
-                    <text class="font-size " >收货人:</text>
+                    <text class="font-size " >收货人</text>
                 </div>
-                <input class="input" type="text" v-model="name" placeholder="姓名" maxlength="6" autofocus="true" />
+                <input class="input pll54" type="text" v-model="name" placeholder="姓名" maxlength="6" autofocus="true" />
             </div>
             <div class="tel">
                 <div class="leftWidth">
-                    <text class="font-size ">联系方式:</text>
+                    <text class="font-size ">联系方式</text>
                 </div>
                 <input class="input" type="number" maxlength="11"  v-model="number" placeholder="手机号码"/>
             </div>
             <div class="region" @click="chooseArea()">
                 <div class="flex-row">
-                    <text class="font-size ">所在地区:</text>
-                    <text class="font-size padd-left10" >{{regionName}}</text>
+                    <text class="font-size ">地区信息</text>
+                    <text class="font-size pl20" >{{regionName}}</text>
                 </div>
                 <div>
-                    <text class="arrow"  :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    <text class="arrow primary fz40"  :style="{fontFamily:'iconfont'}">&#xe792;</text>
                 </div>
             </div>
             <div class="adress">
                 <div class="leftWidth">
-                    <text class="font-size ">详细地址:</text>
+                    <text class="font-size ">详细地址</text>
                 </div>
                 <input class="input" type="text" placeholder="街道、楼牌号等" maxlength="30" v-model="address" />
             </div>
             <div class="isDefault">
-                <text class="font-size ">是否默认:</text>
-                <div class="xiaoyuan" :style="yesColor()" @click="yes()"></div><text class="font-size">是</text>
-                <div class="xiaoyuan" :style="noColor()" @click="no()"></div><text class="font-size">否</text>
+                <text class="font-size ">是否默认</text>
+                <div class="xiaoyuan" :style="yesColor()" @click="yes()"></div><text  @click="yes()" class="font-size">是</text>
+                <div class="xiaoyuan" :style="noColor()" @click="no()"></div><text @click="no()" class="font-size">否</text>
             </div>
         </div>
         <div class="bottomBox bkg-primary" @click="activateConfirm()">
@@ -42,6 +42,9 @@
 </template>
 <style lang="less" src="../style/wx.less"/>
 <style scoped>
+    .pll54{
+        padding-left: 36px;
+    }
     .bottomBox{
         /*margin-top: 10px;*/
         /*width:90%;*/
@@ -84,10 +87,13 @@
     /*border-bottom: 1px solid #eee;*/
     /*}*/
     .addressBox{
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
     }
     .leftWidth{
-        width: 120px !important;
-        min-width: 70px !important;
+        /*width: 120px !important;*/
+        /*min-width: 70px !important;*/
     }
     .name{
         background-color: #ffffff;
@@ -142,7 +148,7 @@
         background-color: #ffffff;
         border-bottom: 1px solid #eee;
         height: 90px;
-        padding-left: 10px;
+        padding-left: 20px;
         padding-right: 10px;
         display: flex;
         flex-direction: row;
@@ -173,8 +179,8 @@
         font-size: 32px;
     }
     .input{
-        width: 570px;
-        margin-left: 10px;
+        width: 530px;
+        margin-left: 20px;
         height:90px;
         line-height:32px;
         font-size: 32px;
@@ -182,9 +188,6 @@
     }
     .font-size{
         font-size: 32px;
-    }
-    .padd-left10{
-        padding-left: 10px;
     }
     .flex-row{
         display: flex;
@@ -233,7 +236,7 @@
                 this.address = c.address;
                 this.isDefault = c.default
             }else{
-                this.title = '添加地址'
+                this.title = '新增地址'
             }
         },
         methods: {
