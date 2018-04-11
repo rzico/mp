@@ -453,8 +453,7 @@
                     event.toast('请选择地址');
                     return ;
                 }
-//                this.waitShow = true;
-//                return;
+                this.waitShow = true;
                 POST("website/member/order/create.jhtml?id=" + this.productId + '&quantity=' + this.buyNum + '&receiverId=' + this.receiverList[0].id).then(
                     function (data) {
                         if (data.type=="success") {

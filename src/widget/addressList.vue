@@ -162,6 +162,14 @@
                     function (res) {
                         if (res.type=="success") {
                             _this.receiverList = res.data;
+                            for(var i = 0;i < res.data.length ; i++){
+                                if(res.data[i].default){
+                                    _this.addressId = res.data[i].id;
+                                    return;
+                                }else{
+                                    _this.addressId = '';
+                                }
+                            }
                         } else {
                             event.toast(res.content)
                         }
@@ -222,6 +230,9 @@
                 let _this = this;
                 event.openURL(utils.locate('widget/addressEdit.js?id=' + item.id + '&addressData=' + encodeURIComponent(JSON.stringify(item))),function (data) {
                     if(data.type == 'success' && data.data != ''){
+//                        if(data.data.default){
+//                            _this.addressId = data.data.id;
+//                        }
 //                        _this.receiverList.
                         _this.open();
                     }
