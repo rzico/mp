@@ -142,8 +142,8 @@
                 <text class="fz26fff ml10">私信</text>
             </div>
             <!--用户用禁言-->
-            <div class="boder-right bottomBR" ></div>
-            <div class="bottomBtnBox" :style="{height:bottomNum + 100}">
+            <div class="boder-right bottomBR" v-if="showJinYan"></div>
+            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="showJinYan">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe74c;</text>
                 <text class="fz26fff ml10">禁言</text>
             </div>
@@ -311,6 +311,7 @@
     export default {
         data: function () {
             return {
+                isUser:false,
                 infoData:[
 //                    {
 //                    autograph:'输入的日期格式错误输入的日期格式错误输入的日期格式错误输入的日期格式错误输入的日期格式错误',
@@ -346,7 +347,7 @@
             if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
                 this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
             }
-
+            this.showJinYan = utils.getUrlParameter('showJinYan');
             this.id = utils.getUrlParameter('id');
 //            this.screenHeight = utils.fullScreen(305 );
             this.screenHeight = utils.fullScreen(237 + this.bottomNum);
