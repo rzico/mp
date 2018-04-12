@@ -1,86 +1,101 @@
 <template>
     <div class="wrapper">
-        <div class="header "  :class="[classHeader()]">
+        <!--<div class="header "  :class="[classHeader()]">-->
+        <!--&lt;!&ndash;顶部导航&ndash;&gt;-->
+        <!--<div class="nav nw">-->
+        <!--<div class="nav_back" @click="goback('/')">-->
+        <!--&lt;!&ndash;style="color: #E1776E"&ndash;&gt;-->
+        <!--<text class="nav_ico"   :style="{fontFamily:'iconfont'}">&#xe669;</text>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;页面名称&ndash;&gt;-->
+        <!--<div class="userBox" >-->
+        <!--&lt;!&ndash;style="color: #999"&ndash;&gt;-->
+        <!--<text class="nav_title">送出</text>-->
+        <!--<text class="nav_ico fz45" style="color:#FF9015"  :style="{fontFamily:'iconfont'}">&#xe6c2;</text>-->
+        <!--<text class="nav_title" >{{pageName}}</text>-->
+        <!--</div>-->
+        <!--<div class="rightTop" >-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="header  "  :class="[classHeader()]">
             <!--顶部导航-->
             <div class="nav nw">
                 <div class="nav_back" @click="goback('/')">
-                    <!--style="color: #E1776E"-->
                     <text class="nav_ico"   :style="{fontFamily:'iconfont'}">&#xe669;</text>
                 </div>
                 <!--页面名称-->
                 <div class="userBox" >
-                    <!--style="color: #999"-->
-                    <text class="nav_title">送出</text>
-                    <text class="nav_ico fz45" style="color:#FF9015"  :style="{fontFamily:'iconfont'}">&#xe6c2;</text>
-                    <text class="nav_title" >{{pageName}}</text>
+                    <text class="nav_title">{{pageName}}</text>
                 </div>
-                <div class="rightTop" >
+                <div class="rightTop">
                 </div>
             </div>
         </div>
-        <scroller class="scrollerStyle">
+        <scroller class="scrollerStyle" >
+            <div v-for="item in infoData">
             <!--顶部个人信息栏-->
-            <div class="topBox bt20"  >
+            <div class="topBox bt30"  >
                 <div class="topHead" >
                     <!--用户头像-->
-                    <image class="testImage" resize="cover" :src="imageUrl" ></image>
+                    <image class="headImage" resize="cover" :src="item.logo | watchHeadImage" ></image>
                     <!--个性签名 用户昵称-->
                     <div class="alignCenter"  >
                         <div class="flex-row pt20" >
                             <!--用户昵称-->
-                            <text class="userName  ">{{userName}}</text>
+                            <text class="userName  ">{{item.nickName}}</text>
                             <!--男性-->
-                            <!--<text  :style="{fontFamily:'iconfont'}" class="pl10 pr10 fz45 manIcon"  >&#xe694;</text>-->
+                            <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'male'" class="pl10 pr10 fz45 manIcon"  >&#xe694;</text>
                             <!--女性-->
-                            <text  :style="{fontFamily:'iconfont'}" class="pl5 pr5 fz45 womenIcon"  >&#xe654;</text>
-                            <div  class="pl10 pr10 ptb3  flex-row starBox">
+                            <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'female'" class="pl5 pr5 fz45 womenIcon"  >&#xe654;</text>
+                            <div v-if="item.vip != null" class="pl10 pr10 ptb3  flex-row starBox">
                                 <text  :style="{fontFamily:'iconfont'}" class="starIcon">&#xe655;</text>
-                                <text class="starNum"> 2</text>
+                                <text class="starNum"> {{item.vip}}</text>
                             </div>
                         </div>
                         <div class="flex-row pt20 pb20">
                             <div class="boder-right">
-                                <text class="focusFans pr20">关注 0</text>
+                                <text class="focusFans pr20">关注 {{item.follow}}</text>
                             </div>
-                            <text class="focusFans pl20">粉丝 148</text>
+                            <text class="focusFans pl20">粉丝 {{item.fans}}</text>
                         </div>
                         <!--用户签名-->
-                        <text class="userSign">{{userSign}}</text>
+                        <text class="userSign">{{item.autograph | watchAutograph}}</text>
                     </div>
                 </div>
             </div>
             <!--<div class="flex-row cell-height-title   bgWhite boder-bottom">-->
-                <!--<div class=" boder-right flex1 ptb5  flex-center">-->
-                    <!--<text class="title activeColor fz32">主页</text>-->
-                <!--</div>-->
-                <!--<div class="flex1 flex-center ptb5">-->
-                    <!--<text class="title fz32">直播</text>-->
-                <!--</div>-->
+            <!--<div class=" boder-right flex1 ptb5  flex-center">-->
+            <!--<text class="title activeColor fz32">主页</text>-->
+            <!--</div>-->
+            <!--<div class="flex1 flex-center ptb5">-->
+            <!--<text class="title fz32">直播</text>-->
+            <!--</div>-->
             <!--</div>-->
             <div >
                 <!--<div class="space-between  cell-height-title  bt20 bgWhite pl20 pr20">-->
-                    <!--<div class="flex-center">-->
-                        <!--<text class="sub_title  fz30">印票贡献榜</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row">-->
-                        <!--<image v-for="item in ticketImgList" class="ticketImg mr10" :src="item" resize="cover"></image>-->
-                        <!--<text class="arrow fz35" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-center">-->
+                <!--<text class="sub_title  fz30">印票贡献榜</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<image v-for="item in ticketImgList" class="ticketImg mr10" :src="item" resize="cover"></image>-->
+                <!--<text class="arrow fz35" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
                 <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
                     <div class=" flex2">
                         <text class="sub_title fz30">职业</text>
                     </div>
                     <div class=" flex4">
-                        <text  class="title">主播</text>
+                        <text  class="title">{{item.occupation | watchOccupation}}</text>
                     </div>
                 </div>
                 <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
                     <div class=" flex2">
-                        <text class="sub_title fz30">BabyShow号</text>
+                        <text class="sub_title fz30">登录号</text>
                     </div>
                     <div class=" flex4">
-                        <text  class="title">37541</text>
+                        <text  class="title">{{item.userId}}</text>
                     </div>
                 </div>
                 <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
@@ -88,37 +103,41 @@
                         <text class="sub_title fz30">年龄</text>
                     </div>
                     <div class=" flex4">
-                        <text  class="title">你猜</text>
-                    </div>
-                </div>
-                <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
-                    <div class=" flex2">
-                        <text class="sub_title fz30">个性签名</text>
-                    </div>
-                    <div class=" flex4">
-                        <text  class="title">TA好像忘记签名了</text>
+                        <text  class="title">{{item.birth | watchBirth}}</text>
                     </div>
                 </div>
                 <div class=" flex-row cell-height   bgWhite pl20 pr20">
                     <div class=" flex2">
-                        <text class="sub_title fz30">情感状态</text>
+                        <text class="sub_title fz30">个性签名</text>
                     </div>
                     <div class=" flex4">
-                        <text  class="title">保密</text>
+                        <text  class="title" style="lines:1;text-overflow: ellipsis">{{item.autograph | watchAutograph}}</text>
                     </div>
                 </div>
-            </div>
+                <!--<div class=" flex-row cell-height   bgWhite pl20 pr20">-->
+                <!--<div class=" flex2">-->
+                <!--<text class="sub_title fz30">情感状态</text>-->
+                <!--</div>-->
+                <!--<div class=" flex4">-->
+                <!--<text  class="title">保密</text>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div></div>
         </scroller>
 
         <!--点赞 评论 分享-->
         <div class=" footBox"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}"  >
             <!--主播用关注-->
-            <div class="bottomBtnBox" :style="{height:bottomNum + 100}">
-                <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe606;</text>
-                <text class="fz26fff ml10"  :class="[isLaud ? 'primary' : '']">关注</text>
+            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="!isFocus" @click="focus()">
+                <text class="fz26fff fz45"  :style="{fontFamily:'iconfont'}">&#xe606;</text>
+                <text class="fz26fff ml10" >关注</text>
+            </div>
+            <div class="bottomBtnBox" :style="{height:bottomNum + 100}"  v-else @click="focus()">
+                <text class="fz26fff fz45 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
+                <text class="fz26fff ml10 gray" >已关注</text>
             </div>
             <div class="boder-right bottomBR" ></div>
-            <div class="bottomBtnBox"  :style="{height:bottomNum + 100}">
+            <div class="bottomBtnBox"  :style="{height:bottomNum + 100}" @click="goChat()">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe62f;</text>
                 <text class="fz26fff ml10">私信</text>
             </div>
@@ -255,7 +274,7 @@
         padding-bottom: 20px;
         color: white;
     }
-    .testImage{
+    .headImage{
         width: 200px;
         height:200px;
         border-width: 5px;
@@ -264,7 +283,7 @@
         border-radius: 100px;
     }
     .userSign{
-        lines:1;
+        lines:2;
         text-overflow:ellipsis;
         width:500px;
         font-size: 28px;
@@ -292,16 +311,32 @@
     export default {
         data: function () {
             return {
-                pageName:'0',
-//                imageUrl:utils.locate('resources/images/background.png'),
-                imageUrl:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522811100&di=5570cc3ef01b85c21e54b7fb29a97756&src=http://img4q.duitang.com/uploads/item/201305/03/20130503034918_envh2.jpeg',
-                userName:'珍珠火凤凰',
-                userSign:'TA好像忘记签名了',
-                ticketImgList:[utils.locate('resources/images/background.png'),
-                                utils.locate('resources/images/background.png'),
-                                utils.locate('resources/images/background.png'),],
+                infoData:[
+//                    {
+//                    autograph:'输入的日期格式错误输入的日期格式错误输入的日期格式错误输入的日期格式错误输入的日期格式错误',
+//                    birth:'1500048000000',
+//                    logo:utils.locate('resources/images/background.png'),
+//                    nickName:'程序',
+//                    gender:'male',
+//                    vip:2,
+//                    follow:5,
+//                    fans:2,
+//                    userId:'u10100'
+//                }
+                ],
+//                headImage:utils.locate('resources/images/background.png'),
+//                headImage:'https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1522811100&di=5570cc3ef01b85c21e54b7fb29a97756&src=http://img4q.duitang.com/uploads/item/201305/03/20130503034918_envh2.jpeg',
+//                nickName:'珍珠火凤凰',
+//                userSign:'TA好像忘记签名了',
+//                印票
+//                ticketImgList:[utils.locate('resources/images/background.png'),
+//                    utils.locate('resources/images/background.png'),
+//                    utils.locate('resources/images/background.png'),],
                 bottomNum:0,
-                screenHeight:0
+                screenHeight:0,
+                pageName:'个人信息',
+                id:'',
+                isFocus:false,
             }
         },
         created(){
@@ -312,8 +347,59 @@
                 this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
             }
 
+            this.id = utils.getUrlParameter('id');
 //            this.screenHeight = utils.fullScreen(305 );
             this.screenHeight = utils.fullScreen(237 + this.bottomNum);
+//            this.getInfo();
+        },
+        filters:{
+            watchHeadImage:function (value) {
+                if(value != utils.locate('resources/images/background.png')){
+                    return utils.thumbnail(value,200,200);
+                }else{
+                    return value;
+                }
+            },
+            watchOccupation:function (value) {
+                return  ("你猜");
+            },
+            watchNickName:function (value) {
+              if(utils.isNull(value)){
+                  return 'host';
+              }else{
+                  return value;
+              }
+            },
+            watchLogo:function (value) {
+                if(utils.isNull(value)){
+                    return utils.locate('resources/images/background.png');
+                }else{
+                    return value;
+                }
+            },
+            watchBirth:function (value) {
+                if(utils.isNull(value)){
+                    return  ("你猜");
+                }
+//            日期计算年龄
+               var str = utils.ymdtimefmt(value);
+                var   r   =   str.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+                if(r==null)return   ("你猜");
+                var   d=   new   Date(r[1],r[3]-1,r[4]);
+                if   (d.getFullYear()==r[1]&&(d.getMonth()+1)==r[3]&&d.getDate()==r[4])
+                {
+                    var   Y   =   new   Date().getFullYear();
+                    return((Y-r[1])+" 岁");
+                }
+                return("你猜");
+            },
+            watchAutograph:function (value) {
+                if(utils.isNull(value)){
+                    return 'TA好像忘记签名了';
+                }else{
+                    return value;
+                }
+            }
         },
         methods:{
             classHeader:function () {
@@ -323,6 +409,29 @@
 //            点击返回
             goback(){
                 event.closeURL();
+            },
+            getInfo(){
+                let _this = this;
+                GET('weex/user/view.jhtml?id=' + this.id,function (data) {
+                    if(data.type == 'success'){
+//                        if(!utils.isNull(data.data.logo)){
+//                            _this.headImage = data.data.logo;
+//                        }
+//                        if(!utils.isNull(data.data.nickName)){
+//                            _this.nickName = data.data.nickName;
+//                        }
+                        _this.infoData = data.data;
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+            //            前往聊天
+            goChat(){
+                let userId = 'u' + (10200 + parseInt(this.id));
+                event.navToChat(userId);
             },
         }
     }
