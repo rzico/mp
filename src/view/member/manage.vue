@@ -31,26 +31,26 @@
                     </div>
                 </div>
                 <!--上架注释的-->
-                <!--<div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">-->
-                <!--<div class="flex-row">-->
-                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>-->
-                <!--<text class="title ml10">我的专栏</text>-->
-                <!--</div>-->
-                <!--<div class="flex-row flex-end">-->
-                <!--<text class="sub_title">{{member.topic}}</text>-->
-                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                <!--</div>-->
-                <!--</div>-->
-                <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="activate()">
-                    <div class="flex-row">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
-                        <text class="title ml10">开通专栏</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">{{member.topic}}</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
+                <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">
+                <div class="flex-row">
+                <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
+                <text class="title ml10">我的专栏</text>
                 </div>
+                <div class="flex-row flex-end">
+                <text class="sub_title">{{member.topic}}</text>
+                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+                </div>
+                <!--<div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="activate()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>-->
+                        <!--<text class="title ml10">开通专栏</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{member.topic}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
             <!--魔篇-->
             <!--<div class="cell-row">-->
