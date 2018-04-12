@@ -347,7 +347,7 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入手机号码',duration:1})
                         }else{
-                            POST('weex/member/update.jhtml?id='+_this.id+'&mobile='+value.data).then(
+                            POST('weex/member/card/update.jhtml?id='+_this.id+'&mobile='+value.data).then(
                                 function (mes) {
                                     if (mes.type == "success") {
                                         _this.data.card.mobile = value.data
@@ -405,7 +405,6 @@
             open:function () {
                 var _this = this;
                 GET("weex/member/card/info.jhtml?id="+_this.id,function (res) {
-                    utils.debug(res)
                     if (res.type=='success') {
                         if(res.data.card.vip == 'vip1'){
                             _this.begin =0
