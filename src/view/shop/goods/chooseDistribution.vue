@@ -11,7 +11,7 @@
             <!--分类行背景-->
             <div class="bgWhite ">
                 <!--分类行内容-->
-                <div class="lineStyle bottomBorder" @click="noneDistribution('','')">
+                <div class="lineStyle bottomBorder" @click="noneDistribution(0,'')">
                     <!--左侧分类名称-->
                     <div class="flex-row">
                         <text class="lineText">暂不用策略</text>
