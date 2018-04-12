@@ -44,8 +44,8 @@
             <div class="cell-row cell-line" v-if="item.type == 'global'">
             <div class="cell-panel ">
                 <text class="title">返现基数:</text>
-                <input type="number" v-model="item.dividend" return-key-type="next" class="lineContent pr20"  placeholder="返现基数比例" />
-                <text class="title">%</text>
+                <input type="number" v-model="item.dividend" return-key-type="next" class="lineContent pr20"  placeholder="请输入返现基数" />
+                <text class="title">元</text>
             </div>
             <div class="cell-panel cell-clear">
                 <text class="title">返现比例:</text>
@@ -339,7 +339,7 @@
                     _this.item.percent3 = 0;
                     _this.item.tota = 0;
                     if (utils.isNull(_this.item.dividend)) {
-                        event.toast('请输入返现基数比例');
+                        event.toast('请输入返现基数');
                         return;
                     }
                     if (utils.isNull(_this.item.percent1)) {
