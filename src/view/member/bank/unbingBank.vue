@@ -141,7 +141,6 @@
 //               当用户输完验证码后进行系统验证
                 if(lastCaptchaLength == 6){
                     _this.captcha = e.value;
-                    _this.onEnd();
                 }
             },
             onSend: function (e) {
