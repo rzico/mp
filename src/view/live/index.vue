@@ -14,10 +14,11 @@
                 </div>
             </div>
         </div>
-        <waterfall   show-scrollbar="false"   @loadmore="onloading" ref="listDom" loadmoreoffset="300" column-gap="10" column-width="370" left-gap="10" column-count="2" >
+        <waterfall  show-scrollbar="false"   @loadmore="onloading" ref="listDom" loadmoreoffset="300" column-gap="10" column-width="369"  column-count="2" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
+
             <header v-if="hasImageList()">
                 <div class="bt10">
                     <slider class="slider" interval="3000" auto-play="true">
@@ -41,7 +42,7 @@
                 </div>
             </header>
             <cell v-for="item in liveList" @click="seeLive(item.liveId)">
-                <div class="bt30">
+                <div class="bt30" >
                     <div>
                         <image :src="item.frontcover" class="liveCover"></image>
                         <div class="space-between coverInfo">
@@ -55,6 +56,9 @@
                     </div>
                 </div>
             </cell>
+            <!--<header>-->
+                <!--<div style="height: 500px;background-color:red;" ></div>-->
+            <!--</header>-->
         </waterfall>
     </div>
 </template>
@@ -90,7 +94,7 @@
     }
     .liveCover{
         border-radius: 5px;
-        width: 370px;
+        width: 369px;
         height: 270px;
     }
     /*直播列表*/
