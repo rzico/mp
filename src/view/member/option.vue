@@ -45,7 +45,8 @@
                         <text class="title ml10">免费开通专栏</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :checked="hasTopic" @change="create()"></switch>
+                        <switch class="switch" :checked="hasTopic" v-if="!hasTopic" @change="create()"></switch>
+                        <text class="check" :style="{fontFamily:'iconfont'}" v-else>&#xe64d;</text>
                     </div>
                 </div>
             </div>
@@ -163,6 +164,7 @@
                 storageNum:'0M',
                 hasTopic:false,
                 clicked:false,
+                disableTopic:true,
             }
         },
         components: {
@@ -186,6 +188,7 @@
                         _this.setQrcode = '已设置';
                     }
                     _this.hasTopic = data.data.hasTopic;
+                    _this.disableTopic = !_this.hasTopic;
                 }else{
                     event.toast(data.content)
                 }
@@ -359,15 +362,18 @@
                 var _this = this;
                 POST('weex/member/topic/submit.jhtml').then(
                     function (data) {
+                        utils.debug(data);
                         if (data.type == 'success') {
                             _this.hasTopic = true;
                             event.toast("开通专栏成功");
                         } else {
+                            _this.hasTopic = false;
                             event.toast(err.content)
                         }
                         _this.clicked = false;
                     },function (err) {
                         _this.clicked = false;
+                        _this.hasTopic = false;
                         event.toast(err.content)
                     })
             },
