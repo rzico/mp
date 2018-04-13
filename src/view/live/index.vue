@@ -3,7 +3,7 @@
         <div class="header  "  :class="[classHeader()]">
             <!--顶部导航-->
             <div class="nav nw">
-                <div class="nav_back" @click="goback('/')">
+                <div class="nav_back" @click="goback()">
                     <text class="nav_ico"   :style="{fontFamily:'iconfont'}">&#xe669;</text>
                 </div>
                 <!--页面名称-->
@@ -40,7 +40,7 @@
                     <text class="title ml10">直播推荐</text>
                 </div>
             </header>
-            <cell v-for="item in liveList" @click="seeLive(item.id)">
+            <cell v-for="item in liveList" @click="seeLive(item.liveId)">
                 <div class="bt30">
                     <div>
                         <image :src="item.frontcover" class="liveCover"></image>
@@ -219,17 +219,20 @@
                 }
             },
             watchOnline:function (value) {
-//                if(value)
-                 return value > 9999 ? parseFloat(utils.currencyfmt(value/10000)) + "万" : value;
+               if(utils.isNull(value)){
+                   return 0
+               }else{
+                   return value > 9999 ? parseFloat(utils.currencyfmt(value/10000)) + "万" : value;
+               }
+
             }
         },
         created(){
             utils.initIconFont();
             var _this = this;
-
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
-//            this.getLiveList();
+            this.getLiveList();
         },
         methods:{
             getLiveList:function () {
@@ -316,8 +319,8 @@
                     _this.getLiveList();
                 }, 1000)
             },
-            seeLive(id){
-                livePlayer.toLookLiveRoom(id);
+            seeLive(liveId){
+                livePlayer.toLookLiveRoom(liveId);
             },
             goback(){
                 event.closeURL();
