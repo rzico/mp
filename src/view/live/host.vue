@@ -48,7 +48,7 @@
                             <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'male'" class="pl10 pr10 fz45 manIcon"  >&#xe694;</text>
                             <!--女性-->
                             <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'female'" class="pl5 pr5 fz45 womenIcon"  >&#xe654;</text>
-                            <div v-if="item.vip != null" class="pl10 pr10 ptb3  flex-row starBox">
+                            <div v-if="hasVip(item.vip)" class="pl10 pr10 ptb3  flex-row starBox">
                                 <text  :style="{fontFamily:'iconfont'}" class="starIcon">&#xe655;</text>
                                 <text class="starNum"> {{item.vip}}</text>
                             </div>
@@ -92,7 +92,7 @@
                 </div>
                 <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
                     <div class=" flex2">
-                        <text class="sub_title fz30">登录号</text>
+                        <text class="sub_title fz30">登录名</text>
                     </div>
                     <div class=" flex4">
                         <text  class="title">{{item.userId}}</text>
@@ -143,7 +143,7 @@
             </div>
             <!--用户用禁言-->
             <div class="boder-right bottomBR" v-if="showJinYan"></div>
-            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="showJinYan">
+            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="showJinYan" @click="toGap()">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe74c;</text>
                 <text class="fz26fff ml10">禁言</text>
             </div>
@@ -338,6 +338,9 @@
                 pageName:'个人信息',
                 id:'',
                 isFocus:false,
+                groupId:false,
+                clicked:false
+
             }
         },
         created(){
@@ -349,9 +352,11 @@
             }
             this.showJinYan = utils.getUrlParameter('showJinYan');
             this.id = utils.getUrlParameter('id');
+
+            this.groupId = utils.getUrlParameter('groupId');
 //            this.screenHeight = utils.fullScreen(305 );
             this.screenHeight = utils.fullScreen(237 + this.bottomNum);
-//            this.getInfo();
+            this.getInfo();
         },
         filters:{
             watchHeadImage:function (value) {
@@ -403,6 +408,13 @@
             }
         },
         methods:{
+            hasVip:function (vip) {
+                 if(utils.isNull(vip)){
+                     return false;
+                 }else{
+                     return true;
+                 }
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc
@@ -421,7 +433,7 @@
 //                        if(!utils.isNull(data.data.nickName)){
 //                            _this.nickName = data.data.nickName;
 //                        }
-                        _this.infoData = data.data;
+                        _this.infoData.push(data.data);
                     }else{
                         event.toast(data.content);
                     }
@@ -434,6 +446,58 @@
                 let userId = 'u' + (10200 + parseInt(this.id));
                 event.navToChat(userId);
             },
+            toGap(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                event.livePlayer(this.id,this.groupId);
+            },
+//            关注
+            focus:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                if(this.isFocus){
+                    POST('weex/member/follow/delete.jhtml?authorId=' + this.UId).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.isFocus = !_this.isFocus;
+//                                event.sendGlobalEvent('onUserInfoChange',data);
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }else{
+                    POST('weex/member/follow/add.jhtml?authorId=' + this.UId).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.isFocus = !_this.isFocus;
+//                                event.sendGlobalEvent('onUserInfoChange',data);
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }
+            },
+
         }
     }
 </script>
