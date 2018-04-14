@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper bgWhite">
+    <div class="wrapper bgWhite" style="background-color: white">
         <div class="header  "  :class="[classHeader()]">
             <!--顶部导航-->
             <div class="nav nw">
@@ -14,11 +14,10 @@
                 </div>
             </div>
         </div>
-        <waterfall  show-scrollbar="false"   @loadmore="onloading" ref="listDom" loadmoreoffset="300" column-gap="10" column-width="369"  column-count="2" >
+        <waterfall  show-scrollbar="false"   @loadmore="onloading" ref="listDom" :scrollable="canScroll" loadmoreoffset="300" column-gap="10" column-width="369"  column-count="2" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-
             <header v-if="hasImageList()">
                 <div class="bt10">
                     <slider class="slider" interval="3000" auto-play="true">
@@ -33,7 +32,7 @@
                 </div>
             </header>
             <header >
-                <noData :noDataHint="noDataHint" v-if="liveList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
+                <noData :noDataHint="noDataHint" v-if="liveList.length == 0" ndBgColor="#fff" :style="{minHeight:screenHeight + 'px'}" ></noData>
             </header>
             <header  v-if="liveList.length > 0" >
                 <div class="bkg-white pt20 pb20 pl20 pr20 flex-row" >
@@ -174,6 +173,7 @@
                 showLoading: 'hide',
                 pageStart:0,
                 pageSize:10,
+                canScroll:true,
                 liveList:[
 //                    {
 //                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629642&di=9671800c4b314f94a4d76931b824b34d&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fecd8b4dad519e8635c4d1c5dcf738061ab9cad71.jpg',
@@ -326,6 +326,7 @@
             },
             onrefresh:function () {
                 var _this = this;
+                _this.canScroll = false;
                 _this.pageStart = 0;
 //                避免下拉刷新时触发 轮播图的v-if事件 避免销毁,页面跳动
 //                if(!utils.isNull(this.imageList)){
@@ -354,6 +355,7 @@
                         delay: 0 //ms
                     })
                     _this.refreshing = false;
+                    _this.canScroll = true;
                     _this.getLiveList();
                 }, 1000)
             },
