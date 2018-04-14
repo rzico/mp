@@ -56,14 +56,28 @@
                     </div>
                 </div>
             </cell>
-            <!--<header>-->
-                <!--<div style="height: 500px;background-color:red;" ></div>-->
-            <!--</header>-->
+            <!--ios下 waterfall组件内容高度不够时 无法下拉刷新-->
+            <header >
+                <!--636-->
+                <div class="adaptOneHeight"v-if="adaptIosOne()"></div>
+            </header>
+            <header >
+                <!--298-->
+                <div class="adaptTwoHeight" v-if="adaptIosTwo()"></div>
+            </header>
         </waterfall>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .adaptOneHeight{
+      height: 540px;
+    }
+
+    .adaptTwoHeight{
+        height: 200px;
+    }
+
     .coverAbsoTop{
         position: absolute;
         top:0;
@@ -239,10 +253,32 @@
             this.getLiveList();
         },
         methods:{
+            adaptIosOne(){
+              if(utils.isIosSystem()){
+                  if(this.liveList.length != 0 &&  this.liveList.length < 3){
+                      return true;
+                  }else{
+                      return false;
+                  }
+              }else{
+                  return false;
+              }
+            },
+            adaptIosTwo(){
+                if(utils.isIosSystem()){
+                    if(this.liveList.length != 0 &&  this.liveList.length >2 && this.liveList.length < 5){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            },
             getLiveList:function () {
                 let _this = this;
               GET('weex/live/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                  if(data.type == 'success' && data.data != ''){
+                  if(data.type == 'success'){
                       if (_this.pageStart == 0) {
                           _this.liveList = data.data.data;
                       }else{
@@ -251,8 +287,6 @@
                           })
                       }
                       _this.pageStart = data.data.start + data.data.data.length;
-                  }else if(data.type == 'success' && data.data == ''){
-
                   }else{
                       event.toast(data.content);
                   }

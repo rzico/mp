@@ -143,7 +143,7 @@
             </div>
             <!--用户用禁言-->
             <div class="boder-right bottomBR" v-if="showJinYan"></div>
-            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="showJinYan" @click="toGap()">
+            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="showJinYan && showJinYan != 'false'" @click="toGap()">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe74c;</text>
                 <text class="fz26fff ml10">禁言</text>
             </div>
@@ -308,6 +308,7 @@
     import { POST, GET,SCAN } from '../../assets/fetch';
     import utils from '../../assets/utils';
     const animation = weex.requireModule('animation');
+    const livePlayer = weex.requireModule('livePlayer');
     export default {
         data: function () {
             return {
@@ -339,13 +340,12 @@
                 id:'',
                 isFocus:false,
                 groupId:false,
-                clicked:false
-
+                clicked:false,
+                showJinYan:false,
             }
         },
         created(){
             utils.initIconFont();
-
 //            判断是iponex就动态获取底部上弹高度
             if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
                 this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
@@ -456,7 +456,15 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.livePlayer(this.id,this.groupId);
+                let userId = 'u' + (10200 + parseInt(this.id));
+                livePlayer.toGag(userId,this.groupId,function (data) {
+                    if(data.type == 'success'){
+                        _this.showJinYan = false;
+                        event.toast('禁言成功');
+                    }else {
+                        event.toast(data.content);
+                    }
+                });
             },
 //            关注
             focus:function () {
@@ -470,7 +478,7 @@
                     _this.clicked = false;
                 },1500)
                 if(this.isFocus){
-                    POST('weex/member/follow/delete.jhtml?authorId=' + this.UId).then(
+                    POST('weex/member/follow/delete.jhtml?authorId=' + this.id).then(
                         function (data) {
                             if(data.type == 'success'){
                                 _this.isFocus = !_this.isFocus;
@@ -483,7 +491,7 @@
                         }
                     )
                 }else{
-                    POST('weex/member/follow/add.jhtml?authorId=' + this.UId).then(
+                    POST('weex/member/follow/add.jhtml?authorId=' + this.id).then(
                         function (data) {
                             if(data.type == 'success'){
                                 _this.isFocus = !_this.isFocus;
