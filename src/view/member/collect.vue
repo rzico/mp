@@ -25,8 +25,10 @@
                         <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                     </div>
                     <div class="flex-row">
+                        <div  v-if="!item.loading"  class="articleImg coverAbsoTop " ></div>
                         <!--文章封面-->
-                        <image resize="cover" class="articleImg" :src="item.thumbnail  " ></image>
+                        <!--<image resize="cover" class="articleImg" :src="item.thumbnail  " ></image>-->
+                        <image  :src="item.loadingImg" @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleImg"></image>
                         <!--文章相关信息。标题点赞...-->
                         <div class="articleInfo">
                             <text class="fz30 articleTitle">{{item.title}}</text>
@@ -146,6 +148,7 @@
                 userName:'我',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
+                loadingImg:utils.locate('resources/images/loading1.gif'),
             }
         },
         filters:{
@@ -196,6 +199,10 @@
                     if(data.type == 'success' && data.data.data != '' ){
                         if (_this.pageStart == 0) {
                             data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                                item.loading = false;
+//                             （配合懒加载）
+                                item.loadingImg = '';
                                 if(!utils.isNull(item.thumbnail)){
                                     item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
                                 }
@@ -203,6 +210,10 @@
                             _this.collectList = data.data.data;
                         }else{
                             data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                                item.loading = false;
+//                             （配合懒加载）
+                                item.loadingImg = '';
                                 if(!utils.isNull(item.thumbnail)){
                                     item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
                                 }
@@ -366,6 +377,16 @@
                         event.toast(err.content);
                     }
                 )
+            },
+//            封面显示出来
+            onImageAppear(item){
+                if(utils.isNull(item.loadingImg)){
+                    item.loadingImg = item.thumbnail;
+                }
+            },
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
             },
         }
     }

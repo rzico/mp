@@ -22,7 +22,6 @@
                     <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
                     <!--&lt;!&ndash;不能用过滤器,在上啦加载push时 会渲染不出来&ndash;&gt;-->
                     <!--<image  :src="item.thumbnail"  resize="cover" class="articleCover"></image>-->
-
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.loadingImg" @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
@@ -100,11 +99,6 @@
         /*border-radius: 5px;*/
         margin-top: 20px;
         margin-bottom: 20px;
-    }
-    .coverAbsoTop{
-        position: absolute;
-        top:0;
-        background-color: rgba(136,136,136,0.1);
     }
     .articleBox {
         background-color: #ffffff;

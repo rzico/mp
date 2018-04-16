@@ -458,11 +458,6 @@
         width: 750px;padding-left: 20px;padding-right: 20px;padding-top: 20px;padding-bottom: 20px;margin-bottom:10px;background-color:#fff;
     }
 
-    .coverAbsoTop{
-        position: absolute;
-        top:0;
-        background-color: rgba(136,136,136,0.1);
-    }
 
     /*<!--轮播图-->*/
     .indicatorSlider{
