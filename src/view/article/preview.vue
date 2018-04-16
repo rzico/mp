@@ -33,7 +33,7 @@
                 </div>
             </div>
             <!--模版-->
-            <div  v-if="!templateChoose && isSelf == 1" >
+            <div  v-if="!templateChoose && isSelf == 1">
                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
                 <text class="templateText templateIcon textTemplateIcon" :style="{bottom:bottomNum + 135}" @click="chooseTemplate()">模版</text>
             </div>
@@ -132,7 +132,7 @@
 
             <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
-        <buyGoods  ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId" :articleId="articleId" ></buyGoods>
+        <buyGoods  ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId"  ></buyGoods>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -314,7 +314,8 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import navbar from './header.vue'
+    const globalEvent = weex.requireModule('globalEvent');
+    import navbar from './header.vue';
     import share from '../../include/share.vue'
     import utils from '../../assets/utils';
     import reward from '../../widget/rewardDialog.vue';
@@ -369,6 +370,13 @@
         created(){
             var _this = this;
             utils.initIconFont();
+//            商品购买控制
+//            globalEvent.addEventListener("buyGood", function (e) {
+//                    _this.goodId = e.goodId;
+//                    _this.buyShow = true;
+//            });
+
+
             this.articleId = utils.getUrlParameter('articleId');
 //            判断是iponex就动态获取底部上弹高度
             if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
@@ -908,9 +916,6 @@
 //            赞赏
             goReward(){
 //                this.$refs.buy.show(55,342);
-                this.goodId = 55;
-                this.articleId = 342;
-                this.buyShow = true;
 //                this.rewardShow = true;
             },
             sendReward(m,id){
