@@ -1,6 +1,7 @@
 <template>
     <div class="wrapper">
-        <headerNav @search="gosearch" @menu="menu"></headerNav>
+        <!--<headerNav @search="gosearch" @menu="menu"></headerNav>-->
+        <liveHeader @search="gosearch" @menu="menu"></liveHeader>
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="tabRef" @corpusChange="corpusChange"></tabNav>
         <slider class="pageBox" style="width: 750px" infinite="false"  :class="[pageTop()]" @change="onSliderChange" :index="whichCorpus">
             <div v-for="(item,index) in corpusList" class="categoryBox">
@@ -32,7 +33,7 @@
 <style>
     .pageBox{
         position: fixed;
-        top: 216px;left: 0;bottom: 0;
+        top: 380px;left: 0;bottom: 0;
     }
     .categoryBox{
         width: 750px;
@@ -44,6 +45,7 @@
 <script>
     const dom = weex.requireModule('dom')
     import headerNav from './header.vue';
+    import liveHeader from './liveHeader.vue';
     import circleCategory from './circle.vue';
     import othersCategory from './others.vue';
     import hotsCategory from './hots.vue';
@@ -65,7 +67,7 @@
             }
         },
         components: {
-            headerNav,tabNav,othersCategory,hotsCategory,circleCategory
+            liveHeader,headerNav,tabNav,othersCategory,hotsCategory,circleCategory
         },
         props:{
             corpusList:{
