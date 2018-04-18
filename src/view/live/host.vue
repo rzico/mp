@@ -683,6 +683,7 @@
                         livePlayer.toKick(_this.userId,_this.infoData[0].nickName,function (data) {
                             if(data.type == 'success'){
                                 event.toast('踢出成功');
+                                event.closeURL();
                             }else{
                                 event.toast(data.content);
                             }

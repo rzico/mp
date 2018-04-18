@@ -245,8 +245,7 @@
             },
             open:function () {
                 var _this = this;
-//
-                GET('weex/live/gift/data.jhtml?liveId='+ +_this.liveId +'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
+                GET('weex/live/gift/data.jhtml?liveId=' +_this.liveId + '&liveTapeId=' + '&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
                         if (res.data.start==0) {
                             _this.depositList = res.data.data;
