@@ -441,7 +441,8 @@
                 laud:0,
                 products:[],
                 isReview:0,
-                clicked:false
+                clicked:false,
+                goodsId:''
             }
         },
         filters:{
@@ -574,13 +575,14 @@
 
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
-                var op = getVal.split('=');
-                if(op[0] == 'articleId') {
+//                var op = getVal.split('=');
+                var urlId = utils.getUrlParameter('articleId');
+                if(!utils.isNull(urlId)) {
                     let options = {
                         type:'article',
-                        key:op[1]
+                        key:urlId
                     };
-                    _this.articleId = op[1];
+                    _this.articleId = urlId;
                     if(_this.articleId.length == 19){//19位的id为草稿文章
                     }else{
                         GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
@@ -592,10 +594,19 @@
                             return;
                         });
                     };
+
+//                  第一次发布的商品  记录商品id
+                    if(!utils.isNull(utils.getUrlParameter('goodsId'))){
+                        this.goodsId = utils.getUrlParameter('goodsId');
+                    }
                     //从缓存读取数据 写入界面
                     _this.readData(options);
-                }else if(op[0] == 'goodsStorageName'){//读取商品缓存并写入页面之中。
-                    storage.getItem(op[1], function (e) {
+                }else if(utils.getUrlParameter('goodsStorageName') == 'goodsPublish'){//读取商品缓存并写入页面之中。
+//                  第一次发布的商品  记录商品id
+                    if(!utils.isNull(utils.getUrlParameter('goodsId'))){
+                        this.goodsId = utils.getUrlParameter('goodsId');
+                    }
+                    storage.getItem('goodsPublish', function (e) {
                         if (e.result == 'success') {
                             var goodsInfo = JSON.parse(e.data);
                             _this.coverImage =  goodsInfo.thumbnail;
@@ -619,7 +630,7 @@
 //                            存储页面数据
                             _this.saveDraft();
 //                          把缓存删除
-                            storage.removeItem(op[1], e => {
+                            storage.removeItem('goodsPublish', e => {
                             })
                         }
                     });
@@ -1176,6 +1187,8 @@
                         if(data.type == 'success'){
                             //这边会由于避免重复渲染而需要再次向服务器上传该图片
                             _this.serveCover = data.data;
+//                        临时保存到缓存
+                            _this.saveDraft();
 //                        上传段落图片
                             _this.sendImage(0);
                         }else{
@@ -1241,6 +1254,8 @@
                             if(mediaType == 'image' || mediaType == 'product'){
                                 //                            向后台获取缩略图
                                 _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
+//                        临时保存到缓存
+                                _this.saveDraft();
 //                                    因为异步操作,所以要分别在if elseif里写下列代码
                                 sendIndex ++ ;
 //                        判断是否最后一张图
@@ -1256,6 +1271,8 @@
                                     if(e.type == 'success'){
                                         //                            向后台获取缩略图 (视频不需要获取缩略图)
                                         _this.paraList[sendIndex].serveThumbnail = e.data;
+//                        临时保存到缓存
+                                        _this.saveDraft();
 //                                        event.toast(_this.paraList[sendIndex].serveThumbnail);
                                     }else{//上传失败
                                         _this.toSendArticle = false;
@@ -1379,6 +1396,7 @@
                 this.savePage();
 //                判断是再次编辑还是初次编辑;
                 let sendId =  utils.isNull(_this.articleId) ? _this.timestamp : _this.articleId;
+
                 let articleData = {
                     thumbnail:this.serveCover,
                     music:_this.musicData,
@@ -1386,7 +1404,7 @@
                     id:sendId,
                     title:_this.setTitle,
                     votes:_this.voteData,
-                    isDraft:false,
+                    isDraft:false
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
@@ -1761,7 +1779,12 @@
 //                }
 //                判断是否没有图片
                 if(utils.isNull(imgSrc)){
-                    album.openAlbumSingle(false, function(data){
+                    var options = {
+                        isCrop:false,
+                        width:1,
+                        height:1
+                    };
+                    album.openAlbumSingle(options, function(data){
                         if(data.type == 'success'){
                             _this.paraList[index].paraImage = data.data.originalPath;
                             _this.paraList[index].thumbnailImage = data.data.thumbnailSmallPath;
@@ -1858,68 +1881,68 @@
                     _this.clicked = false;
                 },1500)
 //                ***** 单选裁剪 *****
-//                let option = {
-//                    isCrop:true,
-//                    width:2,
-//                    height:1
-//                };
-//                album.openAlbumSingle(
-//                    //选完图片后触发回调函数
-//                    option,function (data) {
-//                        _this.clicked = false;
-//                        if(data.type == 'success'){
-//                            _this.coverImage = data.data.originalPath;
-//////                    添加修改标志
-//                            _this.hadChange = 1;
-////                        临时保存到缓存
-//                            _this.saveDraft();
-//                        }else{
-//                            if(data.content.indexOf('取消') != -1){
-//                            }else{
-//                                event.toast(data.content);
-//                            }
-//                        }
-//                    })
+                var options = {
+                    isCrop:true,
+                    width:2,
+                    height:1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options,function (data) {
+                        _this.clicked = false;
+                        if(data.type == 'success'){
+                            _this.coverImage = data.data.originalPath;
+////                    添加修改标志
+                            _this.hadChange = 1;
+//                        临时保存到缓存
+                            _this.saveDraft();
+                        }else{
+                            if(data.content.indexOf('取消') != -1){
+                            }else{
+                                event.toast(data.content);
+                            }
+                        }
+                    })
 //                ***** 单选裁剪 *****
 
 
 
 //                ***** 跳转拼图封面页面 *****
-                let paraLength =  _this.paraList.length;
-                var uploadLength = 0;
-                let imgList = [];
-//                控制最多只传6张图
-                for(let i = 0;i < paraLength; i++){
-                    if(uploadLength < 6){
-//                        区分字体 图像 视频
-                        if(_this.paraList[i].paraImage != '' && (_this.paraList[i].mediaType == 'image' || _this.paraList[i].mediaType == 'product')){
-                            imgList.push({
-                                path:_this.paraList[i].paraImage
-                            });
-                            uploadLength ++ ;
-                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video' ){
-                            imgList.push({
-                                path:_this.paraList[i].thumbnailImage
-                            });
-                            uploadLength ++ ;
-                        }
-                    }
-                }
-                var  coverData = {
-                    image : imgList,
-                    cover : _this.coverImage
-                }
-                coverData = JSON.stringify(coverData);
-                storage.setItem('coverImage', coverData);
-                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
-                    if(message.type == 'success' && message.data != ''){
-                        _this.coverImage = message.data;
-//                    添加修改标志
-                        _this.hadChange = 1;
-//                        临时保存到缓存
-                        _this.saveDraft();
-                    }
-                });
+//                let paraLength =  _this.paraList.length;
+//                var uploadLength = 0;
+//                let imgList = [];
+////                控制最多只传6张图
+//                for(let i = 0;i < paraLength; i++){
+//                    if(uploadLength < 6){
+////                        区分字体 图像 视频
+//                        if(_this.paraList[i].paraImage != '' && (_this.paraList[i].mediaType == 'image' || _this.paraList[i].mediaType == 'product')){
+//                            imgList.push({
+//                                path:_this.paraList[i].paraImage
+//                            });
+//                            uploadLength ++ ;
+//                        }else if(_this.paraList[i].paraImage != '' && _this.paraList[i].mediaType == 'video' ){
+//                            imgList.push({
+//                                path:_this.paraList[i].thumbnailImage
+//                            });
+//                            uploadLength ++ ;
+//                        }
+//                    }
+//                }
+//                var  coverData = {
+//                    image : imgList,
+//                    cover : _this.coverImage
+//                }
+//                coverData = JSON.stringify(coverData);
+//                storage.setItem('coverImage', coverData);
+//                event.openURL(utils.locate('view/member/editor/cover.js?name=coverImage'),function (message) {
+//                    if(message.type == 'success' && message.data != ''){
+//                        _this.coverImage = message.data;
+////                    添加修改标志
+//                        _this.hadChange = 1;
+////                        临时保存到缓存
+//                        _this.saveDraft();
+//                    }
+//                });
 //                ***** 跳转拼图封面页面 *****
             },
             //            跳转音乐页面

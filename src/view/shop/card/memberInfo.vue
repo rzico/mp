@@ -51,7 +51,7 @@
             </div>
             <div class="cell-panel space-between cell-clear" @click="petdividend()" v-if="data.card.type == 'partner'">
                 <div class="flex-row">
-                    <text class="title ml10">股东比例</text>
+                    <text class="title ml10">分红比例</text>
                 </div>
                 <div class="flex-row flex-end" >
                     <text class="sub_title">{{data.card.bonus}}%</text>
@@ -175,7 +175,7 @@
                 id: "",
                 begin:0,
                 typebegin:0,
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:''},},
+                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:'',bindMobile:false,bindName:false},},
                 roles:"",
             }
         },
@@ -205,7 +205,7 @@
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -246,7 +246,7 @@
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -285,10 +285,13 @@
 //            设置昵称
             petname:function () {
                 let _this = this;
+                if(this.data.card.bindName == true){
+                    return
+                }
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle:'确定'
                     })
                     return
                 }
@@ -322,10 +325,13 @@
             //            设置手机
             pettel:function () {
                 let _this = this;
+                if(this.data.card.bindMobile == true){
+                    return
+                }
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle: '确定'
                     })
                     return
                 }
@@ -341,7 +347,7 @@
                         if(value.data == '' || value.data == null ){
                             modal.toast({message:'请输入手机号码',duration:1})
                         }else{
-                            POST('weex/member/update.jhtml?id='+_this.id+'&mobile='+value.data).then(
+                            POST('weex/member/card/update.jhtml?id='+_this.id+'&mobile='+value.data).then(
                                 function (mes) {
                                     if (mes.type == "success") {
                                         _this.data.card.mobile = value.data
@@ -362,7 +368,7 @@
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
-                        okTitle: 'OK'
+                        okTitle: '确定'
                     })
                     return
                 }

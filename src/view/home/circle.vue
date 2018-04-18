@@ -164,7 +164,7 @@
         left: 20px;
     }
     .articleCover {
-        width: 370px;
+        width: 360px;
         /*height: 370px;*/
         height: 460px;
         /*width:690px;*/
@@ -285,7 +285,7 @@
             getAllArticle(){
                 let _this = this;
                 GET('weex/article/circle.jhtml?id=' + this.UId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                    if(data.type == 'success' && data.data.data != '' ){
+                            if(data.type == 'success' && data.data.data != '' ){
                         let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
                             if(!utils.isNull(item.logo)){

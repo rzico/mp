@@ -716,7 +716,7 @@
             let _this = this;
             utils.initIconFont();
 //            获取屏幕的高度
-            this.screenHeight = utils.fullScreen(316);
+            this.screenHeight = utils.fullScreen(216);
             this.UId = event.getUId();
 //           获取用户信息;
             this.updateUserInfo();
@@ -847,6 +847,7 @@
                         }
                         _this.listCurrent = _this.listCurrent + _this.listPageSize;
                     }else{
+                        _this.articleList = middleList;
                         if(utils.isNull(_this.corpusId)){
                             _this.helpList = [];
                             _this.helpList.push(
@@ -1141,12 +1142,12 @@
 //                            utils.debug('当前行:' + _this.listCurrent);
                         }else if( data.type == "success" && data.data == '' ){
 //                            utils.debug('触发强制加载');
-//                            _this.$refs.scrollerRef.resetLoadmore();
                         }else{
                             event.toast(data.content);
                         }
                     })
 
+                     _this.$refs.scrollerRef.resetLoadmore();
                     this.showLoading = 'hide'
                 }, 1500)
             },
