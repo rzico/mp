@@ -158,6 +158,9 @@
     }
     .lineTitle{
         font-size: 32px;
+        width: 300px;
+        lines:1;
+        text-overflow: ellipsis;
     }
     .vip1 {
         /*margin-top: 50px;*/

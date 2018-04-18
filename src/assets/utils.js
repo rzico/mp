@@ -3,8 +3,8 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://mopian.1xx.me';
-// const websiteURL = 'http://dev.rzico.com';
+// const websiteURL = 'http://mopian.1xx.me';
+const websiteURL = 'http://dev.rzico.com';
 const event = weex.requireModule('event');
 const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
@@ -88,7 +88,7 @@ let utilsFunc = {
         w = parseInt(w * proportion);
         h = parseInt(h * proportion);
         if (url.substring(0,11) == "http://cdnx") {
-            return url+"?x-oss-process=image/resize,w_"+w+",h_"+h+"";
+            return url+"?x-oss-process=image/resize,m_fill,w_"+w+",h_"+h+"";
         } else
         if (url.substring(0,10) == "http://cdn") {
             return url+"@"+w+"w_"+h+"h_1e_1c_100Q";
@@ -148,10 +148,11 @@ let utilsFunc = {
         return len;
     },
 //    将过长的字符串换成 XXX...格式 默认取前7个字符
-    changeStrLast(value,length){
+    changeStrLast(value,length,maxLength){
         length = this.isNull(length) ? 7 : length;
+        maxLength = this.isNull(maxLength) ? 16 : maxLength;
         //              如果用户名称过长，便截取拼成名字
-        if((this.getLength(value) > 16)){
+        if((this.getLength(value) > maxLength)){
             value = value.substr(0,length) + '...'
         }
         return value;
@@ -499,6 +500,21 @@ let utilsFunc = {
         }
         return text;
     },
+    //金额保留两位小数点
+    currencyfmt(value) {
+        if (value == '' || value == null || value == undefined) {
+            return value;
+        }
+        // 返回处理后的值
+        if (value != null) {
+            if (value == 0) {
+                return value;
+            } else {
+                var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
+                return price;
+            }
+        }
+    }
 };
 
 export default utilsFunc;

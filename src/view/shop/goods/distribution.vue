@@ -40,7 +40,7 @@
                     </div>
                     <!--右侧功能-->
                     <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point)">
+                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point,item.tota,item.type)">
                             <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
                             <text class="gray fontSize30 ml5mr10">修改</text>
                         </div>
@@ -242,7 +242,7 @@
                 moveSign:false,
                 showSort:false,//子组件
                 catagoryList:[],
-                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',bgChange:false},
+                item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',tota:'',type:'',bgChange:false},
                 roles:'',
                 catagory:''
             }
@@ -297,7 +297,9 @@
                                     percent2:item.percent2,
                                     percent3:item.percent3,
                                     point:item.point,
+                                    tota:item.dividend,
                                     id:item.id,
+                                    type:item.type,
                                     bgChange:false
                                 })
                             })
@@ -318,7 +320,9 @@
                                     percent2:item.precent2,
                                     percent3:item.precent3,
                                     point:item.point,
+                                    tota:item.dividend,
                                     id:item.id,
+                                    type:item.type,
                                     bgChange:false
                                 })
                             })
@@ -393,21 +397,21 @@
 //                    )
 //                }
 //            },
-//            添加分类
-            addCatagory(){
-                let _this = this;
-                if (!utils.isRoles("A",_this.roles)) {
-                    modal.alert({
-                        message: '请点亮专栏',
-                        okTitle: 'OK'
-                    })
-                    return
-                }
-                _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",bgChange:false};
-                _this.isShow  = true;
-             },
+////            添加分类
+//            addCatagory(){
+//                let _this = this;
+//                if (!utils.isRoles("A",_this.roles)) {
+//                    modal.alert({
+//                        message: '请点亮专栏',
+//                        okTitle: 'OK'
+//                    })
+//                    return
+//                }
+//                _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",point:"",tota:"",bgChange:false};
+//                _this.isShow  = true;
+//             },
 //            修改分类名称
-            changeName(id,name,percent1,percent2,percent3,point){
+            changeName(id,name,percent1,percent2,percent3,point,tota,type){
                 let _this = this;
                 if (!utils.isRoles("A",_this.roles)) {
                     modal.alert({
@@ -416,7 +420,7 @@
                     })
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point),function () {
+                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota+'&type='+type),function () {
                     _this.catagoryList =[]
                     _this.open()
                 })
@@ -469,6 +473,7 @@
             },
 //            点击完成时、上传排序后的数组
             cleanbgChange:function () {
+                var _this = this;
 //                关闭所有的分类背景变化
                 this.catagoryList.forEach(function (item) {
                     if(item.bgChange == true){
@@ -493,6 +498,8 @@
                         function (data) {
                             if(data.type == 'success'){
                                 event.toast('排序成功');
+                                _this.catagoryList =[]
+                                _this.open()
                             }else{
                                 event.toast(data.content);
                             }
@@ -522,18 +529,24 @@
                 let c1 = this.catagoryList[index].percent1;
                 let c2 = this.catagoryList[index].percent2;
                 let c3 = this.catagoryList[index].percent3;
+                let c4 = this.catagoryList[index].tota;
+                let c5 = this.catagoryList[index].point;
                 let d = this.catagoryList[index].bgChange;
                 this.catagoryList[index].name = this.catagoryList[index - 1].name;
                 this.catagoryList[index].id = this.catagoryList[index - 1].id;
                 this.catagoryList[index].percent1 = this.catagoryList[index - 1].percent1;
                 this.catagoryList[index].percent2 = this.catagoryList[index - 1].percent2;
                 this.catagoryList[index].percent3 = this.catagoryList[index - 1].percent3;
+                this.catagoryList[index].tota = this.catagoryList[index - 1].tota;
+                this.catagoryList[index].point = this.catagoryList[index - 1].point;
                 this.catagoryList[index].bgChange = this.catagoryList[index - 1].bgChange;
                 this.catagoryList[index - 1].name = a;
                 this.catagoryList[index - 1].id = b;
                 this.catagoryList[index - 1].percent1 = c1;
                 this.catagoryList[index - 1].percent2 = c2;
                 this.catagoryList[index - 1].percent3 = c3;
+                this.catagoryList[index - 1].tota = c4;
+                this.catagoryList[index - 1].point = c5;
                 this.catagoryList[index - 1].bgChange = d;
             },
             //向下移动，下箭头
@@ -545,18 +558,24 @@
                 let c1 = this.catagoryList[index].percent1;
                 let c2 = this.catagoryList[index].percent2;
                 let c3 = this.catagoryList[index].percent3;
+                let c4 = this.catagoryList[index].tota;
+                let c5 = this.catagoryList[index].point;
                 let d = this.catagoryList[index].bgChange;
                 this.catagoryList[index].name = this.catagoryList[index + 1].name;
                 this.catagoryList[index].id = this.catagoryList[index + 1].id;
                 this.catagoryList[index].percent1 = this.catagoryList[index + 1].percent1;
                 this.catagoryList[index].percent2 = this.catagoryList[index + 1].percent2;
                 this.catagoryList[index].percent3 = this.catagoryList[index + 1].percent3;
+                this.catagoryList[index].tota = this.catagoryList[index + 1].tota;
+                this.catagoryList[index].point = this.catagoryList[index + 1].point;
                 this.catagoryList[index].bgChange = this.catagoryList[index + 1].bgChange;
                 this.catagoryList[index + 1].name = a;
                 this.catagoryList[index + 1].id = b;
                 this.catagoryList[index + 1].percent1 = c1;
                 this.catagoryList[index + 1].percent2 = c2;
                 this.catagoryList[index + 1].percent3 = c3;
+                this.catagoryList[index + 1].tota = c4;
+                this.catagoryList[index + 1].point = c5;
                 this.catagoryList[index + 1].bgChange = d;
             },
             jump:function () {

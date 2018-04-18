@@ -1,18 +1,20 @@
 <template>
     <div class="wrapper bkg-primary">
-        <navbar :title="title" @goback="goback" border="false"> </navbar>
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="vipsetup()"> </navbar>
 
         <div class="box">
             <div class="flex-center">
               <text class="name" >{{data.card.name}}</text>
-              <text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>
+                <div class="labelType"><text class="labelText">{{data.card.type | watchType}}</text> </div>
+                <div :class="[vipClass(data.card.vip)]" style="margin-top: 60px"><text class="labelText">{{data.card.vip | watchVip}}</text> </div>
+              <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
             </div>
             <text class="code" >NO.{{data.card.code | codefmt}}</text>
             <text class="balance" >{{data.card.balance | currencyfmt}}</text>
             <div class="flex-center">
                 <text class="label" @click="deposit()">消费记录</text>
                 <text class="label" >|</text>
-                <text class="label" @click="vipsetup()" >会员详情</text>
+                <text class="label" @click="integral()" >积分记录</text>
             </div>
         </div>
         <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
@@ -28,6 +30,21 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .labelType{
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: #EB4E40;
+        padding-left:5px;
+        padding-right: 5px;
+        margin-left: 10px;
+        margin-top: 60px;
+    }
+    .labelText{
+        color: white;
+        font-size: 24px;
+    }
     .box {
         margin-top: 100px;
         width:650px;
@@ -58,28 +75,39 @@
         z-index: 100;
     }
     .name {
-        margin-left: 45px;
         margin-top: 60px;
         color:#bbb;
         font-size: 30px;
     }
     .vip1 {
-        margin-top: 50px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: silver;
+        padding-left:5px;
+        padding-right: 5px;
         margin-left: 10px;
-        font-size: 28px;
-        color:#FFDD1F;
     }
     .vip2 {
-        margin-top: 50px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: gold;
+        padding-left:5px;
+        padding-right: 5px;
         margin-left: 10px;
-        font-size: 28px;
-        color:#FF8800;
     }
     .vip3 {
-        margin-top: 50px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: #6EBCE9;
+        padding-left:5px;
+        padding-right: 5px;
         margin-left: 10px;
-        font-size: 28px;
-        color:#DC0000;
     }
     .content {
         margin-top: 40px;
@@ -135,7 +163,8 @@
             navbar
         },
         props: {
-            title: { default: "会员卡" }
+            title: { default: "会员卡" },
+            complete: {default: "设置"}
         },
         filters:{
             codefmt:function (val) {
@@ -144,7 +173,25 @@
                 } else  {
                     return val.substr(0,11)+"  "+val.substr(11);
                 }
-            }
+            },
+            watchType:function (data) {
+                if(data == 'partner'){
+                    return '股东'
+                }else if(data == 'team'){
+                    return '团队'
+                }else{
+                    return '普通'
+                }
+            },
+            watchVip:function (data) {
+                if(data == 'vip3'){
+                    return '钻石'
+                }else if(data == 'vip2'){
+                    return '金卡'
+                }else{
+                    return '银卡'
+                }
+            },
         } ,
         data () {
             return {
@@ -163,6 +210,11 @@
             this.permissions()
         },
         methods: {
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
             //            获取权限
             permissions:function () {
                 var _this = this;
@@ -206,6 +258,16 @@
                 this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate("view/shop/card/deposit.js?id="+this.id),function (data) {
+                    _this.clicked =false
+                })
+            },
+            integral:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate("view/shop/card/integral.js?id="+this.id),function (data) {
                     _this.clicked =false
                 })
             },

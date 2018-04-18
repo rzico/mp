@@ -15,17 +15,17 @@
     .corpusBox{
         flex-direction: row;
         height:80px;
-        border-bottom-width: 1px;
-        border-style: solid;
-        border-color: gainsboro;
+        /*border-bottom-width: 1px;*/
+        /*border-style: solid;*/
+        /*border-color: gainsboro;*/
         background-color: #fff;
     }
     .articleClass{
         flex-direction: row;
         padding-left: 10px;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: gainsboro;
+        /*border-bottom-width: 1px;*/
+        /*border-bottom-style: solid;*/
+        /*border-bottom-color: gainsboro;*/
         height:80px;
         background-color: #fff;
     }

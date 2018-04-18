@@ -36,14 +36,17 @@
                         <div class="friendsLine" @click="jump(num.id)">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
-                                <text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>
+                                <!--<text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>-->
                             </div>
                             <div class="friendsName">
-
-                                <text class="lineTitle ">手机号:{{num.mobile}}</text>
-                                <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 550px">
-                                    <text class="realName">{{num.name}}(卡号:{{num.code | watchCode}})</text>
-                                    <text style="font-size: 28px;color: #888">{{num | watchStatus}}</text>
+                                <text class="lineTitle ">{{num.mobile}} (卡号:{{num.code | watchCode}})</text>
+                                <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 590px">
+                                    <div style="flex-direction: row;align-items: center">
+                                    <text class="realName">{{num.name}}</text>
+                                    <div class="label"><text class="labelText">{{num.type | watchType}}</text> </div>
+                                    <div :class="[vipClass(num.vip)]"><text class="labelText">{{num.vip | watchVip}}</text> </div>
+                                    </div>
+                                    <text class="fz28" style="color: #888" v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
                                 </div>
 
                             </div>
@@ -56,8 +59,20 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
-
-
+    .label{
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: #EB4E40;
+        padding-left:5px;
+        padding-right: 5px;
+        margin-left: 10px;
+    }
+    .labelText{
+        color: white;
+        font-size: 24px;
+    }
     .rightTop{
         height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
     }
@@ -152,34 +167,37 @@
         margin-left: 20px;
         lines:1;
         text-overflow: ellipsis;
-        max-width: 450px;
+        max-width: 600px;
     }
     .vip1 {
-        /*margin-top: 50px;*/
-        /*margin-left: 10px;*/
-        position: absolute;
-        top: 20px;
-        left: 60px;
-        color:#FFDD1F;
-        font-size: 30px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: silver;
+        padding-left:5px;
+        padding-right: 5px;
+        margin-left: 10px;
     }
     .vip2 {
-        /*margin-top: 50px;*/
-        /*margin-left: 10px;*/
-        position: absolute;
-        top: 20px;
-        left: 60px;
-        color:#FF8800;
-        font-size: 30px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: gold;
+        padding-left:5px;
+        padding-right: 5px;
+        margin-left: 10px;
     }
     .vip3 {
-        /*margin-top: 50px;*/
-        /*margin-left: 10px;*/
-        position: absolute;
-        top: 20px;
-        left: 60px;
-        color:#DC0000;
-        font-size: 30px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        background-color: #6EBCE9;
+        padding-left:5px;
+        padding-right: 5px;
+        margin-left: 10px;
     }
 </style>
 
@@ -225,14 +243,24 @@
             watchCode:function (value) {
                 return value.substr(-6)
             },
-            watchStatus:function (data) {
-                if(data.status == 'loss'){
-                    return '挂失中'
-                }else {
-                    return ''
+            watchType:function (data) {
+                if(data == 'partner'){
+                    return '股东'
+                }else if(data == 'team'){
+                    return '团队'
+                }else{
+                    return '普通'
                 }
-
-            }
+            },
+            watchVip:function (data) {
+                if(data == 'vip3'){
+                    return '钻石'
+                }else if(data == 'vip2'){
+                    return '金卡'
+                }else{
+                    return '银卡'
+                }
+            },
         },
         methods: {
             //            获取权限

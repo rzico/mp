@@ -219,7 +219,7 @@
                 var _this = this;
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=occupation'), function (data) {
                     _this.clicked = false;
-                    if(data.type == 'success' ) {
+                    if(data.type == 'success' && data.data != '') {
                         _this.category = parseInt(data.data.listId);
                         _this.occupation = data.data.listName;
                         POST('weex/member/update.jhtml?occupationId=' +_this.category).then(
@@ -318,9 +318,14 @@
             },
             headLogo: function () {
                 var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
-                    true,function (data) {
+                    options,function (data) {
                         _this.clicked = false;
                         if(data.type == 'success') {
 //                            _this.logo = data.data.thumbnailSmallPath;

@@ -50,8 +50,10 @@
             else if(urlType == 'category'){
                 this.title = '职业选择';
             }
+            else if(urlType == 'template'){
+                this.title = '模版选择';
+            }
             GET(urlType + '/list.jhtml',function (data) {
-//                event.toast(data);
                 if(data.type == 'success' && data.data != ''){
                     _this.dataList = data.data;
                     data.data.forEach(function (item) {
@@ -66,9 +68,12 @@
         },
         methods: {
             goback: function (e) {
-                let E = {
-                    listId : this.listId,
-                    listName : this.listName
+                var E = '';
+                if(!utils.isNull(this.listId)){
+                     E = {
+                        listId : this.listId,
+                        listName : this.listName
+                    }
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);

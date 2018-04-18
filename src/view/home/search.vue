@@ -2,7 +2,7 @@
     <div class="wrapper">
         <!--输入栏-->
         <searchNav  :searchHint="searchHint" @oninput="oninput" :keyword="keyword" @search="search"  ref="childFind"> </searchNav><!--搜索栏-->
-        <div  class="confm boder-bottom bt20" v-if="isInput() && !isSearch" @click="search(keyword)">
+        <div  class="confm  bt20" v-if="isInput() && !isSearch" @click="search(keyword)">
             <text class="ico " :style="{fontFamily:'iconfont'}">&#xe611;</text>
             <text class="title">搜索: {{keyword}} </text>
         </div>
@@ -11,7 +11,7 @@
                 <!--搜索历史-->
                 <div class="searchBox bt20"  v-if="historyList != ''">
                     <div class="space-between searchHead" >
-                        <text class="gray fz28">搜索历史</text>
+                        <text class="gray fz26">搜索历史</text>
                         <text class="ico gray cleanHistory fz28" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
                     </div>
                     <div class="borderBottom searchBorder"></div>
@@ -19,7 +19,7 @@
                         <div v-for="(item,index) in historyList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
                             <div class="searchContent" :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
-                                <text class=" searchContentText boder-bottom fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
+                                <text class=" searchContentText boder-bottom fz28" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
                                 <!--,index != historyList.history.length - 2 || index != historyList.history.length-1 ? 'boder-bottom' : ''-->
                             </div>
                         </div>
@@ -28,14 +28,14 @@
                 <!--搜索热点-->
                 <div class="searchBox " v-if="hotList != ''">
                     <div class="space-between searchHead" >
-                        <text class="gray fz28">搜索发现</text>
+                        <text class="gray fz26">搜索发现</text>
                     </div>
                     <div class="borderBottom searchBorder"></div>
                     <div class="searchContentBox flex-row " >
                         <div v-for="(item,index) in hotList" class="flex-row">
                             <div class="boder-left" v-if="index % 2 != 0" style="height: 50px;width: 1px;"></div>
                             <div class="searchContent  " :class="[ index % 2 == 0 ? 'pl25' :'']"  @click="helpSearch(item.history)">
-                                <text class="boder-bottom searchContentText fz32" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
+                                <text class="boder-bottom searchContentText fz28" :class="[ index % 2 != 0 ? 'pl25' :'']">{{item.history}}</text>
                             </div>
                         </div>
                     </div>
@@ -54,30 +54,31 @@
         <!--数据显示-->
         <scroller v-if="isSearch"  @loadmore="onloading" loadmoreoffset="50" >
             <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-                <!--<text class="indicator">{{refreshState}}</text>-->
+            <!--<text class="indicator">{{refreshState}}</text>-->
             <!--</refresh>-->
             <!--顶部标题分类栏-->
             <div class="mt20" :style="{minHeight:screenHeight + 'px'}">
                 <!--无数据提示-->
                 <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
-                <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30">
-                    <!--朋友-->
-                    <div  v-for="(item,index) in searchList.friend" v-if="index <= 9" class="cell-line">
-                        <!--类别-->
-                        <div  v-if="isRepeat(index)" class="pl30 pr30  bgWhite">
-                            <div class="typeTextBox  space-between">
-                                <text class="title fz28 pb15" >相关专栏</text>
-                                <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(2)" v-if="searchList.length > 10">更多&#xe630;</text>
-                            </div>
+                <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30 ">
+                    <!--类别-->
+                    <div   class="pl30 pr30  bgWhite">
+                        <div class="typeTextBox  space-between">
+                            <text class="title fz28 pb15" >相关专栏</text>
+                            <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(2)" v-if="searchList.length > 10">更多&#xe630;</text>
                         </div>
+                    </div>
+                    <!--朋友-->
+                    <div  class="cell-line">
                         <div class="contentBox pb15">
                             <!--好友-->
-                            <div class="singleUserBox"  @click="goAuthor(item.id)">
+                            <div class="singleUserBox"  v-for="(item,index) in searchList.friend" v-if="index <= 9" @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div >
                                     <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -161,13 +162,16 @@
                 </div>
             </div>
             <!--<loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">-->
-                <!--<text class="indicator">加载中...</text>-->
+            <!--<text class="indicator">加载中...</text>-->
             <!--</loading>-->
         </scroller>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .fz26{
+        font-size: 26px;
+    }
     .moreArticle{
         width: 690px;
     }
@@ -403,7 +407,7 @@
                     name:'文章'
                 },{
                     id:'2',
-                    name:'商家'
+                    name:'用户'
                 }],
                 whichCorpus:0,
                 screenHeight:0,
@@ -770,7 +774,7 @@
                                 data.data.data.forEach(function (item) {
                                     _this.searchList.friend.push(item);
                                 });
-                           _this.pageStart = data.data.start + data.data.data.length;
+                                _this.pageStart = data.data.start + data.data.data.length;
                             }else if(data.type == 'success' && data.data.data == ''){
                             }else{
                                 event.toast(data.content);

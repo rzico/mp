@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
-        <captcha ref="captcha" :title="caption" :mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
+        <captcha ref="captcha" :title="caption" :tel="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>

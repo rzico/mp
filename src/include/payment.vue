@@ -247,6 +247,7 @@
                 _this.isPwd = false;
                 _this.clearPwd();
                 GET("payment/view.jhtml?sn="+sn,function (res) {
+//                    utils.debug(res);
                     _this.info = res.data;
                     _this.isShow = true;
                 },function (err) {
@@ -327,6 +328,7 @@
                 var _this = this;
                 POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
                     function (data) {
+//                        utils.debug(data);
                         if (data.type=="success") {
                             event.wxAppPay(data.data,function (e) {
                                 if (e.type=='success') {
@@ -380,6 +382,7 @@
 //                                });
                             })
                         } else {
+
                             event.toast(data.content);
                             _this.close("error");
                         }
