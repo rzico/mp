@@ -215,8 +215,6 @@
                 }],
 //                isInit:true,
                 pageName:'直播',
-                pageStart:0,
-                pageSize:10
             }
         },
         components: {
@@ -360,7 +358,9 @@
                 }, 1000)
             },
             seeLive(liveId){
-                livePlayer.toLookLiveRoom(liveId);
+                livePlayer.toLookLiveRoom(liveId,function (data) {
+
+                });
             },
             goback(){
                 event.closeURL();
