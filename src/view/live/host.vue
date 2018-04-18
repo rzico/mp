@@ -376,7 +376,8 @@
                 isGag:false,
 //                是否管理员
                 isManager:false,
-                userId:''
+                userId:'',
+                hasManager:false,
             }
         },
         created(){
@@ -387,7 +388,6 @@
                 this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
             }
             this.isUser = utils.getUrlParameter('isUser');
-            utils.debug(this.isUser);
             if(this.isUser == 'false'){
                 this.isUser = false;
             }
@@ -615,7 +615,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                if(this.isManager){
+                if(this.hasManager){
                     modal.confirm({
                         message: '是否收回该用户的管理员资格?',
                         duration: 0.3,
@@ -627,7 +627,7 @@
                                 function (data) {
                                     if(data.type == 'success'){
                                         event.toast('收回资格成功');
-                                        _this.isManager = !_this.isManager;
+                                        _this.hasManager = !_this.hasManager;
                                     }else{
                                         event.toast(data.content);
                                     }
@@ -645,12 +645,11 @@
                         cancelTitle:'取消',
                     }, function (value) {
                         if(value == '确定'){
-                            utils.debug('weex/live/admin/add.jhtml?id=' + _this.id + '&liveId=' + _this.groupId);
                             POST('weex/live/admin/add.jhtml?id=' + _this.id + '&liveId=' + _this.groupId).then(
                                 function (data) {
                                     if(data.type == 'success'){
                                         event.toast('升为管理员成功');
-                                        _this.isManager = !_this.isManager;
+                                        _this.hasManager = !_this.hasManager;
                                     }else{
                                         event.toast(data.content);
                                     }
