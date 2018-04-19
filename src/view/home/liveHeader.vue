@@ -1,20 +1,20 @@
 <template>
     <div >
-        <div class="headers cell-bottom-clear" :class="[classHeader()]">
+        <div class="headers cell-bottom-clear" >
             <div class="navContent" style="width:750px;">
                 <image class="image" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/liveHeader.png"></image>
-                <div class="imageContent">
+                <div class="imageContent" :class="[classTop()]">
                 <text class="titleOne">芸店VIP</text>
-                <text class="titleTwo">vip直播商城</text>
-                <div class="button">
+                <text class="titleTwo">VIP直播商城</text>
+                <div class="button" @click="doLive()">
                     <text class="buttonText">我要直播</text>
                 </div>
                 </div>
-                <div   style="position: absolute;top: 70px;right: 80px" @click="scan()" >
-                    <text class="scan fz40 flex-row" style="width: 59px;" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                <div class="iconOne" :class="[classTop()]"  @click="scan()" >
+                    <text class="scan fz40"  :style="{fontFamily:'iconfont'}" >&#xe607;</text>
                 </div>
                 <!--750/8=93.75-->
-                <div style="position: absolute;top: 70px;right: 10px" @click="menu()" >
+                <div class="iconTwo" :class="[classTop()]" @click="menu()" >
                     <text class="scan" :style="{fontFamily:'iconfont'}" >&#xe72b;</text>
                 </div>
             </div>
@@ -29,7 +29,7 @@
     }
     .navContent{
         width:750px;
-        height: 300px;
+        height: 258px;
         justify-content: center;
         align-items: center;
         margin-top: 0px;
@@ -38,31 +38,36 @@
         width: 300px;
         flex-direction: column;
         align-items: center;
-        position: absolute;
-        top:0;
+        position: fixed;
+        top:44px;
         left:225px;
     }
     .image{
         width: 750px;
-        height: 300px;
+        height: 258px;
     }
     .titleOne{
-        font-size: 50px;
+        font-size: 40px;
         color: white;
         font-weight: bold;
-        margin-top: 60px;
+        line-height:88px;
+        height:88px;
+        text-align: center;
     }
     .titleTwo{
-        margin-top: 10px;
-        font-size: 32px;
+        font-size: 24px;
         color: white;
-        font-weight: bold;
+    }
+    .iconOne{
+        height: 88px;width: 59px;line-height:88px;text-align: center;position: fixed;top: 54px;right: 80px;
+    }
+    .iconTwo{
+        height: 88px;width: 59px;line-height:88px;text-align: center;position: fixed;top: 54px;right: 10px
     }
     .button{
-        margin-top: 20px;
+        margin-top: 10px;
         align-items: center;
         justify-content: center;
-        width: 300px;
         padding-left: 40px;
         padding-right: 40px;
         padding-top:5px;
@@ -71,7 +76,7 @@
         border-radius: 40px;
     }
     .buttonText{
-        font-size: 40px;
+        font-size: 34px;
         color: #EB4E40;
         font-weight: bold;
     }
@@ -106,25 +111,56 @@
     }
 </style>
 <script>
-
-
+    const livePlayer = weex.requireModule('livePlayer');
     const event = weex.requireModule('event');
     const dom=weex.requireModule("dom");
     import utils from '../../assets/utils';
     import { SCAN} from '../../assets/fetch';
+    import { POST, GET } from '../../assets/fetch';
     export default {
         data:function () {
           return{
               imageUrl:utils.locate('resources/images/liveHeader.png'),
+              clicked:false
           }
         },
         created() {
         },
         methods: {
-            classHeader:function () {
-                let dc = utils.device();
-
-                return dc
+            //            我要直播
+            doLive(){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                GET('weex/live/check.jhtml?memberId=' + event.getUId(),function (data) {
+                    if(data.type == 'success' && !utils.isNull(data.data)){
+//                            开始直播
+                        livePlayer.toPlayLiveRoom(data.data.liveId,true,false,function(mes){});
+                    }else if(data.type == 'success' && utils.isNull(data.data)){
+                        event.openURL(utils.locate('view/live/apply.js'),
+                            function (message) {
+                                if(message.type == 'success'){
+//                                  开始直播
+                                    livePlayer.toPlayLiveRoom(message.data.liveId,message.data.play,message.data.record,function(mes){});
+                                }
+                            }
+                        );
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+            //            监听设备型号,控制导航栏
+            classTop:function () {
+                let dc = utils.addTop();
+                return dc;
             },
             menu:function (e) {
                 this.$emit('menu');

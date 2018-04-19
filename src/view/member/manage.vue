@@ -108,25 +108,25 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <!--<div class="cell-panel space-between" @click="doLive()">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe624;</text>-->
-                        <!--<text class="title ml10">我要直播</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="cell-panel space-between" @click="doLive()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe624;</text>
+                        <text class="title ml10">我要直播</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
 
-                <!--<div class="cell-panel space-between" @click="seeLive()">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe68e;</text>-->
-                        <!--<text class="title ml10">观看直播</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="cell-panel space-between" @click="seeLive()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
+                        <text class="title ml10">观看直播</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="cell-panel space-between cell-clear" @click="gmchat()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
@@ -466,11 +466,11 @@
                 GET('weex/live/check.jhtml?memberId=' + event.getUId(),function (data) {
                     if(data.type == 'success' && !utils.isNull(data.data)){
 //                            开始直播
-                        livePlayer.toPlayLiveRoom(data.data.liveId,false,false,function(mes){});
+                        livePlayer.toPlayLiveRoom(data.data.liveId,true,false,function(mes){});
                     }else if(data.type == 'success' && utils.isNull(data.data)){
                         event.openURL(utils.locate('view/live/apply.js'),
                             function (message) {
-                                if(message.type == 'success' && message.content == '申请成功'){
+                                if(message.type == 'success' ){
 //                                  开始直播
                                     livePlayer.toPlayLiveRoom(message.data.liveId,message.data.play,message.data.record,function(mes){});
                                 }

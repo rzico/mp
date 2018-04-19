@@ -33,7 +33,7 @@
 <style>
     .pageBox{
         position: fixed;
-        top: 380px;left: 0;bottom: 0;
+        top: 338px;left: 0;bottom: 0;
     }
     .categoryBox{
         width: 750px;
