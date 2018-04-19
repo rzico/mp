@@ -32,100 +32,109 @@
                 </div>
             </div>
         </div>
+        <!--设置-->
+        <div  class="rightTopBox flex-row"  :class="[classTop()]">
+            <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
+            <div v-if="!isUser">
+                <text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-if="hasManager" style="font-size:50px;color: #fff">&#xe697;</text>
+                <text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-else style="font-size:50px;color: #fff">&#xe643;</text>
+            </div>
+            <text  :style="{fontFamily:'iconfont'}" @click="tickOut()" v-if="!isUser || isManager" class="ml20" style="font-size:50px;color: #fff">&#xe67b;</text>
+        </div>
         <scroller class="scrollerStyle" >
             <div v-for="item in infoData">
-            <!--顶部个人信息栏-->
-            <div class="topBox bt30"  >
-                <div class="topHead" >
-                    <!--用户头像-->
-                    <image class="headImage" resize="cover" :src="item.logo | watchHeadImage" ></image>
-                    <!--个性签名 用户昵称-->
-                    <div class="alignCenter"  >
-                        <div class="flex-row pt20" >
-                            <!--用户昵称-->
-                            <text class="userName  ">{{item.nickName}}</text>
-                            <!--男性-->
-                            <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'male'" class="pl10 pr10 fz45 manIcon"  >&#xe694;</text>
-                            <!--女性-->
-                            <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'female'" class="pl5 pr5 fz45 womenIcon"  >&#xe654;</text>
-                            <div v-if="item.vip != null" class="pl10 pr10 ptb3  flex-row starBox">
-                                <text  :style="{fontFamily:'iconfont'}" class="starIcon">&#xe655;</text>
-                                <text class="starNum"> {{item.vip}}</text>
+                <!--顶部个人信息栏-->
+                <div class="topBox bt30"  >
+                    <div class="topHead" >
+                        <!--用户头像-->
+                        <image class="headImage" resize="cover" :src="item.logo | watchHeadImage" ></image>
+                        <!--个性签名 用户昵称-->
+                        <div class="alignCenter"  >
+                            <div class="flex-row pt20" >
+                                <!--用户昵称-->
+                                <text class="userName  ">{{item.nickName}}</text>
+                                <!--男性-->
+                                <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'male'" class="pl10 pr10 fz45 manIcon"  >&#xe694;</text>
+                                <!--女性-->
+                                <text  :style="{fontFamily:'iconfont'}" v-if="item.gender == 'female'" class="pl5 pr5 fz45 womenIcon"  >&#xe654;</text>
+                                <div v-if="hasVip(item.vip)" class="pl10 pr10 ptb3  flex-row starBox">
+                                    <text  :style="{fontFamily:'iconfont'}" class="starIcon">&#xe655;</text>
+                                    <text class="starNum"> {{item.vip}}</text>
+                                </div>
                             </div>
-                        </div>
-                        <div class="flex-row pt20 pb20">
-                            <div class="boder-right">
-                                <text class="focusFans pr20">关注 {{item.follow}}</text>
+                            <div class="flex-row pt20 pb20">
+                                <div class="boder-right">
+                                    <text class="focusFans pr20">关注 {{item.follow}}</text>
+                                </div>
+                                <text class="focusFans pl20">粉丝 {{item.fans}}</text>
                             </div>
-                            <text class="focusFans pl20">粉丝 {{item.fans}}</text>
+                            <!--用户签名-->
+                            <text class="userSign">{{item.autograph | watchAutograph}}</text>
                         </div>
-                        <!--用户签名-->
-                        <text class="userSign">{{item.autograph | watchAutograph}}</text>
                     </div>
                 </div>
-            </div>
-            <!--<div class="flex-row cell-height-title   bgWhite boder-bottom">-->
-            <!--<div class=" boder-right flex1 ptb5  flex-center">-->
-            <!--<text class="title activeColor fz32">主页</text>-->
-            <!--</div>-->
-            <!--<div class="flex1 flex-center ptb5">-->
-            <!--<text class="title fz32">直播</text>-->
-            <!--</div>-->
-            <!--</div>-->
-            <div >
-                <!--<div class="space-between  cell-height-title  bt20 bgWhite pl20 pr20">-->
-                <!--<div class="flex-center">-->
-                <!--<text class="sub_title  fz30">印票贡献榜</text>-->
+                <!--<div class="flex-row cell-height-title   bgWhite boder-bottom">-->
+                <!--<div class=" boder-right flex1 ptb5  flex-center">-->
+                <!--<text class="title activeColor fz32">主页</text>-->
                 <!--</div>-->
-                <!--<div class="flex-row">-->
-                <!--<image v-for="item in ticketImgList" class="ticketImg mr10" :src="item" resize="cover"></image>-->
-                <!--<text class="arrow fz35" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--<div class="flex1 flex-center ptb5">-->
+                <!--<text class="title fz32">直播</text>-->
                 <!--</div>-->
                 <!--</div>-->
-                <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
-                    <div class=" flex2">
-                        <text class="sub_title fz30">职业</text>
+                <div >
+                    <!--<div class="space-between  cell-height-title  bt20 bgWhite pl20 pr20">-->
+                    <!--<div class="flex-center">-->
+                    <!--<text class="sub_title  fz30">印票贡献榜</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row">-->
+                    <!--<image v-for="item in ticketImgList" class="ticketImg mr10" :src="item" resize="cover"></image>-->
+                    <!--<text class="arrow fz35" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
+                        <div class=" flex2">
+                            <text class="sub_title fz30">职业</text>
+                        </div>
+                        <div class=" flex4">
+                            <text  class="title">{{item.occupation | watchOccupation}}</text>
+                        </div>
                     </div>
-                    <div class=" flex4">
-                        <text  class="title">{{item.occupation | watchOccupation}}</text>
+                    <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
+                        <div class=" flex2">
+                            <text class="sub_title fz30">登录名</text>
+                        </div>
+                        <div class=" flex4">
+                            <text  class="title">{{item.userId}}</text>
+                        </div>
                     </div>
-                </div>
-                <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
-                    <div class=" flex2">
-                        <text class="sub_title fz30">登录号</text>
+                    <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
+                        <div class=" flex2">
+                            <text class="sub_title fz30">年龄</text>
+                        </div>
+                        <div class=" flex4">
+                            <text  class="title">{{item.birth | watchBirth}}</text>
+                        </div>
                     </div>
-                    <div class=" flex4">
-                        <text  class="title">{{item.userId}}</text>
+                    <div class=" flex-row cell-height   bgWhite pl20 pr20">
+                        <div class=" flex2">
+                            <text class="sub_title fz30">个性签名</text>
+                        </div>
+                        <div class=" flex4">
+                            <text  class="title" style="lines:1;text-overflow: ellipsis">{{item.autograph | watchAutograph}}</text>
+                        </div>
                     </div>
-                </div>
-                <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
-                    <div class=" flex2">
-                        <text class="sub_title fz30">年龄</text>
-                    </div>
-                    <div class=" flex4">
-                        <text  class="title">{{item.birth | watchBirth}}</text>
-                    </div>
-                </div>
-                <div class=" flex-row cell-height   bgWhite pl20 pr20">
-                    <div class=" flex2">
-                        <text class="sub_title fz30">个性签名</text>
-                    </div>
-                    <div class=" flex4">
-                        <text  class="title" style="lines:1;text-overflow: ellipsis">{{item.autograph | watchAutograph}}</text>
-                    </div>
-                </div>
-                <!--<div class=" flex-row cell-height   bgWhite pl20 pr20">-->
-                <!--<div class=" flex2">-->
-                <!--<text class="sub_title fz30">情感状态</text>-->
-                <!--</div>-->
-                <!--<div class=" flex4">-->
-                <!--<text  class="title">保密</text>-->
-                <!--</div>-->
-                <!--</div>-->
-            </div></div>
+                    <!--<div class=" flex-row cell-height   bgWhite pl20 pr20">-->
+                    <!--<div class=" flex2">-->
+                    <!--<text class="sub_title fz30">情感状态</text>-->
+                    <!--</div>-->
+                    <!--<div class=" flex4">-->
+                    <!--<text  class="title">保密</text>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div></div>
         </scroller>
 
-        <!--点赞 评论 分享-->
+        <!--关注 私信 禁言-->
         <div class=" footBox"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}"  >
             <!--主播用关注-->
             <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="!isFocus" @click="focus()">
@@ -142,16 +151,35 @@
                 <text class="fz26fff ml10">私信</text>
             </div>
             <!--用户用禁言-->
-            <div class="boder-right bottomBR" v-if="showJinYan"></div>
-            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="showJinYan">
-                <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe74c;</text>
-                <text class="fz26fff ml10">禁言</text>
+            <div class="bottomBtnBox" v-if="!isUser || isManager">
+                <div class="boder-right bottomBR" ></div>
+                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="!isGag" @click="toGag()">
+                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67e;</text>
+                    <text class="fz26fff ml10">禁言</text>
+                </div>
+                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-else @click="toGag()">
+                    <text class="fz26fff fz45 gray" :style="{fontFamily:'iconfont'}">&#xe74c;</text>
+                    <text class="fz26fff ml10 gray">已禁言</text>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+
+    .rightTopBox{
+        position: fixed;
+        top: 44px;
+        right: 20px;
+        /*width: 110px;*/
+        /*width: 92px;*/
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+    }
+
+
     .scrollerStyle{
         position: relative;
         top:0;
@@ -308,10 +336,11 @@
     import { POST, GET,SCAN } from '../../assets/fetch';
     import utils from '../../assets/utils';
     const animation = weex.requireModule('animation');
+    const livePlayer = weex.requireModule('livePlayer');
+    const modal = weex.requireModule('modal');
     export default {
         data: function () {
             return {
-                isUser:false,
                 infoData:[
 //                    {
 //                    autograph:'输入的日期格式错误输入的日期格式错误输入的日期格式错误输入的日期格式错误输入的日期格式错误',
@@ -337,21 +366,54 @@
                 screenHeight:0,
                 pageName:'个人信息',
                 id:'',
+//                是否关注
                 isFocus:false,
+                groupId:'',
+                clicked:false,
+//                是否用户
+                isUser:true,
+//                是否禁言
+                isGag:false,
+//                是否管理员
+                isManager:false,
+                userId:'',
+                hasManager:false,
             }
         },
         created(){
+            let _this = this;
             utils.initIconFont();
-
 //            判断是iponex就动态获取底部上弹高度
             if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
                 this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
             }
-            this.showJinYan = utils.getUrlParameter('showJinYan');
+            this.isUser = utils.getUrlParameter('isUser');
+            if(this.isUser == 'false'){
+                this.isUser = false;
+            }
+            if(this.isUser == 'true'){
+                this.isUser = true;
+            }
             this.id = utils.getUrlParameter('id');
+            this.userId = 'u' + (10200 + parseInt(this.id));
+            this.groupId = utils.getUrlParameter('groupId');
+
+//            获取相关管理员权限
+            this.managerInfo();
+
+            livePlayer.getGag(this.userId,this.groupId,function(data){
+                _this.isGag = data.data ;
+                if(_this.isGag == 'false'){
+                    _this.isGag  = false;
+                }
+                if(_this.isGag == 'true'){
+                    _this.isGag  = true;
+                }
+            })
 //            this.screenHeight = utils.fullScreen(305 );
             this.screenHeight = utils.fullScreen(237 + this.bottomNum);
-//            this.getInfo();
+            this.getInfo();
+
         },
         filters:{
             watchHeadImage:function (value) {
@@ -365,11 +427,11 @@
                 return  ("你猜");
             },
             watchNickName:function (value) {
-              if(utils.isNull(value)){
-                  return 'host';
-              }else{
-                  return value;
-              }
+                if(utils.isNull(value)){
+                    return 'host';
+                }else{
+                    return value;
+                }
             },
             watchLogo:function (value) {
                 if(utils.isNull(value)){
@@ -383,7 +445,7 @@
                     return  ("你猜");
                 }
 //            日期计算年龄
-               var str = utils.ymdtimefmt(value);
+                var str = utils.ymdtimefmt(value);
                 var   r   =   str.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
                 if(r==null)return   ("你猜");
                 var   d=   new   Date(r[1],r[3]-1,r[4]);
@@ -403,6 +465,34 @@
             }
         },
         methods:{
+            //            获取相关管理员权限
+            managerInfo(){
+              let _this = this;
+                if(!this.isUser){
+                    GET('weex/live/admin/view.jhtml?liveId=' + _this.groupId + '&memberId=' + this.id,function(mes){
+                        if(mes.type == 'success' && (mes.data == true || mes.data == 'true')){
+                            _this.hasManager = mes.data;
+                        }
+                    },function(err){
+                        event.toast(err.content);
+                    })
+                }else{
+                    GET('weex/live/admin/view.jhtml?liveId=' + _this.groupId ,function(mes){
+                        if(mes.type == 'success' && (mes.data == true || mes.data == 'true')){
+                            _this.isManager = mes.data;
+                        }
+                    },function(err){
+                        event.toast(err.content);
+                    })
+                }
+            },
+            hasVip:function (vip) {
+                if(utils.isNull(vip)){
+                    return false;
+                }else{
+                    return true;
+                }
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc
@@ -421,7 +511,8 @@
 //                        if(!utils.isNull(data.data.nickName)){
 //                            _this.nickName = data.data.nickName;
 //                        }
-                        _this.infoData = data.data;
+                        _this.isFocus = data.data.isfollow;
+                        _this.infoData.push(data.data);
                     }else{
                         event.toast(data.content);
                     }
@@ -431,9 +522,176 @@
             },
             //            前往聊天
             goChat(){
-                let userId = 'u' + (10200 + parseInt(this.id));
-                event.navToChat(userId);
+//                let userId = 'u' + (10200 + parseInt(this.id));
+                event.navToChat(this.userId);
             },
+            toGag(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+//                let userId = 'u' + (10200 + parseInt(this.id));
+                var gagTime = '1';
+                if(!_this.isGag){
+                    gagTime = '86400';
+                }
+                livePlayer.toGag(this.userId,this.infoData[0].nickName,this.groupId,gagTime,function (data) {
+                    if(data.type == 'success'){
+//                        livePlayer.getGag(userId,_this.groupId,function(mes){
+//                            if(mes.data){
+                        if(!_this.isGag){
+                            event.toast('禁言成功');
+                        }else{
+                            event.toast('解除禁言成功');
+                        }
+                        _this.isGag = !_this.isGag;
+//                            }else{
+//                                event.toast('系统繁忙,请稍后重试');
+//                            }
+//                        })
+                    }else {
+                        event.toast(data.content);
+                    }
+                });
+            },
+//            关注
+            focus:function () {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                if(this.isFocus){
+                    POST('weex/member/follow/delete.jhtml?authorId=' + this.id).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.isFocus = !_this.isFocus;
+//                                event.sendGlobalEvent('onUserInfoChange',data);
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }else{
+                    POST('weex/member/follow/add.jhtml?authorId=' + this.id).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                _this.isFocus = !_this.isFocus;
+//                                event.sendGlobalEvent('onUserInfoChange',data);
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                        }
+                    )
+                }
+            },
+
+//            监听设备型号,控制导航栏设置 返回按钮
+            classTop:function () {
+                let dc = utils.addTop();
+                return dc;
+            },
+//            设置管理员
+            setManager(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                if(this.hasManager){
+                    modal.confirm({
+                        message: '是否收回该用户的管理员资格?',
+                        duration: 0.3,
+                        okTitle:'确定',
+                        cancelTitle:'取消',
+                    }, function (value) {
+                        if(value == '确定'){
+                            POST('weex/live/admin/delete.jhtml?id=' + _this.id + '&liveId=' + _this.groupId).then(
+                                function (data) {
+                                    if(data.type == 'success'){
+                                        event.toast('收回资格成功');
+                                        _this.hasManager = !_this.hasManager;
+                                    }else{
+                                        event.toast(data.content);
+                                    }
+                                },function (err) {
+                                    event.toast(err.content);
+                                }
+                            )
+                        }
+                    })
+                }else{
+                    modal.confirm({
+                        message: '是否将该用户升为管理员?',
+                        duration: 0.3,
+                        okTitle:'确定',
+                        cancelTitle:'取消',
+                    }, function (value) {
+                        if(value == '确定'){
+                            POST('weex/live/admin/add.jhtml?id=' + _this.id + '&liveId=' + _this.groupId).then(
+                                function (data) {
+                                    if(data.type == 'success'){
+                                        event.toast('升为管理员成功');
+                                        _this.hasManager = !_this.hasManager;
+                                    }else{
+                                        event.toast(data.content);
+                                    }
+                                },function (err) {
+                                    event.toast(err.content);
+                                }
+                            )
+                        }
+                    })
+                }
+            },
+//            踢人
+            tickOut(){
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                modal.confirm({
+                    message: '是否将该用户踢出直播间?',
+                    duration: 0.3,
+                    okTitle:'确定',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if(value == '确定'){
+//                        let userId = 'u' + (10200 + parseInt(_this.id));
+                        livePlayer.toKick(_this.userId,_this.infoData[0].nickName,function (data) {
+                            if(data.type == 'success'){
+                                event.toast('踢出成功');
+                                event.closeURL();
+                            }else{
+                                event.toast(data.content);
+                            }
+                        });
+                    }
+                })
+
+            }
         }
     }
 </script>

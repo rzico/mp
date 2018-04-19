@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper bgWhite">
+    <div class="wrapper bgWhite" style="background-color: white">
         <div class="header  "  :class="[classHeader()]">
             <!--顶部导航-->
             <div class="nav nw">
@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <waterfall   show-scrollbar="false"   @loadmore="onloading" ref="listDom" loadmoreoffset="300" column-gap="10" column-width="370" left-gap="10" column-count="2" >
+        <waterfall  show-scrollbar="false"   @loadmore="onloading" ref="listDom" :scrollable="canScroll" loadmoreoffset="300" column-gap="10" column-width="369"  column-count="2" >
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
@@ -32,7 +32,7 @@
                 </div>
             </header>
             <header >
-                <noData :noDataHint="noDataHint" v-if="liveList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
+                <noData :noDataHint="noDataHint" v-if="liveList.length == 0" ndBgColor="#fff" :style="{minHeight:screenHeight + 'px'}" ></noData>
             </header>
             <header  v-if="liveList.length > 0" >
                 <div class="bkg-white pt20 pb20 pl20 pr20 flex-row" >
@@ -41,7 +41,7 @@
                 </div>
             </header>
             <cell v-for="item in liveList" @click="seeLive(item.liveId)">
-                <div class="bt30">
+                <div class="bt30" >
                     <div>
                         <image :src="item.frontcover" class="liveCover"></image>
                         <div class="space-between coverInfo">
@@ -55,11 +55,28 @@
                     </div>
                 </div>
             </cell>
+            <!--ios下 waterfall组件内容高度不够时 无法下拉刷新-->
+            <header >
+                <!--636-->
+                <div class="adaptOneHeight"v-if="adaptIosOne()"></div>
+            </header>
+            <header >
+                <!--298-->
+                <div class="adaptTwoHeight" v-if="adaptIosTwo()"></div>
+            </header>
         </waterfall>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .adaptOneHeight{
+      height: 540px;
+    }
+
+    .adaptTwoHeight{
+        height: 200px;
+    }
+
     .coverAbsoTop{
         position: absolute;
         top:0;
@@ -90,7 +107,7 @@
     }
     .liveCover{
         border-radius: 5px;
-        width: 370px;
+        width: 369px;
         height: 270px;
     }
     /*直播列表*/
@@ -156,6 +173,7 @@
                 showLoading: 'hide',
                 pageStart:0,
                 pageSize:10,
+                canScroll:true,
                 liveList:[
 //                    {
 //                    thumbnail:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522837629642&di=9671800c4b314f94a4d76931b824b34d&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farchive%2Fecd8b4dad519e8635c4d1c5dcf738061ab9cad71.jpg',
@@ -197,8 +215,6 @@
                 }],
 //                isInit:true,
                 pageName:'直播',
-                pageStart:0,
-                pageSize:10
             }
         },
         components: {
@@ -235,10 +251,32 @@
             this.getLiveList();
         },
         methods:{
+            adaptIosOne(){
+              if(utils.isIosSystem()){
+                  if(this.liveList.length != 0 &&  this.liveList.length < 3){
+                      return true;
+                  }else{
+                      return false;
+                  }
+              }else{
+                  return false;
+              }
+            },
+            adaptIosTwo(){
+                if(utils.isIosSystem()){
+                    if(this.liveList.length != 0 &&  this.liveList.length >2 && this.liveList.length < 5){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            },
             getLiveList:function () {
                 let _this = this;
               GET('weex/live/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                  if(data.type == 'success' && data.data != ''){
+                  if(data.type == 'success'){
                       if (_this.pageStart == 0) {
                           _this.liveList = data.data.data;
                       }else{
@@ -247,8 +285,6 @@
                           })
                       }
                       _this.pageStart = data.data.start + data.data.data.length;
-                  }else if(data.type == 'success' && data.data == ''){
-
                   }else{
                       event.toast(data.content);
                   }
@@ -288,6 +324,7 @@
             },
             onrefresh:function () {
                 var _this = this;
+                _this.canScroll = false;
                 _this.pageStart = 0;
 //                避免下拉刷新时触发 轮播图的v-if事件 避免销毁,页面跳动
 //                if(!utils.isNull(this.imageList)){
@@ -316,11 +353,14 @@
                         delay: 0 //ms
                     })
                     _this.refreshing = false;
+                    _this.canScroll = true;
                     _this.getLiveList();
                 }, 1000)
             },
             seeLive(liveId){
-                livePlayer.toLookLiveRoom(liveId);
+                livePlayer.toLookLiveRoom(liveId,function (data) {
+
+                });
             },
             goback(){
                 event.closeURL();
