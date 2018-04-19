@@ -15,7 +15,7 @@
                         <!--<image :src="item.logo" class="friendsImage"></image>-->
                         <div  v-if="!item.loading"  class="friendsImage coverAbsoTop " ></div>
                         <!--文章封面-->
-                        <image  :src="item.loadingImg" @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="friendsImage"></image>
+                        <image  :src="item.logo"  @load="onImageLoad(item)" resize="cover" class="friendsImage"></image>
                         <div class="friendsName">
                             <text class="lineTitle ">{{item.nickName}}</text>
                             <text class="realName">{{item.autograph}}</text>
@@ -162,12 +162,6 @@
             this.getAllFocus();
         },
         methods:{
-//            封面显示出来
-            onImageAppear(item){
-                if(utils.isNull(item.loadingImg)){
-                    item.loadingImg = item.logo;
-                }
-            },
 //            封面加载出来
             onImageLoad(item){
                 item.loading = true;
@@ -185,8 +179,6 @@
                                 }
 //                             （配合懒加载）
                                 item.loading = false;
-//                             （配合懒加载）
-                                item.loadingImg = '';
                             })
                             _this.userList = data.data.data;
                         }else{
@@ -196,8 +188,6 @@
                                 }
 //                             （配合懒加载）
                                 item.loading = false;
-//                             （配合懒加载）
-                                item.loadingImg = '';
                                 _this.userList.push(item);
                             })
                         }

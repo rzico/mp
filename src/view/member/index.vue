@@ -43,7 +43,9 @@
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-            <cell style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></cell>
+            <cell >
+                <div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
+            </cell>
             <cell>
                 <!--顶部个人信息栏-->
                 <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>

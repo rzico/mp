@@ -148,7 +148,6 @@
                 userName:'我',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
-                loadingImg:utils.locate('resources/images/loading1.gif'),
             }
         },
         filters:{

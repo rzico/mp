@@ -3,7 +3,7 @@
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
-        <cell >
+        <cell>
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
         <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)"   >
@@ -23,7 +23,7 @@
                     <!--&lt;!&ndash;不能用过滤器,在上啦加载push时 会渲染不出来&ndash;&gt;-->
                     <!--<image  :src="item.thumbnail"  resize="cover" class="articleCover"></image>-->
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.loadingImg" @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
+                    <image  :src="item.thumbnail"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
@@ -179,12 +179,6 @@
             this.screenHeight = utils.fullScreen(316);
         },
         methods:{
-//            封面显示出来
-            onImageAppear(item){
-                if(utils.isNull(item.loadingImg)){
-                    item.loadingImg = item.thumbnail;
-                }
-            },
 //            封面加载出来
             onImageLoad(item){
                 item.loading = true;
@@ -197,8 +191,6 @@
                         data.data.data.forEach(function (item) {
 //                             （配合懒加载）
                             item.loading = false;
-//                             （配合懒加载）
-                            item.loadingImg = '';
                             if(!utils.isNull(item.thumbnail)){
                                 item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
                             }
@@ -213,12 +205,12 @@
                         })
                         if (_this.pageStart == 0) {
 //                            下拉刷新后文章的前2个组件无法触发appear事件，此时手动进行更新 （配合懒加载）
-                            if(!utils.isNull(data.data.data[0])){
-                                _this.onImageAppear(data.data.data[0]);
-                            }
-                            if(!utils.isNull(data.data.data[1])){
-                                _this.onImageAppear(data.data.data[1]);
-                            }
+//                            if(!utils.isNull(data.data.data[0])){
+//                                _this.onImageAppear(data.data.data[0]);
+//                            }
+//                            if(!utils.isNull(data.data.data[1])){
+//                                _this.onImageAppear(data.data.data[1]);
+//                            }
                             _this.articleList = data.data.data;
                         }
                         _this.pageStart = data.data.start + data.data.data.length;
@@ -243,7 +235,7 @@
 //                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
             },
             goArticle(id){
-                if (this.clicked) {
+                if (this.clicked){
                     return;
                 }
                 this.clicked = true;
@@ -258,7 +250,6 @@
 //                event.router(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true'));
 
             },
-
             onloading:function () {
 ////            获取文章列表
                 this.getAllArticle();
@@ -295,3 +286,8 @@
         }
     }
 </script>
+
+
+
+
+

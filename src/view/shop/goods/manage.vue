@@ -53,7 +53,8 @@
             <!--导航栏-->
             <cell v-else v-for="(item,index) in goodsList">
                 <div class="goodsLine boder-bottom" :class="[item.id == goodsId ? 'bgActive' : '']" @click="popup(item,index)">
-                    <image class="goodsImg" :src="item.thumbnail | watchThumbnail"></image>
+                    <div  v-if="!item.loading"  class="goodsImg coverAbsoTop top20" ></div>
+                    <image class="goodsImg" :src="item.thumbnail | watchThumbnail"  @load="onImageLoad(item)"></image>
                     <div class="infoBox">
                         <div class="flex1">
                             <text class="linesCtrl title">{{item.name}}</text>
@@ -108,6 +109,10 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .top20{
+        top: 20px;
+    }
+
     /*<!---->*/
     /*动画*/
     .component-fade-top-enter-active{
@@ -402,9 +407,15 @@
                 GET('weex/member/product/list.jhtml?productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success'){
                         if (_this.pageStart == 0) {
+                            data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                                item.loading = false;
+                            })
                             _this.goodsList = data.data.data;
                         }else{
                             data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                                item.loading = false;
                                 _this.goodsList.push(item);
                             })
                         }
@@ -725,7 +736,11 @@
             },
             inputBlur(){
                 this.$refs['searchBar'].blur();
-            }
+            },
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
         }
     }
 </script>
