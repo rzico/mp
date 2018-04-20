@@ -40,7 +40,7 @@
                     <text class="title ml10">直播推荐</text>
                 </div>
             </header>
-            <cell v-for="item in liveList" @click="seeLive(item.liveId)">
+            <cell v-for="item in liveList" @click="seeLive(item)">
                 <div class="bt30" >
                     <div>
                         <image :src="item.frontcover" class="liveCover"></image>
@@ -357,10 +357,8 @@
                     _this.getLiveList();
                 }, 1000)
             },
-            seeLive(liveId){
-                livePlayer.toLookLiveRoom(liveId,function (data) {
-
-                });
+            seeLive(item){
+                livePlayer.toLookLiveRoom(item.liveId,function (data) {});
             },
             goback(){
                 event.closeURL();
