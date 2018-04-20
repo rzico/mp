@@ -20,7 +20,7 @@
             <!--朋友信息-->
             <cell v-for="(item,index) in messageList" >
                 <!--左滑删除时如果是直接在cell下 而没有多一个div包住的话 第一次要点删除的文字才能触发。-->
-                <!--<div>-->
+                <div>
                     <div class="deleteBox bkg-delete" @click="deleteMessage(item.userId,index)">
                         <text class="deleteText">删除</text>
                     </div>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <div class="friendsBorder"></div>
-                <!--</div>-->
+                </div>
             </cell>
         </list>
         <!--<div v-if="showMenu" >-->

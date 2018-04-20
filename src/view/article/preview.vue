@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" @viewdisappear="pageDestroy()" @viewappear="pageShow()">
         <!--导航栏-->
         <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
         <!--<div  :style="{height:scrollHeight}" >-->
@@ -29,7 +29,7 @@
                 </div>
                 <div class="bottomBtnBox"  @click="goReward()">
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="fz26fff ">购买</text>
+                    <text class="fz26fff ">赞赏</text>
                 </div>
             </div>
             <!--模版-->
@@ -370,12 +370,6 @@
         created(){
             var _this = this;
             utils.initIconFont();
-//            商品购买控制
-//            globalEvent.addEventListener("buyGood", function (e) {
-//                    _this.goodId = e.goodId;
-//                    _this.buyShow = true;
-//            });
-
 
             this.articleId = utils.getUrlParameter('articleId');
 //            判断是iponex就动态获取底部上弹高度
@@ -420,7 +414,7 @@
                     _this.shareNum = data.data.share;
                     _this.authorInfo = data.data;
 //                    _this.isReward = data.data.isReward;
-//                    _this.isReview = data.data.isReview;
+                    _this.isReview = data.data.isReview;
                     let uId = event.getUId();
 //            判断是否作者本人
                     if(uId == _this.memberId){
@@ -463,11 +457,22 @@
             },function (err) {
                 event.toast(err.content);
             })
-
-
-
         },
         methods:{
+//            页面被关闭
+            pageDestroy:function(){
+
+//                globalEvent.removeEventListener("buyGood");
+            },
+            pageShow:function(){
+
+//            商品购买控制
+//            globalEvent.addEventListener("buyGood", function (e) {
+//                    _this.goodId = e.goodId;
+//                    _this.buyShow = true;
+//            });
+
+            },
             articleOutBoxTop:function () {
                 let dc = utils.artOutTop();
                 return dc
@@ -916,7 +921,7 @@
 //            赞赏
             goReward(){
 //                this.$refs.buy.show(55,342);
-//                this.rewardShow = true;
+                this.rewardShow = true;
             },
             sendReward(m,id){
                 let _this = this;

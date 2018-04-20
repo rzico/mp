@@ -136,6 +136,9 @@
         methods:{
 //            立即提交
             submitNow(){
+                if (this.clicked) {
+                    return;
+                }
                 this.clicked = true;
                 var _this = this;
                 setTimeout(function () {

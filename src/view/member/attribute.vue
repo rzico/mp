@@ -205,7 +205,6 @@
                     logo:this.logo,
                     nickName:this.nickName,
                     autograph:this.autograph
-
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);
@@ -284,7 +283,14 @@
                             POST('weex/member/update.jhtml?nickName=' +encodeURI(value.data)).then(
                                 function (mes) {
                                     if (mes.type == "success") {
-                                        _this.nickName = value.data
+                                        _this.nickName = value.data;
+                                        var E = {
+                                            logo:_this.logo,
+                                            nickName:_this.nickName,
+                                            autograph:_this.autograph
+                                        }
+                                        E = JSON.stringify(E);
+                                        storage.setItem('userAttrInfo',E,e=>{});
                                     } else {
                                         event.toast(mes.content);
                                     }
@@ -341,6 +347,15 @@
                                             if (mes.type == "success") {
 //                                                将服务器上的路径写入页面中
                                                 _this.logo = utils.thumbnail(data.data,120,120);
+
+                                                var E = {
+                                                    logo:_this.logo,
+                                                    nickName:_this.nickName,
+                                                    autograph:_this.autograph
+                                                }
+                                                E = JSON.stringify(E);
+                                                storage.setItem('userAttrInfo',E,e=>{});
+
 //                                              event.toast(data);
                                             } else {
                                                 event.toast(mes.content);
@@ -404,7 +419,7 @@
                     autograph:senfData
                 };
                 textData = JSON.stringify(textData);
-                storage.setItem('oneNumber', textData,e=>{
+                storage.setItem('oneNumber',textData,e=>{
                 event.openURL(utils.locate('widget/autograph.js?name=oneNumber'), function (message) {
                     _this.clicked = false;
                     if(message.type == 'success'){
@@ -412,6 +427,13 @@
                             function (mes) {
                                 if (mes.type == "success") {
                                     _this.autograph = message.data.text;
+                                    var E = {
+                                        logo:_this.logo,
+                                        nickName:_this.nickName,
+                                        autograph:_this.autograph
+                                    }
+                                    E = JSON.stringify(E);
+                                    storage.setItem('userAttrInfo',E,e=>{});
                                 } else {
                                     event.toast(mes.content);
                                 }

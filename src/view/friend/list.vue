@@ -58,25 +58,25 @@
                 <!--</div>-->
             </cell>
             <cell v-for="friend in friendsList" ref="listref" >
-                <!--姓氏首字母-->
-                <div class="letterBox" v-if="friend.name != ''">
-                    <text class="nameLetter">{{friend.letter}}</text>
-                </div>
-                <!--姓氏里每个人的名子-->
-                <div v-for="(item,index) in friend.name"  >
-                    <div class="addFriendsBorder" >
-                        <div class="deleteBox bkg-delete" @click="deleteFriend(friend.letter,item.id,index)">
-                            <text class="deleteText">删除</text>
-                        </div>
-                        <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
-                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
-                            <div class="friendsName">
-                                <text class="lineTitle">{{item.nickName}}</text>
-                                <text class="realName">真实姓名:{{item.realName | watchName}}</text>
+                    <!--姓氏首字母-->
+                    <div class="letterBox" v-if="friend.name != ''">
+                        <text class="nameLetter">{{friend.letter}}</text>
+                    </div>
+                    <!--姓氏里每个人的名子-->
+                    <div v-for="(item,index) in friend.name"  >
+                        <div class="addFriendsBorder" >
+                            <div class="deleteBox bkg-delete" @click="deleteFriend(friend.letter,item.id,index)">
+                                <text class="deleteText" @click="deleteFriend(friend.letter,item.id,index)">删除</text>
+                            </div>
+                            <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
+                                <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
+                                <div class="friendsName">
+                                    <text class="lineTitle">{{item.nickName}}</text>
+                                    <text class="realName">真实姓名:{{item.realName | watchName}}</text>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </cell>
             <cell>
                 <!--总共多少个好友-->
@@ -124,7 +124,7 @@
     }
     .newMessage{
         position: absolute;
-        left:75px;
+        left:45px;
         top:15px;
         width:60px;
         align-items: center;
@@ -820,8 +820,9 @@
                     })
                 });
             },
+
 //            删除好友    //friendList 的 friend属性 包括letter和name
-            deleteFriend(letter,id,index){
+            deleteFriend(letter,id,index,ds){
                 let _this = this;
                 POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
                     function(data){

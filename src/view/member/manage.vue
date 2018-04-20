@@ -211,6 +211,7 @@
 </style>
 <script>
     import { POST, GET } from '../../assets/fetch';
+    const storage = weex.requireModule('storage');
     import utils from '../../assets/utils';
     import payment from '../../include/payment.vue';
     const event = weex.requireModule('event');
@@ -317,11 +318,14 @@
                 event.closeURL(backData);
             },
             attribute:function (e) {
+                var _this = this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
 
 //                storage.setItem('catagoryList',data.data);
 //                storage.getItem(autotext, e => {
@@ -331,21 +335,37 @@
 //                })
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
-                        _this.clicked = false;
-                        if(data.type == 'success' && data.data != ''){
-                            if(!utils.isNull(data.data.logo)){
-                                _this.member.logo = data.data.logo;
-                            }
-                            if(!utils.isNull(data.data.nickName)){
-                                _this.member.nickName = data.data.nickName;
-                            }
-                            if(!utils.isNull(data.data.autograph)){
-                                _this.member.autograph = data.data.autograph;
-                            }
-                            return ;
-                        }else if(data.type == 'success' && data.content == '关闭'){
+//                        if(data.type == 'success' && data.data != ''){
+//                                if(!utils.isNull(data.data.logo)){
+//                                _this.member.logo = data.data.logo;
+//                            }
+//                            if(!utils.isNull(data.data.nickName)){
+//                                _this.member.nickName = data.data.nickName;
+//                            }
+//                            if(!utils.isNull(data.data.autograph)){
+//                                _this.member.autograph = data.data.autograph;
+//                            }
+//                            return ;
+//                        }else
+                        if(data.type == 'success' && data.content == '关闭'){
                             event.closeURL();
+                            return;
                         }
+                        storage.getItem('userAttrInfo',e => {
+                            if(utils.isNull(e.data)){
+                                return;
+                            }
+                            let infoData =  JSON.parse(e.data);
+                            if(!utils.isNull(infoData.logo)){
+                                _this.member.logo = infoData.logo;
+                            }
+                            if(!utils.isNull(infoData.nickName)){
+                                _this.member.nickName = infoData.nickName;
+                            }
+                            if(!utils.isNull(infoData.autograph)){
+                                _this.member.autograph = infoData.autograph;
+                            }
+                        })
 
                     }
                 );

@@ -1230,54 +1230,91 @@
             },
 //            个人信息
             goAttribute(){
+                var _this = this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/member/attribute.js'),
                     function (data) {
-                        _this.clicked = false;
-                        if(data.type == 'success' && data.data != ''){
-                            if(!utils.isNull(data.data.logo)){
-                                _this.imageUrl = data.data.logo;
+//                        if(data.type == 'success' && data.data != ''){
+//                            if(!utils.isNull(data.data.logo)){
+//                                _this.imageUrl = data.data.logo;
+//                            }
+//                            if(!utils.isNull(data.data.nickName)){
+//                                _this.userName = data.data.nickName;
+//                            }
+//                            if(!utils.isNull(data.data.autograph)){
+//                                _this.userSign = data.data.autograph;
+//                            }
+//                        }else{
+////                            return ;
+//                        }
+                        storage.getItem('userAttrInfo', e => {
+                            if(utils.isNull(e.data)){
+                                return;
                             }
-                            if(!utils.isNull(data.data.nickName)){
-                                _this.userName = data.data.nickName;
+                            let infoData =  JSON.parse(e.data);
+                            if(!utils.isNull(infoData.logo)){
+                                _this.imageUrl = infoData.logo;
                             }
-                            if(!utils.isNull(data.data.autograph)){
-                                _this.userSign = data.data.autograph;
+                            if(!utils.isNull(infoData.nickName)){
+                                _this.userName = infoData.nickName;
                             }
-                        }else{
-//                            return ;
-                        }
+                            if(!utils.isNull(infoData.autograph)){
+                                _this.userSign = infoData.autograph;
+                            }
+                        })
+                        storage.removeItem('userAttrInfo');
                     }
                 );
             },
 //            设置中心
             goManage(){
+                var _this = this;
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
-                        _this.clicked = false;
-//                    utils.debug(data)
-                        if(data.type == 'success' && data.data != ''){
-                            if(!utils.isNull(data.data.occupation)){
-                                _this.imageUrl = data.data.occupation;
+//                        _this.clicked = false;
+////                    utils.debug(data)
+//                        if(data.type == 'success' && data.data != ''){
+//                            if(!utils.isNull(data.data.occupation)){
+//                                _this.imageUrl = data.data.occupation;
+//                            }
+//                            if(!utils.isNull(data.data.nickName)){
+//                                _this.userName = data.data.nickName;
+//                            }
+//                            if(!utils.isNull(data.data.autograph)){
+//                                _this.userSign = data.data.autograph;
+//                            }
+//                        }else{
+////                            return ;
+//                        }
+                        storage.getItem('userAttrInfo', e => {
+                            if(utils.isNull(e.data)){
+                                return;
                             }
-                            if(!utils.isNull(data.data.nickName)){
-                                _this.userName = data.data.nickName;
+                            let infoData =  JSON.parse(e.data);
+                            if(!utils.isNull(infoData.logo)){
+                                _this.imageUrl = infoData.logo;
                             }
-                            if(!utils.isNull(data.data.autograph)){
-                                _this.userSign = data.data.autograph;
+                            if(!utils.isNull(infoData.nickName)){
+                                _this.userName = infoData.nickName;
                             }
-                        }else{
-//                            return ;
-                        }
+                            if(!utils.isNull(infoData.autograph)){
+                                _this.userSign = infoData.autograph;
+                            }
+                        })
+                        storage.removeItem('userAttrInfo');
                     }
                 );
             },
