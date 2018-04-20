@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="cell-row cell-line"  v-if="hastopic()">
+            <div class="cell-row cell-line"  v-if="member.isShop && member.hasShop">
                 <div class="cell-panel space-between cell-clear" @click="store">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
@@ -53,10 +53,21 @@
                     </div>
                 </div>
             </div>
-
+            <div class="cell-row cell-line"  v-if="!member.hasShop">
+                <div class="cell-panel space-between cell-clear" @click="goShop()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe628;</text>
+                        <text class="title ml10">完善店铺</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
 
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between " @click="orderManage()" v-if="hasuseCashier()">
+                <div class="cell-panel space-between " @click="orderManage()" v-if="member.isShop">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
                         <text class="title ml10">订单管理</text>
@@ -66,7 +77,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between " @click="goodsManage()" v-if="hasuseCashier()">
+                <div class="cell-panel space-between " @click="goodsManage()" v-if="member.isShop">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
                         <text class="title ml10">商品管理</text>
@@ -108,15 +119,15 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between" @click="doLive()">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe624;</text>
-                        <text class="title ml10">我要直播</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between" @click="doLive()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe624;</text>-->
+                        <!--<text class="title ml10">我要直播</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="cell-panel space-between" @click="seeLive()">
                     <div class="flex-row flex-start">
@@ -196,7 +207,7 @@
         },
         data() {
             return {
-                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false},
+                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false,isAgent:false,isShop:false,hasShop:false},
                 showShare:false,
                 clicked:false,
                 isuseCashier:false,
@@ -226,23 +237,6 @@
                     event.toast(err.content);
                 });
             },
-//            判断是否点亮专栏
-            hastopic:function () {
-                let _this = this
-                if (utils.isRoles("A",_this.roles)) {
-                    return true
-                }else {
-                    return false
-                }
-            },
-//            判断是否开启商户模式
-            hasuseCashier:function () {
-                if(!this.isuseCashier == true){
-                    return true
-                }else{
-                    return false
-                }
-            },
             maskTouch(){
                 this.showShare = false;
             },
@@ -264,13 +258,23 @@
                     }
                 })
             },
+            goShop:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
+                    _this.clicked = false;
+                        _this.open();
+                })
+            },
             open:function () {
                 var _this = this;
                 GET("weex/member/manager/view.jhtml",
                     function (data) {
                         if (data.type=="success") {
                             _this.member = data.data;
-                            _this.isuseCashier = data.data.useCashier
                         } else {
                             event.toast(data.content);
                         }

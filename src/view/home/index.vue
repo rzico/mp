@@ -1,11 +1,11 @@
 <template>
     <div class="wrapper">
-        <!--<headerNav @search="gosearch" @menu="menu"></headerNav>-->
-        <liveHeader @search="gosearch" @menu="menu"></liveHeader>
+        <headerNav @search="gosearch" @menu="menu" v-if="isHeader"></headerNav>
+        <liveHeader @search="gosearch" @menu="menu" @doLive="doLive" v-if="!isHeader"></liveHeader>
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="tabRef" @corpusChange="corpusChange"></tabNav>
-        <slider class="pageBox" style="width: 750px" infinite="false"  :class="[pageTop()]" @change="onSliderChange" :index="whichCorpus">
+        <slider class="pageBox" :style="{top:pageBoxTop + 'px'}" style="width: 750px" infinite="false"  :class="[pageTop()]" @change="onSliderChange" :index="whichCorpus">
             <div v-for="(item,index) in corpusList" class="categoryBox">
-                <hotsCategory  v-if="item.name == '热点' && item.load == 1"  :articleCategoryId="item.id" ></hotsCategory>
+                <hotsCategory  v-if="item.name == '热点' && item.load == 1"  :articleCategoryId="item.id" @scrollHandler="onScrollHandler" @toponappear="onToponappear"></hotsCategory>
                 <circleCategory v-else-if="item.name == '圈子' && uId != 0 && item.load == 1"    :articleCategoryId="item.id" ></circleCategory>
                 <othersCategory v-else-if=" item.load == 1"    :articleCategoryId="item.id" ></othersCategory>
             </div>
@@ -27,10 +27,14 @@
                 </div>
             </div>
         </div>
+        <choose @cancelBox="cancelBox" v-if="isMask"></choose>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .maskLayer{
+        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px; background-color: rgba(0,0,0,0.4);
+    }
     .pageBox{
         position: fixed;
         top: 338px;left: 0;bottom: 0;
@@ -46,6 +50,7 @@
     const dom = weex.requireModule('dom')
     import headerNav from './header.vue';
     import liveHeader from './liveHeader.vue';
+    import choose from '../live/choose.vue';
     import circleCategory from './circle.vue';
     import othersCategory from './others.vue';
     import hotsCategory from './hots.vue';
@@ -64,10 +69,13 @@
                 showMenu:false,
                 clicked:false,
                 uId:0,
+                isHeader:false,
+                pageBoxTop:338,
+                isMask:false
             }
         },
         components: {
-            liveHeader,headerNav,tabNav,othersCategory,hotsCategory,circleCategory
+            choose,liveHeader,headerNav,tabNav,othersCategory,hotsCategory,circleCategory
         },
         props:{
             corpusList:{
@@ -109,6 +117,27 @@
             })
         },
         methods: {
+//            开启直播弹窗
+            doLive:function (e) {
+                this.isMask = e
+            },
+//            关闭直播弹窗
+            cancelBox:function (e) {
+                this.isMask = e
+            },
+//            正常滑动控制
+            onScrollHandler:function (e) {
+                this.isHeader = e
+                if(this.isHeader == true){
+                    this.pageBoxTop =216
+                }else{
+                    this.pageBoxTop =338
+                }
+            },
+//            快速滑动回顶部控制
+            onToponappear:function (e) {
+                this.isHeader = e
+            },
 //            滑动切换分类
             onSliderChange:function (e) {
                 this.whichCorpus = e.index;

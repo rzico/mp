@@ -623,7 +623,7 @@
                 moneyNum:0,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.png'),
-                bgImgUrl:utils.locate('resources/images/background.png'),
+                bgImgUrl:utils.locate('resources/images/liveHeader.png'),
 //                maskUrl:utils.locate('resources/images/frosted.png'),
 //                id:'334',
                 showLoading: 'hide',

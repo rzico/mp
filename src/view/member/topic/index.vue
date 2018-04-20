@@ -2,16 +2,25 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <scroller class="scroller" show-scrollbar="false">
-            <div class="flex-row ">
-                <div class="topic">
-                    <div>
-                    <image class="logo" @click="changeLogo"
-                           v-bind:src="topic.logo">
-                    </image>
+            <div class="cell-row cell-line">
+                <div class="cell-logo" @click="changeLogo">
+                    <div class="flex-row flex-start">
+                        <text class="title ml10">专栏封面</text>
                     </div>
-                    <div class="topic_footer">
-                        <text class="name" @click="petname">{{topic.name}}</text>
-                        <text class="autograph" @click="petname">点击修改专栏</text>
+                    <div class="flex-row flex-end">
+                        <image class="logo" resize="cover"
+                               v-bind:src="topic.logo">
+                        </image>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="petname">
+                    <div class="flex-row">
+                        <text class="title ml10">专栏名称</text>
+                    </div>
+                    <div class="flex-row flex-end" >
+                        <text class="sub_title">{{topic.name}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </div>
@@ -39,15 +48,15 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
-                        <text class="title ml10">开启商户模式</text>
+                        <text class="title ml10">开启直播间</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCashier" @change="onUseCashier"></switch>
+                        <switch class="switch" :disabled="topic.useLive" :checked="topic.useLive" @change="createLive"></switch>
                     </div>
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">适用于有实体店铺的商家，首页默认管理后台</text>
+                <text class="sub_title">适用于有实体店铺的商家</text>
             </div>
 
             <div class="cell-row cell-line">
@@ -56,7 +65,7 @@
                         <text class="title ml10">开通会员卡</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCard" @change="onUseCard"></switch>
+                        <switch class="switch" :disabled="topic.useCard" :checked="topic.useCard" @change="onUseCard"></switch>
                     </div>
                 </div>
             </div>
@@ -128,7 +137,15 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-
+    .cell-logo {
+        height: 160px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom-width: 1px;
+        border-bottom-color: #bbb;
+        border-bottom-style: solid;
+    }
     .topic {
         flex-direction:row;
         align-items:center;
@@ -156,9 +173,9 @@
     }
 
     .logo {
-        width:120px;
+        width:200px;
         height:120px;
-        border-radius:60px;
+        border-radius:10px;
         overflow:hidden;
     }
 
@@ -200,14 +217,15 @@
         data() {
           return {
               sn:"",
-              topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false},
+              topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false,useLive:false},
               noJob:true,
               isOwner:false,
               showShare:false,
               copyPublic:'',
               copyApplet:'',
               templateId:'',
-              templateName:'默认'
+              templateName:'默认',
+              liveId:''
           }
         },
         components: {
@@ -290,30 +308,42 @@
             },
 //            修改昵称
             petname:function () {
+                if(this.topic.useCard == true){
+                    return
+                }
                 let _this = this;
                 modal.prompt({
-                    message: '修改专栏名称',
+                    message: '设置专栏名称',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',
                     default:_this.topic.name,
-                    placeholder:"请输入专栏名称",
                 }, function (value) {
                     if(value.result == '确定'){
                         if(utils.isNull(value.data)){
                             modal.toast({message:'请输入专栏名称',duration:1})
                         }else{
-                            POST('weex/member/topic/update.jhtml?name=' + encodeURI(value.data)).then(
-                                function (mes) {
-                                    if (mes.type == "success") {
-                                        _this.topic.name = value.data;
-                                    } else {
-                                        event.toast(mes.content);
-                                    }
-                                }, function (err) {
-                                    event.toast(err.content);
+                            var dataContent = value.data;
+                            modal.confirm({
+                                message: '专栏名称设定后将不可修改',
+                                duration: 0.3,
+                                okTitle:'确定',
+                                cancelTitle:'取消',
+                            }, function (e) {
+                                if(e == '确定'){
+                                    POST('weex/member/topic/update.jhtml?name=' + encodeURI(dataContent)).then(
+                                        function (mes) {
+                                            if (mes.type == "success") {
+                                                _this.topic.name = dataContent;
+                                            } else {
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            event.toast(err.content);
+                                        }
+                                    )
                                 }
-                            )
+                            })
                         }
                     }
                 })
@@ -397,6 +427,14 @@
                 )
             },
             onUseCard:function (e) {
+                if(utils.isNull(this.topic.name) || utils.isNull(this.topic.logo)){
+                    modal.alert({
+                        message: '请先设置专栏名称与专栏封面',
+                        duration: 0.3,
+                        okTitle:'确定',
+                    })
+                    return
+                }
                 var _this = this;
                 POST('weex/member/topic/update.jhtml?useCard=' + e.value).then(
                     function (mes) {
@@ -419,7 +457,23 @@
                 )
 
             },
+            //            创建直播
+            createLive(){
+                let _this = this;
+                POST('weex/live/create.jhtml?title=' + encodeURIComponent(this.topic.name) + '&frontcover=' + this.topic.logo).then(
+                    function (data) {
+                        if(data.type == 'success'){
+                            _this.load()
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    }
+                )
+            },
             onUseCashier:function (e) {
+
                 var _this = this;
                 POST('weex/member/topic/update.jhtml?useCashier=' + e.value).then(
                     function (mes) {

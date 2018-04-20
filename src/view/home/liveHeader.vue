@@ -127,6 +127,15 @@
         created() {
         },
         methods: {
+            //             开通专栏
+            create:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+
+            },
             //            我要直播
             doLive(){
                 let _this = this;
@@ -137,25 +146,47 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                GET('weex/live/check.jhtml?memberId=' + event.getUId(),function (data) {
-                    if(data.type == 'success' && !utils.isNull(data.data)){
-//                            开始直播
-                        livePlayer.toPlayLiveRoom(data.data.liveId,true,false,function(mes){});
-                    }else if(data.type == 'success' && utils.isNull(data.data)){
-                        event.openURL(utils.locate('view/live/apply.js'),
-                            function (message) {
-                                if(message.type == 'success'){
-//                                  开始直播
-                                    livePlayer.toPlayLiveRoom(message.data.liveId,message.data.play,message.data.record,function(mes){});
-                                }
-                            }
-                        );
-                    }else{
-                        event.toast(data.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                })
+                POST('weex/member/topic/submit.jhtml').then(
+                    function (data) {
+                        if (data.type == 'success') {
+                            //            获取是否在专栏开通直播
+                                GET('weex/member/topic/view.jhtml', function (data) {
+                                    if (data.type == 'success') {
+//                                        判断是否开启直播，是则跳转直播界面，否则跳转专栏开启直播按钮
+                                        if(data.data.useLive == true){
+//                                            开启直播弹窗
+                                            var isMask = true
+                                            _this.$emit('doLive',isMask);
+
+                                        }else{
+//                                            跳转专栏
+                                            event.openURL(utils.locate('view/member/topic/index.js'),function (data) {
+                                                //            再次查询是否在专栏开通直播
+                                                GET('weex/member/topic/view.jhtml', function (data) {
+                                                    if (data.type == 'success') {
+                                                        if(data.data.useLive == true){
+//                                            开启直播弹窗
+                                                            _this.$emit('doLive',isMask);
+
+                                                        }else{
+                                                            event.toast(data.content)
+                                                        }
+                                                    } else {
+                                                        event.toast(err.content)
+                                                    }
+                                                })
+                                            });
+                                        }
+                                    } else {
+                                        event.toast(err.content)
+                                    }
+                                })
+                        } else {
+                            event.toast(err.content)
+                        }
+                    },function (err) {
+                        event.toast(err.content)
+                    })
             },
             //            监听设备型号,控制导航栏
             classTop:function () {
