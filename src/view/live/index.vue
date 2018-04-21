@@ -23,9 +23,9 @@
                     <slider class="slider" interval="3000" auto-play="true">
                         <div class="frame" v-for="img in imageList">
                             <!--配合图片懒加载，先显示一个本地图片-->
-                            <image  :src="loadingImg"  v-if="!img.loading"  resize="cover" class="slideImage coverAbsoTop" ></image>
+                            <div  v-if="!img.loading"  class="slideImage coverAbsoTop " ></div>
                             <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                            <image class="slideImage" resize="cover"  @appear="onImageAppear(img)"  @load="onImageLoad(img)"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
+                            <image class="slideImage" resize="cover"    @load="onImageLoad(img)"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
                         </div>
                         <indicator class="indicatorSlider"></indicator>
                     </slider>
@@ -43,7 +43,11 @@
             <cell v-for="item in liveList" @click="seeLive(item)">
                 <div class="bt30" >
                     <div>
-                        <image :src="item.frontcover" class="liveCover"></image>
+                        <!--配合图片懒加载，先显示一个本地图片-->
+                        <div  v-if="!item.loading"  class="liveCover coverAbsoTop " ></div>
+                        <image :src="item.frontcover | watchFrontCover" resize="cover" class="liveCover"  @load="onImageLoad(item)"></image>
+                        <!--避免 主播上传的是白色封面，会导致标题白色字体看不见-->
+                        <div class="tempMask" v-if="item.loading"></div>
                         <div class="space-between coverInfo">
                             <text class="sub_title white">{{item.nickname | watchAuthor}}</text>
                             <text class="sub_title white fzz24"  :style="{fontFamily:'iconfont'}" >&#xe653; {{item.viewerCount | watchOnline}}</text>
@@ -80,6 +84,7 @@
     .coverAbsoTop{
         position: absolute;
         top:0;
+        background-color: rgba(136,136,136,0.1);
     }
 
     /*直播列表*/
@@ -158,6 +163,10 @@
         position: relative;
     }
     /*轮播图*/
+
+    .tempMask{
+        position: absolute;top: 0;left: 0px;right: 0px;bottom: 0px;background-color: #000;opacity: 0.2;
+    }
 </style>
 <script>
     const livePlayer = weex.requireModule('livePlayer');
@@ -240,7 +249,9 @@
                }else{
                    return value > 9999 ? parseFloat(utils.currencyfmt(value/10000)) + "万" : value;
                }
-
+            },
+            watchFrontCover:function(value){
+                return utils.thumbnail(value,369,270);
             }
         },
         created(){
@@ -278,9 +289,15 @@
               GET('weex/live/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                   if(data.type == 'success'){
                       if (_this.pageStart == 0) {
+                          data.data.data.forEach(function (item) {
+//                              配合懒加载
+                              item.loading = false;
+                          })
                           _this.liveList = data.data.data;
                       }else{
                           data.data.data.forEach(function (item) {
+//                              配合懒加载
+                              item.loading = false;
                               _this.liveList.push(item);
                           })
                       }
