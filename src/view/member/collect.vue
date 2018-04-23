@@ -28,7 +28,7 @@
                         <div  v-if="!item.loading"  class="articleImg coverAbsoTop " ></div>
                         <!--文章封面-->
                         <!--<image resize="cover" class="articleImg" :src="item.thumbnail  " ></image>-->
-                        <image  :src="item.loadingImg" @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleImg"></image>
+                        <image  :src="item.thumbnail" @load="onImageLoad(item)" resize="cover" class="articleImg"></image>
                         <!--文章相关信息。标题点赞...-->
                         <div class="articleInfo">
                             <text class="fz30 articleTitle">{{item.title}}</text>
@@ -376,12 +376,6 @@
                         event.toast(err.content);
                     }
                 )
-            },
-//            封面显示出来
-            onImageAppear(item){
-                if(utils.isNull(item.loadingImg)){
-                    item.loadingImg = item.thumbnail;
-                }
             },
 //            封面加载出来
             onImageLoad(item){
