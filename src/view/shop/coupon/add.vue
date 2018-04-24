@@ -315,8 +315,10 @@
                     return '无门槛'
                 }if(data == 1){
                     return '消费送'
-                } else {
+                } if(data == 2) {
                     return '领卡送'
+                }else {
+                    return '需购买'
                 }
             }
         },
@@ -500,6 +502,7 @@
                     return
                 }
                 if( _this.codeName =='fullcut' || _this.codeName =='discount'){
+                    _this.goodsId = ''
                 if(_this.money==''){
                     event.toast('优惠面额未设置')
                     return
