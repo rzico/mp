@@ -33,6 +33,7 @@
                             </div>
                             <div class="flex-row space-between align-bottom">
                                 <text class="datetime">{{deposit.createDate | hitimefmt}}</text>
+                                <text class="datetime" style="margin-right: 20px">余额:{{deposit.balance | currencyfmt}}</text>
                             </div>
                         </div>
                     </div>
