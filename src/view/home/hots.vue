@@ -1,10 +1,10 @@
 <template>
-    <list class="wrapper" show-scrollbar="false" ref="listDom"  @loadmore="onloading" loadmoreoffset="300" >
-        <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
-            <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
+    <list class="wrapper" show-scrollbar="false" ref="listDom" @scroll="onscroll" @loadmore="onloading" loadmoreoffset="300">
+        <refresh class="refreshBox"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+            <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg"></image>
         </refresh>
-        <cell v-if="hasImageList()">
-            <div class="bt10">
+        <cell v-if="hasImageList()"ref="listSlide">
+            <div class="bt10" >
                 <slider class="slider" interval="3000" auto-play="true">
                     <div class="frame" v-for="img in imageList">
                         <!--配合图片懒加载，先显示一个本地图片-->
@@ -17,16 +17,16 @@
                 </slider>
             </div>
         </cell>
-        <cell >
+        <cell>
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
-        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)">
+        <cell v-for="(item,index) in articleList"  :key="index" @click="goArticle(item.id)">
             <!--    排版一 采取左右布局。封面较小-->
             <div v-if="item.templateIndex == 0" class="tempPdBox">
                 <div class="flex-row">
                     <div class="bt20 flex-row" @click="goAuthor(item.authorId)">
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author }}</text>
+                        <text class="authorName">{{item.author}}</text>
                     </div>
                 </div>
                 <div class="flex-row" >
@@ -393,6 +393,10 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .ded{
+        position:fixed;top:195px;
+    }
+
     .positionRelative{
         position:relative;
     }
@@ -583,13 +587,13 @@
                 pageSize:10,
                 articleList:[],
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
                 screenHeight:0,
                 clicked:false,
                 imageList: [],
                 templateIndexList:[0,1,5,6,7],
 //                isInit:true,
                 loadingImg:utils.locate('resources/images/loading1.gif'),
+                hadUpdate:false,
             }
         },
         components: {
@@ -609,7 +613,22 @@
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
         },
+        updated(){//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            this.hideTopLine();
+        },
         methods:{
+            hideTopLine(){
+                if(this.hadUpdate){
+                    return;
+                }
+                this.hadUpdate = true;
+                if(!utils.isIosSystem()) {
+                    const el = this.$refs.listSlide//跳转到相应的cell
+                    dom.scrollToElement(el, {
+                        offset: 1 //要为1， 为0时 向下小拉一下会出现白线
+                    })
+                }
+            },
 //            封面加载出来
             onImageLoad(item){
                 item.loading = true;
@@ -638,6 +657,7 @@
             getAllArticle(){
                 let _this = this;
                 GET('weex/article/hot.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    utils.debug(data);
                     if(data.type == 'success' && data.data.data != '' ){
                         let dataLength = data.data.data.length;
 //                      此处用了2个foreach 是由于在js中 使用变量来嫁接data.data.data 也是一样的内存地址。
@@ -698,7 +718,7 @@
                                         item.thumbnail = utils.thumbnail(item.thumbnail,750, 375);
                                         break;
                                 }
-                        }
+                            }
                             if(_this.pageStart != 0){
                                 _this.articleList.push(item);
                             }
@@ -795,12 +815,24 @@
                         timingFunction: 'linear',//350 duration配合这个效果目前较好
                         needLayout:false,
                         delay: 0 //ms
+                    },function(){
+                        _this.hadUpdate = false;
+                        _this.hideTopLine();
                     })
                     _this.refreshing = false;
 //                    _this.imageList = [];
                     _this.getAllArticle();
                 }, 1000)
+
             },
+            onscroll(e){
+                var _this = this;
+                if(Math.abs(e.contentOffset.y) == 0){
+                        _this.hadUpdate = false;
+                        _this.hideTopLine();
+                    return;
+                }
+            }
         }
     }
 </script>

@@ -1,9 +1,9 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" >
         <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div>
             <!--顶部白色区域 classHeader(), -->
-            <div class="header headerMore bkg-primary" :style="{opacity: opacityNum}" @click="doNothing()" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore" :style="{opacity: opacityNum}" @click="doNothing()" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw" >
                     <div style="width: 50px;">
@@ -24,21 +24,21 @@
             </div>
             <!--绑定动画-->
             <!--只能多写一个顶部栏。否则无法适应-->
-            <div  class="corpusBox hideCorpus" :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
-                <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll ">
-                    <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+            <div  class="corpusBox hideCorpus bkg-444" :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
+                <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll bkg-444">
+                    <div class="articleClass bkg-444">
+                        <text @click="corpusChange(index,item.id)" class="allArticle white" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
-                <div class="corpusIconBox"  @click="goCorpus()">
-                    <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
+                <div class="corpusIconBox bkg-444"  @click="goCorpus()">
+                    <text  :style="{fontFamily:'iconfont'}" class="fz35 white">&#xe603;</text>
                 </div>
                 <!--文集前后白色遮罩层-->
                 <!--<div class="blur leftBlur"></div>-->
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <list  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+        <list show-scrollbar="false"  offset-accuracy="0" ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
@@ -46,9 +46,9 @@
             <cell >
                 <div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
             </cell>
-            <cell>
+            <cell ref="listSlide" >
                 <!--顶部个人信息栏-->
-                <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
+                <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox' @appear="hideTopLine()">
                     <!--背景图片-->
                     <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
                     <!--遮罩层-->
@@ -202,6 +202,9 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .bkg-444{
+        background-color: #444444;
+    }
     .hideCorpus{
         top: 136px;position: fixed;
     }
@@ -756,23 +759,31 @@
                 }
             });
         },
-
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.topBox//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: 1
-                })
-            }
-        },
         methods: {
+            hideTopLine(){
+                let _this = this;
+//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+                if(this.hadUpdate){
+                    return;
+                }
+                this.hadUpdate = true;
+//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+                if(!utils.isIosSystem()){
+//                    if(utils.isNull(sign)){
+                        const el = _this.$refs.listSlide//跳转到相应的cell
+                        dom.scrollToElement(el, {
+                            offset: 1
+                        })
+//                    }else{
+//                        const el = _this.$refs.listSlide//跳转到相应的cell
+//                        setTimeout(function () {
+//                            dom.scrollToElement(el, {
+//                                offset: 1
+//                            })
+//                        },100)
+//                    }
+                }
+            },
             doNothing:function () {
                 return;
             },
@@ -1166,10 +1177,18 @@
                 var _this = this;
 //                this.offsetX = e.contentOffset.x;
 //                this.offsetY = e.contentOffset.y;
+
+                if(Math.abs(e.contentOffset.y) == 0){
+                    _this.hadUpdate = false;
+                    _this.hideTopLine();
+                    return;
+                }
+
+
                 if(e.contentOffset.y >=0){
                     return;
                 }
-                scrollTop =Math.abs(e.contentOffset.y);
+                var scrollTop =Math.abs(e.contentOffset.y);
 //                modal.toast({message:scrollTop});8
 
                 var scrollTopNum = 0;

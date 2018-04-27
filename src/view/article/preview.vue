@@ -17,7 +17,7 @@
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
                 <div class="bottomBtnBox"  @click="goLaud()">
                     <text class="fz26fff fzz45 " :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="fz26fff ">点赞 {{laudNum}}</text>
+                    <text class="fz26fff " :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
                 </div>
                 <div class="bottomBtnBox"  @click="goShare(0)">
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe67d;</text>
