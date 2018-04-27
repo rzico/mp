@@ -43,8 +43,9 @@
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-            <cell >
-                <div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
+            <cell @appear="toponappear" @disappear="tophideappear">
+                <!--<div style="position:fixed;top: 121px;width: 10px;height: 10px;opacity: 1;background-color:red"  ></div>-->
+                <div style="width: 300px;height: 1px;opacity: 0;position:absolute"  ></div>
             </cell>
             <cell ref="listSlide" >
                 <!--顶部个人信息栏-->
@@ -88,6 +89,7 @@
 
                 </div>
             </cell>
+
             <cell>
                 <div  class="corpusBox" >
                     <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
@@ -96,7 +98,7 @@
 
                         </div>
                     </scroller>
-                    <div class="corpusIconBox" @click="goCorpus()"  >
+                    <div class="corpusIconBox" @click="goCorpus()">
                         <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
                     </div>
                 </div>
@@ -666,6 +668,7 @@
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
                 clicked:false,
+                topCellHide:false,
             }
         },
         components: {
@@ -1146,8 +1149,6 @@
                         pageSize:_this.listPageSize,
                     }
                     event.findList(options,function (data) {
-//                        utils.debug(data);
-//                        utils.debug(_this.listCurrent);
                         if( data.type == "success" && data.data != '') {
                             data.data.forEach(function (item) {
 //                        event.toast(item);
@@ -1161,9 +1162,7 @@
                                 }
                             })
                             _this.listCurrent = _this.listCurrent + _this.listPageSize;
-//                            utils.debug('当前行:' + _this.listCurrent);
                         }else if( data.type == "success" && data.data == '' ){
-//                            utils.debug('触发强制加载');
                         }else{
                             event.toast(data.content);
                         }
@@ -1182,7 +1181,9 @@
                     _this.hideTopLine();
                     return;
                 }
-
+                if(!this.topCellHide){
+                    return;
+                }
 
                 if(e.contentOffset.y >=0){
                     return;
@@ -1303,7 +1304,6 @@
                 event.openURL(utils.locate('view/member/manage.js'),
                     function (data) {
 //                        _this.clicked = false;
-////                    utils.debug(data)
 //                        if(data.type == 'success' && data.data != ''){
 //                            if(!utils.isNull(data.data.occupation)){
 //                                _this.imageUrl = data.data.occupation;
@@ -1392,10 +1392,14 @@
             },
 //            快速滑动滚动条时， 控制顶部导航栏消失
             toponappear(){
+                this.topCellHide = false;
                 this.opacityNum = 0 ;
 //                this.settingColor = 'white';
                 this.settingColor = '';
 //                event.changeWindowsBar("false");
+            },
+            tophideappear(){
+              this.topCellHide = true;
             },
             onrefresh:function () {
                 var _this = this;
