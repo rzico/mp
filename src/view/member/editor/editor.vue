@@ -493,7 +493,7 @@
 
 //                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
                 clipboard.getString(ret => {
-                    if(ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 ){
+                    if(typeof ret.data != "object"  && (ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 )){
                         modal.confirm({
                             message: '是否生成已复制链接的文章?',
                             duration: 0.3,

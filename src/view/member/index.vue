@@ -1013,7 +1013,6 @@
                     return;
                 }
                 this.clicked = true;
-//                utils.debug(item);
                 var _this = this;
                 setTimeout(function () {
                     _this.clicked = false;

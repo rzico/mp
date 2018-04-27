@@ -657,7 +657,6 @@
             getAllArticle(){
                 let _this = this;
                 GET('weex/article/hot.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                    utils.debug(data);
                     if(data.type == 'success' && data.data.data != '' ){
                         let dataLength = data.data.data.length;
 //                      此处用了2个foreach 是由于在js中 使用变量来嫁接data.data.data 也是一样的内存地址。
