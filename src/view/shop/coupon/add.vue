@@ -37,7 +37,7 @@
             <div class="conditions">
                 <text class="conditionsText" style="font-size: 32px">使用条件</text>
                 <text class="man" style="padding-left: 30px;font-size: 32px">满</text>
-                <input type="number" placeholder="0为无门槛" class="inputconditions" v-model="conditions" @change="" @input=""/>
+                <input type="number" placeholder="0为无门槛" class="inputconditions" v-model="condition"/>
                 <text class="conditionsText" style="font-size: 32px">元使用</text>
             </div>
             <div class="time" >
@@ -126,10 +126,12 @@
         padding-left: 20px;
     }
     .begindate{
+        font-size: 28px;
         color: #888;
         width:190px;
     }
     .enddate{
+        font-size: 28px;
         color: #888;
         width:190px;
     }
@@ -252,7 +254,7 @@
                 scope:'',
                 money:'',
                 number:'',
-                conditions:'',
+                condition:'',
                 rule:'',
                 type:'满减',
                 codeName:'fullcut',
@@ -311,10 +313,12 @@
             activityWatch:function (data) {
                 if(data == 0){
                     return '无门槛'
-                }if(data == 1){
+                } else if(data == 1){
                     return '消费送'
-                } else {
+                } else if(data == 2) {
                     return '领卡送'
+                } else {
+                    return '需购买'
                 }
             }
         },
@@ -346,7 +350,8 @@
                         _this.beginDate = utils.ymdtimefmt(mes.data.beginDate);
                         _this.codeName = mes.data.type;
                         _this.scene = mes.data.scope;
-                        _this.conditions =mes.data.minimumPrice;
+                        _this.condition =mes.data.minimumPrice;
+
                             _this.goodsId = mes.data.goodsId;
                             _this.goodsName = mes.data.name;
                             _this.beginThree = mes.data.activity.atveType;
@@ -422,7 +427,7 @@
                 var _this = this;
                 picker.pick({
                     index:_this.beginThree,
-                    items:['无门槛','消费送','领卡送']
+                    items:['无门槛','消费送','领卡送','需购买']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -433,6 +438,10 @@
                             _this.beginThree =e.data
                         }else if(e.data == 2){
                             _this.activityName = 2;
+                            _this.beginThree =e.data
+
+                        }else if(e.data == 3){
+                            _this.activityName = 3;
                             _this.beginThree =e.data
 
                         }
@@ -480,6 +489,10 @@
             },
             complete:function () {
                 let _this = this;
+                if(utils.isNull(_this.condition)){
+                   _this.condition = 0
+//                    event.toast('使用条件未设置')
+                }
                 if(_this.beginDate=='点击设置'){
                     event.toast("开始时间未设置")
                     return
@@ -489,6 +502,7 @@
                     return
                 }
                 if( _this.codeName =='fullcut' || _this.codeName =='discount'){
+                    _this.goodsId = ''
                 if(_this.money==''){
                     event.toast('优惠面额未设置')
                     return
@@ -500,26 +514,28 @@
                         return
                     }
                 }
-                if(_this.conditions==''){
-                    event.toast('使用条件未设置')
-                    return
-                }
                 if(_this.rule==''){
                     event.toast('规则介绍未设置')
                     return
                 }
-                if(_this.number==''){
+                if(utils.isNull(_this.number)){
                     event.toast('新增数量未设置')
                     return
                 }
-                if(_this.activityName != 0){
-                    if(_this.activitConditions == '' || _this.activitynum =='') {
-                        event.toast('活动未设置')
-                        return
-                    }
-                }
+//                if(_this.activityName == 1){
+//                    if(_this.activitConditions == '' || _this.activitynum =='') {
+//                        event.toast('活动未设置')
+//                        return
+//                    }
+//                }
+//                if(_this.activityName == 2){
+//                    if(_this.activitynum =='') {
+//                        event.toast('活动未设置')
+//                        return
+//                    }
+//                }
                 POST('weex/member/coupon/submit.jhtml?type='+_this.codeName+'&scope='+_this.scene+'&beginDate='+_this.beginDate
-                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.conditions+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id+'&stock='+_this.number +'&goodsId='
+                    +'&endDate='+_this.endDate +'&amount='+_this.money+'&minimumPrice='+_this.condition+'&introduction='+encodeURI(_this.rule)+'&id='+_this.id+'&stock='+_this.number +'&goodsId='
                 +_this.goodsId+'&atveType='+_this.activityName+'&atveMinPrice='+_this.activitConditions +'&atveAmount='+_this.activitynum).then(
                     function (mes) {
                         if (mes.type == "success") {
