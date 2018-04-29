@@ -325,9 +325,17 @@
                             event.closeURL(utils.message('success','申请成功',backData));
                         }else{
                             event.toast(data.content);
+                            _this.toSendArticle = false;
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 0;//总的进度
+                            _this.processWidth = 0;//进度条宽度
                         }
                     },function (err) {
                         event.toast(err.content);
+                        _this.toSendArticle = false;
+                        _this.currentPro = 0;//当前进度
+                        _this.proTotal = 0;//总的进度
+                        _this.processWidth = 0;//进度条宽度
                     }
                 )
             },
