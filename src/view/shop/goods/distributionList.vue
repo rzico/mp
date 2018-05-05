@@ -149,11 +149,11 @@
             this.item.type = utils.getUrlParameter('type');
             if(utils.isNull(this.item.type)){
                 _this.item.type = 'dividend';
-                _this.typeName = '股东分红';
+                _this.typeName = '三级分销';
                 _this.typeBegin =0
             }
             if(this.item.type == 'dividend'){
-                _this.typeName = '股东分红';
+                _this.typeName = '三级分销';
                 _this.typeBegin =0
             }else{
                 _this.typeName = '消费返现';
@@ -203,12 +203,12 @@
                 var _this = this;
                 picker.pick({
                     index:_this.typeBegin,
-                    items:['股东分红','消费返现']
+                    items:['三级分销','消费返现']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
                             _this.item.type = 'dividend';
-                            _this.typeName = '股东分红';
+                            _this.typeName = '三级分销';
                             _this.typeBegin = e.data
                         }else if(e.data == 1){
                             _this.item.type = 'global';

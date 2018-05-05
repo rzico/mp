@@ -1,10 +1,13 @@
 <template>
-    <list class="wrapper" show-scrollbar="false" ref="listDom"  @loadmore="onloading" loadmoreoffset="300" >
+    <list class="wrapper" show-scrollbar="false" ref="listDom"  @loadmore="onloading" loadmoreoffset="300"   @scroll="scrollHandler">
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
         <cell v-if="hasImageList()">
-            <div class="bt10">
+            <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
+            <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
+            <!--多了热门直播 把bt10样式去掉了-->
+            <div class="">
                 <slider class="slider" interval="3000" auto-play="true">
                     <div class="frame" v-for="img in imageList">
                         <!--配合图片懒加载，先显示一个本地图片-->
@@ -15,6 +18,9 @@
                     <indicator class="indicatorSlider"></indicator>
                 </slider>
             </div>
+        </cell>
+        <cell>
+            <hotsLive :lives="lives" v-if="lives.length > 0"></hotsLive>
         </cell>
         <cell >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
@@ -566,11 +572,13 @@
     }
 </style>
 <script>
+    import hotsLive from './hotsLive.vue';
     import filters from '../../filters/filters';
     import utils from '../../assets/utils';
     import {dom,event,animation} from '../../weex.js';
     import { POST, GET } from '../../assets/fetch';
     import noData from '../../include/noData.vue';
+    var scrollTop = 0;
     export default {
         data(){
             return{
@@ -587,10 +595,12 @@
                 templateIndexList:[0,1,5,6,7],
 //                isInit:true,
                 loadingImg:utils.locate('resources/images/loading1.gif'),
+                lives:[],
+                isHeader:false,//                控制导航栏
             }
         },
         components: {
-            noData
+            noData,hotsLive
         },
         props:{
 //            whichCorpus:{default:0}
@@ -602,11 +612,53 @@
             var _this = this;
             this.templateIndexList = this.shuffle(this.templateIndexList);
             this.getAllArticle();
-
+            this.getHots();
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
         },
         methods:{
+//            监听页面滚动
+            scrollHandler: function(e) {
+                var _this = this;
+                if(e.contentOffset.y >=0){
+                    return;
+                }
+                scrollTop =Math.abs(e.contentOffset.y);
+                let opacityDegree = Math.floor(scrollTop/14)/10;
+                if(opacityDegree > 1){
+                    opacityDegree = 1;
+                }
+                if(opacityDegree > 0.4){
+
+                }else{
+
+                }
+                if(scrollTop >= 338){
+                    this.isHeader = true;
+                }if(scrollTop <= 216){
+                    this.isHeader = false;
+
+                }
+                this.$emit('scrollHandler',this.isHeader);
+            },
+//            快速滑动页面到顶部时触发
+            toponappear(){
+                this.isHeader = false;
+                this.$emit('toponappear',this.isHeader);
+            },
+//            获取热门直播
+            getHots:function() {
+                var _this = this;
+                GET("weex/live/list.jhtml?pageStart=0&pageSize=3",function (res) {
+                    if (res.type=="success") {
+                        _this.lives = res.data.data
+                    } else {
+                        event.toast(res.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
 //            封面显示出来
             onImageAppear(item){
                 if(utils.isNull(item.loadingImg)){

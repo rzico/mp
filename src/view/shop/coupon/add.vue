@@ -313,11 +313,11 @@
             activityWatch:function (data) {
                 if(data == 0){
                     return '无门槛'
-                } else if(data == 1){
+                }if(data == 1){
                     return '消费送'
-                } else if(data == 2) {
+                } if(data == 2) {
                     return '领卡送'
-                } else {
+                }else {
                     return '需购买'
                 }
             }
