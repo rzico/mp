@@ -286,7 +286,7 @@
                         if(ablum.type == 'success') {
                             event.upload(ablum.data.originalPath,function (message) {
                                 if (message.type == 'success') {
-                                    POST('weex/member/topic/update.jhtml?logo=' + encodeURI(message.data) ).then(
+                                    POST('weex/member/topic/update.jhtml?logo=' + encodeURIComponent(message.data) ).then(
                                         function (mes) {
                                             if (mes.type == "success") {
                                                 _this.topic.logo = message.data;
@@ -300,8 +300,8 @@
                                 } else {
                                     event.toast(message.content);
                                 }
-                            },function (data) {
-                                event.toast(data.content);
+                            },function (err) {
+                                event.toast(err.content);
                             })
                         }
                     })
@@ -380,6 +380,7 @@
                     event.toast(err.content)
                 })
             },
+
             goback: function () {
                 event.closeURL()
             },
