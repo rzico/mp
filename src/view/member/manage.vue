@@ -129,15 +129,15 @@
                     <!--</div>-->
                 <!--</div>-->
 
-                <div class="cell-panel space-between" @click="seeLive()">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
-                        <text class="title ml10">观看直播</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between" @click="seeLive()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe68e;</text>-->
+                        <!--<text class="title ml10">观看直播</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="cell-panel space-between cell-clear" @click="gmchat()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
