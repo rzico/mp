@@ -150,8 +150,8 @@
                 GET('weex/live/check.jhtml?memberId=' + event.getUId(),function (data) {
                     if(data.type == 'success' && !utils.isNull(data.data)){
 //                            开始直播
-                        event.toast("当前APP版本不支持直播");
-//                        livePlayer.toPlayLiveRoom(data.data.liveId,false,false,function(mes){});
+//                        event.toast("当前APP版本不支持直播");
+                        livePlayer.toPlayLiveRoom(data.data.liveId,false,false,function(mes){});
 
                     }else
                     if (data.type == 'success' && utils.isNull(data.data)) {
