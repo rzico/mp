@@ -84,12 +84,9 @@
                                 <!--<text class="articleTitle">{{item.title}}</text>-->
                                 <text class="articleTitle" style="color: #fff">{{item.title}}</text>
                             </div>
-                            <!--<div class="flex-row bt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
-                            <!--<text class="articleContent">{{item.htmlTag}}</text>-->
+                            <!--<div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
+                                <!--<text class="articleContent white" >{{item.htmlTag}}</text>-->
                             <!--</div>-->
-                            <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                                <text class="articleContent white" >{{item.htmlTag}}</text>
-                            </div>
                             <div class="space-between">
                                 <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                     <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
@@ -331,12 +328,9 @@
                                 <!--<text class="articleTitle">{{item.title}}</text>-->
                                 <text class="articleTitle" style="color: #fff">{{item.title}}</text>
                             </div>
-                            <!--<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
-                            <!--<text class="articleContent">{{item.htmlTag}}</text>-->
+                            <!--<div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
+                                <!--<text class="articleContent white" >{{item.htmlTag}}</text>-->
                             <!--</div>-->
-                            <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                                <text class="articleContent white" >{{item.htmlTag}}</text>
-                            </div>
 
                             <div class="space-between">
                                 <div class="relevantInfo" v-if="item.articleSign != '样例'">
@@ -496,7 +490,7 @@
     }
     .articleContent{
         lines: 2;width: 710px;text-overflow: ellipsis;
-        font-size: 32px;
+        font-size: 26px;
         color: #888;
     }
     .activeClass{
@@ -558,7 +552,7 @@
         margin-left: 20px;
     }
     .articleTitle {
-        font-size: 38px;
+        font-size: 32px;
         lines: 1;width: 710px;text-overflow: ellipsis;
     }
     .articleSign {
