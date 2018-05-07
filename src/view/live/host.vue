@@ -35,11 +35,13 @@
         <!--设置-->
         <div  class="rightTopBox flex-row"  :class="[classTop()]">
             <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
-            <div v-if="!isUser">
-                <text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-if="hasManager" style="font-size:50px;color: #fff">&#xe697;</text>
-                <text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-else style="font-size:50px;color: #fff">&#xe643;</text>
-            </div>
-            <text  :style="{fontFamily:'iconfont'}" @click="tickOut()" v-if="!isUser || isManager" class="ml20" style="font-size:50px;color: #fff">&#xe67b;</text>
+            <!--<div v-if="!isUser">-->
+                <!--<text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-if="hasManager" style="font-size:50px;color: #fff">&#xe697;</text>-->
+                <!--<text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-else style="font-size:50px;color: #fff">&#xe643;</text>-->
+            <!--</div>-->
+            <!--<text  :style="{fontFamily:'iconfont'}" @click="tickOut()" v-if="!isUser || isManager" class="ml20 topIcon">&#xe67b;</text>-->
+            <text @click="focus()" v-if="!isFocus" class="ml20 topIcon" :style="{fontFamily:'iconfont'}">&#xe606;</text>
+            <text @click="focus()" class="ml20 topIcon"  v-else  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
         </div>
         <scroller class="scrollerStyle" >
             <div v-for="item in infoData">
@@ -95,7 +97,7 @@
                         <div class=" flex2">
                             <text class="sub_title fz30">职业</text>
                         </div>
-                        <div class=" flex4">
+                        <div class=" flex4 ">
                             <text  class="title">{{item.occupation | watchOccupation}}</text>
                         </div>
                     </div>
@@ -103,7 +105,7 @@
                         <div class=" flex2">
                             <text class="sub_title fz30">登录名</text>
                         </div>
-                        <div class=" flex4">
+                        <div class=" flex4 ">
                             <text  class="title">{{item.userId}}</text>
                         </div>
                     </div>
@@ -111,16 +113,32 @@
                         <div class=" flex2">
                             <text class="sub_title fz30">年龄</text>
                         </div>
-                        <div class=" flex4">
+                        <div class=" flex4 ">
                             <text  class="title">{{item.birth | watchBirth}}</text>
                         </div>
                     </div>
-                    <div class=" flex-row cell-height   bgWhite pl20 pr20">
+                    <div class=" flex-row cell-height boder-bottom  bgWhite pl20 pr20">
                         <div class=" flex2">
                             <text class="sub_title fz30">个性签名</text>
                         </div>
-                        <div class=" flex4">
+                        <div class=" flex4 ">
                             <text  class="title" style="lines:1;text-overflow: ellipsis">{{item.autograph | watchAutograph}}</text>
+                        </div>
+                    </div>
+                    <!--<div v-if="!isUser">-->
+                    <!--<text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-if="hasManager" style="font-size:50px;color: #fff">&#xe697;</text>-->
+                    <!--<text  :style="{fontFamily:'iconfont'}" @click="setManager()" v-else style="font-size:50px;color: #fff">&#xe643;</text>-->
+                    <!--</div>-->
+                    <div v-if="!isUser" class=" flex-row cell-height   bgWhite pl20 pr20">
+                        <div class=" flex2">
+                            <text class="sub_title fz30">管理员</text>
+                        </div>
+                        <div class=" flex4 " @click="setManager()" v-if="hasManager">
+                            <!--<switch class="switch" :checked="hasTopic" ></switch>-->
+                            <text class=" fzz65 greenColor" :style="{fontFamily:'iconfont'}">&#xe7d9;</text>
+                        </div>
+                        <div class=" flex4 " @click="setManager()" v-else>
+                            <text class=" fzz65 gray" :style="{fontFamily:'iconfont'}">&#xe7da;</text>
                         </div>
                     </div>
                     <!--<div class=" flex-row cell-height   bgWhite pl20 pr20">-->
@@ -137,15 +155,16 @@
         <!--关注 私信 禁言-->
         <div class=" footBox"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}"  >
             <!--主播用关注-->
-            <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="!isFocus" @click="focus()">
-                <text class="fz26fff fz45"  :style="{fontFamily:'iconfont'}">&#xe606;</text>
-                <text class="fz26fff ml10" >关注</text>
+            <!--<text  :style="{fontFamily:'iconfont'}" @click="tickOut()" v-if="!isUser || isManager" class="ml20 topIcon">&#xe67b;</text>-->
+            <div class="bottomBtnBox" :style="{height:bottomNum + 100}"  @click="tickOut()" v-if="!isUser || isManager">
+                <text class="fz26fff fz45"  :style="{fontFamily:'iconfont'}">&#xe67b;</text>
+                <text class="fz26fff ml10" >踢出房间</text>
             </div>
-            <div class="bottomBtnBox" :style="{height:bottomNum + 100}"  v-else @click="focus()">
-                <text class="fz26fff fz45 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>
-                <text class="fz26fff ml10 gray" >已关注</text>
-            </div>
-            <div class="boder-right bottomBR" ></div>
+            <!--<div class="bottomBtnBox" :style="{height:bottomNum + 100}"  v-else @click="focus()">-->
+                <!--<text class="fz26fff fz45 gray"  :style="{fontFamily:'iconfont'}">&#xe6b8;</text>-->
+                <!--<text class="fz26fff ml10 gray" >已关注</text>-->
+            <!--</div>-->
+            <div class="boder-right bottomBR"  v-if="!isUser || isManager"></div>
             <div class="bottomBtnBox"  :style="{height:bottomNum + 100}" @click="goChat()">
                 <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe62f;</text>
                 <text class="fz26fff ml10">私信</text>
@@ -153,13 +172,13 @@
             <!--用户用禁言-->
             <div class="bottomBtnBox" v-if="!isUser || isManager">
                 <div class="boder-right bottomBR" ></div>
-                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="!isGag" @click="toGag()">
+                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-if="isGag" @click="toGag()">
                     <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67e;</text>
                     <text class="fz26fff ml10">禁言</text>
                 </div>
                 <div class="bottomBtnBox" :style="{height:bottomNum + 100}" v-else @click="toGag()">
-                    <text class="fz26fff fz45 gray" :style="{fontFamily:'iconfont'}">&#xe74c;</text>
-                    <text class="fz26fff ml10 gray">已禁言</text>
+                    <text class="fz26fff fz45 " :style="{fontFamily:'iconfont'}">&#xe74c;</text>
+                    <text class="fz26fff ml10 ">已禁言</text>
                 </div>
             </div>
         </div>
@@ -167,7 +186,16 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .greenColor{
+        color:#1AA218;
+    }
+    .topIcon{
+        font-size:50px;color: #fff;
+    }
 
+    .fzz65{
+        font-size:65px;
+    }
     .rightTopBox{
         position: fixed;
         top: 44px;
@@ -606,6 +634,8 @@
             },
 //            设置管理员
             setManager(){
+                this.hasManager = !this.hasManager;
+                return;
                 //防止重复点击按钮
                 if(this.clicked) {
                     return;

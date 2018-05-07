@@ -302,7 +302,7 @@
                     _this.ctrlProcess(data);
                 })
             },
-            //            控制进度条
+            //         控制进度条
             ctrlProcess(data){
                 this.processWidth = parseInt(data.data) * 5;
                 if(this.processWidth == 500){
@@ -318,14 +318,24 @@
                             let backData = {
                                 liveId:data.data.liveId,
                                 play:false,
-                                record:_this.isRecord
+                                record:_this.isRecord,
+                                title:_this.titleWord,
+                                frontcover:_this.coverParaImage,
                             }
                             event.closeURL(utils.message('success','申请成功',backData));
                         }else{
                             event.toast(data.content);
+                            _this.toSendArticle = false;
+                            _this.currentPro = 0;//当前进度
+                            _this.proTotal = 0;//总的进度
+                            _this.processWidth = 0;//进度条宽度
                         }
                     },function (err) {
                         event.toast(err.content);
+                        _this.toSendArticle = false;
+                        _this.currentPro = 0;//当前进度
+                        _this.proTotal = 0;//总的进度
+                        _this.processWidth = 0;//进度条宽度
                     }
                 )
             },

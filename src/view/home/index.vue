@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <choose @cancelBox="cancelBox" v-if="isMask"></choose>
+        <!--<choose @cancelBox="cancelBox" v-if="isMask"></choose>-->
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -50,7 +50,7 @@
     const dom = weex.requireModule('dom')
     import headerNav from './header.vue';
     import liveHeader from './liveHeader.vue';
-    import choose from '../live/choose.vue';
+//    import choose from '../live/choose.vue';
     import circleCategory from './circle.vue';
     import othersCategory from './others.vue';
     import hotsCategory from './hots.vue';
@@ -75,7 +75,7 @@
             }
         },
         components: {
-            choose,liveHeader,headerNav,tabNav,othersCategory,hotsCategory,circleCategory
+            liveHeader,headerNav,tabNav,othersCategory,hotsCategory,circleCategory
         },
         props:{
             corpusList:{
@@ -118,13 +118,12 @@
         },
         methods: {
 //            开启直播弹窗
-            doLive:function (e) {
-                this.isMask = e
-            },
+//            doLive:function (e) {
+//            },
 //            关闭直播弹窗
-            cancelBox:function (e) {
-                this.isMask = e
-            },
+//            cancelBox:function (e) {
+//                this.isMask = e
+//            },
 //            正常滑动控制
             onScrollHandler:function (e) {
                 this.isHeader = e

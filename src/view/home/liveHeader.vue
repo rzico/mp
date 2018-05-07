@@ -146,47 +146,37 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                POST('weex/member/topic/submit.jhtml').then(
-                    function (data) {
-                        if (data.type == 'success') {
-                            //            获取是否在专栏开通直播
-                                GET('weex/member/topic/view.jhtml', function (data) {
-                                    if (data.type == 'success') {
-//                                        判断是否开启直播，是则跳转直播界面，否则跳转专栏开启直播按钮
-                                        if(data.data.useLive == true){
-//                                            开启直播弹窗
-                                            var isMask = true
-                                            _this.$emit('doLive',isMask);
 
-                                        }else{
+                GET('weex/live/check.jhtml?memberId=' + event.getUId(),function (data) {
+                    if(data.type == 'success' && !utils.isNull(data.data)){
+//                            开始直播
+//                        event.toast("当前APP版本不支持直播");
+                        livePlayer.toPlayLiveRoom(data.data.liveId,false,false,function(mes){});
+
+                    }else
+                    if (data.type == 'success' && utils.isNull(data.data)) {
+                        POST('weex/member/topic/submit.jhtml').then(
+                            function (data) {
+                                if (data.type == 'success') {
 //                                            跳转专栏
-                                            event.openURL(utils.locate('view/member/topic/index.js'),function (data) {
-                                                //            再次查询是否在专栏开通直播
-                                                GET('weex/member/topic/view.jhtml', function (data) {
-                                                    if (data.type == 'success') {
-                                                        if(data.data.useLive == true){
-//                                            开启直播弹窗
-                                                            _this.$emit('doLive',isMask);
+                                    event.openURL(utils.locate('view/member/topic/index.js'),function (data) {
 
-                                                        }else{
-                                                            event.toast(data.content)
-                                                        }
-                                                    } else {
-                                                        event.toast(err.content)
-                                                    }
-                                                })
-                                            });
-                                        }
-                                    } else {
-                                        event.toast(err.content)
-                                    }
-                                })
-                        } else {
-                            event.toast(err.content)
-                        }
-                    },function (err) {
-                        event.toast(err.content)
-                    })
+                                    });
+
+                                } else {
+                                    event.toast(err.content)
+                                }
+                            },function (err) {
+                                event.toast(err.content)
+                            })
+
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+
             },
             //            监听设备型号,控制导航栏
             classTop:function () {
