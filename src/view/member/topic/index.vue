@@ -277,7 +277,7 @@
                 var _this = this;
                 var options = {
                     isCrop:true,
-                    width:1,
+                    width:2,
                     height:1
                 };
                 album.openAlbumSingle(
