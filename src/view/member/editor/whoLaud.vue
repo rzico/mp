@@ -9,8 +9,8 @@
                 <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
             </cell>
             <!--点赞-->
-            <cell class="lineBigBox"  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
-                <div class="flex-row lineBox">
+            <cell class="lineBox"  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
+                <div class="flex-row">
                     <image class="headImg" :src="item.logo" ></image>
                     <div class="userInfo">
                         <text class="fz30 nameColor" >{{item.nickName}}</text>
@@ -52,21 +52,15 @@
         width: 90px;
         border-radius: 45px;
     }
-    .lineBigBox{
-        width: 750px;
-        background-color: #fff;
-    }
     .lineBox{
         flex-direction: row;
         align-items: center;
         height: 150px;
         padding-right: 20px;
-        /*justify-content: space-between;*/
+        justify-content: space-between;
         width: 725px;
         margin-left: 25px;
-        /*width: 750px;*/
-        /*padding-left: 25px;*/
-        /*background-color: #fff;*/
+        background-color: #fff;
         border-color: gainsboro;
         border-style: solid;
         border-bottom-width:1px;
