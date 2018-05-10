@@ -55,8 +55,8 @@
                         <div>
                             <!--模版样图-->
                             <scroller  class="templateImgBox"  scroll-direction="horizontal" >
-                                <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
-                                    <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id)"></image>
+                                <div   v-for="(thumImg,index) in templateList" style="flex-direction: row"  :ref="thumImg.name">
+                                    <image v-for="(item,index) in thumImg.templates" @appear="thumImgAppear(thumImg.name)" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id,thumImg.name)"></image>
                                 </div>
                             </scroller>
                         </div>
@@ -295,6 +295,7 @@
 </style>
 
 <script>
+    const dom = weex.requireModule('dom');
     const modal = weex.requireModule('modal');
     import navbar from './header.vue'
     import share from '../../include/share.vue'
@@ -305,6 +306,9 @@
     export default {
         data:function () {
             return{
+                initTemplateName:'热门',
+                templateSaveName:'经典',
+                noAppear:false,
                 templateName:'热门',
                 templateSn:'1001',
                 initTemplateSn:'1001',
@@ -398,9 +402,12 @@
                             if(data.type == 'success' && data.data != ''){
                                 _this.templateList = data.data;
                                 _this.templateList.forEach(function (item) {
-                                    if(item.templates.sn == data.data){
-                                        _this.templateName = item.name;
-                                    }
+                                    item.templates.forEach(function (mes) {
+                                        if (mes.sn == _this.templateSn) {
+                                            _this.templateName = item.name;
+                                            _this.initTemplateName = item.name;
+                                        }
+                                    })
                                 })
                             }
                         },function (err) {
@@ -441,22 +448,174 @@
                 if(!utils.isNull(doneEdit)){
                     this.showShare = doneEdit;
                 }
-            },
-//            点击 图片 更换模版的触发
-            tickImage(itemSn,itemId){
+            },//            点击 图片 更换模版的触发
+            tickImage(itemSn,itemId,thumName){
                 this.templateSn= itemSn;
                 this.templateId ='t' + itemSn;
                 this.templateSaveId = itemId;
+                this.templateSaveName = thumName;
                 this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
+            },
+
+            thumImgAppear(name){
+                if(this.noAppear){
+                    return;
+                }
+                this.templateName= name;
             },
 //            点击 标题 更换模版类型的触发
             tickTitle(name){
-                this.templateName= name;
+                let _this = this;
+                this.noAppear = true;
+                this.templateName = name;
+                this.scrollerToTemp();
+                setTimeout(function () {
+                    _this.noAppear=false;
+                },300)
             },
+
+
+            scrollerToTemp(hasAnimation){
+                switch(this.templateName){
+                    case '热门':
+                        if(utils.isNull(this.$refs.热门)){
+                            break;
+                        }
+                        var el = this.$refs.热门[0];
+                        break;
+                    case '经典':
+                        if(utils.isNull(this.$refs.经典)){
+                            break;
+                        }
+                        var el = this.$refs.经典[0];
+                        break;
+                    case '节日':
+                        if(utils.isNull(this.$refs.节日)){
+                            break;
+                        }
+                        var el = this.$refs.节日[0];
+                        break;
+                    case '四季':
+                        if(utils.isNull(this.$refs.四季)){
+                            break;
+                        }
+                        var el = this.$refs.四季[0];
+                        break;
+                    case '摄影':
+                        if(utils.isNull(this.$refs.摄影)){
+                            break;
+                        }
+                        var el = this.$refs.摄影[0];
+                        break;
+                    case '朦胧':
+                        if(utils.isNull(this.$refs.朦胧)){
+                            break;
+                        }
+                        var el = this.$refs.朦胧[0];
+                        break;
+                    case '请柬':
+                        if(utils.isNull(this.$refs.请柬)){
+                            break;
+                        }
+                        var el = this.$refs.请柬[0];
+                        break;
+                    case '可爱':
+                        if(utils.isNull(this.$refs.可爱)){
+                            break;
+                        }
+                        var el = this.$refs.可爱[0];
+                        break;
+                    case '活动':
+                        if(utils.isNull(this.$refs.活动)){
+                            break;
+                        }
+                        var el = this.$refs.活动[0];
+                        break;
+                    case '购物':
+                        if(utils.isNull(this.$refs.购物)){
+                            break;
+                        }
+                        var el = this.$refs.购物[0];
+                        break;
+                    case '政企':
+                        if(utils.isNull(this.$refs.政企)){
+                            break;
+                        }
+                        var el = this.$refs.政企[0];
+                        break;
+                    case '赏花':
+                        if(utils.isNull(this.$refs.赏花)){
+                            break;
+                        }
+                        var el = this.$refs.赏花[0];
+                        break;
+                    case '动态':
+                        if(utils.isNull(this.$refs.动态)){
+                            break;
+                        }
+                        var el = this.$refs.动态[0];
+                        break;
+                    case '旅行':
+                        if(utils.isNull(this.$refs.旅行)){
+                            break;
+                        }
+                        var el = this.$refs.旅行[0];
+                        break;
+                    case '假期':
+                        if(utils.isNull(this.$refs.假期)){
+                            break;
+                        }
+                        var el = this.$refs.假期[0];
+                        break;
+                    case '拼接':
+                        if(utils.isNull(this.$refs.拼接)){
+                            break;
+                        }
+                        var el = this.$refs.拼接[0];
+                        break;
+                    case '新春':
+                        if(utils.isNull(this.$refs.新春)){
+                            break;
+                        }
+                        var el = this.$refs.新春[0];
+                        break;
+                    default:
+                        if(utils.isNull(this.$refs.热门)){
+                            break;
+                        }
+                        var el = this.$refs.热门[0];
+                        break;
+
+                }
+                if(!utils.isNull(hasAnimation)){
+                    this.noScrollAnimation(el);
+                    return;
+                }
+                dom.scrollToElement(el, {})
+            },
+
+
+            noScrollAnimation(el){
+                dom.scrollToElement(el, {
+                    animated:false,
+                })
+            },
+
+
 //            点击模版按钮时
             chooseTemplate(){
+                this.noAppear = true;
                 this.templateChoose = !this.templateChoose;
+                let _this = this;
+                this.templateName = this.initTemplateName;
+                setTimeout(function () {
+                    _this.scrollerToTemp('2');
+                },100)
+                setTimeout(function(){
+                    _this.noAppear=false;
+                },600)
             },
+
 //            点击模版完成按钮时
             chooseComplete(){
                 let _this = this;
