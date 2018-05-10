@@ -735,7 +735,6 @@
                                 middleList.push(data.data.data[0]);
                                 data.data.data.splice(0,1);
                             }
-
 //                            下拉刷新后文章的前2个组件无法触发appear事件，此时手动进行更新 （配合懒加载）
 //                            if(!utils.isNull(data.data.data[0])){
 //                                _this.onImageAppear(data.data.data[0]);

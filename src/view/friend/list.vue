@@ -22,7 +22,7 @@
             <cell ref="linkref" >
                 <!--新的朋友-->
                 <!--<div class="">-->
-                <div class="topLine addBorder" @click="openPage(0)">
+                <div class="topLine " @click="openPage(0)">
                     <!--<image :src="item.lineImage" class="lineImage"></image>-->
                     <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
                     <!--有新消息-->
@@ -31,22 +31,25 @@
                     </div>
                     <text class="lineTitle">新的朋友</text>
                 </div>
+                <div class="addBorder"></div>
                 <!--</div>-->
                 <!--我关注的-->
                 <!--<div class="">-->
-                <div class="topLine addBorder" @click="openPage(1)">
+                <div class="topLine " @click="openPage(1)">
                     <!--<image :src="item.lineImage" class="lineImage"></image>-->
                     <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
                     <text class="lineTitle">我关注的</text>
                 </div>
+                <div class="addBorder"></div>
                 <!--</div>-->
                 <!--顶部功能栏-->
                 <!--<div class="">-->
-                <div class="topLine addBorder" @click="openPage(2)">
+                <div class="topLine " @click="openPage(2)">
                     <!--<image :src="item.lineImage" class="lineImage"></image>-->
                     <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
                     <text class="lineTitle">我的粉丝</text>
                 </div>
+                <div class="addBorder"></div>
                 <!--</div>-->
                 <!--我收藏的-->
                 <!--<div class="">-->
@@ -229,6 +232,8 @@
         background-color: #e8e8e8;
     }
     .addBorder{
+        width:670px;
+        margin-left:20px;
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.5);

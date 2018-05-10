@@ -7,12 +7,12 @@
             <!--网页:style="{height:screenHeight}"-->
             <web class="webView" ref="webView" :style="{bottom:bottomNum + 100}"  :src="webUrl" ></web>
             <!--下一步-->
-                <div class="footBox bkg-primary cb-top " v-if="!publish" :style="{height:bottomNum + 100}" @click="goOption()">
-                    <!--这边要兼容ipone7plus-->
-                    <div class="bkg-primary fullWidth flex-center" :style="{height:bottomNum + 100}"  @click="goOption()">
-                        <text class="nextStep">下一步</text>
-                    </div>
+            <div class="footBox bkg-primary cb-top " v-if="!publish" :style="{height:bottomNum + 100}" @click="goOption()">
+                <!--这边要兼容ipone7plus-->
+                <div class="bkg-primary fullWidth flex-center" :style="{height:bottomNum + 100}"  @click="goOption()">
+                    <text class="nextStep">下一步</text>
                 </div>
+            </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
                 <div class="bottomBtnBox"  @click="goLaud()">
@@ -58,12 +58,12 @@
                     </div>
                     <div>
                         <div>
-                            <!--模版样图-->
-                            <scroller  class="templateImgBox"  scroll-direction="horizontal" >
-                                <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
-                                    <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id)"></image>
-                                </div>
-                            </scroller>
+                               <!--模版样图-->
+                                <scroller  class="templateImgBox"  scroll-direction="horizontal" >
+                                    <div   v-for="(thumImg,index) in templateList" style="flex-direction: row"  :ref="thumImg.name">
+                                        <image v-for="(item,index) in thumImg.templates" @appear="thumImgAppear(thumImg.name)" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id,thumImg.name)"></image>
+                                    </div>
+                                </scroller>
                         </div>
                         <div>
                             <!--模版标题-->
@@ -200,7 +200,7 @@
     }
     .imgActive{
         border-style: solid;
-        border-color: #D9141E;
+        border-color: #99ccff;
         border-width: 5px;
         border-radius: 20px;
     }
@@ -314,6 +314,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
+    const dom = weex.requireModule('dom');
     const globalEvent = weex.requireModule('globalEvent');
     import navbar from './header.vue';
     import share from '../../include/share.vue'
@@ -326,10 +327,12 @@
     export default {
         data:function () {
             return{
-                templateName:'热门',
+                templateName:'经典',
+                initTemplateName:'经典',
                 templateSn:'1001',
                 initTemplateSn:'1001',
                 templateSaveId:'1',
+                templateSaveName:'经典',
                 templateChoose:false,
                 webUrl:'',
                 lastImageItem:'',
@@ -356,6 +359,7 @@
                 bottomNum:0,
                 rewardShow:false,
                 buyShow:false,
+                noAppear:false,
 //                isReview:false,
 //                isReward:false,
             }
@@ -423,13 +427,19 @@
                         _this.relaseShare();
                         //获取所有的文章模版
                         GET('weex/member/template/list.jhtml?type=template',function (data) {
-
                             if(data.type == 'success' && data.data != ''){
                                 _this.templateList = data.data;
                                 _this.templateList.forEach(function (item) {
-                                    if(item.templates.sn == data.data){
-                                        _this.templateName = item.name;
-                                    }
+                                    item.templates.forEach(function (mes) {
+                                        if (mes.sn == _this.templateSn) {
+                                            _this.templateName = item.name;
+                                            _this.initTemplateName = item.name;
+                                        }
+                                    })
+
+//                                    if(item.templates.sn == _this.templateSn){
+//                                        _this.templateName = item.name;
+//                                    }
                                 })
                             }
                         },function (err) {
@@ -485,19 +495,166 @@
                 }
             },
 //            点击 图片 更换模版的触发
-            tickImage(itemSn,itemId){
+            tickImage(itemSn,itemId,thumName){
                 this.templateSn= itemSn;
                 this.templateId ='t' + itemSn;
                 this.templateSaveId = itemId;
+                this.templateSaveName = thumName;
                 this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
+            },
+            thumImgAppear(name){
+                if(this.noAppear){
+                    return;
+                }
+                this.templateName= name;
             },
 //            点击 标题 更换模版类型的触发
             tickTitle(name){
-                this.templateName= name;
+                let _this = this;
+                this.noAppear = true;
+                this.templateName = name;
+                this.scrollerToTemp();
+                setTimeout(function () {
+                    _this.noAppear=false;
+                },300)
             },
+            scrollerToTemp(hasAnimation){
+                switch(this.templateName){
+                    case '热门':
+                        if(utils.isNull(this.$refs.热门)){
+                            break;
+                        }
+                        var el = this.$refs.热门[0];
+                        break;
+                    case '经典':
+                        if(utils.isNull(this.$refs.经典)){
+                            break;
+                        }
+                        var el = this.$refs.经典[0];
+                        break;
+                    case '节日':
+                        if(utils.isNull(this.$refs.节日)){
+                            break;
+                        }
+                        var el = this.$refs.节日[0];
+                        break;
+                    case '四季':
+                        if(utils.isNull(this.$refs.四季)){
+                            break;
+                        }
+                        var el = this.$refs.四季[0];
+                        break;
+                    case '摄影':
+                        if(utils.isNull(this.$refs.摄影)){
+                            break;
+                        }
+                        var el = this.$refs.摄影[0];
+                        break;
+                    case '朦胧':
+                        if(utils.isNull(this.$refs.朦胧)){
+                            break;
+                        }
+                        var el = this.$refs.朦胧[0];
+                        break;
+                    case '请柬':
+                        if(utils.isNull(this.$refs.请柬)){
+                            break;
+                        }
+                        var el = this.$refs.请柬[0];
+                        break;
+                    case '可爱':
+                        if(utils.isNull(this.$refs.可爱)){
+                            break;
+                        }
+                        var el = this.$refs.可爱[0];
+                        break;
+                    case '活动':
+                        if(utils.isNull(this.$refs.活动)){
+                            break;
+                        }
+                        var el = this.$refs.活动[0];
+                        break;
+                    case '购物':
+                        if(utils.isNull(this.$refs.购物)){
+                            break;
+                        }
+                        var el = this.$refs.购物[0];
+                        break;
+                    case '政企':
+                        if(utils.isNull(this.$refs.政企)){
+                            break;
+                        }
+                        var el = this.$refs.政企[0];
+                        break;
+                    case '赏花':
+                        if(utils.isNull(this.$refs.赏花)){
+                            break;
+                        }
+                        var el = this.$refs.赏花[0];
+                        break;
+                    case '动态':
+                        if(utils.isNull(this.$refs.动态)){
+                            break;
+                        }
+                        var el = this.$refs.动态[0];
+                        break;
+                    case '旅行':
+                        if(utils.isNull(this.$refs.旅行)){
+                            break;
+                        }
+                        var el = this.$refs.旅行[0];
+                        break;
+                    case '假期':
+                        if(utils.isNull(this.$refs.假期)){
+                            break;
+                        }
+                        var el = this.$refs.假期[0];
+                        break;
+                    case '拼接':
+                        if(utils.isNull(this.$refs.拼接)){
+                            break;
+                        }
+                        var el = this.$refs.拼接[0];
+                        break;
+                    case '新春':
+                        if(utils.isNull(this.$refs.新春)){
+                            break;
+                        }
+                        var el = this.$refs.新春[0];
+                        break;
+                    default:
+                        if(utils.isNull(this.$refs.热门)){
+                            break;
+                        }
+                        var el = this.$refs.热门[0];
+                        break;
+
+                }
+                if(!utils.isNull(hasAnimation)){
+                    this.noScrollAnimation(el);
+                    return;
+                }
+                dom.scrollToElement(el, {})
+            },
+
+            noScrollAnimation(el){
+                dom.scrollToElement(el, {
+                    animated:false,
+                })
+            },
+
 //            点击模版按钮时
             chooseTemplate(){
+                this.noAppear = true;
                 this.templateChoose = !this.templateChoose;
+                let _this = this;
+                this.templateName = this.initTemplateName;
+                setTimeout(function () {
+                    _this.scrollerToTemp('2');
+                },100)
+                setTimeout(function(){
+                    _this.noAppear=false;
+                },600)
             },
 //            点击模版完成按钮时
             chooseComplete(){
@@ -510,6 +667,7 @@
 //                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.initTemplateSn = _this.templateSn;
+                                _this.initTemplateName = _this.templateSaveName;
                             }else{
                                 event.toast(data.content);
                             }
@@ -600,10 +758,10 @@
 //                        }
 //                        let backData = utils.message('success','成功',E);
 //                        event.closeURL(backData);
-                            _this.publish = true;
-                            _this.showShare = true;
-                            _this.complete = '操作';
-                            _this.title = '文章详情';
+                        _this.publish = true;
+                        _this.showShare = true;
+                        _this.complete = '操作';
+                        _this.title = '文章详情';
                     }
                 });
 //                event.router(utils.locate('view/member/editor/option.js?articleId=' + _this.articleId));
