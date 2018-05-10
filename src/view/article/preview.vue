@@ -307,7 +307,7 @@
         data:function () {
             return{
                 initTemplateName:'热门',
-                templateSaveName:'经典',
+                templateSaveName:'热门',
                 noAppear:false,
                 templateName:'热门',
                 templateSn:'1001',
