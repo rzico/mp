@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-panel tip" v-if="isNoActivate()" @click="activate()">
+            <div class="sub-panel tip" v-if="!isStatus" @click="activate()">
                 <text class="vip">点亮VIP专栏特权（588元/年）</text>
             </div>
             <div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">
@@ -51,7 +51,7 @@
                         <text class="title ml10">开启直播间</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="topic.useLive" :checked="topic.useLive" @change="createLive"></switch>
+                        <switch class="switch" :disabled="isBottomLive" :checked="topic.useLive" @change="createLive"></switch>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                         <text class="title ml10">开通会员卡</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="topic.useCard" :checked="topic.useCard" @change="onUseCard"></switch>
+                        <switch class="switch" :disabled="isBottomCard" :checked="topic.useCard" @change="onUseCard"></switch>
                     </div>
                 </div>
             </div>
@@ -225,7 +225,10 @@
               copyApplet:'',
               templateId:'',
               templateName:'默认',
-              liveId:''
+              liveId:'',
+              isStatus:false,
+              isBottomLive:false,
+              isBottomCard:false
           }
         },
         components: {
@@ -357,7 +360,22 @@
                         _this.isOwner =data.data.isOwner;
                         _this.topic = data.data;
                         _this.templateId = data.data.templateId;
-                        _this.templateName = data.data.templateName
+                        _this.templateName = data.data.templateName;
+                        if(data.data.status == 'success'){
+                            _this.isStatus = true;
+                            _this.isBottomLive = false;
+                            _this.isBottomCard = false;
+                        }else {
+                            _this.isStatus = false;
+                            _this.isBottomLive = true;
+                            _this.isBottomCard = true;
+                        }
+                        if(data.data.status == 'success' && data.data.useLive == true){
+                            _this.isBottomLive = true;
+                        }
+                        if(data.data.status == 'success' && data.data.useCard == true){
+                            _this.isBottomCard = true;
+                        }
                     } else {
                         event.toast(err.content)
                     }

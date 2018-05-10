@@ -396,6 +396,7 @@
                         _this.templateSn = data.data;
                         _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
 //                        _this.webUrl = 'http://weex.1xx.me/';
+
                     }else{
                         event.toast(data.content);
                     }
