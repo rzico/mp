@@ -10,14 +10,14 @@
              <noData :noDataHint="noDataHint" ndBgColor="#fff"  v-if="shareList.length == 0"></noData>
             </cell>
             <!--分享-->
-            <cell class="lineBigBox" v-for="item in shareList">
-                <div class="flex-row lineBox" >
+            <cell class="lineBox" v-for="item in shareList">
+                <div class="flex-row" >
                     <!--人物头像-->
                     <image class="headImg" :src="item.logo" ></image>
                     <div class="userInfo">
                         <!--人物信息跟分享信息-->
                         <div class="flex-row" >
-                            <text class="fz32 " >{{item.nickName | watchNickName}}</text>
+                            <text class="fz32 " >{{item.nickName}}</text>
                             <text class="fz32  " style="color: #bbb;">({{item.shareType | watchType}})</text>
                         </div>
                         <!--分享的图标跟日期-->
@@ -33,21 +33,15 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-    .lineBigBox{
-        width: 750px;
-        background-color: #fff;
-    }
     .lineBox{
         flex-direction: row;
         align-items: center;
         height: 140px;
         padding-right: 20px;
-        /*justify-content: space-between;*/
-        /*width: 750px;*/
-        /*padding-left: 25px;*/
-        width: 725px;
-        margin-left: 25px;
-        /*background-color: #fff;*/
+        justify-content: space-between;
+        width: 750px;
+        padding-left: 25px;
+        background-color: #fff;
         border-color: gainsboro;
         border-style: solid;
         border-bottom-width:1px;

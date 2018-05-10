@@ -48,7 +48,7 @@
                 this.title = '文章类别';
             }
             else if(urlType == 'category'){
-                this.title = '职业选择';
+                this.title = '行业选择';
             }
             else if(urlType == 'template'){
                 this.title = '模版选择';

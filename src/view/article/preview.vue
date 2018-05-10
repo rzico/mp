@@ -1,39 +1,34 @@
 <template>
-    <div class="wrapper" @viewdisappear="pageDestroy()" @viewappear="pageShow()">
+    <div class="wrapper">
         <!--导航栏-->
         <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
         <!--<div  :style="{height:scrollHeight}" >-->
-        <div class="articleOutBox" :class="[articleOutBoxTop()]" >
+        <div class="articleOutBox" :class="[articleOutBoxTop()]">
             <!--网页:style="{height:screenHeight}"-->
             <web class="webView" ref="webView" :style="{bottom:bottomNum + 100}"  :src="webUrl" ></web>
             <!--下一步-->
-                <div class="footBox bkg-primary cb-top " v-if="!publish" :style="{height:bottomNum + 100}" @click="goOption()">
-                    <!--这边要兼容ipone7plus-->
-                    <div class="bkg-primary fullWidth flex-center" :style="{height:bottomNum + 100}"  @click="goOption()">
-                        <text class="nextStep">下一步</text>
-                    </div>
+            <div v-if="!publish" >
+                <div class="footBox bkg-primary cb-top " :style="{height:bottomNum + 100}" @click="goOption()">
+                    <text class="nextStep">下一步</text>
                 </div>
+            </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
-                <div class="bottomBtnBox"  @click="goLaud()">
-                    <text class="fz26fff fzz45 " :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="fz26fff " :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
+                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goLaud()">
+                    <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                    <text class="fz26fff "  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
                 </div>
-                <div class="bottomBtnBox"  @click="goShare(0)">
-                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                <div class="bottomBtnBox"  :style="{height:bottomNum + 100}" @click="goShare(0)">
+                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                     <text class="fz26fff ">分享 {{shareNum}}</text>
                 </div>
-                <div class="bottomBtnBox" @click="goReview()">
-                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goReview()">
+                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                     <text class="fz26fff ">评论 {{reviewNum}}</text>
-                </div>
-                <div class="bottomBtnBox"  @click="goReward()">
-                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="fz26fff ">赞赏</text>
                 </div>
             </div>
             <!--模版-->
-            <div  v-if="!templateChoose && isSelf == 1">
+            <div  v-if="!templateChoose && isSelf == 1" >
                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
                 <text class="templateText templateIcon textTemplateIcon" :style="{bottom:bottomNum + 135}" @click="chooseTemplate()">模版</text>
             </div>
@@ -60,8 +55,8 @@
                         <div>
                             <!--模版样图-->
                             <scroller  class="templateImgBox"  scroll-direction="horizontal" >
-                                <div   v-for="(thumImg,index) in templateList" style="flex-direction: row">
-                                    <image v-for="(item,index) in thumImg.templates" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id)"></image>
+                                <div   v-for="(thumImg,index) in templateList" style="flex-direction: row"  :ref="thumImg.name">
+                                    <image v-for="(item,index) in thumImg.templates" @appear="thumImgAppear(thumImg.name)" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id,thumImg.name)"></image>
                                 </div>
                             </scroller>
                         </div>
@@ -130,19 +125,11 @@
                 <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
 
-            <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
-        <buyGoods  ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId"  ></buyGoods>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
-    .fullWidth{
-        width: 750px;
-    }
-    .bottomBtnBox:active {
-        background-color: #eee;
-    }
     .articleOutBox{
         position:absolute;bottom: 0;width: 750px;  top: 136px;
     }
@@ -156,21 +143,16 @@
         color: #888;
     }
     .bottomBtnBox{
-        height: 100px;
         flex: 1;align-items: center;justify-content: center;
-        flex-direction: column;
-        padding-top:5px;
-        padding-bottom:5px;
     }
     .fz26fff{
         font-size: 26px;
         line-height: 26px;
         color: #444;
     }
-    .fzz45{
-        font-size: 38px;
-        line-height:38px;
-        padding-bottom:10px;
+    .fz45{
+        font-size: 50px;
+        line-height:50px;
     }
     .btnTextColor{
         color:#F0AD3C;
@@ -290,7 +272,7 @@
         width:750px;
         /*height:100px;*/
         background-color: #fff;
-        position: absolute;
+        position: fixed;
         border-style:solid;
         border-top-width: 1px;
         border-color: #ccc;
@@ -313,19 +295,20 @@
 </style>
 
 <script>
+    const dom = weex.requireModule('dom');
     const modal = weex.requireModule('modal');
-    const globalEvent = weex.requireModule('globalEvent');
-    import navbar from './header.vue';
+    import navbar from './header.vue'
     import share from '../../include/share.vue'
     import utils from '../../assets/utils';
-    import reward from '../../widget/rewardDialog.vue';
-    import buyGoods from '../../widget/buyGoods.vue';
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch'
     export default {
         data:function () {
             return{
+                initTemplateName:'热门',
+                templateSaveName:'热门',
+                noAppear:false,
                 templateName:'热门',
                 templateSn:'1001',
                 initTemplateSn:'1001',
@@ -349,28 +332,22 @@
                 showShare:false,
                 screenHeight:0,
                 clicked:false,
-                authorInfo:{
-                    nickName:'initNickDefault'
-                },
+                authorInfo:[],
                 scrollHeight:0,
                 bottomNum:0,
-                rewardShow:false,
-                buyShow:false,
-//                isReview:false,
-//                isReward:false,
             }
         },
         components: {
-            navbar,share,reward,buyGoods
+            navbar,share
         },
         props: {
             title: { default: ""},
             complete:{ default : ''},
         },
         created(){
+
             var _this = this;
             utils.initIconFont();
-
             this.articleId = utils.getUrlParameter('articleId');
 //            判断是iponex就动态获取底部上弹高度
             if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
@@ -413,8 +390,6 @@
                     _this.isCollect = data.data.hasFavorite;
                     _this.shareNum = data.data.share;
                     _this.authorInfo = data.data;
-//                    _this.isReward = data.data.isReward;
-                    _this.isReview = data.data.isReview;
                     let uId = event.getUId();
 //            判断是否作者本人
                     if(uId == _this.memberId){
@@ -427,9 +402,12 @@
                             if(data.type == 'success' && data.data != ''){
                                 _this.templateList = data.data;
                                 _this.templateList.forEach(function (item) {
-                                    if(item.templates.sn == data.data){
-                                        _this.templateName = item.name;
-                                    }
+                                    item.templates.forEach(function (mes) {
+                                        if (mes.sn == _this.templateSn) {
+                                            _this.templateName = item.name;
+                                            _this.initTemplateName = item.name;
+                                        }
+                                    })
                                 })
                             }
                         },function (err) {
@@ -451,28 +429,15 @@
                         _this.complete = 'textIcon';
                         _this.title = '';
                     }
-                }else{
-                    event.toast(data.content);
                 }
             },function (err) {
                 event.toast(err.content);
             })
+
+
+
         },
         methods:{
-//            页面被关闭
-            pageDestroy:function(){
-
-//                globalEvent.removeEventListener("buyGood");
-            },
-            pageShow:function(){
-
-//            商品购买控制
-//            globalEvent.addEventListener("buyGood", function (e) {
-//                    _this.goodId = e.goodId;
-//                    _this.buyShow = true;
-//            });
-
-            },
             articleOutBoxTop:function () {
                 let dc = utils.artOutTop();
                 return dc
@@ -483,21 +448,172 @@
                 if(!utils.isNull(doneEdit)){
                     this.showShare = doneEdit;
                 }
-            },
-//            点击 图片 更换模版的触发
-            tickImage(itemSn,itemId){
+            },//            点击 图片 更换模版的触发
+            tickImage(itemSn,itemId,thumName){
                 this.templateSn= itemSn;
                 this.templateId ='t' + itemSn;
                 this.templateSaveId = itemId;
+                this.templateSaveName = thumName;
                 this.webUrl  = utils.articleUrl(this.templateId,this.articleId);
+            },
+
+            thumImgAppear(name){
+                if(this.noAppear){
+                    return;
+                }
+                this.templateName= name;
             },
 //            点击 标题 更换模版类型的触发
             tickTitle(name){
-                this.templateName= name;
+                let _this = this;
+                this.noAppear = true;
+                this.templateName = name;
+                this.scrollerToTemp();
+                setTimeout(function () {
+                    _this.noAppear=false;
+                },300)
             },
+
+
+            scrollerToTemp(hasAnimation){
+                switch(this.templateName){
+                    case '热门':
+                        if(utils.isNull(this.$refs.热门)){
+                            break;
+                        }
+                        var el = this.$refs.热门[0];
+                        break;
+                    case '经典':
+                        if(utils.isNull(this.$refs.经典)){
+                            break;
+                        }
+                        var el = this.$refs.经典[0];
+                        break;
+                    case '节日':
+                        if(utils.isNull(this.$refs.节日)){
+                            break;
+                        }
+                        var el = this.$refs.节日[0];
+                        break;
+                    case '四季':
+                        if(utils.isNull(this.$refs.四季)){
+                            break;
+                        }
+                        var el = this.$refs.四季[0];
+                        break;
+                    case '摄影':
+                        if(utils.isNull(this.$refs.摄影)){
+                            break;
+                        }
+                        var el = this.$refs.摄影[0];
+                        break;
+                    case '朦胧':
+                        if(utils.isNull(this.$refs.朦胧)){
+                            break;
+                        }
+                        var el = this.$refs.朦胧[0];
+                        break;
+                    case '请柬':
+                        if(utils.isNull(this.$refs.请柬)){
+                            break;
+                        }
+                        var el = this.$refs.请柬[0];
+                        break;
+                    case '可爱':
+                        if(utils.isNull(this.$refs.可爱)){
+                            break;
+                        }
+                        var el = this.$refs.可爱[0];
+                        break;
+                    case '活动':
+                        if(utils.isNull(this.$refs.活动)){
+                            break;
+                        }
+                        var el = this.$refs.活动[0];
+                        break;
+                    case '购物':
+                        if(utils.isNull(this.$refs.购物)){
+                            break;
+                        }
+                        var el = this.$refs.购物[0];
+                        break;
+                    case '政企':
+                        if(utils.isNull(this.$refs.政企)){
+                            break;
+                        }
+                        var el = this.$refs.政企[0];
+                        break;
+                    case '赏花':
+                        if(utils.isNull(this.$refs.赏花)){
+                            break;
+                        }
+                        var el = this.$refs.赏花[0];
+                        break;
+                    case '动态':
+                        if(utils.isNull(this.$refs.动态)){
+                            break;
+                        }
+                        var el = this.$refs.动态[0];
+                        break;
+                    case '旅行':
+                        if(utils.isNull(this.$refs.旅行)){
+                            break;
+                        }
+                        var el = this.$refs.旅行[0];
+                        break;
+                    case '假期':
+                        if(utils.isNull(this.$refs.假期)){
+                            break;
+                        }
+                        var el = this.$refs.假期[0];
+                        break;
+                    case '拼接':
+                        if(utils.isNull(this.$refs.拼接)){
+                            break;
+                        }
+                        var el = this.$refs.拼接[0];
+                        break;
+                    case '新春':
+                        if(utils.isNull(this.$refs.新春)){
+                            break;
+                        }
+                        var el = this.$refs.新春[0];
+                        break;
+                    default:
+                        if(utils.isNull(this.$refs.热门)){
+                            break;
+                        }
+                        var el = this.$refs.热门[0];
+                        break;
+
+                }
+                if(!utils.isNull(hasAnimation)){
+                    this.noScrollAnimation(el);
+                    return;
+                }
+                dom.scrollToElement(el, {})
+            },
+
+
+            noScrollAnimation(el){
+                dom.scrollToElement(el, {
+                    animated:false,
+                })
+            },
+
+
 //            点击模版按钮时
             chooseTemplate(){
+                this.noAppear = true;
                 this.templateChoose = !this.templateChoose;
+                let _this = this;
+                this.templateName = this.initTemplateName;
+                setTimeout(function () {
+                    _this.scrollerToTemp('2');
+                },100)
+                setTimeout(function(){
+                    _this.noAppear=false;
+                },600)
             },
 //            点击模版完成按钮时
             chooseComplete(){
@@ -510,6 +626,7 @@
 //                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.initTemplateSn = _this.templateSn;
+                                _this.initTemplateName = _this.templateSaveName;
                             }else{
                                 event.toast(data.content);
                             }
@@ -531,17 +648,15 @@
                     setTimeout(function () {
                         _this.clicked = false;
                     },1500)
-//                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-//                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-//                            let E = {
-//                                isDone : 'complete'
-//                            }
-//                            let backData = utils.message('success','成功',E);
-//                            event.closeURL(backData);
-//                        }
-//                    })
-                    event.router(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId));
-
+                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                            let E = {
+                                isDone : 'complete'
+                            }
+                            let backData = utils.message('success','成功',E);
+                            event.closeURL(backData);
+                        }
+                    })
                 }else{
                     this.isOperation = true;
                 }
@@ -549,19 +664,20 @@
 //            点击操作里的编辑
             operationEditor(){
                 this.isOperation = false;
-//                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-//                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-//                        event.closeURL();
-//                    }
-//                })
-                event.router(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId));
+                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
+//                    _this.updateArticle();
+                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+                        event.closeURL();
+                    }
+                })
             },
 //            点击操作里的设置
             operationSet(){
                 var _this = this;
                 this.isOperation = false;
 //                event.openURL(utils.locate('view/member/editor/option.js),
-                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
+                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId + '&publish=1'),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                 });
             },
@@ -576,12 +692,8 @@
             },
 //            点击返回
             goback(){
-//                event.closeURL();
-                if(utils.isNull(utils.getUrlParameter('isRouter'))){
-                    event.closeURL();
-                }else{
-                    event.closeRouter();
-                }
+                event.closeURL();
+//                event.closeRouter();
             },
 //            点击下一步 跳转文章设置。
             goOption(){
@@ -595,15 +707,11 @@
                 },1500)
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-//                        let E = {
-//                            isDone : 'complete'
-//                        }
-//                        let backData = utils.message('success','成功',E);
-//                        event.closeURL(backData);
-                            _this.publish = true;
-                            _this.showShare = true;
-                            _this.complete = '操作';
-                            _this.title = '文章详情';
+                        let E = {
+                            isDone : 'complete'
+                        }
+                        let backData = utils.message('success','成功',E);
+                        event.closeURL(backData);
                     }
                 });
 //                event.router(utils.locate('view/member/editor/option.js?articleId=' + _this.articleId));
@@ -685,10 +793,6 @@
 //            前往评论
             goReview(){
                 let _this = this;
-//                if(!this.isReview){
-//                    event.toast('该文章未开通评论功能');
-//                    return;
-//                }
                 if (this.clicked) {
                     return;
                 }
@@ -918,91 +1022,6 @@
                     }
                 )
             },
-//            赞赏
-            goReward(){
-//                this.$refs.buy.show(55,342);
-                this.rewardShow = true;
-            },
-            sendReward(m,id){
-                let _this = this;
-                POST("website/member/reward/submit.jhtml?amount="+m+"&articleId="+_this.articleId).then(
-                    function (data) {
-                        if (data.type=="success") {
-                            if (id == 0) {
-                                _this.payment(data.data,"weixinAppPlugin");
-                            }else if (id == 1) {
-                                _this.payment(data.data,"alipayH5Plugin");
-                            }
-                        } else {
-                            event.toast(data.content);
-                        }
-                    },
-                    function (err) {
-                        event.toast(err.content);
-                    }
-                )
-            },
-
-            payment (sn,plugId) {
-                var _this = this;
-                POST("payment/submit.jhtml?sn="+ sn +"&paymentPluginId="+plugId).then(
-                    function (data) {
-                        setTimeout(function () {
-                            _this.$refs.buy.waitHide();
-                        },1000)
-                        if (data.type=="success") {
-                            event.wxAppPay(data.data,function (e) {
-                                if (e.type=='success') {
-                                    POST("payment/query.jhtml?sn="+ sn).then(
-                                        function (mes) {
-                                            if (mes.type=="success") {
-                                                if (mes.data=="0000") {
-                                                    _this.close(utils.message("success","success"));
-                                                } else
-                                                if (mes.data=="0001") {
-                                                    _this.close(utils.message("error","error"));
-                                                }
-                                                else {
-                                                    _this.close(utils.message("error","error"));
-                                                }
-                                            } else {
-                                                _this.close(utils.message("error","error"));
-                                            }
-                                        },
-                                        function (err) {
-                                            _this.close(utils.message("error","error"));
-                                        }
-                                    )
-                                } else {
-                                    _this.close();
-                                }
-                            })
-                        } else {
-                            event.toast(data.content);
-                        }
-                    },
-                    function (err) {
-                        event.toast("网络不稳定");
-                    }
-                )
-            },
-            close (e) {
-                this.rewardShow = false;
-                if(utils.isNull(e)){
-                    return;
-                }
-                if(e.type == 'success'){
-                    event.toast('赞赏成功');
-                }else{
-                    event.toast('网络不稳定');
-                }
-            },
-            maskHide(){
-                this.buyShow = false;
-            },
-            goPay(id){
-                this.payment(id,"weixinAppPlugin");
-            }
 //            复制文章\
 //            copyArticle(){
 //                POST('weex/member/article/grabarticle.jhtml').then(
