@@ -12,7 +12,10 @@
                 <div class="addFriendsBorder" >
                     <!--用户头像与昵称签名-->
                     <div class="friendsLine" >
-                        <image :src="item.logo" class="friendsImage"></image>
+                        <!--<image :src="item.logo" class="friendsImage"></image>-->
+                        <div  v-if="!item.loading"  class="friendsImage coverAbsoTop " ></div>
+                        <!--文章封面-->
+                        <image  :src="item.logo"   @load="onImageLoad(item)" resize="cover" class="friendsImage"></image>
                         <div class="friendsName">
                             <text class="lineTitle ">{{item.nickName}}</text>
                             <text class="realName">{{item.autograph}}</text>
@@ -126,6 +129,7 @@
                 userName:'我',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
+                loadingImg:utils.locate('resources/images/loading1.gif'),
             }
         },
         components: {
@@ -156,6 +160,10 @@
             this.getAllFans();
         },
         methods:{
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
 //            获取所有粉丝列表
             getAllFans(){
                 let _this = this;
@@ -167,6 +175,8 @@
                                 if(!utils.isNull(item.logo)){
                                     item.logo = utils.thumbnail(item.logo,250,150);
                                 }
+//                             （配合懒加载）
+                                item.loading = false;
                             })
                             _this.userList = data.data.data;
                         }else{
@@ -174,6 +184,8 @@
                                 if(!utils.isNull(item.logo)){
                                     item.logo = utils.thumbnail(item.logo,250,150);
                                 }
+//                             （配合懒加载）
+                                item.loading = false;
                                 _this.userList.push(item);
                             })
                         }

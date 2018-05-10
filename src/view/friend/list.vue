@@ -21,62 +21,62 @@
         <list class="listBody"  :scrollable="canScroll">
             <cell ref="linkref" >
                 <!--新的朋友-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(0)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
-                        <!--有新消息-->
-                        <div class="newMessage"  v-if="newFriendNum != '' && newFriendNum != 0 && newFriendNum != null && newFriendNum != undefined">
-                            <text class="messageTotal">{{newFriendNum}}</text>
-                        </div>
-                        <text class="lineTitle">新的朋友</text>
+                <!--<div class="">-->
+                <div class="topLine addBorder" @click="openPage(0)">
+                    <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                    <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
+                    <!--有新消息-->
+                    <div class="newMessage"  v-if="newFriendNum != '' && newFriendNum != 0 && newFriendNum != null && newFriendNum != undefined">
+                        <text class="messageTotal">{{newFriendNum}}</text>
                     </div>
+                    <text class="lineTitle">新的朋友</text>
                 </div>
+                <!--</div>-->
                 <!--我关注的-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(1)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
-                        <text class="lineTitle">我关注的</text>
-                    </div>
+                <!--<div class="">-->
+                <div class="topLine addBorder" @click="openPage(1)">
+                    <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                    <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
+                    <text class="lineTitle">我关注的</text>
                 </div>
+                <!--</div>-->
                 <!--顶部功能栏-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(2)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
-                        <text class="lineTitle">我的粉丝</text>
-                    </div>
+                <!--<div class="">-->
+                <div class="topLine addBorder" @click="openPage(2)">
+                    <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                    <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
+                    <text class="lineTitle">我的粉丝</text>
                 </div>
+                <!--</div>-->
                 <!--我收藏的-->
-                <div class="addBorder">
-                    <div class="topLine " @click="openPage(3)">
-                        <!--<image :src="item.lineImage" class="lineImage"></image>-->
-                        <text class="lineImage" style="color:#D85C87" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
-                        <text class="lineTitle">我收藏的</text>
-                    </div>
+                <!--<div class="">-->
+                <div class="topLine " @click="openPage(3)">
+                    <!--<image :src="item.lineImage" class="lineImage"></image>-->
+                    <text class="lineImage" style="color:#D85C87" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                    <text class="lineTitle">我收藏的</text>
                 </div>
+                <!--</div>-->
             </cell>
             <cell v-for="friend in friendsList" ref="listref" >
-                <!--姓氏首字母-->
-                <div class="letterBox" v-if="friend.name != ''">
-                    <text class="nameLetter">{{friend.letter}}</text>
-                </div>
-                <!--姓氏里每个人的名子-->
-                <div v-for="(item,index) in friend.name"  >
-                    <div class="addFriendsBorder" >
-                        <div class="deleteBox bkg-delete" @click="deleteFriend(friend.letter,item.id,index)">
-                            <text class="deleteText">删除</text>
-                        </div>
-                        <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
-                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
-                            <div class="friendsName">
-                                <text class="lineTitle">{{item.nickName}}</text>
-                                <text class="realName">真实姓名:{{item.realName | watchName}}</text>
+                    <!--姓氏首字母-->
+                    <div class="letterBox" v-if="friend.name != ''">
+                        <text class="nameLetter">{{friend.letter}}</text>
+                    </div>
+                    <!--姓氏里每个人的名子-->
+                    <div v-for="(item,index) in friend.name"  >
+                        <div class="addFriendsBorder" >
+                            <div class="deleteBox bkg-delete" @click="deleteFriend(friend.letter,item.id,index)">
+                                <text class="deleteText" @click="deleteFriend(friend.letter,item.id,index)">删除</text>
+                            </div>
+                            <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
+                                <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
+                                <div class="friendsName">
+                                    <text class="lineTitle">{{item.nickName}}</text>
+                                    <text class="realName">真实姓名:{{item.realName | watchName}}</text>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </cell>
             <cell>
                 <!--总共多少个好友-->
@@ -108,7 +108,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 60px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
+        position: absolute;right: 0px;top: 0px;height: 100px;align-items: center;width: 130px;justify-content: center;
     }
     .messageTotal{
         background-color: red;
@@ -124,7 +124,7 @@
     }
     .newMessage{
         position: absolute;
-        left:75px;
+        left:45px;
         top:15px;
         width:60px;
         align-items: center;
@@ -190,8 +190,8 @@
     .friendTotalBox{
         width:750px;
         align-items: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
+        padding-top: 30px;
+        padding-bottom: 30px;
         background-color: #F2F3F8;
     }
     .friendTotalText{
@@ -217,8 +217,8 @@
         align-items: center;
     }
     .friendsName{
-        height:90px;
-        margin-top: 15px;
+        height:84px;
+        margin-top: 8px;
         justify-content: space-between;
     }
     .letterBox{
@@ -239,11 +239,11 @@
     }
     .realName{
         color: #888;
-        font-size: 30px;
+        font-size: 28px;
         margin-left: 20px;
     }
     .friendsImage{
-        margin-top: 20px ;
+        margin-top: 10px ;
         height: 80px;
         width:80px;
     }
@@ -251,11 +251,13 @@
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.2);
+        width:670px;
+        margin-left:20px;
     }
     .friendsLine{
-        padding-left: 30px;
-        height:120px;
-        width:690px;
+        /*padding-left: 30px;*/
+        height:100px;
+        width:670px;
         /*width:750px;*/
         background-color: #fff;
         flex-direction: row;
@@ -265,10 +267,12 @@
     }
     .topLine{
         flex-direction: row;
-        width:660px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        padding-left: 30px;
+        /*width:660px;*/
+        padding-top: 10px;
+        padding-bottom: 10px;
+        /*padding-left: 30px;*/
+        width:670px;
+        margin-left:20px;
         align-items: center;
         background-color: #fff;
     }
@@ -278,7 +282,7 @@
         font-size: 80px;
     }
     .lineTitle{
-        font-size: 34px;
+        font-size: 32px;
         margin-left: 20px;
     }
 </style>
@@ -436,39 +440,9 @@
         created(){
             var _this = this;
             utils.initIconFont();
-            let listoption = {
-                type:'friend',//类型
-                keyword:'',//关键址
-                orderBy:'desc',//"desc"降序 ,"asc"升序
-                current:0,
-                pageSize:0,
-            }
-//            读取本地朋友缓存
-            event.findList(listoption,function (data) {
-                if(data.type == 'success' && data.data != ''){
-                    data.data.forEach(function (friend) {
-                        var jsonData = JSON.parse(friend.value);
-                        jsonData.key = friend.key;
-                        var firstLetter;
-                        if(utils.isNull(jsonData.nickName)){//判断是否手机号登录，手机号登录的昵称为空
-                            firstLetter = '#';
-                        }else{
-//                          获取首字母
-                            firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
-                        }
 
-                        _this.friendsList.forEach(function (item) {
-                            if(item.letter == firstLetter){
-                                item.name.push(jsonData);
-                            }
-                        })
-                    })
-                    _this.friendTotal = data.data.length;
-                }else if(data.type == 'success'){
-                }else{
-                    event.toast(data.content);
-                }
-            })
+            this.updateFriend();
+
 //            读取本地朋友未读消息
             let newFriend = {
                 type:'message',//类型
@@ -503,9 +477,45 @@
                     _this.newFriendNum = 0;
                 }
             });
-
         },
         methods: {
+            updateFriend(){
+
+                let _this = this;
+                let listoption = {
+                    type:'friend',//类型
+                    keyword:'',//关键址
+                    orderBy:'desc',//"desc"降序 ,"asc"升序
+                    current:0,
+                    pageSize:0,
+                }
+//            读取本地朋友缓存
+                event.findList(listoption,function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        data.data.forEach(function (friend) {
+                            var jsonData = JSON.parse(friend.value);
+                            jsonData.key = friend.key;
+                            var firstLetter;
+                            if(utils.isNull(jsonData.nickName)){//判断是否手机号登录，手机号登录的昵称为空
+                                firstLetter = '#';
+                            }else{
+//                          获取首字母
+                                firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
+                            }
+
+                            _this.friendsList.forEach(function (item) {
+                                if(item.letter == firstLetter){
+                                    item.name.push(jsonData);
+                                }
+                            })
+                        })
+                        _this.friendTotal = data.data.length;
+                    }else if(data.type == 'success'){
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc
@@ -531,7 +541,6 @@
                                 friend.name = utils.isNull(friend.name) ? '' : friend.name;
 //                                判断该用户是否有手机号md5，有就存入缓存
                                 friend.md5 = utils.isNull(friend.md5) ? '' : friend.md5;
-
                                 if(utils.isNull(friend.nickName)){//手机号登录的昵称为空
                                     _this.friendsList.forEach(function (item) {
                                         if(item.letter == '#'){
@@ -549,6 +558,13 @@
 //                                            将本次时间戳缓存起来
                                                     storage.setItem('lastTimestamp' + _this.UId, timestamp.toString());
                                                 }else if(message.type == 'success' && message.content =='更新成功'){
+                                                    item.name.forEach(function (mes) {
+                                                        if(mes.id == friend.id){
+                                                            mes.logo = friend.logo;
+                                                            mes.nickName = friend.nickName;
+                                                            mes.realName = friend.realName;
+                                                        }
+                                                    })
                                                 }else{
                                                     event.toast(message.content);
                                                 }
@@ -572,6 +588,13 @@
 //                                            将本次时间戳缓存起来
                                                     storage.setItem('lastTimestamp' + _this.UId, timestamp.toString());
                                                 }else if(message.type == 'success' && message.content =='更新成功'){
+                                                    item.name.forEach(function (mes) {
+                                                        if(mes.id == friend.id){
+                                                            mes.logo = friend.logo;
+                                                            mes.nickName = friend.nickName;
+                                                            mes.realName = friend.realName;
+                                                        }
+                                                    })
                                                 }else{
                                                     event.toast(message.content);
                                                 }
@@ -797,8 +820,9 @@
                     })
                 });
             },
+
 //            删除好友    //friendList 的 friend属性 包括letter和name
-            deleteFriend(letter,id,index){
+            deleteFriend(letter,id,index,ds){
                 let _this = this;
                 POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
                     function(data){

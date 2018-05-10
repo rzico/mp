@@ -31,7 +31,7 @@
                     <div class="topPriceNum " >
                         <div class="inputLine flex-row boder-bottom ">
                             <text class="title">价格</text>
-                            <input type="number" v-model="topLinePrice" return-key-type="next"class="lineContent toplineContentHeight"  @input="nameUnitFirstInput" placeholder="给商品定个好价格" />
+                            <input type="number" v-model="topLinePrice"  return-key-type="next"class="lineContent toplineContentHeight"  @input="nameUnitFirstInput" placeholder="给商品定个好价格" />
                         </div>
                         <div class="inputLine flex-row ">
                             <text class="title">库存</text>
@@ -480,7 +480,7 @@
 //                        无多规格时的价格
                     let productPrice =  data.data.products[0].price;
                     if(!utils.isNull(productPrice)){
-                        _this.topLinePrice = productPrice;
+                        _this.topLinePrice = utils.currencyfmt(productPrice);
                     }
 
 //                        无多规格时的数量
@@ -497,6 +497,9 @@
                         }
                         if(utils.isNull(item.stock)){
                             item.stock = '';
+                        }
+                        if(!utils.isNull(item.price)){
+                            item.price = utils.currencyfmt(item.price)
                         }
 
                         _this.list.push(item);

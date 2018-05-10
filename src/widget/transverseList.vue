@@ -6,7 +6,8 @@
         <scroller scroll-direction="horizontal" class="corpusScroll" show-scrollbar="false">
             <div  v-for="user in arrayList">
                 <div class="aboutImgName" @click="goAuthor(user.id)">
-                    <image class="aboutUserImg" :src="user.logo"></image>
+                    <div  v-if="!user.loading"  class="aboutUserImg coverAbsoTop "></div>
+                    <image class="aboutUserImg"  @load="onImageLoad(user)"  :src="user.logo"></image>
                     <text class="userName"  >{{user.nickName}}</text>
                 </div>
             </div>
@@ -64,7 +65,11 @@
         methods:{
             goAuthor(id){
                 this.$emit('goAuthor',id);
-            }
+            },
+            //            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
         }
 
     }

@@ -1,34 +1,39 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" @viewdisappear="pageDestroy()" @viewappear="pageShow()">
         <!--导航栏-->
         <navbar :title="title" :authorInfo="authorInfo" :isSelf="isSelf" @doFocus="doFocus" @goback="goback" :complete="complete" @goComplete="goComplete"></navbar>
         <!--<div  :style="{height:scrollHeight}" >-->
-        <div class="articleOutBox" :class="[articleOutBoxTop()]">
+        <div class="articleOutBox" :class="[articleOutBoxTop()]" >
             <!--网页:style="{height:screenHeight}"-->
             <web class="webView" ref="webView" :style="{bottom:bottomNum + 100}"  :src="webUrl" ></web>
             <!--下一步-->
-            <div v-if="!publish" >
-                <div class="footBox bkg-primary cb-top " :style="{height:bottomNum + 100}" @click="goOption()">
-                    <text class="nextStep">下一步</text>
+                <div class="footBox bkg-primary cb-top " v-if="!publish" :style="{height:bottomNum + 100}" @click="goOption()">
+                    <!--这边要兼容ipone7plus-->
+                    <div class="bkg-primary fullWidth flex-center" :style="{height:bottomNum + 100}"  @click="goOption()">
+                        <text class="nextStep">下一步</text>
+                    </div>
                 </div>
-            </div>
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
-                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goLaud()">
-                    <text class="fz26fff fz45" :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                    <text class="fz26fff "  :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
+                <div class="bottomBtnBox"  @click="goLaud()">
+                    <text class="fz26fff fzz45 " :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                    <text class="fz26fff " :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
                 </div>
-                <div class="bottomBtnBox"  :style="{height:bottomNum + 100}" @click="goShare(0)">
-                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                <div class="bottomBtnBox"  @click="goShare(0)">
+                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                     <text class="fz26fff ">分享 {{shareNum}}</text>
                 </div>
-                <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goReview()">
-                    <text class="fz26fff fz45" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                <div class="bottomBtnBox" @click="goReview()">
+                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                     <text class="fz26fff ">评论 {{reviewNum}}</text>
+                </div>
+                <div class="bottomBtnBox"  @click="goReward()">
+                    <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
+                    <text class="fz26fff ">赞赏</text>
                 </div>
             </div>
             <!--模版-->
-            <div  v-if="!templateChoose && isSelf == 1" >
+            <div  v-if="!templateChoose && isSelf == 1">
                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
                 <text class="templateText templateIcon textTemplateIcon" :style="{bottom:bottomNum + 135}" @click="chooseTemplate()">模版</text>
             </div>
@@ -125,11 +130,19 @@
                 <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
 
+            <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
+        <buyGoods  ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId"  ></buyGoods>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .fullWidth{
+        width: 750px;
+    }
+    .bottomBtnBox:active {
+        background-color: #eee;
+    }
     .articleOutBox{
         position:absolute;bottom: 0;width: 750px;  top: 136px;
     }
@@ -143,16 +156,21 @@
         color: #888;
     }
     .bottomBtnBox{
+        height: 100px;
         flex: 1;align-items: center;justify-content: center;
+        flex-direction: column;
+        padding-top:5px;
+        padding-bottom:5px;
     }
     .fz26fff{
         font-size: 26px;
         line-height: 26px;
         color: #444;
     }
-    .fz45{
-        font-size: 50px;
-        line-height:50px;
+    .fzz45{
+        font-size: 38px;
+        line-height:38px;
+        padding-bottom:10px;
     }
     .btnTextColor{
         color:#F0AD3C;
@@ -272,7 +290,7 @@
         width:750px;
         /*height:100px;*/
         background-color: #fff;
-        position: fixed;
+        position: absolute;
         border-style:solid;
         border-top-width: 1px;
         border-color: #ccc;
@@ -296,9 +314,12 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import navbar from './header.vue'
+    const globalEvent = weex.requireModule('globalEvent');
+    import navbar from './header.vue';
     import share from '../../include/share.vue'
     import utils from '../../assets/utils';
+    import reward from '../../widget/rewardDialog.vue';
+    import buyGoods from '../../widget/buyGoods.vue';
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch'
@@ -328,22 +349,28 @@
                 showShare:false,
                 screenHeight:0,
                 clicked:false,
-                authorInfo:[],
+                authorInfo:{
+                    nickName:'initNickDefault'
+                },
                 scrollHeight:0,
                 bottomNum:0,
+                rewardShow:false,
+                buyShow:false,
+//                isReview:false,
+//                isReward:false,
             }
         },
         components: {
-            navbar,share
+            navbar,share,reward,buyGoods
         },
         props: {
             title: { default: ""},
             complete:{ default : ''},
         },
         created(){
-
             var _this = this;
             utils.initIconFont();
+
             this.articleId = utils.getUrlParameter('articleId');
 //            判断是iponex就动态获取底部上弹高度
             if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
@@ -386,6 +413,8 @@
                     _this.isCollect = data.data.hasFavorite;
                     _this.shareNum = data.data.share;
                     _this.authorInfo = data.data;
+//                    _this.isReward = data.data.isReward;
+                    _this.isReview = data.data.isReview;
                     let uId = event.getUId();
 //            判断是否作者本人
                     if(uId == _this.memberId){
@@ -422,15 +451,28 @@
                         _this.complete = 'textIcon';
                         _this.title = '';
                     }
+                }else{
+                    event.toast(data.content);
                 }
             },function (err) {
                 event.toast(err.content);
             })
-
-
-
         },
         methods:{
+//            页面被关闭
+            pageDestroy:function(){
+
+//                globalEvent.removeEventListener("buyGood");
+            },
+            pageShow:function(){
+
+//            商品购买控制
+//            globalEvent.addEventListener("buyGood", function (e) {
+//                    _this.goodId = e.goodId;
+//                    _this.buyShow = true;
+//            });
+
+            },
             articleOutBoxTop:function () {
                 let dc = utils.artOutTop();
                 return dc
@@ -489,15 +531,17 @@
                     setTimeout(function () {
                         _this.clicked = false;
                     },1500)
-                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                            let E = {
-                                isDone : 'complete'
-                            }
-                            let backData = utils.message('success','成功',E);
-                            event.closeURL(backData);
-                        }
-                    })
+//                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+//                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                            let E = {
+//                                isDone : 'complete'
+//                            }
+//                            let backData = utils.message('success','成功',E);
+//                            event.closeURL(backData);
+//                        }
+//                    })
+                    event.router(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId));
+
                 }else{
                     this.isOperation = true;
                 }
@@ -505,20 +549,19 @@
 //            点击操作里的编辑
             operationEditor(){
                 this.isOperation = false;
-                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
-//                    _this.updateArticle();
-                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                        event.closeURL();
-                    }
-                })
+//                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
+//                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
+//                        event.closeURL();
+//                    }
+//                })
+                event.router(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId));
             },
 //            点击操作里的设置
             operationSet(){
                 var _this = this;
                 this.isOperation = false;
 //                event.openURL(utils.locate('view/member/editor/option.js),
-                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId + '&publish=1'),function (data) {
+                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
                 });
             },
@@ -533,8 +576,12 @@
             },
 //            点击返回
             goback(){
-                event.closeURL();
-//                event.closeRouter();
+//                event.closeURL();
+                if(utils.isNull(utils.getUrlParameter('isRouter'))){
+                    event.closeURL();
+                }else{
+                    event.closeRouter();
+                }
             },
 //            点击下一步 跳转文章设置。
             goOption(){
@@ -548,11 +595,15 @@
                 },1500)
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
                     if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                        let E = {
-                            isDone : 'complete'
-                        }
-                        let backData = utils.message('success','成功',E);
-                        event.closeURL(backData);
+//                        let E = {
+//                            isDone : 'complete'
+//                        }
+//                        let backData = utils.message('success','成功',E);
+//                        event.closeURL(backData);
+                            _this.publish = true;
+                            _this.showShare = true;
+                            _this.complete = '操作';
+                            _this.title = '文章详情';
                     }
                 });
 //                event.router(utils.locate('view/member/editor/option.js?articleId=' + _this.articleId));
@@ -634,6 +685,10 @@
 //            前往评论
             goReview(){
                 let _this = this;
+//                if(!this.isReview){
+//                    event.toast('该文章未开通评论功能');
+//                    return;
+//                }
                 if (this.clicked) {
                     return;
                 }
@@ -863,6 +918,91 @@
                     }
                 )
             },
+//            赞赏
+            goReward(){
+//                this.$refs.buy.show(55,342);
+                this.rewardShow = true;
+            },
+            sendReward(m,id){
+                let _this = this;
+                POST("website/member/reward/submit.jhtml?amount="+m+"&articleId="+_this.articleId).then(
+                    function (data) {
+                        if (data.type=="success") {
+                            if (id == 0) {
+                                _this.payment(data.data,"weixinAppPlugin");
+                            }else if (id == 1) {
+                                _this.payment(data.data,"alipayH5Plugin");
+                            }
+                        } else {
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    }
+                )
+            },
+
+            payment (sn,plugId) {
+                var _this = this;
+                POST("payment/submit.jhtml?sn="+ sn +"&paymentPluginId="+plugId).then(
+                    function (data) {
+                        setTimeout(function () {
+                            _this.$refs.buy.waitHide();
+                        },1000)
+                        if (data.type=="success") {
+                            event.wxAppPay(data.data,function (e) {
+                                if (e.type=='success') {
+                                    POST("payment/query.jhtml?sn="+ sn).then(
+                                        function (mes) {
+                                            if (mes.type=="success") {
+                                                if (mes.data=="0000") {
+                                                    _this.close(utils.message("success","success"));
+                                                } else
+                                                if (mes.data=="0001") {
+                                                    _this.close(utils.message("error","error"));
+                                                }
+                                                else {
+                                                    _this.close(utils.message("error","error"));
+                                                }
+                                            } else {
+                                                _this.close(utils.message("error","error"));
+                                            }
+                                        },
+                                        function (err) {
+                                            _this.close(utils.message("error","error"));
+                                        }
+                                    )
+                                } else {
+                                    _this.close();
+                                }
+                            })
+                        } else {
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
+            },
+            close (e) {
+                this.rewardShow = false;
+                if(utils.isNull(e)){
+                    return;
+                }
+                if(e.type == 'success'){
+                    event.toast('赞赏成功');
+                }else{
+                    event.toast('网络不稳定');
+                }
+            },
+            maskHide(){
+                this.buyShow = false;
+            },
+            goPay(id){
+                this.payment(id,"weixinAppPlugin");
+            }
 //            复制文章\
 //            copyArticle(){
 //                POST('weex/member/article/grabarticle.jhtml').then(

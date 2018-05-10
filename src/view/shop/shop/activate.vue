@@ -4,19 +4,19 @@
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
-            <text class="three">③ 激活  一</text>
-            <text class="four">④ 交易测试</text>
+            <text class="three">③ 激活  </text>
+            <!--<text class="four">④ 交易测试</text>-->
         </div>
         <div class="bind">
             <div class="iconfontDiv">
                 <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
             </div>
-            <text class="text">激活店铺完成，请扫码绑定二维码</text>
-            <text class="sweepCode">{{code}}</text>
-            <text class="sweepCodetwo" @click="scan()">{{prompting}}</text>
+            <text class="text">激活店铺完成</text>
+            <!--<text class="sweepCode">{{code}}</text>-->
+            <!--<text class="sweepCodetwo" @click="scan()">{{prompting}}</text>-->
         </div>
         <div class="button bkg-primary" @click="select">
-            <text class="buttonText">下一步</text>
+            <text class="buttonText">完成</text>
         </div>
     </div>
 </template>
@@ -109,7 +109,7 @@
     export default {
         data: function () {
             return{
-                prompting:'点击扫码',
+//                prompting:'点击扫码',
                 shopId:'',
                 code:'',
                 clicked:false
@@ -125,12 +125,12 @@
         created() {
             utils.initIconFont();
             this.shopId = utils.getUrlParameter('shopId');
-            this.code = utils.getUrlParameter('code')+'';
-            if(utils.isNull(this.code)){
-                this.prompting='点击扫码'
-            }else {
-                this.prompting='点击修改二维码'
-            }
+//            this.code = utils.getUrlParameter('code')+'';
+//            if(utils.isNull(this.code)){
+//                this.prompting='点击扫码'
+//            }else {
+//                this.prompting='点击修改二维码'
+//            }
         },
         methods:{
             goback:function () {
@@ -138,55 +138,55 @@
             },
 //            判断code是否有值，无值弹开扫一扫，有值回到列表
             select:function () {
-                if(utils.isNull(this.code)) {
-                    this.scan()
-                }else {
+//                if(utils.isNull(this.code)) {
+//                    this.scan()
+//                }else {
                     let message = utils.message('success','成功','');
                     event.closeURL(message)
-                }
+//                }
             },
-            scan:function() {
-                if (this.clicked==true) {
-                    return;
-                }
-                this.clicked = true;
-                var _this=this
-                event.scan(function (message) {
-                    _this.clicked =false
-                    if (message.type=='error') {
-                        _this.clicked =false
-                        return;
-                    }
-                    utils.readScan(message.data,function (data) {
-                        if (data.type == 'success'){
-                            if (data.data.type!='818804') {
-                                event.toast("无效收钱码");
-                                _this.clicked =false
-                                return;
-                            }
-                            _this.code = data.data.code
-                            POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
-                                function (mes) {
-                                    if (mes.type == "success") {
-                                        event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
-                                            _this.clicked =false
-                                            if (message.type == "success") {
-                                                event.closeURL(message);
-                                            }
-                                        })
-                                    } else {
-                                        event.toast(mes.content);
-                                    }
-                                }, function (err) {
-                                    event.toast("网络不稳定");
-                                }
-                            )
-                        } else {
-                            event.toast(data.content);
-                        }
-                    })
-                });
-            }
+//            scan:function() {
+//                if (this.clicked==true) {
+//                    return;
+//                }
+//                this.clicked = true;
+//                var _this=this
+//                event.scan(function (message) {
+//                    _this.clicked =false
+//                    if (message.type=='error') {
+//                        _this.clicked =false
+//                        return;
+//                    }
+//                    utils.readScan(message.data,function (data) {
+//                        if (data.type == 'success'){
+//                            if (data.data.type!='818804') {
+//                                event.toast("无效收钱码");
+//                                _this.clicked =false
+//                                return;
+//                            }
+//                            _this.code = data.data.code
+//                            POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
+//                                function (mes) {
+//                                    if (mes.type == "success") {
+//                                        event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
+//                                            _this.clicked =false
+//                                            if (message.type == "success") {
+//                                                event.closeURL(message);
+//                                            }
+//                                        })
+//                                    } else {
+//                                        event.toast(mes.content);
+//                                    }
+//                                }, function (err) {
+//                                    event.toast("网络不稳定");
+//                                }
+//                            )
+//                        } else {
+//                            event.toast(data.content);
+//                        }
+//                    })
+//                });
+//            }
         }
     }
 </script>

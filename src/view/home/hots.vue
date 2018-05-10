@@ -1,41 +1,36 @@
 <template>
-    <list class="wrapper" show-scrollbar="false" ref="listDom"  @loadmore="onloading" loadmoreoffset="300"   @scroll="scrollHandler">
-        <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
-            <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
+    <list class="wrapper" show-scrollbar="false" ref="listDom" @scroll="onscroll" @loadmore="onloading" loadmoreoffset="300">
+        <refresh class="refreshBox"  @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+            <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg"></image>
         </refresh>
-        <cell v-if="hasImageList()">
-            <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-            <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
-            <!--多了热门直播 把bt10样式去掉了-->
-            <div class="">
+        <cell v-if="hasImageList()"ref="listSlide">
+            <div class="bt10" >
                 <slider class="slider" interval="3000" auto-play="true">
                     <div class="frame" v-for="img in imageList">
                         <!--配合图片懒加载，先显示一个本地图片-->
-                        <image  :src="loadingImg"  v-if="!img.loading"  resize="cover" class="slideImage coverAbsoTop" ></image>
+                        <!--<image  :src="loadingImg"  v-if="!img.loading"  resize="cover" class="slideImage coverAbsoTop" ></image>-->
+                        <div  v-if="!img.loading"  class="slideImage coverAbsoTop "></div>
                         <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                        <image class="slideImage" resize="cover"  @appear="onImageAppear(img)"  @load="onImageLoad(img)"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
+                        <image class="slideImage" resize="cover"  @load="onImageLoad(img)"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
                     </div>
                     <indicator class="indicatorSlider"></indicator>
                 </slider>
             </div>
         </cell>
         <cell>
-            <hotsLive :lives="lives" v-if="lives.length > 0"></hotsLive>
-        </cell>
-        <cell >
             <noData :noDataHint="noDataHint" v-if="articleList.length == 0"  :style="{minHeight:screenHeight + 'px'}" ></noData>
         </cell>
-        <cell v-for="(item,index) in articleList" :key="index" @click="goArticle(item.id)">
+        <cell v-for="(item,index) in articleList"  :key="index" @click="goArticle(item.id)">
             <!--    排版一 采取左右布局。封面较小-->
             <div v-if="item.templateIndex == 0" class="tempPdBox">
                 <div class="flex-row">
                     <div class="bt20 flex-row" @click="goAuthor(item.authorId)">
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName">{{item.author }}</text>
+                        <text class="authorName">{{item.author}}</text>
                     </div>
                 </div>
                 <div class="flex-row" >
-                    <div class="tempOneContent" >
+                    <div class="tempOneContent">
                         <div class="flex-row">
                             <text class="articleTitle tempOneWidth">{{item.title}}</text>
                             <!--<text class="articleTitle tempOneWidth" >用折纸做出的北欧范花瓶-1</text>-->
@@ -58,9 +53,10 @@
                     <!--文章封面-->
                     <div style="position: relative">
                         <!--配合图片懒加载，先显示一个本地图片-->
-                        <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempOneImg coverAbsoTop" ></image>
+                        <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempOneImg coverAbsoTop" ></image>-->
+                        <div  v-if="!item.loading"  class="tempOneImg coverAbsoTop "></div>
                         <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                        <image  :src="item.thumbnail"  @appear="onImageAppear(item)"  @load="onImageLoad(item)"  resize="cover" class="tempOneImg"></image>
+                        <image  :src="item.thumbnail"    @load="onImageLoad(item)"  resize="cover" class="tempOneImg"></image>
                     </div>
                 </div>
             </div>
@@ -69,25 +65,29 @@
                 <!--文章封面-->
                 <div class="positionRelative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempTwoCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempTwoCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="tempTwoCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)"  resize="cover" class="tempTwoCover" ></image>
+                    <image  :src="item.thumbnail "    @load="onImageLoad(item)"  resize="cover" class="tempTwoCover" ></image>
                     <div class="tempTwoMask"></div>
                     <div class="tempTwoAuthor" @click="goAuthor(item.authorId)">
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName white">{{item.author}}</text>
                     </div>
-                    <div class="tempTwoContent" @click="goArticle(item.id)">
+                    <div class="tempTwoContent"  @click="goArticle(item.id)">
                         <!--只会显示出一个div,所以需要用个大div包住,-->
                         <div>
                             <div class="flex-row bt20">
                                 <!--<text class="articleTitle">{{item.title}}</text>-->
                                 <text class="articleTitle" style="color: #fff">{{item.title}}</text>
                             </div>
-                            <!--<div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
-                                <!--<text class="articleContent white" >{{item.htmlTag}}</text>-->
+                            <!--<div class="flex-row bt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
+                            <!--<text class="articleContent">{{item.htmlTag}}</text>-->
                             <!--</div>-->
-                            <div class="space-between">
+                            <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                                <text class="articleContent white" >{{item.htmlTag}}</text>
+                            </div>
+                            <div class="space-between" >
                                 <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                     <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                     <text class="relevantText white">{{item.hits}}</text>
@@ -107,123 +107,123 @@
 
             <!--    排版三  采取封面三分化-->
             <!--<div v-else-if="item.templateIndex == 2" class="tempPdBox">-->
-                <!--<div class="flex-row">-->
-                    <!--<div class="flex-row" @click="goAuthor(item.authorId)">-->
-                        <!--<image :src="item.logo " resize="cover" class="authorImg"></image>-->
-                        <!--<text class="authorName">{{item.author}}</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;文章封面&ndash;&gt;-->
-                <!--<div  class="tempThreeCover space-between ">-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempThreeCoverWH" ></image>-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempThreeCoverWH" ></image>-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempThreeCoverWH" ></image>-->
-                <!--</div>-->
-                <!--<div class="tempThreeContent" >-->
-                    <!--<div class="flex-row bt20">-->
-                        <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
-                        <!--<text class="articleTitle" >用折纸做出的北欧范花瓶-3</text>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--<div class="flex-row  bt20" >-->
-                        <!--<text class="articleContent " >家居界的仿妆鼻祖来了，这次惊艳你的居然是家居界最最最......</text>-->
-                    <!--</div>-->
-                    <!--<div class="space-between">-->
-                        <!--<div>-->
-                            <!--<text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>-->
-                        <!--</div>-->
-                        <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
-                            <!--<text class="relevantImage " :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
-                            <!--<text class="relevantText ">{{item.hits}}</text>-->
-                            <!--<text class="relevantImage  " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
-                            <!--<text class="relevantText ">{{item.laud}}</text>-->
-                            <!--<text class="relevantImage  " :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
-                            <!--<text class="relevantText ">{{item.review}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<div class="flex-row">-->
+            <!--<div class="flex-row" @click="goAuthor(item.authorId)">-->
+            <!--<image :src="item.logo " resize="cover" class="authorImg"></image>-->
+            <!--<text class="authorName">{{item.author}}</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+            <!--<div  class="tempThreeCover space-between ">-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempThreeCoverWH" ></image>-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempThreeCoverWH" ></image>-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempThreeCoverWH" ></image>-->
+            <!--</div>-->
+            <!--<div class="tempThreeContent" >-->
+            <!--<div class="flex-row bt20">-->
+            <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
+            <!--<text class="articleTitle" >用折纸做出的北欧范花瓶-3</text>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
+            <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="flex-row  bt20" >-->
+            <!--<text class="articleContent " >家居界的仿妆鼻祖来了，这次惊艳你的居然是家居界最最最......</text>-->
+            <!--</div>-->
+            <!--<div class="space-between">-->
+            <!--<div>-->
+            <!--<text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>-->
+            <!--</div>-->
+            <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
+            <!--<text class="relevantImage " :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+            <!--<text class="relevantText ">{{item.hits}}</text>-->
+            <!--<text class="relevantImage  " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+            <!--<text class="relevantText ">{{item.laud}}</text>-->
+            <!--<text class="relevantImage  " :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+            <!--<text class="relevantText ">{{item.review}}</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</div>-->
             <!--&lt;!&ndash;    排版四  采取封面四分化&ndash;&gt;-->
             <!--<div v-else-if="item.templateIndex == 3" class="articleBox">-->
-                <!--<div class="flex-row">-->
-                    <!--<div  class="flex-row ml20" @click="goAuthor(item.authorId)">-->
-                        <!--<image :src="item.logo " resize="cover" class="authorImg"></image>-->
-                        <!--<text class="authorName">{{item.author}}</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;文章封面&ndash;&gt;-->
-                <!--<div  class="tempFourCover space-between mt20 bt20">-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH" ></image>-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH"></image>-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH mt6"></image>-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH mt6"></image>-->
-                <!--</div>-->
-                <!--<div  class="tempThreeContent ml20" >-->
-                    <!--<div class="flex-row bt20">-->
-                        <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
-                        <!--<text class="articleTitle" >用折纸做出的北欧范花瓶-4</text>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--<div class="flex-row  bt20" >-->
-                        <!--<text class="articleContent ">家居界的仿妆鼻祖来了，这次惊艳你的居然是家居界最最最......</text>-->
-                    <!--</div>-->
-                    <!--<div class="space-between">-->
-                        <!--<div>-->
-                            <!--<text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>-->
-                        <!--</div>-->
-                        <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
-                            <!--<text class="relevantImage " :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
-                            <!--<text class="relevantText ">{{item.hits}}</text>-->
-                            <!--<text class="relevantImage  " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
-                            <!--<text class="relevantText ">{{item.laud}}</text>-->
-                            <!--<text class="relevantImage  " :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
-                            <!--<text class="relevantText ">{{item.review}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<div class="flex-row">-->
+            <!--<div  class="flex-row ml20" @click="goAuthor(item.authorId)">-->
+            <!--<image :src="item.logo " resize="cover" class="authorImg"></image>-->
+            <!--<text class="authorName">{{item.author}}</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+            <!--<div  class="tempFourCover space-between mt20 bt20">-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH" ></image>-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH"></image>-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH mt6"></image>-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH mt6"></image>-->
+            <!--</div>-->
+            <!--<div  class="tempThreeContent ml20" >-->
+            <!--<div class="flex-row bt20">-->
+            <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
+            <!--<text class="articleTitle" >用折纸做出的北欧范花瓶-4</text>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
+            <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="flex-row  bt20" >-->
+            <!--<text class="articleContent ">家居界的仿妆鼻祖来了，这次惊艳你的居然是家居界最最最......</text>-->
+            <!--</div>-->
+            <!--<div class="space-between">-->
+            <!--<div>-->
+            <!--<text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>-->
+            <!--</div>-->
+            <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
+            <!--<text class="relevantImage " :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+            <!--<text class="relevantText ">{{item.hits}}</text>-->
+            <!--<text class="relevantImage  " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+            <!--<text class="relevantText ">{{item.laud}}</text>-->
+            <!--<text class="relevantImage  " :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+            <!--<text class="relevantText ">{{item.review}}</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</div>-->
             <!--&lt;!&ndash;    排版五  采取封面两分化&ndash;&gt;-->
             <!--<div v-else-if="item.templateIndex == 4" class="articleBox">-->
-                <!--<div class="flex-row">-->
-                    <!--<div  class="flex-row ml20" @click="goAuthor(item.authorId)">-->
-                        <!--<image :src="item.logo | watchlogo" resize="cover" class="authorImg"></image>-->
-                        <!--<text class="authorName">{{item.author}}</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;文章封面&ndash;&gt;-->
-                <!--<div  class="tempFourCover space-between mt20 bt20">-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH" ></image>-->
-                    <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH"></image>-->
-                <!--</div>-->
-                <!--<div  class="tempThreeContent ml20" >-->
-                    <!--<div class="flex-row bt20">-->
-                        <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
-                        <!--<text class="articleTitle" >用折纸做出的北欧范花瓶-5</text>-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--<div class="flex-row  bt20" >-->
-                        <!--<text class="articleContent ">家居界的仿妆鼻祖来了，这次惊艳你的居然是家居界最最最......</text>-->
-                    <!--</div>-->
-                    <!--<div class="space-between">-->
-                        <!--<div>-->
-                            <!--<text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>-->
-                        <!--</div>-->
-                        <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
-                            <!--<text class="relevantImage " :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
-                            <!--<text class="relevantText ">{{item.hits}}</text>-->
-                            <!--<text class="relevantImage  " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
-                            <!--<text class="relevantText ">{{item.laud}}</text>-->
-                            <!--<text class="relevantImage  " :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
-                            <!--<text class="relevantText ">{{item.review}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!--<div class="flex-row">-->
+            <!--<div  class="flex-row ml20" @click="goAuthor(item.authorId)">-->
+            <!--<image :src="item.logo | watchlogo" resize="cover" class="authorImg"></image>-->
+            <!--<text class="authorName">{{item.author}}</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+            <!--<div  class="tempFourCover space-between mt20 bt20">-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH" ></image>-->
+            <!--<image  :src="item.thumbnail "  resize="cover" class="tempFourCoverWH"></image>-->
+            <!--</div>-->
+            <!--<div  class="tempThreeContent ml20" >-->
+            <!--<div class="flex-row bt20">-->
+            <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
+            <!--<text class="articleTitle" >用折纸做出的北欧范花瓶-5</text>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
+            <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="flex-row  bt20" >-->
+            <!--<text class="articleContent ">家居界的仿妆鼻祖来了，这次惊艳你的居然是家居界最最最......</text>-->
+            <!--</div>-->
+            <!--<div class="space-between">-->
+            <!--<div>-->
+            <!--<text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>-->
+            <!--</div>-->
+            <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
+            <!--<text class="relevantImage " :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+            <!--<text class="relevantText ">{{item.hits}}</text>-->
+            <!--<text class="relevantImage  " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+            <!--<text class="relevantText ">{{item.laud}}</text>-->
+            <!--<text class="relevantImage  " :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+            <!--<text class="relevantText ">{{item.review}}</text>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
             <!--</div>-->
             <!--    排版六  采取封面新版化-->
             <div v-else-if="item.templateIndex == 5" class="articleBox">
@@ -236,11 +236,12 @@
                 <!--文章封面-->
                 <div style="position: relative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
+                    <image  :src="item.thumbnail "  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
-                <div  class="tempThreeContent ml20" >
+                <div  class="tempThreeContent ml20">
                     <div class="flex-row bt20">
                         <!--<text class="articleTitle">{{item.title}}</text>-->
                         <text class="articleTitle" >{{item.title}}</text>
@@ -287,11 +288,12 @@
                 <!--文章封面-->
                 <div style="position: relative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="articleCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.thumbnail "  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
+                    <image  :src="item.thumbnail "   @load="onImageLoad(item)" resize="cover" class="articleCover"></image>
                 </div>
-                <div  class="tempThreeContent ml20" >
+                <div  class="tempThreeContent ml20"  >
                     <div class="space-between">
                         <div>
                             <text class="relevantText" >{{item.createDate | dateweektimefmt}}</text>
@@ -313,26 +315,30 @@
                 <!--文章封面-->
                 <div class="positionRelative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>-->
+                    <div  v-if="!item.loading"  class="tempEightCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.thumbnail"  @appear="onImageAppear(item)"  @load="onImageLoad(item)" resize="cover" class="tempEightCover" ></image>
+                    <image  :src="item.thumbnail"   @load="onImageLoad(item)" resize="cover" class="tempEightCover" ></image>
                     <div class="tempTwoMask"></div>
                     <div class="tempTwoAuthor" @click="goAuthor(item.authorId)">
                         <image :src="item.logo " resize="cover" class="authorImg"></image>
                         <text class="authorName white">{{item.author}}</text>
                     </div>
-                    <div class="tempTwoContent" @click="goArticle(item.id)">
+                    <div class="tempTwoContent"@click="goArticle(item.id)">
                         <!--只会显示出一个div,所以需要用个大div包住,-->
                         <div>
                             <div class="flex-row bt20">
                                 <!--<text class="articleTitle">{{item.title}}</text>-->
                                 <text class="articleTitle" style="color: #fff">{{item.title}}</text>
                             </div>
-                            <!--<div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
-                                <!--<text class="articleContent white" >{{item.htmlTag}}</text>-->
+                            <!--<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
+                            <!--<text class="articleContent">{{item.htmlTag}}</text>-->
                             <!--</div>-->
+                            <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                                <text class="articleContent white" >{{item.htmlTag}}</text>
+                            </div>
 
-                            <div class="space-between">
+                            <div class="space-between" >
                                 <div class="relevantInfo" v-if="item.articleSign != '样例'">
                                     <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
                                     <text class="relevantText white">{{item.hits}}</text>
@@ -355,15 +361,16 @@
                 <div class="atricleHead">
                     <text class="articleTitle">{{item.title}}</text>
                 </div>
-                <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
+                <div class="atricleHead mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined" >
                     <text class="articleContent">{{item.htmlTag}}</text>
                 </div>
                 <!--文章封面-->
                 <div style="position: relative">
                     <!--配合图片懒加载，先显示一个本地图片-->
-                    <image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>
+                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>-->
+                    <div v-if="!item.loading"  class="tempEightCover coverAbsoTop "></div>
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.thumbnail"  resize="cover" @appear="onImageAppear(item)"  @load="onImageLoad(item)"  class="articleCover"></image>
+                    <image  :src="item.thumbnail"  resize="cover"  @load="onImageLoad(item)"  class="articleCover"></image>
                 </div>
                 <!--文章底部-->
                 <div class="articleFoot">
@@ -386,6 +393,10 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .ded{
+        position:fixed;top:195px;
+    }
+
     .positionRelative{
         position:relative;
     }
@@ -451,10 +462,6 @@
         width: 750px;padding-left: 20px;padding-right: 20px;padding-top: 20px;padding-bottom: 20px;margin-bottom:10px;background-color:#fff;
     }
 
-    .coverAbsoTop{
-        position: absolute;
-        top:0;
-    }
 
     /*<!--轮播图-->*/
     .indicatorSlider{
@@ -490,7 +497,7 @@
     }
     .articleContent{
         lines: 2;width: 710px;text-overflow: ellipsis;
-        font-size: 26px;
+        font-size: 32px;
         color: #888;
     }
     .activeClass{
@@ -552,7 +559,7 @@
         margin-left: 20px;
     }
     .articleTitle {
-        font-size: 32px;
+        font-size: 38px;
         lines: 1;width: 710px;text-overflow: ellipsis;
     }
     .articleSign {
@@ -566,13 +573,11 @@
     }
 </style>
 <script>
-    import hotsLive from './hotsLive.vue';
     import filters from '../../filters/filters';
     import utils from '../../assets/utils';
     import {dom,event,animation} from '../../weex.js';
     import { POST, GET } from '../../assets/fetch';
     import noData from '../../include/noData.vue';
-    var scrollTop = 0;
     export default {
         data(){
             return{
@@ -582,19 +587,17 @@
                 pageSize:10,
                 articleList:[],
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
                 screenHeight:0,
                 clicked:false,
                 imageList: [],
                 templateIndexList:[0,1,5,6,7],
 //                isInit:true,
                 loadingImg:utils.locate('resources/images/loading1.gif'),
-                lives:[],
-                isHeader:false,//                控制导航栏
+                hadUpdate:false,
             }
         },
         components: {
-            noData,hotsLive
+            noData
         },
         props:{
 //            whichCorpus:{default:0}
@@ -606,57 +609,24 @@
             var _this = this;
             this.templateIndexList = this.shuffle(this.templateIndexList);
             this.getAllArticle();
-            this.getHots();
+
 //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(316);
         },
+        updated(){//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            this.hideTopLine();
+        },
         methods:{
-//            监听页面滚动
-            scrollHandler: function(e) {
-                var _this = this;
-                if(e.contentOffset.y >=0){
+            hideTopLine(){
+                if(this.hadUpdate){
                     return;
                 }
-                scrollTop =Math.abs(e.contentOffset.y);
-                let opacityDegree = Math.floor(scrollTop/14)/10;
-                if(opacityDegree > 1){
-                    opacityDegree = 1;
-                }
-                if(opacityDegree > 0.4){
-
-                }else{
-
-                }
-                if(scrollTop >= 338){
-                    this.isHeader = true;
-                }if(scrollTop <= 216){
-                    this.isHeader = false;
-
-                }
-                this.$emit('scrollHandler',this.isHeader);
-            },
-//            快速滑动页面到顶部时触发
-            toponappear(){
-                this.isHeader = false;
-                this.$emit('toponappear',this.isHeader);
-            },
-//            获取热门直播
-            getHots:function() {
-                var _this = this;
-                GET("weex/live/list.jhtml?pageStart=0&pageSize=3",function (res) {
-                    if (res.type=="success") {
-                        _this.lives = res.data.data
-                    } else {
-                        event.toast(res.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
-//            封面显示出来
-            onImageAppear(item){
-                if(utils.isNull(item.loadingImg)){
-                    item.loadingImg = item.thumbnail;
+                this.hadUpdate = true;
+                if(!utils.isIosSystem()) {
+                    const el = this.$refs.listSlide//跳转到相应的cell
+                    dom.scrollToElement(el, {
+                        offset: 1 //要为1， 为0时 向下小拉一下会出现白线
+                    })
                 }
             },
 //            封面加载出来
@@ -665,11 +635,11 @@
             },
 
             hasImageList(){
-              if(utils.isNull(this.imageList)){
-                  return false;
-              }else{
-                  return true;
-              }
+                if(utils.isNull(this.imageList)){
+                    return false;
+                }else{
+                    return true;
+                }
             },
 
 //            打乱数组
@@ -767,12 +737,12 @@
                             }
 
 //                            下拉刷新后文章的前2个组件无法触发appear事件，此时手动进行更新 （配合懒加载）
-                            if(!utils.isNull(data.data.data[0])){
-                                _this.onImageAppear(data.data.data[0]);
-                            }
-                            if(!utils.isNull(data.data.data[1])){
-                                _this.onImageAppear(data.data.data[1]);
-                            }
+//                            if(!utils.isNull(data.data.data[0])){
+//                                _this.onImageAppear(data.data.data[0]);
+//                            }
+//                            if(!utils.isNull(data.data.data[1])){
+//                                _this.onImageAppear(data.data.data[1]);
+//                            }
                             _this.imageList = middleList;
                             _this.articleList = data.data.data;
                         }
@@ -844,12 +814,24 @@
                         timingFunction: 'linear',//350 duration配合这个效果目前较好
                         needLayout:false,
                         delay: 0 //ms
+                    },function(){
+                        _this.hadUpdate = false;
+                        _this.hideTopLine();
                     })
                     _this.refreshing = false;
 //                    _this.imageList = [];
                     _this.getAllArticle();
                 }, 1000)
+
             },
+            onscroll(e){
+                var _this = this;
+                if(Math.abs(e.contentOffset.y) == 0){
+                        _this.hadUpdate = false;
+                        _this.hideTopLine();
+                    return;
+                }
+            }
         }
     }
 </script>

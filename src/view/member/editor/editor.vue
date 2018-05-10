@@ -409,7 +409,6 @@
                 proTotal:0,//总的进度
                 processWidth:0,//进度条宽度
                 articleId:'',
-                goodsId:'', //商品发布时，保留 id 需传入后台
                 refreshing: false,
                 firstPlusShow:true,
                 coverImage:utils.locate('resources/images/background.png'),
@@ -441,8 +440,7 @@
                 laud:0,
                 products:[],
                 isReview:0,
-                clicked:false,
-                goodsId:''
+                clicked:false
             }
         },
         filters:{
@@ -495,31 +493,31 @@
 
 //                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
                 clipboard.getString(ret => {
-                   if(ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 ){
-                       modal.confirm({
-                           message: '是否生成已复制链接的文章?',
-                           duration: 0.3,
-                           okTitle:'生成',
-                           cancelTitle:'取消',
-                       }, function (value) {
-                           if(value == '生成'){
-                               _this.toSendArticle = true;
-                               _this.currentPro = 0;//当前进度
-                               _this.proTotal = 1;//总的进度
-                               _this.processWidth = 0;//进度条宽度
+                    if(typeof ret.data != "object"  && (ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 )){
+                        modal.confirm({
+                            message: '是否生成已复制链接的文章?',
+                            duration: 0.3,
+                            okTitle:'生成',
+                            cancelTitle:'取消',
+                        }, function (value) {
+                            if(value == '生成'){
+                                _this.toSendArticle = true;
+                                _this.currentPro = 0;//当前进度
+                                _this.proTotal = 1;//总的进度
+                                _this.processWidth = 0;//进度条宽度
 
-                               _this.processWidth = _this.processWidth  + (50 * Math.random());
+                                _this.processWidth = _this.processWidth  + (50 * Math.random());
 //                                  利用定时器 模拟进度条效果
-                               var timer = setInterval(function () {
-                                   if(_this.processWidth < 500){
-                                       let middle = _this.processWidth  + (50 * Math.random()) ;
-                                       if(middle > 500){
-                                           _this.processWidth = 500;
-                                       }else{
-                                           _this.processWidth = middle;
-                                       }
-                                   }
-                               },500);
+                                var timer = setInterval(function () {
+                                    if(_this.processWidth < 500){
+                                        let middle = _this.processWidth  + (50 * Math.random()) ;
+                                        if(middle > 500){
+                                            _this.processWidth = 500;
+                                        }else{
+                                            _this.processWidth = middle;
+                                        }
+                                    }
+                                },500);
 
 //                               调用接口 获取公众号文章内容(仅支持图文)
                                 GET('weex/member/article/grabarticle.jhtml?articlePath=' + encodeURIComponent(ret.data),function (data) {
@@ -559,30 +557,29 @@
                                     event.closeURL();
                                 })
                                 return;
-                           }else{
-                               clipboard.setString('');
+                            }else{
+                                clipboard.setString('');
 //                              进行原本逻辑。
-                               _this.firstEdit();
-                           }
-                       })
-                   }else{
+                                _this.firstEdit();
+                            }
+                        })
+                    }else{
 //                       进行原本逻辑。
-                       _this.firstEdit();
-                   }
+                        _this.firstEdit();
+                    }
                 })
 
 
 
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
-//                var op = getVal.split('=');
-                var urlId = utils.getUrlParameter('articleId');
-                if(!utils.isNull(urlId)) {
+                var op = getVal.split('=');
+                if(op[0] == 'articleId') {
                     let options = {
                         type:'article',
-                        key:urlId
+                        key:op[1]
                     };
-                    _this.articleId = urlId;
+                    _this.articleId = op[1];
                     if(_this.articleId.length == 19){//19位的id为草稿文章
                     }else{
                         GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
@@ -594,24 +591,14 @@
                             return;
                         });
                     };
-
-//                  第一次发布的商品  记录商品id
-                    if(!utils.isNull(utils.getUrlParameter('goodsId'))){
-                        this.goodsId = utils.getUrlParameter('goodsId');
-                    }
                     //从缓存读取数据 写入界面
                     _this.readData(options);
-                }else if(utils.getUrlParameter('goodsStorageName') == 'goodsPublish'){//读取商品缓存并写入页面之中。
-//                  第一次发布的商品  记录商品id
-                    if(!utils.isNull(utils.getUrlParameter('goodsId'))){
-                        this.goodsId = utils.getUrlParameter('goodsId');
-                    }
-                    storage.getItem('goodsPublish', function (e) {
+                }else if(op[0] == 'goodsStorageName'){//读取商品缓存并写入页面之中。
+                    storage.getItem(op[1], function (e) {
                         if (e.result == 'success') {
                             var goodsInfo = JSON.parse(e.data);
                             _this.coverImage =  goodsInfo.thumbnail;
                             _this.setTitle = goodsInfo.name;
-                            _this.goodsId = goodsInfo.id;
 //                    data.data里存放的是用户选取的图片路径
                             _this.paraList.push({
                                 //原图
@@ -630,7 +617,7 @@
 //                            存储页面数据
                             _this.saveDraft();
 //                          把缓存删除
-                            storage.removeItem('goodsPublish', e => {
+                            storage.removeItem(op[1], e => {
                             })
                         }
                     });
@@ -1187,7 +1174,7 @@
                         if(data.type == 'success'){
                             //这边会由于避免重复渲染而需要再次向服务器上传该图片
                             _this.serveCover = data.data;
-//                        临时保存到缓存
+//                           存储页面数据
                             _this.saveDraft();
 //                        上传段落图片
                             _this.sendImage(0);
@@ -1228,6 +1215,7 @@
                     }else if(mediaType == 'video'){//如果是视频就将缩略图进行赋值
                         _this.paraList[sendIndex].serveThumbnail = _this.paraList[sendIndex].thumbnailImage;
                     }
+
                     sendIndex ++ ;
 //                        判断是否最后一张图
                     if(sendIndex < sendLength){
@@ -1254,7 +1242,8 @@
                             if(mediaType == 'image' || mediaType == 'product'){
                                 //                            向后台获取缩略图
                                 _this.paraList[sendIndex].serveThumbnail = utils.thumbnail(data.data,155,155);
-//                        临时保存到缓存
+
+//                                      保存缓存
                                 _this.saveDraft();
 //                                    因为异步操作,所以要分别在if elseif里写下列代码
                                 sendIndex ++ ;
@@ -1271,7 +1260,8 @@
                                     if(e.type == 'success'){
                                         //                            向后台获取缩略图 (视频不需要获取缩略图)
                                         _this.paraList[sendIndex].serveThumbnail = e.data;
-//                        临时保存到缓存
+
+//                                      保存缓存
                                         _this.saveDraft();
 //                                        event.toast(_this.paraList[sendIndex].serveThumbnail);
                                     }else{//上传失败
@@ -1396,7 +1386,6 @@
                 this.savePage();
 //                判断是再次编辑还是初次编辑;
                 let sendId =  utils.isNull(_this.articleId) ? _this.timestamp : _this.articleId;
-
                 let articleData = {
                     thumbnail:this.serveCover,
                     music:_this.musicData,
@@ -1404,12 +1393,12 @@
                     id:sendId,
                     title:_this.setTitle,
                     votes:_this.voteData,
-                    isDraft:false
+                    isDraft:false,
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
-                POST('weex/member/article/submit.jhtml?goodsId='+_this.goodsId,articleData).then(
+                POST('weex/member/article/submit.jhtml',articleData).then(
                     function (res) {
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
@@ -1432,19 +1421,19 @@
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','');
                                     event.sendGlobalEvent('onArticleChange',listenData);
-                                    event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
-                                        _this.currentPro = 0;//当前进度
-                                        _this.proTotal = 0;//总的进度
-                                        _this.processWidth = 0;//进度条宽度
-//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == ''){
-                                        let E = {
-                                            isDone : 'complete'
-                                        }
-                                        let backData = utils.message('success','成功',E);
-                                        event.closeURL(backData);
+//                                    event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
+//                                        _this.currentPro = 0;//当前进度
+//                                        _this.proTotal = 0;//总的进度
+//                                        _this.processWidth = 0;//进度条宽度
+////                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == ''){
+//                                        let E = {
+//                                            isDone : 'complete'
 //                                        }
-                                    })
-//                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish));
+//                                        let backData = utils.message('success','成功',E);
+//                                        event.closeURL(backData);
+////                                        }
+//                                    })
+                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish + '&isRouter=1'));
                                 }else{
                                     _this.toSendArticle = false;
 //                防止重复点击
@@ -2112,6 +2101,7 @@
         }
     }
 </script>
+
 
 
 

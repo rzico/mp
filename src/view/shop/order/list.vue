@@ -522,7 +522,7 @@
                 })
             },
 //            前往作者主页
-            goAuthor(id){
+            goAuthor(id) {
                 if (this.clicked) {
                     return;
                 }

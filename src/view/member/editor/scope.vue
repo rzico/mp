@@ -28,19 +28,19 @@
                     <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                 </div>
             </div>
-            <div class="cell-row-row cell-line mt0 cell-bottom-clear" @click="checkChange(2)">
-                <div class="cell-panel-column  cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">加密</text>
-                    </div>
-                    <div class="flex-row ">
-                        <text class="sub_title ml10">设置一个密码,凭密码访问</text>
-                    </div>
-                </div>
-                <div v-if="checkId == 2">
-                    <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
-                </div>
-            </div>
+            <!--<div class="cell-row-row cell-line mt0 cell-bottom-clear" @click="checkChange(2)">-->
+                <!--<div class="cell-panel-column  cell-clear">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">加密</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row ">-->
+                        <!--<text class="sub_title ml10">设置一个密码,凭密码访问</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div v-if="checkId == 2">-->
+                    <!--<text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="cell-row-row cell-line mt0 " @click="checkChange(3)">
                 <div class="cell-panel-column  cell-clear">
                     <div class="flex-row">

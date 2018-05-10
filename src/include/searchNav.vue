@@ -58,11 +58,6 @@
     import utils from '../assets/utils'
     const event = weex.requireModule('event');
     export default {
-        data() {
-            return {
-                keyword:"",
-            }
-        },
         props: {
             keyword:{default:''},
             searchHint:{default:'搜索'},

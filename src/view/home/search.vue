@@ -68,20 +68,20 @@
                             <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(2)" v-if="searchList.length > 10">更多&#xe630;</text>
                         </div>
                     </div>
-                    <!--朋友-->
-                    <div  class="cell-line">
-                        <div class="contentBox pb15">
-                            <!--好友-->
-                            <div class="singleUserBox"  v-for="(item,index) in searchList.friend" v-if="index <= 9" @click="goAuthor(item.id)">
-                                <image class="logo" :src="item.logo | watchFriendLogo"></image>
-                                <div >
-                                    <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
+                        <!--朋友-->
+                        <div  class="cell-line">
+                            <div class="contentBox pb15">
+                                <!--好友-->
+                                <div class="singleUserBox"  v-for="(item,index) in searchList.friend" v-if="index <= 9" @click="goAuthor(item.id)">
+                                    <image class="logo" :src="item.logo | watchFriendLogo"></image>
+                                    <div >
+                                        <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
+                                    </div>
                                 </div>
+
                             </div>
 
                         </div>
-
-                    </div>
                 </div>
                 <!--更多专栏搜索-->
                 <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 2" class="bt30">
@@ -139,8 +139,10 @@
                                 <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                             </div>
                             <div class="flex-row">
+
+                                <div  v-if="!item.loading"  class="articleImg coverAbsoTop " ></div>
                                 <!--文章封面-->
-                                <image resize="cover" class="articleImg" :src="item.thumbnail | watchThumbnail" ></image>
+                                <image resize="cover" class="articleImg" :src="item.thumbnail |watchThumbnail"   @load="onImageLoad(item)"  ></image>
                                 <!--文章相关信息。标题点赞...-->
                                 <div class="articleInfo">
                                     <text class="fz30 articleTitle">{{item.title}} </text>
@@ -564,6 +566,10 @@
                 let _this = this;
                 GET('weex/article/search.jhtml?keyword=' + encodeURI(this.keyword) + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != ''){
+                        data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                            item.loading = false;
+                        })
                         _this.searchList.article = data.data.data;
                     }else if(data.type == 'success' && data.data.data == ''){
                     }else{
@@ -797,7 +803,10 @@
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
                 });
             },
-
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
         }
 
     }

@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper ">
         <!--输入栏-->
-        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>
+        <searchNav :searchHint="searchHint" @oninput="oninput" @search="search" ref="childFind"> </searchNav>
         <!--搜索栏-->
         <div v-if="isInput() ">
             <div class="confm" v-if="!isSearch" @click="childSearch()">

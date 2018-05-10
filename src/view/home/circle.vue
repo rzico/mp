@@ -1,14 +1,16 @@
 <template>
-    <waterfall class="wrapper pl10 pr10" show-scrollbar="false"   @loadmore="onloading" loadmoreoffset="300" column-gap="10" column-width="auto" column-count="2">
+    <waterfall class="wrapper pl10 pr10" show-scrollbar="false"  @scroll="onscroll"   @loadmore="onloading" loadmoreoffset="300" column-gap="10" column-width="auto" column-count="2">
         <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
             <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
         </refresh>
+        <cell ref="listSlide"></cell>
         <header v-if="hasImageList()">
             <!--轮播图-->
             <div class="bt10">
                 <slider class="slider" interval="3000" auto-play="true">
                     <div class="frame" v-for="img in imageList">
-                        <image class="slideImage" resize="cover"  :src="img.thumbnail"  @click="goArticle(img.id)"></image>
+                        <div  v-if="!img.slideLoading"  class="slideImage coverAbsoTop "></div>
+                        <image class="slideImage" resize="cover"  :src="img.thumbnail" @load="onSlideImageLoad(img)" @click="goArticle(img.id)"></image>
                     </div>
                     <indicator class="indicatorSlider"></indicator>
                 </slider>
@@ -34,8 +36,9 @@
                     <!--</div>-->
                     <!--文章封面-->
                     <div style="position: relative">
+                        <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
                         <!--不能用过滤器,在上啦加载push时 会渲染不出来-->
-                        <image  :src="item.thumbnail "  resize="cover" class="articleCover bt45"></image>
+                        <image  :src="item.thumbnail " @load="onImageLoad(item)"  resize="cover" class="articleCover bt45"></image>
                     </div>
 
                     <!--<div class="flex-row ml20 bt15" @click="goAuthor(item.authorId)">-->
@@ -254,8 +257,23 @@
             this.screenHeight = utils.fullScreen(316);
             utils.initIconFont();
 
+        }
+        ,updated(){//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+            this.hideTopLine();
         },
         methods:{
+            hideTopLine(){
+                if(this.hadUpdate){
+                    return;
+                }
+                this.hadUpdate = true;
+                if(!utils.isIosSystem()) {
+                    const el = this.$refs.listSlide//跳转到相应的cell
+                    dom.scrollToElement(el, {
+                        offset: 1 //要为1， 为0时 向下小拉一下会出现白线
+                    })
+                }
+            },
             hasImageList(){
               if(utils.isNull(this.imageList) && this.isInit){
                   return false;
@@ -269,6 +287,7 @@
               GET('weex/circle/list.jhtml?id=' + this.UId,function(data){
                   if(data.type == 'success'){
                       data.data.forEach(function(item){
+                          item.loading = false;
                           if(!utils.isNull(item.logo)){
                               item.logo = utils.thumbnail(item.logo,100,100);
                           }
@@ -288,6 +307,8 @@
                             if(data.type == 'success' && data.data.data != '' ){
                         let dataLength = data.data.data.length;
                         data.data.data.forEach(function (item,index) {
+                            item.slideLoading = false;
+                            item.loading = false;
                             if(!utils.isNull(item.logo)){
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                                 item.logo = utils.thumbnail(item.logo,60,60);
@@ -396,6 +417,9 @@
                         timingFunction: 'linear',//350 duration配合这个效果目前较好
                         needLayout:false,
                         delay: 0 //ms
+                    },function(){
+                        _this.hadUpdate = false;
+                        _this.hideTopLine();
                     })
                     this.refreshing = false;
                     _this.imageList = [];
@@ -403,6 +427,22 @@
                     _this.getUserList();
                 }, 1000)
             },
+//            封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
+            //            头像加载出来
+            onSlideImageLoad(item){
+                item.slideLoading = true;
+            },
+            onscroll(e){
+            var _this = this;
+            if(Math.abs(e.contentOffset.y) == 0){
+                _this.hadUpdate = false;
+                _this.hideTopLine();
+                return;
+            }
+        }
         }
     }
 </script>
