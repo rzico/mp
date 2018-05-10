@@ -1,5 +1,5 @@
 <template>
-    <div class="corpusBox baseNavBg" :style="{height:heightNum}">
+    <div class="corpusBox" :style="{height:heightNum}">
         <scroller scroll-direction="horizontal" class="corpusScroll" show-scrollbar="false"  @scroll="scrollHandler" >
             <div class="articleClass baseNavBg" :style="{height:heightNum}">
                 <text @click="corpusChange(index,item.id)" :style="{lineHeight:heightNum}" class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index && corpusList.length != 0 ? 'corpusActive' : 'noActive']">{{item.name}}</text>
