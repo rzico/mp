@@ -615,7 +615,6 @@
                     _this.noAppear=false;
                 },600)
             },
-
 //            点击模版完成按钮时
             chooseComplete(){
                 let _this = this;
@@ -627,6 +626,7 @@
 //                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.initTemplateSn = _this.templateSn;
+                                _this.initTemplateName = _this.templateSaveName;
                             }else{
                                 event.toast(data.content);
                             }
