@@ -119,7 +119,7 @@
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <image class="coverImg" :src="item.ext.thumbnail | watchThumbnail" ></image>
+                    <image class="coverImg" resize="cover" :src="item.ext.thumbnail | watchThumbnail" ></image>
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>
@@ -134,7 +134,7 @@
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <image class="coverImg"  :src="item.ext.thumbnail | watchThumbnail"></image>
+                    <image class="coverImg"  resize="cover"  :src="item.ext.thumbnail | watchThumbnail"></image>
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>

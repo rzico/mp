@@ -22,7 +22,7 @@
             <cell ref="linkref" >
                 <!--新的朋友-->
                 <!--<div class="">-->
-                <div class="topLine addBorder" @click="openPage(0)">
+                <div class="topLine " @click="openPage(0)">
                     <!--<image :src="item.lineImage" class="lineImage"></image>-->
                     <text class="lineImage" style="color: #FF8C34" :style="{fontFamily:'iconfont'}">&#xe631;</text>
                     <!--有新消息-->
@@ -31,22 +31,25 @@
                     </div>
                     <text class="lineTitle">新的朋友</text>
                 </div>
+                <div class="addBorder"></div>
                 <!--</div>-->
                 <!--我关注的-->
                 <!--<div class="">-->
-                <div class="topLine addBorder" @click="openPage(1)">
+                <div class="topLine " @click="openPage(1)">
                     <!--<image :src="item.lineImage" class="lineImage"></image>-->
                     <text class="lineImage" style="color:#FCB504;" :style="{fontFamily:'iconfont'}">&#xe65b;</text>
                     <text class="lineTitle">我关注的</text>
                 </div>
+                <div class="addBorder"></div>
                 <!--</div>-->
                 <!--顶部功能栏-->
                 <!--<div class="">-->
-                <div class="topLine addBorder" @click="openPage(2)">
+                <div class="topLine " @click="openPage(2)">
                     <!--<image :src="item.lineImage" class="lineImage"></image>-->
                     <text class="lineImage" style="color: #8DC62D" :style="{fontFamily:'iconfont'}">&#xe68e;</text>
                     <text class="lineTitle">我的粉丝</text>
                 </div>
+                <div class="addBorder"></div>
                 <!--</div>-->
                 <!--我收藏的-->
                 <!--<div class="">-->
@@ -58,25 +61,25 @@
                 <!--</div>-->
             </cell>
             <cell v-for="friend in friendsList" ref="listref" >
-                    <!--姓氏首字母-->
-                    <div class="letterBox" v-if="friend.name != ''">
-                        <text class="nameLetter">{{friend.letter}}</text>
-                    </div>
-                    <!--姓氏里每个人的名子-->
-                    <div v-for="(item,index) in friend.name"  >
-                        <div class="addFriendsBorder" >
-                            <div class="deleteBox bkg-delete" @click="deleteFriend(friend.letter,item.id,index)">
-                                <text class="deleteText" @click="deleteFriend(friend.letter,item.id,index)">删除</text>
-                            </div>
-                            <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
-                                <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
-                                <div class="friendsName">
-                                    <text class="lineTitle">{{item.nickName}}</text>
-                                    <text class="realName">真实姓名:{{item.realName | watchName}}</text>
-                                </div>
+                <!--姓氏首字母-->
+                <div class="letterBox" v-if="friend.name != ''">
+                    <text class="nameLetter">{{friend.letter}}</text>
+                </div>
+                <!--姓氏里每个人的名子-->
+                <div v-for="(item,index) in friend.name"  >
+                    <div class="addFriendsBorder" >
+                        <div class="deleteBox bkg-delete" @click="deleteFriend(friend.letter,item.id,index)">
+                            <text class="deleteText" @click="deleteFriend(friend.letter,item.id,index)">删除</text>
+                        </div>
+                        <div class="friendsLine" @click="goChat(item.id)"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)" >
+                            <image :src="item.logo" class="friendsImage" @click="goAuthor(item.id)"></image>
+                            <div class="friendsName">
+                                <text class="lineTitle">{{item.nickName}}</text>
+                                <text class="realName">真实姓名:{{item.realName | watchName}}</text>
                             </div>
                         </div>
                     </div>
+                </div>
             </cell>
             <cell>
                 <!--总共多少个好友-->
@@ -229,6 +232,8 @@
         background-color: #e8e8e8;
     }
     .addBorder{
+        width:670px;
+        margin-left:20px;
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.5);
