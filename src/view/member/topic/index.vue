@@ -226,7 +226,7 @@
               templateId:'',
               templateName:'默认',
               liveId:'',
-              isStatus:false,
+              isStatus:true,
               isBottomLive:false,
               isBottomCard:false
           }
