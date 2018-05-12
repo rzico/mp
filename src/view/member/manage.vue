@@ -87,10 +87,20 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="goReviewManage()">
+                <div class="cell-panel space-between " @click="goReviewManage()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
                         <text class="title ml10">评价管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="dragon()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe62e;</text>
+                        <text class="title ml10">接龙管理</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -356,6 +366,20 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/member/reviewManage.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            //            评论管理
+            dragon:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/member/dragon.js'),
                     function (data) {
                         _this.clicked = false;
                         return ;

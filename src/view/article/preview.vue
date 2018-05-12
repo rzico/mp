@@ -28,7 +28,7 @@
                 </div>
             </div>
             <!--模版-->
-            <div  v-if="!templateChoose && isSelf == 1" >
+            <div  v-if="!templateChoose &&  isSelf == 1" >
                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
                 <text class="templateText templateIcon textTemplateIcon" :style="{bottom:bottomNum + 135}" @click="chooseTemplate()">模版</text>
             </div>
@@ -89,6 +89,10 @@
                         <text class="fz28 pl10 primary">删除</text>
                     </div>
                     <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
+                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="goDragon()">
+                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe6b5;</text>
+                        <text class="fz28 pl10">创建接龙</text>
+                    </div>
                     <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
                         <text class="fz28 pl10">生成长图</text>
@@ -110,6 +114,10 @@
                     <div class="arrowUp" >
                         <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                     </div>
+                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="goDragon()">-->
+                        <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe6b5;</text>-->
+                        <!--<text class="fz28 pl10">创建接龙</text>-->
+                    <!--</div>-->
                     <div class="flex-row pt25 pb25 pl35 pr35 textActive " @click="goAuthor">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                         <text class="fz28 pl10">作者主页</text>
@@ -125,11 +133,110 @@
                 <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
 
+            <!--接龙-->
+            <div class="maskLayer" v-if="isDragonMask">
+                <div class="dragonBox">
+                    <text class="dragonTitle">创建接龙</text>
+                    <div class="titleBox">
+                        <text class="titleBoxText">标题:</text>
+                        <input class="dragonTitleInput" placeholder="请输入标题" v-model="dragonTitle"/>
+                    </div>
+                    <div class="typeBox" @click="pickdragon()">
+                        <text class="typeBoxTitle">类型:</text>
+                        <text class="dragonTypeText">{{dragonTypeText}}</text>
+                    </div>
+                    <div class="dragonButtonBox">
+                        <div class="leftButton" @click="OnDragon()"><text class="dragonButtonBoxText">取消</text> </div>
+                        <div class="rightButton" @click="dragonComplete()"> <text class="dragonButtonBoxText">确认</text></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    /*接龙*/
+    .dragonBox{
+        width: 550px;
+        background-color: white;
+        border-radius: 15px;
+        border:1px solid #999;
+        flex-direction: column;
+        align-items: center;
+        position: fixed;
+        top: 200px;
+        left: 100px;
+    }
+    .dragonTitle{
+        font-size: 40px;
+        color: #0088fb;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    .titleBox{
+        flex-direction: row;
+        align-items: center;
+        width: 550px;
+        height: 100px;
+        border-bottom-width: 1px;
+        border-color: #cccccc;
+        padding-left: 20px;
+    }
+    .titleBoxText{
+        font-size: 32px;
+        margin-right: 20px;
+    }
+    .dragonTitleInput{
+        font-size: 32px;
+        color: #888;
+        width: 400px;
+        height: 100px;
+    }
+    .typeBox{
+        flex-direction: row;
+        align-items: center;
+        height:100px;
+        width: 550px;
+        padding-left: 20px;
+    }
+    .typeBoxTitle{
+        font-size: 32px;
+        margin-right: 20px;
+    }
+    .dragonTypeText{
+        font-size: 32px;
+        color: #888;
+        width: 400px;
+    }
+    .dragonButtonBox{
+        flex-direction: row;
+        align-items: center;
+        border-top-width: 2px;
+        border-color: #0088fb;
+    }
+    .leftButton{
+        height: 100px;
+        width: 273px;
+        border-right-width: 2px;
+        border-color: #0088fb;
+        align-items: center;
+        justify-content: center;
+    }
+    .rightButton{
+        height: 100px;
+        width: 275px;
+        align-items: center;
+        justify-content: center;
+    }
+    .dragonButtonBoxText{
+        font-size: 40px;
+        color: #0088fb;
+    }
+    /*==*/
+
+
     .articleOutBox{
         position:absolute;bottom: 0;width: 750px;  top: 136px;
     }
@@ -295,6 +402,7 @@
 </style>
 
 <script>
+    const picker = weex.requireModule('picker');
     const dom = weex.requireModule('dom');
     const modal = weex.requireModule('modal');
     import navbar from './header.vue'
@@ -335,6 +443,10 @@
                 authorInfo:[],
                 scrollHeight:0,
                 bottomNum:0,
+                dragonTitle:'',
+                dragonTypeText:'团购',
+                dragonType:'buying',
+                isDragonMask:false
             }
         },
         components: {
@@ -439,6 +551,65 @@
 
         },
         methods:{
+//            打开接龙设置
+            goDragon:function () {
+                this.isOperation = false;
+              this.isDragonMask = true;
+
+            },
+//            关闭接龙设置
+            OnDragon:function () {
+                this.isDragonMask = false;
+            },
+
+            //            设置接龙类型
+            pickdragon:function () {
+                let _this = this
+                picker.pick({
+                    index:_this.begin,
+                    items:['团购','报名']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.dragonTypeText = '团购';
+                            _this.begin = e.data;
+                            _this.dragonType = 'buying'
+                        }else if(e.data == 1){
+                            _this.dragonTypeText = '报名';
+                            _this.begin = e.data;
+                            _this.dragonType = 'enroll'
+                        }
+                    }
+                })
+            },
+
+            //            点击接龙确认按钮
+            dragonComplete(){
+                if(this.dragonTitle == ''){
+                    event.toast('请输入标题');
+                    return
+                }
+//                if(this.dragonType == ''){
+//                    event.toast('请设置类型');
+//                    return
+//                }
+                let _this = this;
+//                utils.debug('weex/member/dragon/create.jhtml?articleId='+this.articleId+'&title='+encodeURI(this.dragonTitle) +'&type='+this.dragonType)
+                    POST('weex/member/dragon/create.jhtml?articleId='+this.articleId+'&title='+encodeURIComponent(this.dragonTitle) +'&type='+this.dragonType).then(
+                        function (data) {
+                            if(data.type == 'success'){
+                                event.toast(data.content);
+                                _this.isDragonMask = false;
+                            }else{
+                                event.toast(data.content);
+                            }
+                        },
+                        function (err) {
+//                            event.toast(err.content);
+                        }
+                    )
+            },
+
             articleOutBoxTop:function () {
                 let dc = utils.artOutTop();
                 return dc

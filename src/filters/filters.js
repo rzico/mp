@@ -137,6 +137,14 @@ Vue.filter('timeDatefmt', function (value) {
         return res.y + '-' + res.m + '-' + res.d;
 })
 
+//时间格式化 返回 2017-09-30 03:07:56
+Vue.filter('timeDatefmtMinutes', function (value) {
+    let res = utils.resolvetimefmt(value);
+    let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+
+    return  res.y + '-' + res.m + '-' + res.d + '  ' + res.h + ':' + res.i + ':' + res.s;
+})
+
 //月份格式化 本月 上月 2..12月  2016年1月..
 Vue.filter('monthfmt', function (value) {
     let res = utils.resolvetimefmt(value);
