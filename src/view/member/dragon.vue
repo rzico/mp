@@ -21,8 +21,6 @@
                             <div style='flex-direction: row;width: 615px;' >
                                 <text   style="margin-top: 2px;font-size: 28px" :style="{fontFamily:'iconfont'}">&#xe62e;</text>
                                 <text class="fz28 pb15 articleTitle pr30  ml10" style="color: #999">{{item.title}}</text>
-
-                                <!--<text class="sub_date pt20 pr30 pl20 pb15"  v-if="item.status == 'normal'">关闭活动</text>-->
                             </div>
 
 
@@ -32,9 +30,9 @@
                             </div>
 
                             <div class="buttonBox">
-                                <div class="shareButton"  @click="delReview(item.id,index)"  v-if="item.status == 'closed'"><text class="fz26" style="color: white" >删除</text></div>
-                                <div class="deleteButton" @click="OnDragon(item.id,index)"  v-if="item.status == 'normal'"><text class="fz26" style="color: white" >关闭</text></div>
-                                <div class="shareButton" @click="goShare(item.articleId)"  v-if="item.status == 'normal'"><text class="fz26" style="color: white" >分享</text></div>
+                                <div class="OnButton"  @click="delReview(item.id,index)"  v-if="item.status == 'closed'"><text class="fz26" style="color: #333" >删除</text></div>
+                                <div class="deleteButton" @click="OnDragon(item.id,index)"  v-if="item.status == 'normal'"><text class="fz26" style="color: #333" >关闭</text></div>
+                                <div class="shareButton" @click="goShare(item.articleId)"  v-if="item.status == 'normal'"><text class="fz26" style="color: #EB4E40" >分享</text></div>
 
                             </div>
                         </div>
@@ -53,16 +51,27 @@
     .deleteButton{
         width: 80px;
         height: 50px;
-        background-color:#EB4E40;
+        border-width: 1px;
+        border-color: #444;
         align-items: center;
         justify-content: center;
         border-radius: 5px;
         margin-right: 60px;
     }
+    .OnButton{
+        width: 80px;
+        height: 50px;
+        border-width: 1px;
+        border-color: #444;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+    }
     .shareButton{
         width: 80px;
         height: 50px;
-        background-color:#EB4E40;
+        border-width: 1px;
+        border-color: #EB4E40;
         align-items: center;
         justify-content: center;
         border-radius: 5px;
