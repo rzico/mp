@@ -17,8 +17,8 @@
             <!--类型为股东分红时渲染-->
             <div class="cell-row cell-line" v-if="item.type == 'dividend'">
                 <div class="cell-panel cell-clear ">
-                    <text class="title">利润分红:</text>
-                    <input type="number" v-model="item.tota" return-key-type="next" class="lineContent pr20"  placeholder="利润分红比例"/>
+                    <text class="title">商品毛利:</text>
+                    <input type="number" v-model="item.tota" return-key-type="next" class="lineContent pr20"  placeholder="商品毛利比例"/>
                     <text class="title">%</text>
                 </div>
             </div>
@@ -273,7 +273,7 @@
                         return;
                     }
                     if (utils.isNull(this.item.tota)) {
-                        event.toast('请输入利润分红比例');
+                        event.toast('请输入商品毛利比例');
                         return;
                     }
                     if (this.item.percent4 == '点击设置') {

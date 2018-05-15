@@ -801,6 +801,10 @@
                     event.toast('单位不能为空');
                     this.clicked = false;
                     return;
+                }else if(this.goodsUnit.length > 3){
+                    event.toast('单位不能超过三个汉字');
+                    this.clicked = false;
+                    return;
                 }
 
 

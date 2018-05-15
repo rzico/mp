@@ -600,6 +600,7 @@
                             if(data.type == 'success'){
                                 event.toast(data.content);
                                 _this.isDragonMask = false;
+                                _this.showShare = true
                             }else{
                                 event.toast(data.content);
                             }

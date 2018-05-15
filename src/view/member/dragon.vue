@@ -11,7 +11,7 @@
             <!--导航栏-->
             <cell v-else v-for="(item,index) in reviewList">
                 <div class="lineBox">
-                    <div class="flexRow" >
+                    <div class="flexRow"  :style="addBorder(index)" v-if="item.mainId ==''">
                         <image class="headImg" :src="item.logo" ></image>
                         <div class="userInfo">
                             <div style='flex-direction: row;justify-content:space-between;width: 615px;' >
@@ -22,20 +22,20 @@
                                 <text   style="margin-top: 2px;font-size: 28px" :style="{fontFamily:'iconfont'}">&#xe62e;</text>
                                 <text class="fz28 pb15 articleTitle pr30  ml10" style="color: #999">{{item.title}}</text>
                             </div>
-
-
                             <div class="delDate" >
                                 <text class="sub_date mt20 pb15">{{item.createDate | timeDatefmtMinutes}}</text>
 
                             </div>
-
                             <div class="buttonBox">
                                 <div class="OnButton"  @click="delReview(item.id,index)"  v-if="item.status == 'closed'"><text class="fz26" style="color: #333" >删除</text></div>
                                 <div class="deleteButton" @click="OnDragon(item.id,index)"  v-if="item.status == 'normal'"><text class="fz26" style="color: #333" >关闭</text></div>
                                 <div class="shareButton" @click="goShare(item.articleId)"  v-if="item.status == 'normal'"><text class="fz26" style="color: #EB4E40" >分享</text></div>
-
                             </div>
                         </div>
+                    </div>
+                    <div class="child">
+                        <text class="childName">{{item.nickName}}:</text>
+                        <text class="childNumber">{{item.orderCount}} 单</text>
                     </div>
                 </div>
             </cell>
@@ -94,17 +94,41 @@
 
     .flexRow{
         flex-direction: row;
+        border-color: gainsboro;
+        border-top-width:1px;
+        padding-top:15px;
+        margin-top: 20px;
+    }
+    .child{
+        flex-direction: row;
+        align-items: center;
+        /*justify-content: space-between;*/
+        width: 590px;
+        background-color: #eee;
+        margin-left: 115px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        padding-right: 15px;
+    }
+    .childName{
+        font-size: 28px;
+        color: #2C447A;
+        max-width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .childNumber{
+        font-size: 28px;
+        margin-left: 10px;
     }
     .lineBox{
-        flex-direction: row;
+        flex-direction: column;
         padding-right: 20px;
-        padding-top:15px;
         /*padding-bottom: 15px;*/
         width: 725px;
         margin-left: 25px;
         background-color: #fff;
-        border-color: gainsboro;
-        border-bottom-width:1px;
     }
     .infoText{
         font-size: 26px;
@@ -146,6 +170,7 @@
             refreshImg:utils.locate('resources/images/loading.png'),
             clicked:false,
             showShare:false,
+            loading:false
         },
         props:{
             noDataHint:{default:'暂无接龙'},
@@ -178,6 +203,19 @@
             }
         },
         methods:{
+            //            是否添加边框
+            addBorder: function (index) {
+                if(index != 0 ){
+                        return {
+                            borderTopWidth:'1px'
+                        }
+
+                    }else{
+                    return {
+                        borderTopWidth:'0px'
+                    }
+                }
+            },
             //            触碰遮罩层
             maskTouch(){
                 this.showShare = false;
@@ -287,9 +325,11 @@
 //            获取所有接龙列表
             getAllReview(){
                 let _this = this;
-//                utils.debug(this.pageStart)
+                if (this.loading==true) {
+                    return
+                }
+                this.loading = true;
                 GET('weex/member/dragon/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                    utils.debug(data)
                     if(data.type == 'success'){
                         if (_this.pageStart == 0) {
                             _this.reviewList = data.data.data;
@@ -302,7 +342,10 @@
                     }else{
                         event.toast(data.content);
                     }
+                    _this.loading = false;
+
                 },function (err) {
+                    _this.loading = false;
                     event.toast(err.content);
                 })
             },

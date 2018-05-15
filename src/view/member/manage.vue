@@ -87,7 +87,17 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between " @click="goReviewManage()">
+                <div class="cell-panel space-between " @click="dragon()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe63f;</text>
+                        <text class="title ml10">接龙管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="goReviewManage()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
                         <text class="title ml10">评价管理</text>
@@ -97,16 +107,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="dragon()">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe62e;</text>
-                        <text class="title ml10">接龙管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+
                 <!--投票管理暂未开发，关闭连接-->
                 <!--<div class="cell-panel space-between  cell-clear">-->
                 <!--<div class="flex-row flex-start">-->

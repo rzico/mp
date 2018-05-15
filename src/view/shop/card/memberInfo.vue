@@ -372,6 +372,7 @@
                     })
                     return
                 }
+
                 modal.prompt({
                     message: '设置股东比例',
                     duration: 0.3,
