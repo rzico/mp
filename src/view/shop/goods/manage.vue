@@ -595,7 +595,7 @@
                             goodsPublish = JSON.stringify(goodsPublish);
                             storage.setItem('goodsPublish', goodsPublish , e => {
                                 if(e.result == 'success'){
-                                    event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish' + '&goodsId=' + _this.goodsId ), function (data) {
+                                    event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish&goodsId=' + _this.goodsId ), function (data) {
                                         _this.doReset();
                                         _this.clicked = false;
                                         if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){

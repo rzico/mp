@@ -487,9 +487,10 @@
 //            bundleUrl = new String(bundleUrl);
 //            取当前页面rul，将musicId取出来
             var bundleUrl = this.$getConfig().bundleUrl;
-            var getVal = bundleUrl.split('?')[1];
-//          创建文章编辑（首次）
-            if(utils.isNull(getVal)){
+            var articleId = utils.getUrlParameter("articleId");
+
+            //          创建文章编辑（首次）
+            if(utils.isNull(articleId)){
 
 //                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
                 clipboard.getString(ret => {
@@ -573,13 +574,13 @@
 
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
-                var op = getVal.split('=');
-                if(op[0] == 'articleId') {
+                let storageName = utils.getUrlParameter('goodsStorageName')
+                if(utils.isNull(storageName)) {
                     let options = {
                         type:'article',
-                        key:op[1]
+                        key:articleId
                     };
-                    _this.articleId = op[1];
+                    _this.articleId = articleId;
                     if(_this.articleId.length == 19){//19位的id为草稿文章
                     }else{
                         GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
@@ -593,8 +594,8 @@
                     };
                     //从缓存读取数据 写入界面
                     _this.readData(options);
-                }else if(op[0] == 'goodsStorageName'){//读取商品缓存并写入页面之中。
-                    storage.getItem(op[1], function (e) {
+                }else {//读取商品缓存并写入页面之中。
+                    storage.getItem(storageName, function (e) {
                         if (e.result == 'success') {
                             var goodsInfo = JSON.parse(e.data);
                             _this.coverImage =  goodsInfo.thumbnail;
@@ -617,7 +618,7 @@
 //                            存储页面数据
                             _this.saveDraft();
 //                          把缓存删除
-                            storage.removeItem(op[1], e => {
+                            storage.removeItem(storageName, e => {
                             })
                         }
                     });
