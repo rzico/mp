@@ -5,7 +5,7 @@
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
             <text class="three">③ 激活  </text>
-            <!--<text class="four">④ 交易测试</text>-->
+            <text class="four">④ 交易测试</text>
         </div>
         <div class="appellation">
             <text class="vendorName">商家名称</text>

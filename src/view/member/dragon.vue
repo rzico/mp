@@ -284,11 +284,12 @@
                 })
 
             },
-//            获取所以接龙列表
+//            获取所有接龙列表
             getAllReview(){
                 let _this = this;
 //                utils.debug(this.pageStart)
                 GET('weex/member/dragon/list.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    utils.debug(data)
                     if(data.type == 'success'){
                         if (_this.pageStart == 0) {
                             _this.reviewList = data.data.data;

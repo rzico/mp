@@ -7,7 +7,7 @@
             <text class="fz32 color999">你只需为因推广者而成功售出的商品付出佣金,交易不成功无需支付任何费用。</text>
             <div class="setting" @click="pickPattern()">
                 <div class="flex-row">
-                    <text class="fz32 colorRed">分润模式:  {{isPattern}}</text>
+                    <text class="fz32 colorRed">成为团队条件:  {{isPattern}}</text>
                 </div>
                 <div class="flex-row flex-end">
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -15,13 +15,13 @@
             </div>
             <div class="setting" v-if="isMoney()">
                 <div class="flex-row">
-                    <text class="fz32 colorRed">指定金额:  </text>
+                    <text class="fz32 colorRed">指定金额(元) :  </text>
                     <input class="input"   placeholder="请输入金额" type="number" v-model="amount"/>
                 </div>
             </div>
             <div class="setting" @click="pickObject()">
                 <div class="flex-row">
-                    <text class="fz32 colorRed">分润对象:  {{isobject}}</text>
+                    <text class="fz32 colorRed">谁能获得分润:  {{isobject}}</text>
                 </div>
                 <div class="flex-row flex-end">
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -119,7 +119,7 @@
             },
 //            控制指定金额是否渲染
             isMoney:function () {
-              if(this.isPattern == '单次消费满指定金额' || this.isPattern == '累计消费满指定金额'){
+              if(this.isPattern == '单笔消费满指定金额' || this.isPattern == '累计消费满指定金额'){
                   return true
               }else{
                   return false
@@ -151,7 +151,7 @@
                             _this.isPattern = '购买分销商品';
                             _this.beginPattern = 2
                         }if(res.data.pattern == 'pattern4'){
-                            _this.isPattern = '单次消费满指定金额';
+                            _this.isPattern = '单笔消费满指定金额';
                             _this.beginPattern = 3
                         }if(res.data.pattern == 'pattern5'){
                             _this.isPattern = '累计消费满指定金额';
@@ -168,7 +168,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.beginPattern,
-                    items:['无门槛','购买任意商品','购买分销商品','单次消费满指定金额','累计消费满指定金额']
+                    items:['无门槛','购买任意商品','购买分销商品','单笔消费满指定金额','累计消费满指定金额']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -184,7 +184,7 @@
                             _this.beginPattern = e.data;
                             _this.Pattern = 'pattern3'
                         }else if(e.data == 3){
-                            _this.isPattern = '单次消费满指定金额';
+                            _this.isPattern = '单笔消费满指定金额';
                             _this.beginPattern = e.data;
                             _this.Pattern = 'pattern4'
                         }else if(e.data == 4){
