@@ -29,18 +29,6 @@
             </div>
         </scroller>
         <!--遮罩-->
-        <div class="sendMask" @click="maskClick()" v-if="toSendArticle">
-            <!--进度条-->
-            <div class="processBox">
-                <text class="processText">正在云同步,请稍候...</text>
-                <!--进度条背景-->
-                <div class="processStyle processBg"></div>
-                <!--进度条进度与颜色-->
-                <div :style="{width:processWidth + 'px'}"  class="processStyle bkg-primary"></div>
-                <text class="processTotal">{{currentPro}}/{{proTotal}}</text>
-            </div>
-        </div>
-        <!--遮罩-->
         <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
     </div>
 </template>

@@ -5,9 +5,9 @@
             <div class="flex-row ">
                 <div class="topic">
                     <div>
-                    <image class="logo" @click="changeLogo"
-                           v-bind:src="topic.logo">
-                    </image>
+                        <image class="logo" @click="changeLogo"
+                               v-bind:src="topic.logo">
+                        </image>
                     </div>
                     <div class="topic_footer">
                         <text class="name" @click="petname">{{topic.name}}</text>
@@ -35,34 +35,50 @@
             <div class="sub-panel">
                 <text class="sub_title">点亮专栏，更多精美模板选择</text>
             </div>
-            <div v-if="judgmenttwo()">
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">开启商户模式</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCashier" @change="onUseCashier"></switch>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-panel">
-                <text class="sub_title">适用于有实体店铺的商家，首页默认管理后台</text>
-            </div>
+            <!--<div v-if="judgmenttwo()">-->
+            <!--<div class="cell-row cell-line">-->
+            <!--<div class="cell-panel space-between cell-clear">-->
+            <!--<div class="flex-row">-->
+            <!--<text class="title ml10">开启商户模式</text>-->
+            <!--</div>-->
+            <!--<div class="flex-row flex-end">-->
+            <!--<switch class="switch" :disabled="isNoActivate()" :checked="topic.useCashier" @change="onUseCashier"></switch>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sub-panel">-->
+            <!--<text class="sub_title">适用于有实体店铺的商家，首页默认管理后台</text>-->
+            <!--</div>-->
+
+            <!--<div class="cell-row cell-line">-->
+            <!--<div class="cell-panel space-between cell-clear">-->
+            <!--<div class="flex-row">-->
+            <!--<text class="title ml10">开通会员卡</text>-->
+            <!--</div>-->
+            <!--<div class="flex-row flex-end">-->
+            <!--<switch class="switch" :disabled="isNoActivate()" :checked="topic.useCard" @change="onUseCard"></switch>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sub-panel">-->
+            <!--<text class="sub_title">电子会员卡，集成微信卡包</text>-->
+            <!--</div>-->
+            <!--</div>-->
+
 
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
+                <div class="cell-panel space-between cell-clear"  @click="share()">
                     <div class="flex-row">
-                        <text class="title ml10">开通会员卡</text>
+                        <text class="title ml10">分享专栏</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :disabled="isNoActivate()" :checked="topic.useCard" @change="onUseCard"></switch>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">电子会员卡，集成微信卡包</text>
-            </div>
+                <!--<text class="sub_title">复制专栏链接并设置为小程序自定义菜单</text>-->
+                <text class="sub_title">将您的专栏分享给朋友</text>
             </div>
             <!--小程序设置-->
             <div class="cell-row cell-line">
@@ -77,33 +93,38 @@
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">复制专栏链接并设置为小程序自定义菜单</text>
-                <!--<text class="sub_title" style="color:blue">《操作手册》</text>-->
+                <!--<text class="sub_title">复制专栏链接并设置为小程序自定义菜单</text>-->
+                <text class="sub_title">快速设置自己的小程序</text>
             </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear" @click="copy()">
+                <div class="cell-panel space-between cell-clear" @click="appletAgree()">
                     <div class="flex-row">
-                        <text class="title ml10">公众号设置</text>
+                        <text class="title ml10">小程序一键授权</text>
                     </div>
                     <div class="flex-row flex-end">
                         <!--<text class="sub_title">未设置 </text>-->
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}" ref="arrow">&#xe630;</text>
                     </div>
                 </div>
             </div>
-            <div class="sub-panel">
-                <text class="sub_title">复制专栏链接并设置为公众号自定义菜单</text>
-                <!--<text class="sub_title" style="color:blue">《操作手册》</text>-->
+            <div class="sub-panel" v-if="!showOptions">
+                <text class="sub_title">将您的小程序授权给我们管理</text>
             </div>
-
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear"  @click="share()">
-                    <div class="flex-row">
-                        <text class="title ml10">分享专栏至朋友圈</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
+            <div v-else>
+                <div class="sub-panel">
+                    <text class="sub_title">1、前往微信</text>
+                </div>
+                <div class="sub-panel">
+                    <text class="sub_title">2、搜索并进入魔篇公众号</text>
+                </div>
+                <div class="sub-panel">
+                    <text class="sub_title">3、点击菜单栏中间的"一键授权"按钮</text>
+                </div>
+                <div class="sub-panel">
+                    <text class="sub_title">4、跳转到新页面后点击"一键授权"按钮进行授权</text>
+                </div>
+                <div class="button bw bkg-primary ml30 mr30 mt30" @click="agreeSuccess()">
+                    <text class="buttonText white">如已授权成功,请点这里</text>
                 </div>
             </div>
 
@@ -112,7 +133,7 @@
 
         </scroller>
 
-        <payment ref="payment" @notify="notify"></payment>
+        <payment ref="payment" :receiveSn="receiveSn" @notify="notify" v-if="paymentShow" @paymentClose="paymentClose"></payment>
 
         <!--动画无效-->
         <!--<transition name="slide-fade-share" mode="out-in">-->
@@ -193,20 +214,24 @@
     import utils from '../../../assets/utils'
     import music from '../../../assets/music'
     const clipboard = weex.requireModule('clipboard');
+    const animation = weex.requireModule('animation')
     const album = weex.requireModule('album');
     const event = weex.requireModule('event');
     var modal = weex.requireModule('modal');
     export default {
         data() {
-          return {
-              sn:"",
-              topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false},
-              noJob:true,
-              isOwner:false,
-              showShare:false,
-              copyPublic:'',
-              copyApplet:''
-          }
+            return {
+                sn:"",
+                topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false},
+                noJob:true,
+                isOwner:false,
+                showShare:false,
+                copyPublic:'',
+                copyApplet:'',
+                receiveSn:'',
+                paymentShow:false,
+                showOptions:false,
+            }
         },
         components: {
             navbar,payment,share
@@ -223,7 +248,7 @@
             judgmentone:function () {
                 let _this =this;
                 if(_this.noJob == true && _this.isActivate())
-                return true
+                    return true
             },
 //            判断是否商家
             judgmenttwo:function () {
@@ -315,16 +340,16 @@
             create:function () {
                 var _this = this;
                 POST('weex/member/topic/submit.jhtml').then(
-                function (data) {
-                    if (data.type == 'success') {
-                        _this.topic = data.data;
-                        event.toast("开通专栏成功");
-                    } else {
+                    function (data) {
+                        if (data.type == 'success') {
+                            _this.topic = data.data;
+                            event.toast("开通专栏成功");
+                        } else {
+                            event.toast(err.content)
+                        }
+                    },function (err) {
                         event.toast(err.content)
-                    }
-                },function (err) {
-                    event.toast(err.content)
-                })
+                    })
             },
             goback: function () {
                 event.closeURL()
@@ -337,15 +362,22 @@
                 return this.topic.status=="success";
             },
             activate:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500);
                 POST('weex/member/topic/activate.jhtml').then(
                     function (mes) {
-                        _this.clicked = false;
                         if (mes.type == "success") {
                             if (utils.isNull(mes.data)) {
                                 _this.load();
                             } else {
-                                _this.$refs.payment.show(mes.data);
+                                _this.receiveSn = mes.data;
+                                _this.paymentShow = true;
                             }
                         } else {
                             event.toast(mes.content);
@@ -355,7 +387,10 @@
                         event.toast(err.content);
                     }
                 )
-
+            },
+//            隐藏支付组件
+            paymentClose:function () {
+                this.paymentShow = false;
             },
 //            申请开店
             getShop:function (e) {
@@ -379,7 +414,7 @@
                         if (mes.type == "success") {
                             setTimeout(
                                 function () {
-                               _this.load()}, 2000);
+                                    _this.load()}, 2000);
                         } else {
                             setTimeout(
                                 function () {
@@ -504,38 +539,54 @@
                     event.toast(err.content);
                 })
             },
-            //            公众号点击复制
-            copy(){
-                let _this =this;
-                GET('weex/topic/menu.jhtml',function (data) {
-                    if(data.type = 'success'){
-                        _this.copyPublic = data.data;
-                        clipboard.setString(_this.copyPublic);
-                        event.toast('复制成功');
-                    }else{
-                        event.toast(data.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                })
+            //            小程序一键授权
+            appletAgree() {
+                let _this = this;
+//                event.openURL(utils.locate("view/member/topic/appletAgree.js"), function (message) {
+//                });
+                this.showOptions = !this.showOptions;
+                this.rotate(this.$refs['arrow']);
             },
             //            小程序点击复制
             appletCopy(){
-                let _this =this;
-                GET('weex/topic/menu.jhtml?type=applet',function (data) {
-                    if(data.type = 'success'){
-                        _this.copyApplet = data.data;
-                        clipboard.setString(_this.copyApplet);
-                        event.toast('复制成功');
-                    }else{
-                        event.toast(data.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                })
+                event.openURL(utils.locate("view/member/topic/companyInfo.js"),function (message) {
+
+                });
+
+
+//                GET('weex/topic/menu.jhtml?type=applet',function (data) {
+//                    if(data.type = 'success'){
+//                        _this.copyApplet = data.data;
+//                        clipboard.setString(_this.copyApplet);
+//                        event.toast('复制成功');
+//                    }else{
+//                        event.toast(data.content);
+//                    }
+//                },function (err) {
+//                    event.toast(err.content);
+//                })
             },
-
+            rotate: function(ref, callback) {
+                var self = this;
+                if(!self.current_rotate) {
+                    self.current_rotate = 0;
+                }
+                if (self.current_rotate==0) {
+                    self.current_rotate = self.current_rotate + 90;
+                } else {
+                    self.current_rotate = self.current_rotate - 90;
+                }
+                self.anim(ref, {
+                    transform: 'rotate(' + self.current_rotate + 'deg)'
+                }, 'linear', 100, callback);
+            },
+            anim: function(ref, styles, timingFunction, duration, callback) {
+                animation.transition(ref, {
+                    styles: styles,
+                    timingFunction: timingFunction,
+                    duration: duration
+                }, callback || function(){});
+            }
         }
-
     }
 </script>

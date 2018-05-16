@@ -1,8 +1,6 @@
 <template>
     <div style="background-color:#eeeeee">
-
             <navbar :title="title" :complete="complete" @goback="goback" > </navbar>
-
     <div class="big">
         <div class="inputA">
             <text class="textA">卡类型</text>
@@ -14,7 +12,7 @@
         </div>
         <div class="inputC">
             <text class="textID">证件号</text>
-            <input class="input" type="text" placeholder="请输入证件号码" :autofocus="true" value="" @input="idcard"/>
+            <input class="input" type="text" placeholder="请输入证件号码"  value="" @input="idcard"/>
         </div>
         <div class="textdiv">
             <text class="textC">同意</text>
@@ -28,13 +26,9 @@
             <text class="textF">资讯加密处理，仅用于银行验证</text>
         </div>
     </div>
-
 </template>
-
 <style lang="less" src="../../../style/wx.less"/>
-
 <style>
-
     .inputA{
         flex-direction: row;
         background-color:#ffffff;

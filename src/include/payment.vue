@@ -1,6 +1,6 @@
 <template>
-    <div class="wrapper bg" v-if="isShow" @onclick="close('error')">
-        <div class="box">
+    <div class="wrapper bg" v-if="isShow" @click="close('error')">
+        <div class="box"  >
             <div class="nav">
                 <div class="flex1 flex-center" @click="close('error')">
                     <text class="close" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
@@ -203,11 +203,18 @@
                 title: "付款方式",
                 items:[{id:0,name:"微信支付",ico:'&#xe659;',color:'green'},{id:2,name:"钱包余额",ico:'&#xe6ce;',color:'#ff5545'}],
                 id: 0,
-                lastCaptchaLength:0
+                lastCaptchaLength:0,
+                isReceiveSn:0
             }
+        },
+        props: {
+            receiveSn: { default: ''},
         },
         created() {
             utils.initIconFont();
+            if(!utils.isNull(this.receiveSn)){
+                this.show();
+            }
         },
         methods:{
             onchange:function (id) {
@@ -243,10 +250,15 @@
             },
             show (sn) {
                 var _this = this;
-                _this.sn = sn;
+                if(utils.isNull(sn)){
+                    _this.sn = _this.receiveSn;
+                    this.isReceiveSn = 1;
+                }else{
+                    _this.sn = sn;
+                }
                 _this.isPwd = false;
                 _this.clearPwd();
-                GET("payment/view.jhtml?sn="+sn,function (res) {
+                GET("payment/view.jhtml?sn="+_this.sn,function (res) {
 //                    utils.debug(res);
                     _this.info = res.data;
                     _this.isShow = true;
@@ -262,7 +274,11 @@
                 }
                 //globalEvent.removeEventListener("onResume");
                 _this.$emit("notify",e);
-                _this.isShow = false;
+                if(this.isReceiveSn == 0 ){
+                    _this.isShow = false;
+                }else{
+                    _this.$emit("paymentClose");
+                }
             },
             comfrm () {
                 if (this.id == 2) {

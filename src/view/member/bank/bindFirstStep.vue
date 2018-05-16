@@ -26,7 +26,7 @@
                     <text class="title">卡号</text>
                 </div>
                 <div class="twoB">
-                    <input type="number" placeholder="无需网银/免手续费" class="input" :autofocus="true" value="" @input="oninput2"/>
+                    <input type="number" placeholder="无需网银/免手续费" class="input"  value="" @input="oninput2"/>
                 </div>
             </div>
             <div class="A3">

@@ -10,7 +10,7 @@
                         </image>
                         <div class="name">
                             <text class="title">{{member.nickName}}</text>
-                            <text class="autograph">{{member.autograph}}</text>
+                            <text class="autograph" >{{member.autograph}}</text>
                         </div>
                     </div>
                     <div class="flex-row flex-end">
@@ -21,7 +21,7 @@
             <!--芸店-->
             <!--cell-line-->
             <div class="cell-row ">
-                <div class="cell-panel space-between" :class="[member.hasTopic?'':'cell-clear']" @click="option()">
+                <div class="cell-panel space-between"@click="option()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
                         <text class="title ml10">通用设置</text>
@@ -30,6 +30,24 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <!--<div class="cell-panel space-between" :class="[member.hasTopic?'':'cell-clear']" @click="setCompanyInfo()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe657;</text>-->
+                        <!--<text class="title ml10">企业信息</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-panel space-between" :class="[member.hasTopic?'':'cell-clear']" @click="allowLogin()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe657;</text>-->
+                        <!--<text class="title ml10">授权登录</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!--上架注释的-->
                 <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">
                 <div class="flex-row">
@@ -544,7 +562,39 @@
                     }
                 );
             },
+            setCompanyInfo:function () {
+                var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
 
+                event.openURL(utils.locate('view/applet/companyInfo.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            allowLogin:function () {
+                var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                event.openURL(utils.locate('view/applet/allowLoginApplet.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            }
         }
     }
 </script>

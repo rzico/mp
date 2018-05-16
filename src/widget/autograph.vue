@@ -1,11 +1,14 @@
 <template>
     <div style="background-color: white">
-    <div class="header">
-        <navbar :title="title" :complete="complete" @goback="goback"  @goComplete="goComplete"> </navbar>
-    </div>
-    <div class="wrapper">
-        <textarea class="textarea" @input="oninput" autofocus="true" maxlength="30" placeholder="不超过30个字" v-model="autograph"></textarea>
-    </div>
+        <div class="header">
+            <navbar :title="title" :complete="complete" @goback="goback"  @goComplete="goComplete"> </navbar>
+        </div>
+        <div class="wrapper" v-if="autotext == 'companyName'">
+            <textarea class="textarea" @input="oninput" autofocus="true" maxlength="16" placeholder="不超过16个字" v-model="autograph"></textarea>
+        </div>
+        <div class="wrapper" v-else>
+            <textarea class="textarea" @input="oninput" autofocus="true" maxlength="30" placeholder="不超过30个字" v-model="autograph"></textarea>
+        </div>
     </div>
 </template>
 <style>
@@ -29,7 +32,8 @@
     export default {
         data :function(){
             return{
-                autograph:''
+                autograph:'',
+                autotext:''
             }
         },
         components: {
@@ -41,15 +45,17 @@
         },
         created() {
             var _this = this ;
-            var autotext = utils.getUrlParameter('name');
-            if(autotext == 'articleTitle'){
+            this.autotext = utils.getUrlParameter('name');
+            if(this.autotext == 'articleTitle'){
                 this.title = '修改标题';
+            }else if(this.autotext == 'companyName'){
+                this.title = '修改公司名';
             }
-            storage.getItem(autotext, e => {
+            storage.getItem(this.autotext, e => {
 //                event.toast(e)
                 let textData = JSON.parse(e.data);
                 _this.autograph = textData.autograph;
-                storage.removeItem(autotext);
+                storage.removeItem(this.autotext);
             })
         },
         methods: {
@@ -62,7 +68,7 @@
             },
             goComplete:function (e) {
                 var E = {
-                  text:this.autograph
+                    text:this.autograph
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);

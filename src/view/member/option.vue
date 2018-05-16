@@ -362,7 +362,6 @@
                 var _this = this;
                 POST('weex/member/topic/submit.jhtml').then(
                     function (data) {
-                        utils.debug(data);
                         if (data.type == 'success') {
                             _this.hasTopic = true;
                             event.toast("开通专栏成功");
