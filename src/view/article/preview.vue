@@ -324,6 +324,7 @@
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch'
+    const storage = weex.requireModule('storage');
     export default {
         data:function () {
             return{
@@ -864,6 +865,12 @@
                     _this.clicked = false;
                 },1500)
                 event.openURL(utils.locate('view/member/editor/review.js?articleId=' + this.articleId + '&authorId=' + this.memberId),function (data) {
+                    storage.getItem('reviewNum', e => {
+                        if(e.result == 'success' && !utils.isNull(e.data)){
+                            _this.reviewNum = e.data;
+                            storage.removeItem('reviewNum');
+                        }
+                    })
                 })
             },
 //            收藏文章
@@ -1127,9 +1134,11 @@
                 var _this = this;
                 POST("payment/submit.jhtml?sn="+ sn +"&paymentPluginId="+plugId).then(
                     function (data) {
-                        setTimeout(function () {
-                            _this.$refs.buy.waitHide();
-                        },1000)
+                        if(_this.buyShow){
+                            setTimeout(function () {
+                                _this.$refs.buy.waitHide();
+                            },1000)
+                        }
                         if (data.type=="success") {
                             event.wxAppPay(data.data,function (e) {
                                 if (e.type=='success') {

@@ -1,15 +1,17 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"@goback="goback"></navbar>
-        <list  :class="[bgWhite ? 'whiteColor' : '']"  @loadmore="onloading" loadmoreoffset="50">
+        <list  class="whiteColor"  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-if="dataList.length == 0">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
+                <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
             </cell>
-            <!--点赞-->
-            <cell class="lineBox"  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
+            <!--赞赏-->
+            <cell  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
+                <div class="lineBox" >
+
                 <div class="flex-row">
                     <image class="headImg" :src="item.logo" ></image>
                     <div class="userInfo">
@@ -20,6 +22,7 @@
                     </div>
                 </div>
                 <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
+                </div>
             </cell>
         </list>
     </div>
@@ -93,13 +96,16 @@
             }
         },
         components: {
-            navbar
+            navbar,noData
         },
         created(){
             let _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
             this.getAllLaud();
+        },
+        props:{
+            noDataHint:{default:'暂时无人赞赏'},
         },
         methods:{
 //            获取点赞列表
@@ -171,34 +177,6 @@
                 event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
                     _this.clicked = false;
                 });
-            },
-            onrefresh:function () {
-                var _this = this;
-                this.refreshing = true
-                setTimeout(() => {
-                    this.refreshing = false
-                }, 50)
-            },
-            onloading:function () {
-                var _this = this;
-                _this.showLoading = true;
-//                _this.loadingState = "正在加载数据";
-                setTimeout(() => {
-                    _this.listCurrent = _this.listCurrent + _this.pageSize;
-                    GET('weex/reward/list.jhtml?articleId=' + this.articleId +'&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
-                        if(data.type == 'success' && data.data.data != '' ){
-                            data.data.data.forEach(function (item) {
-                                _this.dataList.push(item);
-                            })
-                        }else if(data.type == 'success' && data.data.data == '' ){
-                        }else{
-                            event.toast(data.content);
-                        }
-                    },function (err) {
-                        event.toast(err.content);
-                    })
-                    _this.showLoading = false;
-                }, 1500)
             },
         }
 
