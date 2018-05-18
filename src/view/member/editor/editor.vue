@@ -410,6 +410,7 @@
                 proTotal:0,//总的进度
                 processWidth:0,//进度条宽度
                 articleId:'',
+                goodsId:'',
                 refreshing: false,
                 firstPlusShow:true,
                 coverImage:utils.locate('resources/images/background.png'),
