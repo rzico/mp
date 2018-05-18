@@ -1403,14 +1403,12 @@
                     id:sendId,
                     title:_this.setTitle,
                     votes:_this.voteData,
-                    isDraft:false,
-                    goodsId:_this.goodsId,
-                    articleType:_this.articleType,
+                    isDraft:false
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
-                POST('weex/member/article/submit.jhtml',articleData).then(
+                POST('weex/member/article/submit.jhtml?goodsId='+_this.goodsId+"&articleType="+_this.articleType,articleData).then(
                     function (res) {
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
