@@ -160,7 +160,6 @@
     import noData from '../../include/noData.vue';
     export default {
         data:{
-
             articleId:'',
             reviewList:[],
             refreshing:false,

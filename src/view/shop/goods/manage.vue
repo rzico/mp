@@ -72,10 +72,28 @@
                 </div>
             </cell>
         </list>
+        <div class="mask" v-if="isPopup">
         <div class="shareBox" v-if="isPopup">
             <div style="width: 750px;align-items: center">
                 <text class="fz30 pt30 " style="color: #444">操作</text>
             </div>
+            <!--标签选择小弹框-->
+            <div class="labelBox" v-if="hasLabelBox">
+                <div class="switchBox">
+                    <text class="fz32">新品</text>
+                    <switch  :checked="newSwitch" @change="settingOneLable"></switch>
+                </div>
+                <div class="switchBox">
+                    <text class="fz32">推荐</text>
+                    <switch  :checked="recommendSwitch" @change="settingTwoLable"></switch>
+                </div>
+                <!--小三角-->
+                <div class="triangle">
+                    <image class="triangleImg" :src="triangleImg"></image>
+                </div>
+            </div>
+
+
             <div>
                 <div class="bottomBorder shareLineBox">
                     <div  class="singleBox" @click="doEdit()">
@@ -88,7 +106,7 @@
                         <div class="imgBox" @click="doPublish()">
                             <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                         </div>
-                        <text class="fz28 mt20 color444">发布</text>
+                        <text class="fz28 mt20 color444">详情</text>
                     </div>
                     <div class="singleBox" @click="doDel()">
                         <div class="imgBox" @click="doDel()">
@@ -96,11 +114,24 @@
                         </div>
                         <text class="fz28 mt20 color444">删除</text>
                     </div>
+                    <div class="singleBox" @click="clickLabel()" >
+                        <div class="imgBox" @click="clickLabel()">
+                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                        </div>
+                        <text class="fz28 mt20 color444">标签</text>
+                    </div>
+                    <div class="singleBox_end"  >
+                        <div class="imgBox" >
+                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                        </div>
+                        <text class="fz28 mt20 color444">活动</text>
+                    </div>
                 </div>
             </div>
             <div class="cancelBox" @click="doCancel()">
                 <text class="fz32">取消</text>
             </div>
+        </div>
         </div>
         <div class="button bw bkg-primary" v-if="!doSearch" @click="addGoods()">
             <text class="buttonText ">新增商品</text>
@@ -109,6 +140,45 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    /*标签选择小弹窗*/
+    .mask{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .labelBox{
+        width: 260px;
+        border-radius: 15px;
+        position: fixed;
+        bottom:345px;
+        right:130px;
+        background-color: white;
+        border-width: 1px;
+        border-color: #F5F4F5;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .switchBox{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 220px;
+        height: 90px;
+    }
+    .triangle{
+        position: fixed;
+        bottom: 312px;
+        right:205px;
+    }
+    .triangleImg{
+        height: 50px;
+        width: 50px;
+    }
     .top20{
         top: 20px;
     }
@@ -248,8 +318,14 @@
     .singleBox{
         align-items: center;margin-right: 15px;
     }
+    .singleBox_end{
+        align-items: center;
+    }
     .shareLineBox{
-        width: 730px;margin-left: 20px;padding-right: 20px;flex-direction: row;padding-top: 30px;padding-bottom: 30px;
+        width: 710px;
+        margin-left: 20px;margin-right: 20px;
+        flex-direction: row;  justify-content:space-between;
+        padding-top: 30px;padding-bottom: 30px;
     }
     .bottomBorder{
         border-style: solid;border-color: gainsboro;border-bottom-width: 1px;
@@ -355,7 +431,17 @@
             searchOrCancel:'取消',
             keyword:'',
             clicked:false,
-            roles:''
+            roles:'',
+//            三角形图片
+            triangleImg:utils.locate('resources/images/triangle.png'),
+//            控制标签气泡渲染
+            hasLabelBox:false,
+//
+//            switch 推荐状态
+            recommendSwitch:false,
+//            switch 新品状态
+            newSwitch:false
+
         },
         props:{
             noDataHint:{default:'暂无商品'},
@@ -383,6 +469,64 @@
             }
         },
         methods:{
+//            点击标签
+            clickLabel:function () {
+              this.hasLabelBox = !this.hasLabelBox
+            },
+//            设置新品标签
+            settingOneLable:function (e) {
+                var _this = this;
+                let rc = 0;
+                if(_this.recommendSwitch){
+                    rc = 3
+                }
+                let nw = 0;
+                if (e.value==true) {
+                    nw = 2;
+                }
+                _this.newSwitch = (nw==2);
+                POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+nw +'&tagIds=' +rc).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            let tags=[{id:rc,name:'推荐'},{id:nw,name:'新品'}]
+                            _this.goodsList[_this.goodsIndex].tags = tags;
+
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content);
+                    }
+                )
+
+            },
+//            设置推荐标签
+            settingTwoLable:function (e) {
+                var _this = this;
+                let rc = 0;
+                if(e.value == true){
+                    rc = 3
+                }
+                let nw = 0;
+                if (_this.newSwitch) {
+                    nw = 2;
+                }
+                _this.recommendSwitch = (rc==3);
+                POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+nw +'&tagIds=' +rc).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            let tags=[{id:rc,name:'推荐'},{id:nw,name:'新品'}]
+                            _this.goodsList[_this.goodsIndex].tags = tags;
+
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content);
+                    }
+                )
+
+            },
             //            获取权限
             permissions:function () {
                 var _this = this;
@@ -405,6 +549,7 @@
                 let _this = this;
                 //            获取商品列表
                 GET('weex/member/product/list.jhtml?productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                    utils.debug(data)
                     if(data.type == 'success'){
                         if (_this.pageStart == 0) {
                             data.data.data.forEach(function (item) {
@@ -475,12 +620,14 @@
             doReset(){
                 this.isPopup = false;
                 this.goodsId = 0;
+                this.hasLabelBox = false;
             },
 //            点击取消
             doCancel:function () {
                 this.doReset();
             },
             popup:function (item,index) {
+                var _this = this
                 if(!utils.isNull(this.pageFrom)){
                     let E = utils.message('success','返回商品',item)
                     event.closeURL(E);
@@ -490,6 +637,18 @@
                     }
                     this.goodsId = item.id;
                     this.goodsIndex = index;
+                    let tags = this.goodsList[index].tags;
+                    tags.forEach(function (items) {
+                        if(items.id == 3){
+//                            状态为推荐
+                            _this.recommendSwitch = true;
+                        }
+                        if(items.id == 2){
+//                            状态为新品
+                            _this.newSwitch = true;
+                        }
+                    })
+
                 }
             },
             addGoods(){
@@ -578,6 +737,7 @@
             },
 //            发布商品weex/member/product/article.jhtml?id=goodsId
             doPublish(){
+                this.hasLabelBox = false
                 if (this.clicked) {
                     return;
                 }
@@ -625,6 +785,7 @@
             },
 //            编辑商品
             doEdit(){
+                this.hasLabelBox = false
                 if (this.clicked) {
                     return;
                 }
@@ -641,6 +802,7 @@
             },
 //            删除商品
             doDel(){
+                this.hasLabelBox = false
                 let _this = this;
                 modal.confirm({
                     message: '是否要删除该商品?',

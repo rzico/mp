@@ -226,9 +226,12 @@
                     if (e.result == 'success') {
                         _this.billDate = e.data;
                         _this.title = "账单("+_this.billDate+")";
+                        _this.pageStart=0;
                         _this.open(0,function () {
-
                         });
+                        setTimeout(() => {
+                            _this.onrefresh()
+                        }, 500)
                     }
                 })
             },
