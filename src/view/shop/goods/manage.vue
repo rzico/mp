@@ -60,8 +60,12 @@
                             <text class="linesCtrl title">{{item.name}}</text>
                         </div>
                         <div class="flex1 " >
-                            <div class="bt10 flex1" >
+                            <div class="bt10 flex1 flex-row" >
                                 <text class="goodsPrice" >¥ {{item.price | currencyfmt}}</text>
+                                <div v-for="(items,index) in item.tags">
+                                <div class="listLabelBoxOne"  :style="addBg(items)" v-if="items.id>0"><text class="listLabelBoxText">{{items.name}}</text> </div>
+                                <!--<div class="listLabelBoxTwo" ><text class="listLabelBoxText">推荐</text> </div>-->
+                                </div>
                             </div>
                             <div class="space-between bottomInfo flex1">
                                 <text class="sub_title fz28">库存: {{item.stock}}</text>
@@ -104,7 +108,7 @@
                     </div>
                     <div class="singleBox" @click="doPublish()">
                         <div class="imgBox" @click="doPublish()">
-                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
                         </div>
                         <text class="fz28 mt20 color444">详情</text>
                     </div>
@@ -116,20 +120,20 @@
                     </div>
                     <div class="singleBox" @click="clickLabel()" >
                         <div class="imgBox" @click="clickLabel()">
-                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe63d;</text>
                         </div>
                         <text class="fz28 mt20 color444">标签</text>
                     </div>
                     <div class="singleBox_end"  >
                         <div class="imgBox" >
-                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                            <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe632;</text>
                         </div>
-                        <text class="fz28 mt20 color444">活动</text>
+                        <text class="fz28 mt20 color444">优惠</text>
                     </div>
                 </div>
             </div>
             <div class="cancelBox" @click="doCancel()">
-                <text class="fz32">取消</text>
+                <text class="fz32">关闭</text>
             </div>
         </div>
         </div>
@@ -179,6 +183,27 @@
         height: 50px;
         width: 50px;
     }
+    .listLabelBoxOne{
+        width: 60px;
+        border-radius: 3px;
+        background-color: #EB4E40;
+        align-items: center;
+        justify-content: center;
+        margin-left: 20px;
+    }
+    .listLabelBoxTwo{
+        width: 60px;
+        border-radius: 3px;
+        background-color: #ff700b;
+        align-items: center;
+        justify-content: center;
+        margin-left: 20px;
+    }
+    .listLabelBoxText{
+        color: white;
+        font-size: 20px;
+    }
+
     .top20{
         top: 20px;
     }
@@ -364,6 +389,7 @@
     .linesCtrl{
         lines:2;
         text-overflow: ellipsis;
+        line-height: 40px;
     }
     .bottomInfo{
         padding-right: 40px;
@@ -469,6 +495,18 @@
             }
         },
         methods:{
+            addBg:function (items) {
+                if(items.name == '新品' ){
+                    return {
+                        backgroundColor:'#EB4E40'
+                    }
+
+                }else if(items.name == '推荐'){
+                    return {
+                        backgroundColor:'#ff700b'
+                    }
+                }
+            },
 //            点击标签
             clickLabel:function () {
               this.hasLabelBox = !this.hasLabelBox
@@ -488,7 +526,7 @@
                 POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+nw +'&tagIds=' +rc).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            let tags=[{id:rc,name:'推荐'},{id:nw,name:'新品'}]
+                            let tags=[{id:nw,name:'新品'},{id:rc,name:'推荐'}]
                             _this.goodsList[_this.goodsIndex].tags = tags;
 
                         } else {
@@ -515,7 +553,7 @@
                 POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+nw +'&tagIds=' +rc).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            let tags=[{id:rc,name:'推荐'},{id:nw,name:'新品'}]
+                            let tags=[{id:nw,name:'新品'},{id:rc,name:'推荐'}]
                             _this.goodsList[_this.goodsIndex].tags = tags;
 
                         } else {
@@ -549,7 +587,6 @@
                 let _this = this;
                 //            获取商品列表
                 GET('weex/member/product/list.jhtml?productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                    utils.debug(data)
                     if(data.type == 'success'){
                         if (_this.pageStart == 0) {
                             data.data.data.forEach(function (item) {

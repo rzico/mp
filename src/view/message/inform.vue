@@ -312,6 +312,7 @@
     import navbar from '../../include/navbar.vue';
     import {dom,event,storage,stream,animation} from '../../weex.js';
     import utils from '../../assets/utils';
+    let Base64 = require('js-base64').Base64;
     import { POST, GET } from '../../assets/fetch'
     import noData from '../../include/noData.vue'
     import filters from '../../filters/filters.js'
@@ -420,6 +421,7 @@
                             if (_this.pageStart == 0) {
                                 data.data.data.forEach(function(item) {
                                     if (!utils.isNull(item.ext)) {
+                                        item.ext = Base64.decode(item.ext)
                                         item.ext = JSON.parse(item.ext);
                                     }
 //                                    手机用户登录可能未设置logo和nickName
@@ -436,6 +438,7 @@
                             }else{
                                 data.data.data.forEach(function(item){
                                     if(!utils.isNull(item.ext)){
+                                        item.ext = Base64.decode(item.ext)
                                         item.ext = JSON.parse(item.ext);
                                     }
                                     _this.dataList.push(item);
