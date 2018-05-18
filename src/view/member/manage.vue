@@ -302,7 +302,6 @@
                     autograph :this.member.autograph
                 }
                 let backData = utils.message('success','成功',E);
-//                utils.debug(E)
                 event.closeURL(backData);
             },
             attribute:function (e) {

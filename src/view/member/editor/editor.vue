@@ -486,8 +486,10 @@
             var _this = this;
             //            获取当前时间戳 作为唯一标识符key
             this.timestamp = Math.round(new Date().getTime()/1000);
+
 //            bundleUrl = new String(bundleUrl);
 //            取当前页面rul，将musicId取出来
+
             var bundleUrl = this.$getConfig().bundleUrl;
             var articleId = utils.getUrlParameter("articleId");
             var goodsId = utils.getUrlParameter("goodsId");
