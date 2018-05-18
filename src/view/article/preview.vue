@@ -23,13 +23,13 @@
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                     <text class="fz26fff ">分享 {{shareNum}}</text>
                 </div>
-                <div class="bottomBtnBox" @click="goReview()">
+                <div class="bottomBtnBox" @click="goReview()" v-if="isReview">
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe65c;</text>
                     <text class="fz26fff ">评论 {{reviewNum}}</text>
                 </div>
-                <div class="bottomBtnBox"  @click="goReward()">
+                <div class="bottomBtnBox"  @click="goReward()" v-if="isReward">
                     <text class="fz26fff fzz45 " :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="fz26fff ">赞赏</text>
+                    <text class="fz26fff ">赞赏 {{rewardNum}}</text>
                 </div>
             </div>
             <!--模版-->
@@ -347,6 +347,7 @@
                 laudNum:0,
                 shareNum:0,
                 reviewNum:0,
+                rewardNum:0,
                 isLaud:false,
                 memberId:'',
                 showShare:false,
@@ -360,8 +361,8 @@
                 rewardShow:false,
                 buyShow:false,
                 noAppear:false,
-//                isReview:false,
-//                isReward:false,
+                isReview:false,
+                isReward:false,
             }
         },
         components: {
@@ -412,12 +413,13 @@
                 if( data.type=='success' && data.data != ''){
                     _this.memberId = data.data.memberId;
                     _this.reviewNum = data.data.review;
+                    _this.rewardNum = data.data.reward;
                     _this.laudNum = data.data.laud;
                     _this.isLaud = data.data.hasLaud;
                     _this.isCollect = data.data.hasFavorite;
                     _this.shareNum = data.data.share;
                     _this.authorInfo = data.data;
-//                    _this.isReward = data.data.isReward;
+                    _this.isReward = data.data.isReward;
                     _this.isReview = data.data.isReview;
                     let uId = event.getUId();
 //            判断是否作者本人
@@ -721,6 +723,11 @@
 //                event.openURL(utils.locate('view/member/editor/option.js),
                 event.openURL(utils.locate('view/member/editor/option.js?articleId=' + this.articleId),function (data) {
 //                event.openURL('http://192.168.2.157:8081/option.weex.js?articleId=' + this.articleId, function (data) {
+                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete') {
+
+                        _this.isReward = data.data.isReward;
+                        _this.isReview = data.data.isReview;
+                    }
                 });
             },
 //            触碰遮罩层
@@ -762,6 +769,8 @@
                         _this.showShare = true;
                         _this.complete = '操作';
                         _this.title = '文章详情';
+                        _this.isReward = data.data.isReward;
+                        _this.isReview = data.data.isReview;
                     }
                 });
 //                event.router(utils.locate('view/member/editor/option.js?articleId=' + _this.articleId));
@@ -1079,7 +1088,20 @@
 //            赞赏
             goReward(){
 //                this.$refs.buy.show(55,342);
-                this.rewardShow = true;
+                var _this =this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                if(this.isSelf == 0){
+                    this.rewardShow = true;
+                }else{
+                    event.openURL(utils.locate('view/member/editor/whoReward.js?articleId=' + this.articleId),function (data) {
+                    })
+                }
             },
             sendReward(m,id){
                 let _this = this;

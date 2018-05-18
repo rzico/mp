@@ -89,7 +89,7 @@
                 <text class="buttonText white">如已授权成功,请点这里</text>
             </div>
         </div>
-        <payment ref="payment" @notify="notify"></payment>
+        <payment ref="payment" :receiveSn="receiveSn" @notify="notify" v-if="paymentShow" @paymentClose="paymentClose"></payment>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -137,6 +137,8 @@
                 steped4:false,
                 number5:utils.locate('resources/images/number5.jpg'),
                 showOptions:false,
+                receiveSn:'',
+                paymentShow:false,
             }
         },
         props: {
@@ -277,8 +279,11 @@
                                     if (utils.isNull(mes.data)) {
                                         _this.open();
                                     } else {
-                                        _this.$refs.payment.show(mes.data);
+
+                                        _this.receiveSn = mes.data;
+                                        _this.paymentShow = true;
                                         _this.open();
+
                                     }
                                 } else {
                                     event.toast(mes.content);
@@ -352,6 +357,11 @@
                     function (err) {
                         event.toast(err.content);
                     })
+            },
+
+//            隐藏支付组件
+            paymentClose:function () {
+                this.paymentShow = false;
             },
         }
     }

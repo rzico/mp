@@ -18,12 +18,12 @@
                     </div>
                 </div>
             </div>
-            <div class="ml20 boder-bottom "></div>
+            <div class="ml20 boder-bottom"></div>
             <div class="cell-row mt0">
                 <div class="cell-panel space-between cell-clear" @click="areaChoose()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-                        <text class="title ml20">{{companyInfo.area.name}}</text>
+                        <text class="title ml20">{{companyInfo.area.name | watchAreaName}}</text>
                     </div>
                     <!--<div class="flex-row flex-end">-->
                     <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
@@ -200,9 +200,8 @@
                     autograph: "点击设置企业签名",
                     area:{
                         id:'',
-                        name:'',
+                        name:'点击设置企业地址',
                     },
-                    name:'企业所在地',
                     startTime:'00:00',
                     endTime:'23:59',
                     image:[],
@@ -250,6 +249,13 @@
                     return value
                 }
             },
+            watchAreaName:function (value) {
+                if(utils.isNull(value)){
+                    return '点击设置企业所在地区';
+                }else{
+                    return value
+                }
+            },
         },
         created() {
             this.open();
@@ -285,20 +291,22 @@
                 item.loading = true;
             },
             pickStartTime() {
+                let _this = this;
                 picker.pickTime({
-                    value: this.companyInfo.startTime
+                    value: _this.companyInfo.startTime
                 }, e => {
                     if (e.result === 'success') {
-                        this.companyInfo.startTime = e.data
+                        _this.companyInfo.startTime = e.data
                     }
                 })
             },
             pickEndTime() {
+                let _this = this;
                 picker.pickTime({
-                    value: this.companyInfo.endTime
+                    value: _this.companyInfo.endTime
                 }, e => {
                     if (e.result === 'success') {
-                        this.companyInfo.endTime = e.data
+                        _this.companyInfo.endTime = e.data
                     }
                 })
             },
@@ -408,7 +416,6 @@
                 if (frontUrl == 'http') {
                     _this.realSave();
                 }else{
-                    utils.debug(companyLogo);
                     event.upload(companyLogo, function (data) {
                         if (data.type == 'success') {
                             _this.paraLogo = data.data;
@@ -533,7 +540,8 @@
                 event.openURL(utils.locate('widget/city.js?type=0'),function (data) {
                     if(data.type == 'success' && !utils.isNull(data.data) ){
                         _this.companyInfo.area.id = data.data.chooseId;
-                        _this.companyInfo.area.name = data.data.name;
+//                        _this.companyInfo.area.name = data.data.name;
+                        _this.$set(_this.companyInfo.area,'name',data.data.name);
                     }
 
                 })

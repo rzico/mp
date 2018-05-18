@@ -234,11 +234,9 @@
                         )
                     }
                 })
-
             },
 
             areaChoose:function () {
-//                event.openURL('http://192.168.2.108:8081/city.weex.js?type=0',function (data) {
                 if (this.clicked) {
                     return;
                 }
@@ -443,7 +441,6 @@
                         )
                     }
                 })
-
                 });
             },
             updateStatus: function (attr) {

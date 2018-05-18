@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper"  @viewdisappear="pageDestroy()">
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
         <scroller class="scroller" show-scrollbar="false">
             <div class="flex-row ">
@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="sub-panel tip" v-if="isNoActivate()" @click="activate()">
-                <text class="vip">点亮VIP专栏特权（588元/年）</text>
+                <text class="vip">点亮VIP专栏特权（{{topic.fee | watchFee}}元/年）</text>
             </div>
             <div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">
                 <text class="vip">开通店铺，体验众卖新营销模式</text>
@@ -103,7 +103,8 @@
                     </div>
                     <div class="flex-row flex-end">
                         <!--<text class="sub_title">未设置 </text>-->
-                        <text class="arrow" :style="{fontFamily:'iconfont'}" ref="arrow">&#xe630;</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}" ref="arrow"  v-if="!steped4">&#xe630;</text>
+                        <text class="check" :style="{fontFamily:'iconfont'}" v-else>&#xe64d;</text>
                     </div>
                 </div>
             </div>
@@ -218,6 +219,7 @@
     const album = weex.requireModule('album');
     const event = weex.requireModule('event');
     var modal = weex.requireModule('modal');
+    var globalEvent = weex.requireModule('globalEvent');
     export default {
         data() {
             return {
@@ -231,6 +233,7 @@
                 receiveSn:'',
                 paymentShow:false,
                 showOptions:false,
+                steped4:false,
             }
         },
         components: {
@@ -242,8 +245,29 @@
         created(){
             utils.initIconFont();
             this.load();
+            this.open();
+        },
+        filters:{
+            watchFee:function (value) {
+                return value;
+            }
         },
         methods: {
+            //            获取状态
+            open:function () {
+                var _this = this;
+                GET("weex/member/guide/view.jhtml",function (res) {
+                        if (res.type=='success') {
+                            _this.steped4 = res.data.steped4;
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+
+            },
 //            判断激活状态并且没工作
             judgmentone:function () {
                 let _this =this;
@@ -378,6 +402,13 @@
                             } else {
                                 _this.receiveSn = mes.data;
                                 _this.paymentShow = true;
+
+                                //            全局监听 消息
+                                globalEvent.addEventListener("onMessage", function (e) {
+                                    if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10202'){
+                                        _this.load();
+                                    }
+                                });
                             }
                         } else {
                             event.toast(mes.content);
@@ -387,6 +418,10 @@
                         event.toast(err.content);
                     }
                 )
+            },
+            //            页面被关闭
+            pageDestroy: function pageDestroy() {
+               globalEvent.removeEventListener("onMessage");
             },
 //            隐藏支付组件
             paymentClose:function () {
@@ -478,7 +513,7 @@
             },
             linkman:function () {
                 modal.alert({
-                    message: '开通设置，请联系客服:13860431130',
+                    message: '开通设置，请联系客服:13400766646',
                     okTitle: '知道了'
                 })
             },
@@ -541,6 +576,9 @@
             },
             //            小程序一键授权
             appletAgree() {
+                if(this.steped4){
+                    return;
+                }
                 let _this = this;
 //                event.openURL(utils.locate("view/member/topic/appletAgree.js"), function (message) {
 //                });
@@ -586,7 +624,25 @@
                     timingFunction: timingFunction,
                     duration: duration
                 }, callback || function(){});
-            }
+            },
+            agreeSuccess(){
+                var _this = this;
+                GET("weex/member/guide/view.jhtml",function (res) {
+                        if (res.type=='success') {
+                            _this.steped4 = res.data.steped4;
+                            if(res.data.steped4){
+                                event.toast('授权成功');
+                            }else{
+                                event.toast('请您先按照授权步骤进行授权');
+                            }
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+            },
         }
     }
 </script>

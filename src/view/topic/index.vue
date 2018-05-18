@@ -727,7 +727,6 @@
             addArticle:function () {
                 let _this = this;
 //                this.listCurrent = this.listPageSize + this.listCurrent;
-
                 GET('weex/article/list.jhtml?authorId='+ this.UId + '&articleCatalogId=' + this.corpusId + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
                     if(data.type == 'success'){
                         if (data.data.start==0) {

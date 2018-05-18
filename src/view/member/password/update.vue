@@ -98,7 +98,6 @@
                     if (msg.type=="success") {
                         POST('weex/member/password/update.jhtml?enPassword=' + msg.data+"&captcha="+_this.captcha).then(
                             function (data) {
-                                utils.debug(data)
                                 if (data.type == "success") {
                                     let backData = utils.message('success','成功');
                                     event.closeURL(backData);

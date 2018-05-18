@@ -281,6 +281,7 @@
                 }
             },
             comfrm () {
+                let _this = this;
                 if (this.id == 2) {
                     this.isPwd = true;
                     return;
@@ -290,6 +291,12 @@
                 }
                 if (this.id == 0) {
                     this.payment("weixinAppPlugin");
+                    setTimeout(function () {
+                        if(this.isReceiveSn != 0 ){
+                            _this.$emit("paymentClose");
+                        }
+                    },1500)
+
                 }
             },
             balance(pwd) {
@@ -344,17 +351,16 @@
                 var _this = this;
                 POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
                     function (data) {
-//                        utils.debug(data);
                         if (data.type=="success") {
                             event.wxAppPay(data.data,function (e) {
                                 if (e.type=='success') {
                                     POST("payment/query.jhtml?sn="+_this.sn).then(
-                                        function (data) {
-                                            if (data.type=="success") {
-                                                if (data.data=="0000") {
+                                        function (mes) {
+                                            if (mes.type=="success") {
+                                                if (mes.data=="0000") {
                                                     _this.close(utils.message("success","success"));
                                                 } else
-                                                if (data.data=="0001") {
+                                                if (mes.data=="0001") {
                                                     _this.close(utils.message("error","error"));
                                                 }
                                                 else {

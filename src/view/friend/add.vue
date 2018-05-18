@@ -36,7 +36,6 @@
                     </div>
                 </div>
              </div>
-
             <div class="cell-row cell-line" @click="showQrcode()">
                  <div class="cell-panel h space-between cell-clear">
                     <div class="flex-row">
@@ -58,12 +57,9 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
-
     .h {
         height: 120px;
     }
-
-
 </style>
 <script>
     const stream = weex.requireModule('stream');

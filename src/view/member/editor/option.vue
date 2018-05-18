@@ -385,7 +385,7 @@
 //                    articleCategoryId:this.category
 //                }
 //                publishData = JSON.stringify(publishData);
-                let urlData = 'weex/member/article/publish.jhtml?id=' + this.articleId + '&isPublish=' + this.contributeSwitch + '&isReview=' + this.commentsSwitch + '&isReward='
+                let urlData = 'weex/member/article/publish.jhtml?id=' + this.articleId + '&isPitch=' + this.contributeSwitch + '&isReview=' + this.commentsSwitch + '&isReward='
                     + this.rewardSwitch + '&authority=' + authorityData + '&isTop=' + this.topData + '&password=' + this.password + '&articleCatalogId=' + this.corpusId
                     + '&articleCategoryId=' + this.category;
 //                event.toast(urlData);
@@ -426,7 +426,9 @@
                                 }
 
                                 let E = {
-                                    isDone : 'complete'
+                                    isDone : 'complete',
+                                    isReward:_this.rewardSwitch,
+                                    isReview:_this.commentsSwitch,
                                 }
                                 let backData = utils.message('success','成功',E);
                                 event.closeURL(backData);

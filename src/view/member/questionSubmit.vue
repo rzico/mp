@@ -202,7 +202,7 @@
                 POST('weex/member/feedback/add.jhtml?content=' + encodeURIComponent(this.questionContent) + '&imgs=' + imgsList ).then(
                     function (data) {
                         if(data.type == 'success'){
-                            utils.debug('提交成功');
+                            event.toast('提交成功');
                             event.closeURL();
                         }else{
                             event.toast(data.content);
