@@ -403,6 +403,7 @@
     export default {
         data:function(){
             return{
+                articleType:'article',
                 showStore:'',
                 toSendArticle:false,//控制进度条 遮罩显示
                 currentPro:0,//当前进度
@@ -488,6 +489,11 @@
 //            取当前页面rul，将musicId取出来
             var bundleUrl = this.$getConfig().bundleUrl;
             var articleId = utils.getUrlParameter("articleId");
+            var goodsId = utils.getUrlParameter("goodsId");
+            if (!utils.isNull(goodsId)) {
+                _this.articleType = "product";
+                _this.goodsId = goodsId;
+            }
 
             //          创建文章编辑（首次）
             if(utils.isNull(articleId)){
@@ -574,7 +580,7 @@
 
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
-                let storageName = utils.getUrlParameter('goodsStorageName')
+                let storageName = utils.getUrlParameter('goodsStorageName');
                 if(utils.isNull(storageName)) {
                     let options = {
                         type:'article',
@@ -1395,6 +1401,8 @@
                     title:_this.setTitle,
                     votes:_this.voteData,
                     isDraft:false,
+                    goodsId:_this.goodsId,
+                    articleType:_this.articleType,
                 };
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
