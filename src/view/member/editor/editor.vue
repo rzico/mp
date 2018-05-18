@@ -493,13 +493,14 @@
             var bundleUrl = this.$getConfig().bundleUrl;
             var articleId = utils.getUrlParameter("articleId");
             var goodsId = utils.getUrlParameter("goodsId");
+
             if (!utils.isNull(goodsId)) {
                 _this.articleType = "product";
                 _this.goodsId = goodsId;
             }
 
             //          创建文章编辑（首次）
-            if(utils.isNull(articleId)){
+            if(utils.isNull(articleId) && utils.isNull(goodsId)){
 
 //                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
                 clipboard.getString(ret => {
@@ -584,6 +585,7 @@
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
                 let storageName = utils.getUrlParameter('goodsStorageName');
+                utils.debug(storageName);
                 if(utils.isNull(storageName)) {
                     let options = {
                         type:'article',
@@ -605,6 +607,7 @@
                     _this.readData(options);
                 }else {//读取商品缓存并写入页面之中。
                     storage.getItem(storageName, function (e) {
+                        utils.debug(e);
                         if (e.result == 'success') {
                             var goodsInfo = JSON.parse(e.data);
                             _this.coverImage =  goodsInfo.thumbnail;
