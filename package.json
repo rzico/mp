@@ -15,6 +15,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "js-base64": "^2.4.5",
     "less": "^2.7.3",
     "less-loader": "^4.1.0",
     "natjs": "^0.0.9",

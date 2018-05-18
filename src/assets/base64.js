@@ -1,4 +1,4 @@
-var base64 = {
+let base64 = {
      base64Chars:[
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
             'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
