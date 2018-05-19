@@ -1,0 +1,431 @@
+<template>
+    <div class="wrapper">
+        <navbar :title="title" @goback="goback" @goComplete="setting" > </navbar>
+        <div class="addFriend" @click="add">
+            <div class="flex-row " style="align-items:center">
+                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe632;</text>
+                <text class="title  " style="margin-left: 30px" >新增优惠</text>
+            </div>
+            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
+        <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
+        <list  class="list" v-if="isNoEmpty()" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
+            </refresh>
+            <cell v-for="(num,index) in lists" >
+                <div class="deleteBox bkg-delete" @click="del(num.id,index)">
+                    <text class="deleteText">删除</text>
+                </div>
+                <div class="addFriendsBorder" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+                        <div class="imageBox">
+                            <image class="image" :src="activeImg"></image>
+                            <text class="realName">{{num.type | wacthType}}</text>
+                        </div>
+                    <div class="friendsName">
+                            <text class="lineTitle">{{num.title}}</text>
+                    </div>
+                </div>
+            </cell>
+        </list>
+    </div>
+</template>
+
+<style lang="less" src="../../../style/wx.less"/>
+<style>
+    .deleteText{
+        font-size: 32px;color: #fff;
+    }
+    .deleteBox{
+        position: absolute;right: 0px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
+    }
+    .iconfont{
+        color: #cccccc;
+        margin-top: 5px;
+        margin-right: 20px;
+    }
+    .code{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        height: 60px;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        border-width: 1px;
+        border-color: #cccccc;
+        border-radius: 10px;
+    }
+    .time{
+        width: 550px;
+    }
+    .usetext{
+        font-size: 25px;
+        color: red;
+
+    }
+    .use{
+        align-items: center;
+        justify-content: center;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-color: red;
+        border-width: 1px;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        position: absolute;
+        right: 40px;
+        bottom: 35px;
+    }
+    .mark{
+        font-size: 32px;
+        color: red;
+        margin-top: 20px;
+    }
+    .markmoney{
+        flex-direction: row;
+    }
+    .addFriend {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background-color: white;
+        border-top-width: 1px;
+        border-top-style: solid;
+        border-top-color: #ccc;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
+    }
+    .list {
+        background-color: white;
+    }
+
+    .friendsName {
+        height: 120px;
+        flex-direction: row;
+        align-items: center;
+    }
+    .realName{
+        font-size:40px;
+        font-weight: bold;
+        color: white;
+        position: absolute;
+        top:32px;
+        left:50px;
+    }
+    .imageBox{
+        justify-content: center;
+        align-items: center;
+        height: 120px;
+        width: 140px;
+    }
+    .image{
+        height: 80px;
+        width: 80px;
+    }
+    .addFriendsBorder{
+        background-color: white;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: rgba(153,153,153,0.2);
+        flex-direction: row;
+        align-items: center;
+    }
+    .friendsLine{
+        height:120px;
+    }
+    .scope{
+        font-size: 20px;
+        color: #888;
+    }
+    .lineTitle{
+        font-size: 32px;
+        width: 570px;
+        lines:2;
+        text-overflow: ellipsis;
+    }
+    .vip1 {
+        /*margin-top: 50px;*/
+        /*margin-left: 10px;*/
+        position: absolute;
+        top: 20px;
+        left: 60px;
+        color:#FFDD1F;
+    }
+    .vip2 {
+        /*margin-top: 50px;*/
+        /*margin-left: 10px;*/
+        position: absolute;
+        top: 20px;
+        left: 60px;
+        color:#FF8800;
+    }
+    .vip3 {
+        /*margin-top: 50px;*/
+        /*margin-left: 10px;*/
+        position: absolute;
+        top: 20px;
+        left: 60px;
+        color:#DC0000;
+    }
+</style>
+
+<script>
+    var modal = weex.requireModule('modal')
+    var prompting =''
+    import { POST, GET ,SCAN} from '../../../assets/fetch'
+    import utils from '../../../assets/utils'
+    import filters from '../../../filters/filters'
+    import {dom,event,animation} from '../../../weex.js';
+    const picker = weex.requireModule('picker')
+    import navbar from '../../../include/navbar.vue';
+    import search from '../../../include/search.vue';
+    import noData from '../../../include/noData.vue';
+    var he = require('he');
+    var animationPara;//执行动画的消息
+    export default {
+        components: {
+            navbar,search,noData
+        },
+        data() {
+            return   {
+                start:0,
+                refreshing:false,
+                showLoading:false,
+                friendsList:[],
+                lists:[],
+                pageSize:10,
+                pageStart:0,
+                id:'',
+                goodsId:'',
+                goodsName:'',
+                canScroll:true,
+                refreshImg:utils.locate('resources/images/loading.png'),
+                roles:'',
+                activeImg:utils.locate('resources/images/active.png'),
+                loading:false
+            }
+        },
+        props: {
+            title: { default: "商品优惠"},
+            noDataHint: { default: "该商品尚未创建商品优惠"},
+        },
+        created() {
+            utils.initIconFont();
+            this.goodsId = utils.getUrlParameter('id');
+            this.goodsName = utils.getUrlParameter('goodsName');
+            this.open(function () {});
+            this.permissions()
+        },
+        filters:{
+            wacthType:function (data) {
+                if(data == 'give'){
+                    return '送'
+                }else if(data == 'gift'){
+                    return '赠'
+                }
+            }
+        },
+        methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
+//            新增活动
+            add:function() {
+                let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                event.openURL(utils.locate("view/shop/goods/activityAdd.js?goodsId="+this.goodsId+'&goodsName='+encodeURIComponent(this.goodsName)),function (mes) {
+                    if(mes.type == 'success')
+                        _this.lists.splice(0,0,mes.data);
+                })
+            },
+            open:function () {
+                var _this = this;
+                if (this.loading==true) {
+                    return
+                }
+                this.loading = true;
+                GET('weex/member/promotion/list.jhtml?goodsId='+this.goodsId+'&pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
+                    if (mes.type == 'success') {
+                        if (_this.pageStart==0) {
+                            _this.lists = mes.data.data;
+                        } else {
+                            mes.data.data.forEach(function(item){
+                                _this.lists.push(item);
+                            })
+                        }
+                        _this.pageStart = mes.data.start+mes.data.data.length;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                    _this.loading = false;
+                }, function (err) {
+                    event.toast(err.content)
+                    _this.loading = false;
+                })
+            },
+            isNoEmpty:function() {
+                return this.lists.length!=0;
+            },
+            isEmpty:function() {
+                return this.lists.length==0;
+            },
+            onloading (event) {
+                this.open();
+            },
+//            下拉刷新
+            onrefresh (event) {
+                var _this = this;
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+                    _this.open();
+                }, 1000)
+            },
+            onpanmove:function (e,index) {
+//                获取当前点击的元素。
+                var _this = this;
+                if(e.direction == 'right'){
+                    _this.canScroll = false;
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }else if(e.direction == 'left'){
+                    _this.canScroll = false;
+//                  modal.toast({message:distance});
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(-190)',
+                        },
+                        duration:350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    },function () {
+                        _this.canScroll = true;
+                    })
+                }
+            },
+            //            点击屏幕时
+            onFriendtouchstart:function (e,index) {
+                var _this = this;
+                if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                }else{
+                    animation.transition(animationPara, {
+                        styles: {
+                            transform: 'translateX(0)',
+                        },
+                        duration: 350, //ms
+                        timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                }
+//                获取当前点击的元素。
+                animationPara =  e.currentTarget;
+            },
+            del:function (id,index) {
+                let _this =this
+                POST('weex/member/promotion/delete.jhtml?id='+id).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            //                            把动画收回来。
+                            if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                            }else{
+                                animation.transition(animationPara, {
+                                    styles: {
+                                        transform: 'translateX(0)',
+                                    },
+                                    duration: 10, //ms
+                                    timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                    needLayout:false,
+                                    delay: 0 //ms
+                                })
+                            }
+                            _this.lists.splice(index,1);
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast("网络不稳定");
+                    }
+                )
+            },
+            modification:function (id) {
+                let _this =this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                event.openURL(utils.locate('view/shop/goods/activityAdd.js?id='+id),function (message) {
+                    if(message.type == 'success'){
+                        _this.onrefresh()
+                    }
+                })
+            },
+            goback:function () {
+                event.closeURL();
+            },
+
+        }
+    }
+</script>

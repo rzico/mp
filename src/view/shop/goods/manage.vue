@@ -124,8 +124,8 @@
                         </div>
                         <text class="fz28 mt20 color444">标签</text>
                     </div>
-                    <div class="singleBox_end"  >
-                        <div class="imgBox" >
+                    <div class="singleBox_end"  @click="goAcitve()">
+                        <div class="imgBox"  @click="goAcitve()">
                             <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe632;</text>
                         </div>
                         <text class="fz28 mt20 color444">优惠</text>
@@ -466,7 +466,8 @@
 //            switch 推荐状态
             recommendSwitch:false,
 //            switch 新品状态
-            newSwitch:false
+            newSwitch:false,
+            goodsName:''
 
         },
         props:{
@@ -673,8 +674,11 @@
                         this.isPopup = true;
                     }
                     this.goodsId = item.id;
+                    this.goodsName = item.name;
                     this.goodsIndex = index;
                     let tags = this.goodsList[index].tags;
+                    _this.recommendSwitch = false;
+                    _this.newSwitch = false;
                     tags.forEach(function (items) {
                         if(items.id == 3){
 //                            状态为推荐
@@ -860,6 +864,23 @@
                             event.toast(err.content);
                         });
                     };
+                });
+            },
+//            前往活动
+            goAcitve(){
+                this.hasLabelBox = false
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/activityList.js?id=' + this.goodsId+'&goodsName='+encodeURIComponent(this.goodsName)), function (res) {
+                    _this.clicked = false;
+                    _this.doReset();
+//                    if(res.type == 'success'){
+//                        _this.goodsList.splice(_this.goodsIndex,1);
+//                        _this.goodsList.splice(0,0,res.data);
+//                    }
                 });
             },
 //            返回

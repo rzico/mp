@@ -175,7 +175,6 @@
     .logo {
         width:200px;
         height:120px;
-        border-radius:10px;
         overflow:hidden;
     }
 

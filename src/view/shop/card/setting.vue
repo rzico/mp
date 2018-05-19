@@ -27,7 +27,7 @@
                 </div>
             </cell>
             <cell>
-                <div class="noLoading"></div>
+                <div style="height:400px"></div>
             </cell>
         </list>
     </div>
