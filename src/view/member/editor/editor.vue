@@ -1434,6 +1434,7 @@
 //                                    全局监听文章变动
                                     let listenData = utils.message('success','文章改变','');
                                     event.sendGlobalEvent('onArticleChange',listenData);
+
                                     if (_this.articleType=='article') {
                                       event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
                                         _this.currentPro = 0;//当前进度
