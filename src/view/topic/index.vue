@@ -3,7 +3,7 @@
         <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div>
             <!--顶部白色区域-->
-            <div class="header headerMore bkg-primary" @click="doNothing" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
+            <div class="header headerMore " @click="doNothing" :style="{opacity: opacityNum}" :class="[classHeader(),opacityNum == 0 ? 'novisible' : 'isvisible']" >
                 <!--顶部导航-->
                 <div class="nav nw">
                     <div style="width: 50px;">
@@ -28,10 +28,10 @@
             <!--绑定动画-->
             <!--<transition-group name="navTransition" tag="div">-->
             <!--只能多写一个顶部栏。否则无法适应-->
-            <div  class="corpusBox hideCorpus"   :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
-                <scroller scroll-direction="horizontal"  show-scrollbar="false"  class="corpusScroll">
-                    <div class="articleClass">
-                        <text @click="corpusChange(index,item.id)" class="allArticle"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
+            <div  class="corpusBox hideCorpus bkg-444"   :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">
+                <scroller scroll-direction="horizontal"  show-scrollbar="false"  class="corpusScroll bkg-444">
+                    <div class="articleClass bkg-444">
+                        <text @click="corpusChange(index,item.id)" class="allArticle white"  v-for="(item,index) in corpusList" v-if="item.count != 0" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                     </div>
                 </scroller>
                 <!--<div class="corpusIconBox"  @click="goCorpus()">-->
@@ -54,7 +54,6 @@
             <!--</refresh>-->
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
-
             <!--</transition-group>-->
             <!--顶部个人信息栏-->
             <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
@@ -190,6 +189,10 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .bkg-444{
+        background-color: #444444;
+    }
+
     .hideCorpus{
         top: 136px;position: fixed;
     }

@@ -39,7 +39,7 @@
             </div>
             <!--收藏-->
             <div class="templateIcon templateIconWH"  :style="{bottom:bottomNum + 135}" @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
-                <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe63d;</text>
+                <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe65d;</text>
                 <text class="templateText collectText" >收藏</text>
             </div>
             <transition name="slide-fade" mode="out-in">
@@ -147,10 +147,10 @@
         position:absolute;bottom: 0;width: 750px;  top: 136px;
     }
     .collectText{
-        font-size: 24px;line-height:24px;
+        font-size: 20px;line-height:20px;
     }
     .collectIcon{
-        font-size: 35px;line-height: 35px;margin-bottom: 2px;
+        font-size: 42px;line-height: 42px;margin-bottom: 2px;
     }
     .laudActive{
         color: #888;
@@ -667,7 +667,6 @@
 //                    上传文章模版
                     POST('weex/member/article/update.jhtml?id='+this.articleId + '&templateId=' + this.templateSaveId).then(
                         function (data) {
-//                            utils.debug(data);
                             if(data.type == 'success'){
                                 _this.initTemplateSn = _this.templateSn;
                                 _this.initTemplateName = _this.templateSaveName;
