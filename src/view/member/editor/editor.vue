@@ -585,7 +585,6 @@
             }else{//再次文章编辑
                 _this.delOnceDraft('noclose');
                 let storageName = utils.getUrlParameter('goodsStorageName');
-                utils.debug(storageName);
                 if(utils.isNull(storageName)) {
                     let options = {
                         type:'article',
@@ -607,7 +606,6 @@
                     _this.readData(options);
                 }else {//读取商品缓存并写入页面之中。
                     storage.getItem(storageName, function (e) {
-                        utils.debug(e);
                         if (e.result == 'success') {
                             var goodsInfo = JSON.parse(e.data);
                             _this.coverImage =  goodsInfo.thumbnail;

@@ -77,6 +77,16 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <div class="cell-panel space-between " @click="shippingManage()" v-if="member.isShop">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                        <text class="title ml10">运单管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="cell-panel space-between " @click="goodsManage()" v-if="member.isShop">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
@@ -453,6 +463,28 @@
                     return
                 }
                 event.openURL(utils.locate('view/shop/goods/manage.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            //            前往运单管理
+            shippingManage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate('view/shop/shipping/list.js'),
                     function (data) {
                         _this.clicked = false;
                         return ;

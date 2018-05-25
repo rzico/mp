@@ -1,7 +1,6 @@
 # IntelliJ project files
 .idea
 *.iml
-dist
 out
 gen
 WebContent/WEB-INFO/classes/
