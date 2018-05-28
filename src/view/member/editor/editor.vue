@@ -1141,6 +1141,11 @@
                     if((item.mediaType == 'image' || item.mediaType == 'product')&& item.paraImage != ''){
                         imageNum ++;
                     }
+
+                    if (item.mediaType == 'video' && _this.articleType=='article') {
+                        _this.articleType = 'video';
+                    }
+
                 })
                 if(imageNum == 0){
 //                        modal.toast({message: '至少要保留一张图片', duration: 0.5});
