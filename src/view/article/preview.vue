@@ -503,6 +503,9 @@
                     _this.isCollect = data.data.hasFavorite;
                     _this.shareNum = data.data.share;
                     _this.authorInfo = data.data;
+                    if (data.data.mediaType=="product") {
+                        _this.publish = true;
+                    }
                     let uId = event.getUId();
 //            判断是否作者本人
                     if(uId == _this.memberId){
