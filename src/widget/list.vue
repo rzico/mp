@@ -6,7 +6,7 @@
                     <div class="flex-row ml10">
                         <text class="title ml10 sss">{{item.name}}</text>
                     </div>
-                <div v-if="listId == item.id" >
+                <div v-if="listId == item.id && item.id!=null &&item.id != ''" >
                     <text class="check" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
                 </div>
             </div>

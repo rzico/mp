@@ -476,7 +476,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                if (!utils.isRoles("125",_this.roles)) {
+                if (!utils.isRoles("123",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'

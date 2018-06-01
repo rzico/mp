@@ -102,16 +102,21 @@
                     <div class="infoLines pb10">
                         <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
-
-                    <div class="infoLines pt0">
+                    <div class="infoLines pt0 pb0">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom pt10">
+                        <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom ">
+                        <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
                     </div>
                 </div>
                 <div class="mt20  infoWhiteColor" >
                     <div class="priceLine boder-bottom">
                         <div class="space-between">
                             <text class="sub_title">商品总额</text>
-                            <text class="sub_title">¥{{item.orderItems[0].price | currencyfmt}}</text>
+                            <text class="sub_title">¥{{item.amount | currencyfmt}}</text>
                         </div>
                         <div class=" space-between mt10 bt10">
                             <text class="sub_title">优惠折扣</text>
@@ -124,7 +129,7 @@
                     </div>
                     <div class="priceLine flex-end">
                         <div class="flex-row">
-                            <text class="title mr20">{{item.status | watchStatus}}:</text>
+                            <text class="title mr20">订单合计:</text>
                             <text class="title" style="color: red">¥{{item.amount | currencyfmt}}</text>
                         </div>
                     </div>
@@ -580,54 +585,78 @@
 //            确认订单
             confirmOrder:function (sn) {
                 let _this = this;
-                modal.confirm({
-                    message: '是否确认该订单?',
-                    duration: 0.3,
-                    okTitle:'确认',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确认'){
-                        POST('weex/member/order/confirm.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('确认成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
+//                modal.confirm({
+//                    message: '是否确认该订单?',
+//                    duration: 0.3,
+//                    okTitle:'确认',
+//                    cancelTitle:'取消',
+//                }, function (value) {
+//                    if(value == '确认'){
+//                        POST('weex/member/order/confirm.jhtml?sn=' + sn).then(
+//                            function (data) {
+//                                if(data.type == 'success'){
+//                                    _this.pageStart = 0;
+//                                    _this.open();
+//                                    event.toast('确认成功');
+//                                }else{
+//                                    event.toast(data.content);
+//                                }
+//                            },function (err) {
+//                                event.toast(err.content);
+//                            }
+//                        )
+//                    }
+//                })
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/shop/order/confirmOrder.js?sn=" + sn),function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success'){
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('确认成功');
                     }
-                })
+                });
             },
 //            发货
             sendGoods:function(sn){
                 let _this = this;
-                modal.confirm({
-                    message: '确认发货?',
-                    duration: 0.3,
-                    okTitle:'确认',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确认'){
-                        POST('weex/member/order/shipping.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('发货成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
+//                modal.confirm({
+//                    message: '确认发货?',
+//                    duration: 0.3,
+//                    okTitle:'确认',
+//                    cancelTitle:'取消',
+//                }, function (value) {
+//                    if(value == '确认'){
+//                        POST('weex/member/order/shipping.jhtml?sn=' + sn).then(
+//                            function (data) {
+//                                if(data.type == 'success'){
+//                                    _this.pageStart = 0;
+//                                    _this.open();
+//                                    event.toast('发货成功');
+//                                }else{
+//                                    event.toast(data.content);
+//                                }
+//                            },function (err) {
+//                                event.toast(err.content);
+//                            }
+//                        )
+//                    }
+//                })
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/shop/order/delivery.js?sn=" + sn),function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success') {
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('发货成功');
                     }
-                })
+                });
             },
 //            退货
             returnGoods:function (sn) {

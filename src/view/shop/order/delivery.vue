@@ -9,15 +9,15 @@
                         <text class="title goodsName">{{goods.name}}</text>
                         <text class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
                         <div class="goodsPriceNum">
-                            <text class="title coral">¥ {{goods.price | currencyfmt}}</text>
-                            <text class="sub_title">x{{goods.quantity}}</text>
+                            <!--<text class="title coral">¥ {{goods.price | currencyfmt}}</text>-->
+                            <text class="title coral">x{{goods.quantity}}</text>
                             <!--<text class="sub_title border shopCar" >加购物车</text>-->
                         </div>
                     </div>
                 </div>
                 <div class="setting" @click="pickPay">
                     <div class="flex-row">
-                        <text class="fz32">发货:  {{isobject}}</text>
+                        <text class="fz32">发货方式:  {{isobject | watchType}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -25,14 +25,14 @@
                 </div>
                 <div class="setting" @click="">
                     <div class="flex-row">
-                        <text class="fz32">单号:</text>
-                        <input class="input" placeholder="请输入快递单号"/>
+                        <text class="fz32">货运单号:</text>
+                        <input class="input" type="email" placeholder="请输入快递运单号"  v-model="trackingNo"/>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="button ml30 mr30 mt30">
+                <div class="button ml30 mr30 mt30" @click="sendGoods">
                     <text class="fz40" style="color:#fff;">确认发货</text>
                 </div>
             </div>
@@ -139,7 +139,8 @@
         data: function () {
             return {
                 begin:0,
-                isobject:'线下月结',
+                isobject:'shipping',
+                trackingNo:'',
                 ordersList:[]
             }
         },
@@ -153,6 +154,22 @@
             utils.initIconFont();
             this.orderSn = utils.getUrlParameter('sn');
             this.open();
+        },
+        filters: {
+            watchCreateDate: function (value) {
+                return utils.ymdhistimefmt(value);
+            },
+            watchType:function (val) {
+                if(val == 'shipping'){
+                    return'普通快递'
+                }else if(val == 'warehouse'){
+                    return'同城配送'
+                }else if(val == 'pickup'){
+                    return'线下自提'
+                }else if(val == 'cardbkg'){
+                    return'虚拟商品'
+                }
+            }
         },
         methods: {
             open:function () {
@@ -180,21 +197,36 @@
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.isobject = '普通快递';
+                            _this.isobject = 'shipping';
                             _this.begin = e.data;
                         }else if(e.data == 1){
-                            _this.isobject = '同城配送';
+                            _this.isobject = 'warehouse';
                             _this.begin = e.data;
                         }else if(e.data == 2){
-                            _this.isobject = '线下自提';
+                            _this.isobject = 'pickup';
                             _this.begin = e.data;
                         }else if(e.data == 3){
-                            _this.isobject = '虚拟商品';
+                            _this.isobject = 'cardbkg';
                             _this.begin = e.data;
                         }
                     }
                 })
             },
+            sendGoods:function () {
+                let _this = this
+                POST('weex/member/order/shipping.jhtml?sn=' + this.orderSn + '&shippingMethod='+ this.isobject +'&trackingNo=' + encodeURIComponent(this.trackingNo)).then(
+                    function (data) {
+                        if(data.type == 'success'){
+                            let E = utils.message('success','发货成功','')
+                            event.closeURL(E);
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    }
+                )
+            }
         }
     }
 </script>

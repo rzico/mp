@@ -8,19 +8,6 @@
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
             <div v-else v-for="(item,index) in ordersList"  >
-                <div class="header mt20 flex-row">
-                    <div >
-                        <text  class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe62e;</text>
-                    </div>
-                    <div>
-                        <div  class="logBox"  v-for="(orderLog,index) in item.orderLogs" :class="[index != 0 ? 'mt20' : '']">
-                            <text class="title">{{orderLog.content}} </text>
-                            <text class="subDate"> {{orderLog.createDate | watchLogDate}}</text>
-                        </div>
-                    </div>
-                    <!--<p class=" marginTop5 titleColor">国内承运人: 京东快递</p>-->
-                    <!--<p class=" marginTop5 titleColor">预计送达: 11月13日</p>-->
-                </div>
                 <div class="addressBox flex-row mt20">
                     <div style="width: 70px;">
                         <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
@@ -37,14 +24,14 @@
                     </div>
                 </div>
                 <div class="goodsLine mt20">
-                    <div class="space-between goodsHead boder-bottom" @click="goAuthor(item.memberId)">
+                    <div class="space-between goodsHead boder-bottom">
                         <div class="flex-row">
                             <image :src="item.logo" class="shopImg"></image>
                             <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                         </div>
                     </div>
-                    <div class="flex-row goodsBody " v-for="goods in item.orderItems">
+                    <div class="flex-row goodsBody " v-for="goods in item.shippingItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
                         <div class="goodsInfo" >
                             <text class="title goodsName">{{goods.name}}</text>
@@ -60,7 +47,7 @@
                 <div class="mt20 infoWhiteColor">
                     <div class="infoLines boder-bottom">
                         <div class="flex-row">
-                            <text class="sub_title">订单编号: {{item.sn}}</text>
+                            <text class="sub_title">订单编号: {{item.orderSn}}</text>
                             <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.sn)">复制</text>
                         </div>
                         <div class="mt10 ">
@@ -77,8 +64,17 @@
                         <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
 
-                    <div class="infoLines pt0">
+                    <div class="infoLines pt0 pb0">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom pt10">
+                        <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
+                    </div>
+                    <div class="infoLines pb10 ">
+                        <text class="sub_title ">留言: {{item.memo}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom pt0">
+                        <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
                     </div>
                 </div>
                 <!--<div class="mt20  infoWhiteColor" >-->
@@ -284,6 +280,7 @@
                 pageSize: 15,
 //            refreshImg:utils.locate('resources/images/loading.png'),
                 orderSN:'',
+                shippingSn:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
             }
@@ -397,13 +394,14 @@
         },
         created() {
             utils.initIconFont();
-            this.orderSn = utils.getUrlParameter('sn');
+            this.orderSn = utils.getUrlParameter('orderSn');
+            this.shippingSn = utils.getUrlParameter('sn');
             this.open();
         },
         methods: {
             open:function () {
                 let _this = this;
-                GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
+                GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
@@ -450,140 +448,6 @@
                 event.toast('单号复制成功');
             },
 
-//            确认退款
-            confirmRefund:function (sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '是否确定退款?',
-                    duration: 0.3,
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确定'){
-                        POST('weex/member/order/refunds.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('退款成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                })
-
-            },
-//            关闭订单
-            closeOrder:function (item,sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '确定关闭该订单?',
-                    duration: 0.3,
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确定'){
-                        POST('weex/member/order/cancel.jhtml?sn=' + sn).then(function (data) {
-                            if(data.type == 'success'){
-//            _this.ordersList.splice(_this.selectIndex,1);
-//                                        _this.ordersList[_this.selectIndex].status = 'completed',
-//                                        _this.ordersList[_this.selectIndex].statusDescr = '已取消',
-                                item.status = 'completed';
-                                item.statusDescr = '已取消';
-//                                    _this.pageStart = 0;
-//                                    _this.open();
-                                event.toast('关闭订单成功');
-                            }else{
-                                event.toast(data.content);
-                            }
-                        },function (err) {
-                            event.toast(err.content);
-                        })
-                    }
-                })
-            },
-//            确认订单
-            confirmOrder:function (sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '是否确认该订单?',
-                    duration: 0.3,
-                    okTitle:'确认',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确认'){
-                        POST('weex/member/order/confirm.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('确认成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                })
-            },
-//            发货
-            sendGoods:function(sn){
-                let _this = this;
-                modal.confirm({
-                    message: '确认发货?',
-                    duration: 0.3,
-                    okTitle:'确认',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确认'){
-                        POST('weex/member/order/shipping.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('发货成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                })
-            },
-//            退货
-            returnGoods:function (sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '确定退货?',
-                    duration: 0.3,
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确定'){
-                        POST('weex/member/order/returns.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('退货成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(data.content);
-                            }
-                        )
-                    }
-                })
-            },
 //            前往作者主页
             goAuthor(id){
                 if (this.clicked) {

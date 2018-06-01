@@ -13,7 +13,7 @@
                     <text class="dateText">{{item.createDate | timefmtMore}}</text>
                 </div>
                 <div class="contentBox">
-                    <text class="fz45 black">{{item.ext.orderItems[0].name}}</text>
+                    <text class="fz45 black">{{item.content}}</text>
                     <text class="sub_title mt10">{{item.createDate | ymdtimefmt}}</text>
                     <div class="moneyBox">
                         <text class="fz65">{{item.ext.amount | currencyfmt}}</text>

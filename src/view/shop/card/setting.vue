@@ -5,8 +5,8 @@
             <cell :style="{minHeight:screenHeight + 'px'}">
     <div class="setting" v-for="(num,index) in div">
         <div class="titile">
-            <text class="tiele">活动设置</text>
-            <text class="tiele" @click="del">删除</text>
+            <text class="fz32">活动设置</text>
+            <text class="fz32" @click="del">删除</text>
         </div>
         <div class="money">
             <text class="fz32">充</text>

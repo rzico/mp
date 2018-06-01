@@ -146,8 +146,8 @@
                                     <text class="rightHiddenText" v-else>取消置顶</text>
                                 </div>
                                 <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
-                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                                    <text class="rightHiddenText">文集</text>
+                                    <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                                    <text class="rightHiddenText">设置</text>
                                 </div>
                             </div>
                         </div>
@@ -953,35 +953,39 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id + '&articleId=' + item.key),
-//                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
-                    function (data) {
-                        _this.clicked = false;
-                        if(data.type == 'success' && data.data != ''){
-                            item.value.articleOption.articleCatalog.id = data.data.corpusId;
-                            item.value.articleOption.articleCatalog.name = data.data.corpusName;1
-                            item.value.articleOption.articleCatalog.count = data.data.count;
-                            let resDataStr = JSON.stringify(item.value);
-                            let saveData = {
-                                type:item.type,
-                                key:item.key,
-                                value:resDataStr,
-                                sort:item.sort,
-                                keyword:',['+ data.data.corpusId + '],' + item.title + ','
-                            }
-//                            event.toast(saveData);
-//                1是置顶（默认倒序）  keyword ",[1],文章title,"
-                            event.save(saveData,function(data) {
-                                if (data.type == 'success') {
-                                    event.toast('设置成功');
-                                } else {
-                                    event.toast(data.content);
-                                }
-                            })
-
-                        }
-                    }
-                );
+//                event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id + '&articleId=' + item.key),
+////                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
+//                    function (data) {
+//                        _this.clicked = false;
+//                        if(data.type == 'success' && data.data != ''){
+//                            item.value.articleOption.articleCatalog.id = data.data.corpusId;
+//                            item.value.articleOption.articleCatalog.name = data.data.corpusName;1
+//                            item.value.articleOption.articleCatalog.count = data.data.count;
+//                            let resDataStr = JSON.stringify(item.value);
+//                            let saveData = {
+//                                type:item.type,
+//                                key:item.key,
+//                                value:resDataStr,
+//                                sort:item.sort,
+//                                keyword:',['+ data.data.corpusId + '],' + item.title + ','
+//                            }
+////                            event.toast(saveData);
+////                1是置顶（默认倒序）  keyword ",[1],文章title,"
+//                            event.save(saveData,function(data) {
+//                                if (data.type == 'success') {
+//                                    event.toast('设置成功');
+//                                } else {
+//                                    event.toast(data.content);
+//                                }
+//                            })
+//
+//                        }
+//                    }
+//                );
+                event.openURL(utils.locate('view/member/editor/option.js?articleId=' + item.key),function (message) {
+                    _this.clicked = false;
+//                    _this.updateArticle();
+                });
             },
 
 //            前往文章

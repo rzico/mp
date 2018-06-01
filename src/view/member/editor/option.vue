@@ -16,20 +16,20 @@
             <div class="sub-panel">
                 <text class="sub_title">可自行控制文章展示范围</text>
             </div>
-            <div class="cell-row cell-line" @click="goCategory()">
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">文章分类</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">{{categoryName}}</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-panel">
-                <text class="sub_title">正确设置分类的文章将展示在“身边”栏目</text>
-            </div>
+            <!--<div class="cell-row cell-line" @click="goCategory()">-->
+                <!--<div class="cell-panel space-between cell-clear">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">文章分类</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{categoryName}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sub-panel">-->
+                <!--<text class="sub_title">正确设置分类的文章将展示在“身边”栏目</text>-->
+            <!--</div>-->
             <div class="cell-row cell-line" @click="goChooseCorpus()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -70,18 +70,44 @@
             <div class="sub-panel">
                 <text class="sub_title">开启后读者可以对文章进行评论</text>
             </div>
+            <!--<div class="cell-row cell-line">-->
+                <!--<div class="cell-panel space-between cell-clear">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">投稿</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<switch class="switch" :checked="contributeSwitch" @change="contributeChange"></switch>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sub-panel">-->
+                <!--<text class="sub_title">投稿后，被选用文章将获得大量展示机会</text>-->
+            <!--</div>-->
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
-                        <text class="title ml10">投稿</text>
+                        <text class="title ml10">精选</text>
                     </div>
                     <div class="flex-row flex-end">
-                        <switch class="switch" :checked="contributeSwitch" @change="contributeChange"></switch>
+                        <switch class="switch" :checked="selectSwitch" @change="selectChange"></switch>
                     </div>
                 </div>
             </div>
             <div class="sub-panel">
-                <text class="sub_title">投稿后，被选用文章将获得大量展示机会</text>
+                <text class="sub_title">精选文章将在商城首页展示</text>
+            </div>
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title ml10">推荐</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <switch class="switch" :checked="recommendedSwitch" @change="recommendedChange"></switch>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-panel">
+                <text class="sub_title">推荐文章将在商城首页采用大图展示</text>
             </div>
             <div class="fill">
 
@@ -137,6 +163,8 @@
                 rewardSwitch:false,
                 commentsSwitch:true,
                 contributeSwitch:false,
+                selectSwitch:false,
+                recommendedSwitch:false,
                 articleId:'',
                 topData:false,
                 isPublish:false,
@@ -184,6 +212,14 @@
                     //                    评论
                     if(data.data.isReview != null){
                         _this.commentsSwitch = data.data.isReview;
+                    }
+                    //                    推荐
+                    if(data.data.isTag4 != null){
+                        _this.recommendedSwitch = data.data.isTag4;
+                    }
+                    //                    精选
+                    if(data.data.isTag5 != null){
+                        _this.selectSwitch = data.data.isTag5;
                     }
 //                    谁可以看
                     if(!utils.isNull(data.data.authority)){
@@ -275,7 +311,6 @@
                 this.clicked = true;
                 var _this = this;
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=article_category'),
-//                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
                     function (data) {
                     _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
@@ -314,6 +349,14 @@
 //            投稿开关
             contributeChange:function (e) {
                 this.contributeSwitch = e.value;
+            },
+            //            精选开关
+            selectChange:function (e) {
+                this.selectSwitch = e.value;
+            },
+            //            推荐开关
+            recommendedChange:function (e) {
+                this.recommendedSwitch = e.value;
             },
 //            清楚掉假的进度条。清空假进度条，关闭定时器.
             clearDummyProcess(timer){
@@ -386,7 +429,7 @@
 //                }
 //                publishData = JSON.stringify(publishData);
                 let urlData = 'weex/member/article/publish.jhtml?id=' + this.articleId + '&isPublish=' + this.contributeSwitch + '&isReview=' + this.commentsSwitch + '&isReward='
-                    + this.rewardSwitch + '&authority=' + authorityData + '&isTop=' + this.topData + '&password=' + this.password + '&articleCatalogId=' + this.corpusId
+                    + this.rewardSwitch +'&isTag4=' +this.recommendedSwitch + '&isTag5='+this.selectSwitch + '&authority=' + authorityData + '&isTop=' + this.topData + '&password=' + this.password + '&articleCatalogId=' + this.corpusId
                     + '&articleCategoryId=' + this.category;
 //                event.toast(urlData);
                 POST(urlData).then(function (data) {

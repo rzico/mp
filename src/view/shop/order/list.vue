@@ -45,7 +45,7 @@
                         </div>
                         <div class="flex-row">
                             <text class="title mr20">共{{item.quantity}}件商品</text>
-                            <text class="title">合计:¥ {{item.amount | currencyfmt}}</text>
+                            <text class="title ">合计:¥ {{item.amount | currencyfmt}}</text>
                         </div>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-if="item.status == 'unpaid'">
@@ -472,8 +472,15 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate("view/shop/order/confirmOrder.js?sn=" + sn),function (message) {
+                event.openURL(utils.locate("view/shop/order/confirmOrder.js?sn=" + sn),function (data) {
                     _this.clicked = false;
+                    if(data.type == 'success'){
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('确认成功');
+                    }else{
+
+                    }
                 });
             },
 //            发货
@@ -505,8 +512,16 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate("view/shop/order/delivery.js?sn=" + sn),function (message) {
+                event.openURL(utils.locate("view/shop/order/delivery.js?sn=" + sn),function (data) {
                     _this.clicked = false;
+                    if(data.type == 'success'){
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('发货成功');
+                    }else{
+
+                    }
+
                 });
             },
 //            退货

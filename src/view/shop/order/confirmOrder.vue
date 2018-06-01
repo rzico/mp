@@ -2,22 +2,14 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" > </navbar>
         <div class="contentBox">
-            <div class="info"  v-for="(item,index) in ordersList" >
-                <div class="flex-row goodsBody " v-for="goods in item.orderItems">
-                    <image :src="goods.thumbnail" class="goodsImg"></image>
-                    <div class="goodsInfo" >
-                        <text class="title goodsName">{{goods.name}}</text>
-                        <text class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
-                        <div class="goodsPriceNum">
-                            <text class="title coral">¥ {{goods.price | currencyfmt}}</text>
-                            <text class="sub_title">x{{goods.quantity}}</text>
-                            <!--<text class="sub_title border shopCar" >加购物车</text>-->
-                        </div>
-                    </div>
-                </div>
+            <div class="info" v-for="(item,index) in ordersList">
+                <text class="herderText">应付金额</text>
+                <text class="herderAmount">¥{{item.amount | currencyfmt}}</text>
+                <text class="herderSn">订单编号: {{item.sn}}</text>
+                <text class="herderSn">下单时间: {{item.createDate | watchCreateDate}}</text>
                 <div class="setting" @click="pickPay">
                     <div class="flex-row">
-                        <text class="fz32">付款:  {{isobject}}</text>
+                        <text class="fz32">付款方式:  {{isobject | watchType}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -25,8 +17,8 @@
                 </div>
                 <div class="setting" @click="">
                     <div class="flex-row">
-                        <text class="fz32">金额:</text>
-                        <input class="input" placeholder="请输入金额"/>
+                        <text class="fz32">实付金额:</text>
+                        <input class="input" type="number" placeholder="请输入金额" v-model="amount"/>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -34,14 +26,14 @@
                 </div>
                 <div class="setting" @click="">
                     <div class="flex-row">
-                        <text class="fz32">凭证号:</text>
-                        <input class="input" placeholder="请输入凭证号"/>
+                        <text class="fz32">付款凭证:</text>
+                        <input class="input" type="number" placeholder="请输入凭证号" v-model="tranSn"/>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="button ml30 mr30 mt30">
+                <div class="button mt30" style="width: 530px" @click="submit(item.amount)">
                     <text class="fz40" style="color:#fff;">确认订单</text>
                 </div>
             </div>
@@ -72,11 +64,24 @@
     .info{
         flex-direction: column;
         justify-content: center;
+        align-items: center;
         padding: 30px;
         border-color:#ccc;
         border-width: 1px;
         border-radius: 10px;
         background-color: white;
+    }
+    .herderText{
+        font-size: 32px;
+        color: #999;
+    }
+    .herderAmount{
+        font-size: 80px;
+    }
+    .herderSn{
+        font-size: 30px;
+        color: #999;
+        width: 590px;
     }
     .setting{
         margin-top: 20px;
@@ -148,8 +153,11 @@
         data: function () {
             return {
                 begin:0,
-                isobject:'线下月结',
-                ordersList:[]
+                isobject:'monthPayPlugin',
+                ordersList:[],
+                amount:'',
+                tranSn:''
+
             }
         },
         components: {
@@ -157,6 +165,20 @@
         },
         props: {
             title: {default: "确认订单"},
+        },
+        filters: {
+            watchCreateDate: function (value) {
+                return utils.ymdhistimefmt(value);
+            },
+            watchType:function (val) {
+                if(val == 'monthPayPlugin'){
+                    return'线下月结'
+                }else if(val == 'bankPayPlugin'){
+                    return'刷卡支付'
+                }else if(val == 'cashPayPlugin'){
+                    return'现金支付'
+                }
+            }
         },
         created() {
             utils.initIconFont();
@@ -166,7 +188,7 @@
         methods: {
             open:function () {
                 let _this = this;
-                GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
+                GET('website/member/order/view.jhtml?sn=' + this.orderSn ,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
@@ -185,22 +207,55 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['线下月结','刷卡支付','现金']
+                    items:['线下月结','刷卡支付','现金支付']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.isobject = '线下月结';
+                            _this.isobject = 'monthPayPlugin';
                             _this.begin = e.data;
                         }else if(e.data == 1){
-                            _this.isobject = '刷卡支付';
+                            _this.isobject = 'bankPayPlugin';
                             _this.begin = e.data;
                         }else if(e.data == 2){
-                            _this.isobject = '现金';
+                            _this.isobject = 'cashPayPlugin';
                             _this.begin = e.data;
                         }
                     }
                 })
             },
+            submit:function (amount) {
+                let _this = this;
+                if(utils.isNull(this.amount)){
+                    event.toast('请输入金额')
+                    return
+                }if(this.amount != amount){
+                    event.toast('请输入应付金额')
+                    return
+                }if(utils.isNull(this.tranSn)){
+                    event.toast('请输入凭证号')
+                    return
+                }
+                POST('weex/member/order/payment.jhtml?sn=' + this.orderSn +'&tranSn' + encodeURIComponent(this.tranSn)).then(
+                    function (data) {
+                    if(data.type == 'success'){
+                        POST('/payment/submit.jhtml?sn=' + data.data.sn +'&paymentPluginId=' +_this.isobject).then(
+                            function (data) {
+                                if(data.type == 'success'){
+                                    let E = utils.message('success','确认成功','')
+                                    event.closeURL(E);
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            },function (err) {
+                                event.toast(err.content);
+                            })
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            }
         }
     }
 </script>

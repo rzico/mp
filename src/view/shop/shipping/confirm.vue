@@ -10,33 +10,33 @@
             <div v-else v-for="(item,index) in ordersList" :class="[item.status == 'unpaid' || item.status == 'refunding' || item.status ==  'unshipped' || item.status ==  'returning' ? 'hasPb100' : '']" >
                 <div class="header mt20 flex-row">
                     <div class="priceLine">
-                        <div class="space-between bt10 headerCellBg">
-                            <text class="sub_title">商品总额</text>
-                            <text class="sub_title">¥{{item.orderItems[0].price | currencyfmt}}</text>
+                        <div  v-for="c in item.shippingBarrels">
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">{{c.name}}</text>
+                            <div class="flex-row">
+                                <text class="sub_title">送出:</text>
+                                <input class="min_input" type="number" v-model="c.quantity"/>
+                                <text class="sub_title">桶，收回</text>
+                                <input class="min_input" type="number" v-model="c.returnQuantity"/>
+                                <text class="sub_title">桶</text>
+                            </div>
                         </div>
-                        <div class=" space-between bt10 headerCellBg">
-                            <text class="sub_title">优惠折扣</text>
-                            <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between  bt10 headerCellBg">
-                            <text class="sub_title">水店</text>
-                            <input class="input" type="number" v-model="shopMoney"/>
+                        <div class=" space-between  bt10 headerCellBg cell_height" @click="chooseFloor">
+                            <text class="sub_title">楼层:</text>
+                            <text class="sub_title">{{ordersList[0].receiver.level}}</text>
                         </div>
-                        <div class=" space-between  bt10 headerCellBg">
-                            <text class="sub_title">配送站</text>
-                            <input class="input" type="number" v-model="shopMoney"/>
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">运费:</text>
+                            <text class="sub_title">{{item.freight}}</text>
                         </div>
-                        <div class=" space-between  bt10 headerCellBg">
-                            <text class="sub_title">配送员</text>
-                            <input class="input" type="number" v-model="shopMoney"/>
-                        </div>
-                        <div class=" space-between  bt10 headerCellBg">
-                            <text class="sub_title">平台</text>
-                            <input class="input" type="number" v-model="shopMoney"/>
-                        </div>
-                        <div class=" space-between  bt10 headerCellBg" @click="pickObject()">
-                            <text class="sub_title">结算方式</text>
-                            <text class="sub_title">{{isobject}}</text>
+                        <!--<div class=" space-between  bt10 headerCellBg cell_height" @click="pickObject()">-->
+                            <!--<text class="sub_title">结算方式</text>-->
+                            <!--<text class="sub_title">{{isobject}}</text>-->
+                        <!--</div>-->
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">备注:</text>
+                            <input class="max_input" placeholder="请输入备注" v-model="message"/>
                         </div>
                         <div class="button" @click="confirm()">
                             <text class="fz40" style="color: #EB4E40">核销</text>
@@ -59,14 +59,14 @@
                     </div>
                 </div>
                 <div class="goodsLine mt20">
-                    <div class="space-between goodsHead boder-bottom" @click="goAuthor(item.memberId)">
+                    <div class="space-between goodsHead boder-bottom">
                         <div class="flex-row">
                             <image :src="item.logo" class="shopImg"></image>
                             <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                         </div>
                     </div>
-                    <div class="flex-row goodsBody " v-for="goods in item.orderItems">
+                    <div class="flex-row goodsBody " v-for="goods in item.shippingItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
                         <div class="goodsInfo" >
                             <text class="title goodsName">{{goods.name}}</text>
@@ -99,8 +99,17 @@
                         <text class="sub_title ">配送人员: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
 
-                    <div class="infoLines pt0">
+                    <div class="infoLines pt0 pb0">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom pt10">
+                        <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
+                    </div>
+                    <div class="infoLines pb10 ">
+                        <text class="sub_title ">留言: {{item.memo}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom pt0">
+                        <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
                     </div>
                 </div>
 
@@ -114,8 +123,27 @@
     .input{
         font-size: 28px;
         color: #999;
-        width: 300px;
+        width: 500px;
         text-align: right;
+    }
+    .min_input{
+        font-size: 28px;
+        color: #999;
+        width: 100px;
+        height: 50px;
+        line-height: 40px;
+        text-align: right;
+    }
+    .max_input{
+        font-size: 30px;
+        color: #999;
+        width: 410px;
+        height: 50px;
+        line-height: 40px;
+        text-align: right;
+    }
+    .cell_height{
+        height: 50px;
     }
     .headerCellBg{
         background-color: white;
@@ -253,11 +281,13 @@
                 pageStart: 0,
                 pageSize: 15,
                 begin:0,
+                beginTwo:0,
                 orderSN:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
                 isobject:'线下月结',
-                shopMoney:0
+                shopMoney:0,
+                message:''
             }
         },
         props: {
@@ -369,16 +399,51 @@
         },
         created() {
             utils.initIconFont();
-            this.orderSn = utils.getUrlParameter('sn');
+            this.orderSn = utils.getUrlParameter('orderSn');
+            this.shippingSn = utils.getUrlParameter('sn');
             this.open();
         },
         methods: {
+            chooseFloor:function () {
+                let _this = this
+                picker.pick({
+                    index:_this.beginTwo,
+                    items:[1,2,3,4,5,6,7]
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.ordersList[0].receiver.level = 1;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 1){
+                            _this.ordersList[0].receiver.level = 2;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 2){
+                            _this.ordersList[0].receiver.level = 3;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 3){
+                            _this.ordersList[0].receiver.level = 4;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 4){
+                            _this.ordersList[0].receiver.level = 5;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 5){
+                            _this.ordersList[0].receiver.level = 6;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 6){
+                            _this.ordersList[0].receiver.level = 7;
+                            _this.beginTwo = e.data;
+                        }
+                    }
+                })
+            },
             open:function () {
                 let _this = this;
-                GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
+                GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
+
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
+
                     }else{
                         event.toast(data.content);
                     }
@@ -443,14 +508,52 @@
             },
 //            点击核销
             confirm:function () {
-                modal.confirm({
-                    message: '确认核销吗 ?',
-                    okTitle: '确认',
-                    cancelTitle:'取消',
-                    duration: 0.3
-                }, function (value) {
-                    console.log('confirm callback', value)
-                })
+                let _this = this
+//                modal.confirm({
+//                    message: '确认核销吗 ?',
+//                    okTitle: '确认',
+//                    cancelTitle:'取消',
+//                    duration: 0.3
+//                }, function (value) {
+//                    console.log('confirm callback', value)
+//                })
+                POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
+                        if(data.type == 'success'){
+                            if(data.data == true){
+                                var body = [];
+                                _this.ordersList[0].shippingBarrels.forEach(function(item,index){
+                                    body.push({
+                                        id:item.barrelId,
+                                        quantity:item.quantity,
+                                        returnQuantity:item.returnQuantity,
+
+                                    });
+                                });
+                                body = JSON.stringify(body);
+
+                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level,body).then(
+                                    function (data) {
+                                        if(data.type == 'success'){
+                                            let E = utils.message('success','核销成功','')
+                                            event.closeURL(E);
+                                        }else{
+                                            event.toast(data.content);
+                                        }
+                                    },
+                                    function (err) {
+                                        event.toast(err.content);
+                                    })
+                            }else {
+                                event.toast('该订单他人正在操作，请稍后...')
+                            }
+
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
             },
             //            更改结算方式
             pickObject:function () {

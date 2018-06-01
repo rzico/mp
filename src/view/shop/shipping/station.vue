@@ -9,12 +9,11 @@
                 <noData :noDataHint="noDataHint"></noData>
             </cell>
             <cell>
-        <div class="contentBox" v-for="c in list">
-          <div class="infoBox" @click="get(c.id,c.name)">
-              <image class="image" :src="c.logo"></image>
-              <text class="infoText">{{c.name}}</text>
-          </div>
-        </div>
+                <div class="contentBox" v-for="c in list">
+                    <div class="infoBox" @click="get(c.id,c.name)">
+                        <text class="infoText">{{c.name}}</text>
+                    </div>
+                </div>
             </cell>
         </list>
     </div>
@@ -38,8 +37,8 @@
         flex-direction: row;
         align-items: center;
         width: 750px;
-        height: 120px;
-        padding-left: 30px;
+        height: 100px;
+        padding-left: 10px;
         border-bottom-width: 1px;
         border-color: #cccccc;
     }
@@ -70,20 +69,18 @@
                 pageSize:20,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 refreshing:false,
-                list:[],
-                shopId:''
+                list:[]
             }
         },
         components: {
             navbar,noData
         },
         props: {
-            noDataHint:{default:'暂无配送员'},
-            title: {default: "配送员列表"},
+            noDataHint:{default:'暂无配送站'},
+            title: {default: "配送站列表"},
         },
         created() {
             utils.initIconFont();
-            this.shopId = utils.getUrlParameter('shopId');
             this.open()
         },
         methods: {
@@ -126,7 +123,7 @@
 
             open:function () {
                 let _this = this
-                GET('weex/member/shipping/admin.jhtml?shopId='+this.shopId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,
+                GET('weex/member/shipping/shop.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,
                     function (res) {
                         if (res.type=="success") {
 
@@ -152,7 +149,7 @@
                     id:id,
                     name:name
                 };
-                let E = utils.message('success','返回配送员',data)
+                let E = utils.message('success','返回配送站',data)
                 event.closeURL(E);
             }
 

@@ -7,7 +7,7 @@
             </refresh>
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
-            <div v-else v-for="(item,index) in ordersList" class="hasPb100" >
+            <div v-else v-for="(item,index) in ordersList" class="" >
                 <div class="header mt20 flex-row">
                     <div class="info">
                         <div class="setting" @click="pickPattern()">
@@ -25,6 +25,18 @@
                             <div class="flex-row flex-end">
                                 <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                             </div>
+                        </div>
+                        <div class="setting" >
+                            <div class="flex-row">
+                                <text class="fz32">备注    :</text>
+                                <input class="input" placeholder="请输入备注" v-model="message"/>
+                            </div>
+                            <div class="flex-row flex-end">
+                                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            </div>
+                        </div>
+                        <div class="button" @click="complete()">
+                            <text class="fz40" style="color: #EB4E40">派单</text>
                         </div>
                     </div>
                 </div>
@@ -44,14 +56,14 @@
                     </div>
                 </div>
                 <div class="goodsLine mt20">
-                    <div class="space-between goodsHead boder-bottom" @click="goAuthor(item.memberId)">
+                    <div class="space-between goodsHead boder-bottom">
                         <div class="flex-row">
                             <image :src="item.logo" class="shopImg"></image>
                             <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                         </div>
                     </div>
-                    <div class="flex-row goodsBody " v-for="goods in item.orderItems">
+                    <div class="flex-row goodsBody " v-for="goods in item.shippingItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
                         <div class="goodsInfo" >
                             <text class="title goodsName">{{goods.name}}</text>
@@ -67,8 +79,8 @@
                 <div class="mt20 infoWhiteColor">
                     <div class="infoLines boder-bottom">
                         <div class="flex-row">
-                            <text class="sub_title">订单编号: {{item.sn}}</text>
-                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.sn)">复制</text>
+                            <text class="sub_title">订单编号: {{item.orderSn}}</text>
+                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.orderSn)">复制</text>
                         </div>
                         <div class="mt10 ">
                             <text class="sub_title">下单时间: {{item.createDate | watchCreateDate}}</text>
@@ -84,35 +96,45 @@
                         <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
 
-                    <div class="infoLines pt0">
+
+                    <div class="infoLines pt0 pb0">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
                     </div>
-                </div>
-                <div class="mt20  infoWhiteColor" >
-                    <div class="priceLine boder-bottom">
-                        <div class="space-between">
-                            <text class="sub_title">商品总额</text>
-                            <text class="sub_title">¥{{item.orderItems[0].price | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10 bt10">
-                            <text class="sub_title">优惠折扣</text>
-                            <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between">
-                            <text class="sub_title">+ 运费</text>
-                            <text class="sub_title">¥0.00</text>
-                        </div>
+                    <div class="infoLines boder-bottom pt10">
+                        <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
+                    </div>
+                    <div class="infoLines pb10 ">
+                        <text class="sub_title ">留言: {{item.memo}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom pt0">
+                        <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
                     </div>
                 </div>
+                <!--<div class="mt20  infoWhiteColor" >-->
+                    <!--<div class="priceLine boder-bottom">-->
+                        <!--<div class="space-between">-->
+                            <!--<text class="sub_title">商品总额</text>-->
+                            <!--<text class="sub_title">¥{{item.orderItems[0].price | currencyfmt}}</text>-->
+                        <!--</div>-->
+                        <!--<div class=" space-between mt10 bt10">-->
+                            <!--<text class="sub_title">优惠折扣</text>-->
+                            <!--<text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>-->
+                        <!--</div>-->
+                        <!--<div class=" space-between">-->
+                            <!--<text class="sub_title">+ 运费</text>-->
+                            <!--<text class="sub_title">¥0.00</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                <div class="flex-row space-between goodsFoot boder-top" >
-                    <div class="footMore">
+                <!--<div class="flex-row space-between goodsFoot boder-top" >-->
+                    <!--<div class="footMore">-->
 
-                    </div>
-                    <div class="flex-row">
-                        <text class="title footText" @click="">派单</text>
-                    </div>
-                </div>
+                    <!--</div>-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title footText" @click="">派单</text>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
         </scroller>
 
@@ -123,22 +145,44 @@
     .hasPb100{
         padding-bottom: 100px;
     }
+    .input{
+        width: 400px;
+        height: 80px;
+        line-height: 40px;
+        font-size: 32px;
+        padding-left:20px;
+        padding-top: 3px;
+    }
     .info{
         flex-direction: column;
         justify-content: center;
-
         padding: 30px;
         border-color:#ccc;
         border-width: 1px;
         border-radius: 10px;
         background-color: white;
     }
+    .button{
+        height:80px;
+        width: 568px;
+        margin-top: 30px;
+        margin-left: 30px;
+        margin-right: 30px;
+        margin-bottom: 10px;
+        border-width: 1px;
+        border-color: #EB4E40;
+        border-radius: 15px;
+        align-items: center;
+        justify-content: center;
+    }
+    .button:active{
+        background-color: #cccccc;
+    }
     .setting{
         margin-top: 20px;
         border-color:#ccc;
         height: 80px;
         width: 630px;
-        border-top-width: 1px;
         border-bottom-width: 1px;
         flex-direction: row;
         align-items: center;
@@ -301,8 +345,12 @@
                 pageSize: 15,
 //            refreshImg:utils.locate('resources/images/loading.png'),
                 orderSN:'',
+                shippingSn:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
+                markiId:'',
+                shopId:'',
+                message:''
             }
         },
         filters:{
@@ -409,20 +457,29 @@
             navbar,noData
         },
         props: {
-            title: {default: "派送设置"},
+            title: {default: "派单"},
         },
         created() {
             utils.initIconFont();
-            this.orderSn = utils.getUrlParameter('sn');
+            this.orderSn = utils.getUrlParameter('orderSn');
+            this.shippingSn = utils.getUrlParameter('sn');
             this.open();
         },
         methods: {
             open:function () {
                 let _this = this;
-                GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
+                GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
+                        if(!utils.isNull(data.data.shopId)){
+                            _this.isPattern = data.data.shopName;
+                            _this.shopId = data.data.shopId
+                        }
+                        if(!utils.isNull(data.data.adminId)){
+                            _this.markiId = data.data.adminId;
+                            _this.isMarki = data.data.adminName
+                        }
                     }else{
                         event.toast(data.content);
                     }
@@ -481,10 +538,11 @@
                     }
                     this.clicked = true;
                     var _this = this;
-                    event.openURL(utils.locate('widget/list.js?type=occupation'), function (data) {
+                    event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
                         _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
-                            _this.isPattern = data.data.listName
+                            _this.isPattern = data.data.name;
+                            _this.shopId = data.data.id
                         }
                     })
             },
@@ -496,20 +554,45 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                    event.openURL(utils.locate('view/shop/shipping/marki.js'),function (data) {
+                if(utils.isNull(this.shopId)){
+                    event.toast('请先选择配送站');
+                    _this.clicked = false;
+                    return
+                }
+                    event.openURL(utils.locate('view/shop/shipping/marki.js?shopId='+ this.shopId),function (data) {
                         _this.clicked = false;
                         if(data.type=='success') {
-                            _this.isMarki = data.data.name
+                            _this.isMarki = data.data.name;
+                            _this.markiId = data.data.id
                         }
                     });
                 },
 //            完成
             complete:function () {
-                POST('weex/member/topic/update.jhtml?promoterType='+this.PromoterType+'&pattern='+this.Pattern+'&amount='+this.amount).then(
-                    function (data) {
+                let _this =this
+                if(utils.isNull(this.shopId)){
+                    event.toast('请选择配送站');
+                    return
+                }
+                POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
                         if(data.type == 'success'){
-                            event.toast('设置成功');
-                            event.closeURL();
+                        if(data.data == true){
+                            POST('weex/member/shipping/dispatch.jhtml?sn='+_this.shippingSn+'&shopId='+_this.shopId+'&adminId='+_this.markiId +'&memo=' +encodeURIComponent(_this.message)).then(
+                                function (data) {
+                                    if(data.type == 'success'){
+                                        let E = utils.message('success','派单成功','')
+                                        event.closeURL(E);
+                                    }else{
+                                        event.toast(data.content);
+                                    }
+                                },
+                                function (err) {
+                                    event.toast(err.content);
+                                })
+                        }else {
+                            event.toast('该订单他人正在操作，请稍后...')
+                        }
+
                         }else{
                             event.toast(data.content);
                         }

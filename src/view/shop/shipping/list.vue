@@ -2,21 +2,21 @@
     <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
         <div  class="corpusBox">
-            <scroller scroll-direction="horizontal"  class="corpusScroll">
+            <div  class="corpusScroll">
                 <div class="articleClass" v-for="(item,index) in catagoryList" >
                     <text @click="catagoryChange(index,item.id)" class="allArticle" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
-            </scroller>
+            </div>
         </div>
         <list  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell v-if="ordersList.length == 0">
+            <cell v-if="shippingList.length == 0">
                 <noData :noDataHint="noDataHint"></noData>
             </cell>
             <!--导航栏-->
-            <cell v-else v-for="(item,index) in ordersList">
+            <cell v-else v-for="(item,index) in shippingList">
                 <div class="goodsLine mt20">
                     <div class="space-between goodsHead" >
                         <div class="flex-row" @click="goAuthor(item.memberId)">
@@ -28,7 +28,7 @@
                             <text class="title red">{{item.statusDescr}}</text>
                         </div>
                     </div>
-                    <div class="flex-row goodsBody"  v-for="goods in item.orderItems"  @click="info(item.sn)">
+                    <div class="flex-row goodsBody"  v-for="goods in item.shippingItems"  @click="info(item.orderSn,item.sn)">
                         <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
                         <div class="goodsInfo"  >
                             <text class="title goodsName" >{{goods.name}}</text>
@@ -48,28 +48,28 @@
                             <!--<text class="title">合计:¥ {{item.amount | currencyfmt}}</text>-->
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-if="item.status == 'unpaid'">
+                    <div class="flex-row space-between goodsFoot" v-if="item.status == 'unconfirmed'">
                         <div class="footMore">
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
-                            <text class="title footText " @click="sendSingle(item.sn)">派单</text>
+                            <text class="title footText " @click="sendSingle(item.orderSn,item.sn)">派单</text>
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'unshipped'">
+                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'dispatch'">
                         <div class="footMore">
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
-                            <text class="title footText " @click="delivery(item.sn)">送达</text>
+                            <text class="title footText " @click="delivery(item.orderSn,item.sn)">送达</text>
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'shipped'">
+                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'receive'">
                         <div class="footMore">
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
-                            <text class="title footText " @click="confirm(item.sn)">核销</text>
+                            <text class="title footText " @click="confirm(item.orderSn,item.sn)">核销</text>
                         </div>
                     </div>
                 </div>
@@ -92,8 +92,8 @@
     }
     .footText{
         padding: 10px;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
         border-radius: 5px;
         border-color: #ccc;
         border-width: 1px;
@@ -154,7 +154,7 @@
     /**/
     .articleClass{
         flex-direction: row;
-        height:100px;
+        height:98px;
         background-color: #fff;
         align-items: center;
         justify-content: center;
@@ -170,10 +170,12 @@
     .corpusScroll{
         flex-direction: row;
         width: 375px;
+        height:98px;
         background-color:#fff;
     }
     .corpusBox{
-        flex-direction: row;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
         width: 750px;
         height:100px;
@@ -196,7 +198,7 @@
     export default {
         data:function(){
             return{
-                ordersList:[],
+                shippingList:[],
                 refreshing:false,
                 pageStart:0,
                 pageSize:15,
@@ -208,12 +210,13 @@
                     name:'配送中',
                     id:2
                 },{
-                    name:'已配送',
+                    name:'已送达',
                     id:3
                 }],
                 whichCorpus:0,
                 productCategoryId:1,
                 clicked:false,
+                time:''
             }
         },
         props:{
@@ -245,9 +248,57 @@
         created(){
             utils.initIconFont();
             this.open();
+            this.permissions()
+
         },
         methods:{
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                        if (utils.isRoles("3",_this.roles)) {
+//                            开启定时器，每分钟定位一次经纬度
+                            _this.time = setInterval(function () {
+                                _this.getGps()
+                            },60000);
+                        }
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
+            //  关闭定时器.
+            clearDummyProcess(){
+//              解除定时器
+                if (!utils.isNull(this.time))  {
+                    clearInterval(this.time);
+                    this.time = null;
+                }
+            },
+//            获取经纬度
+            getGps:function(){
+                let _this = this
+                var uId = event.getUId();
+                event.getLocation(function (data) {
+                    if(data.type == 'success'){
+                        POST("/lbs/location.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat +'&memberId=' + uId).then(function (mes) {
+                            if (mes.type == 'success') {
 
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                    }else {
+                        event.toast('定位失败，请开启GPS')
+                    }
+                })
+            },
             //分类切换
             catagoryChange:function(index,id){
 //                event.toast(id);
@@ -264,36 +315,28 @@
                 var _this = this;
                 var status = '';
                 switch(this.productCategoryId){
-                    case 0:
-                        status = 'completed';
-                        break;
                     case 1:
-                        status = 'unpaid';
+                        status = 'unconfirmed';
                         break;
                     case 2:
-                        status = 'unshipped';
+                        status = 'confirmed';
                         break;
                     case 3:
-                        status = 'shipped';
-                        break;
-                    case 4:
-                        status = 'refunding';
-                        break;
-                    case 5:
-                        status = 'cancelled';
+                        status = 'completed';
                         break;
                     default:
                         status = '';
                         break;
                 }
-                GET('weex/member/order/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,
+                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,
                     function (res) {
                         if (res.type=="success") {
+
                             if (res.data.start == 0) {
-                                _this.ordersList = res.data.data;
+                                _this.shippingList = res.data.data;
                             } else {
                                 res.data.data.forEach(function (item) {
-                                    _this.ordersList.push(item);
+                                    _this.shippingList.push(item);
                                 })
                             }
                             _this.pageStart = res.data.start+res.data.data.length;
@@ -340,6 +383,7 @@
             },
 
             goback:function () {
+                this.clearDummyProcess()
                 event.closeURL();
             },
             goDetails:function (sn) {
@@ -351,140 +395,6 @@
                 event.openURL(utils.locate('view/shop/shipping/details.js?sn=' + sn), function () {
                     _this.clicked = false;
                 });
-            },
-//            确认退款
-            confirmRefund:function (sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '是否确定退款?',
-                    duration: 0.3,
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确定'){
-                        POST('weex/member/order/refunds.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('退款成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                })
-
-            },
-//            关闭订单
-            closeOrder:function (item,sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '确定关闭该订单?',
-                    duration: 0.3,
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确定'){
-                        POST('weex/member/order/cancel.jhtml?sn=' + sn).then(function (data) {
-                            if(data.type == 'success'){
-//            _this.ordersList.splice(_this.selectIndex,1);
-//                                        _this.ordersList[_this.selectIndex].status = 'completed',
-//                                        _this.ordersList[_this.selectIndex].statusDescr = '已取消',
-                                item.status = 'completed';
-                                item.statusDescr = '已取消';
-//                                    _this.pageStart = 0;
-//                                    _this.open();
-                                event.toast('关闭订单成功');
-                            }else{
-                                event.toast(data.content);
-                            }
-                        },function (err) {
-                            event.toast(err.content);
-                        })
-                    }
-                })
-            },
-//            确认订单
-            confirmOrder:function (sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '是否确认该订单?',
-                    duration: 0.3,
-                    okTitle:'确认',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确认'){
-                        POST('weex/member/order/confirm.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('确认成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                })
-            },
-//            发货
-            sendGoods:function(sn){
-                let _this = this;
-                modal.confirm({
-                    message: '确认发货?',
-                    duration: 0.3,
-                    okTitle:'确认',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确认'){
-                        POST('weex/member/order/shipping.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('发货成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(err.content);
-                            }
-                        )
-                    }
-                })
-            },
-//            退货
-            returnGoods:function (sn) {
-                let _this = this;
-                modal.confirm({
-                    message: '确定退货?',
-                    duration: 0.3,
-                    okTitle:'确定',
-                    cancelTitle:'取消',
-                }, function (value) {
-                    if(value == '确定'){
-                        POST('weex/member/order/returns.jhtml?sn=' + sn).then(
-                            function (data) {
-                                if(data.type == 'success'){
-                                    _this.pageStart = 0;
-                                    _this.open();
-                                    event.toast('退货成功');
-                                }else{
-                                    event.toast(data.content);
-                                }
-                            },function (err) {
-                                event.toast(data.content);
-                            }
-                        )
-                    }
-                })
             },
 //            前往作者主页
             goAuthor(id) {
@@ -498,13 +408,13 @@
                 });
             },
             //            跳转详情
-            info:function (sn) {
+            info:function (orderSn,sn) {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shipping/info.js?sn=' + sn),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/info.js?orderSn=' + orderSn +'&sn=' + sn),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 
@@ -512,44 +422,53 @@
                 });
             },
             //            跳转派单
-            sendSingle:function (sn) {
+            sendSingle:function (orderSn,sn) {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?sn=' + sn),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
                     _this.clicked = false;
-                    if(data.type=='success') {
+                    if(data.type == 'success'){
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('派单成功');
+                    }else{
 
                     }
                 });
             },
             //            跳转送达
-            delivery:function (sn) {
+            delivery:function (orderSn,sn) {
+
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shipping/delivery.js'),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/delivery.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
-
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('送达成功');
                     }
                 });
             },
             //            跳转核销
-            confirm:function (sn) {
+            confirm:function (orderSn,sn) {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shipping/confirm.js?sn=' + sn),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/confirm.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
-
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('核销成功');
                     }
                 });
             },

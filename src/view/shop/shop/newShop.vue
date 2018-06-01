@@ -23,20 +23,32 @@
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="location" @click="location">
+        <div class="location" @click="location" v-if="hasAddress">
             <div class="left">
-            <text class="businessLocation">商家区位</text>
+            <text class="businessLocation">所在区位</text>
             </div>
             <div class="right">
                 <text class="generalLocation">{{addressName}}</text>
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="appellation">
+        <div class="appellation"  v-if="hasAddress">
             <text class="detailedAddress">详细地址</text>
-            <div style="flex-direction: row;align-items: center">
+            <div class="flex-row">
             <input type="text" placeholder="请输入详细地址" class="addressInput"  v-model="detailedAddress" @change="" @input="oninput4"/>
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+            </div>
+        </div>
+        <div class="gpsBox" @click="getGps()"  v-if="!hasChange && !hasAddress">
+            <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
+            <text class="sub_title">点击定位</text>
+        </div>
+        <div class="changeGpsBox"  v-if="hasChange">
+            <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
+            <text class="changeAddress">{{detailedAddress}}</text>
+            <div class="changeBox" @click="getGps()">
+            <text class="changeIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                <text class="changeText">修改</text>
             </div>
         </div>
         <div class="appellation">
@@ -61,6 +73,46 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .changeGpsBox{
+        flex-direction: row;
+        align-items: center;
+        justify-content:space-between;
+        border-bottom-width: 1px;
+        border-bottom-color: #cccccc;
+        background-color: white;
+        height: 200px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .changeAddress{
+        width: 500px;
+        font-size: 30px;
+        color: #999;
+    }
+    .gpsBox{
+        align-items: center;
+        justify-content:center;
+        border-bottom-width: 1px;
+        border-bottom-color: #cccccc;
+        background-color: white;
+        height: 200px;
+    }
+    .gpsIcon{
+        font-size: 80px;
+        color: #999;
+    }
+    .changeBox{
+        flex-direction: column;
+        align-items: center;
+    }
+    .changeIcon{
+        font-size: 60px;
+        color: #999;
+    }
+    .changeText{
+        font-size: 28px;
+        color: #999;
+    }
     .head{
         flex-direction: row;
         align-items: center;
@@ -260,10 +312,14 @@
 //              =========================================
 //              具体地址
               addressName:'',
-
+              hasAddress:false,
+              hasChange:false,
               category:1,
               industryName:'',
-              clicked:false
+              clicked:false,
+//              经纬度
+              lng:'',
+              lat:''
 
           }
         },
@@ -280,10 +336,37 @@
             if(utils.isNull(this.shopId)) {
                 this.shopId = ''
             }else {
+                this.hasChange = true;
                 this.modification();
             }
         },
         methods:{
+//            获取经纬度
+            getGps:function(){
+                let _this = this
+                event.getLocation(function (data) {
+                    if(data.type == 'success'){
+                        _this.lng = data.data.lng;
+                        _this.lat = data.data.lat;
+                        _this.addressName = data.data.province + data.data.city +data.data.district;
+                        _this.detailedAddress = data.data.address;
+                        GET("/lbs/get.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat,function (mes) {
+                            if (mes.type == 'success') {
+                                _this.areaId = mes.data.areaId;
+                            } else {
+                                event.toast(res.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                        _this.hasChange = false;
+                        _this.hasAddress = true
+                    }else {
+                        event.toast('定位失败，请开启GPS')
+                        _this.hasAddress = false
+                    }
+                })
+            },
             modification:function () {
                 var _this = this;
                 GET('weex/member/shop/view.jhtml?shopId='+_this.shopId,function (mes) {
@@ -377,7 +460,7 @@
                     return
                 }
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
-                    '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
+                    '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category+"&lng=" + _this.lng + "&lat=" +_this.lat).then(
                     function (mes) {
                         _this.clicked =false
                         if (mes.type == "success") {
