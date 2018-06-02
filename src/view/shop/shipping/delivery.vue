@@ -54,7 +54,7 @@
                 </div>
             </cell>
             <cell>
-                <div style="height:400px"></div>
+                <div style="height:100px"></div>
             </cell>
         </list>
     </div>
