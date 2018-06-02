@@ -32,7 +32,7 @@
                                 <input class="input" placeholder="请输入备注" v-model="message"/>
                             </div>
                             <div class="flex-row flex-end">
-                                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                                <div class="chooseBox"><text class="fz28" style="color: #EB4E40">快速话语</text> </div>
                             </div>
                         </div>
                         <div class="button" @click="complete()">
@@ -145,8 +145,16 @@
     .hasPb100{
         padding-bottom: 100px;
     }
+    .chooseBox{
+        padding: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 5px;
+        border-color: #EB4E40;
+        border-width: 1px;
+    }
     .input{
-        width: 400px;
+        width: 360px;
         height: 80px;
         line-height: 40px;
         font-size: 32px;

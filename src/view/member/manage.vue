@@ -80,7 +80,7 @@
                 <div class="cell-panel space-between " @click="shippingManage()" v-if="member.isShop">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="title ml10">运单管理</text>
+                        <text class="title ml10">送货管理</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>

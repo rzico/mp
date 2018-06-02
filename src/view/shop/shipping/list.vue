@@ -221,7 +221,7 @@
         },
         props:{
             noDataHint:{default:'暂无运单'},
-            title:{default:'运单管理'}
+            title:{default:'送货管理'}
         },
         filters:{
             watchSpec:function (value) {
