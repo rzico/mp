@@ -280,7 +280,14 @@
         },
         created(){
             utils.initIconFont();
+            if(!utils.isNull(utils.getUrlParameter('index'))){
+                this.whichCorpus = utils.getUrlParameter('index')
+            }
+            if(!utils.isNull(utils.getUrlParameter('productCategoryId'))){
+                this.productCategoryId = utils.getUrlParameter('productCategoryId')
+            }
             this.open();
+
         },
         methods:{
 

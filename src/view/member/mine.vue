@@ -116,22 +116,22 @@
                 </div>
                 <!-- 订单消息 -->
                 <div class="comWrap">
-                    <div class=" flexCol" >
+                    <div class=" flexCol"  @click="goNoPay()">
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe613;</text>
                         <text class="title mt20">待付款</text>
                         <text class="num" v-if="orderNum!==0">{{orderNum}}</text>
                     </div>
-                    <div class=" flexCol" >
+                    <div class=" flexCol"  @click="goNoDelivery()">
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe612;</text>
                         <text class="title mt20">待发货</text>
                         <text class="num">{{orderNum}}</text>
                     </div>
-                    <div class=" flexCol" >
+                    <div class=" flexCol"  @click="goDelivery()">
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe611;</text>
                         <text class="title mt20">已发货</text>
                         <text class="num">{{orderNum}}</text>
                     </div>
-                    <div class=" flexCol" >
+                    <div class=" flexCol"  @click="goRefund()">
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe60c;</text>
                         <text class="title mt20">待退款</text>
                         <text class="num" v-if="orderNumS!==0">{{orderNumS}}</text>
@@ -884,6 +884,54 @@
                     }
                 );
             },
+//            待付款
+            goNoPay(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/order/list.js?index=0&productCategoryId=1'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
+            //            待发货
+            goNoDelivery(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/order/list.js?index=1&productCategoryId=2'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
+            //            已发货
+            goDelivery(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=3'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
+            //            待退款
+            goRefund(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=4'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
             //            设置中心
             goOption() {
                 if (this.clicked) {
@@ -893,12 +941,6 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/option.js'), function(data) {
                         _this.clicked = false;
-                        //                    utils.debug(data)
-                        if (data.type == 'success' && data.data != '') {
-
-                        } else {
-                            //                            return ;
-                        }
                     }
                 );
             },
