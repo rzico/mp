@@ -82,6 +82,7 @@
                     </div>
                     <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'returning'">
                         <div class="footMore">
+
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">

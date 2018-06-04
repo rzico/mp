@@ -19,100 +19,121 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <!--<div class=" rightTop " :class="[classTop()]" @click="goManage()">-->
-            <!--<text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>-->
-            <!--</div>-->
+            <div class=" rightTop " :class="[classTop()]" @click="goOption()">
+                <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
+            </div>
             <!--绑定动画-->
             <!--只能多写一个顶部栏。否则无法适应-->
             <!--<div class="corpusBox hideCorpus" :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">-->
-            <!--<scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll ">-->
-            <!--<div class="articleClass">-->
-            <!--<text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class="[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>-->
-            <!--</div>-->
-            <!--</scroller>-->
-            <!--<div class="corpusIconBox" @click="goCorpus()">-->
-            <!--<text :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>-->
-            <!--</div>-->
+                <!--<scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll ">-->
+                    <!--<div class="articleClass">-->
+                        <!--<text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class="[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>-->
+                    <!--</div>-->
+                <!--</scroller>-->
+                <!--<div class="corpusIconBox" @click="goCorpus()">-->
+                    <!--<text :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>-->
+                <!--</div>-->
             <!--</div>-->
         </div>
         <scroller show-scrollbar="false" offset-accuracy="0" ref="scrollerRef" @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;" @appear="toponappear"></div>
             <!--顶部个人信息栏-->
-            <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
-                <!--背景图片-->
-                <image class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
-                <!--遮罩层-->
-                <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-                <div class="topHead">
-                    <!--用户头像-->
-                    <image class="testImage" :src="imageUrl"></image>
-                    <!--个性签名 用户昵称-->
-                    <div style="align-items: flex-start;padding-left:20px" @click="goAttribute()">
-                        <!--用户昵称-->
-                        <text class="userName">{{userName}}</text>
-                        <!--用户签名-->
-                        <text class="userSign">{{userSign}}</text>
+            <!--<div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>-->
+                <!--&lt;!&ndash;背景图片&ndash;&gt;-->
+                <!--<image class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>-->
+                <!--&lt;!&ndash;遮罩层&ndash;&gt;-->
+                <!--&lt;!&ndash;<image class="backgroundMask" :src="maskUrl"></image>&ndash;&gt;-->
+                <!--<div class="topHead">-->
+                    <!--&lt;!&ndash;用户头像&ndash;&gt;-->
+                    <!--<image class="testImage" :src="imageUrl"></image>-->
+                    <!--&lt;!&ndash;个性签名 用户昵称&ndash;&gt;-->
+                    <!--<div style="align-items: flex-start;padding-left:20px" @click="goAttribute()">-->
+                        <!--&lt;!&ndash;用户昵称&ndash;&gt;-->
+                        <!--<text class="userName">{{userName}}</text>-->
+                        <!--&lt;!&ndash;用户签名&ndash;&gt;-->
+                        <!--<text class="userSign">{{userSign}}</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;功能按钮&ndash;&gt;-->
+                <!--<div class="topBtnBox">-->
+                    <!--<div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCoupon()">-->
+                        <!--<text class="topBtn topBtnBigFont">{{couponNum}}</text>-->
+                        <!--<text class=" topBtn ">优惠券</text>-->
+                    <!--</div>-->
+                    <!--<div class="topBtnSmallBox walletLayout" @click="goWallet()">-->
+                        <!--<div class="moneyFormat">-->
+                            <!--<text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>-->
+                            <!--<text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>-->
+                        <!--</div>-->
+                        <!--<text class="topBtn">钱包</text>-->
+                    <!--</div>-->
+                    <!--<div class="topBtnSmallBox" :style="{minWidth:topMWidth + 'px'}" @click="goFocusTenants()">-->
+                        <!--<text class="topBtn topBtnBigFont">{{focusNum}}</text>-->
+                        <!--<text class="topBtn">店铺</text>-->
+                    <!--</div>-->
+                    <!--<div class="topBtnSmallBox" :style="{minWidth:topMWidth + 'px'}" @click="goCollectShops()">-->
+                        <!--<text class="topBtn topBtnBigFont">{{focusNum}}</text>-->
+                        <!--<text class="topBtn">商品</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;设置&ndash;&gt;-->
+                <!--<div class="rightTop " :class="[classTop()]" @click="goManage()">-->
+                    <!--<text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;购物车&ndash;&gt;-->
+                <!--<div class="cartList" :class="[classTop()]" @click="goCartList()">-->
+                    <!--<text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" @setting="goAttribute"></topic_header>
+            <!--收藏，钱包，关注-->
+            <div style="background-color: #FFF">
+                <div class="comWrap">
+                    <div class=" flexColTwo" style="width: 236.66px" @click="goCollect()">
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe613;</text>
+                        <text class="title ">收藏</text>
                     </div>
-                </div>
-                <!--功能按钮-->
-                <div class="topBtnBox">
-                    <div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCoupon()">
-                        <text class="topBtn topBtnBigFont">{{couponNum}}</text>
-                        <text class=" topBtn ">优惠券</text>
+                    <div class=" flexColTwo"  style="width: 236.66px" @click="goWallet()">
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe612;</text>
+                        <text class="title ">钱包</text>
                     </div>
-                    <div class="topBtnSmallBox walletLayout" @click="goWallet()">
-                        <div class="moneyFormat">
-                            <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
-                            <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
-                        </div>
-                        <text class="topBtn">钱包</text>
+                    <div class=" flexColTwo"  style="width: 236.66px" @click="goFocus()">
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe611;</text>
+                        <text class="title ">关注</text>
                     </div>
-                    <div class="topBtnSmallBox" :style="{minWidth:topMWidth + 'px'}" @click="goFocusTenants()">
-                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                        <text class="topBtn">店铺</text>
-                    </div>
-                    <div class="topBtnSmallBox" :style="{minWidth:topMWidth + 'px'}" @click="goCollectShops()">
-                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                        <text class="topBtn">商品</text>
-                    </div>
-                </div>
-                <!--设置-->
-                <div class="rightTop " :class="[classTop()]" @click="goManage()">
-                    <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
-                </div>
-                <!--购物车-->
-                <div class="cartList" :class="[classTop()]" @click="goCartList()">
-                    <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
                 </div>
             </div>
             <!-- 我的订单 -->
-            <div style="background-color: #FFF">
+            <div class="mt20" style="background-color: #FFF">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
                     <text class="title">我的订单</text>
-                    <text class="sub_title" style="padding-right: 30px;">查看所有</text>
-                    <text :style="{fontFamily:'iconfont'}" class="iconRight" style="font-size: 25px; color: #999">></text>
+                    <div class="flex-row">
+                    <text class="sub_title" style="padding-right: 10px;">查看所有</text>
+                    <text :style="{fontFamily:'iconfont'}" style="font-size: 32px;color: #999">&#xe630;</text>
+                    </div>
                 </div>
                 <!-- 订单消息 -->
                 <div class="comWrap">
-                    <div class="review flexCol" @click="goReview()">
+                    <div class=" flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe613;</text>
-                        <text class="title mt20">待审核</text>
+                        <text class="title mt20">待付款</text>
                         <text class="num" v-if="orderNum!==0">{{orderNum}}</text>
                     </div>
-                    <div class="delivery flexCol" @click="goDelivery()">
+                    <div class=" flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe612;</text>
                         <text class="title mt20">待发货</text>
                         <text class="num">{{orderNum}}</text>
                     </div>
-                    <div class="receive flexCol" @click="goReceive()">
+                    <div class=" flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe611;</text>
-                        <text class="title mt20">待收货</text>
+                        <text class="title mt20">已发货</text>
                         <text class="num">{{orderNum}}</text>
                     </div>
-                    <div class="evaluation flexCol" @click="goEvaluation()">
+                    <div class=" flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe60c;</text>
-                        <text class="title mt20">待评价</text>
+                        <text class="title mt20">待退款</text>
                         <text class="num" v-if="orderNumS!==0">{{orderNumS}}</text>
                     </div>
                 </div>
@@ -120,25 +141,27 @@
             <!-- 我的文章 -->
             <div class="mt20" style="background-color: #FFF">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
-                    <text class="title">我的帖子</text>
-                    <text class="sub_title" style="padding-right: 30px;">查看所有</text>
-                    <text :style="{fontFamily:'iconfont'}" class="iconRight" style="font-size: 25px; color: #999">></text>
+                    <text class="title">我的文章</text>
+                    <div class="flex-row">
+                    <text class="sub_title" style="padding-right: 10px;">查看所有</text>
+                    <text :style="{fontFamily:'iconfont'}" style="font-size: 32px;color: #999">&#xe630;</text>
+                    </div>
                 </div>
                 <!-- 文章列表 -->
                 <div class="comWrap">
-                    <div class="post flexCol" @click="goEvaluation()">
+                    <div class="post flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe60e;</text>
                         <text class="title mt20">写文章</text>
                     </div>
-                    <div class="post flexCol" @click="goEvaluation()">
+                    <div class="post flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #ff9999">&#xe60f;</text>
                         <text class="title mt20">我的帖子</text>
                     </div>
-                    <div class="post flexCol" @click="goEvaluation()">
+                    <div class="post flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc66cc">&#xe610;</text>
                         <text class="title mt20">收藏的帖子</text>
                     </div>
-                    <div class="post flexCol" @click="goEvaluation()">
+                    <div class="post flexCol" >
                         <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #ff6666">&#xe60d;</text>
                         <text class="title mt20">点赞的帖子</text>
                     </div>
@@ -146,49 +169,79 @@
             </div>
             <!-- 我的圈子 -->
             <!--<div class="mt20" style="background-color: #FFF">-->
-            <!--<div class="boder-bottom pl20 pr20 space-between headTitle" @click="goCircleList()">-->
-            <!--<text class="title">我的圈子</text>-->
-            <!--<text class="sub_title" style="padding-right: 30px;">查看所有</text>-->
-            <!--<text :style="{fontFamily:'iconfont'}" class="iconRight" style="font-size: 25px; color: #999">></text>-->
-            <!--</div>-->
-            <!--<div class="circleWrap">-->
-            <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
-            <!--<text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #e4e4e4">&#xe608;</text>-->
-            <!--<text class="title mt20">创建圈子</text>-->
-            <!--</div>-->
-            <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
-            <!--<image :src="circleImg" class="circleImg"></image>-->
-            <!--<text class="title mt20">搞笑圈</text>-->
-            <!--</div>-->
-            <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
-            <!--<image :src="circleImg" class="circleImg"></image>-->
-            <!--<text class="title mt20">骑士圈</text>-->
-            <!--</div>-->
-            <!--</div>-->
+                <!--<div class="boder-bottom pl20 pr20 space-between headTitle" @click="goCircleList()">-->
+                    <!--<text class="title">我的圈子</text>-->
+                    <!--<text class="sub_title" style="padding-right: 30px;">查看所有</text>-->
+                    <!--<text :style="{fontFamily:'iconfont'}" class="iconRight" style="font-size: 25px; color: #999">></text>-->
+                <!--</div>-->
+                <!--<div class="circleWrap">-->
+                    <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #e4e4e4">&#xe608;</text>-->
+                        <!--<text class="title mt20">创建圈子</text>-->
+                    <!--</div>-->
+                    <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
+                        <!--<image :src="circleImg" class="circleImg"></image>-->
+                        <!--<text class="title mt20">搞笑圈</text>-->
+                    <!--</div>-->
+                    <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
+                        <!--<image :src="circleImg" class="circleImg"></image>-->
+                        <!--<text class="title mt20">骑士圈</text>-->
+                    <!--</div>-->
+                <!--</div>-->
             <!--</div>-->
             <!-- 必备工具 -->
             <div class="mt20" style="background-color: #FFF">
-                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
+                <div class="boder-bottom pl20 pr20 space-between headTitle">
                     <text class="title">必备工具</text>
                 </div>
                 <!-- 帖子列表 -->
-                <div class="comWrap">
-                    <div class="post flexCol" @click="goEvaluation()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe60a;</text>
-                        <text class="title mt20">我要开店</text>
+                <div class="circleWrap">
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe651;</text>
+                        <text class="title mt20">通用设置</text>
                     </div>
-                    <div class="post flexCol" @click="goEvaluation()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe609;</text>
-                        <text class="title mt20">商品管理</text>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe6a4;</text>
+                        <text class="title mt20">我的专栏</text>
                     </div>
-                    <div class="post flexCol" @click="goEvaluation()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe60b;</text>
+                    <div class="iconBox flexCol">
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe628;</text>
+                        <text class="title mt20">店铺管理</text>
+                    </div>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe628;</text>
+                        <text class="title mt20">完善店铺</text>
+                    </div>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe600;</text>
                         <text class="title mt20">订单管理</text>
                     </div>
-                    <div class="post flexCol" @click="goEvaluation()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">...</text>
-                        <text class="title mt20">更多功能</text>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe600;</text>
+                        <text class="title mt20">送货管理</text>
                     </div>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe6a7;</text>
+                        <text class="title mt20">商品管理</text>
+                    </div>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe63f;</text>
+                        <text class="title mt20">接龙管理</text>
+                    </div>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe774;</text>
+                        <text class="title mt20">评价管理</text>
+                    </div>
+                    <div class="iconBox flexCol">
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe633;</text>
+                        <text class="title mt20">推荐好友</text>
+                    </div>
+                    <div class="iconBox flexCol" >
+                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe65a;</text>
+                        <text class="title mt20">联系客服</text>
+                    </div>
+
+
                 </div>
             </div>
         </scroller>
@@ -196,10 +249,13 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .iconBox{
+        width: 177.5px;
+    }
     .rightTop {
-        position: absolute;
+        position: fixed;
         top: 44px;
-        right: 80px;
+        right: 0;
         /*width: 110px;*/
         width: 92px;
         height: 92px;
@@ -416,6 +472,7 @@
         padding-bottom: 20px;
         flex-direction: row;
         justify-content: flex-start;
+        flex-wrap: wrap;
     }
     .cirlceList {
         margin-right: 40px;
@@ -426,6 +483,13 @@
         justify-content: center;
         position: relative;
         height: 140px;
+    }
+    .flexColTwo {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: 100px;
     }
     .num {
         position: absolute;
@@ -464,6 +528,7 @@
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch';
     import filters from '../../filters/filters.js';
+    import topic_header from '../../widget/header.vue';
     var animationPara; //执行动画的文章
     var scrollTop = 0;
     export default {
@@ -476,8 +541,8 @@
                 isDisappear: false,
                 corpusScrollTop: 0,
                 canScroll: true,
-                userName: '余小笙',
-                userSign: '东邪西毒--南帝北丐--中神通',
+                userName: '',
+                userSign: '',
                 whichCorpus: 0,
                 isNoArticle: false,
                 fontName: '&#xe685;',
@@ -495,6 +560,9 @@
                 listCurrent: 0,
                 listPageSize: 10,
             }
+        },
+        components: {
+            topic_header
         },
         filters: {
             watchWho: function(value) {
@@ -798,8 +866,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/persetting/persetting.js'),
-                    function(data) {
+                event.openURL(utils.locate('view/member/attribute.js'), function(data) {
                         _this.clicked = false;
                         if (data.type == 'success' && data.data != '') {
                             if (!utils.isNull(data.data.logo)) {
@@ -818,26 +885,17 @@
                 );
             },
             //            设置中心
-            goManage() {
+            goOption() {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/systemSetting/systemSetting.js'),
-                    function(data) {
+                event.openURL(utils.locate('view/member/option.js'), function(data) {
                         _this.clicked = false;
                         //                    utils.debug(data)
                         if (data.type == 'success' && data.data != '') {
-                            if (!utils.isNull(data.data.occupation)) {
-                                _this.imageUrl = data.data.occupation;
-                            }
-                            if (!utils.isNull(data.data.nickName)) {
-                                _this.userName = data.data.nickName;
-                            }
-                            if (!utils.isNull(data.data.autograph)) {
-                                _this.userSign = data.data.autograph;
-                            }
+
                         } else {
                             //                            return ;
                         }
@@ -862,20 +920,20 @@
                     }
                 );
             },
-            // 收藏的商品
-            goCollectShops() {
+//            我的收藏
+            goCollect(){
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/collectPdt/collectPdt.js?id=' + this.UId),
-                    function(data) {
+                event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
+                    function (data) {
                         _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
+                        if(data.type == 'success' && data.data != ''){
                             _this.updateUserInfo();
-                        } else {
-                            return;
+                        }else{
+                            return ;
                         }
                     }
                 );
@@ -899,37 +957,16 @@
                 );
             },
             // 我的优惠券
-            goCoupon() {
+            goOrderList() {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/mycoupons/mycoupons.js?id=' + this.UId),
+                event.openURL(utils.locate('view/shop/order/list.js'),
                     function(data) {
                         _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
-                            _this.updateUserInfo();
-                        } else {
-                            return;
-                        }
-                    }
-                );
-            },
-            goCircleList() {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/mycirclelist/mycirclelist.js?id=' + this.UId),
-                    function(data) {
-                        _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
-                            _this.updateUserInfo();
-                        } else {
-                            return;
-                        }
+                        _this.updateUserInfo();
                     }
                 );
             },

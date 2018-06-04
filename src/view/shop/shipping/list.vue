@@ -19,10 +19,10 @@
             <cell v-else v-for="(item,index) in shippingList">
                 <div class="goodsLine mt20">
                     <div class="space-between goodsHead" >
-                        <div class="flex-row" @click="goAuthor(item.memberId)">
+                        <div class="flex-row">
                             <image :src="item.logo | watchLogo" class="shopImg"></image>
                             <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                         </div>
                         <div >
                             <text class="title red">{{item.statusDescr}}</text>
@@ -221,7 +221,7 @@
         },
         props:{
             noDataHint:{default:'暂无运单'},
-            title:{default:'运单管理'}
+            title:{default:'送货管理'}
         },
         filters:{
             watchSpec:function (value) {
