@@ -184,10 +184,10 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #999933" class="iconfontSize">&#xe66c;</text>
                         <text class="iconfontText mt20">员工管理</text>
                     </div>
-                    <div class="iconBox flexCol mt20"  @click="fill()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe70e;</text>
-                        <text class="iconfontText mt20">补单</text>
-                    </div>
+                    <!--<div class="iconBox flexCol mt20"  @click="fill()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe70e;</text>-->
+                        <!--<text class="iconfontText mt20">补单</text>-->
+                    <!--</div>-->
                     <!--<div class="iconBox flexCol mt20"  @click="beginShare()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>-->
                         <!--<text class="iconfontText mt20">推荐好友</text>-->
