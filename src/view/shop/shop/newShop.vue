@@ -336,6 +336,9 @@
             if(utils.isNull(this.shopId)) {
                 this.shopId = ''
             }else {
+                if(this.shopId == '#'){
+                    this.shopId = ''
+                }
                 this.hasChange = true;
                 this.modification();
             }

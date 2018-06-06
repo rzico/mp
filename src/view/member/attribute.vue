@@ -204,7 +204,8 @@
                 var E = {
                     logo:this.logo,
                     nickName:this.nickName,
-                    autograph:this.autograph
+                    autograph:this.autograph,
+                    occupation:this.occupation
                 }
                 let backData = utils.message('success','成功',E);
                 event.closeURL(backData);

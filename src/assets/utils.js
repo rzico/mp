@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
-const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');
@@ -319,6 +319,38 @@ let utilsFunc = {
             }
         }
     },
+
+    //   新会员首页 专栏 顶部信息栏
+    topicInfo:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'memberBox';
+            }else if(s == 'IPhoneX'){
+                return 'memberBoxIPHONEX';
+            }else{
+                return s;
+            }
+        }
+    },
+    //   新会员首页 专栏 顶部粉丝栏
+    topicFans:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'fansBox';
+            }else if(s == 'IPhoneX'){
+                return 'fansBoxIPHONEX';
+            }else{
+                return s;
+            }
+        }
+    },
+
     //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addBgImg:function () {
         let s = this.device();
@@ -326,7 +358,22 @@ let utilsFunc = {
             return ""
         } else {
             if(s == 'V1'){
-                return 'addBgImgV1';
+                return 'headerBox';
+            }else if(s == 'IPhoneX'){
+                return 'headerBoxIPHONEX';
+            }else{
+                return s;
+            }
+        }
+    },
+    //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
+    topicBgImg:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'topicBgImg';
             }else if(s == 'IPhoneX'){
                 return 'addBgImgIPhoneX';
             }else{

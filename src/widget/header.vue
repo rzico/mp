@@ -1,17 +1,26 @@
 <template>
     <div class="">
         <div class="headerBox">
-            <image class="bgImg" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/background.jpg"></image>
-            <image class="bgImgTwo" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/topic_mask.png"></image>
-            <div class="memberBox">
+            <image class="bgImg" :src="imgBg"></image>
+            <image class="img_heightMask" :src="img_heightMask"></image>
+            <!--<image class="img_mask" :src="img_mask"></image>-->
+            <div class="memberBox" :class="[headerInfo()]">
                 <image class="logo" :src="logo" @click="setting()"></image>
                 <div class="memberInfo">
                     <text class="name">{{userName}}</text>
-                    <div class="jobBox">
-                        <text class="jobText">教授</text>
+                    <div class="jobBox" v-if="occupation != ''">
+                        <text class="jobText">{{occupation}}</text>
                     </div>
                 </div>
                 <text class="signature">{{userSign}}</text>
+            </div>
+            <div class="fansBox" :class="[headerFans()]">
+                <text class="fans">{{fans}}</text>
+                <text class="fansText">粉丝</text>
+                <div class="focusBox" v-if="focusType">
+                    <text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>
+                    <text class="focusText">关注</text>
+                </div>
             </div>
         </div>
     </div>
@@ -20,25 +29,41 @@
 <style scoped>
    .headerBox{
        width: 750px;
-       height: 375px;
+       height: 410px;
+   }
+   .headerBoxIPHONEX{
+       width: 750px;
+       height: 420px;
    }
     .bgImg{
         width: 750px;
-        height: 375px;
+        height: 750px;
     }
-    .bgImgTwo{
+    .img_heightMask{
         width: 750px;
-        height: 375px;
-        opacity:0.6;
+        height: 750px;
         position: absolute;
         top: 0;
     }
+    .img_mask{
+        width: 750px;
+        height: 126px;
+        /*opacity:0.6;*/
+        position: absolute;
+        top: 249px;
+    }
     .memberBox{
         flex-direction: column;
-        padding-left: 30px;
+        padding-left: 40px;
         position: absolute;
-        top:69.5px;
+        top:150px;
     }
+   .memberBoxIPHONEX{
+       flex-direction: column;
+       padding-left: 40px;
+       position: absolute;
+       top:160px;
+   }
     .logo{
         height: 120px;
         width: 120px;
@@ -48,20 +73,21 @@
         border-radius: 100%;
     }
     .memberInfo{
-        margin-top: 20px;
+        margin-top: 24px;
         flex-direction: row;
         align-items: center;
         height: 40px;
     }
     .name{
-        font-size: 32px;
+        font-size: 36px;
+        font-weight: bold;
         color: white;
     }
     .jobBox{
         margin-left: 15px;
         padding-left: 15px;
         padding-right: 15px;
-        background-color: rgba(255,255,255,0.3);
+        background-color: rgba(238,238,238,0.5);
         border-radius: 30px;
         align-items: center;
         justify-content: center;
@@ -71,11 +97,53 @@
         color: #EB4E40;
     }
     .signature{
-        margin-top: 20px;
-
+        margin-top: 28px;
         font-size: 26px;
+        line-height: 26px;
         color: white;
     }
+    .fansBox{
+        flex-direction: column;
+        align-items:flex-end;
+        position: absolute;
+        right: 30px;
+        bottom: 25px;
+    }
+   .fansBoxIPHONEX{
+       flex-direction: column;
+       align-items:flex-end;
+       position: absolute;
+       right: 30px;
+       bottom: 25px;
+   }
+    .fans{
+        font-size: 32px;
+        color: #fff;
+    }
+   .fansText{
+       font-size: 26px;
+       color: #fff;
+   }
+    .focusBox{
+        margin-top: 10px;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-radius: 60px;
+        background-color: #EB4E40;
+    }
+    .focusIco{
+        padding-top: 7px;
+        font-size: 32px;
+        color:#fff;
+    }
+   .focusText{
+       font-size: 28px;
+       color:#fff;
+   }
 </style>
 <script>
     import navbar from '../include/navbar.vue';
@@ -91,11 +159,16 @@
         },
         data: function () {
             return {
-                imgBg:utils.locate('resources/images/topic_mask.png'),
+                img_mask:utils.locate('resources/images/topic_curveMask.png'),
+                img_heightMask:utils.locate('resources/images/topic_heightMaskf5f5f5.png'),
             }
         },
         props: {
+            focusType:false,
+            fans:0,
             logo:{},
+            imgBg: '',
+            occupation:'',
             userName: {
                 default: function () {''}
             },
@@ -113,6 +186,21 @@
 
         },
         methods: {
+            //            监听设备型号,控制顶部人物信息栏
+            headerInfo: function() {
+                let dc = utils.topicInfo();
+                return dc;
+            },
+            //            监听设备型号,控制顶部人物粉丝栏
+            headerFans: function() {
+                let dc = utils.topicFans();
+                return dc;
+            },
+            //            监听设备型号,控制顶部人物信息栏背景图大小
+            headerBgImg:function () {
+                let dc = utils.topicBgImg();
+                return dc;
+            },
             setting: function () {
                 this.$emit("setting");
             },

@@ -285,9 +285,11 @@
             }
             if(!utils.isNull(utils.getUrlParameter('productCategoryId'))){
                 this.productCategoryId = utils.getUrlParameter('productCategoryId')
+//                把字符串转换成整型，否则switch识别不了
+                this.productCategoryId = parseInt(this.productCategoryId)
+                this.pageStart = 0;
             }
             this.open();
-
         },
         methods:{
 

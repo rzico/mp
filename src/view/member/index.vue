@@ -18,9 +18,14 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <div  class=" rightTop " :class="[classTop()]" @click="goManage()">
+            <div  class=" rightTop " :class="[classTop()]" @click="goManage()" v-if="isOwner && isStatus">
                 <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
                 <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
+            </div>
+            <!--导航栏返回-->
+            <div  class=" leftTop " :class="[classTop()]" @click="goback()">
+                <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
+                <text  :style="{fontFamily:'iconfont'}" style="font-size:40px;color: #fff">&#xe669;</text>
             </div>
             <!--绑定动画-->
             <!--只能多写一个顶部栏。否则无法适应-->
@@ -42,45 +47,46 @@
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
             <!--顶部个人信息栏-->
-            <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
-                <!--背景图片-->
-                <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
-                <!--遮罩层-->
-                <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-                <div class="topHead" >
-                    <!--用户头像-->
-                    <image class="testImage" :src="imageUrl" ></image>
-                    <!--个性签名 用户昵称-->
-                    <div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >
-                        <!--用户昵称-->
-                        <text class="userName">{{userName}}</text>
-                        <!--用户签名-->
-                        <text class="userSign">{{userSign}}</text>
-                    </div>
-                </div>
-                <!--功能按钮-->
-                <div class="topBtnBox">
-                    <div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">
-                        <text class="topBtn topBtnBigFont">{{collectNum}}</text>
-                        <text class=" topBtn " >收藏</text>
-                    </div>
-                    <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
-                        <!--钱包两边的白色边框-->
-                        <div  class="leftBtnBorder topBtnBorder" ></div>
-                        <div  class="rightBtnBorder topBtnBorder" ></div>
-                        <div class="moneyFormat">
-                            <text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>
-                            <text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>
-                        </div>
-                        <text class="topBtn" >钱包</text>
-                    </div>
-                    <div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">
-                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                        <text class="topBtn">关注</text>
-                    </div>
-                </div>
+            <!--<div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>-->
+                <!--&lt;!&ndash;背景图片&ndash;&gt;-->
+                <!--<image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>-->
+                <!--&lt;!&ndash;遮罩层&ndash;&gt;-->
+                <!--&lt;!&ndash;<image class="backgroundMask" :src="maskUrl"></image>&ndash;&gt;-->
+                <!--<div class="topHead" >-->
+                    <!--&lt;!&ndash;用户头像&ndash;&gt;-->
+                    <!--<image class="testImage" :src="imageUrl" ></image>-->
+                    <!--&lt;!&ndash;个性签名 用户昵称&ndash;&gt;-->
+                    <!--<div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >-->
+                        <!--&lt;!&ndash;用户昵称&ndash;&gt;-->
+                        <!--<text class="userName">{{userName}}</text>-->
+                        <!--&lt;!&ndash;用户签名&ndash;&gt;-->
+                        <!--<text class="userSign">{{userSign}}</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;功能按钮&ndash;&gt;-->
+                <!--<div class="topBtnBox">-->
+                    <!--<div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">-->
+                        <!--<text class="topBtn topBtnBigFont">{{collectNum}}</text>-->
+                        <!--<text class=" topBtn " >收藏</text>-->
+                    <!--</div>-->
+                    <!--<div class="topBtnSmallBox walletLayout"  @click="goWallet()">-->
+                        <!--&lt;!&ndash;钱包两边的白色边框&ndash;&gt;-->
+                        <!--<div  class="leftBtnBorder topBtnBorder" ></div>-->
+                        <!--<div  class="rightBtnBorder topBtnBorder" ></div>-->
+                        <!--<div class="moneyFormat">-->
+                            <!--<text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>-->
+                            <!--<text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>-->
+                        <!--</div>-->
+                        <!--<text class="topBtn" >钱包</text>-->
+                    <!--</div>-->
+                    <!--<div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">-->
+                        <!--<text class="topBtn topBtnBigFont">{{focusNum}}</text>-->
+                        <!--<text class="topBtn">关注</text>-->
+                    <!--</div>-->
+                <!--</div>-->
 
-            </div>
+            <!--</div>-->
+            <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goManage"></topic_header>
             <div>
                 <div  class="corpusBox" >
                     <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
@@ -195,6 +201,14 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .topicHearder{
+        width: 750px;
+        height: 375px;
+    }
+    .topicHearderImg{
+        width: 750px;
+        height: 375px;
+    }
     .hideCorpus{
         top: 136px;position: fixed;
     }
@@ -202,6 +216,16 @@
         position: fixed;
         top: 44px;
         right: 0;
+        /*width: 110px;*/
+        width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+    }
+    .leftTop{
+        position: fixed;
+        top: 44px;
+        left: 10px;
         /*width: 110px;*/
         width: 92px;
         height: 92px;
@@ -600,6 +624,7 @@
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch';
     import filters from '../../filters/filters.js';
+    import topic_header from '../../widget/header.vue';
     var animationPara;//执行动画的文章
     var scrollTop = 0;
     export default {
@@ -649,10 +674,17 @@
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
                 clicked:false,
+                imgBg:'',
+                occupation:'',
+                fans:0,
+                focusType:false,
+                power:false,
+                isOwner:false,//                是否是店主
+                isStatus:false//                是否激活店铺
             }
         },
         components: {
-            noData
+            noData,topic_header
         },
         props:{
             noDataHint:{default:'暂无文章'}
@@ -722,8 +754,8 @@
             this.updateUserInfo();
 //            获取文集列表
             this.getCorpus();
-
-
+//            获取专栏信息
+            this.openTopic();
             this.getAllArticle();
 //            监听文章的变化。
             globalEvent.addEventListener("onArticleChange", function (e) {
@@ -759,7 +791,9 @@
 //            }
 //        },
         methods: {
-
+            goback:function () {
+                event.closeURL();
+            },
             isEmpty:function () {
                 return this.articleList.length==0 && this.corpusId != '';
 //                return this.articleList.length==0 ;
@@ -790,7 +824,20 @@
                 return dc;
             },
 
-
+//            获取专栏信息
+            openTopic:function () {
+                var _this = this;
+                GET('weex/member/topic/view.jhtml', function (data) {
+                    if (data.type == 'success') {
+                        _this.isOwner = data.data.isOwner;
+                        _this.isStatus = data.data.status;
+                    } else {
+                        event.toast(err.content)
+                    }
+                },function (err) {
+                    event.toast(err.content)
+                })
+            },
             getAllArticle(){
                 var middleList = [];
                 this.listCurrent = 0;
@@ -885,6 +932,13 @@
                         if(!utils.isNull(data.data.autograph)){
                             _this.userSign = data.data.autograph;
                         }
+                        if (!utils.isNull(data.data.backgroud)) {
+                            _this.imgBg = data.data.backgroud;
+                        }
+                        if (!utils.isNull(data.data.occupation.name)) {
+                            _this.occupation = data.data.occupation.name;
+                        }
+                        _this.fans = data.data.fans
                         _this.collectNum = data.data.favorite;
                         _this.focusNum = data.data.follow;
                         _this.moneyNum = data.data.balance;
@@ -1232,38 +1286,34 @@
                             if(!utils.isNull(data.data.autograph)){
                                 _this.userSign = data.data.autograph;
                             }
+                            if (!utils.isNull(data.data.occupation)){
+                                _this.occupation = data.data.occupation;
+                            }
                         }else{
 //                            return ;
                         }
                     }
                 );
             },
-//            设置中心
+//            专栏
             goManage(){
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/member/manage.js'),
+                if(this.isOwner  && this.isStatus){
+                event.openURL(utils.locate('view/member/topic/index.js'),
                     function (data) {
                         _this.clicked = false;
-//                    utils.debug(data)
                         if(data.type == 'success' && data.data != ''){
-                            if(!utils.isNull(data.data.occupation)){
-                                _this.imageUrl = data.data.occupation;
-                            }
-                            if(!utils.isNull(data.data.nickName)){
-                                _this.userName = data.data.nickName;
-                            }
-                            if(!utils.isNull(data.data.autograph)){
-                                _this.userSign = data.data.autograph;
-                            }
+
                         }else{
 //                            return ;
                         }
                     }
                 );
+                }
             },
 //            我的关注
             goFocus(){

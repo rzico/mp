@@ -1,6 +1,6 @@
 <!-- 个人中心 -->
 <template>
-    <div class="wrapper" style="background-color: #f5f5f5">
+    <div class="wrapper">
         <!--此处div 不能注释...否则ios某些机型无法置顶-->
         <div>
             <!--顶部白色区域 classHeader(), -->
@@ -22,235 +22,272 @@
             <div class=" rightTop " :class="[classTop()]" @click="goOption()">
                 <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
             </div>
-            <!--绑定动画-->
-            <!--只能多写一个顶部栏。否则无法适应-->
-            <!--<div class="corpusBox hideCorpus" :class="[hideCorpus(),twoTop ? 'isvisible' : 'novisible']">-->
-                <!--<scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll ">-->
-                    <!--<div class="articleClass">-->
-                        <!--<text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class="[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>-->
-                    <!--</div>-->
-                <!--</scroller>-->
-                <!--<div class="corpusIconBox" @click="goCorpus()">-->
-                    <!--<text :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>-->
-                <!--</div>-->
-            <!--</div>-->
         </div>
         <scroller show-scrollbar="false" offset-accuracy="0" ref="scrollerRef" @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;" @appear="toponappear"></div>
             <!--顶部个人信息栏-->
-            <!--<div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>-->
-                <!--&lt;!&ndash;背景图片&ndash;&gt;-->
-                <!--<image class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>-->
-                <!--&lt;!&ndash;遮罩层&ndash;&gt;-->
-                <!--&lt;!&ndash;<image class="backgroundMask" :src="maskUrl"></image>&ndash;&gt;-->
-                <!--<div class="topHead">-->
-                    <!--&lt;!&ndash;用户头像&ndash;&gt;-->
-                    <!--<image class="testImage" :src="imageUrl"></image>-->
-                    <!--&lt;!&ndash;个性签名 用户昵称&ndash;&gt;-->
-                    <!--<div style="align-items: flex-start;padding-left:20px" @click="goAttribute()">-->
-                        <!--&lt;!&ndash;用户昵称&ndash;&gt;-->
-                        <!--<text class="userName">{{userName}}</text>-->
-                        <!--&lt;!&ndash;用户签名&ndash;&gt;-->
-                        <!--<text class="userSign">{{userSign}}</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;功能按钮&ndash;&gt;-->
-                <!--<div class="topBtnBox">-->
-                    <!--<div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCoupon()">-->
-                        <!--<text class="topBtn topBtnBigFont">{{couponNum}}</text>-->
-                        <!--<text class=" topBtn ">优惠券</text>-->
-                    <!--</div>-->
-                    <!--<div class="topBtnSmallBox walletLayout" @click="goWallet()">-->
-                        <!--<div class="moneyFormat">-->
-                            <!--<text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>-->
-                            <!--<text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>-->
-                        <!--</div>-->
-                        <!--<text class="topBtn">钱包</text>-->
-                    <!--</div>-->
-                    <!--<div class="topBtnSmallBox" :style="{minWidth:topMWidth + 'px'}" @click="goFocusTenants()">-->
-                        <!--<text class="topBtn topBtnBigFont">{{focusNum}}</text>-->
-                        <!--<text class="topBtn">店铺</text>-->
-                    <!--</div>-->
-                    <!--<div class="topBtnSmallBox" :style="{minWidth:topMWidth + 'px'}" @click="goCollectShops()">-->
-                        <!--<text class="topBtn topBtnBigFont">{{focusNum}}</text>-->
-                        <!--<text class="topBtn">商品</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;设置&ndash;&gt;-->
-                <!--<div class="rightTop " :class="[classTop()]" @click="goManage()">-->
-                    <!--<text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;购物车&ndash;&gt;-->
-                <!--<div class="cartList" :class="[classTop()]" @click="goCartList()">-->
-                    <!--<text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>-->
-                <!--</div>-->
-            <!--</div>-->
-
-            <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" @setting="goAttribute"></topic_header>
+            <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goAttribute"></topic_header>
             <!--收藏，钱包，关注-->
-            <div style="background-color: #FFF">
+            <div class="">
                 <div class="comWrap">
                     <div class=" flexColTwo" style="width: 236.66px" @click="goCollect()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe613;</text>
-                        <text class="title ">收藏</text>
+                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe65d;</text>
+                        <text class="iconfontText ">收藏</text>
                     </div>
                     <div class=" flexColTwo"  style="width: 236.66px" @click="goWallet()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe612;</text>
-                        <text class="title ">钱包</text>
+                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe63e;</text>
+                        <text class="iconfontText ">钱包</text>
                     </div>
                     <div class=" flexColTwo"  style="width: 236.66px" @click="goFocus()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe611;</text>
-                        <text class="title ">关注</text>
+                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe870;</text>
+                        <text class="iconfontText ">关注</text>
                     </div>
                 </div>
             </div>
             <!-- 我的订单 -->
-            <div class="mt20" style="background-color: #FFF">
+            <div class="contentBox" v-if="member.activated && member.hasShop">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
-                    <text class="title">我的订单</text>
+                    <text class="fz30">我的订单</text>
                     <div class="flex-row">
-                    <text class="sub_title" style="padding-right: 10px;">查看所有</text>
-                    <text :style="{fontFamily:'iconfont'}" style="font-size: 32px;color: #999">&#xe630;</text>
+                    <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
+                    <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
                     </div>
                 </div>
                 <!-- 订单消息 -->
                 <div class="comWrap">
-                    <div class=" flexCol"  @click="goNoPay()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe613;</text>
-                        <text class="title mt20">待付款</text>
-                        <text class="num" v-if="orderNum!==0">{{orderNum}}</text>
+                    <div class=" flexCol iconBox"  @click="goNoPay()">
+                        <text :style="{fontFamily:'iconfont'}" style="color:#EB4E40" class="iconfontSize">&#xe6e2;</text>
+                        <text class="iconfontText ">待付款</text>
+                        <div class="shippingNumberBox"  v-if="conut.refund != 0">
+                        <text class="shippingNumber">{{conut.refund}}</text>
+                        </div>
                     </div>
-                    <div class=" flexCol"  @click="goNoDelivery()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe612;</text>
-                        <text class="title mt20">待发货</text>
-                        <text class="num">{{orderNum}}</text>
+                    <div class=" flexCol iconBox"  @click="goNoDelivery()">
+                        <text :style="{fontFamily:'iconfont'}" style="color:#EB4E40" class="iconfontSize">&#xe718;</text>
+                        <text class="iconfontText ">待发货</text>
+                        <div class="shippingNumberBox" v-if="conut.unshipped != 0">
+                        <text class="shippingNumber" >{{conut.unshipped}}</text>
+                        </div>
                     </div>
-                    <div class=" flexCol"  @click="goDelivery()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe611;</text>
-                        <text class="title mt20">已发货</text>
-                        <text class="num">{{orderNum}}</text>
+                    <div class=" flexCol iconBox"  @click="goDelivery()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe72c;</text>
+                        <text class="iconfontText ">已发货</text>
+                        <div class="shippingNumberBox" v-if="conut.shipped != 0">
+                        <text class="shippingNumber" >{{conut.shipped}}</text>
+                        </div>
                     </div>
-                    <div class=" flexCol"  @click="goRefund()">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc0000">&#xe60c;</text>
-                        <text class="title mt20">待退款</text>
-                        <text class="num" v-if="orderNumS!==0">{{orderNumS}}</text>
+                    <div class=" flexCol iconBox"  @click="goRefund()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xea20;</text>
+                        <text class="iconfontText ">待退款</text>
+                        <div class="shippingNumberBox" v-if="conut.unpaid != 0">
+                        <text class="shippingNumber" >{{conut.unpaid}}</text>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- 我的文章 -->
-            <div class="mt20" style="background-color: #FFF">
-                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
-                    <text class="title">我的文章</text>
+            <div class="contentBox">
+                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goMemberIndex()">
+                    <text class="fz30">我的文章</text>
                     <div class="flex-row">
-                    <text class="sub_title" style="padding-right: 10px;">查看所有</text>
-                    <text :style="{fontFamily:'iconfont'}" style="font-size: 32px;color: #999">&#xe630;</text>
+                    <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
+                    <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
                     </div>
                 </div>
                 <!-- 文章列表 -->
-                <div class="comWrap">
-                    <div class="post flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe60e;</text>
-                        <text class="title mt20">写文章</text>
+                <div class="comWrap" >
+                    <!--<div class=" flexCol" @click="editor()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe65f;</text>-->
+                        <!--<text class="fz30 mt20">写文章</text>-->
+                    <!--</div>-->
+                    <div v-for="a in articleThree" v-if="articleThree.length != 0">
+                    <div class=" articleBox" @click="goArticle(a.id)">
+                        <image class="articleImg" :src="a.thumbnail"></image>
+                        <text class="articleImgText">{{a.title}}</text>
                     </div>
-                    <div class="post flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #ff9999">&#xe60f;</text>
-                        <text class="title mt20">我的帖子</text>
                     </div>
-                    <div class="post flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #cc66cc">&#xe610;</text>
-                        <text class="title mt20">收藏的帖子</text>
-                    </div>
-                    <div class="post flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #ff6666">&#xe60d;</text>
-                        <text class="title mt20">点赞的帖子</text>
+                    <div class="unArticleBox" v-if="articleThree.length == 0" @click="jumpEditor()">
+                        <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
+                        <text class="fz26 mt10" style="color: #cccccc">点击发表文章</text>
                     </div>
                 </div>
             </div>
-            <!-- 我的圈子 -->
-            <!--<div class="mt20" style="background-color: #FFF">-->
-                <!--<div class="boder-bottom pl20 pr20 space-between headTitle" @click="goCircleList()">-->
-                    <!--<text class="title">我的圈子</text>-->
-                    <!--<text class="sub_title" style="padding-right: 30px;">查看所有</text>-->
-                    <!--<text :style="{fontFamily:'iconfont'}" class="iconRight" style="font-size: 25px; color: #999">></text>-->
-                <!--</div>-->
-                <!--<div class="circleWrap">-->
-                    <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
-                        <!--<text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #e4e4e4">&#xe608;</text>-->
-                        <!--<text class="title mt20">创建圈子</text>-->
-                    <!--</div>-->
-                    <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
-                        <!--<image :src="circleImg" class="circleImg"></image>-->
-                        <!--<text class="title mt20">搞笑圈</text>-->
-                    <!--</div>-->
-                    <!--<div class="cirlceList flexCol" @click="goEvaluation()">-->
-                        <!--<image :src="circleImg" class="circleImg"></image>-->
-                        <!--<text class="title mt20">骑士圈</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
             <!-- 必备工具 -->
-            <div class="mt20" style="background-color: #FFF">
+            <div class="contentBox" style="margin-bottom: 100px;">
                 <div class="boder-bottom pl20 pr20 space-between headTitle">
-                    <text class="title">必备工具</text>
+                    <text class="fz30">必备工具</text>
                 </div>
                 <!-- 帖子列表 -->
                 <div class="circleWrap">
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe651;</text>
-                        <text class="title mt20">通用设置</text>
+                    <!--<div class="iconBox flexCol mt20"  @click="goOption()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe651;</text>-->
+                        <!--<text class="iconfontText mt20">通用设置</text>-->
+                    <!--</div>-->
+                    <!--<div class="iconBox flexCol mt20" v-if="member.hasTopic" @click="goTopic()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe6a4;</text>-->
+                        <!--<text class="iconfontText mt20">我的专栏</text>-->
+                    <!--</div>-->
+                    <!--<div class="iconBox flexCol mt20" v-if="member.isShop && member.hasShop" @click="store()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe628;</text>-->
+                        <!--<text class="iconfontText mt20">店铺管理</text>-->
+                    <!--</div>-->
+                    <div class="iconBox flexCol mt20"   v-if="member.activated && member.hasShop" @click="goOrderList()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe665;</text>
+                        <text class="iconfontText mt20">订单管理</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe6a4;</text>
-                        <text class="title mt20">我的专栏</text>
+                    <div class="iconBox flexCol mt20"  v-if="member.activated && member.hasShop"  @click="shippingManage()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #996600" class="iconfontSize">&#xe66e;</text>
+                        <text class="iconfontText mt20">送货管理</text>
                     </div>
-                    <div class="iconBox flexCol">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe628;</text>
-                        <text class="title mt20">店铺管理</text>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="dragon()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe664;</text>
+                        <text class="iconfontText mt20">接龙管理</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe628;</text>
-                        <text class="title mt20">完善店铺</text>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="goReviewManage()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe666;</text>
+                        <text class="iconfontText mt20">评价管理</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe600;</text>
-                        <text class="title mt20">订单管理</text>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="gocard()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #cc3300" class="iconfontSize">&#xe66a;</text>
+                        <text class="iconfontText mt20">会员卡</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe600;</text>
-                        <text class="title mt20">送货管理</text>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="gocoupon()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #33cc99" class="iconfontSize">&#xe7fc;</text>
+                        <text class="iconfontText mt20">优惠券</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe6a7;</text>
-                        <text class="title mt20">商品管理</text>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="godistribution()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #cc9900" class="iconfontSize">&#xe668;</text>
+                        <text class="iconfontText mt20">新营销</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe63f;</text>
-                        <text class="title mt20">接龙管理</text>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop"  @click="goodsManage()" >
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #cc66cc" class="iconfontSize">&#xe667;</text>
+                        <text class="iconfontText mt20">商品管理</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe774;</text>
-                        <text class="title mt20">评价管理</text>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="shop()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #336666" class="iconfontSize">&#xe66d;</text>
+                        <text class="iconfontText mt20">店铺管理</text>
                     </div>
-                    <div class="iconBox flexCol">
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe633;</text>
-                        <text class="title mt20">推荐好友</text>
+                    <div class="iconBox flexCol mt20"  v-if="!member.hasShop && !member.activated" @click="goShop()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
+                        <text class="iconfontText mt20">我要开店</text>
                     </div>
-                    <div class="iconBox flexCol" >
-                        <text :style="{fontFamily:'iconfont'}" style="font-size: 55px; color: #66ccff">&#xe65a;</text>
-                        <text class="title mt20">联系客服</text>
+                    <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated" @click="activated()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65" class="iconfontSize">&#xe6ce;</text>
+                        <text class="iconfontText mt20">激活店铺</text>
                     </div>
+                    <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated" @click="modification()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
+                        <text class="iconfontText mt20">修改资料</text>
+                    </div>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="employee()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #999933" class="iconfontSize">&#xe66c;</text>
+                        <text class="iconfontText mt20">员工管理</text>
+                    </div>
+                    <div class="iconBox flexCol mt20"  @click="fill()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe70e;</text>
+                        <text class="iconfontText mt20">补单</text>
+                    </div>
+                    <!--<div class="iconBox flexCol mt20"  @click="beginShare()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>-->
+                        <!--<text class="iconfontText mt20">推荐好友</text>-->
+                    <!--</div>-->
+                    <!--<div class="iconBox flexCol mt20" @click="gmchat()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe65a;</text>-->
+                        <!--<text class="iconfontText mt20">联系客服</text>-->
+                    <!--</div>-->
 
 
                 </div>
             </div>
+
         </scroller>
+        <payment ref="payment" @notify="notify"></payment>
+        <div v-if="showShare"  key="share">
+            <div class="mask" @touchstart="maskTouch"></div>
+            <share @doShare="doShare" @doCancel="doCancel"></share>
+        </div>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .wrapper{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 750px;
+        background-color:#f5f5f5;
+    }
+    .articleBox{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+    }
+    .unArticleBox{
+        height: 200px;
+        width: 670px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .articleImgText{
+        margin-top: 15px;
+        font-size: 26px;
+        color: #444;
+        width: 150px;
+        lines:2;
+        text-overflow: ellipsis;
+    }
+    .contentBox{
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        background-color: white;
+        border-radius: 20px;
+    }
+    .shippingNumberBox{
+        padding-top: 3px;
+        min-height: 35px;
+        min-width: 35px;
+        border-radius: 100%;
+        border-color: #EB4E40;
+        border-width:2px;
+        color: #EB4E40;
+        position: absolute;
+        top:0;
+        right: 40px;
+        align-items: center;
+        justify-content: center;
+    }
+    .shippingNumber{
+        font-size: 26px;
+        line-height: 26px;
+        color: #EB4E40;
+    }
+    .topContentBox{
+        background-color: rgba(255,255,255,0.6);
+    }
+    .articleImg{
+        height: 150px;
+        width: 150px;
+        border-radius: 10px;
+        border-width: 1px;
+        border-color: #eeeeee;
+    }
     .iconBox{
-        width: 177.5px;
+        width: 167.5px;
+    }
+    .iconfontSize{
+        font-size: 60px;
+    }
+    .iconfontText{
+        font-size: 26px;
+        color: #444;
     }
     .rightTop {
         position: fixed;
@@ -261,59 +298,6 @@
         height: 92px;
         align-items: center;
         justify-content: center;
-    }
-    .cartList {
-        position: absolute;
-        top: 44px;
-        right: 20px;
-        /*width: 110px;*/
-        width: 92px;
-        height: 92px;
-        align-items: center;
-        justify-content: center;
-    }
-    .categoryBox {
-        position: absolute;
-        background-color: rgba(136, 136, 136, 0.1);
-        left: 650px;
-        bottom: 100px;
-        border-radius: 5px;
-        padding-right: 3px;
-        padding-left: 3px;
-        padding-top: 3px;
-        padding-bottom: 3px;
-    }
-    .categoryText {
-        color: #fff;
-        font-size: 28px;
-    }
-    .moneyFormat {
-        flex-direction: row;
-        justify-content: center;
-    }
-    .corpusScroll {
-        flex-direction: row;
-        width: 650px;
-        background-color: #fff;
-    }
-    .backgroundImage {
-        position: absolute;
-        width: 750px;
-        top: 0;
-        height: 420px;
-        /*filter: blur(4px);*/
-        /*opacity: 1;*/
-        /*-moz-filter: blur(4px);*/
-        /*-webkit-filter: blur(4px);*/
-        /*-o-filter: blur(4px);*/
-        /*-ms-filter: blur(4px);*/
-        /*-webkit-backdrop-filter: blur(4px);*/
-    }
-    .corpusIconBox {
-        width: 100px;
-        justify-content: center;
-        align-items: center;
-        background-color: white;
     }
     .isvisible {
         opacity: 1;
@@ -342,26 +326,6 @@
         font-size: 33px;
         color: #fff;
     }
-    .setTop {
-        top: 136px;
-    }
-    .posFixed {
-        position: fixed;
-        background-color: red;
-        top: 136px;
-    }
-    .posRelative {
-        position: relative;
-    }
-    .posAbsolute {
-        position: absolute;
-        top: 50px;
-        left: 20px;
-    }
-    .posAbsoluteBtn {
-        position: absolute;
-        top: 200px;
-    }
 
 
     /*顶部导航栏*/
@@ -372,83 +336,10 @@
         top: 0px;
         border-bottom-width: 0px;
     }
-    .topBox {
-        position: relative;
-        padding-top: 40px;
-        height: 380px;
-        background-color: black;
-    }
-    .topBtnBox {
-        flex-direction: row;
-        align-items: center;
-        margin-top: 40px;
-        width: 750px;
-        justify-content: space-around;
-    }
-    .topBtnSmallBox {
-        height: 80px;
-        justify-content: center;
-        align-items: center;
-    }
-    .walletLayout {
-        min-width: 166px;
-        max-width: 260px;
-        flex-shrink: 0;
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-    .topBtn {
-        color: white;
-        font-size: 24px;
-        text-align: center;
-        height: 50px;
-        line-height: 50px;
-    }
-    .topMoneySize {
-        font-weight: 400;
-        font-size: 32px;
-    }
-    .topBtnBigFont {
-        font-weight: 400;
-        font-size: 38px;
-    }
-    .topHead {
-        flex-direction: row;
-        align-items: left;
-        padding-top: 20px;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-bottom: 20px;
-        color: white;
-    }
-    .testImage {
-        width: 120px;
-        height: 120px;
-        border-radius: 60px;
-    }
-    .userSign {
-        lines: 1;
-        text-overflow: ellipsis;
-        width: 500px;
-        font-size: 26px;
-        color: white;
-    }
-    .userName {
-        font-weight: 600;
-        font-size: 32px;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        color: white;
-    }
     .headTitle {
-        height: 100px;
-        line-height: 100px;
+        height: 80px;
+        line-height: 80px;
         position: relative;
-    }
-    .iconRight {
-        position: absolute;
-        right: 18px;
-        top: 34px;
     }
 
 
@@ -456,16 +347,17 @@
     /*订单列表*/
 
     .comWrap {
-        width: 750px;
+        width: 710px;
         padding-top: 20px;
         padding-left: 20px;
         padding-right: 20px;
         padding-bottom: 20px;
         flex-direction: row;
         justify-content: space-between;
+        position: relative;
     }
     .circleWrap {
-        width: 750px;
+        width: 710px;
         padding-top: 20px;
         padding-left: 20px;
         padding-right: 20px;
@@ -473,9 +365,6 @@
         flex-direction: row;
         justify-content: flex-start;
         flex-wrap: wrap;
-    }
-    .cirlceList {
-        margin-right: 40px;
     }
     .flexCol {
         flex-direction: column;
@@ -491,35 +380,6 @@
         position: relative;
         height: 100px;
     }
-    .num {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        color: #ff0000;
-        background-color: #fff;
-        font-size: 24px;
-        font-weight: bold;
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        border-radius: 40px;
-        border-color: #ff0000;
-        border-left-style: solid;
-        border-right-style: solid;
-        border-top-style: solid;
-        border-bottom-style: solid;
-        border-left-width: 2px;
-        border-right-width: 2px;
-        border-top-width: 2px;
-        border-bottom-width: 2px;
-    }
-    .circleImg {
-        width: 58px;
-        height: 58px;
-        border-radius: 29px;
-    }
-
 </style>
 <script>
     import { dom, event, storage, stream, animation } from '../../weex.js';
@@ -529,6 +389,8 @@
     import { POST, GET } from '../../assets/fetch';
     import filters from '../../filters/filters.js';
     import topic_header from '../../widget/header.vue';
+    import share from '../../include/share.vue';
+    import payment from '../../include/payment.vue'
     var animationPara; //执行动画的文章
     var scrollTop = 0;
     export default {
@@ -543,26 +405,36 @@
                 canScroll: true,
                 userName: '',
                 userSign: '',
+                occupation:'',
                 whichCorpus: 0,
                 isNoArticle: false,
                 fontName: '&#xe685;',
                 collectNum: 0,
                 moneyNum: 0,
                 focusNum: 0,
+                fans:0,
                 couponNum: 0,
                 orderNum: 999,
                 orderNumS:0,
-//                imageUrl: utils.locate('resources/images/background.png'),
+                imageUrl: utils.locate('resources/images/background.png'),
                 bgImgUrl: 'http://cdn.ahxinying.cn/weex/placeholder/bg.jpg',
                 circleImg: utils.locate('resources/images/liveHeader.png'),
                 showLoading: 'hide',
-                imageUrl: 'https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg',
                 listCurrent: 0,
                 listPageSize: 10,
+                articleThree:[],
+                roles:'',
+                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,activated:false,useCashier:false,isAgent:false,isShop:false,hasShop:false},
+                showShare:false,
+                clicked:false,
+                imgBg:'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/fengjing.jpeg',
+                focusType:false,
+                conut:[],
+                shopId:'#'
             }
         },
         components: {
-            topic_header
+            topic_header,share,payment
         },
         filters: {
             watchWho: function(value) {
@@ -627,6 +499,14 @@
             this.UId = event.getUId();
             //           获取用户信息;
             this.updateUserInfo();
+//            获取前三篇文章
+            this.openArticle();
+//            获取权限
+            this.permissions();
+//            获取店铺是否完善
+            this.open();
+//            获取订单数量
+            this.getCount()
             //            监听用户信息的变化。
             globalEvent.addEventListener("onUserInfoChange", function(e) {
                 _this.updateUserInfo();
@@ -654,21 +534,7 @@
         //            }
         //        },
         methods: {
-            //            监听设备型号,控制隐藏的文集高度
-            hideCorpus: function() {
-                let dc = utils.hideCorpus();
-                return dc;
-            },
-            //            监听设备型号,控制顶部人物信息栏背景图大小
-            headerBgImg: function() {
-                let dc = utils.addBgImg();
-                return dc;
-            },
-            //            监听设备型号,控制顶部人物信息栏
-            headerInfo: function() {
-                let dc = utils.addInfo();
-                return dc;
-            },
+
             //            监听设备型号,控制导航栏设置 返回按钮
             classTop: function() {
                 let dc = utils.addTop();
@@ -678,6 +544,35 @@
             classHeader: function() {
                 let dc = utils.device();
                 return dc;
+            },
+//            获取店铺是否完善等信息
+            open:function () {
+                var _this = this;
+                GET("weex/member/manager/view.jhtml",
+                    function (data) {
+                        if (data.type=="success") {
+                            _this.member = data.data;
+                        } else {
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast("网络不稳定")
+                    }
+                )
+            },
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
             },
             //            更新用户信息；
             updateUserInfo() {
@@ -694,6 +589,13 @@
                         if (!utils.isNull(data.data.autograph)) {
                             _this.userSign = data.data.autograph;
                         }
+                        if (!utils.isNull(data.data.backgroud)) {
+                            _this.imgBg = data.data.backgroud;
+                        }
+                        if (!utils.isNull(data.data.occupation.name)) {
+                            _this.occupation = data.data.occupation.name;
+                        }
+                        _this.fans = data.data.fans
                         _this.collectNum = data.data.favorite;
                         _this.focusNum = data.data.follow;
                         _this.moneyNum = data.data.balance;
@@ -709,19 +611,48 @@
                     event.toast(err.content);
                 })
             },
-            jumpEditor: function(id) {
+            //            获取文章前四篇
+            openArticle:function () {
+                var _this = this;
+                GET('weex/member/article/list.jhtml?authorId='+this.UId,function (data) {
+                    if (data.type == "success") {
+                        data.data.data.forEach(function (item,index) {
+                            if(index <= 3){
+                                item.thumbnail = utils.thumbnail(item.thumbnail,150,150);
+                                _this.articleThree.push(item)
+                            }
+                        })
+                    }else {
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
+//            获取订单数量
+            getCount(){
+                var _this = this
+                POST('weex/member/order/count.jhtml').then( function (res) {
+                        if (res.type=="success") {
+                            _this.conut = res.data
+                        } else {
+                            event.toast(res.content);
+                        }
+
+                    }, function (err) {
+                        event.toast(err.content);
+                    })
+            },
+            jumpEditor: function() {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id), function(message) {
+                event.openURL(utils.locate('view/member/editor/editor.js'), function(message) {
                     _this.clicked = false;
-                    //                    _this.updateArticle();
+                    _this.openArticle();
                 });
-                //                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
-                ////                    _this.updateArticle();
-                //                })
             },
             //            点击屏幕时
             ontouchstart: function(event, index) {
@@ -776,87 +707,27 @@
                 }
             },
             onpanend: function(event) {},
-            onloading(e) {
-                var _this = this;
-                var articleClass = '';
-                if (!utils.isNull(this.corpusId)) {
-                    articleClass = '[' + this.corpusId + ']';
-                }
-                this.showLoading = 'show'
-                setTimeout(() => {
-                    let options = {
-                        type: 'article',
-                        keyword: articleClass,
-                        orderBy: 'desc',
-                        current: _this.listCurrent,
-                        pageSize: _this.listPageSize,
-                    }
-                    event.findList(options, function(data) {
-                        //                        utils.debug(data);
-                        //                        utils.debug(_this.listCurrent);
-                        if (data.type == "success" && data.data != '') {
-                            data.data.forEach(function(item) {
-                                //                        event.toast(item);
-                                //                    将value json化
-                                item.value = JSON.parse(item.value);
-                                //                          在全部文章里过滤掉已删除的文章
-                                if (utils.isNull(_this.corpusId) && item.value.articleOption.articleCatalog.id == 99) {} else {
-                                    //                              把读取到的文章push进去文章列表
-                                    _this.articleList.push(item);
-                                }
-                            })
-                            _this.listCurrent = _this.listCurrent + _this.listPageSize;
-                            //                            utils.debug('当前行:' + _this.listCurrent);
-                        } else if (data.type == "success" && data.data == '') {
-                            //                            utils.debug('触发强制加载');
-                        } else {
-                            event.toast(data.content);
-                        }
-                    })
-                    _this.$refs.scrollerRef.resetLoadmore();
-                    this.showLoading = 'hide'
-                }, 1500)
-            },
+
             scrollHandler: function(e) {
                 var _this = this;
-                //                this.offsetX = e.contentOffset.x;
-                //                this.offsetY = e.contentOffset.y;
                 if (e.contentOffset.y >= 0) {
                     return;
                 }
                 scrollTop = Math.abs(e.contentOffset.y);
-                //                modal.toast({message:scrollTop});8
                 let opacityDegree = Math.floor(scrollTop / 14) / 10;
-                //                modal.toast({message:opacityDegree,duration:0.1});
                 if (opacityDegree > 1) {
                     opacityDegree = 1;
                 }
                 if (opacityDegree > 0.4) {
-                    //                    event.changeWindowsBar("true");
                     this.settingColor = 'white';
                 } else {
                     this.settingColor = '';
-                    //                    event.changeWindowsBar("false");
                 }
                 this.opacityNum = opacityDegree;
-                //                if(opacityDegree > 0.4){
-                //                    event.changeWindowsBar("true");
-                //                    this.settingColor = 'black';
-                //                }else{
-                //                    this.settingColor = 'white';
-                //                    event.changeWindowsBar("false");
-                //                }
-                //                if(scrollTop >=284){
                 if (scrollTop >= 284) {
                     this.twoTop = true;
-                    //                    this.corpusScrollTop = 136;
-                    //                    this.corpusPosition = 'fixed';
-                    //                    modal.toast({message:this.corpusPosition,duration:1})
                 } else {
                     this.twoTop = false;
-                    //                     _this.corpusScrollTop = 420 -  scrollTop
-                    //                    this.corpusPosition = 'relative';
-                    //                    modal.toast({message:this.corpusScrollTop,duration:1})
                 }
             },
             // 个人信息
@@ -877,6 +748,9 @@
                             }
                             if (!utils.isNull(data.data.autograph)) {
                                 _this.userSign = data.data.autograph;
+                            }
+                            if (!utils.isNull(data.data.occupation)) {
+                                _this.occupation = data.data.occupation;
                             }
                         } else {
                             //                            return ;
@@ -932,6 +806,31 @@
                     }
                 );
             },
+//            写文章
+            editor(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/member/editor/editor.js'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
+//            跳转文章
+            goArticle(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
+                    function () {
+                        _this.clicked = false;
+                    }
+                )
+            },
             //            设置中心
             goOption() {
                 if (this.clicked) {
@@ -943,6 +842,325 @@
                         _this.clicked = false;
                     }
                 );
+            },
+//            会员卡
+            gocard:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {_this.clicked = false});
+            },
+//            优惠券
+            gocoupon:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {_this.clicked = false});
+            },
+//            新营销
+            godistribution:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {_this.clicked = false});
+            },
+//            管理店铺
+            shop:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
+                    if(mes.type =='success'&&mes.data==''){
+                        event.closeURL(mes)
+                    }
+                    _this.clicked =false
+                });
+            },
+//            未激活店铺时修改
+            modification:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+this.shopId),function (message) {
+                    if(message.type == 'success'){
+                        _this.open()
+                        _this.permissions()
+                    }
+                    _this.clicked =false
+                })
+            },
+//            激活店铺
+            activated(){
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                POST('weex/member/topic/activate.jhtml').then(
+                    function (mes) {
+                        _this.clicked = false;
+                        if (mes.type == "success") {
+                            if (utils.isNull(mes.data)) {
+                                _this.open();
+                            } else {
+                                _this.$refs.payment.show(mes.data);
+                            }
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        _this.clicked = false;
+                        event.toast(err.content);
+                    }
+                )
+
+            },
+//            员工管理
+            employee:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
+            },
+            //            补单
+            fill:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {_this.clicked =false});
+            },
+//            我的专栏
+            goTopic: function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate('view/member/topic/index.js'), function (mes) {
+                        _this.open();
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+//            店铺管理
+            store:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/cashier/index.js'),function (mes) {
+                    _this.clicked = false;
+                    if(mes.type == 'success') {
+                        _this.member.useCashier = false;
+                        _this.open();
+                    }
+                })
+            },
+//            我要开店
+            goShop:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
+                    _this.clicked = false;
+                    _this.open()
+                    _this.permissions()
+                })
+            },
+            //            前往运单管理
+            shippingManage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (!utils.isRoles("123",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate('view/shop/shipping/list.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            //            前往商品管理
+            goodsManage:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate('view/shop/goods/manage.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            //           接龙管理
+            dragon:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate('view/member/dragon.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            //            评论管理
+            goReviewManage:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate('view/member/reviewManage.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            doShare(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var shareType;
+                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                switch(id){
+                    case 0 :
+                        shareType = 'timeline';
+                        break;
+                    case 1 :
+                        shareType = 'appMessage';
+                        break;
+                    case 2 :
+                        shareType = 'copyHref';
+                        break;
+                    default:
+                        shareType = 'browser';
+                        break;
+                }
+
+                var option = {
+                    title:"【"+_this.member.nickName+"】推荐给你一个好用的工具，快去看看",
+                    text:"超强图文小视频分享社区,中国版Facebook.",
+                    imageUrl:_this.member.logo,
+                    url:utils.website("?xuid="+_this.member.id),
+                    type:shareType
+                }
+                _this.showShare = false;
+                event.share(option,function (data) {
+                    if(data.type == 'success') {
+                        if (shareType == 'copyHref') {
+                            event.toast('链接已复制到剪贴板');
+                        } else if (shareType == 'browser') {
+                        } else {
+                            event.toast('分享成功');
+                        }
+                        return;
+                    }
+                })
+            },
+//            开启分享
+            beginShare:function () {
+                this.showShare = true;
+            },
+            //            取消分享
+            doCancel(){
+                this.showShare = false;
+            },
+//            打开聊天
+            gmchat:function () {
+                event.navToChat("u10201");
             },
             //            我的关注
             goFocus() {
@@ -998,14 +1216,36 @@
                     }
                 );
             },
-            // 我的优惠券
+            // 我的订单
             goOrderList() {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
                 event.openURL(utils.locate('view/shop/order/list.js'),
+                    function (data) {
+                        _this.clicked = false;
+                        return ;
+                    }
+                );
+            },
+            // 跳转老版本我的
+            goMemberIndex() {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/member/index.js'),
                     function(data) {
                         _this.clicked = false;
                         _this.updateUserInfo();
@@ -1064,111 +1304,8 @@
             //                }, 1000);
             //            },
             //            还原
-            jumpRestore(item, index) {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                POST('weex/member/article/revert.jhtml?articleId=' + item.value.id).then(
-                    function(e) {
-                        if (e.type == 'success') {
-                            //            获取当前时间戳 作为唯一标识符key
-                            let timestamp = Math.round(new Date().getTime() / 1000);
-                            item.value.articleOption.articleCatalog.id = null;
-                            item.value.articleOption.articleCatalog.name = null;
-                            let saveData = {
-                                type: item.type,
-                                key: item.key,
-                                value: JSON.stringify(item.value),
-                                sort: '0,' + timestamp,
-                                keyword: ',[],' + item.value.title + ','
-                            }
-                            event.save(saveData, function(data) {
-                                if (data.type == 'success') {
-                                    if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
-                                        animation.transition(animationPara, {
-                                            styles: {
-                                                transform: 'translateX(0)',
-                                            },
-                                            duration: 10, //ms
-                                            timingFunction: 'ease-in-out', //350 duration配合这个效果目前较好
-                                            //                      timingFunction: 'ease-out',
-                                            needLayout: false,
-                                            delay: 0 //ms
-                                        })
-                                    }
-                                    _this.articleList.splice(index, 1);
-                                    //                                    如果是在全部的文章里，就要立即把文章重新显示；(直接将数据插入而不是重新读取的 会少一个缓存的id字段。不过在该页面没有关系)
-                                    if (_this.whichCorpus == 0) {
-                                        _this.articleList.splice(0, 0, saveData);
-                                    }
-                                } else {
-                                    event.toast(data.content);
-                                }
-                            })
-                        } else {
-                            event.toast(e.content);
-                        }
-                        _this.clicked = false;
-                    },
-                    function(err) {
-                        _this.clicked = false;
-                        event.toast(err.content);
-                    }
-                )
-            },
             //            本地处理sort 置顶数据
-            topLocal(saveSort, item, index) {
-                let _this = this;
-                let saveData = {
-                    type: item.type,
-                    key: item.key,
-                    value: JSON.stringify(item.value),
-                    sort: saveSort,
-                    keyword: ',[' + item.value.articleOption.articleCatalog.id + '],' + item.value.title + ','
-                }
-                event.save(saveData, function(data) {
-                    if (data.type == 'success') {
-                        let option = {
-                            type: item.type,
-                            key: item.key
-                        }
-                        event.find(option, function(e) {
-                            if (e.type == 'success') {
-                                //                                    把动画收回来
-                                if (animationPara == null || animationPara == '' || animationPara == 'undefinded') {} else {
-                                    animation.transition(animationPara, {
-                                        styles: {
-                                            transform: 'translateX(0)',
-                                        },
-                                        duration: 10, //ms
-                                        timingFunction: 'ease-in-out', //350 duration配合这个效果目前较好
-                                        //                      timingFunction: 'ease-out',
-                                        needLayout: false,
-                                        delay: 0 //ms
-                                    })
-                                }
-                                e.data.value = JSON.parse(e.data.value);
-                                if (item.sort.substring(0, 1) == '0') {
-                                    _this.articleList.splice(index, 1);
-                                    _this.articleList.splice(0, 0, e.data);
-                                    event.toast('置顶成功');
-                                } else {
-                                    //                                        _this.articleList.splice(index,1);
-                                    //                                        _this.articleList.splice(index,0,e.data);
-                                    _this.getAllArticle();
-                                    event.toast('取消成功');
-                                }
-                            }
-                        })
-                        _this.clicked = false;
-                    } else {
-                        _this.clicked = false;
-                        event.toast(data.content);
-                    }
-                })
-            },
+
             //            触碰遮罩层
             maskTouch() {
                 this.showMenu = false;

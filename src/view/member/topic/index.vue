@@ -24,12 +24,12 @@
                     </div>
                 </div>
             </div>
-            <div class="sub-panel tip" v-if="!isStatus" @click="activate()">
-                <text class="vip">点亮VIP专栏特权（588元/年）</text>
-            </div>
-            <div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">
-                <text class="vip">开通店铺，体验众卖新营销模式</text>
-            </div>
+            <!--<div class="sub-panel tip" v-if="!isStatus" @click="activate()">-->
+                <!--<text class="vip">点亮VIP专栏特权（588元/年）</text>-->
+            <!--</div>-->
+            <!--<div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">-->
+                <!--<text class="vip">开通店铺，体验众卖新营销模式</text>-->
+            <!--</div>-->
             <div class="cell-row cell-line" @click="goTemplate()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -138,7 +138,7 @@
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .cell-logo {
-        height: 160px;
+        height: 220px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
@@ -174,7 +174,7 @@
 
     .logo {
         width:200px;
-        height:120px;
+        height:200px;
         overflow:hidden;
     }
 
@@ -250,7 +250,7 @@
 //            判断是否商家
             judgmenttwo:function () {
                 let _this = this;
-                if(_this.isOwner == true)
+                if(_this.isOwner == true && _this.isStatus == true)
                     return true
             },
 //            修改模版
@@ -279,7 +279,7 @@
                 var _this = this;
                 var options = {
                     isCrop:true,
-                    width:2,
+                    width:1,
                     height:1
                 };
                 album.openAlbumSingle(

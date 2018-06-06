@@ -1,25 +1,26 @@
 <template>
     <div class="wrapper">
-        <div class="header" :class="[classHeader()]" v-if="isPos()">
-            <!--顶部导航-->
-            <div class="nav nw">
-                <div style="width: 100px;" >
-                </div>
-                <!--页面名称-->
-                <div class="userBox" >
-                    <text class=" nav_title">会员</text>
-                </div>
-                <div class="rightTop" @click="add()" >
-                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
-                </div>
-            </div>
-        </div>
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" v-else> </navbar>
+        <!--<div class="header" :class="[classHeader()]" v-if="isPos()">-->
+            <!--&lt;!&ndash;顶部导航&ndash;&gt;-->
+            <!--<div class="nav nw">-->
+                <!--<div style="width: 100px;" >-->
+                <!--</div>-->
+                <!--&lt;!&ndash;页面名称&ndash;&gt;-->
+                <!--<div class="userBox" >-->
+                    <!--<text class=" nav_title">会员</text>-->
+                <!--</div>-->
+                <!--<div class="rightTop" @click="add()" >-->
+                    <!--<text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" v-if="!choose"> </navbar>
+        <navbar :title="title"  @goback="goback" v-if="choose"> </navbar>
         <div class="code" @click="scan">
             <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
             <text class="headText" style="font-size: 28px;color: #cccccc">搜索会员卡</text>
         </div>
-        <div class="addFriend" @click="add">
+        <div class="addFriend" @click="add" v-if="!choose">
             <div class="flex-row " style="align-items:center">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
                 <text class="title ml20 " >领取会员卡</text>
@@ -227,6 +228,7 @@
                 code:'',
                 id:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
+                choose:false
             }
         },
         props: {
@@ -236,6 +238,7 @@
         },
         created() {
             utils.initIconFont();
+            this.choose = !utils.isNull(utils.getUrlParameter('choose'));
             this.open();
             this.permissions()
         },
@@ -395,10 +398,18 @@
             },
 
             jump:function (id) {
-                let _this =this
+                let _this =this;
+                if(_this.choose != true){
                 event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
                     _this.onrefresh()
                 })
+                }else{
+                    var E = {
+                        id:id
+                    }
+                    let backData = utils.message('success','选择成功',E);
+                    event.closeURL(backData);
+                }
             },
             add:function() {
                 event.openURL(utils.locate("view/shop/card/add.js"),function (message) {

@@ -228,7 +228,7 @@
         },
         data() {
             return {
-                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false,isAgent:false,isShop:false,hasShop:false},
+                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",occupation:'',topic:"未开通",hasTopic:false,useCashier:false,isAgent:false,isShop:false,hasShop:false},
                 showShare:false,
                 clicked:false,
                 isuseCashier:false,
@@ -307,7 +307,8 @@
             },
             goback: function (e) {
                 var E = {
-                    occupation:this.member.logo,
+                    occupation:this.member.occupation,
+                    logo:this.member.logo,
                     nickName:this.member.nickName,
                     autograph :this.member.autograph
                 }
@@ -332,6 +333,9 @@
                             }
                             if(!utils.isNull(data.data.autograph)){
                                 _this.member.autograph = data.data.autograph;
+                            }
+                            if(!utils.isNull(data.data.occupation)){
+                                _this.member.occupation = data.data.occupation;
                             }
                             return ;
                         }else if(data.type == 'success' && data.content == '关闭'){
@@ -382,7 +386,7 @@
                     }
                 );
             },
-            //            评论管理
+            //           接龙管理
             dragon:function (e) {
                 if (this.clicked) {
                     return;
