@@ -18,9 +18,9 @@
             <div class="sub-panel tip" v-if="isNoActivate()" @click="activate()">
                 <text class="vip">点亮VIP专栏特权（{{topic.fee | watchFee}}元/年）</text>
             </div>
-            <div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">
-                <text class="vip">开通店铺，体验众卖新营销模式</text>
-            </div>
+            <!--<div class="sub-panel tip" style="justify-content: center" v-if="judgmentone()" @click="getShop()">-->
+                <!--<text class="vip">开通店铺，体验众卖新营销模式</text>-->
+            <!--</div>-->
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -84,7 +84,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear"  @click="appletCopy()">
                     <div class="flex-row">
-                        <text class="title ml10">小程序设置</text>
+                        <text class="title ml10">小程序企业信息设置</text>
                     </div>
                     <div class="flex-row flex-end">
                         <!--<text class="sub_title">未设置 </text>-->
@@ -95,6 +95,22 @@
             <div class="sub-panel">
                 <!--<text class="sub_title">复制专栏链接并设置为小程序自定义菜单</text>-->
                 <text class="sub_title">快速设置自己的小程序</text>
+            </div>
+            <!--小程序设置-->
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between cell-clear"  @click="appletShuffling()">
+                    <div class="flex-row">
+                        <text class="title ml10">小程序首页轮播图设置</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <!--<text class="sub_title">未设置 </text>-->
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-panel">
+                <!--<text class="sub_title">复制专栏链接并设置为小程序自定义菜单</text>-->
+                <text class="sub_title">快速设置自己的小程序轮播图</text>
             </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between cell-clear" @click="appletAgree()">
@@ -224,7 +240,7 @@
         data() {
             return {
                 sn:"",
-                topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false},
+                topic:{logo:"",name:"",id:"",useCashier:false,useCard:false,useCoupon:false,status:'success'},
                 noJob:true,
                 isOwner:false,
                 showShare:false,
@@ -269,11 +285,11 @@
 
             },
 //            判断激活状态并且没工作
-            judgmentone:function () {
-                let _this =this;
-                if(_this.noJob == true && _this.isActivate())
-                    return true
-            },
+//            judgmentone:function () {
+//                let _this =this;
+//                if(_this.noJob == true && _this.isActivate())
+//                    return true
+//            },
 //            判断是否商家
             judgmenttwo:function () {
                 let _this = this;
@@ -428,20 +444,20 @@
                 this.paymentShow = false;
             },
 //            申请开店
-            getShop:function (e) {
-                let _this = this;
-                POST('weex/member/topic/create_enterprise.jhtml').then(
-                    function (mes) {
-                        if (mes.type == "success") {
-                            _this.load();
-                        } else {
-                            event.toast(mes.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content);
-                    }
-                )
-            },
+//            getShop:function (e) {
+//                let _this = this;
+//                POST('weex/member/topic/create_enterprise.jhtml').then(
+//                    function (mes) {
+//                        if (mes.type == "success") {
+//                            _this.load();
+//                        } else {
+//                            event.toast(mes.content);
+//                        }
+//                    }, function (err) {
+//                        event.toast(err.content);
+//                    }
+//                )
+//            },
             onUseCard:function (e) {
                 var _this = this;
                 POST('weex/member/topic/update.jhtml?useCard=' + e.value).then(
@@ -585,10 +601,14 @@
                 this.showOptions = !this.showOptions;
                 this.rotate(this.$refs['arrow']);
             },
-            //            小程序点击复制
+//            小程序轮播图
+            appletShuffling(){
+                event.openURL(utils.locate("view/member/topic/shuffling.js"),function (message) {
+                });
+            },
+            //            小程序信息设置
             appletCopy(){
                 event.openURL(utils.locate("view/member/topic/companyInfo.js"),function (message) {
-
                 });
 
 

@@ -34,6 +34,12 @@
                         <div class="addIconBox " @click="addImgPara(0)">
                             <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
                         </div>
+                        <!--添加录音-->
+                        <div class="addIconBox " @click="addAudioPara(0)">
+                            <div class="addSmallAudio">
+                                <text class="addAudio iconSize fz26" :style="{fontFamily:'iconfont'}">&#xe67e;</text>
+                            </div>
+                        </div>
                         <!--添加视频-->
                         <div class="addIconBox " @click="addVideoPara(0)">
                             <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
@@ -70,6 +76,9 @@
                                 <div class="videoIconBox" v-if="item.mediaType == 'video'">
                                     <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe644;</text>
                                 </div>
+                                <div class="videoIconBox" v-if="item.mediaType == 'audio'">
+                                    <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe67e;</text>
+                                </div>
                                 <div class="videoIconBox" v-if="item.mediaType == 'product'">
                                     <text class="videoIcon goodsIcon" :style="{fontFamily:'iconfont'}" >&#xe640;</text>
                                 </div>
@@ -98,6 +107,12 @@
                                 <!--添加图片-->
                                 <div class="addIconBox " @click="addImgPara(index + 1)">
                                     <text class="addImage iconSize" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
+                                </div>
+                                <!--添加录音-->
+                                <div class="addIconBox " @click="addAudioPara(index + 1)">
+                                    <div class="addSmallAudio">
+                                        <text class="addAudio iconSize fz26" :style="{fontFamily:'iconfont'}">&#xe67e;</text>
+                                    </div>
                                 </div>
                                 <!--添加视频-->
                                 <div class="addIconBox " @click="addVideoPara(index + 1)">
@@ -140,12 +155,102 @@
             <!--用来撑起底部空白区域-->
             <cell><div class="emptyBox"></div></cell>
         </list>
+
+
         <!--遮罩-->
+        <div  v-if="chooseAudio" class="sendMask" @click="maskClick()">
+            <!--进度条-->
+            <div class=" audioBox">
+                <div class="audioClose" @click="closeAudio()">
+                    <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
+                </div>
+                <div class="flex-row">
+                    <text class="fsize100">00:</text>
+                    <text class="fsize100" v-if="recordNum < 10">0</text>
+                    <text class="fsize100">{{recordNum}}</text>
+                </div>
+                <text class="fz32">最多60秒</text>
+                <div class="flex-row">
+                    <div class="mr10">
+                        <text class="addAudio iconSize fz40 recordIconPd" :style="{fontFamily:'iconfont'}" @click="startRecord()"   v-if="!isRecord">&#xe67e;</text>
+                        <text class="addAudio iconSize fz40 recordIconPd" :style="{fontFamily:'iconfont'}" @click="completeRecord()" v-else>&#xe67c;</text>
+                    </div>
+                    <div class=" ml10 mr10" v-if="!isRecord && recordNum !=0" >
+                        <text class="addAudio iconSize recordIconPd fz40"  v-if="!isPlayAudio" @click="playAudio()" :style="{fontFamily:'iconfont'}">&#xe6bc;</text>
+                        <div v-else @click="playAudio()">
+                            <text class="addAudio iconSize fz40 playAudioIcon "   ></text>
+                            <image class="voiceGifImg " resize="cover" :src="playVoiceImg"   ></image>
+                        </div>
+                        <!--<text class="addAudio iconSize fz40 recordIconPd playingAudio" :style="{fontFamily:'iconfont'}" @click="playAudio()" v-else>&#xe67c;</text>-->
+                    </div>
+                    <div class=" ml10" v-if="!isRecord && recordNum !=0" @click="saveRecord()">
+                        <text class="addAudio recordIconPd iconSize fz40" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--完成文章遮罩-->
         <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .voiceGifImg{
+        width:40px;
+        height:40px;
+        position:absolute;
+        top:30px;
+        left:30px;
+    }
+    .playingAudio{
+        background-color: #1afa29;
+    }
+    .playAudioIcon{
+        width:100px;
+        height:100px;
+        /*padding-top: 50px;*/
+        /*padding-bottom: 50px;*/
+        /*padding-left: 50px;*/
+        /*padding-right: 50px;*/
+        border-radius:50px;
+        background-color:#00bcd3;
+    }
+    .recordIconPd{
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left: 30px;
+        padding-right: 30px;
+        border-radius: 50px;
+        background-color: #00bcd3;
+    }
+    .squareIcon{
+        width: 30px;
+        height: 30px;
+        background-color: #ffffff;
+    }
+    .fsize100{
+        font-size: 100px;
+    }
+    .audioBox{
+        height: 500px;
+        align-items: center;
+        justify-content: space-around;
+        padding-top: 80px;
+        padding-bottom: 80px;
+        border-radius: 5px;
+        width:600px;
+        background-color: #fff;
+    }
+    .audioIconBox{
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        background-color: #00bcd3;
+        align-items: center;
+        justify-content: center;
+    }
+
+
     .videoIconBox{
         position: absolute;
         left: 0;
@@ -229,6 +334,15 @@
         right: 0px;
         padding-right: 10px;
     }
+    .audioClose{
+        position: absolute;
+        top:0px;
+        right:0px;
+        padding-left: 15px;
+        padding-top: 15px;
+        padding-right: 15px;
+        padding-bottom: 15px;
+    }
     .paraClose{
         position: absolute;
         top:0px;
@@ -284,6 +398,17 @@
     }
     .addImage{
         color: #1E7DEB;
+    }
+    .addSmallAudio{
+        width:38px;
+        height: 38px;
+        align-items: center;
+        justify-content: center;
+        background-color: #1afa29;
+        border-radius: 5px;
+    }
+    .addAudio{
+        color:#fff;
     }
     .addVideo{
         color: #CCA7FC;
@@ -396,6 +521,7 @@
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
     var modal = weex.requireModule('modal');
+    const audio = weex.requireModule('audio');
     const stream = weex.requireModule('stream');
     const clipboard = weex.requireModule('clipboard');
     var lastIndex = -1;
@@ -403,15 +529,20 @@
     export default {
         data:function(){
             return{
+                isPlayAudio:false,
+                recordNum:0,
+                isRecord:false,
                 showStore:'',
                 toSendArticle:false,//控制进度条 遮罩显示
                 currentPro:0,//当前进度
                 proTotal:0,//总的进度
                 processWidth:0,//进度条宽度
+                chooseAudio:false,
                 articleId:'',
                 refreshing: false,
                 firstPlusShow:true,
                 coverImage:utils.locate('resources/images/background.png'),
+                playVoiceImg:utils.locate('resources/images/playVoice.gif'),
                 setTitle:'点击设置标题',
                 addMusic:'添加音乐',
                 musicName:'',
@@ -440,7 +571,10 @@
                 laud:0,
                 products:[],
                 isReview:0,
-                clicked:false
+                clicked:false,
+                recordTimer:null,
+                audioUrl:'',
+                audioIndex:''
             }
         },
         filters:{
@@ -625,9 +759,98 @@
             };
         },
         methods: {
+//            播放录音
+            playAudio(){
+                let _this = this;
+                if(!this.isPlayAudio){
+                    event.toast('播放录音');
+                    this.isPlayAudio = true;
+                    audio.play(this.audioUrl,function (mes) {
+                        if(mes.type == 'success'){
+                            _this.isPlayAudio = false;
+                            event.toast('播放结束');
+                        }
+                    });
+                }else{
+                    event.toast('停止播放');
+                    audio.stop();
+                    this.isPlayAudio = false;
+                }
+            },
+            saveRecord(){
+                this.closeAudio();
+                var _this = this;
+//                    data.data里存放的是用户选取的图片路径
+                let textImg = utils.locate('resources/images/text.png');
+                let newPara = {
+                    //原图
+                    paraImage: '',
+//                                    小缩略图
+                    thumbnailImage:textImg,
+                    paraText:'',
+                    show:true,
+                    mediaType: "audio",
+                    //          对象id
+                    id:0,
+//                                            第三方链接
+                    url:_this.audioUrl,
+                }
+                _this.paraList.splice(_this.audioIndex,0,newPara)
+                _this.clearIconBox();
+//                    添加修改标志
+                _this.hadChange = 1;
+//                        临时保存到缓存
+                _this.saveDraft();
+            },
+//            录音中止
+            completeRecord(){
+                let _this = this;
+                audio.stopRecording(function(res){
+                    if(res.type == 'success'){
+                        _this.audioUrl = res.data.path;
+                        if (!utils.isNull(_this.recordTimer))  {
+                            clearInterval(_this.recordTimer);
+                            _this.recordTimer = null;
+                        }
+                        _this.isRecord = !_this.isRecord;
+                        event.toast('录音成功');
+                    }
+                })
+            },
+//            开始录音
+            startRecord(){
+                let _this = this;
+                _this.recordNum = 0;
+                audio.startRecording(function(res){
+                    if(res.type == 'success'){
+                        // 利用定时器 模拟进度条效果
+                        _this.recordTimer = setInterval(function () {
+                            _this.recordNum ++;
+                            if(_this.recordNum >= 59){
+                                _this.completeRecord();
+                            }
+                        },1000);
+                        _this.isRecord = !_this.isRecord;
+                        event.toast('开始录音');
+                    }
+                })
+
+
+            },
+            closeAudio(){
+                if (!utils.isNull(this.recordTimer))  {
+                    clearInterval(this.recordTimer);
+                    this.recordTimer = null;
+                }
+                this.chooseAudio = false;
+                this.isPlayAudio = false;
+                this.recordNum = 0;
+                this.isRecord = false;
+            },
+
 //            清楚掉假的进度条。清空假进度条，关闭定时器.
             clearDummyProcess(timer){
-//                                        解除定时器
+//                  解除定时器
                 if (!utils.isNull(timer))  {
                     clearInterval(timer);
 //                  此处的timer虽然是参数传过来，在js里还是有把整个变量地址传过来.所以可以更改为null;
@@ -1154,6 +1377,9 @@
                     if(!utils.isNull(item.paraImage) && item.paraImage.substring(0,4) != 'http'){
                         _this.proTotal ++;
                     }
+                    if(item.mediaType == 'audio' && !utils.isNull(item.url) && item.url.substring(0,4) != 'http'){
+                        _this.proTotal ++;
+                    }
                 });
 ////                获取设备宽度
 //                let devWidth = weex.config.env.deviceWidth;
@@ -1224,15 +1450,42 @@
                     }else{//进行上传文章
                         _this.realSave();
                     }
-                }else if(utils.isNull(_this.paraList[sendIndex].paraImage)){//判断是否只有文字
-                    _this.paraList[sendIndex].serveThumbnail = '';
-                    sendIndex ++ ;
+                }else if(utils.isNull(_this.paraList[sendIndex].paraImage)){//判断是否只有文字或者录音
+                    if(_this.paraList[sendIndex].mediaType == 'audio' && !utils.isNull(_this.paraList[sendIndex].url) && _this.paraList[sendIndex].url.substring(0,4) != 'http'){
+                        event.upload(_this.paraList[sendIndex].url,function (data) {
+                            if(data.type == 'success'){
+                                _this.paraList[sendIndex].url = data.data;
+                                _this.paraList[sendIndex].serveThumbnail = '';
+//                                  保存缓存
+                                    _this.saveDraft();
+//                                    因为异步操作,所以要分别在if elseif里写下列代码
+                                    sendIndex ++ ;
 //                        判断是否最后一张图
-                    if(sendIndex < sendLength){
+                                    if(sendIndex < sendLength){
 //                            回调自己自己
-                        _this.sendImage(sendIndex)
-                    }else{//进行上传文章
-                        _this.realSave();
+                                    _this.sendImage(sendIndex);
+                                    }else{//进行上传文章
+                                        _this.realSave();
+                                    }
+                            }else{//上传失败
+                                _this.uploadFail()
+                                event.toast(data.content);
+                                return;
+                            }
+                        },function (data) {
+//                    上传进度
+                            _this.ctrlProcess(data);
+                        })
+                    }else{
+                        _this.paraList[sendIndex].serveThumbnail = '';
+                        sendIndex ++ ;
+//                        判断是否最后一张图
+                        if(sendIndex < sendLength){
+//                            回调自己自己
+                            _this.sendImage(sendIndex)
+                        }else{//进行上传文章
+                            _this.realSave();
+                        }
                     }
                 }else{
                     event.upload(_this.paraList[sendIndex].paraImage,function (data) {
@@ -1265,10 +1518,7 @@
                                         _this.saveDraft();
 //                                        event.toast(_this.paraList[sendIndex].serveThumbnail);
                                     }else{//上传失败
-                                        _this.toSendArticle = false;
-                                        _this.currentPro = 0;//当前进度
-                                        _this.proTotal = 0;//总的进度
-                                        _this.processWidth = 0;//进度条宽度
+                                        _this.uploadFail();
                                         event.toast(e.content);
                                         return;
 //                                        这边出错 11.30
@@ -1286,12 +1536,7 @@
                                 })
                             }
                         }else{//上传失败
-                            _this.toSendArticle = false;
-//                防止重复点击
-                            _this.clicked = false;
-                            _this.currentPro = 0;//当前进度
-                            _this.proTotal = 0;//总的进度
-                            _this.processWidth = 0;//进度条宽度
+                            _this.uploadFail();
                             event.toast(data.content);
                             return;
                         }
@@ -1378,6 +1623,14 @@
                         })
                     })
                 }
+            },
+            uploadFail(){
+                this.toSendArticle = false;
+//                防止重复点击
+                this.clicked = false;
+                this.currentPro = 0;//当前进度
+                this.proTotal = 0;//总的进度
+                this.processWidth = 0;//进度条宽度
             },
             //            图片上传后，正式将文章数据上传服务器
             realSave(){
@@ -1548,6 +1801,11 @@
                         }
                     }
                 )
+            },
+            addAudioPara:function(index){
+                this.chooseAudio = true;
+                this.audioIndex = index;
+                return;
             },
             //            点击第一个"+"号时触发
             firstShow:function(){
@@ -1741,6 +1999,9 @@
             },
             //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
+                if(mediaType == 'audio'){
+                    return;
+                }
                 //防止重复点击按钮
                 if(this.clicked) {
                     return;

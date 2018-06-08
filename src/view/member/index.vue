@@ -658,17 +658,17 @@
                 listPageSize:10,
 //                文章==================
                 articleList: [],
-
-                helpList:[],
-                UId:'',
-                screenHeight:0,
 //                文集id
                 corpusId:'',
-                showMenu:false,
                 refreshImg:utils.locate('resources/images/loading.png'),
-                hadUpdate:false,
                 clicked:false,
+                UId:'',
+                screenHeight:0,
                 topCellHide:false,
+                hadUpdate:false,
+                showMenu:false,
+                helpList:[],
+
             }
         },
         components: {

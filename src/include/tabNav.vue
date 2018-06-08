@@ -5,8 +5,9 @@
                 <text @click="corpusChange(index,item.id)" :style="{lineHeight:heightNum}" class="allArticle" v-for="(item,index) in corpusList"  :ref="'corpus'+index"  :class = "[whichCorpus == index && corpusList.length != 0 ? 'corpusActive' : 'noActive']">{{item.name}}</text>
             </div>
         </scroller>
-        <image :src="leftMask" v-if="leftMaskShow" resize="cover" class="leftMask"></image>
-        <image :src="rightMask" v-if="rightMaskShow" resize="cover" class="rightMask"></image>
+        <!--<image :src="leftMask" v-if="leftMaskShow" resize="cover" class="leftMask"></image>-->
+        <!--<image :src="rightMask" v-if="rightMaskShow" resize="cover" class="rightMask"></image>-->
+
         <!--<image :src="dsImg" resize="cover" class="rightMask"></image>-->
     </div>
 </template>
@@ -53,7 +54,8 @@
         /*line-height: 80px;*/
         padding-left: 20px;
         padding-right: 20px;
-        color: #fff;
+        /*color: #444;*/
+        color:#fff;
     }
     .corpusScroll{
          flex-direction: row;width: 750px;

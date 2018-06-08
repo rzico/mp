@@ -302,7 +302,7 @@
                     }else{
                         event.toast(data.content);
                     }
-                    _this.clicked = fasle;
+                    _this.clicked = false;
                 });
             },
 //            上传二维码

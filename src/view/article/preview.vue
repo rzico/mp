@@ -317,7 +317,7 @@
     const dom = weex.requireModule('dom');
     const globalEvent = weex.requireModule('globalEvent');
     import navbar from './header.vue';
-    import share from '../../include/share.vue'
+    import share from '../../include/share.vue';
     import utils from '../../assets/utils';
     import reward from '../../widget/rewardDialog.vue';
     import buyGoods from '../../widget/buyGoods.vue';

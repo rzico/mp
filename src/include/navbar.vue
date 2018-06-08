@@ -31,11 +31,7 @@
         position: absolute;
         top:0;
     }
-    .nav_ico {
-        font-size: 38px;
-        color: #fff;
-        margin-top: 2px;
-    }
+
     .nav_CompleteIcon{
         /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
         padding-left: 27px;
