@@ -305,7 +305,7 @@
         },
         created() {
             this.open();
-            event.changeWindowsBar(true);
+//            event.changeWindowsBar(true);
         },
         methods: {
             //            上箭头
