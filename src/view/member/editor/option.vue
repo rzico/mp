@@ -91,7 +91,7 @@
         <!--<div class="footer button-panel" @click="goDone()">-->
         <!--<text class="button">完成</text>-->
         <!--</div>-->
-        <div  class="footer button-panel" style="position: absolute">
+        <div  class="footer button-panel posiAbsolute" >
             <text class="button" @click="goDone()">完成</text>
         </div>
         <!--遮罩-->
@@ -102,6 +102,9 @@
 <style lang="less" src="../../../style/wx.less"/>
 
 <style scoped>
+    .posiAbsolute{
+        position: absolute;
+    }
     .sub-panel {
         padding-top: 20px;
         padding-left: 20px;

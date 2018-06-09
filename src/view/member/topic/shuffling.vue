@@ -30,11 +30,15 @@
             <!--</cell>-->
 
             <div class="cell-row mt0 pr20" >
-                <div class="cell-panel space-between cell-clear" >
+                <div class="cell-panel space-between cell-clear"  >
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
                         <text class="title ml20">首页轮播图设置</text>
+                        <text class="fz30  pl10 pt10 pb10 pr10" style="color: #999;" @click="questionShow()" :style="{fontFamily:'iconfont'}">&#xe72d;</text>
                     </div>
+                </div>
+                <div class="bt20 flex-center" v-if="queShow">
+                    <text class="sub_title">用户点击轮播图时,将跳转至相关文章或商品购买</text>
                 </div>
                 <div  class="imageBox  " v-if="hasImage()" >
                     <div v-for="(item,index) in imageList" >
@@ -259,7 +263,8 @@
                 proTotal:0,//总的进度
                 processWidth:0,//进度条宽度
                 sliderList:[],
-                imageListLength:0
+                imageListLength:0,
+                queShow:false,
             }
         },
         props: {
@@ -308,6 +313,9 @@
 //            event.changeWindowsBar(true);
         },
         methods: {
+            questionShow:function () {
+              this.queShow = !this.queShow;
+            },
             //            上箭头
             moveUp:function (index) {
                 let _this = this;

@@ -623,19 +623,22 @@
                         if(data.type == 'success'){
                             //                            把动画收回来。
                             if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
+                                _this.messageList.splice(index,1);
                             }else{
                                 animation.transition(animationPara, {
                                     styles: {
                                         transform: 'translateX(0)',
                                     },
-                                    duration: 10, //ms
+                                    duration: 350, //ms
                                     timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
 //                      timingFunction: 'ease-out',
                                     needLayout:false,
                                     delay: 0 //ms
-                                })
+                                },function () {
+                                    _this.messageList.splice(index,1);
+                                }
+                                )
                             }
-                            _this.messageList.splice(index,1);
                         }else{
                             event.toast(data.content);
                         }

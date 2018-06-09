@@ -172,7 +172,7 @@
                 <!--</div>-->
                 <div class="cell-panel space-between cell-clear" @click="subQuestion()">
                     <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe66b;</text>
                         <text class="title ml10">问题反馈</text>
                     </div>
                     <div class="flex-row flex-end">

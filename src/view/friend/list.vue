@@ -465,6 +465,7 @@
 //            globalEvent.removeEventListener("onMessage");
 //            全局监听 消息
             globalEvent.addEventListener("onMessage", function (e) {
+//                utils.debug(e);
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10209'){
                     _this.newFriendNum = e.data.data.unRead;
                 }else if((!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10210')){
@@ -476,6 +477,7 @@
             });
 //            消息红点控制
             globalEvent.addEventListener("onNewFriendChange", function (e) {
+//                utils.debug(e);
                 if(e.data.content == '有新朋友'){
                     _this.hadFriend();
                 }else{
@@ -507,7 +509,6 @@
 //                          获取首字母
                                 firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
                             }
-
                             _this.friendsList.forEach(function (item) {
                                 if(item.letter == firstLetter){
                                     item.name.push(jsonData);
@@ -539,6 +540,7 @@
                         lastTimestamp = '';
                     }
                     GET('weex/member/friends/list.jhtml?status=adopt' + '&timeStamp=' + lastTimestamp ,function (data) {
+//                        utils.debug(data);
                         //   获取当前时间戳 作为唯一标识符key
                         var timestamp = Math.round(new Date().getTime()/1000);
                         if(data.type == 'success' && data.data.data!=''){
@@ -778,6 +780,7 @@
                         });
                         break;
                     case 1:
+//                        event.openURL(utils.locate('widget/sliderCell.js?id='+ this.UId),function (message) {
                         event.openURL(utils.locate('view/member/focus.js?id='+ this.UId),function (message) {
                             _this.clicked = false;
 //                        event.openURL('http://192.168.2.157:8081/new.weex.js',function (message) {
@@ -832,26 +835,42 @@
                 POST('weex/member/friends/delete.jhtml?friendId=' + id).then(
                     function(data){
                         if(data.type == 'success'){
-                            let option ={
-                                type : 'friend',
-                                key:'u' + (10200 + id)
-                            }
-                            //    清除缓存
-                            event.delete(option,function(e){
-                                if(e.type == 'success'){
-//                            遍历好友列表 删除好友行
-                                    _this.friendsList.forEach(function (item) {
-                                        if(item.letter == letter){
-                                            item.name.splice(index,1);
-                                            if(_this.friendTotal != 0){
-                                                _this.friendTotal --;
-                                            }
-                                        }
-                                    })
-                                }else{
-                                    event.toast(e.content);
+
+                            animation.transition(animationPara, {
+                                styles: {
+                                    transform: 'translateX(0)',
+                                },
+                                duration: 350, //ms
+                                timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
+//                      timingFunction: 'ease-out',
+                                needLayout:false,
+                                delay: 0 //ms
+                            },function () {
+                                let option ={
+                                    type : 'friend',
+                                    key:'u' + (10200 + id)
                                 }
+                                //    清除缓存
+                                event.delete(option,function(e){
+                                    if(e.type == 'success'){
+//                            遍历好友列表 删除好友行
+                                        _this.friendsList.forEach(function (item) {
+                                            if(item.letter == letter){
+                                                item.name.splice(index,1);
+                                                if(_this.friendTotal != 0){
+                                                    _this.friendTotal --;
+                                                }
+                                            }
+                                        })
+                                    }else{
+                                        event.toast(e.content);
+                                    }
+                                })
                             })
+
+
+
+
 
                         }else{
                             event.toast(data.content);
