@@ -31,7 +31,7 @@
                                 <text class="fz32">备注    :</text>
                                 <input class="input" placeholder="请输入备注" v-model="message"/>
                             </div>
-                            <div class="flex-row flex-end">
+                            <div class="flex-row flex-end" @click="linkTo()">
                                 <div class="chooseBox"><text class="fz28" style="color: #EB4E40">快速话语</text> </div>
                             </div>
                         </div>
@@ -553,6 +553,21 @@
                             _this.shopId = data.data.id
                         }
                     })
+            },
+            //            跳转备注快速话语
+            linkTo: function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('widget/list.js?type=xdict'), function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success' && data.data != '') {
+                        _this.message = data.data.listName;
+                    }
+                })
+
             },
 
 //            跳转配送员

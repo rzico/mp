@@ -495,6 +495,7 @@
                 }
             )
             GET('weex/article/preview.jhtml?id=' + this.articleId,function (data) {
+                utils.debug(data)
                 if( data.type=='success' && data.data != ''){
                     _this.memberId = data.data.memberId;
                     _this.reviewNum = data.data.review;
@@ -508,7 +509,7 @@
                     }
                     let uId = event.getUId();
 //            判断是否作者本人
-                    if(uId == _this.memberId){
+                    if(uId == _this.memberId || data.data.canEdit == true){
                         _this.isSelf = 1;
 //                        跳出分享。
                         _this.relaseShare();

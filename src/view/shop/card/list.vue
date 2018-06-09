@@ -16,9 +16,21 @@
         <!--</div>-->
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" v-if="!choose"> </navbar>
         <navbar :title="title"  @goback="goback" v-if="choose"> </navbar>
-        <div class="code" @click="scan">
+        <div class="code" @click="scan" v-if="!choose">
             <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
             <text class="headText" style="font-size: 28px;color: #cccccc">搜索会员卡</text>
+        </div>
+        <div class="searchBOX" @click="" v-if="choose">
+            <div class="search_box flex5">
+                <div class="flex-start">
+                    <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                    <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="false" ref="searchBar" :placeholder="searchHint"/>
+                </div>
+                <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
+            </div>
+            <div class="flex-center flex1"  @click="noSearch()" >
+                <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
+            </div>
         </div>
         <div class="addFriend" @click="add" v-if="!choose">
             <div class="flex-row " style="align-items:center">
@@ -34,7 +46,7 @@
             </refresh>
                 <cell v-for="num in lists" >
                     <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="jump(num.id)">
+                        <div class="friendsLine" @click="jump(num)">
                             <div class="image">
                                 <image :src="num.logo" class="friendsImage"></image>
                                 <!--<text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>-->
@@ -47,9 +59,8 @@
                                     <div class="label"><text class="labelText">{{num.type | watchType}}</text> </div>
                                     <div :class="[vipClass(num.vip)]"><text class="labelText">{{num.vip | watchVip}}</text> </div>
                                     </div>
-                                    <text class="fz28" style="color: #888" v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
                                 </div>
-
+                                <text class="recommendedTitle"  v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
                             </div>
                         </div>
                     </div>
@@ -60,6 +71,50 @@
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    /*<!--搜索栏-->*/
+
+    .searchCancelText{
+        color: #EB4E40;
+    }
+    .searchBOX {
+        /*position:sticky;*/
+        background:#eee;
+        flex-direction: row;
+        /*flex:1;*/
+        height: 100px;
+    }
+    .search_box {
+        margin-top:20px;
+        margin-left:20px;
+        margin-right:20px;
+        margin-bottom:20px;
+        padding-left: 20px;
+        height: 60px;
+        border-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+        border-radius:8px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+    }
+    .clearBuf {
+        width:58px;
+        height:58px;
+        text-align: center;
+        padding-top: 10px;
+    }
+    .search_input {
+        margin-left: 20px;
+        font-size:32px;
+        line-height: 58px;
+        height: 58px;
+        width:400px;
+    }
+
+    /*======================*/
+
     .label{
         height: 28px;
         align-items: center;
@@ -130,8 +185,9 @@
     }
 
     .friendsName{
-        height:90px;
+        /*height:90px;*/
         margin-top: 15px;
+        margin-bottom: 15px;
         justify-content: space-between;
     }
     .realName{
@@ -158,7 +214,7 @@
     }
     .friendsLine{
         padding-left: 30px;
-        height:120px;
+        /*height:120px;*/
         background-color: #fff;
         flex-direction: row;
         flex:5;
@@ -166,6 +222,14 @@
     .lineTitle{
         font-size: 34px;
         margin-left: 20px;
+        lines:1;
+        text-overflow: ellipsis;
+        max-width: 600px;
+    }
+    .recommendedTitle{
+        font-size: 28px;
+        margin-left: 20px;
+        color: #888;
         lines:1;
         text-overflow: ellipsis;
         max-width: 600px;
@@ -228,7 +292,11 @@
                 code:'',
                 id:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
-                choose:false
+                choose:false,
+                keyword:'',
+                searchHint: "输入卡号或手机号",
+                searchOrCancel:'取消',
+                doSearch:false,//    是否处于搜索状态
             }
         },
         props: {
@@ -266,6 +334,56 @@
             },
         },
         methods: {
+            //          清空关键字
+            clearBuf:function () {
+                this.keyword = '';
+                this.keyword.length = 0;
+            },
+            inputBlur(){
+                this.$refs['searchBar'].blur();
+            },
+            //            前往搜索
+            goSearch:function () {
+                this.doSearch = true;
+                this.searchOrCancel = '取消'
+                let _this = this;
+                this.lists = [];
+                this.noDataHint = "输入查找卡号或手机号";
+//                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
+//                    _this.doReset();
+//                    if(res.type == 'success'){
+//
+//                    }
+//                });
+            },
+            oninput:function (e) {
+                this.isSearch = false;
+                this.keyword = e.value;
+                this.searchOrCancel = '搜索';
+                this.lists = [];
+                this.noDataHint = "输入查找卡号或手机号";
+                if(e.value.length == 0){
+                    this.searchOrCancel = '取消'
+                }
+            },
+            search: function (e) {
+                var _this = this;
+                this.isSearch = true;
+                this.pageStart = 0;
+                this.searchOrCancel = '取消';
+                this.searchCard();
+            },
+//            点击右上角取消或者搜索按钮
+            noSearch:function () {
+                this.inputBlur();
+                if(this.searchOrCancel == '取消'){
+                    this.pageStart = 0;
+                    this.doSearch = false;
+                    this.open();
+                }else{
+                    this.searchCard()
+                }
+            },
             //            获取权限
             permissions:function () {
                 var _this = this;
@@ -313,7 +431,6 @@
             open:function () {
                 var _this = this;
                 GET('weex/member/card/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
-//                    utils.debug(mes)
                     if (mes.type == 'success') {
                         if (_this.pageStart==0) {
                             _this.lists = mes.data.data;
@@ -322,6 +439,27 @@
                                 _this.lists.push(item);
                             })
                         }
+                        _this.pageStart = mes.data.start+mes.data.data.length;
+
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            searchCard:function () {
+                var _this = this;
+                GET('weex/member/card/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize+'&searchValue='+ encodeURI(_this.keyword),function (mes) {
+                    if (mes.type == 'success') {
+                        if (_this.pageStart==0) {
+                            _this.lists = mes.data.data;
+                        } else {
+                            mes.data.data.forEach(function(item){
+                                _this.lists.push(item);
+                            })
+                        }
+                        _this.noDataHint = '会员不存在';
                         _this.pageStart = mes.data.start+mes.data.data.length;
 
                     } else {
@@ -341,7 +479,6 @@
                             GET('weex/member/card/infobycode.jhtml?code='+_this.code,function (mes) {
                                 if (mes.type == 'success') {
                                     _this.id = mes.data.card.id;
-//                                   utils.debug(_this.id)
                                     event.openURL(utils.locate('view/shop/card/view.js?id='+_this.id),function (message) {
 
                                     })
@@ -363,7 +500,14 @@
                 return this.lists.length==0;
             },
             onloading (event) {
-                this.open();
+                if(!this.doSearch){
+////            获取会员卡列表
+                    this.open();
+                }else{
+//                        重新搜索会员卡
+                    this.searchCard();
+                }
+
             },
 //            下拉刷新
             onrefresh (event) {
@@ -390,22 +534,30 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false
-                    _this.open();
+                    if(!this.doSearch){
+////            获取会员卡列表
+                        _this.open();
+                    }else{
+//                        重新搜索会员卡
+                        _this.searchCard();
+                    }
                 }, 1000)
             },
             goback:function () {
                 event.closeURL();
             },
 
-            jump:function (id) {
+            jump:function (num) {
                 let _this =this;
                 if(_this.choose != true){
-                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
+                event.openURL(utils.locate('view/shop/card/view.js?id='+num.id),function () {
                     _this.onrefresh()
                 })
                 }else{
                     var E = {
-                        id:id
+                        memberId:num.memberId,
+                        memberlogo:num.logo,
+                        memberName:num.name
                     }
                     let backData = utils.message('success','选择成功',E);
                     event.closeURL(backData);

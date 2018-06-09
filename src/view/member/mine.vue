@@ -10,7 +10,7 @@
                     <div style="width: 50px;">
                     </div>
                     <!--导航栏名字头像-->
-                    <div class="userBox" @click="goAttribute()" v-if="settingColor == 'white'">
+                    <div class="userBox"  v-if="settingColor == 'white'">
                         <image class="headImg" :src="imageUrl"></image>
                         <text class="navText">{{userName | watchNickName}}</text>
                     </div>
@@ -89,7 +89,7 @@
             <!-- 我的文章 -->
             <div class="contentBox">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goMemberIndex()">
-                    <text class="fz30">我的文章</text>
+                    <text class="fz30">我的专栏</text>
                     <div class="flex-row">
                     <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
                     <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
@@ -184,10 +184,10 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #999933" class="iconfontSize">&#xe66c;</text>
                         <text class="iconfontText mt20">员工管理</text>
                     </div>
-                    <!--<div class="iconBox flexCol mt20"  @click="fill()">-->
-                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe70e;</text>-->
-                        <!--<text class="iconfontText mt20">补单</text>-->
-                    <!--</div>-->
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="fill()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
+                        <text class="iconfontText mt20">补单</text>
+                    </div>
                     <!--<div class="iconBox flexCol mt20"  @click="beginShare()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>-->
                         <!--<text class="iconfontText mt20">推荐好友</text>-->
@@ -973,7 +973,18 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {_this.clicked =false});
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {
+                    _this.clicked =false
+                    _this.getCount()
+                });
             },
 //            我的专栏
             goTopic: function (e) {
@@ -1233,6 +1244,7 @@
                 }
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
+                    _this.getCount()
                         _this.clicked = false;
                         return ;
                     }

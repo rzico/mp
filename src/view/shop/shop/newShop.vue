@@ -374,7 +374,8 @@
                 var _this = this;
                 GET('weex/member/shop/view.jhtml?shopId='+_this.shopId,function (mes) {
                     if (mes.type == 'success') {
-                        _this.addressName = mes.data.areaName
+                        _this.shopId = mes.data.id;
+                        _this.addressName = mes.data.areaName;
                         _this.licensePhoto = mes.data.license;
                         _this.logo = mes.data.thedoor;
                         _this.areaId = mes.data.areaId;
@@ -387,7 +388,7 @@
                         _this.industryName = mes.data.categoryName
 
                     } else {
-                        event.toast(res.content);
+                        event.toast(mes.content);
                     }
                 }, function (err) {
                     event.toast(err.content)
