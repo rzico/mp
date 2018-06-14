@@ -98,7 +98,7 @@
         },
         created(){
             utils.initIconFont();
-            event.changeWindowsBar(true);
+//            event.changeWindowsBar(true);
         },
         methods: {
 //    登录主页的轮播图slider控制

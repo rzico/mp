@@ -11,7 +11,7 @@
                         <text class="gray tellSize">投票描述</text>
                         <!--多行文本-->
                         <div class="textareaBox">
-                            <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreaTitle" @input="titleOninput"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
+                            <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreaTitle" @input="titleOninput" placeholder="输入投票主题"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true"></textarea>
                         </div>
                     </div>
                     <!--第二行开始 选项-->
@@ -103,8 +103,8 @@
         margin-left: 20px;
     }
     .closeIcon{
-        font-size: 40px;
-        color: #999;
+        font-size: 26px;
+        color: #ccc;
         font-weight: 700;
         padding-bottom: 10px;
         padding-top: 10px;
@@ -113,7 +113,8 @@
     }
     .textareaClass{
         width:485px;
-        font-size: 35px;
+        /*font-size: 35px;*/
+        font-size: 32px;
         line-height: 48px;
     }
     .textareaBox{

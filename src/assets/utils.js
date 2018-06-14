@@ -3,7 +3,8 @@
  */
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://mopian.1xx.me';
+var websiteURL = 'https://mopian.1xx.me';
+// var websiteURL = 'http://192.168.2.106:8080';
 // const websiteURL = 'http://dev.1xx.me';
 const event = weex.requireModule('event');
 const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
@@ -27,6 +28,10 @@ let utilsFunc = {
     },
     //获取网站资源
     website(url) {
+        //5.26 kzj 区分ios跟安卓系统，以此来兼容ios的旧版本。
+        // if(this.isIosSystem()){
+        //      websiteURL = 'http://mopian.1xx.me';
+        // }
         const newUrl = websiteURL + url;
         return newUrl;
     },
@@ -66,7 +71,6 @@ let utilsFunc = {
     },
     //把缩略图过滤为原图
     filterThumbnail(url){
-
         if(this.isNull(url)){
             return url;
         }

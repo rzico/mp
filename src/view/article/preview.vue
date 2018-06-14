@@ -58,12 +58,12 @@
                     </div>
                     <div>
                         <div>
-                               <!--模版样图-->
-                                <scroller  class="templateImgBox"  scroll-direction="horizontal" >
-                                    <div   v-for="(thumImg,index) in templateList" style="flex-direction: row"  :ref="thumImg.name">
-                                        <image v-for="(item,index) in thumImg.templates" @appear="thumImgAppear(thumImg.name)" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id,thumImg.name)"></image>
-                                    </div>
-                                </scroller>
+                            <!--模版样图-->
+                            <scroller  class="templateImgBox"  scroll-direction="horizontal" >
+                                <div   v-for="(thumImg,index) in templateList" style="flex-direction: row"  :ref="thumImg.name">
+                                    <image v-for="(item,index) in thumImg.templates" @appear="thumImgAppear(thumImg.name)" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id,thumImg.name)"></image>
+                                </div>
+                            </scroller>
                         </div>
                         <div>
                             <!--模版标题-->
@@ -662,7 +662,8 @@
 //            点击模版完成按钮时
             chooseComplete(){
                 let _this = this;
-                this.chooseTemplate();
+                this.templateChoose = !this.templateChoose;
+                this.templateName = this.initTemplateName;
                 if(this.initTemplateSn != this.templateSn){
 //                    上传文章模版
                     POST('weex/member/article/update.jhtml?id='+this.articleId + '&templateId=' + this.templateSaveId).then(
