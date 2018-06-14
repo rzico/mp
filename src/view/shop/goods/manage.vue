@@ -186,7 +186,7 @@
     .listLabelBoxOne{
         width: 60px;
         border-radius: 3px;
-        background-color: #EB4E40;
+        background-color: #5eb0fd;
         align-items: center;
         justify-content: center;
         margin-left: 20px;
@@ -504,7 +504,7 @@
             addBg:function (items) {
                 if(items.name == '新品' ){
                     return {
-                        backgroundColor:'#EB4E40'
+                        backgroundColor:'#5eb0fd'
                     }
 
                 }else if(items.name == '推荐'){

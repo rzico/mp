@@ -262,14 +262,14 @@
 //            },
             yesColor:function () {
                 if(this.isDefault == true){
-                    return {backgroundColor:'#EB4E40'}
+                    return {backgroundColor:'#5eb0fd'}
                 }else{
                     return {backgroundColor:'#ffffff'}
                 }
             },
             noColor:function () {
                 if(this.isDefault == false){
-                    return {backgroundColor:'#EB4E40'}
+                    return {backgroundColor:'#5eb0fd'}
                 }else{
                     return {backgroundColor:'#ffffff'}
                 }

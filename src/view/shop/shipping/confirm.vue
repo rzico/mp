@@ -39,7 +39,7 @@
                             <input class="max_input" placeholder="请输入备注" v-model="message"/>
                         </div>
                         <div class="button" @click="confirm()">
-                            <text class="fz40" style="color: #EB4E40">核销</text>
+                            <text class="fz40 primary">核销</text>
                         </div>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
         margin-right: 30px;
         margin-bottom: 10px;
         border-width: 1px;
-        border-color: #EB4E40;
+        border-color: #5eb0fd;
         border-radius: 15px;
         align-items: center;
         justify-content: center;

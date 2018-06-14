@@ -177,7 +177,7 @@
                                 _this.autograph = member.autograph;
                             }
                             _this.copy = "邀请码:"+(member.id+10200)+"";
-                            _this.qrcode = "http://pan.baidu.com/share/qrcode?w=450&h=450&url=" +encodeURI(_this.dataURL+"/q/865380"+(member.id+10200)+'.jhtml');
+                            _this.qrcode = utils.website("/q/show?url="+encodeURI(_this.dataURL+"/q/865380"+(member.id+10200)+'.jhtml'));
                             _this.isShow = true;
                         } else {
                             event.toast(data.content);

@@ -36,7 +36,7 @@
             </header>
             <header  v-if="liveList.length > 0" >
                 <div class="bkg-white pt20 pb20 pl20 pr20 flex-row" >
-                    <text class="fz40 " style="color: #EB4E40" :style="{fontFamily:'iconfont'}" >&#xe653;</text>
+                    <text class="fz40 primary"  :style="{fontFamily:'iconfont'}" >&#xe653;</text>
                     <text class="title ml10">直播推荐</text>
                 </div>
             </header>

@@ -292,13 +292,14 @@
                     type:['cache','tim','wxstorage']
                 }
                 event.clearCache(option,function (data) {
+                    _this.clicked = false;
                     if(data.type == 'success'){
                         _this.storageNum = '0M';
                         event.toast('清除成功');
                     }else{
                         event.toast(data.content);
                     }
-                    _this.clicked = fasle;
+
                 });
             },
 //            上传二维码

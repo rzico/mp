@@ -78,7 +78,7 @@
                     <div class="flex-row">
                         <input class="memoInput" placeholder="请输入备注" v-model="memoData"/>
                         <div class="flex-row flex-end ml10" @click="linkTo">
-                            <div class="chooseBox"><text class="fz28" style="color: #EB4E40">快速话语</text> </div>
+                            <div class="chooseBox"><text class="fz28 primary" >快速话语</text> </div>
                         </div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
     }
     .addressBox{
         width: 750px;
-        background-color: #EB4E40;
+        background-color: #5eb0fd;
         flex-direction: column;
         align-items: center;
     }
@@ -296,14 +296,14 @@
         margin-right: 50px;
         margin-top: 30px;
         margin-bottom: 30px;
-        background-color: #EB4E40;
+        background-color: #5eb0fd;
         align-items: center;
         justify-content: center;
         border-radius: 15px;
     }
     .button:active {
         background-color:#ccc;
-        color:#EB4E40;
+        color:#5eb0fd;
     }
     .buttonText{
         font-size: 40px;
@@ -331,7 +331,7 @@
         padding-left: 20px;
         padding-right: 20px;
         border-radius: 5px;
-        border-color: #EB4E40;
+        border-color: #5eb0fd;
         border-width: 1px;
     }
 </style>

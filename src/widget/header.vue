@@ -94,7 +94,7 @@
     }
     .jobText{
         font-size: 24px;
-        color: #EB4E40;
+        color: #5eb0fd;
     }
     .signature{
         margin-top: 28px;
@@ -133,7 +133,7 @@
         padding-top: 5px;
         padding-bottom: 5px;
         border-radius: 60px;
-        background-color: #EB4E40;
+        background-color: #5eb0fd;
     }
     .focusIco{
         padding-top: 7px;

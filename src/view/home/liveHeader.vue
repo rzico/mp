@@ -77,7 +77,7 @@
     }
     .buttonText{
         font-size: 34px;
-        color: #EB4E40;
+        color:#5eb0fd;
         font-weight: bold;
     }
     .search_box {
