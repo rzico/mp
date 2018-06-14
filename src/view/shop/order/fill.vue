@@ -551,7 +551,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/shop/goods/manage.js?from=fill"),function (data) {
+                event.openURL(utils.locate("view/shop/goods/manage.js?from=fill&pageType=true"),function (data) {
                     _this.clicked = false
                     if(data.type == 'success'){
 //                        把传回来的商品名字保存起来，用来对比购物车列表是否有改商品
@@ -758,7 +758,10 @@
                     if (res.type == 'success') {
 //                        如果实付金额为0，则不走后面的流程
                         if(res.data.amountPayable == 0){
-                            event.toast('确认成功');
+                            modal.alert({
+                                message: '确认成功',
+                                okTitle: '知道了'
+                            })
                             _this.cartList();
                             _this.getInfo();
                         }else {
@@ -774,7 +777,10 @@
                                                 POST('weex/member/order/shipping.jhtml?sn=' + orderSn + '&shippingMethod='+ _this.sendObject).then(
                                                     function (data) {
                                                         if(data.type == 'success'){
-                                                            event.toast('确认成功')
+                                                            modal.alert({
+                                                                message: '确认成功',
+                                                                okTitle: '知道了'
+                                                            })
                                                             _this.cartList();
                                                             _this.getInfo();
                                                             _this.clicked = false;
@@ -782,7 +788,10 @@
 //                                                            因为失败 订单已经提交，所以刷新购物车列表与商品合计
                                                             _this.cartList();
                                                             _this.getInfo();
-                                                            event.toast(data.content);
+                                                            modal.alert({
+                                                                message: data.content,
+                                                                okTitle: '知道了'
+                                                            })
                                                             _this.clicked = false;
                                                         }
                                                     },function (err) {

@@ -186,7 +186,7 @@
                     </div>
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="fill()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
-                        <text class="iconfontText mt20">补单</text>
+                        <text class="iconfontText mt20">人工补单</text>
                     </div>
                     <!--<div class="iconBox flexCol mt20"  @click="beginShare()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>-->

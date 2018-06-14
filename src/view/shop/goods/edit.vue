@@ -124,6 +124,20 @@
                     </div>
                 </div>
             </div>
+            <div class="sub-panel ml20 mt10">
+                <text class="sub_title">设置该商品的配送方式</text>
+            </div>
+            <div class="cell-row cell-line mt10" @click="pickType()">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title">配送方式</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{isobject | watchType}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
 
             <div style="height: 400px"></div>
         </scroller>
@@ -348,6 +362,7 @@
     }
 </style>
 <script>
+    const picker = weex.requireModule('picker');
     const modal = weex.requireModule('modal');
     const album = weex.requireModule('album');
     import navbar from '../../../include/navbar.vue';
@@ -377,13 +392,26 @@
             productTemplates:[],
             goodsId:'',
             clicked:false,
-            roles:''
+            roles:'',
+            begin:0,
+            isobject:'product'
         },
         props:{
             title:{default:'新增商品'}
         },
         components: {
             navbar
+        },
+        filters: {
+            watchType:function (val) {
+                if(val == 'product'){
+                    return'普通快递'
+                }else if(val == 'warehouse'){
+                    return'同城配送'
+                }else if(val == 'dummy'){
+                    return'虚拟物品'
+                }
+            }
         },
         created(){
             let _this = this;
@@ -429,6 +457,27 @@
             }
         },
         methods: {
+            //            选择配送方式
+            pickType:function () {
+                let _this = this
+                picker.pick({
+                    index:_this.begin,
+                    items:['普通快递','同城配送','虚拟物品']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.isobject = 'product';
+                            _this.begin = e.data;
+                        }else if(e.data == 1){
+                            _this.isobject = 'warehouse';
+                            _this.begin = e.data;
+                        }else if(e.data == 2){
+                            _this.isobject = 'dummy';
+                            _this.begin = e.data;
+                        }
+                    }
+                })
+            },
             nameUnitFirstInput(){
                 //                        临时缓存起来商品数据
                 if(utils.isNull(this.goodsId)){
@@ -446,6 +495,10 @@
                 let goodUnit =  data.data.unit;
                 if(!utils.isNull(goodUnit)){
                     _this.goodsUnit = goodUnit;
+                }
+//                配送方式
+                if(!utils.isNull(data.data.type)){
+                    _this.isobject = data.data.type;
                 }
 //                        分类
                 if(!utils.isNull(data.data.productCategory.id)){
@@ -973,6 +1026,7 @@
                     productCategory: categoryTemplate,
                     distribution:distributionTemplate,
                     products: _this.productTemplates,
+                    type:_this.isobject,
                 };
 
 //                utils.debug(productData);

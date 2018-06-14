@@ -59,6 +59,33 @@
                 </div>
             </div>
         </div>
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between " @click="goAddress()">
+                    <div class="flex-row">
+                        <text class="title ml10">我的地址</text>
+                    </div>
+                    <div class="flex-row flex-end" >
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between " @click="gousers()">
+                    <div class="flex-row">
+                        <text class="title ml10">授权用户</text>
+                    </div>
+                    <div class="flex-row flex-end" >
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="settlemenSetup()">
+                    <div class="flex-row">
+                        <text class="title ml10">结算方式</text>
+                    </div>
+                    <div class="flex-row flex-end" >
+                        <text class="sub_title">{{data.card.paymentMethod | watchPayment}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
         <div class="cell-row cell-line">
             <div class="cell-panel space-between">
                 <div class="flex-row">
@@ -169,14 +196,24 @@
                     return '普通'
                 }
             },
+            watchPayment:function (data) {
+                if(data == 'immediate'){
+                    return '现金结算'
+                }else if(data == 'monthly') {
+                    return '月度结算'
+                }
+            },
         },
         data() {
             return {
                 id: "",
+                memberId:'',
                 begin:0,
                 typebegin:0,
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:'',bindMobile:false,bindName:false},},
+                settlemenBegin:0,
+                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:'',bindMobile:false,bindName:false,paymentMethod:''},},
                 roles:"",
+                clicked:false
             }
         },
         created() {
@@ -198,6 +235,69 @@
                 }, function (err) {
                     event.toast(err.content);
                 });
+            },
+//            我的地址
+            goAddress(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/card/address.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
+            gousers(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/card/users.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
+            //            结算方式
+            settlemenSetup:function () {
+                var _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle:'确定'
+                    })
+                    return
+                }
+                picker.pick({
+                    index:_this.settlemenBegin,
+                    items:['现金结算','月度结算']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.settlemenBegin = e.data;
+                            _this.data.card.paymentMethod = 'immediate'
+                        }else if(e.data == 1){
+                            _this.settlemenBegin = e.data;
+                            _this.data.card.paymentMethod = 'monthly'
+                        }
+                        POST('weex/member/card/update.jhtml?id='+_this.id+'&paymentMethod='+_this.data.card.paymentMethod).then(
+                            function (mes) {
+                                if (mes.type == "success") {
+
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast("网络不稳定");
+                            }
+                        )
+                    }
+                })
             },
 //            设置等级
             vipsetup:function () {
@@ -406,6 +506,7 @@
             open:function () {
                 var _this = this;
                 GET("weex/member/card/info.jhtml?id="+_this.id,function (res) {
+                    utils.debug(res)
                     if (res.type=='success') {
                         if(res.data.card.vip == 'vip1'){
                             _this.begin =0
@@ -420,7 +521,14 @@
                         }if(res.data.card.type == 'partner'){
                             _this.typebegin =2
                         }
+                        if(res.data.card.paymentMethod == 'immediate'){
+                            _this.settlemenBegin =0
+                        }
+                        if(res.data.card.paymentMethod == 'monthly'){
+                            _this.settlemenBegin =1
+                        }
                         _this.data = res.data;
+                        _this.memberId = res.data.card.memberId
                     } else {
                         event.toast(res.content);
                     }

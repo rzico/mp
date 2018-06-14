@@ -24,7 +24,7 @@
             <div class="search_box flex5">
                 <div class="flex-start">
                     <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                    <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="false" ref="searchBar" :placeholder="searchHint"/>
+                    <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
                 </div>
                 <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
             </div>
@@ -32,12 +32,21 @@
                 <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
             </div>
         </div>
+        <div style="background-color: white;border-top-width: 1px;border-color: #ccc">
         <div class="addFriend" @click="add" v-if="!choose">
-            <div class="flex-row " style="align-items:center">
+            <div class="flex-row ">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
                 <text class="title ml20 " >领取会员卡</text>
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
+        <div class="addCard" @click="addCard()" v-if="!choose">
+            <div class="flex-row ">
+                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
+                <text class="title ml20 " >新增会员</text>
+            </div>
+            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="50">
@@ -168,14 +177,24 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        margin-left: 36px;
+        padding-right: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: white;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
+    }
+    .addCard{
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
         padding-left: 36px;
         padding-right: 30px;
-        padding-top: 30px;
-        padding-bottom: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
         background-color: white;
-        border-top-width: 1px;
-        border-top-style: solid;
-        border-top-color: #ccc;
         border-bottom-width: 1px;
         border-bottom-style: solid;
         border-bottom-color: #ccc;
@@ -565,6 +584,10 @@
             },
             add:function() {
                 event.openURL(utils.locate("view/shop/card/add.js"),function (message) {
+                })
+            },
+            addCard:function() {
+                event.openURL(utils.locate("view/shop/card/address.js"),function (message) {
                 })
             },
             setting:function () {

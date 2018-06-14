@@ -39,7 +39,7 @@
                     <text @click="catagoryChange(index,item.id)" class="allArticle" v-for="(item,index) in catagoryList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
             </scroller>
-            <div class="corpusIconBox" @click="goCatagory()">
+            <div class="corpusIconBox" v-if="!pageType" @click="goCatagory()">
                 <text  :style="{fontFamily:'iconfont'}" class="fz35">&#xe603;</text>
             </div>
         </div>
@@ -137,7 +137,7 @@
             </div>
         </div>
         </div>
-        <div class="button bw bkg-primary" v-if="!doSearch" @click="addGoods()">
+        <div class="button bw bkg-primary" v-if="!doSearch && !pageType" @click="addGoods()">
             <text class="buttonText ">新增商品</text>
         </div>
     </div>
@@ -467,7 +467,9 @@
             recommendSwitch:false,
 //            switch 新品状态
             newSwitch:false,
-            goodsName:''
+            goodsName:'',
+            pageType:false//            选择页过来不让新增商品
+
 
         },
         props:{
@@ -493,6 +495,9 @@
             this.getAllGoods();
             if(!utils.isNull(utils.getUrlParameter('from'))){
                 this.pageFrom = utils.getUrlParameter('from');
+            }
+            if(!utils.isNull(utils.getUrlParameter('pageType'))){
+                this.pageType = utils.getUrlParameter('pageType');
             }
         },
         methods:{
@@ -586,29 +591,56 @@
 //            商品列表
             getAllGoods(){
                 let _this = this;
-                //            获取商品列表
-                GET('weex/member/product/list.jhtml?productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                    if(data.type == 'success'){
-                        if (_this.pageStart == 0) {
-                            data.data.data.forEach(function (item) {
+                if(this.pageType == false){
+                    //            获取商品列表
+                    GET('weex/member/product/list.jhtml?productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                        if(data.type == 'success'){
+                            if (_this.pageStart == 0) {
+                                data.data.data.forEach(function (item) {
 //                             （配合懒加载）
-                                item.loading = false;
-                            })
-                            _this.goodsList = data.data.data;
+                                    item.loading = false;
+                                })
+                                _this.goodsList = data.data.data;
+                            }else{
+                                data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                                    item.loading = false;
+                                    _this.goodsList.push(item);
+                                })
+                            }
+                            _this.pageStart = data.data.start + data.data.data.length;
                         }else{
-                            data.data.data.forEach(function (item) {
-//                             （配合懒加载）
-                                item.loading = false;
-                                _this.goodsList.push(item);
-                            })
+                            event.toast(data.content);
                         }
-                        _this.pageStart = data.data.start + data.data.data.length;
-                    }else{
-                        event.toast(data.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                })
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+                }else{
+                    //            查找选择模式下获取商品列表，多传一个type参数
+                    GET('weex/member/product/list.jhtml?type=query&productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                        if(data.type == 'success'){
+                            if (_this.pageStart == 0) {
+                                data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                                    item.loading = false;
+                                })
+                                _this.goodsList = data.data.data;
+                            }else{
+                                data.data.data.forEach(function (item) {
+//                             （配合懒加载）
+                                    item.loading = false;
+                                    _this.goodsList.push(item);
+                                })
+                            }
+                            _this.pageStart = data.data.start + data.data.data.length;
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+                }
+
             },
             onloading:function () {
 //                判断是否正在搜索
@@ -934,23 +966,45 @@
 //          查找商品
             searchGoods:function () {
                 let _this = this;
-                GET('weex/member/product/list.jhtml?keyword='+ encodeURI(_this.keyword)  + '&productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
-                    if(data.type == 'success'){
-                        if (_this.pageStart == 0) {
-                            _this.goodsList = data.data.data;
+                if(this.pageType == false){
+                    GET('weex/member/product/list.jhtml?keyword='+ encodeURI(_this.keyword)  + '&productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                        if(data.type == 'success'){
+                            if (_this.pageStart == 0) {
+                                _this.goodsList = data.data.data;
+                            }else{
+                                data.data.data.forEach(function (item) {
+                                    _this.goodsList.push(item);
+                                })
+                            }
+                            _this.noDataHint = '商品不存在';
+                            _this.pageStart = data.data.start + data.data.data.length;
                         }else{
-                            data.data.data.forEach(function (item) {
-                                _this.goodsList.push(item);
-                            })
+                            event.toast(data.content);
                         }
-                        _this.noDataHint = '商品不存在';
-                        _this.pageStart = data.data.start + data.data.data.length;
-                    }else{
-                        event.toast(data.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                })
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+                }else{
+//                    查找选择模式，多传一个type参数
+                    GET('weex/member/product/list.jhtml?type=query&keyword='+ encodeURI(_this.keyword)  + '&productCategoryId=' + this.productCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                        if(data.type == 'success'){
+                            if (_this.pageStart == 0) {
+                                _this.goodsList = data.data.data;
+                            }else{
+                                data.data.data.forEach(function (item) {
+                                    _this.goodsList.push(item);
+                                })
+                            }
+                            _this.noDataHint = '商品不存在';
+                            _this.pageStart = data.data.start + data.data.data.length;
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },function (err) {
+                        event.toast(err.content);
+                    })
+                }
+
             },
 //          清空关键字
             clearBuf:function () {
