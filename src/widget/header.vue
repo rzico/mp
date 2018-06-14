@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+
         <div class="headerBox">
             <image class="bgImg" :src="imgBg"></image>
             <image class="img_heightMask" :src="img_heightMask"></image>
@@ -23,17 +23,18 @@
                 </div>
             </div>
         </div>
-    </div>
+
 </template>
 <style lang="less" src="../style/wx.less"/>
 <style scoped>
    .headerBox{
        width: 750px;
-       height: 410px;
+       position: absolute;
+       top: 0;
    }
    .headerBoxIPHONEX{
        width: 750px;
-       height: 420px;
+
    }
     .bgImg{
         width: 750px;
@@ -107,14 +108,14 @@
         align-items:flex-end;
         position: absolute;
         right: 30px;
-        bottom: 25px;
+        top: 325px;
     }
    .fansBoxIPHONEX{
        flex-direction: column;
        align-items:flex-end;
        position: absolute;
        right: 30px;
-       bottom: 25px;
+       top: 335px;
    }
     .fans{
         font-size: 32px;

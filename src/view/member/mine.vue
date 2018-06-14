@@ -23,13 +23,15 @@
                 <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
             </div>
         </div>
+
         <scroller show-scrollbar="false" offset-accuracy="0" ref="scrollerRef" @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+            <div class="" style="position: relative">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;" @appear="toponappear"></div>
+                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType"  @setting="goAttribute"></topic_header>
             <!--顶部个人信息栏-->
-            <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goAttribute"></topic_header>
+            <div style="height: 410px"></div>
             <!--收藏，钱包，关注-->
-            <div class="">
                 <div class="comWrap">
                     <div class=" flexColTwo" style="width: 236.66px" @click="goCollect()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe65d;</text>
@@ -44,7 +46,7 @@
                         <text class="iconfontText ">关注</text>
                     </div>
                 </div>
-            </div>
+
             <!-- 我的订单 -->
             <div class="contentBox" v-if="member.activated && member.hasShop">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
@@ -200,7 +202,7 @@
 
                 </div>
             </div>
-
+            </div>
         </scroller>
         <payment ref="payment" @notify="notify"></payment>
         <div v-if="showShare"  key="share">
@@ -244,6 +246,7 @@
         text-overflow: ellipsis;
     }
     .contentBox{
+        width: 710px;
         margin-top: 20px;
         margin-left: 20px;
         margin-right: 20px;
@@ -287,6 +290,7 @@
     }
     .iconfontText{
         font-size: 26px;
+        line-height: 40px;
         color: #444;
     }
     .rightTop {
@@ -378,7 +382,7 @@
         align-items: center;
         justify-content: center;
         position: relative;
-        height: 100px;
+        /*height: 100px;*/
     }
 </style>
 <script>
@@ -430,7 +434,8 @@
                 imgBg:'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/fengjing.jpeg',
                 focusType:false,
                 conut:[],
-                shopId:'#'
+                shopId:'#',
+                hasHeaderInfo:true
             }
         },
         components: {
@@ -728,6 +733,11 @@
                     this.twoTop = true;
                 } else {
                     this.twoTop = false;
+                }
+                if (scrollTop >= 750) {
+                    this.hasHeaderInfo = false;
+                } else {
+                    this.hasHeaderInfo = true;
                 }
             },
             // 个人信息
