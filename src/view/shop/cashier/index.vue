@@ -5,49 +5,49 @@
             <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goIndex()" v-if="isIndex">&#xe628;</text>
             <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()" v-else>&#xe60a;</text>
             <div class="wallet-title">
-                <text class="sub_title">今天收入（元）</text>
-                <text class="sub_title">昨天收入:{{cashier.yesterday | currencyfmt}}</text>
+                <text class="sub_title">今天收银（元）</text>
+                <text class="sub_title">昨天收银:{{cashier.yesterday | currencyfmt}}</text>
             </div>
         </div>
         <scroller class="scroller">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <!--<div class="fontInput" v-if="hasShop()">-->
-                <!--<text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>-->
-                <!--<input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" v-model="amount" />-->
-                <!--<text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>-->
-            <!--</div>-->
-            <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn "  @click="payment('aliPayPlugin')">-->
-                    <!--<text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>-->
-                    <!--<text class="btn-text" value="支付宝">支付宝</text>-->
-                <!--</div>-->
-                <!--<div class="btn "  @click="payment('weixinPayPlugin')">-->
-                    <!--<text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>-->
-                    <!--<text class="btn-text" value="微信钱包">微信钱包</text>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn "  @click="payment('cardPayPlugin')">-->
-                    <!--<text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
-                    <!--<text class="btn-text" value="会员卡">会员卡</text>-->
-                <!--</div>-->
-                <!--<div class="btn "  @click="payment('balancePayPlugin')">-->
-                    <!--<text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
-                    <!--<text class="btn-text" value="芸店钱包">芸店钱包</text>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn " @click="offline('bankPayPlugin')">-->
-                    <!--<text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>-->
-                    <!--<text class="btn-text" value="刷卡">刷卡(记账)</text>-->
-                <!--</div>-->
-                <!--<div class="btn " @click="offline('cashPayPlugin')">-->
-                    <!--<text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>-->
-                    <!--<text class="btn-text" value="现金">现金(记账)</text>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="fontInput" v-if="hasShop()">
+                <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
+                <input class="input" type="number" placeholder="请输入消费金额" maxlength="7":autofocus="true" v-model="amount" />
+                <text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>
+            </div>
+            <div class="buttombox"  v-if="hasInput()">
+                <div class="btn "  @click="payment('aliPayPlugin')">
+                    <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
+                    <text class="btn-text" value="支付宝">支付宝</text>
+                </div>
+                <div class="btn "  @click="payment('weixinPayPlugin')">
+                    <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
+                    <text class="btn-text" value="微信钱包">微信钱包</text>
+                </div>
+            </div>
+            <div class="buttombox"  v-if="hasInput()">
+                <div class="btn "  @click="payment('cardPayPlugin')">
+                    <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
+                    <text class="btn-text" value="会员卡">会员卡</text>
+                </div>
+                <div class="btn "  @click="payment('balancePayPlugin')">
+                    <text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>
+                    <text class="btn-text" value="芸店钱包">芸店钱包</text>
+                </div>
+            </div>
+            <div class="buttombox"  v-if="hasInput()">
+                <div class="btn " @click="offline('bankPayPlugin')">
+                    <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
+                    <text class="btn-text" value="刷卡">刷卡(记账)</text>
+                </div>
+                <div class="btn " @click="offline('cashPayPlugin')">
+                    <text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>
+                    <text class="btn-text" value="现金">现金(记账)</text>
+                </div>
+            </div>
             <div class="menubox">
                 <div class="menu" @click="goods()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
@@ -57,21 +57,21 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
                     <text class="menuBtn">订单</text>
                 </div>
-                <div class="menu" @click="goShipping()">
+                <div class="menu" @click="deposit()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">送货</text>
+                    <text class="menuBtn">账单</text>
                 </div>
                 <div class="menu" @click="gocard()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="menuBtn">水卡</text>
+                    <text class="menuBtn">会员卡</text>
                 </div>
                 <div class="menu" @click="gocoupon()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="menuBtn">水票</text>
+                    <text class="menuBtn">优惠券</text>
                 </div>
                 <div class="menu" @click="godistribution()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
-                    <text class="menuBtn">营销</text>
+                    <text class="menuBtn">新营销</text>
                 </div>
                 <div class="menu" @click="shop()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
@@ -81,11 +81,11 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
                     <text class="menuBtn">员工</text>
                 </div>
-                <!--<div class="content">-->
-                    <!--<text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>-->
-                    <!--<text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>-->
-                    <!--<text class="sub_title mt10">3.快速秒到,超过30秒没到账联系客服处理</text>-->
-                <!--</div>-->
+                <div class="content">
+                    <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
+                    <text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>
+                    <text class="sub_title mt10">3.快速秒到,超过30秒没到账联系客服处理</text>
+                </div>
             </div>
         </scroller>
         <div class="waiting" v-if="isShow()">
