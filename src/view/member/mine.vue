@@ -255,9 +255,9 @@
         min-height: 35px;
         min-width: 35px;
         border-radius: 100%;
-        border-color: #5eb0fd;
+        border-color: #EB4E40;
         border-width:2px;
-        color: #5eb0fd;
+        color: #EB4E40;
         position: absolute;
         top:0;
         right: 40px;
@@ -267,7 +267,7 @@
     .shippingNumber{
         font-size: 26px;
         line-height: 26px;
-        color: #5eb0fd;
+        color: #EB4E40;
     }
     .topContentBox{
         background-color: rgba(255,255,255,0.6);

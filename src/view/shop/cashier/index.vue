@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <div class="wallet-panel" :style="objHeader()">
+        <div class="wallet-panel bkg-primary" :style="objHeader()">
             <text class="balance">{{cashier.today | currencyfmt}}</text>
             <!--<text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goIndex()" v-if="isIndex">&#xe628;</text>-->
             <!--<text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()">&#xe60a;</text>-->
@@ -486,8 +486,6 @@
             objHeader:function () {
                 if (utils.device()=='V1') {
                     return {backgroundColor:'#000'}
-                } else {
-                    return {backgroundColor:'#5eb0fd'}
                 }
             },
             hasShop:function () {

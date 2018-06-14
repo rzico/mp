@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="completeButton" @click="complete()">
+        <div class="completeButton bkg-primary" @click="complete()">
             <text class="fz40" style="color:white">完成</text>
         </div>
         <div class="warning">
@@ -53,7 +53,6 @@
         height: 80px;
         align-items: center;
         justify-content: center;
-        background-color:#5eb0fd;
         border-radius: 15px;
         margin: 20px;
     }
