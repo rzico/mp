@@ -795,7 +795,9 @@
 //            点击模版完成按钮时
             chooseComplete(){
                 let _this = this;
-                this.chooseTemplate();
+                this.noAppear = true;
+                this.templateChoose = !this.templateChoose;
+                this.templateName = this.initTemplateName;
                 if(this.initTemplateSn != this.templateSn){
 //                    上传文章模版
                     POST('weex/member/article/update.jhtml?id='+this.articleId + '&templateId=' + this.templateSaveId).then(

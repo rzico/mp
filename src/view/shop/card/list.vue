@@ -29,7 +29,7 @@
                 <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
             </div>
             <div class="flex-center flex1"  @click="noSearch()" >
-                <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
+                <text class="fz32 primary" >{{searchOrCancel}}</text>
             </div>
         </div>
         <div style="background-color: white;border-top-width: 1px;border-color: #ccc">
@@ -129,7 +129,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 5px;
-        background-color: #EB4E40;
+        background-color: #5eb0fd;
         padding-left:5px;
         padding-right: 5px;
         margin-left: 10px;
@@ -337,7 +337,7 @@
                 if(data == 'partner'){
                     return '股东'
                 }else if(data == 'team'){
-                    return '团队'
+                    return 'VIP'
                 }else{
                     return '普通'
                 }

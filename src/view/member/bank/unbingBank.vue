@@ -13,7 +13,7 @@
                 <input type="number" maxlength="6" placeholder="请输入验证码" class="input" v-model="captcha" @input="captchaInput"/>
             </div>
             <div class="code" @click="onSend">
-                <text class="fz28" style="color: #EB4E40" v-if="retry">发送验证码</text>
+                <text class="fz28 primary"  v-if="retry">发送验证码</text>
                 <text class="fz28" style="color: #cccccc" v-else> {{time}}秒后重新发送</text>
             </div>
         </div>
@@ -56,7 +56,7 @@
         padding-right: 10px;
         padding-top: 5px;
         padding-bottom: 5px;
-        border-color:#EB4E40;
+        border-color:#5eb0fd;
         border-radius: 10px;
         border-width: 1px;
     }

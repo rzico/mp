@@ -32,15 +32,15 @@
             <div class="">
                 <div class="comWrap">
                     <div class=" flexColTwo" style="width: 236.66px" @click="goCollect()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe65d;</text>
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe65d;</text>
                         <text class="iconfontText ">收藏</text>
                     </div>
                     <div class=" flexColTwo"  style="width: 236.66px" @click="goWallet()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe63e;</text>
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe63e;</text>
                         <text class="iconfontText ">钱包</text>
                     </div>
                     <div class=" flexColTwo"  style="width: 236.66px" @click="goFocus()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe870;</text>
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe870;</text>
                         <text class="iconfontText ">关注</text>
                     </div>
                 </div>
@@ -57,28 +57,28 @@
                 <!-- 订单消息 -->
                 <div class="comWrap">
                     <div class=" flexCol iconBox"  @click="goNoPay()">
-                        <text :style="{fontFamily:'iconfont'}" style="color:#EB4E40" class="iconfontSize">&#xe6e2;</text>
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
                         <text class="iconfontText ">待付款</text>
                         <div class="shippingNumberBox"  v-if="conut.refund != 0">
                         <text class="shippingNumber">{{conut.refund}}</text>
                         </div>
                     </div>
                     <div class=" flexCol iconBox"  @click="goNoDelivery()">
-                        <text :style="{fontFamily:'iconfont'}" style="color:#EB4E40" class="iconfontSize">&#xe718;</text>
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
                         <text class="iconfontText ">待发货</text>
                         <div class="shippingNumberBox" v-if="conut.unshipped != 0">
                         <text class="shippingNumber" >{{conut.unshipped}}</text>
                         </div>
                     </div>
                     <div class=" flexCol iconBox"  @click="goDelivery()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xe72c;</text>
+                        <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
                         <text class="iconfontText ">已发货</text>
                         <div class="shippingNumberBox" v-if="conut.shipped != 0">
                         <text class="shippingNumber" >{{conut.shipped}}</text>
                         </div>
                     </div>
                     <div class=" flexCol iconBox"  @click="goRefund()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #EB4E40" class="iconfontSize">&#xea20;</text>
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
                         <text class="iconfontText ">待退款</text>
                         <div class="shippingNumberBox" v-if="conut.unpaid != 0">
                         <text class="shippingNumber" >{{conut.unpaid}}</text>
@@ -255,9 +255,9 @@
         min-height: 35px;
         min-width: 35px;
         border-radius: 100%;
-        border-color: #EB4E40;
+        border-color: #5eb0fd;
         border-width:2px;
-        color: #EB4E40;
+        color: #5eb0fd;
         position: absolute;
         top:0;
         right: 40px;
@@ -267,7 +267,7 @@
     .shippingNumber{
         font-size: 26px;
         line-height: 26px;
-        color: #EB4E40;
+        color: #5eb0fd;
     }
     .topContentBox{
         background-color: rgba(255,255,255,0.6);

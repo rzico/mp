@@ -29,7 +29,7 @@
                             <div class="buttonBox">
                                 <div class="OnButton"  @click="delReview(item.id,index)"  v-if="item.status == 'closed'"><text class="fz26" style="color: #333" >删除</text></div>
                                 <div class="deleteButton" @click="OnDragon(item.id,index)"  v-if="item.status == 'normal'"><text class="fz26" style="color: #333" >关闭</text></div>
-                                <div class="shareButton" @click="goShare(item.articleId)"  v-if="item.status == 'normal'"><text class="fz26" style="color: #EB4E40" >分享</text></div>
+                                <div class="shareButton" @click="goShare(item.articleId)"  v-if="item.status == 'normal'"><text class="fz26 primary"  >分享</text></div>
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
         width: 80px;
         height: 50px;
         border-width: 1px;
-        border-color: #EB4E40;
+        border-color: #5eb0fd;
         align-items: center;
         justify-content: center;
         border-radius: 5px;

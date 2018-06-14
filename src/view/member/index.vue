@@ -146,12 +146,12 @@
                                 </div>
                             </div>
                             <div class="rightHiddenSmallBox">
-                                <div class="rightHiddenIconBox"  @click="jumpTop(item,index)">
+                                <div class="rightHiddenIconBox"  @click="jumpTop(item,index)" v-if="!item.value.isDraft">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe61c;</text>
                                     <text class="rightHiddenText" v-if="item.sort.substring(0,1) != '1'">置顶</text>
                                     <text class="rightHiddenText" v-else>取消置顶</text>
                                 </div>
-                                <div class="rightHiddenIconBox" @click="jumpCorpus(item)">
+                                <div class="rightHiddenIconBox" @click="jumpCorpus(item)" v-if="!item.value.isDraft">
                                     <text class="rightHiddenIcon" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
                                     <text class="rightHiddenText">设置</text>
                                 </div>

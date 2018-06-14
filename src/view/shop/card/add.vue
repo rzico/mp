@@ -93,7 +93,7 @@
                 GET("weex/member/card/qrcode.jhtml",function (res) {
                     if (res.type=='success') {
                         _this.data = res.data;
-                        _this.qrcode = "http://pan.baidu.com/share/qrcode?w=400&h=400&url="+encodeURI(_this.data.qrcode);
+                        _this.qrcode = utils.website("/q/show?url="+encodeURI(_this.data.qrcode));
                     } else {
                         event.toast(res.content);
                     }

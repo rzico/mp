@@ -45,7 +45,7 @@
     }
     .more{
         font-size: 20px;
-        color: #EB4E40;
+        color:#5eb0fd;
     }
     .hotsContent{
         margin-top: 20px;

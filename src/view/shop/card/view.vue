@@ -35,7 +35,7 @@
         align-items: center;
         justify-content: center;
         border-radius: 5px;
-        background-color: #EB4E40;
+        background-color: #5eb0fd;
         padding-left:5px;
         padding-right: 5px;
         margin-left: 10px;

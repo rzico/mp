@@ -89,7 +89,7 @@
         top:20px;
         left:15px;
         font-size: 20px;
-        color:#EB4E40;
+        color:#5eb0fd;
     }
     .complete{
         font-size: 32px;

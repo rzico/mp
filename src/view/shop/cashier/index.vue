@@ -3,7 +3,7 @@
         <div class="wallet-panel" :style="objHeader()">
             <text class="balance">{{cashier.today | currencyfmt}}</text>
             <!--<text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goIndex()" v-if="isIndex">&#xe628;</text>-->
-            <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()">&#xe60a;</text>
+            <!--<text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()">&#xe60a;</text>-->
             <div class="wallet-title">
                 <text class="sub_title">今天收入（元）</text>
                 <text class="sub_title">昨天收入:{{cashier.yesterday | currencyfmt}}</text>
@@ -482,7 +482,7 @@
                 if (utils.device()=='V1') {
                     return {backgroundColor:'#000'}
                 } else {
-                    return {backgroundColor:'#EB4E40'}
+                    return {backgroundColor:'#5eb0fd'}
                 }
             },
             hasShop:function () {

@@ -45,7 +45,7 @@
                         </div>
                         <div class="flex-row flex-end" @click="linkTo">
                             <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                            <div class="chooseBox"><text class="fz28" style="color: #EB4E40">快速话语</text> </div>
+                            <div class="chooseBox"><text class="fz28 primary">快速话语</text> </div>
                         </div>
                     </div>
                     <div class="button mt30" style="width: 530px" @click="goComplete()">
@@ -66,7 +66,7 @@
         padding-left: 20px;
         padding-right: 20px;
         border-radius: 5px;
-        border-color: #EB4E40;
+        border-color: #5eb0fd;
         border-width: 1px;
     }
     .info{
@@ -98,7 +98,7 @@
         /*border-radius: 15px;*/
         padding-left: 30px;
         padding-right: 30px;
-        background-image: linear-gradient(to right, pink,#EB4E40);
+        background-image: linear-gradient(to right, pink,#5eb0fd);
         flex-direction: row;
         justify-content: space-between;
         align-items: center;

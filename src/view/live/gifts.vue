@@ -94,7 +94,7 @@
         height:60px;
         font-size: 48px;
         line-height: 60px;
-        color:#EB4E40;
+        color:#5eb0fd;
     }
     .cell-row {
         min-height: 120px;

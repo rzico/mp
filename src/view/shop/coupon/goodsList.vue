@@ -14,7 +14,7 @@
                     <div class="infoBox">
                         <text class="goodsName">{{item.name}}</text>
                         <div class="infoBoxBottom">
-                        <text class="fz32" style="color: #EB4E40;margin-right: 20px">¥ {{item.price | currencyfmt}}</text>
+                        <text class="fz32 mr20 primary" >¥ {{item.price | currencyfmt}}</text>
                         <text class="sub_title fz28">库存: {{item.stock}}</text>
                         </div>
                     </div>

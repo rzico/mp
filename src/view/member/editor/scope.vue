@@ -21,7 +21,7 @@
                         <text class="title ml10 cell-bottom-clear">不公开</text>
                     </div>
                     <div class="flex-row ">
-                        <text class="sub_title ml10">自行控制分享范围,仅被分享的人可见</text>
+                        <text class="sub_title ml10">仅被分享人及缴费会员可见</text>
                     </div>
                 </div>
                 <div v-if="checkId == 1" >

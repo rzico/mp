@@ -32,11 +32,11 @@
                                 <input class="input" placeholder="请输入备注" v-model="message"/>
                             </div>
                             <div class="flex-row flex-end" @click="linkTo()">
-                                <div class="chooseBox"><text class="fz28" style="color: #EB4E40">快速话语</text> </div>
+                                <div class="chooseBox"><text class="fz28 primary">快速话语</text> </div>
                             </div>
                         </div>
                         <div class="button" @click="complete()">
-                            <text class="fz40" style="color: #EB4E40">派单</text>
+                            <text class="fz40 primary">派单</text>
                         </div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
         padding-left: 20px;
         padding-right: 20px;
         border-radius: 5px;
-        border-color: #EB4E40;
+        border-color: #5eb0fd;
         border-width: 1px;
     }
     .input{
@@ -178,7 +178,7 @@
         margin-right: 30px;
         margin-bottom: 10px;
         border-width: 1px;
-        border-color: #EB4E40;
+        border-color: #5eb0fd;
         border-radius: 15px;
         align-items: center;
         justify-content: center;

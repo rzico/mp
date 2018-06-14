@@ -7,7 +7,7 @@
             <text class="fz32 color999">你只需为因推广者而成功售出的商品付出佣金,交易不成功无需支付任何费用。</text>
             <div class="setting" @click="pickPattern()">
                 <div class="flex-row">
-                    <text class="fz32 colorRed">成为团队条件:  {{isPattern}}</text>
+                    <text class="fz32 primary">升级VIP条件:  {{isPattern}}</text>
                 </div>
                 <div class="flex-row flex-end">
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -15,13 +15,13 @@
             </div>
             <div class="setting" v-if="isMoney()">
                 <div class="flex-row">
-                    <text class="fz32 colorRed">指定金额(元) :  </text>
+                    <text class="fz32 primary">指定金额(元) :  </text>
                     <input class="input"   placeholder="请输入金额" type="number" v-model="amount"/>
                 </div>
             </div>
             <div class="setting" @click="pickObject()">
                 <div class="flex-row">
-                    <text class="fz32 colorRed">谁能获得分润:  {{isobject}}</text>
+                    <text class="fz32 primary">谁能获得分润:  {{isobject}}</text>
                 </div>
                 <div class="flex-row flex-end">
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -53,7 +53,7 @@
         height: 80px;
         align-items: center;
         justify-content: center;
-        background-color:#EB4E40;
+        background-color:#5eb0fd;
         border-radius: 15px;
         margin: 20px;
     }
@@ -78,7 +78,7 @@
     }
     .input{
         font-size: 32px;
-        color:#EB4E40;
+        color:#5eb0fd;
         width: 450px;
         height: 80px;
         margin-top: 5px;
@@ -135,7 +135,7 @@
                             _this.begin = 0;
                             _this.isPattern = '无门槛'
                         }if(res.data.promoterType == 'team'){
-                            _this.isobject = '团队成员';
+                            _this.isobject = 'VIP会员';
                             _this.begin = 1;
                             _this.isPattern = '无门槛'
                         }if(res.data.promoterType == 'partenr'){
@@ -200,7 +200,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['任何用户','团队成员','分红股东']
+                    items:['任何用户','VIP会员','分红股东']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -208,7 +208,7 @@
                             _this.begin = e.data;
                             _this.PromoterType = 'any'
                         }else if(e.data == 1){
-                            _this.isobject = '团队成员';
+                            _this.isobject = 'VIP会员';
                             _this.begin = e.data;
                             _this.PromoterType = 'team'
                         }else if(e.data == 2){
