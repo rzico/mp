@@ -2,8 +2,8 @@
     <div class="wrapper">
         <div class="wallet-panel" :style="objHeader()">
             <text class="balance">{{cashier.today | currencyfmt}}</text>
-            <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goIndex()" v-if="isIndex">&#xe628;</text>
-            <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()" v-else>&#xe60a;</text>
+            <!--<text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goIndex()" v-if="isIndex">&#xe628;</text>-->
+            <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()">&#xe60a;</text>
             <div class="wallet-title">
                 <text class="sub_title">今天收入（元）</text>
                 <text class="sub_title">昨天收入:{{cashier.yesterday | currencyfmt}}</text>
