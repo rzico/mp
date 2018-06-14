@@ -57,10 +57,11 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
                     <text class="menuBtn">订单</text>
                 </div>
-                <div class="menu" @click="deposit()">
+                <div class="menu" @click="goShipping()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">账单</text>
+                    <text class="menuBtn">送货</text>
                 </div>
+
                 <div class="menu" @click="gocard()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">会员卡</text>
@@ -72,6 +73,10 @@
                 <div class="menu" @click="godistribution()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
                     <text class="menuBtn">新营销</text>
+                </div>
+                <div class="menu" @click="deposit()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
+                    <text class="menuBtn">收银</text>
                 </div>
                 <div class="menu" @click="shop()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
@@ -560,22 +565,22 @@
                 }
                 event.openURL(utils.locate("view/shop/shipping/list.js"),function (e) {_this.clicked =false});
             },
-//            deposit:function () {
-//                if (this.clicked==true) {
-//                    return;
-//                }
-//                this.clicked = true;
-//                let _this = this
-//                if (!utils.isRoles("125",_this.roles)) {
-//                    modal.alert({
-//                        message: '暂无权限',
-//                        okTitle: 'OK'
-//                    })
-//                    _this.clicked = false
-//                    return
-//                }
-//                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {_this.clicked =false});
-//            },
+            deposit:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("125",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {_this.clicked =false});
+            },
             goIndex:function () {
                 GET("weex/member/topic/owner.jhtml",function (res) {
                     if (res.type=='success') {
