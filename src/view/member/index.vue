@@ -44,6 +44,7 @@
             </div>
         </div>
         <scroller  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+            <div class="" style="position: relative">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
             <!--顶部个人信息栏-->
@@ -86,6 +87,7 @@
                 <!--</div>-->
 
             <!--</div>-->
+                <div style="height: 410px"></div>
             <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goManage"></topic_header>
             <div>
                 <div  class="corpusBox" >
@@ -194,6 +196,7 @@
                     </div>
 
                 </div>
+            </div>
             </div>
         </scroller>
     </div>
