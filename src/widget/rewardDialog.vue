@@ -3,7 +3,8 @@
         <div  style="position: fixed;bottom: 0;" @click="returnFunc()">
             <div class="box">
                 <div style="width: 750px;flex-direction: row;align-items: center;justify-content: center;height: 100px;background-color: #eee">
-                    <text class="title">赞赏金额将全数转入作者钱包</text>
+                    <!--<text class="title">赞赏金额将全数转入作者钱包</text>-->
+                    <text class="title">赞赏作者</text>
                     <!--扩大点击区域-->
                     <div class="bigCloseBox"  @click="closeReward()" >
                     <!--右上角关闭按钮"x"-->
@@ -28,7 +29,6 @@
                 <div class="imgbox">
                     <image style="" :src="src" class="img" alt="em"></image>
                 </div>
-
                 <div class="cell" style="border-bottom-width: 0px;">
                     <dropdown :title="title" :id="id" :items="items" @onchange="onchange" ></dropdown>
                 </div>

@@ -474,16 +474,16 @@
         methods:{
 //            页面被关闭
             pageDestroy:function(){
-
-//                globalEvent.removeEventListener("buyGood");
+                globalEvent.removeEventListener("buyGood");
             },
             pageShow:function(){
-
+                    let _this = this;
 //            商品购买控制
-//            globalEvent.addEventListener("buyGood", function (e) {
-//                    _this.goodId = e.goodId;
-//                    _this.buyShow = true;
-//            });
+            globalEvent.addEventListener("buyGood", function (e) {
+//                utils.debug(e);
+                    _this.goodId = e.goodId;
+                    _this.buyShow = true;
+            });
 
             },
             articleOutBoxTop:function () {
