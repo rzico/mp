@@ -15,8 +15,8 @@
                 <text class="signature">{{userSign}}</text>
             </div>
             <div class="fansBox" :class="[headerFans()]">
-                <text class="fans">{{fans}}</text>
-                <text class="fansText">粉丝</text>
+                <text class="fans" @click="goFans">{{fans}}</text>
+                <text class="fansText" @click="goFans">粉丝</text>
                 <div class="focusBox" v-if="focusType">
                     <text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>
                     <text class="focusText">关注</text>
@@ -204,6 +204,9 @@
             },
             setting: function () {
                 this.$emit("setting");
+            },
+            goFans: function () {
+                this.$emit("goFans");
             },
 
 //methods 方法到此为止

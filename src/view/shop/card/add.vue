@@ -93,7 +93,8 @@
                 GET("weex/member/card/qrcode.jhtml",function (res) {
                     if (res.type=='success') {
                         _this.data = res.data;
-                        _this.qrcode = utils.website("/q/show?url="+encodeURI(_this.data.qrcode));
+                        _this.qrcode = utils.website("/q/show.jhtml?url="+encodeURI(_this.data.qrcode));
+                        utils.debug( _this.qrcode)
                     } else {
                         event.toast(res.content);
                     }

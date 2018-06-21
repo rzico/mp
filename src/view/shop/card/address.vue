@@ -20,6 +20,15 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+            <div class="cell-panel space-between" @click="chooseFloor()">
+                <div class="flex-row">
+                    <text class="title ml10">楼层高度:</text>
+                </div>
+                <div class="flex-row flex-end" >
+                    <text class="sub_title">{{floor}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+            </div>
             <!--必须用一个div把区域跟详细地址包住，不能注释，否者渲染时会出现位置错乱-->
             <div class="" v-if="hasAddress">
                 <div class="location" @click="location()" >
@@ -149,7 +158,9 @@
                 hasAddress:false,
                 hasChange:false,
                 cardId:'',
-                id:''
+                id:'',
+                begin:0,
+                floor:1
             }
         },
         created() {
@@ -167,6 +178,39 @@
             }
         },
         methods: {
+            //            楼层选择
+            chooseFloor:function () {
+                let _this = this
+                picker.pick({
+                    index:_this.begin,
+                    items:[1,2,3,4,5,6,7]
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.floor = 1 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 1){
+                            _this.floor = 2 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 2){
+                            _this.floor = 3 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 3){
+                            _this.floor = 4 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 4){
+                            _this.floor = 5 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 5){
+                            _this.floor = 6 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 6){
+                            _this.floor = 7 ;
+                            _this.begin = e.data;
+                        }
+                    }
+                })
+            },
             goback: function (e) {
                 event.closeURL();
             },
@@ -198,6 +242,9 @@
                         }
                         if(!utils.isNull(mes.data.lat)){
                             _this.lat =  mes.data.lat
+                        }
+                        if(!utils.isNull(mes.data.level)){
+                            _this.floor = mes.data.level
                         }
                     } else {
                         event.toast(mes.content);
@@ -260,7 +307,7 @@
                     event.toast('请输入详细地址')
                     return
                 }
-                POST("weex/member/receiver/add.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&memberId='+this.memberId).then(function (mes) {
+                POST("weex/member/receiver/add.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&memberId='+this.memberId+'&level='+this.floor).then(function (mes) {
                     if (mes.type == 'success') {
                         let E = utils.message('success','添加成功','')
                         event.closeURL(E);
@@ -285,7 +332,7 @@
                         event.toast('请输入详细地址')
                         return
                     }
-                    POST("weex/member/receiver/addcard.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat).then(function (mes) {
+                    POST("weex/member/receiver/addcard.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&level='+this.floor).then(function (mes) {
                         if (mes.type == 'success') {
                             let E = utils.message('success','添加成功','')
                             event.closeURL(E);
@@ -314,7 +361,7 @@
                     event.toast('请输入详细地址')
                     return
                 }
-                POST("weex/member/receiver/update.jhtml?isDefault=true&areaId="+this.areaId+'&id='+this.id+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+ encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat).then(function (mes) {
+                POST("weex/member/receiver/update.jhtml?isDefault=true&areaId="+this.areaId+'&id='+this.id+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+ encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&level='+this.floor).then(function (mes) {
                     if (mes.type == 'success') {
                         let E = utils.message('success','修改成功','')
                         event.closeURL(E);

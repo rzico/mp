@@ -28,11 +28,10 @@
             <div class="" style="position: relative">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;" @appear="toponappear"></div>
-                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType"  @setting="goAttribute"></topic_header>
+                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType"  @setting="goAttribute" @goFans="goFans"></topic_header>
             <!--顶部个人信息栏-->
-            <div style="height: 410px"></div>
             <!--收藏，钱包，关注-->
-                <div class="comWrap">
+                <div class="comWrap" style="margin-top: 410px">
                     <div class=" flexColTwo" style="width: 236.66px" @click="goCollect()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe65d;</text>
                         <text class="iconfontText ">收藏</text>
@@ -762,6 +761,22 @@
                             if (!utils.isNull(data.data.occupation)) {
                                 _this.occupation = data.data.occupation;
                             }
+                        } else {
+                            //                            return ;
+                        }
+                    }
+                );
+            },
+            goFans(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/friend/fans.js'), function(data) {
+                        _this.clicked = false;
+                        if (data.type == 'success' && data.data != '') {
+
                         } else {
                             //                            return ;
                         }

@@ -18,7 +18,7 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <div  class=" rightTop " :class="[classTop()]" @click="goManage()" v-if="isOwner && isStatus">
+            <div  class=" rightTop " :class="[classTop()]"  v-if="isOwner && isStatus">
                 <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
                 <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
             </div>
@@ -43,54 +43,20 @@
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <scroller  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+        <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goTopic" @goFans="goFans"></topic_header>
+       <!--层级问题，多写一个div触发事件-->
+        <div class="topicBox">
+            <div class="topicHearderBox" @click="goCorpus()"></div>
+            <div class="topicFansBox"></div>
+        </div>
+        <scroller  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll" >
             <div class="" style="position: relative">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
             <!--顶部个人信息栏-->
-            <!--<div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>-->
-                <!--&lt;!&ndash;背景图片&ndash;&gt;-->
-                <!--<image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>-->
-                <!--&lt;!&ndash;遮罩层&ndash;&gt;-->
-                <!--&lt;!&ndash;<image class="backgroundMask" :src="maskUrl"></image>&ndash;&gt;-->
-                <!--<div class="topHead" >-->
-                    <!--&lt;!&ndash;用户头像&ndash;&gt;-->
-                    <!--<image class="testImage" :src="imageUrl" ></image>-->
-                    <!--&lt;!&ndash;个性签名 用户昵称&ndash;&gt;-->
-                    <!--<div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >-->
-                        <!--&lt;!&ndash;用户昵称&ndash;&gt;-->
-                        <!--<text class="userName">{{userName}}</text>-->
-                        <!--&lt;!&ndash;用户签名&ndash;&gt;-->
-                        <!--<text class="userSign">{{userSign}}</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;功能按钮&ndash;&gt;-->
-                <!--<div class="topBtnBox">-->
-                    <!--<div class="topBtnSmallBox " :style="{minWidth:topMWidth + 'px'}" @click="goCollect()">-->
-                        <!--<text class="topBtn topBtnBigFont">{{collectNum}}</text>-->
-                        <!--<text class=" topBtn " >收藏</text>-->
-                    <!--</div>-->
-                    <!--<div class="topBtnSmallBox walletLayout"  @click="goWallet()">-->
-                        <!--&lt;!&ndash;钱包两边的白色边框&ndash;&gt;-->
-                        <!--<div  class="leftBtnBorder topBtnBorder" ></div>-->
-                        <!--<div  class="rightBtnBorder topBtnBorder" ></div>-->
-                        <!--<div class="moneyFormat">-->
-                            <!--<text class="topBtn topMoneySize" v-if="moneyNum != 0">¥</text>-->
-                            <!--<text class="topBtn topBtnBigFont">{{moneyNum | currencyfmt}}</text>-->
-                        <!--</div>-->
-                        <!--<text class="topBtn" >钱包</text>-->
-                    <!--</div>-->
-                    <!--<div class="topBtnSmallBox"  :style="{minWidth:topMWidth + 'px'}"   @click="goFocus()">-->
-                        <!--<text class="topBtn topBtnBigFont">{{focusNum}}</text>-->
-                        <!--<text class="topBtn">关注</text>-->
-                    <!--</div>-->
-                <!--</div>-->
 
-            <!--</div>-->
-                <div style="height: 410px"></div>
-            <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goManage"></topic_header>
-            <div>
-                <div  class="corpusBox" >
+            <div  style="margin-top: 410px">
+                <div  class="corpusBox">
                     <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
                         <div class="articleClass">
                             <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
@@ -204,6 +170,20 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .topicBox{
+        width: 750px;
+        height: 410px;
+        position: absolute;
+        top: 0;
+    }
+    .topicHearderBox{
+        height: 100px;
+        width: 100px;
+        background-color: red;
+        position: absolute;
+        top: 170px;
+        left: 50px;
+    }
     .topicHearder{
         width: 750px;
         height: 375px;
@@ -794,6 +774,27 @@
 //            }
 //        },
         methods: {
+            //            专栏
+            goTopic(){
+                utils.debug(111)
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if(this.isOwner  && this.isStatus){
+                    event.openURL(utils.locate('view/member/topic/index.js'),
+                        function (data) {
+                            _this.clicked = false;
+                            if(data.type == 'success' && data.data != ''){
+
+                            }else{
+//                            return ;
+                            }
+                        }
+                    );
+                }
+            },
             goback:function () {
                 event.closeURL();
             },
@@ -1222,6 +1223,7 @@
                 scrollTop =Math.abs(e.contentOffset.y);
 //                modal.toast({message:scrollTop});8
 
+
                 let opacityDegree = Math.floor(scrollTop/14)/10;
 //                modal.toast({message:opacityDegree,duration:0.1});
                 if(opacityDegree > 1){
@@ -1298,25 +1300,22 @@
                     }
                 );
             },
-//            专栏
-            goManage(){
+
+            goFans(){
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                if(this.isOwner  && this.isStatus){
-                event.openURL(utils.locate('view/member/topic/index.js'),
-                    function (data) {
+                event.openURL(utils.locate('view/friend/fans.js'), function(data) {
                         _this.clicked = false;
-                        if(data.type == 'success' && data.data != ''){
+                        if (data.type == 'success' && data.data != '') {
 
-                        }else{
-//                            return ;
+                        } else {
+                            //                            return ;
                         }
                     }
                 );
-                }
             },
 //            我的关注
             goFocus(){
