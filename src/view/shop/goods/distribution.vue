@@ -419,6 +419,12 @@
                         okTitle: 'OK'
                     })
                     return
+                }else  if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
                 }
                 event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota+'&type='+type),function () {
                     _this.catagoryList =[]

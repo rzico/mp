@@ -36,7 +36,7 @@
         <div class="addFriend" @click="add" v-if="!choose">
             <div class="flex-row ">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>
-                <text class="title ml20 " >领取会员卡</text>
+                <text class="title ml20 " >扫码领卡</text>
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>

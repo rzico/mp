@@ -2091,7 +2091,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
+                event.openURL(utils.locate('view/shop/goods/manage.js?from=editor&pageType=true'),function (data) {
                     if(data.type == 'success'){
                         let newPara = {
                             //原图

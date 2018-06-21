@@ -9,7 +9,7 @@
                 <div class="memberInfo">
                     <text class="name">{{userName}}</text>
                     <div class="jobBox" v-if="occupation != ''">
-                        <text class="jobText">{{occupation}}</text>
+                        <text class="jobText primary" >{{occupation}}</text>
                     </div>
                 </div>
                 <text class="signature">{{userSign}}</text>
@@ -95,7 +95,6 @@
     }
     .jobText{
         font-size: 24px;
-        color: #5eb0fd;
     }
     .signature{
         margin-top: 28px;

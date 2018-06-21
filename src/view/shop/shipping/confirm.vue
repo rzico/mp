@@ -402,13 +402,14 @@
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
             this.open();
+            this.permissions()
         },
         methods: {
             chooseFloor:function () {
                 let _this = this
                 picker.pick({
                     index:_this.beginTwo,
-                    items:[1,2,3,4,5,6,7]
+                    items:[1,2,3,4,5,6,7,8,9]
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -431,6 +432,12 @@
                             _this.beginTwo = e.data;
                         }else if(e.data == 6){
                             _this.ordersList[0].receiver.level = 7;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 7){
+                            _this.ordersList[0].receiver.level = 8;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 8){
+                            _this.ordersList[0].receiver.level = 9;
                             _this.beginTwo = e.data;
                         }
                     }
@@ -506,9 +513,31 @@
                     return;
                 })
             },
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
 //            点击核销
             confirm:function () {
                 let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.permissions();
+                    _this.clicked = false;
+                    return
+                }
 //                modal.confirm({
 //                    message: '确认核销吗 ?',
 //                    okTitle: '确认',

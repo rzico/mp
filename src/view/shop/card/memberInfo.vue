@@ -238,11 +238,20 @@
             },
 //            我的地址
             goAddress(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+
                 event.openURL(utils.locate('view/shop/card/address.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
@@ -251,11 +260,20 @@
                 });
             },
             gousers(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+
                 event.openURL(utils.locate('view/shop/card/users.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
@@ -266,7 +284,7 @@
             //            结算方式
             settlemenSetup:function () {
                 var _this = this;
-                if (!utils.isRoles("12",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle:'确定'
@@ -302,7 +320,7 @@
 //            设置等级
             vipsetup:function () {
                 var _this = this;
-                if (!utils.isRoles("12",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle:'确定'
@@ -388,7 +406,7 @@
                 if(this.data.card.bindName == true){
                     return
                 }
-                if (!utils.isRoles("12",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle:'确定'
@@ -428,7 +446,7 @@
                 if(this.data.card.bindMobile == true){
                     return
                 }
-                if (!utils.isRoles("12",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: '确定'
@@ -506,7 +524,6 @@
             open:function () {
                 var _this = this;
                 GET("weex/member/card/info.jhtml?id="+_this.id,function (res) {
-                    utils.debug(res)
                     if (res.type=='success') {
                         if(res.data.card.vip == 'vip1'){
                             _this.begin =0

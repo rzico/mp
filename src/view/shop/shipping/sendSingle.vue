@@ -358,7 +358,8 @@
                 clicked:false,
                 markiId:'',
                 shopId:'',
-                message:''
+                message:'',
+                roles:''
             }
         },
         filters:{
@@ -472,6 +473,7 @@
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
             this.open();
+            this.permissions()
         },
         methods: {
             open:function () {
@@ -539,13 +541,36 @@
             goback(){
                 event.closeURL();
             },
-            //            设置门槛
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
+            //            设置配送站
             pickPattern:function () {
+
                     if (this.clicked) {
                         return;
                     }
                     this.clicked = true;
                     var _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.permissions();
+                    _this.clicked = false;
+                    return
+                }
                     event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
                         _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {

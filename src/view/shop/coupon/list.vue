@@ -424,7 +424,14 @@
                 animationPara =  e.currentTarget;
             },
             del:function (id,index) {
-                let _this =this
+                let _this =this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
                 POST('weex/member/coupon/delete.jhtml?id='+id).then(
                     function (mes) {
                         if (mes.type == "success") {
@@ -453,7 +460,7 @@
             },
             modification:function (id) {
                 let _this =this;
-                if (!utils.isRoles("12",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'

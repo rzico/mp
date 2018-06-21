@@ -183,7 +183,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:[1,2,3,4,5,6,7]
+                    items:[1,2,3,4,5,6,7,8,9]
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -206,6 +206,12 @@
                             _this.begin = e.data;
                         }else if(e.data == 6){
                             _this.floor = 7 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 7){
+                            _this.floor = 8 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 8){
+                            _this.floor = 9 ;
                             _this.begin = e.data;
                         }
                     }

@@ -94,7 +94,6 @@
                     if (res.type=='success') {
                         _this.data = res.data;
                         _this.qrcode = utils.website("/q/show.jhtml?url="+encodeURI(_this.data.qrcode));
-                        utils.debug( _this.qrcode)
                     } else {
                         event.toast(res.content);
                     }

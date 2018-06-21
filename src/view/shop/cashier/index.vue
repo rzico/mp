@@ -355,7 +355,7 @@
                     } else {
                         event.toast(mes.content);
                     }
-                },function (err) {
+                 },function (err) {
                     event.toast(err.content);
                 });
             },
@@ -438,7 +438,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
+                if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -455,7 +455,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
+                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -472,7 +472,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("125",_this.roles) || utils.isNull(_this.shopId)) {
+                if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -490,7 +490,7 @@
             },
             hasShop:function () {
                 let _this = this
-                if (utils.isRoles("15",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
+                if (utils.isRoles("12",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
                     return true
                 }else {
                     return false

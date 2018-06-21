@@ -18,10 +18,10 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <div  class=" rightTop " :class="[classTop()]"  v-if="isOwner && isStatus">
-                <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
-                <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
-            </div>
+            <!--<div  class=" rightTop " :class="[classTop()]"  v-if="isOwner && isStatus">-->
+                <!--&lt;!&ndash;<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>&ndash;&gt;-->
+                <!--<text  :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>-->
+            <!--</div>-->
             <!--导航栏返回-->
             <div  class=" leftTop " :class="[classTop()]" @click="goback()">
                 <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
@@ -43,18 +43,13 @@
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goTopic" @goFans="goFans"></topic_header>
-       <!--层级问题，多写一个div触发事件-->
-        <div class="topicBox">
-            <div class="topicHearderBox" @click="goCorpus()"></div>
-            <div class="topicFansBox"></div>
-        </div>
+
         <scroller  show-scrollbar="false"  offset-accuracy="0"  ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll" >
             <div class="" style="position: relative">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
+                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goTopic" @goFans="goFans"></topic_header>
             <!--顶部个人信息栏-->
-
             <div  style="margin-top: 410px">
                 <div  class="corpusBox">
                     <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
@@ -663,7 +658,7 @@
                 focusType:false,
                 power:false,
                 isOwner:false,//                是否是店主
-                isStatus:false//                是否激活店铺
+                isStatus:'error'//                是否激活店铺
             }
         },
         components: {
@@ -776,13 +771,13 @@
         methods: {
             //            专栏
             goTopic(){
-                utils.debug(111)
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                if(this.isOwner  && this.isStatus){
+                if(this.isOwner == true ){
+                    utils.debug(111)
                     event.openURL(utils.locate('view/member/topic/index.js'),
                         function (data) {
                             _this.clicked = false;
@@ -793,6 +788,12 @@
                             }
                         }
                     );
+                }else {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    });
+                    this.clicked = false;
                 }
             },
             goback:function () {
@@ -1300,7 +1301,6 @@
                     }
                 );
             },
-
             goFans(){
                 if (this.clicked) {
                     return;

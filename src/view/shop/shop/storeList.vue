@@ -223,7 +223,8 @@ export default {
             canScroll:true,
             refreshImg:utils.locate('resources/images/loading.png'),
             clicked:false,
-            screenHeight:0
+            screenHeight:0,
+            roles:''
         }
     },
     components: {
@@ -236,7 +237,7 @@ export default {
     created() {
         utils.initIconFont();
         this.open(function () {});
-//        this.openTwo(function () {});
+        this.permissions();
         this.screenHeight = utils.fullScreen(256);
     },
     filters:{
@@ -252,6 +253,13 @@ export default {
             }
             this.clicked = true;
             let _this = this
+            if (!utils.isRoles("1",_this.roles)) {
+                modal.alert({
+                    message: '暂无权限',
+                    okTitle: '确定'
+                })
+                return
+            }
                     event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
                         if(message.type == 'success'){
                             _this.onrefresh()
@@ -328,6 +336,19 @@ export default {
         goback: function () {
             event.closeURL()
         },
+        //            获取权限
+        permissions: function () {
+            var _this = this;
+            POST("weex/member/roles.jhtml").then(function (mes) {
+                if (mes.type == "success") {
+                    _this.roles = mes.data;
+                } else {
+                    event.toast(mes.content);
+                }
+            }, function (err) {
+                event.toast(err.content);
+            });
+        },
 
         add:function () {
             if (this.clicked==true) {
@@ -335,6 +356,13 @@ export default {
             }
             this.clicked = true;
             let _this= this;
+            if (!utils.isRoles("1",_this.roles)) {
+                modal.alert({
+                    message: '暂无权限',
+                    okTitle: '确定'
+                })
+                return
+            }
             event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
                 _this.clicked =false
                 if(message.type == 'success'){
