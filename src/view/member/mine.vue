@@ -47,7 +47,7 @@
                 </div>
 
             <!-- 我的订单 -->
-            <div class="contentBox" v-if="member.activated && member.hasShop">
+            <div class="contentBox" v-if="member.activated && member.hasShop && filter('order')">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
                     <text class="fz30">我的订单</text>
                     <div class="flex-row">
@@ -60,8 +60,8 @@
                     <div class=" flexCol iconBox"  @click="goNoPay()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
                         <text class="iconfontText ">待付款</text>
-                        <div class="shippingNumberBox"  v-if="conut.refund != 0">
-                        <text class="shippingNumber">{{conut.refund}}</text>
+                        <div class="shippingNumberBox"  v-if="conut.unpaid != 0">
+                        <text class="shippingNumber">{{conut.unpaid}}</text>
                         </div>
                     </div>
                     <div class=" flexCol iconBox"  @click="goNoDelivery()">
@@ -81,12 +81,53 @@
                     <div class=" flexCol iconBox"  @click="goRefund()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
                         <text class="iconfontText ">待退款</text>
-                        <div class="shippingNumberBox" v-if="conut.unpaid != 0">
-                        <text class="shippingNumber" >{{conut.unpaid}}</text>
+                        <div class="shippingNumberBox" v-if="conut.refund != 0">
+                        <text class="shippingNumber" >{{conut.refund}}</text>
                         </div>
                     </div>
                 </div>
             </div>
+                <!-- 我的运单 -->
+                <div class="contentBox" v-if="member.activated && member.hasShop && filter('shipping')">
+                    <div class="boder-bottom pl20 pr20 space-between headTitle" @click="shippingManage()">
+                        <text class="fz30">我的运单</text>
+                        <div class="flex-row">
+                            <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
+                        </div>
+                    </div>
+                    <!-- 订单消息 -->
+                    <div class="comWrap">
+                        <div class=" flexCol iconBox"  @click="goConfirm()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
+                            <text class="iconfontText ">待确认</text>
+                            <div class="shippingNumberBox"  v-if="shippingConut.unconfirmed != 0">
+                                <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
+                            </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goToMask()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                            <text class="iconfontText ">预约单</text>
+                            <div class="shippingNumberBox" v-if="shippingConut.hope != 0">
+                                <text class="shippingNumber" >{{shippingConut.hope}}</text>
+                            </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goOnTheWay()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
+                            <text class="iconfontText ">配送中</text>
+                            <div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">
+                                <text class="shippingNumber" >{{shippingConut.confirmed}}</text>
+                            </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goaArive()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
+                            <text class="iconfontText ">已送达</text>
+                            <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
+                                <text class="shippingNumber" >{{shippingConut.completed}}</text>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <!-- 我的文章 -->
             <div class="contentBox">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goMemberIndex()">
@@ -133,19 +174,19 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe628;</text>-->
                         <!--<text class="iconfontText mt20">店铺管理</text>-->
                     <!--</div>-->
-                    <div class="iconBox flexCol mt20"   v-if="member.activated && member.hasShop" @click="goOrderList()">
+                    <div class="iconBox flexCol mt20"   v-if="member.activated && member.hasShop && filter('order')" @click="goOrderList()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe665;</text>
                         <text class="iconfontText mt20">订单管理</text>
                     </div>
-                    <div class="iconBox flexCol mt20"  v-if="member.activated && member.hasShop"  @click="shippingManage()">
+                    <div class="iconBox flexCol mt20"  v-if="member.activated && member.hasShop && filter('shipping')" @click="shippingManage()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #996600" class="iconfontSize">&#xe66e;</text>
                         <text class="iconfontText mt20">送货管理</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="dragon()">
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('dragon')" @click="dragon()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe664;</text>
                         <text class="iconfontText mt20">接龙管理</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="goReviewManage()">
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('review')" @click="goReviewManage()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe666;</text>
                         <text class="iconfontText mt20">评价管理</text>
                     </div>
@@ -153,19 +194,19 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #cc3300" class="iconfontSize">&#xe66a;</text>
                         <text class="iconfontText mt20">会员卡</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="gocoupon()">
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('coupon')" @click="gocoupon()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #33cc99" class="iconfontSize">&#xe7fc;</text>
                         <text class="iconfontText mt20">优惠券</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="godistribution()">
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('distribution')" @click="godistribution()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #cc9900" class="iconfontSize">&#xe668;</text>
                         <text class="iconfontText mt20">新营销</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop"  @click="goodsManage()" >
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('manage')"  @click="goodsManage()" >
                         <text :style="{fontFamily:'iconfont'}" style=" color: #cc66cc" class="iconfontSize">&#xe667;</text>
                         <text class="iconfontText mt20">商品管理</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="shop()">
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('shop')" @click="shop()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #336666" class="iconfontSize">&#xe66d;</text>
                         <text class="iconfontText mt20">店铺管理</text>
                     </div>
@@ -181,11 +222,11 @@
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
                         <text class="iconfontText mt20">修改资料</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="employee()">
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('employee')" @click="employee()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #999933" class="iconfontSize">&#xe66c;</text>
                         <text class="iconfontText mt20">员工管理</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="fill()">
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
                         <text class="iconfontText mt20">人工补单</text>
                     </div>
@@ -433,6 +474,7 @@
                 imgBg:'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/fengjing.jpeg',
                 focusType:false,
                 conut:[],
+                shippingConut:[],
                 shopId:'#',
                 hasHeaderInfo:true
             }
@@ -510,7 +552,9 @@
 //            获取店铺是否完善
             this.open();
 //            获取订单数量
-            this.getCount()
+            this.getCount();
+//            获取运单数量
+            this.getShippingConut();
             //            监听用户信息的变化。
             globalEvent.addEventListener("onUserInfoChange", function(e) {
                 _this.updateUserInfo();
@@ -538,6 +582,89 @@
         //            }
         //        },
         methods: {
+
+//            权限过滤器
+            filter(e){
+                var _this = this;
+                if(e == 'order'){
+//                    订单
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'shipping'){
+//                    运单
+                    if (utils.isRoles("123",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'dragon'){
+//                    接龙
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'review'){
+//                    评价
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'coupon'){
+//                    优惠券
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'distribution'){
+//                    新营销
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'manage'){
+//                    商品
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'shop'){
+//                    店铺
+                    if (utils.isRoles("1",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'employee'){
+//                    员工
+                    if (utils.isRoles("1",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'fill'){
+//                    补单
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }if(e == 'dragon'){
+//                    接龙
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }
+            },
 
             //            监听设备型号,控制导航栏设置 返回按钮
             classTop: function() {
@@ -646,6 +773,20 @@
                     }, function (err) {
                         event.toast(err.content);
                     })
+            },
+            //            获取运单数量
+            getShippingConut(){
+                var _this = this
+                POST('weex/member/shipping/count.jhtml').then( function (res) {
+                    if (res.type=="success") {
+                        _this.shippingConut = res.data
+                    } else {
+                        event.toast(res.content);
+                    }
+
+                }, function (err) {
+                    event.toast(err.content);
+                })
             },
             jumpEditor: function() {
                 if (this.clicked) {
@@ -780,6 +921,54 @@
                         } else {
                             //                            return ;
                         }
+                    }
+                );
+            },
+//            待确认
+            goConfirm(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=0&productCategoryId=1'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
+//            预约单
+            goToMask(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
+//            配送中
+            goOnTheWay(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
+            },
+//            已送达
+            goaArive(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
+                        _this.clicked = false;
                     }
                 );
             },
@@ -998,7 +1187,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("125",_this.roles)) {
+                if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1070,6 +1259,8 @@
                 }
                 event.openURL(utils.locate('view/shop/shipping/list.js'),
                     function (data) {
+                        _this.getCount()
+                        _this.getShippingConut();
                         _this.clicked = false;
                         return ;
                     }
@@ -1259,7 +1450,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                if (!utils.isRoles("125",_this.roles)) {
+                if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1269,7 +1460,8 @@
                 }
                 event.openURL(utils.locate('view/shop/order/list.js'),
                     function (data) {
-                    _this.getCount()
+                        _this.getCount()
+                        _this.getShippingConut();
                         _this.clicked = false;
                         return ;
                     }

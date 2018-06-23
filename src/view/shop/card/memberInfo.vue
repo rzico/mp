@@ -62,7 +62,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between " @click="goAddress()">
                     <div class="flex-row">
-                        <text class="title ml10">我的地址</text>
+                        <text class="title ml10">收获地址</text>
                     </div>
                     <div class="flex-row flex-end" >
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -82,6 +82,24 @@
                     </div>
                     <div class="flex-row flex-end" >
                         <text class="sub_title">{{data.card.paymentMethod | watchPayment}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between " @click="gousers()">
+                    <div class="flex-row">
+                        <text class="title ml10">电子券</text>
+                    </div>
+                    <div class="flex-row flex-end" >
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="settlemenSetup()">
+                    <div class="flex-row">
+                        <text class="title ml10">桶</text>
+                    </div>
+                    <div class="flex-row flex-end" >
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -184,7 +202,7 @@
                 if (utils.isNull(val)) {
                     return '无';
                 }else{
-                    return
+                    return val
                 }
             },
             watchType:function (data) {

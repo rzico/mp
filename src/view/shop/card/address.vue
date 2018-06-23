@@ -25,7 +25,7 @@
                     <text class="title ml10">楼层高度:</text>
                 </div>
                 <div class="flex-row flex-end" >
-                    <text class="sub_title">{{floor}}</text>
+                    <text class="sub_title">{{floor | wacthFloor}}</text>
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
             </div>
@@ -160,7 +160,7 @@
                 cardId:'',
                 id:'',
                 begin:0,
-                floor:1
+                floor:0
             }
         },
         created() {
@@ -177,40 +177,52 @@
                 this.memberId = '';
             }
         },
+        filters: {
+            wacthFloor(e){
+                if(e == 0){
+                    return '有电梯'
+                }else{
+                    return e
+                }
+            }
+        },
         methods: {
             //            楼层选择
             chooseFloor:function () {
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:[1,2,3,4,5,6,7,8,9]
+                    items:[0,1,2,3,4,5,6,7,8,9]
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.floor = 1 ;
+                            _this.floor = 0 ;
                             _this.begin = e.data;
                         }else if(e.data == 1){
-                            _this.floor = 2 ;
+                            _this.floor = 1 ;
                             _this.begin = e.data;
                         }else if(e.data == 2){
-                            _this.floor = 3 ;
+                            _this.floor = 2 ;
                             _this.begin = e.data;
                         }else if(e.data == 3){
-                            _this.floor = 4 ;
+                            _this.floor = 3 ;
                             _this.begin = e.data;
                         }else if(e.data == 4){
-                            _this.floor = 5 ;
+                            _this.floor = 4 ;
                             _this.begin = e.data;
                         }else if(e.data == 5){
-                            _this.floor = 6 ;
+                            _this.floor = 5 ;
                             _this.begin = e.data;
                         }else if(e.data == 6){
-                            _this.floor = 7 ;
+                            _this.floor = 6 ;
                             _this.begin = e.data;
                         }else if(e.data == 7){
-                            _this.floor = 8 ;
+                            _this.floor = 7;
                             _this.begin = e.data;
                         }else if(e.data == 8){
+                            _this.floor = 8 ;
+                            _this.begin = e.data;
+                        }else if(e.data == 9){
                             _this.floor = 9 ;
                             _this.begin = e.data;
                         }

@@ -430,6 +430,7 @@
                 POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId).then(function (data) {
                     if (data.type == 'success') {
                         _this.member = data.data.receiver;
+                        utils.debug(_this.member)
                         _this.floor = data.data.receiver.level;
                         _this.addressId = data.data.receiver.id;
                         _this.effectivePrice = data.data.price;//  商品合计
@@ -539,6 +540,7 @@
 //                        可能会出现会员id为0的情况，0为无效会员
                         if(data.data.memberId != 0){
                             _this.memberId = data.data.memberId;
+                            utils.debug(_this.memberId)
                             _this.getInfo()
                         }else{
                             event.toast('无效会员')

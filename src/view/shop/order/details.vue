@@ -118,13 +118,21 @@
                             <text class="sub_title">商品总额</text>
                             <text class="sub_title">¥{{item.amount | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between mt10 bt10">
+                        <div class=" space-between mt10 "v-if="item.couponDiscount != 0 && item.couponDiscount != '0'">
                             <text class="sub_title">优惠折扣</text>
                             <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between">
+                        <div class=" space-between mt10 " v-if="item.pointDiscount != 0 && item.pointDiscount != '0'">
+                            <text class="sub_title">积分抵扣</text>
+                            <text class="sub_title">-{{item.pointDiscount | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10 bt10" v-if="item.exchangeDiscount != 0 && item.exchangeDiscount != '0'">
+                            <text class="sub_title">电子券支付</text>
+                            <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
+                        </div>
+                        <div class=" space-between" v-if="item.freight !=0">
                             <text class="sub_title">+ 运费</text>
-                            <text class="sub_title">¥0.00</text>
+                            <text class="sub_title">¥{{item.freight | currencyfmt}}</text>
                         </div>
                     </div>
                     <div class="priceLine flex-end">

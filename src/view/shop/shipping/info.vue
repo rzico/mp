@@ -63,9 +63,11 @@
                     <div class="infoLines pb10">
                         <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
-
-                    <div class="infoLines pt0 pb0">
+                    <div class="infoLines pt0 pb10">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb0">
+                        <text class="sub_title ">配送人员: </text>
                     </div>
                     <div class="infoLines boder-bottom pt10">
                         <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
@@ -402,6 +404,7 @@
             open:function () {
                 let _this = this;
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
+                    utils.debug(data)
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);

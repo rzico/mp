@@ -392,6 +392,13 @@
             },
             watchLogDate:function (value) {
                 return utils.ymdhisdayfmt(value);
+            },
+            wacthFloor(e){
+                if(e == 0){
+                    return '有电梯'
+                }else{
+                    return e
+                }
             }
         },
         components: {
@@ -409,34 +416,37 @@
                 let _this = this
                 picker.pick({
                     index:_this.beginTwo,
-                    items:[1,2,3,4,5,6,7,8,9]
+                    items:[0,1,2,3,4,5,6,7,8,9]
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.ordersList[0].receiver.level = 1;
+                            _this.ordersList[0].receiver.level = 0;
                             _this.beginTwo = e.data;
                         }else if(e.data == 1){
-                            _this.ordersList[0].receiver.level = 2;
+                            _this.ordersList[0].receiver.level = 1;
                             _this.beginTwo = e.data;
                         }else if(e.data == 2){
-                            _this.ordersList[0].receiver.level = 3;
+                            _this.ordersList[0].receiver.level = 2;
                             _this.beginTwo = e.data;
                         }else if(e.data == 3){
-                            _this.ordersList[0].receiver.level = 4;
+                            _this.ordersList[0].receiver.level = 3;
                             _this.beginTwo = e.data;
                         }else if(e.data == 4){
-                            _this.ordersList[0].receiver.level = 5;
+                            _this.ordersList[0].receiver.level = 4;
                             _this.beginTwo = e.data;
                         }else if(e.data == 5){
-                            _this.ordersList[0].receiver.level = 6;
+                            _this.ordersList[0].receiver.level = 5;
                             _this.beginTwo = e.data;
                         }else if(e.data == 6){
-                            _this.ordersList[0].receiver.level = 7;
+                            _this.ordersList[0].receiver.level = 6;
                             _this.beginTwo = e.data;
                         }else if(e.data == 7){
-                            _this.ordersList[0].receiver.level = 8;
+                            _this.ordersList[0].receiver.level = 7;
                             _this.beginTwo = e.data;
                         }else if(e.data == 8){
+                            _this.ordersList[0].receiver.level = 8;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 9){
                             _this.ordersList[0].receiver.level = 9;
                             _this.beginTwo = e.data;
                         }

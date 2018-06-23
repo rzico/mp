@@ -32,7 +32,7 @@
                     <div class="messageSetting" @click="chooseFloor">
                         <div class="flex-row">
                             <text class="fz32">楼层:</text>
-                            <text class="fz32 ml20">{{floor}}</text>
+                            <text class="fz32 ml20">{{floor | wacthFloor}}</text>
                         </div>
                         <div class="flex-row flex-end">
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -168,6 +168,7 @@
     import navbar from '../../../include/navbar.vue';
     import noData from '../../../include/noData.vue';
     import utils from '../../../assets/utils';
+    import filters from '../../../filters/filters.js';
     import { POST, GET, SCAN } from '../../../assets/fetch'
     export default {
         data: function () {
@@ -207,6 +208,15 @@
         },
         props: {
             title: {default: "送达"},
+        },
+        filters: {
+            wacthFloor(e){
+                if(e == 0){
+                    return '有电梯'
+                }else{
+                    return e
+                }
+            }
         },
         methods: {
             //            联系收货人
@@ -327,34 +337,37 @@
                 let _this = this
                 picker.pick({
                     index:_this.beginTwo,
-                    items:[1,2,3,4,5,6,7,8,9]
+                    items:[0,1,2,3,4,5,6,7,8,9]
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.floor = 1;
+                            _this.floor = 0;
                             _this.beginTwo = e.data;
                         }else if(e.data == 1){
-                            _this.floor = 2;
+                            _this.floor = 1;
                             _this.beginTwo = e.data;
                         }else if(e.data == 2){
-                            _this.floor = 3;
+                            _this.floor = 2;
                             _this.beginTwo = e.data;
                         }else if(e.data == 3){
-                            _this.floor = 4;
+                            _this.floor = 3;
                             _this.beginTwo = e.data;
                         }else if(e.data == 4){
-                            _this.floor = 5;
+                            _this.floor = 4;
                             _this.beginTwo = e.data;
                         }else if(e.data == 5){
-                            _this.floor = 6;
+                            _this.floor = 5;
                             _this.beginTwo = e.data;
                         }else if(e.data == 6){
-                            _this.floor = 7;
+                            _this.floor = 6;
                             _this.beginTwo = e.data;
                         }else if(e.data == 7){
-                            _this.floor = 8;
+                            _this.floor = 7;
                             _this.beginTwo = e.data;
                         }else if(e.data == 8){
+                            _this.floor = 8;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 9){
                             _this.floor = 9;
                             _this.beginTwo = e.data;
                         }

@@ -487,18 +487,19 @@
             }
         },
         created(){
-            this.permissions()
-            utils.initIconFont();
-//            获取分类列表
-            this.getCatagory();
-//            获取商品列表
-            this.getAllGoods();
             if(!utils.isNull(utils.getUrlParameter('from'))){
                 this.pageFrom = utils.getUrlParameter('from');
             }
             if(!utils.isNull(utils.getUrlParameter('pageType'))){
                 this.pageType = utils.getUrlParameter('pageType');
             }
+            this.permissions()
+            utils.initIconFont();
+//            获取分类列表
+            this.getCatagory();
+//            获取商品列表
+            this.getAllGoods();
+
         },
         methods:{
             addBg:function (items) {

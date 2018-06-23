@@ -169,7 +169,7 @@
     }
     .corpusScroll{
         flex-direction: row;
-        width: 375px;
+        width: 500px;
         height:98px;
         background-color:#fff;
     }
@@ -207,11 +207,14 @@
                     name:'待确认',
                     id:1
                 },{
-                    name:'配送中',
+                    name:'预约单',
                     id:2
                 },{
-                    name:'已送达',
+                    name:'配送中',
                     id:3
+                },{
+                    name:'已送达',
+                    id:4
                 }],
                 whichCorpus:0,
                 productCategoryId:1,
@@ -247,6 +250,15 @@
         },
         created(){
             utils.initIconFont();
+            if(!utils.isNull(utils.getUrlParameter('index'))){
+                this.whichCorpus = utils.getUrlParameter('index')
+            }
+            if(!utils.isNull(utils.getUrlParameter('productCategoryId'))){
+                this.productCategoryId = utils.getUrlParameter('productCategoryId')
+//                把字符串转换成整型，否则switch识别不了
+                this.productCategoryId = parseInt(this.productCategoryId)
+                this.pageStart = 0;
+            }
             this.open();
             this.permissions()
 
@@ -319,9 +331,12 @@
                         status = 'unconfirmed';
                         break;
                     case 2:
-                        status = 'confirmed';
+                        status = 'hope';
                         break;
                     case 3:
+                        status = 'confirmed';
+                        break;
+                    case 4:
                         status = 'completed';
                         break;
                     default:
