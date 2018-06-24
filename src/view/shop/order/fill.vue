@@ -541,6 +541,7 @@
                         if(data.data.memberId != 0){
                             _this.memberId = data.data.memberId;
                             utils.debug(_this.memberId)
+                            _this.addressId = '';
                             _this.getInfo()
                         }else{
                             event.toast('无效会员')

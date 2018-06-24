@@ -593,76 +593,78 @@
                     }else{
                         return false
                     }
-                }if(e == 'shipping'){
+                } else if(e == 'shipping'){
 //                    运单
                     if (utils.isRoles("123",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'dragon'){
+                } else if(e == 'dragon'){
 //                    接龙
                     if (utils.isRoles("12",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'review'){
+                } else if(e == 'review'){
 //                    评价
                     if (utils.isRoles("12",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'coupon'){
+                } else if(e == 'coupon'){
 //                    优惠券
                     if (utils.isRoles("12",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'distribution'){
+                } else if(e == 'distribution'){
 //                    新营销
                     if (utils.isRoles("12",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'manage'){
+                } else if(e == 'manage'){
 //                    商品
                     if (utils.isRoles("12",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'shop'){
+                } else if(e == 'shop'){
 //                    店铺
                     if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'employee'){
+                } else if(e == 'employee'){
 //                    员工
                     if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'fill'){
+                } else if(e == 'fill'){
 //                    补单
                     if (utils.isRoles("12",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
-                }if(e == 'dragon'){
+                } else if(e == 'dragon'){
 //                    接龙
                     if (utils.isRoles("12",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
+                } else {
+                    return false
                 }
             },
 
