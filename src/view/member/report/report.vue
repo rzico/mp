@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <report_header @iconTime="pickDate()"></report_header>
+        <report_header :pageName="pageName" :timeDate="timeDate" @iconTime="pickDate()" @deductTime="deductTime()" @addTime="addTime()"></report_header>
         <div class="classBox">
             <div class="tableOne">
                 <text class="tableText">测试</text>
@@ -15,11 +15,11 @@
                 <text class="tableText">测试</text>
             </div>
         </div>
-        <list class="list "  @loadmore="onloading" loadmoreoffset="180">
+        <list   @loadmore="onloading" loadmoreoffset="180">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell v-for="(deposit,index) in depositList" ref="adoptPull">
+            <cell v-for="(deposit,index) in depositList" ref="adoptPull" >
                 <!--如果月份重复就不渲染该区域-->
                 <div class="cell-header cell-line space-between" v-if="isRepeat(index)" :class="[index == 0 ? 'mt20' : '']"  @click="summary(deposit.createDate)">
                     <div class="flex-row flex-start">
@@ -50,15 +50,23 @@
                     </div>
                 </div>
             </cell>
+            <cell v-if="depositList.length!=0">
+                <div class="list"></div>
+            </cell>
             <cell v-if="noData()" >
                 <noData > </noData>
             </cell>
         </list>
+
         <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)">
             <!--点击上箭头或向上滑动展开-->
             <div class="iconBox">
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
+            </div>
+            <div class="bottomCell">
+                <text class="totalIcon primary" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
+                <text class="fz32 ml20">合计: ¥100.00</text>
             </div>
         </div>
     </div>
@@ -66,6 +74,10 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .list{
+        padding-bottom: 140px;
+        background-color: white;
+    }
     .classBox{
         height: 80px;
         width: 750px;
@@ -73,11 +85,10 @@
         align-items: center;
         background-color: white;
         border-bottom-width: 1px;
-        border-bottom-color: #777;
+        border-bottom-color: #ccc;
     }
     .tableOne{
         width:186px;
-        height:100px;
         align-items: center;
         justify-content: center;
         border-right-width: 1px;
@@ -85,7 +96,6 @@
     }
     .tableTwo{
         width:188px;
-        height:100px;
         align-items: center;
         justify-content: center;
     }
@@ -99,7 +109,7 @@
         height: 400px;
         background-color: white;
         position: fixed;
-        bottom:-300px;
+        bottom:-240px;
         left: 20px;
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
@@ -116,6 +126,19 @@
         width: 150px;
         align-items: center;
         justify-content: center;
+    }
+    .bottomCell{
+        height: 100px;
+        width: 706px;
+        background-color: #f5f5f5;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 20px;
+        border-bottom-width:1px;
+        border-color:#cccccc;
+    }
+    .totalIcon{
+        font-size: 80px;
     }
     .newHeight{
         height: 130px;
@@ -221,13 +244,22 @@
                 noLoading:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
-                isIcon:true
+                isIcon:true,
+                timeDate:'',
+                pageName:'周报'
             }
         },
         components: {
             report_header,noData
         },
         props: {
+
+        },
+        created () {
+//              页面创建时请求数据
+            utils.initIconFont();
+            this.open();
+            this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
 
         },
 //        dom呈现完执行滚动一下
@@ -246,6 +278,34 @@
             }
         },
         methods: {
+//            点击减少一天时间
+            deductTime:function () {
+//                先把时间转为时间戳
+                this.timeDate = Date.parse(this.timeDate);
+//                运算减去一天
+                this.timeDate = (this.timeDate/1000-86400)*1000;
+//                把时间戳转换为时间
+                this.timeDate = utils.ymdtimefmt(this.timeDate);
+//                赋值给参数请求接口
+                this.billDate = this.timeDate;
+                this.pageStart=0;
+                this.open();
+
+            },
+//            点击增加一天时间
+            addTime:function () {
+//                先把时间转为时间戳
+                this.timeDate = Date.parse(this.timeDate);
+//                运算增加一天
+                this.timeDate = (this.timeDate/1000+86400)*1000;
+//                把时间戳转换为时间
+                this.timeDate = utils.ymdtimefmt(this.timeDate);
+//                赋值给参数请求接口
+                this.billDate = this.timeDate;
+                this.pageStart=0;
+                this.open();
+
+            },
             onpanmove:function (e,index) {
 //                获取当前点击的元素。
                 var _this = this;
@@ -253,7 +313,7 @@
                     _this.isIcon = false;// 当向上滑动时把变量置为false，达到再次点击div时触发的是收回动画
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-300)',
+                            transform: 'translateY(-240)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -288,7 +348,7 @@
                 }else{
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-300)',
+                            transform: 'translateY(-240)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -304,7 +364,7 @@
                     }else{
                         animation.transition(animationPara, {
                             styles: {
-                                transform: 'translateY(-0)',
+                                transform: 'translateY(0)',
                             },
                             duration: 350, //ms
                             timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -365,6 +425,7 @@
                 }, function (e) {
                     if (e.result == 'success') {
                         _this.billDate = e.data;
+                        _this.timeDate = e.data;
                         _this.title = "账单("+_this.billDate+")";
                         _this.pageStart=0;
                         _this.open(0,function () {
@@ -465,10 +526,6 @@
                 return res.y+"年"+ res.m +"月";
             }
         },
-        created () {
-//              页面创建时请求数据
-            utils.initIconFont();
-            this.open();
-        }
+
     }
 </script>

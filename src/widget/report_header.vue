@@ -17,7 +17,7 @@
     <div class="timeBox bkg-primary">
         <div class="leftBox">
             <div class="deduct" @click="deductTime()"><text class="fz40" style="color: #fff" >—</text> </div>
-            <div class="timeContent"><text class="fz28" style="color: #fff">2018-06-06</text> </div>
+            <div class="timeContent"><text class="fz28" style="color: #fff">{{timeDate}}</text> </div>
             <div class="add" @click="addTime()"><text class="fz40" style="color: #fff">+</text> </div>
         </div>
         <div class="rightBox" @click="iconTime()">
@@ -101,11 +101,12 @@
         },
         data: function () {
             return {
-                pageName:'周报'
+
             }
         },
         props: {
-
+            timeDate:'',
+            pageName:'周报'
         },
         filters:{
 
