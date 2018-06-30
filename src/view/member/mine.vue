@@ -129,7 +129,7 @@
                     </div>
                 </div>
             <!-- 我的文章 -->
-            <div class="contentBox">
+            <div class="contentBox" v-if="filter('topic')">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goMemberIndex()">
                     <text class="fz30">我的专栏</text>
                     <div class="flex-row">
@@ -229,6 +229,10 @@
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
                         <text class="iconfontText mt20">人工补单</text>
+                    </div>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="goreport()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
+                        <text class="iconfontText mt20">测试报表</text>
                     </div>
                     <!--<div class="iconBox flexCol mt20"  @click="beginShare()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>-->
@@ -476,7 +480,8 @@
                 conut:[],
                 shippingConut:[],
                 shopId:'#',
-                hasHeaderInfo:true
+                hasHeaderInfo:true,
+                time:''
             }
         },
         components: {
@@ -549,6 +554,8 @@
             this.openArticle();
 //            获取权限
             this.permissions();
+//             获取经纬度
+            this.getGps();
 //            获取店铺是否完善
             this.open();
 //            获取订单数量
@@ -663,7 +670,14 @@
                     }else{
                         return false
                     }
-                } else {
+                } else if(e == 'topic'){
+//                    专栏
+                    if (utils.isRoles("1",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }else {
                     return false
                 }
             },
@@ -700,12 +714,46 @@
                 POST("weex/member/roles.jhtml").then(function (mes) {
                     if (mes.type=="success") {
                         _this.roles = mes.data;
+                        if (utils.isRoles("3",_this.roles)) {
+//                            开启定时器，每分钟定位一次经纬度
+                            _this.time = setInterval(function () {
+                                _this.getGps()
+                            },100000);
+                        }
                     } else {
                         event.toast(mes.content);
                     }
                 },function (err) {
                     event.toast(err.content);
                 });
+            },
+//            //  关闭定时器.
+//            clearDummyProcess(){
+////              解除定时器
+//                if (!utils.isNull(this.time))  {
+//                    clearInterval(this.time);
+//                    this.time = null;
+//                }
+//            },
+//            获取经纬度
+            getGps:function(){
+                let _this = this
+                var uId = event.getUId();
+                event.getLocation(function (data) {
+                    if(data.type == 'success'){
+                        POST("/lbs/location.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat +'&memberId=' + uId).then(function (mes) {
+                            if (mes.type == 'success') {
+
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                    }else {
+                        event.toast('定位失败，请开启GPS')
+                    }
+                })
             },
             //            更新用户信息；
             updateUserInfo() {
@@ -923,6 +971,12 @@
                         } else {
                             //                            return ;
                         }
+                    }
+                );
+            },
+            goreport(){
+                event.openURL(utils.locate('view/member/report/report.js'), function(data) {
+
                     }
                 );
             },

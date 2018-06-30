@@ -51,9 +51,6 @@
                         <!--<text class="sub_title" style="color: #666" :style="{fontFamily:'iconfont'}">联系卖家 </text>-->
                         <!--<text class="sub_title primary"  :style="{fontFamily:'iconfont'}">&#xe628;</text>-->
                         <!--</div>-->
-
-
-
                     </div>
                     <div class="flex-row goodsBody " v-for="goods in item.orderItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
@@ -94,16 +91,31 @@
                         </div>
                     </div>
                     <div class="infoLines pb10">
-                        <text class="sub_title ">支付方式: {{item.paymentMethod | watchPayMethod}}</text>
+                        <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt0">
                         <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
                     </div>
                     <div class="infoLines pb10">
-                        <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
+                        <text class="sub_title ">配送方式: {{item.shippingMethod}}</text>
+                    </div>
+                    <div class="infoLines pb10">
+                        <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10">
+                        <text class="sub_title ">配送站点: {{item.shopName}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10">
+                        <text class="sub_title ">配送人员: {{item.track.name}}  {{item.track.mobile}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10">
+                        <text class="sub_title ">送货工资: ¥{{item.adminFreight | currencyfmt}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10">
+                        <text class="sub_title ">配送运费: ¥{{item.shippingFreight | currencyfmt}}</text>
                     </div>
                     <div class="infoLines pt0 pb0">
-                        <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
+                        <text class="sub_title ">货款结算: ¥{{item.cost | currencyfmt}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt10">
                         <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
@@ -126,12 +138,12 @@
                             <text class="sub_title">积分抵扣</text>
                             <text class="sub_title">-{{item.pointDiscount | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between mt10 bt10" v-if="item.exchangeDiscount != 0 && item.exchangeDiscount != '0'">
+                        <div class=" space-between mt10 " v-if="item.exchangeDiscount != 0 && item.exchangeDiscount != '0'">
                             <text class="sub_title">电子券支付</text>
                             <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
                         </div>
-                        <div class=" space-between" v-if="item.freight !=0">
-                            <text class="sub_title">+ 运费</text>
+                        <div class=" space-between mt10" >
+                            <text class="sub_title">+ 本单运费</text>
                             <text class="sub_title">¥{{item.freight | currencyfmt}}</text>
                         </div>
                     </div>

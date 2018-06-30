@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between " @click="gousers()">
+                <div class="cell-panel space-between" :class="[appType() ? '':'cell-clear']" @click="goCouponCode()">
                     <div class="flex-row">
                         <text class="title ml10">电子券</text>
                     </div>
@@ -95,9 +95,9 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="settlemenSetup()">
+                <div class="cell-panel space-between cell-clear" @click="goBarrel()" v-if="appType()">
                     <div class="flex-row">
-                        <text class="title ml10">桶</text>
+                        <text class="title ml10">我的桶</text>
                     </div>
                     <div class="flex-row flex-end" >
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -191,6 +191,7 @@
             title: {default: "会员详情"}
         },
         filters: {
+
             codefmt: function (val) {
                 if (utils.isNull(val)) {
                     return val;
@@ -241,6 +242,14 @@
             this.permissions()
         },
         methods: {
+//            当前app状态
+            appType(){
+                if(utils.appType() == 'water'){
+                    return true
+                }else{
+                    return false
+                }
+            },
             //            获取权限
             permissions: function () {
                 var _this = this;
@@ -293,6 +302,48 @@
                 this.clicked = true;
 
                 event.openURL(utils.locate('view/shop/card/users.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
+            goCouponCode(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/couponCode.js?cardId='+this.id +'&logo='+this.data.card.logo),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
+            goBarrel(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+this.id),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 
@@ -447,6 +498,7 @@
                                 function (mes) {
                                     if (mes.type == "success") {
                                         _this.data.card.name = value.data
+                                        utils.debug( _this.data.card.name )
                                     } else {
                                         event.toast(mes.content);
                                     }
@@ -487,6 +539,7 @@
                                 function (mes) {
                                     if (mes.type == "success") {
                                         _this.data.card.mobile = value.data
+                                        utils.debug( _this.data.card.mobile )
                                     } else {
                                         event.toast(mes.content);
                                     }

@@ -31,7 +31,10 @@
                     <div class="topPriceNum " >
                         <div class="inputLine flex-row boder-bottom ">
                             <text class="title">价格</text>
-                            <input type="number" v-model="topLinePrice"  return-key-type="next"class="lineContent toplineContentHeight"  @input="nameUnitFirstInput" placeholder="给商品定个好价格" />
+                            <input type="number" v-model="topLinePrice"  return-key-type="next"class="lineContent specification pr10"  @input="nameUnitFirstInput" placeholder="商品销售价" />
+                            <!--2个价格中间的框-->
+                            <div style="width: 1px;height: 40px" class="boder-left"></div>
+                            <input type="number" v-model="cost"  return-key-type="next"class="lineContent specification"  @input="nameUnitFirstInput" placeholder="商品成本价" />
                         </div>
                         <div class="inputLine flex-row ">
                             <text class="title">库存</text>
@@ -60,7 +63,10 @@
                         </div>
                         <div class="inputLine flex-row boder-bottom">
                             <text class="title">价格</text>
-                            <input type="number" v-model="item.price" @input="oninput(item,index)" return-key-type="next" class="lineContent" placeholder="给商品定个好价格" />
+                            <input type="number" v-model="item.price" @input="oninput(item,index)" return-key-type="next" class="lineContent specification pr10" placeholder="商品销售价" />
+                            <!--2个价格中间的框-->
+                            <div style="width: 1px;height: 40px" class="boder-left"></div>
+                            <input type="number" v-model="cost" @input="oninput(item,index)" return-key-type="next" class="lineContent specification"  placeholder="商品成本价" />
                         </div>
                         <div class="inputLine flex-row">
                             <text class="title">库存</text>
@@ -138,8 +144,21 @@
                     </div>
                 </div>
             </div>
-
-            <div style="height: 400px"></div>
+            <div class="sub-panel ml20 mt10">
+                <text class="sub_title">设置该商品的品牌类型</text>
+            </div>
+            <div class="cell-row cell-line mt10" @click="goChoosebrand()">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title">品牌类型</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{barrelName}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 600px"></div>
         </scroller>
         <div class="button bw bkg-primary" @click="goComplete()">
             <text class="buttonText ">保存</text>
@@ -161,6 +180,14 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .brandInput{
+        font-size: 32px;
+        color: #888;
+        width: 500px;
+        height: 80px;
+        line-height: 70px;
+        text-align: right;
+    }
     /*<!--进度条-->*/
     .processTotal{
         position: absolute;
@@ -380,6 +407,7 @@
             distributionId:'',
             distributionName:'',
             topLinePrice:'',
+            cost:'',
             topLineNum:'',
             firstThumbnailImg:'',
             firstParaImage:'',
@@ -394,7 +422,9 @@
             clicked:false,
             roles:'',
             begin:0,
-            isobject:'product'
+            isobject:'product',
+            barrelId:'',
+            barrelName:''
         },
         props:{
             title:{default:'新增商品'}
@@ -500,6 +530,13 @@
                 if(!utils.isNull(data.data.type)){
                     _this.isobject = data.data.type;
                 }
+                //                品牌类型
+                if(!utils.isNull(data.data.barrel.id)){
+                    _this.barrelId = data.data.barrel.id;
+                }
+                if(!utils.isNull(data.data.barrel.name)){
+                    _this.barrelName = data.data.barrel.name;
+                }
 //                        分类
                 if(!utils.isNull(data.data.productCategory.id)){
                     _this.catagoryId = data.data.productCategory.id;
@@ -532,8 +569,10 @@
 
 //                        无多规格时的价格
                     let productPrice =  data.data.products[0].price;
+                    let productCost = data.data.products[0].cost;
                     if(!utils.isNull(productPrice)){
                         _this.topLinePrice = utils.currencyfmt(productPrice);
+                        _this.cost = utils.currencyfmt(productCost);
                     }
 
 //                        无多规格时的数量
@@ -554,7 +593,9 @@
                         if(!utils.isNull(item.price)){
                             item.price = utils.currencyfmt(item.price)
                         }
-
+                        if(!utils.isNull(item.cost)){
+                            item.cost = utils.currencyfmt(item.cost)
+                        }
                         _this.list.push(item);
                     })
                 }
@@ -581,6 +622,7 @@
                         spec1: '',
                         spec2: '',
                         price: this.topLinePrice,
+                        cost: this.cost,
                         stock: this.topLineNum,
                         isNew: true,
                         thumbnail: this.firstThumbnailImg,
@@ -604,6 +646,7 @@
                         spec1: this.list[goodsIndex].spec1,
                         spec2: this.list[goodsIndex].spec2,
                         price: this.list[goodsIndex].price,
+                        cost: this.list[goodsIndex].cost,
                         stock: this.list[goodsIndex].stock,
                         isNew: true,
                         thumbnail: this.list[goodsIndex].thumbnail,
@@ -742,6 +785,21 @@
                     }
                 });
             },
+            //            选择品牌
+            goChoosebrand() {
+                let _this = this;
+                event.openURL(utils.locate('view/shop/goods/chooseBrand.js?catagoryId=' + this.barrelId), function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        _this.barrelId = parseInt(data.data.catagoryId);
+                        _this.barrelName = data.data.catagoryName;
+
+//                        临时缓存起来商品数据
+                        if(utils.isNull(_this.goodsId)){
+                            _this.saveDraft();
+                        }
+                    }
+                });
+            },
 //            选择营销策略
             goChooseDistri(){
                 let _this = this;
@@ -785,6 +843,7 @@
                 let f = this.list[index].thumbnail;
                 let g = this.list[index].paraImage;
                 let h = this.list[index].productId;
+                let r = this.list[index].cost;
                 this.list[index].spec1 = this.list[index - 1].spec1;
                 this.list[index].spec2 = this.list[index - 1].spec2;
                 this.list[index].price = this.list[index - 1].price;
@@ -793,6 +852,7 @@
                 this.list[index].thumbnail = this.list[index - 1].thumbnail;
                 this.list[index].paraImage = this.list[index - 1].paraImage;
                 this.list[index].productId = this.list[index - 1].productId;
+                this.list[index].cost = this.list[index - 1].cost;
                 this.list[index - 1].spec1 = a;
                 this.list[index - 1].spec2 = b;
                 this.list[index - 1].price = c;
@@ -801,6 +861,7 @@
                 this.list[index - 1].thumbnail = f;
                 this.list[index - 1].paraImage = g;
                 this.list[index - 1].productId = h;
+                this.list[index - 1].cost = r;
                 //                        临时缓存起来商品数据
                 if(utils.isNull(_this.goodsId)){
                     _this.saveDraft();
@@ -818,6 +879,7 @@
                 let f = this.list[index].thumbnail;
                 let g = this.list[index].paraImage;
                 let h = this.list[index].productId;
+                let r = this.list[index].cost;
                 this.list[index].spec1 = this.list[index + 1].spec1;
                 this.list[index].spec2 = this.list[index + 1].spec2;
                 this.list[index].price = this.list[index + 1].price;
@@ -826,6 +888,7 @@
                 this.list[index].thumbnail = this.list[index + 1].thumbnail;
                 this.list[index].paraImage = this.list[index + 1].paraImage;
                 this.list[index].productId = this.list[index + 1].productId;
+                this.list[index].cost = this.list[index + 1].cost;
                 this.list[index + 1].spec1 = a;
                 this.list[index + 1].spec2 = b;
                 this.list[index + 1].price = c;
@@ -834,6 +897,7 @@
                 this.list[index + 1].thumbnail = f;
                 this.list[index + 1].paraImage = g;
                 this.list[index + 1].productId = h;
+                this.list[index + 1].cost = r;
                 //                        临时缓存起来商品数据
                 if(utils.isNull(_this.goodsId)){
                     _this.saveDraft();
@@ -1019,6 +1083,10 @@
                     id:_this.distributionId,
                     name:_this.distributionName
                 }
+                let categoryBarrel = {
+                    id:_this.barrelId,
+                    name:_this.barrelName
+                }
                 let productData = {
                     id: sendId,
                     name: _this.goodsName,
@@ -1027,6 +1095,7 @@
                     distribution:distributionTemplate,
                     products: _this.productTemplates,
                     type:_this.isobject,
+                    barrel: categoryBarrel
                 };
 
 //                utils.debug(productData);
@@ -1075,6 +1144,7 @@
                         spec1: '',
                         spec2: '',
                         price:_this.topLinePrice,
+                        cost:_this.cost,
                         stock: parseInt(_this.topLineNum),
 //                        distribution:0
                     })
@@ -1086,6 +1156,7 @@
                             spec1: item.spec1,
                             spec2: item.spec2,
                             price: item.price,
+                            cost: item.cost,
                             stock: parseInt(item.stock),
 //                          distribution:0
                         }
@@ -1113,6 +1184,10 @@
                     productCategory:{
                         id:_this.catagoryId,
                         name:_this.catagoryName
+                    },
+                    barrel:{
+                        id:_this.barrelId,
+                        name:_this.barrelName
                     },
                     distribution:{
                         id:_this.distributionId,

@@ -777,7 +777,6 @@
                 this.clicked = true;
                 let _this = this;
                 if(this.isOwner == true ){
-                    utils.debug(111)
                     event.openURL(utils.locate('view/member/topic/index.js'),
                         function (data) {
                             _this.clicked = false;
@@ -836,6 +835,12 @@
                     if (data.type == 'success') {
                         _this.isOwner = data.data.isOwner;
                         _this.isStatus = data.data.status;
+                        if(!utils.isNull(data.data.autograph)){
+                            _this.userSign = data.data.autograph;
+                        }
+                        if(!utils.isNull(data.data.name)){
+                            _this.userName = data.data.name;
+                        }
                     } else {
                         event.toast(err.content)
                     }
@@ -882,13 +887,13 @@
                         if(utils.isNull(_this.corpusId) && data.data.length < 10){
                             _this.helpList = [];//在push前要清空list
                             _this.helpList.push(
-                                {
-                                key:2,
-                                articleSign:'样例',
-                                articleTitle:'如何开通专栏',
-                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                                articleDate:'2017-10-19'
-                            },
+//                                {
+//                                key:2,
+//                                articleSign:'样例',
+//                                articleTitle:'如何开通专栏',
+//                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
+//                                articleDate:'2017-10-19'
+//                            },
                                 {
                                 key:1,
                                 articleSign:'样例',
@@ -903,13 +908,13 @@
                         if(utils.isNull(_this.corpusId)){
                             _this.helpList = [];
                             _this.helpList.push(
-                                {
-                                key:2,
-                                articleSign:'样例',
-                                articleTitle:'如何开通专栏',
-                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
-                                articleDate:'2017-10-19'
-                            },
+//                                {
+//                                key:2,
+//                                articleSign:'样例',
+//                                articleTitle:'如何开通专栏',
+//                                articleCoverUrl:utils.locate('resources/images/column.jpg'),
+//                                articleDate:'2017-10-19'
+//                            },
                           {
                                 key:1,
                                 articleSign:'样例',
@@ -928,15 +933,11 @@
 //            获取用户信息
                 GET('weex/member/view.jhtml',function (data) {
                     if(data.type == 'success'){
-                        if(!utils.isNull(data.data.nickName)){
-                            _this.userName = data.data.nickName;
-                        }
+
                         if(!utils.isNull(data.data.logo)){
                             _this.imageUrl = data.data.logo;
                         }
-                        if(!utils.isNull(data.data.autograph)){
-                            _this.userSign = data.data.autograph;
-                        }
+
                         if (!utils.isNull(data.data.backgroud)) {
                             _this.imgBg = data.data.backgroud;
                         }

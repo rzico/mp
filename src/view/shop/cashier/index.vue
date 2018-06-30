@@ -49,15 +49,15 @@
                 </div>
             </div>
             <div class="menubox">
-                <div class="menu" @click="goods()">
+                <div class="menu" @click="goods()" v-if="filter('manage')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
                     <text class="menuBtn">商品</text>
                 </div>
-                <div class="menu" @click="order()">
+                <div class="menu" @click="order()" v-if="filter('order')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
                     <text class="menuBtn">订单</text>
                 </div>
-                <div class="menu" @click="goShipping()">
+                <div class="menu" @click="goShipping()" v-if="filter('shipping')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
                     <text class="menuBtn">送货</text>
                 </div>
@@ -66,23 +66,23 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">会员卡</text>
                 </div>
-                <div class="menu" @click="gocoupon()">
+                <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
                     <text class="menuBtn">优惠券</text>
                 </div>
-                <div class="menu" @click="godistribution()">
+                <div class="menu" @click="godistribution()" v-if="filter('distribution')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
                     <text class="menuBtn">新营销</text>
                 </div>
-                <div class="menu" @click="deposit()">
+                <div class="menu" @click="deposit()" v-if="filter('money')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
                     <text class="menuBtn">收银</text>
                 </div>
-                <div class="menu" @click="shop()">
+                <div class="menu" @click="shop()" v-if="filter('shop')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
                     <text class="menuBtn">店铺</text>
                 </div>
-                <div class="menu" @click="employee()">
+                <div class="menu" @click="employee()" v-if="filter('employee')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
                     <text class="menuBtn">员工</text>
                 </div>
@@ -346,6 +346,69 @@
             this.permissions()
         },
         methods: {
+            //            权限过滤器
+            filter(e){
+                var _this = this;
+                if(e == 'order'){
+//                    订单
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'shipping'){
+//                    运单
+                    if (utils.isRoles("123",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'coupon'){
+//                    优惠券
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'distribution'){
+//                    新营销
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'manage'){
+//                    商品
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'shop'){
+//                    店铺
+                    if (utils.isRoles("1",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'employee'){
+//                    员工
+                    if (utils.isRoles("1",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }else if(e == 'money'){
+//                    收银
+                    if (utils.isRoles("12",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }else {
+                    return false
+                }
+            },
 //            获取权限
             permissions:function () {
                 var _this = this;

@@ -8,20 +8,22 @@
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
             <div v-else v-for="(item,index) in ordersList" :class="[item.status == 'unpaid' || item.status == 'refunding' || item.status ==  'unshipped' || item.status ==  'returning' ? 'hasPb100' : '']" >
+                <div  v-for="c in item.shippingBarrels">
+                    <div class="setting">
+                        <div class="titile">
+                            <text class="fz28">{{c.name}}</text>
+                        </div>
+                        <div class="money">
+                            <text class="fz28">送出</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.quantity" />
+                            <text class="monyeTextthree fz28">桶，收回</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.returnQuantity" />
+                            <text class="monyeTextthree fz28">桶</text>
+                        </div>
+                    </div>
+                </div>
                 <div class="header mt20 flex-row">
                     <div class="priceLine">
-                        <div  v-for="c in item.shippingBarrels">
-                        <div class=" space-between  bt10 headerCellBg cell_height">
-                            <text class="sub_title">{{c.name}}</text>
-                            <div class="flex-row">
-                                <text class="sub_title">送出:</text>
-                                <input class="min_input" type="number" v-model="c.quantity"/>
-                                <text class="sub_title">桶，收回</text>
-                                <input class="min_input" type="number" v-model="c.returnQuantity"/>
-                                <text class="sub_title">桶</text>
-                            </div>
-                        </div>
-                        </div>
                         <div class=" space-between  bt10 headerCellBg cell_height" @click="chooseFloor">
                             <text class="sub_title">楼层:</text>
                             <text class="sub_title">{{ordersList[0].receiver.level}}</text>
@@ -45,7 +47,7 @@
                 </div>
                 <div class="addressBox flex-row mt20">
                     <div style="width: 70px;">
-                        <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
+0                        <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>
                     <div style="width: 630px">
                         <div class="flex-row">
@@ -82,7 +84,7 @@
                 <div class="mt20 infoWhiteColor">
                     <div class="infoLines boder-bottom">
                         <div class="flex-row">
-                            <text class="sub_title">订单编号: {{item.sn}}</text>
+                            <text class="sub_title">订单编号: {{item.orderSn}}</text>
                             <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.sn)">复制</text>
                         </div>
                         <div class="mt10 ">
@@ -96,11 +98,16 @@
                         <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
                     </div>
                     <div class="infoLines pb10">
-                        <text class="sub_title ">配送人员: {{item.shippingMethod | watchShippingMethod}}</text>
+                        <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
-
-                    <div class="infoLines pt0 pb0">
+                    <div class="infoLines pt0 pb10">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10">
+                        <text class="sub_title ">配送站点: {{item.shopName}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb0">
+                        <text class="sub_title ">配送人员: {{item.track.name}}  {{item.track.mobile}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt10">
                         <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
@@ -120,12 +127,59 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-    .input{
-        font-size: 28px;
-        color: #999;
-        width: 500px;
-        text-align: right;
+    .setting{
+        background-color: white;
+        margin-left: 25px;
+        margin-right: 25px;
+        margin-top: 25px;
+        border-width: 1px;
+        border-color: #cccccc;
+        border-radius: 15px;
+        overflow: hidden;
     }
+    .titile{
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        /*border-radius: 15px;*/
+        padding-left: 30px;
+        padding-right: 30px;
+        background-image: linear-gradient(to right, pink,#5eb0fd);
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 80px;
+    }
+    .money{
+        padding-left: 30px;
+        border-top-width: 1px;
+        border-color: #cccccc;
+        flex-direction: row;
+        align-items: center;
+        height: 80px;
+    }
+    .note{
+        padding-left: 30px;
+        border-color: #cccccc;
+        flex-direction: row;
+        align-items: center;
+    }
+    .monyeTextthree{
+        padding-left: 20px;
+    }
+
+    .input{
+        padding-left: 20px;
+        width: 150px;
+        font-size: 28px;
+        color: red;
+        height: 100px;
+    }
+    /*.input{*/
+        /*font-size: 28px;*/
+        /*color: #999;*/
+        /*width: 500px;*/
+        /*text-align: right;*/
+    /*}*/
     .min_input{
         font-size: 28px;
         color: #999;
@@ -539,6 +593,10 @@
 //            点击核销
             confirm:function () {
                 let _this = this
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
@@ -557,6 +615,7 @@
 //                    console.log('confirm callback', value)
 //                })
                 POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
+
                         if(data.type == 'success'){
                             if(data.data == true){
                                 var body = [];
@@ -572,6 +631,7 @@
 
                                 POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level,body).then(
                                     function (data) {
+                                        _this.clicked = false;
                                         if(data.type == 'success'){
                                             let E = utils.message('success','核销成功','')
                                             event.closeURL(E);
@@ -580,9 +640,11 @@
                                         }
                                     },
                                     function (err) {
+                                        _this.clicked = false;
                                         event.toast(err.content);
                                     })
                             }else {
+                                _this.clicked = false;
                                 event.toast('该订单他人正在操作，请稍后...')
                             }
 

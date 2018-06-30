@@ -7,7 +7,8 @@
             </cell>
             <cell :style="{minHeight:screenHeight + 'px'}">
                 <div  v-for="c in list">
-                <div class="setting">
+                    <!--默认显示-->
+                <div class="setting" v-if="c.show == true">
                     <div class="titile">
                         <text class="fz32">{{c.name}}</text>
                     </div>
@@ -19,12 +20,33 @@
                         <text class="monyeTextthree fz32">桶</text>
                     </div>
                 </div>
+                    <!--隐藏显示-->
+                    <div class="setting" v-if="c.show == false && hasList">
+                        <div class="titile">
+                            <text class="fz32">{{c.name}}</text>
+                        </div>
+                        <div class="money">
+                            <text class="fz32">送出</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.give" />
+                            <text class="monyeTextthree fz32">桶，收回</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
+                            <text class="monyeTextthree fz32">桶</text>
+                        </div>
+                    </div>
                 </div>
+                <!--列表按钮控制-->
+                <div class="iconBox" >
+                    <div class="icon" @click="contorlList()">
+                    <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="!hasList">&#xe601;</text>
+                    <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="hasList">&#xe608;</text>
+                    </div>
+                </div>
+                <!--详情-->
                 <div class="info" >
-                    <text class="herderText">本单运费</text>
+                    <text class="herderText">本单工资</text>
                     <div class="flex-row">
                         <text style="font-size: 65px">¥  </text>
-                    <text class="herderAmount">{{freight | currencyfmt}}</text>
+                        <text class="herderAmount">{{adminFreight | currencyfmt}}</text>
                     </div>
                     <text class="herderSn">收货地址: {{areaName}}{{address}}</text>
                     <text class="herderSn mt10">收货姓名: {{consignee}}</text>
@@ -61,6 +83,24 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .iconBox{
+        margin-top: 25px;
+        width:750px;
+        align-items: center;
+        justify-content: center;
+    }
+    .icon{
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+        border-color: #cccccc;
+        width: 150px;
+        align-items: center;
+        justify-content: center;
+    }
+    .bigIcon{
+        font-size: 60px;
+        color: #777;
+    }
     .chooseBox{
         padding: 10px;
         padding-left: 20px;
@@ -162,6 +202,7 @@
     }
 </style>
 <script>
+    var modal = weex.requireModule('modal');
     const phone = weex.requireModule('phone');
     const picker = weex.requireModule('picker');
     import {dom,event,stream,storage,animation} from '../../../weex.js'
@@ -173,6 +214,7 @@
     export default {
         data: function () {
             return{
+                clicked:false,
                 screenHeight:0,
                 give:0,
                 take:0,
@@ -187,12 +229,16 @@
                 shippingView:[],
                 shippingSn:'',
                 orderSn:'',
+                shippingId:'',
                 floor:0,
-                freight:'',
+                adminFreight:'',
                 areaName:'',
                 address:'',
                 consignee:'',
-                phone:''
+                phone:'',
+                hasList:false,
+                giveTotal:0,
+                takeTotal:0
             }
         },
         created: function () {
@@ -200,6 +246,7 @@
             this.screenHeight = utils.fullScreen(136)+500;
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
+            this.shippingId = utils.getUrlParameter('shippingId');
             this.open();
             this.load()
         },
@@ -219,6 +266,9 @@
             }
         },
         methods: {
+            contorlList(){
+              this.hasList = !this.hasList
+            },
             //            联系收货人
             callPhone:function () {
                 phone.tel(this.phone,function(){
@@ -278,12 +328,12 @@
             },
             open:function () {
                 let _this = this
-                GET('weex/member/barrel/list.jhtml',
+                GET('weex/member/barrel/list.jhtml?shippingId='+this.shippingId,
                     function (res) {
                         if (res.type=="success") {
                             res.data.forEach(function (item) {
-                                item.give = 0;
-                                item.take = 0;
+                                item.give = '';
+                                item.take = '';
                                 item.noteInput = '';
                                 _this.list.push(item);
                             });
@@ -299,7 +349,7 @@
                 let _this = this;
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
-                        _this.freight = data.data.freight;
+                        _this.adminFreight = data.data.adminFreight;
                         _this.areaName = data.data.receiver.areaName;
                         _this.address = data.data.receiver.address;
                         _this.floor = data.data.receiver.level;
@@ -375,12 +425,24 @@
                 })
             },
             goComplete:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this = this
                 POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
                         if(data.type == 'success'){
                             if(data.data == true){
                                 var body = [];
                                 _this.list.forEach(function(item,index){
+                                    if(utils.isNull(item.give)){
+                                        item.give = 0
+                                    }
+                                    if(utils.isNull(item.take)){
+                                        item.take = 0
+                                    }
+                                    _this.giveTotal = _this.giveTotal + item.give;
+                                    _this.takeTotal = _this.takeTotal + item.take;
                                     body.push({
                                         id:item.id,
                                         quantity:item.give,
@@ -389,8 +451,24 @@
                                     });
                                 });
                                 body = JSON.stringify(body);
+                                if(_this.giveTotal <= 0){
+                                    _this.clicked = false;
+                                    modal.alert({
+                                        message: '送出桶数总数不能为0',
+                                        okTitle: 'OK'
+                                    });
+                                    return
+                                }else if(_this.takeTotal <= 0){
+                                    _this.clicked = false;
+                                    modal.alert({
+                                        message: '回收桶数总数不能为0',
+                                        okTitle: 'OK'
+                                    });
+                                    return
+                                }
                                 POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor,body).then(
                                     function (data) {
+                                        _this.clicked = false;
                                         if(data.type == 'success'){
                                             let E = utils.message('success','送达成功','');
                                             event.closeURL(E);
@@ -399,13 +477,16 @@
                                         }
                                     },
                                     function (err) {
+                                        _this.clicked = false;
                                         event.toast(err.content);
                                     })
                             }else {
+                                _this.clicked = false;
                                 event.toast('该订单他人正在操作，请稍后...')
                             }
 
                         }else{
+                            _this.clicked = false;
                             event.toast(data.content);
                         }
                     },

@@ -95,18 +95,16 @@
                     <div class="infoLines pb10">
                         <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
                     </div>
-
-
                     <div class="infoLines pt0 pb0">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
                     </div>
-                    <div class="infoLines boder-bottom pt10">
+                    <div class="infoLines boder-bottom pt10" v-if="item.hopeDate!=''">
                         <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
                     </div>
-                    <div class="infoLines pb10 ">
+                    <div class="infoLines pb10 " v-if="item.memo != ''">
                         <text class="sub_title ">留言: {{item.memo}}</text>
                     </div>
-                    <div class="infoLines boder-bottom pt0">
+                    <div class="infoLines boder-bottom pt0" v-if="item.orderMemo != ''">
                         <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
                     </div>
                 </div>
@@ -566,7 +564,7 @@
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
-                    })
+                    });
                     _this.permissions();
                     _this.clicked = false;
                     return
@@ -575,7 +573,9 @@
                         _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.isPattern = data.data.name;
-                            _this.shopId = data.data.id
+                            _this.shopId = data.data.id;
+                            _this.isMarki = '';
+                            _this.markiId = ''
                         }
                     })
             },

@@ -40,7 +40,7 @@
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
-        <div class="addCard" @click="addCard()" v-if="!choose">
+        <div class="addCard" @click="addCard()" >
             <div class="flex-row ">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
                 <text class="title ml20 " >新增会员</text>
@@ -587,7 +587,9 @@
                 })
             },
             addCard:function() {
+                var _this = this
                 event.openURL(utils.locate("view/shop/card/address.js"),function (message) {
+                    _this.open()
                 })
             },
             setting:function () {

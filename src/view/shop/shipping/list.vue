@@ -61,7 +61,7 @@
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
-                            <text class="title footText " @click="delivery(item.orderSn,item.sn)">送达</text>
+                            <text class="title footText " @click="delivery(item.orderSn,item.sn,item.shippingItems[index].id)">送达</text>
                         </div>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'receive'">
@@ -270,12 +270,6 @@
                 POST("weex/member/roles.jhtml").then(function (mes) {
                     if (mes.type=="success") {
                         _this.roles = mes.data;
-                        if (utils.isRoles("3",_this.roles)) {
-//                            开启定时器，每分钟定位一次经纬度
-                            _this.time = setInterval(function () {
-                                _this.getGps()
-                            },60000);
-                        }
                     } else {
                         event.toast(mes.content);
                     }
@@ -283,34 +277,34 @@
                     event.toast(err.content);
                 });
             },
-            //  关闭定时器.
-            clearDummyProcess(){
-//              解除定时器
-                if (!utils.isNull(this.time))  {
-                    clearInterval(this.time);
-                    this.time = null;
-                }
-            },
-//            获取经纬度
-            getGps:function(){
-                let _this = this
-                var uId = event.getUId();
-                event.getLocation(function (data) {
-                    if(data.type == 'success'){
-                        POST("/lbs/location.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat +'&memberId=' + uId).then(function (mes) {
-                            if (mes.type == 'success') {
-
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
-                        })
-                    }else {
-                        event.toast('定位失败，请开启GPS')
-                    }
-                })
-            },
+//            //  关闭定时器.
+//            clearDummyProcess(){
+////              解除定时器
+//                if (!utils.isNull(this.time))  {
+//                    clearInterval(this.time);
+//                    this.time = null;
+//                }
+//            },
+////            获取经纬度
+//            getGps:function(){
+//                let _this = this
+//                var uId = event.getUId();
+//                event.getLocation(function (data) {
+//                    if(data.type == 'success'){
+//                        POST("/lbs/location.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat +'&memberId=' + uId).then(function (mes) {
+//                            if (mes.type == 'success') {
+//
+//                            } else {
+//                                event.toast(mes.content);
+//                            }
+//                        }, function (err) {
+//                            event.toast(err.content)
+//                        })
+//                    }else {
+//                        event.toast('定位失败，请开启GPS')
+//                    }
+//                })
+//            },
             //分类切换
             catagoryChange:function(index,id){
 //                event.toast(id);
@@ -398,7 +392,7 @@
             },
 
             goback:function () {
-                this.clearDummyProcess()
+//                this.clearDummyProcess()
                 event.closeURL();
             },
             goDetails:function (sn) {
@@ -429,7 +423,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shipping/info.js?orderSn=' + orderSn +'&sn=' + sn),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/info.js?orderSn=' + orderSn +'&sn=' + sn ),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 
@@ -443,6 +437,14 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                if (utils.isRoles("3",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    });
+                    _this.clicked = false;
+                    return
+                }
                 event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
                     _this.clicked = false;
                     if(data.type == 'success'){
@@ -455,14 +457,14 @@
                 });
             },
             //            跳转送达
-            delivery:function (orderSn,sn) {
+            delivery:function (orderSn,sn,shippingId) {
 
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shipping/delivery.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/delivery.js?orderSn=' + orderSn + '&sn='+sn +'&shippingId=' + shippingId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
                         _this.pageStart = 0;
@@ -478,6 +480,14 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                if (utils.isRoles("3",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    });
+                    _this.clicked = false;
+                    return
+                }
                 event.openURL(utils.locate('view/shop/shipping/confirm.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {

@@ -66,8 +66,11 @@
                     <div class="infoLines pt0 pb10">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
                     </div>
+                    <div class="infoLines pt0 pb10">
+                        <text class="sub_title ">配送站点: {{item.shopName}}</text>
+                    </div>
                     <div class="infoLines pt0 pb0">
-                        <text class="sub_title ">配送人员: </text>
+                        <text class="sub_title ">配送人员: {{item.track.name}}  {{item.track.mobile}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt10">
                         <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
@@ -79,28 +82,22 @@
                         <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
                     </div>
                 </div>
-                <!--<div class="mt20  infoWhiteColor" >-->
-                    <!--<div class="priceLine boder-bottom">-->
-                        <!--<div class="space-between">-->
-                            <!--<text class="sub_title">商品总额</text>-->
-                            <!--<text class="sub_title">¥{{item.orderItems[0].price | currencyfmt}}</text>-->
-                        <!--</div>-->
-                        <!--<div class=" space-between mt10 bt10">-->
-                            <!--<text class="sub_title">优惠折扣</text>-->
-                            <!--<text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>-->
-                        <!--</div>-->
-                        <!--<div class=" space-between">-->
-                            <!--<text class="sub_title">+ 运费</text>-->
-                            <!--<text class="sub_title">¥0.00</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="priceLine flex-end">-->
-                        <!--<div class="flex-row">-->
-                            <!--<text class="title mr20">{{item.status | watchStatus}}:</text>-->
-                            <!--<text class="title" style="color: red">¥{{item.amount | currencyfmt}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
+                <div class="mt20  infoWhiteColor" >
+                    <div class="priceLine boder-bottom">
+                        <div class=" space-between pb10">
+                            <text class="sub_title">+ 送货工资</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between pb10">
+                            <text class="sub_title">+ 配送运费</text>
+                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between ">
+                            <text class="sub_title">+ 货款结算</text>
+                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        </div>
+                    </div>
+                </div>
             </div>
         </scroller>
 
@@ -404,7 +401,6 @@
             open:function () {
                 let _this = this;
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
-                    utils.debug(data)
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
