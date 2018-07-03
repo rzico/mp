@@ -568,8 +568,6 @@
             },
 //            前往链接
             goLink(id,item){
-                utils.debug('1');
-                utils.debug(item);
                 if (this.clicked) {
                     return;
                 }

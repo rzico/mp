@@ -199,6 +199,8 @@
                 </div>
             </div>
         </scroller>
+        <!--遮罩-->
+        <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
     </div>
 </template>
 
@@ -612,6 +614,7 @@
 </style>
 
 <script>
+    import process from '../../widget/process.vue';
     import {dom,event,storage,stream,animation} from '../../weex.js';
     const modal = weex.requireModule('modal');
     var globalEvent = weex.requireModule('globalEvent');
@@ -654,6 +657,7 @@
                     name:'回收站',
                     id:'99'
                 }],
+                lastDownLoadtamp:'',
                 listCurrent:0,
                 listPageSize:10,
 //                文章==================
@@ -668,11 +672,15 @@
                 hadUpdate:false,
                 showMenu:false,
                 helpList:[],
+                toSendArticle:false,
+                currentPro:0,//当前进度
+                proTotal:0,//总的进度
+                processWidth:0,//进度条宽度
 
             }
         },
         components: {
-            noData
+            noData,process
         },
         props:{
             noDataHint:{default:'暂无文章'}
@@ -744,8 +752,7 @@
 //            获取文集列表
             this.getCorpus();
 
-
-            this.getAllArticle();
+            this.getAllArticle('create');
 //            监听文章的变化。
             globalEvent.addEventListener("onArticleChange", function (e) {
                 _this.listCurrent = 0;
@@ -822,7 +829,7 @@
             },
 
 
-            getAllArticle(){
+            getAllArticle(isFirst){
                 var middleList = [];
                 this.listCurrent = 0;
                 var articleClass = '';
@@ -845,7 +852,7 @@
                                 item.value = JSON.parse(item.value);
                                 //                            将封面转为缩略图
                                 //                            item.value.thumbnail = utils.thumbnail(item.value.thumbnail,690,345);
-                                //                          在全部文章里过滤掉已删除的文章
+                                //                          在全部文章里过滤掉已删除的文章res-1.0.0
                                 if(utils.isNull(_this.corpusId) && item.value.articleOption.articleCatalog.id == 99){
                                 }else{
                                     //                              把读取到的文章push进去文章列表
@@ -854,6 +861,10 @@
                             })
                         }
                         _this.articleList = middleList;
+
+                        if(!utils.isNull(isFirst) && utils.isNull(_this.articleList)){
+                            _this.doDownLoad();
+                        }
 
 //                        if(utils.isNull(_this.articleList)){
 //
@@ -1701,79 +1712,91 @@
                 this.showMenu = false;
             },
 
+//            执行下载代码
+            doDownLoad(){
+                let _this = this;
+                storage.getItem('lastDownLoadtamp' + _this.UId, e => {
+                    if(e.result == 'success' && !utils.isNull(e.data)){
+                        _this.lastDownLoadtamp = e.data;
+                    }else{
+                        _this.lastDownLoadtamp = '';
+                    }
+                    this.downloadArticle();
+                })
+            },
 ////            下载文章 20 20的循环
-//            downloadArticle(){
-//                if (this.clicked) {
-//                    return;
-//                }
-//                this.clicked = true;
-//                var _this = this;
-//                GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
-//                    if(data.type == 'success' && data.data.data != ''){
-//                        if(data.data.start == 0 ){
-////                           将本次时间戳缓存起来
-//                            storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate.toString());
-//                        }
-//                        _this.toSendArticle = true;
-//                        _this.proTotal = data.data.recordsTotal;
-//                        data.data.data.forEach(function (item,index) {
-//                            var sortStatus = item.articleOption.isTop  == true ? '1,' : '0,';
-//                            let saveData = {
-//                                type:"article",
-//                                key:item.id,
-//                                value:item,
-//                                sort:sortStatus + item.modifyDate +'',
-//                                keyword:',['+ item.articleOption.articleCatalog.id + '],' + item.title + ','
-//                            }
-//                            event.save(saveData,function(e){
-//                                _this.ctrlProcess();
-//                                if(e.type == 'success'){
-//                                    if(index == 19){
-//                                        _this.listCurrent = _this.listCurrent + _this.listPageSize;
-//                                        _this.downloadArticle();
-//                                    }else if(index == data.data.data.length - 1){
-//                                        _this.doneDown();
-//                                    }
-//                                }else{
-//                                }
-//                            })
-//                        })
-//                    }else if(data.type == 'success' && data.data.data == ''){
-//                        if(data.data.recordsTotal == 0){
-//                            event.toast('您还没有发布过文章。');
-//                        }else{
-//                            _this.doneDown();
-//                        }
-//                    }else{
-//                        event.toast(data.content);
-//                    }
-//                    _this.clicked = false;
-//                },function (err) {
-//                    _this.clicked = false;
-//                    event.toast(err.content);
-//                })
-//            },
-////            下载完成后执行
-//            doneDown(){
-//                let _this = this;
-//                _this.toSendArticle = false;
-////                                    全局监听文章变动
-//                let listenData = utils.message('success','文章改变','');
-//                event.sendGlobalEvent('onArticleChange',listenData);
+            downloadArticle(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
+                    if(data.type == 'success' && data.data.data != ''){
+                        if(data.data.start == 0 ){
+//                           将本次时间戳缓存起来
+                            storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate.toString());
+                        }
+                        _this.toSendArticle = true;
+                        _this.proTotal = data.data.recordsTotal;
+                        data.data.data.forEach(function (item,index) {
+                            var sortStatus = item.articleOption.isTop  == true ? '1,' : '0,';
+                            let saveData = {
+                                type:"article",
+                                key:item.id,
+                                value:item,
+                                sort:sortStatus + item.modifyDate +'',
+                                keyword:',['+ item.articleOption.articleCatalog.id + '],' + item.title + ','
+                            }
+                            event.save(saveData,function(e){
+                                _this.ctrlProcess();
+                                    if(e.type == 'success'){
+                                    if(index == 9){
+                                        _this.listCurrent = _this.listCurrent + _this.listPageSize;
+                                        _this.downloadArticle();
+                                    }else if(index == data.data.data.length - 1){
+                                        _this.doneDown();
+                                    }
+                                }else{
+                                }
+                            })
+                        })
+                    }else if(data.type == 'success' && data.data.data == ''){
+                        if(data.data.recordsTotal == 0){
+                            event.toast('您还没有发布过文章。');
+                        }else{
+                            _this.doneDown();
+                        }
+                    }else{
+                        event.toast(data.content);
+                    }
+                    _this.clicked = false;
+                },function (err) {
+                    _this.clicked = false;
+                    event.toast(err.content);
+                })
+            },
+//            下载完成后执行
+            doneDown(){
+                let _this = this;
+                _this.toSendArticle = false;
+//                                    全局监听文章变动
+                let listenData = utils.message('success','文章改变','');
+                event.sendGlobalEvent('onArticleChange',listenData);
 //                event.toast('同步完成');
-//                _this.currentPro = 0;
-//                _this.processWidth = 0;
-//                this.listCurrent = 0;
-//            },
-//            //            控制进度条
-//            ctrlProcess(data){
-//                this.currentPro ++;
-//                this.processWidth = this.currentPro *  (100 / this.proTotal) * 5;
-////                this.processWidth = parseInt(data.data) * 5;
-//                if(this.processWidth >= 500){
-//                    this.processWidth = 500;
-//                }
-//            },
+                _this.currentPro = 0;
+                _this.processWidth = 0;
+                this.listCurrent = 0;
+            },
+            //            控制进度条
+            ctrlProcess(data){
+                this.currentPro ++;
+                this.processWidth = this.currentPro *  (100 / this.proTotal) * 5;
+//                this.processWidth = parseInt(data.data) * 5;
+                if(this.processWidth >= 500){
+                    this.processWidth = 500;
+                }
+            },
         }
     }
 </script>
