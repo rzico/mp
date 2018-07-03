@@ -60,6 +60,7 @@
             <div class="mt20" :style="{minHeight:screenHeight + 'px'}">
                 <!--无数据提示-->
                 <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
+                <!--相关专栏-->
                 <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30 ">
                     <!--类别-->
                     <div   class="pl30 pr30  bgWhite">
@@ -68,20 +69,18 @@
                             <text class="sub_title pb10 fz28" :style="{fontFamily:'iconfont'}" @click="goMoreSearch(2)" v-if="searchList.length > 10">更多&#xe630;</text>
                         </div>
                     </div>
-                        <!--朋友-->
-                        <div  class="cell-line">
-                            <div class="contentBox pb15">
-                                <!--好友-->
-                                <div class="singleUserBox"  v-for="(item,index) in searchList.friend" v-if="index <= 9" @click="goAuthor(item.id)">
-                                    <image class="logo" :src="item.logo | watchFriendLogo"></image>
-                                    <div >
-                                        <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
-                                    </div>
+                    <!--朋友-->
+                    <div  class="cell-line">
+                        <div class="contentBox pb15">
+                            <!--好友-->
+                            <div class="singleUserBox"  v-for="(item,index) in searchList.friend" v-if="index <= 9" @click="goAuthor(item.id)">
+                                <image class="logo" :src="item.logo | watchFriendLogo"></image>
+                                <div >
+                                    <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
                                 </div>
-
                             </div>
-
                         </div>
+                    </div>
                 </div>
                 <!--更多专栏搜索-->
                 <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 2" class="bt30">
@@ -98,7 +97,7 @@
                             <div class="flex-row "  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div style="width: 460px;">
-                                    <text class="title ml20">{{item.nickName | watchNickName}}</text>
+                                    <text class="title ml20">{{item.name | watchNickName}}</text>
                                     <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
                                 </div>
                                 <div style="width: 130px;">
@@ -409,7 +408,7 @@
                     name:'文章'
                 },{
                     id:'2',
-                    name:'用户'
+                    name:'专栏'
                 }],
                 whichCorpus:0,
                 screenHeight:0,
@@ -685,13 +684,10 @@
                         this.searchList.friend = [];
                         break;
                     case 2:
-                        if(utils.isNull(this.searchList.friend)){
-                            this.pageStart=0;
-                            this.userSearch();
-                        }else{
-                            this.pageStart = this.searchList.article.length;
-                        }
                         this.searchList.article = [];
+                        this.searchList.friend = [];
+                        this.pageStart=0;
+                        this.userSearch();
                         break;
                     default:
                         break;

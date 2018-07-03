@@ -15,7 +15,7 @@
                 <div class="header mt20 flex-row">
                     <div >
                         <text  class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe62e;</text>
-                    </div>-
+                    </div>
                     <div>
                         <div  class="logBox"  v-for="(orderLog,index) in item.orderLogs" :class="[index != 0 ? 'mt20' : '']">
                             <text class="title">{{orderLog.content}} </text>

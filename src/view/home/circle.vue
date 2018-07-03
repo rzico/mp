@@ -85,18 +85,18 @@
     }
     .slideImage {
         width: 750px;
-        /*height: 280px;*/
-        height: 375px;
+        height: 280px;
+        /*height: 375px;*/
     }
     .slider {
         width: 750px;
-        height: 375px;
-        /*height: 280px;*/
+        /*height: 375px;*/
+        height: 280px;
     }
     .frame {
         width: 750px;
-        /*height: 280px;*/
-        height: 375px;
+        height: 280px;
+        /*height: 375px;*/
         position: relative;
     }
     /*轮播图*/

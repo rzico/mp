@@ -13,6 +13,7 @@
                     </div>
             </div>
             <div class="qrcode_panel"  >
+                <!--<div  v-if="!qrcodeLoading"  class="qrcode coverAbsoTop " ></div>-->
                 <image class="qrcode" resize="cover"
                        :src="qrcode">
                 </image>
@@ -91,7 +92,8 @@
     .qrcode {
         width:450px;
         height:450px;
-        background-color: black;
+        /*background-color: black;*/
+        background-color: rgba(136,136,136,0.1);
     }
 
     .name {
@@ -151,7 +153,8 @@
                 logo:utils.locate('resources/images/background.png'),
                 autograph:"",
                 qrcode:"",
-                copy:"点击复制名片"
+                copy:"点击复制名片",
+//                qrcodeLoading:false
             }
         },
         methods: {
@@ -177,7 +180,8 @@
                                 _this.autograph = member.autograph;
                             }
                             _this.copy = "邀请码:"+(member.id+10200)+"";
-                            _this.qrcode = "http://pan.baidu.com/share/qrcode?w=450&h=450&url=" +encodeURI(_this.dataURL+"/q/865380"+(member.id+10200)+'.jhtml');
+//                            _this.qrcode = "http://pan.baidu.com/share/qrcode?w=450&h=450&url=" + encodeURI(_this.dataURL+"/q/865380"+(member.id+10200)+'.jhtml');
+                             _this.qrcode = "http://qr.liantu.com/api.php?w=450&text=" + encodeURI(_this.dataURL+"/q/865380"+(member.id+10200) + ".jhtml");
                             _this.isShow = true;
                         } else {
                             event.toast(data.content);
@@ -191,7 +195,12 @@
             copyCode(){
                 clipboard.setString(this.copy);
                 event.toast('复制成功');
-            }
+            },
+//            二维码加载出来
+//            onImageLoad(){
+//                this.qrcodeLoading = true;
+//                utils.debug('onload')
+//            },
         }
      }
 </script>

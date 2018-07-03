@@ -17,6 +17,9 @@
         <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list v-else  class="list" :scrollable="canScroll">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
+            </refresh>
             <!--朋友信息-->
             <cell v-for="(item,index) in messageList" >
                 <!--左滑删除时如果是直接在cell下 而没有多一个div包住的话 第一次要点删除的文字才能触发。-->
@@ -33,8 +36,8 @@
                         <div class="newMessage" v-if="item.unRead != '' && item.unRead != 0 && item.unRead != null && item.unRead != undefined">
                             <text class="messageTotal">{{item.unRead | watchUnRead}}</text>
                         </div>
-                        <div style="flex: 5;">
-                            <div style="flex-direction: row;flex: 1;" >
+                        <div class="flexFive">
+                            <div class="mesInfoBox">
                                 <!--名字与内容-->
                                 <div class="messageText">
                                     <text class="friendName">{{item | watchName}}</text>
@@ -44,7 +47,7 @@
                                     <text class="messageTime">{{item.createDate | timefmt}}</text>
                                 </div>
                             </div>
-                            <div style="flex: 2;height: 45px;justify-content: center;">
+                            <div class="mesContBox">
                                 <text class="friendMessage">{{item.content}}</text>
                             </div>
                         </div>
@@ -75,7 +78,15 @@
 
 <style lang="less" src="../../style/wx.less"/>
 <style>
-
+    .mesInfoBox{
+        flex-direction: row;flex: 1;
+    }
+    .flexFive{
+        flex:5;
+    }
+    .mesContBox{
+        flex: 2;height: 45px;justify-content: center;
+    }
     .rightTop{
         height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
     }
@@ -105,7 +116,7 @@
         font-size: 32px;color: #fff;
     }
     .deleteBox{
-        position: absolute;right: 0px;top: 0px;height: 120px;align-items: center;width: 130px;justify-content: center;
+        position: absolute;right: 0px;top: 0px;height: 119px;align-items: center;width: 130px;justify-content: center;
     }
     /*.nav {*/
     /*flex:1;*/
@@ -173,6 +184,8 @@
         color: #999;
         font-size: 26px;
         padding-right: 20px;
+        /*width:625px;*/
+        width:620px;
     }
     .friendsImageBox{
         flex: 1;
@@ -221,6 +234,8 @@
                 pageName:'消息',
 //                showMenu:false,
                 clicked:false,
+                refreshing:false,
+                refreshImg:utils.locate('resources/images/loading.png'),
             }
         },
         components: {
@@ -340,6 +355,34 @@
             };
         },
         methods:{
+            onrefresh:function () {
+                var _this = this;
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+//                    _this.getAllInform();
+                }, 1000)
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc

@@ -4,10 +4,9 @@
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 var websiteURL = 'https://mopian.1xx.me';
-// var websiteURL = 'http://192.168.2.106:8080';
-// const websiteURL = 'http://dev.1xx.me';
+// const websiteURL = 'https://dev.1xx.me';
 const event = weex.requireModule('event');
-const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 let utilsFunc = {
     initIconFont () {
         let domModule = weex.requireModule('dom');

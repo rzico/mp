@@ -313,6 +313,7 @@
 </style>
 
 <script>
+    const album = weex.requireModule('album');
     const modal = weex.requireModule('modal');
     const dom = weex.requireModule('dom');
     const globalEvent = weex.requireModule('globalEvent');
@@ -475,15 +476,27 @@
 //            页面被关闭
             pageDestroy:function(){
                 globalEvent.removeEventListener("buyGood");
+                globalEvent.removeEventListener("saveImage");
             },
             pageShow:function(){
                     let _this = this;
 //            商品购买控制
-            globalEvent.addEventListener("buyGood", function (e) {
+                globalEvent.addEventListener("buyGood", function (e) {
 //                utils.debug(e);
                     _this.goodId = e.goodId;
                     _this.buyShow = true;
-            });
+                });
+//            图片保存控制
+                globalEvent.addEventListener("saveImage", function (e) {
+//                utils.debug(e);
+                    album.saveImage(decodeURIComponent(e.url),function (mes) {
+                        if(mes.type == 'success'){
+                            event.toast('图片已保存到手机相册');
+                        }else{
+                            event.toast(mes.content);
+                        }
+                    })
+                });
 
             },
             articleOutBoxTop:function () {

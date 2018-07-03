@@ -315,7 +315,7 @@
                         needLayout:false,
                         delay: 0 //ms
                     })
-                    this.refreshing = false
+                    this.refreshing = false;
                     _this.getNewFriends();
                 }, 1000)
             },

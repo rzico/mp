@@ -56,9 +56,11 @@
             <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
             <!--</transition-group>-->
             <!--顶部个人信息栏-->
-            <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
+            <!--,bgImageLoad ? 'bkg-primary' : 'bkg-white'-->
+            <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
                 <!--背景图片-->
-                <image   class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
+                <!--@load="onImageLoad(item)"-->
+                <image   class="backgroundImage" :class="[headerBgImg()]"    :src="bgImgUrl"></image>
                 <!--遮罩层-->
                 <!--<image class="backgroundMask" :src="maskUrl"></image>-->
                 <div  class="topHead">
@@ -520,7 +522,7 @@
         position: relative;
         padding-top:40px;
         height: 420px;
-        background-color: black;
+        /*background-color: black;*/
     }
     .topBtnBox{
         flex-direction: row;
@@ -633,6 +635,7 @@
                 clicked:false,
                 bottomNum:0,
                 noDataHint:"暂无文章",
+//                bgImageLoad:false,
 
             }
         },
@@ -649,7 +652,7 @@
             noData
         },
         created:function () {
-            utils.initIconFont();
+
             var _this = this;
             this.UId = utils.getUrlParameter('id');
             this.authorId = event.getUId();
@@ -950,6 +953,7 @@
                         function (data) {
                             if(data.type == 'success'){
                                 _this.isFocus = !_this.isFocus;
+                                _this.fansNum -- ;
                                 event.sendGlobalEvent('onUserInfoChange',data);
                             }else{
                                 event.toast(data.content);
@@ -965,6 +969,7 @@
                         function (data) {
                             if(data.type == 'success'){
                                 _this.isFocus = !_this.isFocus;
+                                _this.fansNum ++ ;
                                 event.sendGlobalEvent('onUserInfoChange',data);
                             }else{
                                 event.toast(data.content);
@@ -1052,7 +1057,11 @@
                         event.toast("网络不稳定请重试");
                     }
                 )
-            }
+            },
+//            背景图添加完成
+//            onImageLoad(){
+//                this.bgImageLoad = true;
+//            }
         }
     }
 </script>

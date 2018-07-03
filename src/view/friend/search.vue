@@ -126,7 +126,7 @@
                 this.clicked = true;
                 var _this = this;
                 this.isSearch = true;
-                GET('weex/member/friends/search.jhtml?keyword='+    encodeURI(_this.keyword),function (data) {
+                GET('weex/member/friends/search.jhtml?keyword='+    encodeURIComponent(_this.keyword),function (data) {
                         if(data.type == 'success'){
                             _this.friendsList = [];
                             data.data.forEach(function (item) {

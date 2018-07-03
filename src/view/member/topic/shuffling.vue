@@ -44,7 +44,7 @@
                     <div v-for="(item,index) in imageList" >
                         <div  v-if="!item.loading"  class="goodsImg coverAbsoTop " ></div>
                         <image class="goodsImg " resize="cover" @load="onImageLoad(item)" @click="changeCover(item,index)" :src="item.thumbnailImage"></image>
-                        <div class="changeCoverBox">
+                        <div class="changeCoverBox" @click="changeCover(item,index)">
                             <text class="fz26 white">更换封面</text>
                         </div>
                         <!--右上角关闭按钮"x"-->
@@ -645,6 +645,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/member/topic/articleList.js?from=shuffling'),function (res) {
 //                    utils.debug(res);
+//                    utils.debug(res.data.id);
 //                    utils.debug(res.type);
 //                    utils.debug(res.data.value.thumbnail);
                     if(res.type == 'success' && !utils.isNull(res.data)){
@@ -656,7 +657,7 @@
                                 let item = {
                                     paraImage: data.data.originalPath,
                                     thumbnailImage: data.data.originalPath,
-                                    actionId:res.data.id,
+                                    actionId:res.data.key,
                                     url:'',
                                     action:'OPENARTICLE'
                                 }

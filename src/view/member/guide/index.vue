@@ -19,28 +19,28 @@
             <text class="sub_title">免费开通专栏，即可拥有自已的微信、小程序专栏</text>
         </div>
 
-        <div class="cell-row cell-line">
-            <div class="cell-panel space-between cell-clear" @click="bindingCard()">
-                <div class="flex-row flex-start pl20"  >
-                    <image class="number" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/number2.jpeg"></image>
-                    <text class="icoPitch pl20" :style="{fontFamily:'iconfont'}" v-if="steped2">&#xe64d;</text>
-                    <text class="title ml10" v-if="!steped2">绑定银行卡</text>
-                    <text class="complete ml10" v-if="steped2">已绑定银行卡</text>
-                </div>
-                <div class="flex-row flex-end">
-                    <text class="sub_title"></text>
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                </div>
-            </div>
-        </div>
-        <div class="sub-panel ">
-            <text class="sub_title ">绑定银行卡完成实名认证</text>
-        </div>
+        <!--<div class="cell-row cell-line">-->
+            <!--<div class="cell-panel space-between cell-clear" @click="bindingCard()">-->
+                <!--<div class="flex-row flex-start pl20"  >-->
+                    <!--<image class="number" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/number2.jpeg"></image>-->
+                    <!--<text class="icoPitch pl20" :style="{fontFamily:'iconfont'}" v-if="steped2">&#xe64d;</text>-->
+                    <!--<text class="title ml10" v-if="!steped2">绑定银行卡</text>-->
+                    <!--<text class="complete ml10" v-if="steped2">已绑定银行卡</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                    <!--<text class="sub_title"></text>-->
+                    <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="sub-panel ">-->
+            <!--<text class="sub_title ">绑定银行卡完成实名认证</text>-->
+        <!--</div>-->
 
         <div class="cell-row cell-line">
             <div class="cell-panel space-between  cell-clear" @click="pay()">
                 <div class="flex-row flex-start ">
-                    <image class="number" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/number3.jpeg"></image>
+                    <image class="number" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/number2.jpeg"></image>
                     <text class="icoPitch " :style="{fontFamily:'iconfont'}" v-if="steped3">&#xe64d;</text>
                     <text class="title ml10" v-if="!steped3">支付费用</text>
                     <text class="complete ml10" v-if="steped3">已支付费用</text>
@@ -57,7 +57,7 @@
         <div class="cell-row cell-line">
             <div class="cell-panel space-between  cell-clear" @click="appletAgree()">
                 <div class="flex-row flex-start pl20">
-                    <image class="number" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/number4.jpeg"></image>
+                    <image class="number" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/number3.jpeg"></image>
                     <text class="icoPitch pl20" :style="{fontFamily:'iconfont'}" v-if="steped4">&#xe64d;</text>
                     <text class="title ml10" v-if="!steped4">小程序授权</text>
                     <text class="complete ml10" v-if="steped4">小程序已授权</text>
@@ -188,66 +188,32 @@
                     return;
                 }
             },
-//            判断是否已绑卡，未绑卡跳转绑卡界面，已绑卡不跳转
-            bindingCard:function () {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                var _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                }, 1500);
-                if(this.steped1 == true) {
-                    if (_this.steped2 == false) {
-                        event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
-                            _this.open();
-                        })
-                    } else {
-                        return;
-                    }
-                }else{
-                    var _this = this;
-                    modal.alert({
-                        message: '请先完成第一步',
-                        okTitle: '知道了'
-                    })
-                }
-            },
-            //            判断是否开通店铺
-            shop:function () {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                var _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                }, 1500);
-                if(this.steped1 !== true) {
-                    modal.alert({
-                        message: '请先完成第一步',
-                        okTitle: '知道了'
-                    })
-                    return
-                } if(this.steped2 !== true) {
-                    modal.alert({
-                        message: '请先完成第二步',
-                        okTitle: '知道了'
-                    })
-                    _this.clicked = false;
-                    return
-                }else{
-                    var _this = this;
-                    if (_this.steped3 == false) {
-                        event.openURL(utils.locate('view/shop/shop/newShop.js'), function (message) {
-                            _this.open();
-                        })
-                    } else {
-                        return;
-                    }
-                }
-            },
+////            判断是否已绑卡，未绑卡跳转绑卡界面，已绑卡不跳转
+//            bindingCard:function () {
+//                if (this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
+//                var _this = this;
+//                setTimeout(function () {
+//                    _this.clicked = false;
+//                }, 1500);
+//                if(this.steped1 == true) {
+//                    if (_this.steped2 == false) {
+//                        event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+//                            _this.open();
+//                        })
+//                    } else {
+//                        return;
+//                    }
+//                }else{
+//                    var _this = this;
+//                    modal.alert({
+//                        message: '请先完成第一步',
+//                        okTitle: '知道了'
+//                    })
+//                }
+//            },
             //            判断是否付费
             pay:function () {
                 if (this.clicked) {
@@ -264,13 +230,7 @@
                         okTitle: '知道了'
                     })
                     return
-                } if(this.steped2 !== true) {
-                    modal.alert({
-                        message: '请先完成第二步',
-                        okTitle: '知道了'
-                    })
-                    return
-                }else {
+                } else {
                     var _this = this;
                     if (_this.steped3 == false) {
                         POST('weex/member/topic/activate.jhtml').then(

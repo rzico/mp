@@ -200,8 +200,6 @@
                             data.data.data.forEach(function (item) {
 //                             （配合懒加载）
                                 item.loading = false;
-//                             （配合懒加载）
-                                item.loadingImg = '';
                                 if(!utils.isNull(item.thumbnail)){
                                     item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
                                 }
@@ -211,8 +209,6 @@
                             data.data.data.forEach(function (item) {
 //                             （配合懒加载）
                                 item.loading = false;
-//                             （配合懒加载）
-                                item.loadingImg = '';
                                 if(!utils.isNull(item.thumbnail)){
                                     item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
                                 }

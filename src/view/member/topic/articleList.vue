@@ -1,7 +1,5 @@
 <template>
     <div class="wrapper">
-        <!--<navbar :title="title"  @goback="goback" ></navbar>-->
-        <!--<div style="min-height: 136px">-->
         <div class="header"  :class="[classHeader()]">
             <transition name="component-fade-top" mode="out-in">
                 <div class="pageTop" v-if="!doSearch">
@@ -33,7 +31,7 @@
         <!--输入栏-->
         <!--<searchNav v-else :searchHint="searchHint" :searchOrCancel="searchOrCancel" :showCancel="false" :cancelSearch="true" @noSearch="noSearch" @oninput="oninput" @search="search"  ref="childFind"> </searchNav>-->
         <!--</div>-->
-        <div  class="corpusBox" >
+        <div  class="corpusBox">
             <scroller scroll-direction="horizontal"  class="corpusScroll">
                 <div class="articleClass">
                     <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in catagoryList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
@@ -65,7 +63,7 @@
                 <!--文章底部-->
                 <div class="articleFoot">
                     <div>
-                        <text class="articleDate"   v-if="item.value.articleOption.articleCatalog.id != '99'">{{item.sort.substring(2) | timeDatefmt}}</text>
+                        <text class="articleDate" v-if="item.value.articleOption.articleCatalog.id != '99'">{{item.sort.substring(2) | timeDatefmt}}</text>
                         <text class="articleDate" v-else>{{item.value.modifyDate | timeDatefmt}}</text>
                     </div>
                     <div class="relevantInfo" v-if="item.articleSign != '样例'">
@@ -80,12 +78,10 @@
             </div>
             </cell>
         </list>
-
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-
     .categoryBox{
         position: absolute;background-color: rgba(136,136,136,0.1);left: 670px;bottom: 120px;border-radius: 5px;padding-right: 3px;padding-left: 3px;padding-top: 3px;padding-bottom: 3px;
     }
@@ -98,7 +94,6 @@
         flex-direction: row;
     }
     /*<!--搜索栏-->*/
-
     .searchCancelText{
         color: #fff;
     }
@@ -138,8 +133,6 @@
         height: 58px;
         width:400px;
     }
-
-
     /*<!--顶部导航栏-->*/
     .navRightBox{
         min-width: 92px;
@@ -195,9 +188,7 @@
         border-style: solid;
         border-color: gainsboro;
         background-color: #fff;
-
     }
-
     .relevantImage {
         flex-direction: row;
         font-size: 32px;
@@ -206,17 +197,14 @@
         margin-left: 5px;
         align-items: center;
     }
-
     .relevantText {
         color: #888;
         font-size: 26px;
     }
-
     .relevantInfo {
         flex-direction: row;
         align-items: center;
     }
-
     .articleFoot {
         flex-direction: row;
         justify-content: space-between;
@@ -224,12 +212,10 @@
         align-items: center;
         margin-left: 30px;
     }
-
     .articleDate {
         font-size: 24px;
         color: #888;
     }
-
     .articleCover {
         /*height: 300px;*/
         /*height: 345px;*/
@@ -240,7 +226,6 @@
         margin-top: 30px;
         margin-bottom: 30px;
     }
-
     .articleBox {
         background-color: #ffffff;
         /*padding-left: 30px;*/
@@ -289,7 +274,6 @@
         data:{
             refreshing:false,
             reviewNum:0,
-            isPopup:false,
             catagoryList:[{
                 name:'全部',
                 id:''
@@ -300,7 +284,6 @@
             searchHint: "输入文章名",
             searchOrCancel:'取消',
             keyword:'',
-            roles:'',
             corpusList:[{
                 name:'全部',
                 id:''
@@ -474,18 +457,6 @@
                     this.searchGoods();
                 }
             },
-            popup:function (item,index) {
-                if(!utils.isNull(this.pageFrom)){
-                    let E = utils.message('success','返回商品',item)
-                    event.closeURL(E);
-                }else{
-                    if (this.isPopup==false) {
-                        this.isPopup = true;
-                    }
-                    this.goodsId = item.id;
-                    this.goodsIndex = index;
-                }
-            },
 //            分类切换
             corpusChange:function(index,id){
 //                event.toast(id);
@@ -531,50 +502,6 @@
                 },function (err) {
                     event.toast(err.content);
                 })
-            },
-//            发布商品weex/member/product/article.jhtml?id=goodsId
-            doPublish(){
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-//                utils.debug('weex/member/product/article.jhtml?id=' + this.goodsId);
-//                判断是否已发布过的商品，是就跳转编辑旧文章，不是就编辑新的文章
-//                GET('weex/member/product/article.jhtml?id=' + this.goodsId,function (data) {
-//                    if(data.type == 'success'){
-//                        if(data.data == 0){
-//                        如果没有历史记录就新添加一个缓存
-                var goodsPublish =  this.articleList[this.goodsIndex];
-                goodsPublish = JSON.stringify(goodsPublish);
-                storage.setItem('goodsPublish', goodsPublish , e => {
-                    if(e.result == 'success'){
-                        event.openURL(utils.locate('view/member/editor/editor.js?goodsStorageName=goodsPublish'), function (data) {
-                            _this.clicked = false;
-                            if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                                let E = {
-                                    isDone : 'complete'
-                                }
-                                let backData = utils.message('success','成功',E);
-                                event.closeURL(backData);
-                            }
-                        });
-                    }else{
-                        _this.clicked = false;
-                        event.toast('网络不稳定');
-                    }
-                });
-//                        }else{
-//                            event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + data.data),function (data) {})
-//                        }
-//                    }else{
-//                        event.toast(data.content);
-//                    }
-//                },function (err) {
-//                    event.toast(err.content);
-//                })
-
-
             },
 //            返回
             goback:function () {

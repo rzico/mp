@@ -462,7 +462,6 @@
                     _this.distributionName = data.data.distribution.name;
                 }
                 if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1) &&  utils.isNull(data.data.products[0].isNew)){
-
 //                        无多规格时的商品id
                     let productId =  data.data.products[0].productId;
                     if(!utils.isNull(productPrice)){
@@ -479,10 +478,9 @@
 
 //                        无多规格时的价格
                     let productPrice =  data.data.products[0].price;
-                    if(!utils.isNull(productPrice)){
-                        _this.topLinePrice = utils.currencyfmt(productPrice);
-                    }
-
+//                    if(!utils.isNull(productPrice)){
+//                        _this.topLinePrice = utils.currencyfmt(productPrice);
+//                    }
 //                        无多规格时的数量
                     let productNum =  data.data.products[0].stock;
                     if(!utils.isNull(productNum)){
@@ -498,9 +496,9 @@
                         if(utils.isNull(item.stock)){
                             item.stock = '';
                         }
-                        if(!utils.isNull(item.price)){
-                            item.price = utils.currencyfmt(item.price)
-                        }
+//                        if(!utils.isNull(item.price)){
+//                            item.price = utils.currencyfmt(item.price)
+//                        }
 
                         _this.list.push(item);
                     })
@@ -971,7 +969,6 @@
                     products: _this.productTemplates,
                 };
 
-//                utils.debug(productData);
 //                转成json字符串后上传服务器
                 productData = JSON.stringify(productData);
 //                网络请求，保存商品

@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
-        <captcha :title="cptitle" @onclick="onclick" ref="captcha"  :mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
+        <captcha :title="cptitle" @onclick="onclick" ref="captcha" :tel="mobile" :mobile="mobile" @onSend="onSend" @onEnd="onEnd"> </captcha>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -11,18 +11,14 @@
 
 </style>
 <script>
-    const modal = weex.requireModule('modal')
-    var navigator = weex.requireModule('navigator')
     import navbar from '../../../include/navbar.vue'
     import { POST, GET } from '../../../assets/fetch'
     var event = weex.requireModule('event');
     import captcha from '../../../include/captcha.vue'
     import utils from '../../../assets/utils';
-    var stream = weex.requireModule('stream')
     export default {
         components: {
             navbar,captcha
-
         },
         props: {
             title: { default: "绑定手机"},
@@ -34,9 +30,9 @@
             }
         },
         created() {
+
             this.mobile = utils.getUrlParameter("mobile");
 //            this.onSend();
-//            utils.debug(222)
         },
         methods: {
             onSend: function (e) {

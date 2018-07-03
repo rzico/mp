@@ -19,6 +19,9 @@
         <!--<text style="color: #fff;font-size: 35px">朋友</text>-->
         <!--</div>-->
         <list class="listBody"  :scrollable="canScroll">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
+            </refresh>
             <cell ref="linkref" >
                 <!--新的朋友-->
                 <!--<div class="">-->
@@ -424,7 +427,9 @@
                     name:[]
                 }],
                 allLetter:['||','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'],
-                clicked:false
+                clicked:false,
+                refreshing:false,
+                refreshImg:utils.locate('resources/images/loading.png'),
             }
         },
         props: {
@@ -486,6 +491,34 @@
             });
         },
         methods: {
+            onrefresh:function () {
+                var _this = this;
+
+                _this.pageStart = 0;
+                this.refreshing = true;
+                animation.transition(_this.$refs.refreshImg, {
+                    styles: {
+                        transform: 'rotate(360deg)',
+                    },
+                    duration: 1000, //ms
+                    timingFunction: 'linear',//350 duration配合这个效果目前较好
+                    needLayout:false,
+                    delay: 0 //ms
+                })
+                setTimeout(() => {
+                    animation.transition(_this.$refs.refreshImg, {
+                        styles: {
+                            transform: 'rotate(0)',
+                        },
+                        duration: 10, //ms
+                        timingFunction: 'linear',//350 duration配合这个效果目前较好
+                        needLayout:false,
+                        delay: 0 //ms
+                    })
+                    this.refreshing = false
+//                    _this.getAllInform();
+                }, 1000)
+            },
             updateFriend(){
 
                 let _this = this;

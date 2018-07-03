@@ -7,7 +7,7 @@
                 </div>
                 <div class="search_box " @click="search()" >
                     <text class="ico_small gray searchMLMR fzz24" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                    <text class="sub_title  fzz24">搜索用户和文章</text>
+                    <text class="sub_title  fzz24">搜索用户专栏和文章</text>
                 </div>
                 <!--<div class="flex-center flex1 ml10"  style="justify-content: flex-end;" @click="scan()" >-->
                     <!--<text class="scan fz40 flex-row" style="width: 59px;" :style="{fontFamily:'iconfont'}" >&#xe607;</text>-->
@@ -85,7 +85,6 @@
         methods: {
             classHeader:function () {
                 let dc = utils.device();
-
                 return dc
             },
             menu:function (e) {

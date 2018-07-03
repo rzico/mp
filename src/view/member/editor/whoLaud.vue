@@ -70,7 +70,6 @@
     .fz30{
         font-size: 30px;
     }
-
 </style>
 <script>
     import navbar from '../../../include/navbar.vue';

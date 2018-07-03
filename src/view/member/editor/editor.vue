@@ -5,7 +5,7 @@
             <!--<refresh class="refresh" @refresh="onrefresh" @pullingdown="onpullingdown"  :display="refreshing ? 'show' : 'hide'"></refresh>-->
             <cell>
                 <div >
-                    <image class="coverImage" resize="cover" :src="coverImage"></image>
+                    <image class="coverImage" resize="cover" @load="onImageLoad($event,coverImage)" :src="coverImage"></image>
                     <div class="coverMaskImage"></div>
                     <text class="setTitle" @trigger="articleTitle(setTitle)" @click="articleTitle(setTitle)">{{setTitle}}</text>
                     <div class="bottomBtn addMusic" >
@@ -72,7 +72,7 @@
                             </div>
                             <!--图片-->
                             <div @click="editParaImage(item.paraImage,index,item.mediaType)">
-                                <image class="paraImage" resize="cover"  :src="item.thumbnailImage | watchThumbImg"></image>
+                                <image class="paraImage" resize="cover"   :src="item.thumbnailImage | watchThumbImg"></image>
                                 <div class="videoIconBox" v-if="item.mediaType == 'video'">
                                     <text class="videoIcon" :style="{fontFamily:'iconfont'}" >&#xe644;</text>
                                 </div>
@@ -99,9 +99,9 @@
                                 </div>
                             </div>
                             <!--图标-->
-                            <div class="iconBox"  v-else >
+                            <div class="iconBox" v-else>
                                 <!--添加文本-->
-                                <div class="addIconBox "  @click="addTextPara(index + 1)">
+                                <div class="addIconBox" @click="addTextPara(index + 1)">
                                     <text class="addText iconSize" :style="{fontFamily:'iconfont'}">&#xe609;</text>
                                 </div>
                                 <!--添加图片-->
@@ -146,10 +146,42 @@
                         </div>
                     </div>
                 </div>
+
+                <!--表单-->
+                <div  v-for="(item,index) in tableList"  class="voteMargin" @click="editTable(index)">
+                    <div class="paraBox paraBoxHeight">
+                        <!--左上角关闭按钮"x"-->
+                        <div class="paraClose" @click="closeTable(index)">
+                            <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
+                        </div>
+                        <!--图片-->
+                        <div>
+                            <image class="paraImage" :src="tableImg"></image>
+                        </div>
+                        <!--文章内容-->
+                        <div class="paraText">
+                            <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
+                            <text class="paraTextSize">{{item.textAreaTitle}}</text>
+                        </div>
+                    </div>
+                </div>
+
                 <!--添加商品-->
-                <div class="paraBox flexRow " @click="addLinkPara(paraList.length)">
-                    <text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe640;</text>
-                    <text class="addVote">添加商品</text>
+                <!--<div class="paraBox flexRow " @click="addLinkPara(paraList.length)">-->
+                    <!--<text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe640;</text>-->
+                    <!--<text class="addVote">添加商品</text>-->
+                <!--</div>-->
+
+                <!--添加投票-->
+                <!--<div class="paraBox flexRow " @click="goVote()">-->
+                <!--<text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
+                <!--<text class="addVote">添加投票</text>-->
+                <!--</div>-->
+
+                <!--添加表单-->
+                <div class="paraBox flexRow " @click="goTable()" v-if="tableList.length == 0">
+                <text class="addVote addVoteIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                <text class="addVote pt2">添加表单</text>
                 </div>
             </cell>
             <!--用来撑起底部空白区域-->
@@ -165,11 +197,12 @@
                     <text class="paraCloseSize" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
                 </div>
                 <div class="flex-row">
-                    <text class="fsize100">00:</text>
+                    <text class="fsize100" v-if="recordMinNum < 10">0</text>
+                    <text class="fsize100">{{recordMinNum}}:</text>
                     <text class="fsize100" v-if="recordNum < 10">0</text>
                     <text class="fsize100">{{recordNum}}</text>
                 </div>
-                <text class="fz32">最多60秒</text>
+                <text class="fz32">最多60分钟</text>
                 <div class="flex-row">
                     <div class="mr10">
                         <text class="addAudio iconSize fz40 recordIconPd" :style="{fontFamily:'iconfont'}" @click="startRecord()"   v-if="!isRecord">&#xe67e;</text>
@@ -177,9 +210,9 @@
                     </div>
                     <div class=" ml10 mr10" v-if="!isRecord && recordNum !=0" >
                         <text class="addAudio iconSize recordIconPd fz40"  v-if="!isPlayAudio" @click="playAudio()" :style="{fontFamily:'iconfont'}">&#xe6bc;</text>
-                        <div v-else @click="playAudio()">
-                            <text class="addAudio iconSize fz40 playAudioIcon "   ></text>
-                            <image class="voiceGifImg " resize="cover" :src="playVoiceImg"   ></image>
+                        <div v-else @click="playAudio()" >
+                            <text class="addAudio iconSize fz40 playAudioIcon"></text>
+                            <image class="voiceGifImg " resize="cover" :src="playVoiceImg"></image>
                         </div>
                         <!--<text class="addAudio iconSize fz40 recordIconPd playingAudio" :style="{fontFamily:'iconfont'}" @click="playAudio()" v-else>&#xe67c;</text>-->
                     </div>
@@ -191,10 +224,15 @@
         </div>
         <!--完成文章遮罩-->
         <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
+        <!--等待遮罩-->
+        <!--<waiting  v-if="waitShow"></waiting>-->
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .pt2{
+        padding-top: 2px;
+    }
     .voiceGifImg{
         width:40px;
         height:40px;
@@ -488,7 +526,6 @@
         padding-left: 12px;
         padding-top: 5px;
         background-color: #fff;
-
     }
     .addMusic{
         left: 25px;
@@ -517,6 +554,7 @@
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     import process from '../../../widget/process.vue';
+//    import waiting from '../../../widget/waiting.vue';
     const storage = weex.requireModule('storage');
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
@@ -529,7 +567,9 @@
     export default {
         data:function(){
             return{
+//                waitShow:false,
                 isPlayAudio:false,
+                recordMinNum:0,
                 recordNum:0,
                 isRecord:false,
                 showStore:'',
@@ -548,6 +588,7 @@
                 musicName:'',
                 paraList:[],
                 voteList:[],
+                tableList:[],
                 proportion:'',//缩略图的比例
                 serveCover:'',//用来保存图片上传服务器后存储服务器图片路径，避免覆盖图片时产生闪屏
                 catalogId:'',
@@ -557,6 +598,7 @@
                 articleTemplates:[],//文章段落数组
                 musicData:'',//音乐数据
                 voteData:[],//投票的数组
+                tableData:[],//表单的数组
                 hadChange:0,
 //                缓存有用
                 articleOption:{
@@ -604,10 +646,14 @@
         computed:{
             voteImg:function(){
                 return utils.locate('resources/images/vote.png');
+            },
+            tableImg:function () {
+                return utils.locate('resources/images/vote.png');
             }
         },
         components: {
             navbar,process
+//            , waiting
         },
         props: {
             title: { default: "编辑"},
@@ -759,6 +805,13 @@
             };
         },
         methods: {
+            onImageLoad(e,item){
+                if(!e.success){
+                    this.coverImage = utils.locate('resources/images/background.png');
+                }
+            },
+
+
 //            播放录音
             playAudio(){
                 let _this = this;
@@ -779,6 +832,7 @@
             },
             saveRecord(){
                 this.closeAudio();
+                audio.stop();
                 var _this = this;
 //                    data.data里存放的是用户选取的图片路径
                 let textImg = utils.locate('resources/images/text.png');
@@ -805,29 +859,42 @@
 //            录音中止
             completeRecord(){
                 let _this = this;
+//                this.waitShow = true;
+                if (!utils.isNull(_this.recordTimer))  {
+                    clearInterval(_this.recordTimer);
+                    _this.recordTimer = null;
+                }
                 audio.stopRecording(function(res){
                     if(res.type == 'success'){
                         _this.audioUrl = res.data.path;
-                        if (!utils.isNull(_this.recordTimer))  {
-                            clearInterval(_this.recordTimer);
-                            _this.recordTimer = null;
-                        }
-                        _this.isRecord = !_this.isRecord;
                         event.toast('录音成功');
+                    }else{
+                        event.toast(res.content);
                     }
+//                    _this.waitShow = false;
+                    _this.isRecord = !_this.isRecord;
                 })
             },
 //            开始录音
             startRecord(){
                 let _this = this;
+                _this.recordMinNum = 0;
                 _this.recordNum = 0;
+                if(this.isPlayAudio){
+                    this.isPlayAudio = !this.isPlayAudio;
+                    audio.stop();
+                }
                 audio.startRecording(function(res){
                     if(res.type == 'success'){
                         // 利用定时器 模拟进度条效果
                         _this.recordTimer = setInterval(function () {
                             _this.recordNum ++;
-                            if(_this.recordNum >= 59){
-                                _this.completeRecord();
+                            if(_this.recordNum >= 60){
+                                _this.recordMinNum ++ ;
+                                _this.recordNum = 0;
+                                if( _this.recordMinNum == 59 && _this.recordNum >=60 ){
+                                    _this.completeRecord();
+                                }
                             }
                         },1000);
                         _this.isRecord = !_this.isRecord;
@@ -845,6 +912,7 @@
                 this.chooseAudio = false;
                 this.isPlayAudio = false;
                 this.recordNum = 0;
+                this.recordMinNum = 0;
                 this.isRecord = false;
             },
 
@@ -1001,6 +1069,7 @@
                                         textHeight:'48',
                                         rowsNum:'1',
                                         editSign:-1,
+                                        autofocus:false,
                                     })
                                 })
 
@@ -1009,6 +1078,29 @@
                                     chooseTime:startTime,
                                     optionsIndex:optionIndex,
                                     textAreaTitle:item.title,
+                                    pageBox:optionBox
+                                })
+                            })
+                        }
+
+//                            表单
+                        if(!utils.isNull(articleData.forms)){
+                            articleData.forms.forEach(function (item) {
+                                //选项
+                                let optionBox = [];
+                                item.options.forEach(function (value) {
+                                    optionBox.push({
+                                        textAreaMessage:value,
+                                        textHeight:'48',
+                                        rowsNum:'1',
+                                        editSign:-1,
+                                        autofocus:false,
+                                    })
+                                })
+
+                                _this.tableList.push({
+                                    textAreaTitle:item.title,
+                                    textAreabutton:item.buttonName,
                                     pageBox:optionBox
                                 })
                             })
@@ -1079,7 +1171,8 @@
                     templates:this.articleTemplates,
                     thumbnail:this.coverImage,
                     title:this.setTitle,
-                    votes:this.voteData
+                    votes:this.voteData,
+                    forms:this.tableData,
                 }
                 allPageData = JSON.stringify(allPageData);
                 var storageType;
@@ -1181,9 +1274,19 @@
 
                 event.openEditor(_this.paraList[index].paraText,function (data) {
                     _this.clicked = false;
-                    if(data.data != '') {
+                    if(data.data != ''){
+                        data.data  = utils.filteremoji(data.data);
+                        //                将h1-h5换成\n
+                        let takeEnter=data.data.replace(/<\/h[0-9]>/g,"\n");
+//                将html标签替换，可能遗留空格
+                        let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
+//                将空格 &nbsp; 替换成 。
+                        let spaceText=nbspText.replace(/&nbsp;/g," ");
+//                将空格替换掉
+                         spaceText= spaceText.replace(/^\s+|\s+$/g, '')
+
 //                    将返回回来的html数据赋值进去
-                        _this.paraList[index].paraText = data.data;
+                        _this.paraList[index].paraText = spaceText;
                         _this.hadChange = 1;
 //                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
@@ -1343,7 +1446,7 @@
                     return;
                 }
 //                判断封面是否有值。
-                if(this.coverImage == utils.locate('resources/images/background.png')){
+                if(this.coverImage == utils.locate('resources/images/background.png') || utils.isNull(this.coverImage)){
                     event.toast('请设置封面');
                     return;
                 }
@@ -1457,16 +1560,16 @@
                                 _this.paraList[sendIndex].url = data.data;
                                 _this.paraList[sendIndex].serveThumbnail = '';
 //                                  保存缓存
-                                    _this.saveDraft();
+                                _this.saveDraft();
 //                                    因为异步操作,所以要分别在if elseif里写下列代码
-                                    sendIndex ++ ;
+                                sendIndex ++ ;
 //                        判断是否最后一张图
-                                    if(sendIndex < sendLength){
+                                if(sendIndex < sendLength){
 //                            回调自己自己
                                     _this.sendImage(sendIndex);
-                                    }else{//进行上传文章
-                                        _this.realSave();
-                                    }
+                                }else{//进行上传文章
+                                    _this.realSave();
+                                }
                             }else{//上传失败
                                 _this.uploadFail()
                                 event.toast(data.content);
@@ -1553,14 +1656,31 @@
                 this.articleTemplates=[];//文章段落数组
                 this.musicData='';//音乐数据
                 this.voteData=[];//投票的数组
-
+                this.tableData = [];//表单的数组
                 let _this = this;
                 this.musicData = {
                     name:_this.musicName,
                     id:musicId
                 }
-//                let voteData = [];
-//                投票组
+
+//                表单组
+                this.tableList.forEach(function (item) {
+//                    投票选项
+                    let voteOptions = [];
+                    let tableValues = [];
+                    item.pageBox.forEach(function (value) {
+                        voteOptions.push(value.textAreaMessage);
+                        tableValues.push('');
+                    })
+                    _this.tableData.push({
+                        title:item.textAreaTitle,
+                        buttonName:item.textAreabutton,
+                        options:voteOptions,
+                        values:tableValues
+                    })
+                });
+
+                //                投票组
                 this.voteList.forEach(function (item) {
 //                    投票选项
                     let voteOptions = [];
@@ -1582,6 +1702,8 @@
                     })
 //                    event.toast(voteData);
                 });
+
+
 //                var articleTemplates = [];
                 if(!utils.isNull(this.articleId) && this.articleId.length == 19){//判断id为19位的是草稿，或者有文章id时。
                     var uploadThumbnailImg ;
@@ -1644,10 +1766,14 @@
                     music:_this.musicData,
                     templates:_this.articleTemplates,
                     id:sendId,
+//                    title:encodeURIComponent(_this.setTitle),
                     title:_this.setTitle,
                     votes:_this.voteData,
+                    forms:_this.tableData,
                     isDraft:false,
                 };
+
+                utils.debug(_this.articleTemplates);
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
@@ -1655,6 +1781,7 @@
                     function (res) {
                         if(res.data != '' && res.type == 'success'){
 //                            _this.articleId = res.data.id;
+//                            res.data.title = decodeURIComponent(res.data.title);
                             let resDataStr = JSON.stringify(res.data);
                             let saveData = {
                                 type:"article",
@@ -1732,6 +1859,19 @@
                 },1500)
                 event.openEditor('',function (data) {
                     if(data.type == 'success' && data.data != ''){
+
+                        data.data  = utils.filteremoji(data.data);
+                        //                将h1-h5换成\n
+                        let takeEnter=data.data.replace(/<\/h[0-9]>/g,"\n");
+//                将html标签替换，可能遗留空格
+                        let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
+//                将空格 &nbsp; 替换成 。
+                        let spaceText=nbspText.replace(/&nbsp;/g," ");
+//                将空格替换掉
+                        spaceText= spaceText.replace(/^\s+|\s+$/g,'')
+
+
+
                         let textImg = utils.locate('resources/images/text.png');
 //                    将返回回来的html数据赋值进
                         let newPara = {
@@ -1740,7 +1880,7 @@
 //                                    小缩略图
                             thumbnailImage:textImg,
 //                        paraText:_this.checkInput(data.data),
-                            paraText:data.data,
+                            paraText:spaceText,
                             mediaType: "image",
                             show:true,
                             //          对象id
@@ -1997,6 +2137,29 @@
                     }
                 })
             },
+
+            //            删除表单
+            closeTable:function (index) {
+                var _this = this;
+                modal.confirm({
+                    message: '确定删除表单?',
+                    okTitle:'删除',
+                    cancelTitle:'取消',
+                    duration: 0.3
+                }, function (value) {
+                    console.log(value);
+                    if(value == '删除'){
+                        //                将内容删掉
+                        _this.tableList.splice(index,1);
+//                    添加修改标志
+                        _this.hadChange = 1;
+//                        if(utils.isNull(_this.articleId)){
+//                        临时保存到缓存
+                        _this.saveDraft();
+//                        }
+                    }
+                })
+            },
             //            编辑段落图片或者视频
             editParaImage(imgSrc,index,mediaType){
                 if(mediaType == 'audio'){
@@ -2221,6 +2384,60 @@
                     }
                 });
             },
+
+//            跳转表单页面
+            goTable:function(){
+//防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+//                event.openURL('http://192.168.2.157:8081/vote.weex.js',function (message) {
+                event.openURL(utils.locate('view/member/editor/table.js'),function (message) {
+                    if(message.type == 'success' &&  message.data != '') {
+                        _this.tableList.push(message.data);
+//                    添加修改标志
+                        _this.hadChange = 1;
+//                        if(utils.isNull(_this.articleId)){
+//                        临时保存到缓存
+                        _this.saveDraft();
+//                        }
+                    }
+                });
+            },
+//            编辑表单
+            editTable:function (index) {
+                //防止重复点击按钮
+                if(this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                let voteData = JSON.stringify(_this.tableList[index]);
+                storage.setItem('voteData', voteData);
+//                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
+                event.openURL(utils.locate('view/member/editor/table.js?name=voteData'),function (message) {
+                    if(message.type=='success' && message.data != '') {
+//                        直接=无法重新渲染页面。需要push后才可以
+//                        _this.voteList[index] = message.data;
+                        _this.tableList.splice(index,1);
+                        _this.tableList.splice(index,0,message.data);
+//                    添加修改标志
+                        _this.hadChange = 1;
+//                        if(utils.isNull(_this.articleId)){
+//                        临时保存到缓存
+                        _this.saveDraft();
+//                        }
+                    }
+                });
+            },
             //            跳转投票页面
             goVote:function () {
                 //防止重复点击按钮
@@ -2362,6 +2579,8 @@
         }
     }
 </script>
+
+
 
 
 

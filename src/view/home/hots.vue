@@ -60,50 +60,50 @@
                     </div>
                 </div>
             </div>
-            <!--    排版二  文章信息全在封面上-->
-            <div v-else-if="item.templateIndex == 1" class="bt10 positionRelative">
-                <!--文章封面-->
-                <div class="positionRelative">
-                    <!--配合图片懒加载，先显示一个本地图片-->
-                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempTwoCover coverAbsoTop" ></image>-->
-                    <div  v-if="!item.loading"  class="tempTwoCover coverAbsoTop "></div>
-                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.thumbnail "    @load="onImageLoad(item)"  resize="cover" class="tempTwoCover" ></image>
-                    <div class="tempTwoMask"></div>
-                    <div class="tempTwoAuthor" @click="goAuthor(item.authorId)">
-                        <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName white">{{item.author}}</text>
-                    </div>
-                    <div class="tempTwoContent"  @click="goArticle(item.id)">
-                        <!--只会显示出一个div,所以需要用个大div包住,-->
-                        <div>
-                            <div class="flex-row bt20">
-                                <!--<text class="articleTitle">{{item.title}}</text>-->
-                                <text class="articleTitle" style="color: #fff">{{item.title}}</text>
-                            </div>
-                            <!--<div class="flex-row bt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
-                            <!--<text class="articleContent">{{item.htmlTag}}</text>-->
+            <!--    排版二  文章信息全在封面上  6月20注释-->
+            <!--<div v-else-if="item.templateIndex == 1" class="bt10 positionRelative">-->
+                <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+                <!--<div class="positionRelative">-->
+                    <!--&lt;!&ndash;配合图片懒加载，先显示一个本地图片&ndash;&gt;-->
+                    <!--&lt;!&ndash;<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempTwoCover coverAbsoTop" ></image>&ndash;&gt;-->
+                    <!--<div  v-if="!item.loading"  class="tempTwoCover coverAbsoTop "></div>-->
+                    <!--&lt;!&ndash;使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)&ndash;&gt;-->
+                    <!--<image  :src="item.thumbnail "    @load="onImageLoad(item)"  resize="cover" class="tempTwoCover" ></image>-->
+                    <!--<div class="tempTwoMask"></div>-->
+                    <!--<div class="tempTwoAuthor" @click="goAuthor(item.authorId)">-->
+                        <!--<image :src="item.logo " resize="cover" class="authorImg"></image>-->
+                        <!--<text class="authorName white">{{item.author}}</text>-->
+                    <!--</div>-->
+                    <!--<div class="tempTwoContent"  @click="goArticle(item.id)">-->
+                        <!--&lt;!&ndash;只会显示出一个div,所以需要用个大div包住,&ndash;&gt;-->
+                        <!--<div>-->
+                            <!--<div class="flex-row bt20">-->
+                                <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
+                                <!--<text class="articleTitle" style="color: #fff">{{item.title}}</text>-->
                             <!--</div>-->
-                            <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                                <text class="articleContent white" >{{item.htmlTag}}</text>
-                            </div>
-                            <div class="space-between" >
-                                <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                    <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                    <text class="relevantText white">{{item.hits}}</text>
-                                    <text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                    <text class="relevantText white">{{item.laud}}</text>
-                                    <text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                    <text class="relevantText white">{{item.review}}</text>
-                                </div>
-                                <div>
-                                    <text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <!--&lt;!&ndash;<div class="flex-row bt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--<div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
+                                <!--<text class="articleContent white" >{{item.htmlTag}}</text>-->
+                            <!--</div>-->
+                            <!--<div class="space-between" >-->
+                                <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
+                                    <!--<text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                                    <!--<text class="relevantText white">{{item.hits}}</text>-->
+                                    <!--<text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                                    <!--<text class="relevantText white">{{item.laud}}</text>-->
+                                    <!--<text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                                    <!--<text class="relevantText white">{{item.review}}</text>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <!--    排版三  采取封面三分化-->
             <!--<div v-else-if="item.templateIndex == 2" class="tempPdBox">-->
@@ -267,7 +267,7 @@
                     </div>
                 </div>
             </div>
-            <!--    排版七  采取新版 标题置顶化-->
+            <!--    排版七  采取新版 标题置顶化 -->
             <div v-else-if="item.templateIndex == 6" class="articleBox">
                 <div class="flex-row bt20">
                     <div  class="flex-row ml20" @click="goAuthor(item.authorId)">
@@ -310,51 +310,51 @@
                 </div>
             </div>
 
-            <!--    排版八  文章信息全在封面上-->
-            <div v-else-if="item.templateIndex == 7" class="bt10">
-                <!--文章封面-->
-                <div class="positionRelative">
-                    <!--配合图片懒加载，先显示一个本地图片-->
-                    <!--<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>-->
-                    <div  v-if="!item.loading"  class="tempEightCover coverAbsoTop "></div>
-                    <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
-                    <image  :src="item.thumbnail"   @load="onImageLoad(item)" resize="cover" class="tempEightCover" ></image>
-                    <div class="tempTwoMask"></div>
-                    <div class="tempTwoAuthor" @click="goAuthor(item.authorId)">
-                        <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName white">{{item.author}}</text>
-                    </div>
-                    <div class="tempTwoContent"@click="goArticle(item.id)">
-                        <!--只会显示出一个div,所以需要用个大div包住,-->
-                        <div>
-                            <div class="flex-row bt20">
-                                <!--<text class="articleTitle">{{item.title}}</text>-->
-                                <text class="articleTitle" style="color: #fff">{{item.title}}</text>
-                            </div>
-                            <!--<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
-                            <!--<text class="articleContent">{{item.htmlTag}}</text>-->
+            <!--    排版八  文章信息全在封面上 6月20注释-->
+            <!--<div v-else-if="item.templateIndex == 7" class="bt10">-->
+                <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+                <!--<div class="positionRelative">-->
+                    <!--&lt;!&ndash;配合图片懒加载，先显示一个本地图片&ndash;&gt;-->
+                    <!--&lt;!&ndash;<image  :src="loadingImg"  v-if="!item.loading"  resize="cover" class="tempEightCover coverAbsoTop" ></image>&ndash;&gt;-->
+                    <!--<div  v-if="!item.loading"  class="tempEightCover coverAbsoTop "></div>-->
+                    <!--&lt;!&ndash;使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)&ndash;&gt;-->
+                    <!--<image  :src="item.thumbnail"   @load="onImageLoad(item)" resize="cover" class="tempEightCover" ></image>-->
+                    <!--<div class="tempTwoMask"></div>-->
+                    <!--<div class="tempTwoAuthor" @click="goAuthor(item.authorId)">-->
+                        <!--<image :src="item.logo " resize="cover" class="authorImg"></image>-->
+                        <!--<text class="authorName white">{{item.author}}</text>-->
+                    <!--</div>-->
+                    <!--<div class="tempTwoContent"@click="goArticle(item.id)">-->
+                        <!--&lt;!&ndash;只会显示出一个div,所以需要用个大div包住,&ndash;&gt;-->
+                        <!--<div>-->
+                            <!--<div class="flex-row bt20">-->
+                                <!--&lt;!&ndash;<text class="articleTitle">{{item.title}}</text>&ndash;&gt;-->
+                                <!--<text class="articleTitle" style="color: #fff">{{item.title}}</text>-->
                             <!--</div>-->
-                            <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                                <text class="articleContent white" >{{item.htmlTag}}</text>
-                            </div>
+                            <!--&lt;!&ndash;<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<text class="articleContent">{{item.htmlTag}}</text>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--<div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
+                                <!--<text class="articleContent white" >{{item.htmlTag}}</text>-->
+                            <!--</div>-->
 
-                            <div class="space-between" >
-                                <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                    <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                    <text class="relevantText white">{{item.hits}}</text>
-                                    <text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                    <text class="relevantText white">{{item.laud}}</text>
-                                    <text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                    <text class="relevantText white">{{item.review}}</text>
-                                </div>
-                                <div>
-                                    <text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <!--<div class="space-between" >-->
+                                <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
+                                    <!--<text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                                    <!--<text class="relevantText white">{{item.hits}}</text>-->
+                                    <!--<text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                                    <!--<text class="relevantText white">{{item.laud}}</text>-->
+                                    <!--<text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                                    <!--<text class="relevantText white">{{item.review}}</text>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
             <!--    排版九  传统模样的模版-->
             <div v-else class="articleBox">
@@ -476,18 +476,18 @@
     }
     .slideImage {
         width: 750px;
-        /*height: 280px;*/
-        height: 375px;
+        height: 280px;
+        /*height: 375px;*/
     }
     .slider {
         width: 750px;
-        height: 375px;
-        /*height: 280px;*/
+        /*height: 375px;*/
+        height: 280px;
     }
     .frame {
         width: 750px;
-        /*height: 280px;*/
-        height: 375px;
+        height: 280px;
+        /*height: 375px;*/
         position: relative;
     }
     /*轮播图*/

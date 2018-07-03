@@ -18,7 +18,6 @@
                     <div class="moneyBox">
                         <text class="fz65">{{item.ext.amount | currencyfmt}}</text>
                         <text class="fz30" >元</text>
-
                     </div>
                     <div class="contentLine">
                         <text class="fz30 black">订单号:</text>
@@ -97,7 +96,10 @@
                 <!--系统消息-->
                 <div class="lineBox pt20 pb20"  >
                     <div style="flex-direction: row">
-                        <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                        <div>
+                            <div v-if="!item.logoLoading"  class="headImg coverAbsoTop " ></div>
+                            <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                        </div>
                         <div class="commentsInfo">
                             <text class="fz30 nameColor" >{{item.nickName }}</text>
                             <text  class="commentsText">{{item.content}}</text>
@@ -111,15 +113,21 @@
             <cell v-if="messageType == 'gm_10203'" v-for="item in dataList" @click="goLink(item.id)">
                 <!--评论-->
                 <div class="lineBox pt20 pb20">
-                    <div style="flex-direction: row">
-                        <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                    <div class="onlyFlexRow">
+                        <div>
+                            <div v-if="!item.logoLoading"  class="headImg coverAbsoTop " ></div>
+                            <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                        </div>
                         <div class="commentsInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
                             <text  class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <image class="coverImg" resize="cover" :src="item.ext.thumbnail | watchThumbnail" ></image>
+                    <div>
+                        <div v-if="!item.thumLoading"  class="coverImg coverAbsoTop " ></div>
+                        <image class="coverImg" resize="cover" :src="item.ext.thumbnail | watchThumbnail" ></image>
+                    </div>
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>
@@ -127,43 +135,58 @@
                 <!--点赞-->
                 <div class="lineBox lineBoxHeight" >
                     <div class="flex-row">
-                        <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                        <div>
+                            <div v-if="!item.logoLoading"  class="headImg coverAbsoTop " ></div>
+                            <image class="headImg" :src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                        </div>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                            <text class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <image class="coverImg"  resize="cover"  :src="item.ext.thumbnail | watchThumbnail"></image>
+                    <div>
+                        <div v-if="!item.thumLoading"  class="coverImg coverAbsoTop " ></div>
+                        <image class="coverImg"  resize="cover"  :src="item.ext.thumbnail | watchThumbnail"></image>
+                    </div>
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>
             <cell  v-if="messageType == 'gm_10205'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--关注-->
-                <div class="lineBox lineBoxHeight" >
+                <div class="lineBox lineBoxHeight">
                     <div class="flex-row">
-                        <image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                        <div>
+                            <div v-if="!item.logoLoading"  class="headImg coverAbsoTop " ></div>
+                            <image class="headImg":src="item.logo | watchLogo"  @click="goAuthor(item.userId)"></image>
+                        </div>
                         <div class="userInfo">
                             <text class="fz30 nameColor" >{{item.nickName}}</text>
-                            <text   class="infoText">关注了你</text>
+                            <text class="infoText">关注了你</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>
-            <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
-                <!--收藏--> <!--分享提醒--><!--赞赏-->
+            <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id,item)">
+                <!--收藏--> <!--分享提醒--><!--赞赏--><!--文章提醒-->
                 <div class="lineBox pt20 pb20">
-                    <div style="flex-direction: row">
-                        <image class="headImg" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
+                    <div class="onlyFlexRow">
+                        <div>
+                            <div v-if="!item.logoLoading"  class="headImg coverAbsoTop " ></div>
+                            <image class="headImg" @load="onImageLoad(item)" :src="item.logo | watchLogo" @click="goAuthor(item.userId)"></image>
+                        </div>
                         <div class="commentsInfo">
                             <text class="fz30 nameColor" >{{item.nickName }}</text>
-                            <text  class="commentsText">{{item.content}}</text>
+                            <text class="commentsText">{{item.content}}</text>
                             <text class="sub_title">{{item.createDate | timefmtOther}}</text>
                         </div>
                     </div>
-                    <image class="coverImg" resize="cover" :src="item.ext.thumbnail | watchThumbnail"></image>
+                    <div>
+                        <div v-if="!item.thumLoading"  class="coverImg coverAbsoTop " ></div>
+                        <image class="coverImg" resize="cover"  @load="onImageLoad(item,'thum')" :src="item.ext.thumbnail | watchThumbnail"></image>
+                    </div>
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>
@@ -172,6 +195,9 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .onlyFlexRow{
+        flex-direction: row;
+    }
     .contentLimit{
         width:450px;
         lines:2;
@@ -315,15 +341,16 @@
     import { POST, GET } from '../../assets/fetch'
     import noData from '../../include/noData.vue'
     import filters from '../../filters/filters.js'
+    import toBase64 from '../../assets/base64';
     export default {
         data(){
             return{
                 messageType:'',
                 bgWhite:true,
                 dataList:[],
-                refreshing:false,
                 pageStart:0,
                 pageSize:15,
+                refreshing:false,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
             }
@@ -411,6 +438,35 @@
             this.getAllInform();
         },
         methods:{
+//            utf-8 解码
+            utf8Decode(inputStr) {
+                var outputStr = "";
+                var code1, code2, code3, code4;
+
+                for(var i = 0; i < inputStr.length; i++) {
+                    code1 = inputStr.charCodeAt(i);
+
+                    if(code1 < 128) {
+                        outputStr += String.fromCharCode(code1);
+                    }
+                    else if(code1 < 224) {
+                        code2 = inputStr.charCodeAt(++i);
+                        outputStr += String.fromCharCode(((code1 & 31) << 6) | (code2 & 63));
+                    }
+                    else if(code1 < 240) {
+                        code2 = inputStr.charCodeAt(++i);
+                        code3 = inputStr.charCodeAt(++i);
+                        outputStr += String.fromCharCode(((code1 & 15) << 12) | ((code2 & 63) << 6) | (code3 & 63));
+                    }
+                    else {
+                        code2 = inputStr.charCodeAt(++i);
+                        code3 = inputStr.charCodeAt(++i);
+                        code4 = inputStr.charCodeAt(++i);
+                        outputStr += String.fromCharCode(((code1 & 7) << 18) | ((code2 & 63) << 12) |((code3 & 63) << 6) | (code2 & 63));
+                    }
+                }
+                return outputStr;
+            },
 //            获取所以消息
             getAllInform(){
                 let _this = this;
@@ -420,8 +476,19 @@
                             if (_this.pageStart == 0) {
                                 data.data.data.forEach(function(item) {
                                     if (!utils.isNull(item.ext)) {
+                                        item.ext = item.ext.replace(/\r\n/,"");
+//                                        item.ext = JSON.parse(item.ext);
+                                        item.ext = toBase64.base64decodeStr(item.ext);
+
+                                        item.ext = _this.utf8Decode(item.ext);
+
+//                                        解码后 ext.author   ext.title为乱码，后期若有用到这2个字段，需再作处理
                                         item.ext = JSON.parse(item.ext);
+
                                     }
+//                                    配合懒加载
+                                    item.logoLoading = false;
+                                    item.thumLoading = false;
 //                                    手机用户登录可能未设置logo和nickName
                                     if(utils.isNull(item.nickName)){
                                         item.nickName = '未填写';
@@ -436,6 +503,9 @@
                             }else{
                                 data.data.data.forEach(function(item){
                                     if(!utils.isNull(item.ext)){
+//                                        item.ext = JSON.parse(item.ext);
+                                        item.ext = toBase64.base64decodeStr(item.ext);
+//                                        解码后 ext.author   ext.title为乱码，后期若有用到这2个字段，需再作处理
                                         item.ext = JSON.parse(item.ext);
                                     }
                                     _this.dataList.push(item);
@@ -497,7 +567,9 @@
                 this.getAllInform();
             },
 //            前往链接
-            goLink(id){
+            goLink(id,item){
+                utils.debug('1');
+                utils.debug(item);
                 if (this.clicked) {
                     return;
                 }
@@ -516,7 +588,15 @@
                     _this.clicked = false;
                     event.toast(err.content);
                 })
-            }
+            },
+//            封面加载出来
+            onImageLoad(item,whoTrigger){
+                if(utils.isNull(whoTrigger)){
+                    item.logoLoading = true;
+                }else{
+                    item.thumLoading = true;
+                }
+            },
         }
 
     }

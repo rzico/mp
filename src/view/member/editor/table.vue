@@ -7,17 +7,19 @@
                 <div class="voteBox mt20 border-radius">
                     <!--第一行 投票描述-->
                     <div class="voteTell addBottomBorder">
-                        <text class="gray tellSize">表单描述</text>
+                        <text class="gray tellSize">标题描述</text>
                         <!--多行文本-->
                         <div class="textareaBox">
-                            <textarea class="textareaClass ml10" data-id="0" v-model="vote.textAreaTitle" @input="titleOninput" placeholder="输入表单主题"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true" return-key-type="next"></textarea>
+                            <!--<textarea class="textareaClass ml10" data-id="0" v-model="vote.textAreaTitle" placeholder="输入表单主题"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true" return-key-type="next"></textarea>-->
+                            <input class="textareaClass ml10"  v-model="vote.textAreaTitle" placeholder="输入表单主题(如:培训班在线报名)"  autofocus="true" return-key-type="next" />
+                            <!--input 必须设置高度和line-height，不然在ios下会出现光标对不齐的问题-->
                         </div>
                     </div>
                     <div class="voteTell addBottomBorder">
                         <text class="gray tellSize">按钮描述</text>
                         <!--多行文本-->
                         <div class="textareaBox">
-                            <textarea class="textareaClass ml10 " data-id="0" v-model="vote.textAreabutton" placeholder="输入提交按钮的描述"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="false"></textarea>
+                            <input class="textareaClass ml10 " data-id="0" v-model="vote.textAreabutton" placeholder="输入提交按钮的描述(如:立即报名)"    autofocus="false" />
                         </div>
                     </div>
                     <!--第二行开始 选项-->
@@ -27,7 +29,7 @@
                         <!--多行文本-->
                         <div class="textareaBox">
                             <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                            <textarea class="textareaClass" :class="[index == 0 ? 'ml10' : '']"  :placeholder='setPlaceholder(index)' :autofocus="item.autofocus" v-model="item.textAreaMessage" @input="optionsOninput($event,index)"  :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
+                            <input class="textareaClass" :class="[index == 0 ? 'ml10' : '']"  :placeholder='setPlaceholder(index) + "(如:姓名/电话/性别)"' :autofocus="item.autofocus" v-model="item.textAreaMessage"  />
                         </div>
                         <!--删除按钮-->
                         <text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 1" @click="deleteOptions(index)">&#xe60a;</text>
@@ -50,7 +52,7 @@
                 <div class="voteBox mt20 border-radius">
                     <!--第一行 投票描述-->
                     <div class="voteTell addBottomBorder">
-                        <text class=" tellSize">{{vote.textAreaTitle | watchPreviewTitle}}</text>
+                        <text class=" tellSize previewLine">{{vote.textAreaTitle | watchPreviewTitle}}</text>
                         <!--多行文本-->
                         <!--<div class="textareaBox">-->
                             <!--<textarea class="textareaClass ml10" data-id="0" v-model="vote.textAreaTitle" @input="titleOninput" placeholder="输入表单主题"  :style="{height:titleHeight + 'px'}"  :rows="titleRows" autofocus="true" return-key-type="next"></textarea>-->
@@ -70,7 +72,7 @@
                         <!--多行文本-->
                         <div class="textareaBox">
                             <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                            <textarea class="textareaClass"  :class="[index == 0 ? 'ml10' : '']"  :placeholder='setPreviewPlaceholder(index,item)'    :style="{height:item.textHeight + 'px'}" :rows="item.rowsNum"></textarea>
+                            <input class="textareaClass"  :class="[index == 0 ? 'ml10' : '']"  :placeholder='setPreviewPlaceholder(index,item)'   />
                         </div>
                         <!--删除按钮-->
                         <!--<text class="closeIcon" :style="{fontFamily:'iconfont'}" v-if="index >= 1" @click="deleteOptions(index)">&#xe60a;</text>-->
@@ -124,11 +126,17 @@
         padding-right: 10px;
         padding-left: 10px
     }
+    .previewLine{
+        width:620px;
+        /*lines:2;*/
+        /*text-overflow:ellipsis;*/
+    }
     .textareaClass{
         width:485px;
         /*font-size: 35px;*/
         font-size: 32px;
         line-height: 48px;
+        height:48px;
     }
     .textareaBox{
         height:120px;
@@ -173,10 +181,10 @@
             return{
                 refreshing: false,
                 voteList:[],
-                chooseOptions:'单选(默认)',
-                optionArray:['单选(默认)','多选，最多2项','多选,无限制'],
-                titleHeight:48,
-                titleRows:1,
+//                chooseOptions:'单选(默认)',
+//                optionArray:['单选(默认)','多选，最多2项','多选,无限制'],
+//                titleHeight:48,
+//                titleRows:1,
             }
         },
         components: {
@@ -207,19 +215,18 @@
             if(utils.isNull(vote)){
 //               添加新的投票
                 this.voteList.push({
-                    optionsIndex:0,
                     textAreaTitle:'',
                     textAreabutton:'',
                     pageBox:[{
                         textAreaMessage:'',
-                        textHeight:'48',
-                        rowsNum:'1',
+//                        textHeight:'48',
+//                        rowsNum:'1',
                         editSign:-1,
                         autofocus:false,
                     },{
                         textAreaMessage:'',
-                        textHeight:48,
-                        rowsNum:1,
+//                        textHeight:48,
+//                        rowsNum:1,
                         editSign:-1,
                         autofocus:false,
                     }]
@@ -229,7 +236,7 @@
                 //                编辑投票。
                 storage.getItem(vote, e => {
                     let voteData =  JSON.parse(e.data);
-                    _this.chooseOptions = _this.optionArray[voteData.optionsIndex];
+//                    _this.chooseOptions = _this.optionArray[voteData.optionsIndex];
 //                    event.toast(voteData);
 //                    添加上服务器过滤掉的属性
 //                    if(utils.isNull(voteData.pageBox[0].textHeight)){
@@ -251,21 +258,21 @@
         },
         methods:{
 //            选择投票类型
-            pickOptions(){
-                picker.pick({
-//                    默认选中
-                    index: this.voteList[0].optionsIndex,
-//                    数据选项
-                    items: this.optionArray
-                }, e => {
-                    if (e.result === 'success') {
-//                        更改默认选中的下标
-                        this.voteList[0].optionsIndex = e.data;
-//                        将选择的数据写入chooseOptions
-                        this.chooseOptions = this.optionArray[e.data];
-                    }
-                })
-            },
+//            pickOptions(){
+//                picker.pick({
+////                    默认选中
+//                    index: this.voteList[0].optionsIndex,
+////                    数据选项
+//                    items: this.optionArray
+//                }, e => {
+//                    if (e.result === 'success') {
+////                        更改默认选中的下标
+//                        this.voteList[0].optionsIndex = e.data;
+////                        将选择的数据写入chooseOptions
+//                        this.chooseOptions = this.optionArray[e.data];
+//                    }
+//                })
+//            },
 //            设置preview的事例
             setPreviewPlaceholder:function (index,item) {
                 if(utils.isNull(item.textAreaMessage)){
@@ -288,78 +295,78 @@
             addOptions:function () {
                 this.voteList[0].pageBox.push({
                     textAreaMessage:'',
-                    textHeight:48,
-                    rowsNum:1,
+//                    textHeight:48,
+//                    rowsNum:1,
                     editSign:-1,
                     autofocus:true,
                 })
             },
 //            选项输入（当一进页面选项里有数据时，会触发该函数）
-            optionsOninput:function (e,index) {
-                var _this = this;
-                var len = this.getLen(e.value);
-//                当字符数超过25时，将多行输入改成2行并且高度设为96
-//                modal.toast({message:len,duration:0.3})
-                if(len > 29){
-//                    if(optionIndex == -1){
-////            选项输入（当一进页面选项里有数据时，会触发该函数）此时不会更新optionIndex，所以需要手动刷新。
-//                        this.voteList[0].pageBox.forEach(function(item){
-//                             if(_this.getLen(item.textAreaMessage) > 25){
-//                                 item.rowsNum = 2;
-//                                 item.textHeight = 96;
-//                                 item.editSign = 0;
-//                             }
-//                        })
-//                        return
+//            optionsOninput:function (e,index) {
+//                var _this = this;
+//                var len = this.getLen(e.value);
+////                当字符数超过25时，将多行输入改成2行并且高度设为96
+////                modal.toast({message:len,duration:0.3})
+//                if(len > 29){
+////                    if(optionIndex == -1){
+//////            选项输入（当一进页面选项里有数据时，会触发该函数）此时不会更新optionIndex，所以需要手动刷新。
+////                        this.voteList[0].pageBox.forEach(function(item){
+////                             if(_this.getLen(item.textAreaMessage) > 25){
+////                                 item.rowsNum = 2;
+////                                 item.textHeight = 96;
+////                                 item.editSign = 0;
+////                             }
+////                        })
+////                        return
+////                    }
+////                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
+//                    if(this.voteList[0].pageBox[index].editSign == -1){
+//                        this.voteList[0].pageBox[index].rowsNum = 2;
+//                        this.voteList[0].pageBox[index].textHeight = 96;
+//                        this.voteList[0].pageBox[index].editSign = 0;
 //                    }
-//                    editSign是每个组件的控制符，控制是否切换高度.不用每次输入都执行一次
-                    if(this.voteList[0].pageBox[index].editSign == -1){
-                        this.voteList[0].pageBox[index].rowsNum = 2;
-                        this.voteList[0].pageBox[index].textHeight = 96;
-                        this.voteList[0].pageBox[index].editSign = 0;
-                    }
-                }else{//否则将高度与行数改回来
-                    if(this.voteList[0].pageBox[index].editSign == 0){
-                        this.voteList[0].pageBox[index].rowsNum = 1;
-                        this.voteList[0].pageBox[index].textHeight = 48;
-                        this.voteList[0].pageBox[index].editSign = -1;
-                    }
-                }
-            },
-//            标题描述输入。
-            titleOninput:function (e) {
-                var len = this.getLen(e);
-                //当字符数超过25时，将多行输入改成2行并且高度设为96
-                if(len > 25){
-//                    控制是否切换高度.不用每次输入都执行一次
-                    if(isSign == -1){
-                        this.titleRows = 2;
-                        this.titleHeight = 96;
-                        isSign = 0;
-                    }
-                }else{//否则将高度与行数改回来
-                    if(isSign == 0){
-                        this.titleRows = 1;
-                        this.titleHeight = 48;
-                        isSign = -1;
-                    }
-                }
-            },
-//            获取已输入的字符总长度
-            getLen(e){
-                var name = e;
-                var len = 0;
-                for (let i = 0; i < name.length; i++) {
-                    var a = name.charAt(i);
-                    if (a.match(/[^\x00-\xff]/ig) != null) {
-                        len += 2;
-                    }
-                    else {
-                        len += 1;
-                    }
-                }
-                return len;
-            },
+//                }else{//否则将高度与行数改回来
+//                    if(this.voteList[0].pageBox[index].editSign == 0){
+//                        this.voteList[0].pageBox[index].rowsNum = 1;
+//                        this.voteList[0].pageBox[index].textHeight = 48;
+//                        this.voteList[0].pageBox[index].editSign = -1;
+//                    }
+//                }
+//            },
+////            标题描述输入。
+//            titleOninput:function (e) {
+//                var len = this.getLen(e);
+//                //当字符数超过25时，将多行输入改成2行并且高度设为96
+//                if(len > 25){
+////                    控制是否切换高度.不用每次输入都执行一次
+//                    if(isSign == -1){
+//                        this.titleRows = 2;
+//                        this.titleHeight = 96;
+//                        isSign = 0;
+//                    }
+//                }else{//否则将高度与行数改回来
+//                    if(isSign == 0){
+//                        this.titleRows = 1;
+//                        this.titleHeight = 48;
+//                        isSign = -1;
+//                    }
+//                }
+//            },
+////            获取已输入的字符总长度
+//            getLen(e){
+//                var name = e;
+//                var len = 0;
+//                for (let i = 0; i < name.length; i++) {
+//                    var a = name.charAt(i);
+//                    if (a.match(/[^\x00-\xff]/ig) != null) {
+//                        len += 2;
+//                    }
+//                    else {
+//                        len += 1;
+//                    }
+//                }
+//                return len;
+//            },
 
 //            下拉刷新
             onrefresh (e) {
@@ -376,6 +383,24 @@
 //            完成
             goComplete:function () {
                 var _this = this;
+                if(utils.isNull(this.voteList[0].textAreaTitle)){
+                    event.toast('请输入表单标题');
+                    return;
+                }
+                if(utils.isNull(this.voteList[0].textAreabutton)){
+                    event.toast('请输入按钮描述');
+                    return;
+                }
+                let mesNum = 0;
+                for(let i = 0; i< this.voteList[0].pageBox.length;i++) {
+                    if (utils.isNull(this.voteList[0].pageBox[i].textAreaMessage)) {
+                        mesNum++;
+                    }
+                }
+                if(mesNum > 0){
+                    event.toast('请将描述填写完整');
+                    return;
+                }
                 let voteData = _this.voteList[0];
                 let backData = utils.message('success','成功',voteData);
                 event.closeURL(backData);

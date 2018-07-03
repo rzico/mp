@@ -84,9 +84,7 @@
                 <text class="sub_title">投稿后，被选用文章将获得大量展示机会</text>
             </div>
             <div class="fill">
-
             </div>
-
         </scroller>
         <!--<div class="footer button-panel" @click="goDone()">-->
         <!--<text class="button">完成</text>-->

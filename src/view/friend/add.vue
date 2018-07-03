@@ -6,7 +6,7 @@
                 <div class="cell-panel h cell-clear">
                     <div class="flex-row flex-start" style="height: 120px;width: 750px;" @click="gosearch()">
                         <text class="ico" style="color:#ccc" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                        <text class="sub_title">手机号/登录名</text>
+                        <text class="sub_title">手机号/昵称/登录名</text>
                     </div>
                  </div>
             </div>

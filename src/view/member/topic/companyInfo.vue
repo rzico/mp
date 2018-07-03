@@ -493,7 +493,7 @@
                 }
                 POST('weex/member/enterprise/add.jhtml?name=' + encodeURIComponent(this.companyInfo.name) + '&logo=' + this.paraLogo + '&phone=' + this.companyInfo.phone
                     + '&area=' + this.companyInfo.area.id + '&address=' + encodeURIComponent(this.companyInfo.address) + '&startTime=' + this.companyInfo.startTime + '&endTime=' + this.companyInfo.endTime
-                    + '&img=' + imgsList + '&autogragh=' + this.companyInfo.autograph ).then(
+                    + '&img=' + imgsList + '&autogragh=' + encodeURIComponent(this.companyInfo.autograph)).then(
                     function (data) {
                         if (data.type == 'success') {
                             event.toast('保存成功');

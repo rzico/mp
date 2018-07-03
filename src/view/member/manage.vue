@@ -120,10 +120,20 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="goReviewManage()">
+                <div class="cell-panel space-between " @click="goReviewManage()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe774;</text>
                         <text class="title ml10">评价管理</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="goTableManage()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
+                        <text class="title ml10">表单管理</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -443,11 +453,27 @@
                     return;
                 }
                 this.clicked = true;
-                let _this = this;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500);
                 event.openURL(utils.locate('view/member/reviewManage.js'),
                     function (data) {
-                        _this.clicked = false;
-                        return ;
+                    }
+                );
+            },
+//            表单管理
+            goTableManage:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500);
+                event.openURL(utils.locate('view/member/tableManage.js'),
+                    function (data) {
                     }
                 );
             },

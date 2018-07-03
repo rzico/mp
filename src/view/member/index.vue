@@ -38,16 +38,18 @@
                 <!--<div class="blur rightBlur"></div>-->
             </div>
         </div>
-        <list show-scrollbar="false"  offset-accuracy="0" ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
-                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
-            <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
-            <cell @appear="toponappear" @disappear="tophideappear">
-                <!--<div style="position:fixed;top: 121px;width: 10px;height: 10px;opacity: 1;background-color:red"  ></div>-->
-                <div style="width: 300px;height: 1px;opacity: 0;position:absolute"  ></div>
-            </cell>
-            <cell ref="listSlide" >
+        <scroller show-scrollbar="false"  offset-accuracy="0" ref="scrollerRef"  @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
+            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >-->
+                <!--<image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--</refresh>-->
+            <!--判断是否到顶部，关闭那个顶部导航栏显示效果 list 用  6.27号已弃用-->
+            <!--<div @appear="toponappear" @disappear="tophideappear">-->
+                <!--&lt;!&ndash;<div style="position:fixed;top: 121px;width: 10px;height: 10px;opacity: 1;background-color:red"  ></div>&ndash;&gt;-->
+                <!--<div style="width: 300px;height: 1px;opacity: 0;position:absolute"  ></div>-->
+            <!--</div>-->
+            <!--判断是否到顶部，关闭那个顶部导航栏显示效果 scroller 用  6.27号已弃用-->
+            <!--<div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>-->
+            <div ref="listSlide" >
                 <!--顶部个人信息栏-->
                 <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox' @appear="hideTopLine()">
                     <!--背景图片-->
@@ -88,14 +90,13 @@
                     </div>
 
                 </div>
-            </cell>
+            </div>
 
-            <cell>
+            <div>
                 <div  class="corpusBox" >
                     <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
                         <div class="articleClass">
                             <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
-
                         </div>
                     </scroller>
                     <div class="corpusIconBox" @click="goCorpus()">
@@ -176,7 +177,6 @@
                             </div>
                         </div>
                     </div>
-
                     <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
                     <!--帮助使用文章-->
                     <div class="articleBox" v-for="item in helpList" v-if="corpusId == '' && articleList.length < 10" @click="goHelpArticle(item.key)">
@@ -197,8 +197,8 @@
                     </div>
 
                 </div>
-            </cell>
-        </list>
+            </div>
+        </scroller>
     </div>
 </template>
 
@@ -664,7 +664,7 @@
                 clicked:false,
                 UId:'',
                 screenHeight:0,
-                topCellHide:false,
+//                topdivHide:false,
                 hadUpdate:false,
                 showMenu:false,
                 helpList:[],
@@ -764,6 +764,7 @@
         },
         methods: {
             hideTopLine(){
+                return;
                 let _this = this;
 //            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
                 if(this.hadUpdate){
@@ -773,12 +774,12 @@
 //            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
                 if(!utils.isIosSystem()){
 //                    if(utils.isNull(sign)){
-                        const el = _this.$refs.listSlide//跳转到相应的cell
+                        const el = _this.$refs.listSlide//跳转到相应的div
                         dom.scrollToElement(el, {
                             offset: 1
                         })
 //                    }else{
-//                        const el = _this.$refs.listSlide//跳转到相应的cell
+//                        const el = _this.$refs.listSlide//跳转到相应的div
 //                        setTimeout(function () {
 //                            dom.scrollToElement(el, {
 //                                offset: 1
@@ -853,6 +854,12 @@
                             })
                         }
                         _this.articleList = middleList;
+
+//                        if(utils.isNull(_this.articleList)){
+//
+//                        }
+
+
 //                        当选择全部文章并且全部文章低于10篇时 显示帮助文档。写在这边可以避免渲染小闪屏问题。写死在data里每次切换会先闪一下帮助List再变成文章List
                         if(utils.isNull(_this.corpusId) && data.data.length < 10){
                             _this.helpList = [];//在push前要清空list
@@ -1173,28 +1180,32 @@
             },
             scrollHandler: function(e) {
                 var _this = this;
-//                this.offsetX = e.contentOffset.x;
-//                this.offsetY = e.contentOffset.y;
 
-                if(Math.abs(e.contentOffset.y) == 0){
-                    _this.hadUpdate = false;
-                    _this.hideTopLine();
-                    return;
-                }
-                if(!this.topCellHide){
-                    return;
-                }
+//                list时 用下方8行注释
+//                if(Math.abs(e.contentOffset.y) == 0){
+//                    _this.hadUpdate = false;
+//                    _this.hideTopLine();
+//                    return;
+//                }
+//                if(!this.topdivHide){
+//                    return;
+//                }
 
                 if(e.contentOffset.y >=0){
+                    this.opacityNum = 0;
+                    this.twoTop = false;
                     return;
                 }
-                var scrollTop =Math.abs(e.contentOffset.y);
+                var scrollTop = Math.abs(e.contentOffset.y);
+
 //                modal.toast({message:scrollTop});8
 
                 var scrollTopNum = 0;
-                if(!utils.isIosSystem()){
-                    scrollTopNum = 120;
-                }
+//                list时 用下方3行注释
+//                if(!utils.isIosSystem()){
+//                    scrollTopNum = 120;
+//                }
+//                let opacityDegree = Math.floor((scrollTop - scrollTopNum)/14)/10;
                 let opacityDegree = Math.floor((scrollTop - scrollTopNum)/14)/10;
 //                modal.toast({message:opacityDegree,duration:0.1});
                 if(opacityDegree > 1){
@@ -1207,7 +1218,7 @@
                     this.settingColor = '';
 //                    event.changeWindowsBar("false");
                 }
-                this.opacityNum = opacityDegree;
+                    this.opacityNum = opacityDegree;
 //                if(opacityDegree > 0.4){
 //                    event.changeWindowsBar("true");
 //                    this.settingColor = 'black';
@@ -1216,13 +1227,15 @@
 //                    event.changeWindowsBar("false");
 //                }
 
-                var scrollNum = 284;
-                if(!utils.isIosSystem()){
-                    scrollNum = 404;
-                }
+//                list 时用下方3行注释代码
+//                var scrollNum = 284;
+//                if(!utils.isIosSystem()){
+//                    scrollNum = 404;
+//                }
 
-//                if(scrollTop >=284){
-                if(scrollTop >= scrollNum){
+                if(scrollTop >=284){
+                    //                list 时用下方1行注释代码
+//                if(scrollTop >= scrollNum){
                     this.twoTop = true;
 //                    this.corpusScrollTop = 136;
 
@@ -1390,17 +1403,17 @@
                     }
                 );
             },
-//            快速滑动滚动条时， 控制顶部导航栏消失
-            toponappear(){
-                this.topCellHide = false;
-                this.opacityNum = 0 ;
-//                this.settingColor = 'white';
-                this.settingColor = '';
-//                event.changeWindowsBar("false");
-            },
-            tophideappear(){
-              this.topCellHide = true;
-            },
+////            快速滑动滚动条时， 控制顶部导航栏消失
+//            toponappear(){
+//                this.topdivHide = false;
+//                this.opacityNum = 0 ;
+////                this.settingColor = 'white';
+//                this.settingColor = '';
+////                event.changeWindowsBar("false");
+//            },
+//            tophideappear(){
+//              this.topdivHide = true;
+//            },
             onrefresh:function () {
                 var _this = this;
                 _this.refreshing = true;
@@ -1687,6 +1700,80 @@
             maskTouch(){
                 this.showMenu = false;
             },
+
+////            下载文章 20 20的循环
+//            downloadArticle(){
+//                if (this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
+//                var _this = this;
+//                GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
+//                    if(data.type == 'success' && data.data.data != ''){
+//                        if(data.data.start == 0 ){
+////                           将本次时间戳缓存起来
+//                            storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate.toString());
+//                        }
+//                        _this.toSendArticle = true;
+//                        _this.proTotal = data.data.recordsTotal;
+//                        data.data.data.forEach(function (item,index) {
+//                            var sortStatus = item.articleOption.isTop  == true ? '1,' : '0,';
+//                            let saveData = {
+//                                type:"article",
+//                                key:item.id,
+//                                value:item,
+//                                sort:sortStatus + item.modifyDate +'',
+//                                keyword:',['+ item.articleOption.articleCatalog.id + '],' + item.title + ','
+//                            }
+//                            event.save(saveData,function(e){
+//                                _this.ctrlProcess();
+//                                if(e.type == 'success'){
+//                                    if(index == 19){
+//                                        _this.listCurrent = _this.listCurrent + _this.listPageSize;
+//                                        _this.downloadArticle();
+//                                    }else if(index == data.data.data.length - 1){
+//                                        _this.doneDown();
+//                                    }
+//                                }else{
+//                                }
+//                            })
+//                        })
+//                    }else if(data.type == 'success' && data.data.data == ''){
+//                        if(data.data.recordsTotal == 0){
+//                            event.toast('您还没有发布过文章。');
+//                        }else{
+//                            _this.doneDown();
+//                        }
+//                    }else{
+//                        event.toast(data.content);
+//                    }
+//                    _this.clicked = false;
+//                },function (err) {
+//                    _this.clicked = false;
+//                    event.toast(err.content);
+//                })
+//            },
+////            下载完成后执行
+//            doneDown(){
+//                let _this = this;
+//                _this.toSendArticle = false;
+////                                    全局监听文章变动
+//                let listenData = utils.message('success','文章改变','');
+//                event.sendGlobalEvent('onArticleChange',listenData);
+//                event.toast('同步完成');
+//                _this.currentPro = 0;
+//                _this.processWidth = 0;
+//                this.listCurrent = 0;
+//            },
+//            //            控制进度条
+//            ctrlProcess(data){
+//                this.currentPro ++;
+//                this.processWidth = this.currentPro *  (100 / this.proTotal) * 5;
+////                this.processWidth = parseInt(data.data) * 5;
+//                if(this.processWidth >= 500){
+//                    this.processWidth = 500;
+//                }
+//            },
         }
     }
 </script>

@@ -1,17 +1,17 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" > </navbar>
-        <list show-scrollbar="false" style="background-color: #ffffff"  @loadmore="onloading" loadmoreoffset="50" >
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'"  >
+        <list show-scrollbar="false" style="background-color: #ffffff"  @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-if="userList.length == 0">
                 <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
             </cell>
             <cell v-else v-for="item in userList" @click="goAuthor(item.id)">
-                <div class="addFriendsBorder" >
+                <div class="addFriendsBorder">
                     <!--用户头像与昵称签名-->
-                    <div class="friendsLine" >
+                    <div class="friendsLine">
                         <!--<image :src="item.logo" class="friendsImage"></image>-->
                         <div  v-if="!item.loading"  class="friendsImage coverAbsoTop " ></div>
                         <!--文章封面-->
@@ -39,7 +39,7 @@
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .friendsImage{
-        margin-top: 20px ;
+        margin-top: 20px;
         height: 100px;
         width:100px;
         border-radius: 50px;
