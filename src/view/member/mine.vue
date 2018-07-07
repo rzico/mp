@@ -174,6 +174,10 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe628;</text>-->
                         <!--<text class="iconfontText mt20">店铺管理</text>-->
                     <!--</div>-->
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
+                        <text :style="{fontFamily:'iconfont'}" style="color:#5A427C" class="iconfontSize">&#xe6e8;</text>
+                        <text class="iconfontText mt20">人工补单</text>
+                    </div>
                     <div class="iconBox flexCol mt20"   v-if="member.activated && member.hasShop && filter('order')" @click="goOrderList()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe665;</text>
                         <text class="iconfontText mt20">订单管理</text>
@@ -225,10 +229,6 @@
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('employee')" @click="employee()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #999933" class="iconfontSize">&#xe66c;</text>
                         <text class="iconfontText mt20">员工管理</text>
-                    </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
-                        <text class="iconfontText mt20">人工补单</text>
                     </div>
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="goreport()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
@@ -988,7 +988,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=0&productCategoryId=1'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },
@@ -1000,7 +1002,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },
@@ -1012,7 +1016,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },
@@ -1024,7 +1030,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },
@@ -1036,7 +1044,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/order/list.js?index=0&productCategoryId=1'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },
@@ -1048,7 +1058,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/order/list.js?index=1&productCategoryId=2'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },
@@ -1060,7 +1072,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=3'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },
@@ -1072,7 +1086,9 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=4'), function(data) {
-                        _this.clicked = false;
+                    _this.clicked = false;
+                    _this.getCount()
+                    _this.getShippingConut();
                     }
                 );
             },

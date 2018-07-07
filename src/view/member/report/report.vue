@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <report_header :pageName="pageName" :timeDate="timeDate" @iconTime="pickDate()" @deductTime="deductTime()" @addTime="addTime()"></report_header>
+        <report_header :pageName="pageName"   @reportMonthClick="reportMonthClick" @reportDayClick="reportDayClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
             <div class="tableOne">
                 <text class="tableText">测试</text>
@@ -246,7 +246,8 @@
                 hadUpdate:false,
                 isIcon:true,
                 timeDate:'',
-                pageName:'周报'
+                pageName:'测试报表',
+                isStyle:'日报'
             }
         },
         components: {
@@ -259,7 +260,6 @@
 //              页面创建时请求数据
             utils.initIconFont();
             this.open();
-            this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
 
         },
 //        dom呈现完执行滚动一下
@@ -280,31 +280,72 @@
         methods: {
 //            点击减少一天时间
             deductTime:function () {
+                if(this.isStyle == '日报') {
 //                先把时间转为时间戳
-                this.timeDate = Date.parse(this.timeDate);
+                    this.timeDate = Date.parse(this.timeDate);
 //                运算减去一天
-                this.timeDate = (this.timeDate/1000-86400)*1000;
+                    this.timeDate = (this.timeDate / 1000 - 86400) * 1000;
 //                把时间戳转换为时间
-                this.timeDate = utils.ymdtimefmt(this.timeDate);
+                    this.timeDate = utils.ymdtimefmt(this.timeDate);
 //                赋值给参数请求接口
-                this.billDate = this.timeDate;
-                this.pageStart=0;
-                this.open();
+                    this.billDate = this.timeDate;
+                    this.pageStart = 0;
+                    this.open();
+                }else if(this.isStyle == '月报'){
+                    this.timeDate = utils.reduceMonth(this.timeDate);
+//                    赋值给参数请求接口
+                    this.billDate = this.timeDate;
+                    this.pageStart = 0;
+                    this.open();
+                }else if(this.isStyle == '年报'){
+                    this.timeDate = utils.reduceYears(this.timeDate);
+//                    赋值给参数请求接口
+                    this.billDate = this.timeDate;
+                    this.pageStart = 0;
+                    this.open();
+                    utils.debug(this.timeDate)
+                }
 
             },
 //            点击增加一天时间
             addTime:function () {
-//                先把时间转为时间戳
-                this.timeDate = Date.parse(this.timeDate);
+                if(this.isStyle == '日报'){
+                    //                先把时间转为时间戳
+                    this.timeDate = Date.parse(this.timeDate);
 //                运算增加一天
-                this.timeDate = (this.timeDate/1000+86400)*1000;
+                    this.timeDate = (this.timeDate/1000+86400)*1000;
 //                把时间戳转换为时间
-                this.timeDate = utils.ymdtimefmt(this.timeDate);
+                    this.timeDate = utils.ymdtimefmt(this.timeDate);
 //                赋值给参数请求接口
-                this.billDate = this.timeDate;
-                this.pageStart=0;
-                this.open();
-
+                    this.billDate = this.timeDate;
+                    this.pageStart=0;
+                    this.open();
+                }else if(this.isStyle == '月报'){
+                    this.timeDate = utils.increaseMonth(this.timeDate);
+//                    赋值给参数请求接口
+                    this.billDate = this.timeDate;
+                    this.pageStart = 0;
+                    this.open();
+                }else if(this.isStyle == '年报'){
+                    this.timeDate = utils.increaseYears(this.timeDate);
+//                    赋值给参数请求接口
+                    this.billDate = this.timeDate;
+                    this.pageStart = 0;
+                    this.open();
+                    utils.debug(this.timeDate)
+                }
+            },
+//            日报
+            reportDayClick(isStyle){
+                this.isStyle = isStyle
+            },
+//            月报
+            reportMonthClick(isStyle){
+                this.isStyle = isStyle
+            },
+//            年报
+            reportYearsClick(isStyle){
+                this.isStyle = isStyle
             },
             onpanmove:function (e,index) {
 //                获取当前点击的元素。

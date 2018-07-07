@@ -510,10 +510,16 @@
             open:function () {
                 let _this = this;
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
-
                     if(data.type == 'success'){
                         _this.ordersList = [];
-                        _this.ordersList.push(data.data);
+                        data.data.shippingBarrels.forEach(function (item) {
+                            if(utils.isNull(item.quantity) || item.quantity ==0){
+                                item.quantity=''
+                            }if(utils.isNull(item.returnQuantity) || item.returnQuantity ==0){
+                                item.returnQuantity=''
+                            }
+                        })
+                            _this.ordersList.push(data.data);
 
                     }else{
                         event.toast(data.content);
@@ -620,6 +626,11 @@
                             if(data.data == true){
                                 var body = [];
                                 _this.ordersList[0].shippingBarrels.forEach(function(item,index){
+                                    if(utils.isNull(item.quantity)){
+                                        item.quantity = 0;
+                                    }if(utils.isNull(item.returnQuantity)){
+                                        item.returnQuantity = 0;
+                                    }
                                     body.push({
                                         id:item.barrelId,
                                         quantity:item.quantity,

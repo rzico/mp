@@ -19,21 +19,106 @@
                 <div class="" v-for="c in lists">
                     <div class="contentBox">
                         <div class="couponDiv">
-                            <image class="couponImg"></image>
+                            <image class="couponImg" :src="c.logo"></image>
                         </div>
                         <div class="infoBox">
                             <text class="couponTitle">{{c.name}}</text>
-                            <text class="stock">X {{c.stock}}</text>
+                            <text class="stock">余桶:{{c.stock}}   押桶:</text>
+                        </div>
+                        <div class="iconBox">
+                            <text class="editorIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                         </div>
                     </div>
                 </div>
             </cell>
         </list>
+        <div class="mask">
+            <div class="editorBox">
+                <text class="fz40 mt30">编辑桶</text>
+                <div class="editorCell">
+                    <text class="fz32">押金:</text>
+                    <input class="editorInput" type="number" placeholder="请输入押金" autofocus="true"/>
+                </div>
+                <div class="editorCell">
+                    <text class="fz32">押桶:</text>
+                    <input class="editorInput" type="number" placeholder="请输入押桶"/>
+                </div>
+                <div class="editorCell">
+                    <text class="fz32">借桶:</text>
+                    <input class="editorInput" type="number" placeholder="请输入借桶"/>
+                </div>
+                <div class="bottomBox">
+                    <div class="leftBox"><text class="bottomBoxText">取消</text></div>
+                    <div class="rightBox"><text class="bottomBoxText">确认</text></div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .mask{
+        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color:rgba(000,000,000,0.4);
+    }
+    .editorBox{
+        width: 650px;
+        align-items: center;
+        background-color: white;
+        border-radius: 15px;
+        position: absolute;
+        left:50px;
+        top: 200px;
+    }
+    .editorCell{
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 610px;
+        height: 100px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-color: #cccccc;
+    }
+    .editorInput{
+        width: 500px;
+        height: 98px;
+        line-height: 90px;
+        font-size: 32px;
+        background-color: red;
+    }
+    .bottomBox{
+        flex-direction: row;
+        align-items: center;
+        width: 650px;
+        height: 100px;
+        border-top-width: 2px;
+        border-color: #0088fb;
+    }
+    .leftBox{
+        height: 100px;
+        width: 325px;
+        border-right-width: 2px;
+        border-color: #0088fb;
+        align-items: center;
+        justify-content: center;
+    }
+    .leftBox:active{
+        background-color: #cccccc;
+    }
+    .rightBox{
+        height: 100px;
+        width: 325px;
+        align-items: center;
+        justify-content: center;
+    }
+    .rightBox:active{
+        background-color: #cccccc;
+    }
+    .bottomBoxText{
+        font-size: 40px;
+        color: #0088fb;
+    }
     .totalBox{
         height: 150px;
         background-color: white;
@@ -43,6 +128,7 @@
         align-items: center;
         justify-content: space-between;
     }
+
     .editor{
 
         font-size: 40px;
@@ -87,13 +173,12 @@
     .couponImg{
         height:120px;
         width: 120px;
-        background-color: #cccccc;
     }
     .infoBox{
         flex-direction: column;
         justify-content: space-between;
         height: 120px;
-        width: 530px;
+        width: 430px;
         padding-left: 20px;
     }
     .couponTitle{
@@ -105,6 +190,16 @@
     .stock{
         font-size: 28px;
         color: #888888;
+    }
+    .iconBox{
+        width: 100px;
+        height: 120px;
+        align-items: center;
+        justify-content: center;
+    }
+    .editorIcon{
+        font-size: 60px;
+        color: #999;
     }
     .infoBottomBox{
         flex-direction: row;
@@ -196,7 +291,7 @@
                     if (mes.type == 'success') {
                         _this.total = mes.data.stock;
                         _this.money = mes.data.pledge;
-                        if (_this.pageStart==0) {
+                        if (mes.data.start==0) {
                             _this.lists = mes.data.data;
                         } else {
                             mes.data.data.forEach(function(item){

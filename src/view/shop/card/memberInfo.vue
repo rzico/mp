@@ -89,7 +89,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between" :class="[appType() ? '':'cell-clear']" @click="goCouponCode()">
                     <div class="flex-row">
-                        <text class="title ml10">电子券</text>
+                        <text class="title ml10">电子票</text>
                     </div>
                     <div class="flex-row flex-end" >
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
