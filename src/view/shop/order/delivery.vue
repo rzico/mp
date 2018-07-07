@@ -162,7 +162,8 @@
                 shopId:'',
                 shopName:'',
                 markiId:'',
-                markiName:''
+                markiName:'',
+                isSelf:false
             }
         },
         components: {
@@ -206,6 +207,7 @@
                     if(data.type == 'success' && data.data != '') {
                         _this.shopName = data.data.name;
                         _this.shopId = data.data.id;
+                        _this.isSelf = data.data.isSelf;
                         _this.markiName = '';
                         _this.markiId = ''
                     }
@@ -282,14 +284,17 @@
                         event.toast('请选择配送站点');
                         _this.clicked = false;
                         return
-                    }else if(utils.isNull(this.markiId)){
-                        event.toast('请选择配送人员');
-                        _this.clicked = false;
-                        return
+                    }
+                    if(this.isSelf == true || this.isSelf == 'true'){
+                        if(utils.isNull(this.markiId)){
+                            event.toast('请选择配送人员');
+                            _this.clicked = false;
+                            return
+                        }
                     }
                 }
 
-                POST('weex/member/order/shipping.jhtml?sn=' + this.orderSn + '&shippingMethod='+ this.isobject +'&trackingNo=' + encodeURIComponent(this.trackingNo)).then(
+                POST('weex/member/order/shipping.jhtml?sn=' + this.orderSn +'&shopId='+this.shopId +'&adminId=' + this.markiId + '&shippingMethod='+ this.isobject +'&trackingNo=' + encodeURIComponent(this.trackingNo)).then(
                     function (data) {
                         if(data.type == 'success'){
                             let E = utils.message('success','发货成功','')

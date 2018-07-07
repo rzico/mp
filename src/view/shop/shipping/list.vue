@@ -32,10 +32,13 @@
                     <div class="space-between goodsHead" >
                         <div class="flex-row">
                             <image :src="item.logo | watchLogo" class="shopImg"></image>
-                            <text class="title ml20 mr20">{{item.name}}</text>
+                            <div class="">
+                                <text class="title ml20 mr20">{{item.consignee}}</text>
+                                <text class="address">{{item.address}}</text>
+                            </div>
                             <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                         </div>
-                        <div >
+                        <div>
                             <text class="title red">{{item.statusDescr}}</text>
                         </div>
                     </div>
@@ -58,11 +61,11 @@
                             <text class="sub_title">预约时间:{{item.hopeDate | watchCreateDate}}</text>
                         </div>
                         <div class="flex-row">
-                            <text class="title mr20">共{{item.quantity}}件商品</text>
+                            <text class="sub_title mr20">共{{item.quantity}}件商品</text>
                             <!--<text class="title">合计:¥ {{item.amount | currencyfmt}}</text>-->
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-if="item.status == 'unconfirmed'">
+                    <div class="flex-row space-between goodsFoot" v-if="item.status == 'unconfirmed'  && filter('unconfirmed')">
                         <div class="flex-row">
                         <div class="selected" @click="singleChoose(index,item.groupName)">
                             <text :style="{fontFamily:'iconfont'}" class="selectedIcon primary" v-if="checkChoose(index)">&#xe64d;</text>
@@ -86,7 +89,7 @@
                         </div>
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'dispatch'">
+                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'dispatch' && filter('dispatch')">
                         <div class="footMore">
                             <!--<text class="sub_title">删除</text>-->
                         </div>
@@ -94,7 +97,7 @@
                             <text class="title footText " @click="delivery(item.orderSn,item.sn,item.id)">送达</text>
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'receive'">
+                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'receive' && filter('receive')">
                         <div class="footMore">
                             <!--<text class="sub_title">删除</text>-->
                         </div>
@@ -142,6 +145,13 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .address{
+        font-size: 26px;
+        margin-left: 20px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
     .mask{
         position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color:rgba(000,000,000,0.4);
     }
@@ -246,7 +256,7 @@
     }
     .goodsName{
         line-height: 32px;
-        lines:2;
+        lines:1;
         text-overflow: ellipsis;
     }
     .goodsPriceNum{
@@ -259,7 +269,7 @@
     }
     .goodsInfo{
         display: flex;flex-direction: column;justify-content: space-between;
-        height: 160px;
+        height: 130px;
         /*width: 400px;*/
         width: 550px;
         padding-left: 20px;
@@ -275,8 +285,8 @@
         background-color: #fff;
     }
     .goodsImg{
-        height: 160px;
-        width: 160px;
+        height: 130px;
+        width: 130px;
     }
     .goodsHead{
         background-color: #fff;
@@ -408,6 +418,32 @@
 
         },
         methods:{
+            //            权限过滤器
+            filter(e) {
+                var _this = this;
+                if (e == 'unconfirmed') {
+//                    派单等
+                    if (utils.isRoles("12", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                } else if (e == 'dispatch') {
+//                    送达
+                    if (utils.isRoles("123", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }else if (e == 'receive') {
+//                    运单
+                    if (utils.isRoles("12", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+            },
             //判断分类是否重复
             isRepeat(index){
                 if(index != 0){
@@ -810,6 +846,14 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                if (!utils.isRoles("123",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    });
+                    _this.clicked = false;
+                    return
+                }
                 event.openURL(utils.locate('view/shop/shipping/delivery.js?orderSn=' + orderSn + '&sn='+sn +'&shippingId=' + shippingId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {

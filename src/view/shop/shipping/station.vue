@@ -10,7 +10,7 @@
             </cell>
             <cell>
                 <div class="contentBox" v-for="c in list">
-                    <div class="infoBox" @click="get(c.id,c.name)">
+                    <div class="infoBox" @click="get(c.id,c.name,c.isSelf)">
                         <text class="infoText">{{c.name}}</text>
                     </div>
                 </div>
@@ -144,10 +144,11 @@
                     })
             },
 
-            get:function(id,name){
+            get:function(id,name,isSelf){
                 var data = {
                     id:id,
-                    name:name
+                    name:name,
+                    isSelf:isSelf
                 };
                 let E = utils.message('success','返回配送站',data)
                 event.closeURL(E);

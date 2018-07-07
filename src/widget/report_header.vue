@@ -15,9 +15,9 @@
         </div>
     </div>
         <div class="chooseBox bkg-primary">
-            <div class="reportBox mr20" :class="[isStyle == reportDay ? 'reportBoxActive':'']" @click="reportDayClick()"><text class="reportBoxText">{{reportDay}}</text> </div>
-            <div class="reportBox mr20" :class="[isStyle == reportMonth ? 'reportBoxActive':'']" @click="reportMonthClick()"><text class="reportBoxText">{{reportMonth}}</text> </div>
-            <div class="reportBox" :class="[isStyle == reportYears ? 'reportBoxActive':'']" @click="reportYearsClick()"> <text class="reportBoxText">{{reportYears}}</text> </div>
+            <div class="reportBox mr20" :class="[isStyle == reportDay ? 'reportBoxActive':'']" @click="reportDayClick()"><text class="reportBoxText">{{reportDay | watchDay}}</text> </div>
+            <div class="reportBox mr20" :class="[isStyle == reportMonth ? 'reportBoxActive':'']" @click="reportMonthClick()"><text class="reportBoxText">{{reportMonth | watchMonth}}</text> </div>
+            <div class="reportBox" :class="[isStyle == reportYears ? 'reportBoxActive':'']" @click="reportYearsClick()"> <text class="reportBoxText">{{reportYears | watchYears}}</text> </div>
         </div>
     <div class="timeBox bkg-primary">
         <div class="leftBox">
@@ -139,26 +139,31 @@
             return {
                 timeDate:'',
                 showTime:'',
-                isStyle:'日报',
-                reportDay:'日报',
-                reportMonth:'月报',
-                reportYears:'年报',
+                isStyle:'day',
+                reportDay:'day',
+                reportMonth:'month',
+                reportYears:'years',
             }
         },
         props: {
             pageName:''
         },
         filters:{
-            watchCode: function (value) {
-                if(this.isStyle == '月报'){
-                    return value.substr(7)
-                }else if(this.isStyle == '年报'){
-                    return value.substr(4)
-                }else {
-                    return value
+            watchDay: function (value) {
+                if(value == 'day'){
+                    return '日报'
                 }
             },
-
+            watchMonth: function (value) {
+                if(value == 'month'){
+                    return '月报'
+                }
+            },
+            watchYears: function (value) {
+                if(value == 'years'){
+                    return '年报'
+                }
+            },
         },
         created(){
             this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
@@ -177,56 +182,81 @@
             },
             //            点击减少一天时间
             deductTime:function () {
-                if(this.isStyle == '日报') {
+                var beginTime = '';
+                var endTime = '';
+                if(this.isStyle == 'day') {
 //                先把时间转为时间戳
                     this.timeDate = Date.parse(this.timeDate);
 //                运算减去一天
                     this.timeDate = (this.timeDate / 1000 - 86400) * 1000;
 //                把时间戳转换为时间
                     this.timeDate = utils.ymdtimefmt(this.timeDate);
-                    this.showTime = this.timeDate
-                }else if(this.isStyle == '月报'){
+                    this.showTime = this.timeDate;
+                    beginTime = this.timeDate+ ' ' +'00:00:00';
+                    endTime = this.timeDate+ ' ' +'23:59:59';
+                }else if(this.isStyle == 'month'){
                     this.timeDate = utils.reduceMonth(this.timeDate);
                     this.showTime = this.timeDate;
 //                    先把时间转为时间戳
                     this.showTime = Date.parse(this.showTime);
 //                    把时间戳转换为时间 2017-9
                     this.showTime = utils.ymtimefmt(this.showTime);
-                }else if(this.isStyle == '年报'){
+                    beginTime = this.timeDate+ ' ' +'00:00:00';
+                    endTime = this.timeDate+ ' ' +'23:59:59';
+                }else if(this.isStyle == 'years'){
                     this.timeDate = utils.reduceYears(this.timeDate);
                     this.showTime = this.timeDate;
 //                    先把时间转为时间戳
                     this.showTime = Date.parse(this.showTime);
-//                    把时间戳转换为时间 2017-9
+//                    把时间戳转换为时间 2017
                     this.showTime = utils.ytimefmt(this.showTime);
+                    beginTime = this.timeDate+ ' ' +'00:00:00';
+                    endTime = this.timeDate+ ' ' +'23:59:59';
                 }
-
+                var data ={
+                    beginTime:beginTime,
+                    endTime:endTime,
+                };
+                this.$emit("deductTime",data);
             },
 //            点击增加一天时间
             addTime:function () {
-                if(this.isStyle == '日报'){
+                var beginTime = '';
+                var endTime = '';
+                if(this.isStyle == 'day'){
                     //                先把时间转为时间戳
                     this.timeDate = Date.parse(this.timeDate);
 //                运算增加一天
                     this.timeDate = (this.timeDate/1000+86400)*1000;
 //                把时间戳转换为时间
                     this.timeDate = utils.ymdtimefmt(this.timeDate);
-                    this.showTime = this.timeDate
-                }else if(this.isStyle == '月报'){
+                    this.showTime = this.timeDate;
+                    beginTime = this.timeDate+ ' ' +'00:00:00';
+                    endTime = this.timeDate+ ' ' +'23:59:59';
+                }else if(this.isStyle == 'month'){
                     this.timeDate = utils.increaseMonth(this.timeDate);
                     this.showTime = this.timeDate;
 //                    先把时间转为时间戳
                     this.showTime = Date.parse(this.showTime);
 //                    把时间戳转换为时间 2017-9
                     this.showTime = utils.ymtimefmt(this.showTime);
-                }else if(this.isStyle == '年报'){
+                    beginTime = this.timeDate+ ' ' +'00:00:00';
+                    endTime = this.timeDate+ ' ' +'23:59:59';
+                }else if(this.isStyle == 'years'){
                     this.timeDate = utils.increaseYears(this.timeDate);
                     this.showTime = this.timeDate;
 //                    先把时间转为时间戳
                     this.showTime = Date.parse(this.showTime);
-//                    把时间戳转换为时间 2017-9
+//                    把时间戳转换为时间 2017
                     this.showTime = utils.ytimefmt(this.showTime);
+                    beginTime = this.timeDate+ ' ' +'00:00:00';
+                    endTime = this.timeDate+ ' ' +'23:59:59';
                 }
+                var data ={
+                    beginTime:beginTime,
+                    endTime:endTime,
+                };
+                this.$emit("addTime",data);
             },
             iconTime () {
                 var _this = this;
@@ -235,31 +265,38 @@
                 }, function (e) {
                     if (e.result == 'success') {
                         _this.timeDate = e.data;
+                        _this.showTime = e.data;
                     }
-                })
+                });
+                var beginTime = '';
+                var endTime = '';
+                beginTime = this.timeDate+ ' ' +'00:00:00';
+                endTime = this.timeDate+ ' ' +'23:59:59';
+                var data ={
+                    beginTime:beginTime,
+                    endTime:endTime,
+                };
+                this.$emit("iconTime",data);
             },
             reportDayClick:function () {
-                this.isStyle = '日报';
+                this.isStyle = 'day';
                 this.showTime = this.timeDate;
-                this.$emit("reportDayClick",this.isStyle);
             },
             reportMonthClick:function () {
-                this.isStyle = '月报';
+                this.isStyle = 'month';
                 this.showTime = this.timeDate;
 //                    先把时间转为时间戳
                 this.showTime = Date.parse(this.showTime);
 //                    把时间戳转换为时间 2017-9
                 this.showTime = utils.ymtimefmt(this.showTime);
-                this.$emit("reportMonthClick",this.isStyle);
             },
             reportYearsClick:function () {
-                this.isStyle = '年报';
+                this.isStyle = 'years';
                 this.showTime = this.timeDate;
 //                    先把时间转为时间戳
                 this.showTime = Date.parse(this.showTime);
 //                    把时间戳转换为时间 2017-9
                 this.showTime = utils.ytimefmt(this.showTime);
-                this.$emit("reportYearsClick",this.isStyle);
             },
 //methods 方法到此为止
         },
