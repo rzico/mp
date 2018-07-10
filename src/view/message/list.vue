@@ -199,7 +199,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import { POST, GET ,SCAN} from '../../assets/fetch';
+    import { POST, GET ,SCAN } from '../../assets/fetch';
     import utils from '../../assets/utils';
     import {dom,event,stream} from '../../weex.js';
     import noData from '../../include/noData.vue';
@@ -273,6 +273,9 @@
                         break;
                     case 'gm_10212':
                         return '线下收款';
+                        break;
+                    case 'gm_10213':
+                        return '送货提醒';
                         break;
                     default:
                         return value.nickName;
