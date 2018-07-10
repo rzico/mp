@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
-const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
 const appName = 'water';// app类型  water 或 yundian
 let utilsFunc = {
     // app类型
@@ -505,6 +505,87 @@ let utilsFunc = {
         }
         return timeObj;
     },
+    // 点击一次增加一月
+    increaseMonth: function(date) {
+        // data格式为2017-09-01
+        var arr = date.split('-');
+        var year = arr[0]; //获取当前日期的年份
+        var month = arr[1]; //获取当前日期的月份
+        var day = arr[2]; //获取当前日期的日
+        var days = new Date(year, month, 0);
+        days = days.getDate(); //获取当前日期中的月的天数
+        var year2 = year;
+        var month2 = parseInt(month) + 1;
+        if (month2 == 13) {
+            year2 = parseInt(year2) + 1;
+            month2 = 1;
+        }
+        var day2 = day;
+        var days2 = new Date(year2, month2, 0);
+        days2 = days2.getDate();
+        if (day2 > days2) {
+            day2 = days2;
+        }
+        if (month2 < 10) {
+            month2 = '0' + month2;
+        }
+
+        var t2 = year2 + '-' + month2 + '-' + day2;
+        return t2;
+    },
+    // 点击一次减一月
+    reduceMonth: function(date) {
+        // data格式为2017-09-01
+        var arr = date.split('-');
+        var year = arr[0]; //获取当前日期的年份
+        var month = arr[1]; //获取当前日期的月份
+        var day = arr[2]; //获取当前日期的日
+        var days = new Date(year, month, 0);
+        days = days.getDate(); //获取当前日期中月的天数
+        var year2 = year;
+        var month2 = parseInt(month) - 1;
+        if (month2 == 0) {
+            year2 = parseInt(year2) - 1;
+            month2 = 12;
+        }
+        var day2 = day;
+        var days2 = new Date(year2, month2, 0);
+        days2 = days2.getDate();
+        if (day2 > days2) {
+            day2 = days2;
+        }
+        if (month2 < 10) {
+            month2 = '0' + month2;
+        }
+        var t2 = year2 + '-' + month2 + '-' + day2;
+        return t2;
+    },
+    // 点击一次减一年
+    reduceYears: function(date) {
+        // data格式为2017-09-01
+        var arr = date.split('-');
+        var year = arr[0]; //获取当前日期的年份
+        var month = arr[1]; //获取当前日期的月份
+        var day = arr[2]; //获取当前日期的日
+        var year2 = parseInt(year) - 1;
+        var month2 = month;
+        var day2 = day;
+        var t2 = year2 + '-' + month2 + '-' + day2;
+        return t2;
+    },
+    // 点击一次增加一年
+    increaseYears: function(date) {
+        // data格式为2017-09-01
+        var arr = date.split('-');
+        var year = arr[0]; //获取当前日期的年份
+        var month = arr[1]; //获取当前日期的月份
+        var day = arr[2]; //获取当前日期的日
+        var year2 = parseInt(year) + 1;
+        var month2 = month;
+        var day2 = day;
+        var t2 = year2 + '-' + month2 + '-' + day2;
+        return t2;
+    },
     //返回格式 2017-09-01
     ymdtimefmt:function(value){
         if(value == '' || value == null || value == undefined){
@@ -512,6 +593,22 @@ let utilsFunc = {
         }
         let timeObj = this.resolvetimefmt(value);
         return timeObj.y + '-' + timeObj.m + '-' + timeObj.d
+    },
+    //返回格式 2017-09
+    ymtimefmt:function(value){
+        if(value == '' || value == null || value == undefined){
+            return value;
+        }
+        let timeObj = this.resolvetimefmt(value);
+        return timeObj.y + '-' + timeObj.m
+    },
+    //返回格式 2017
+    ytimefmt:function(value){
+        if(value == '' || value == null || value == undefined){
+            return value;
+        }
+        let timeObj = this.resolvetimefmt(value);
+        return timeObj.y
     },
     //返回格式 2017-09-01 06:35:59
     ymdhistimefmt:function(value){

@@ -14,8 +14,10 @@
                 <div class="" v-for="c in lists">
                     <div class="contentBox">
                         <div class="couponDiv">
-                        <text class="fz28">X</text>
+                            <div  style="flex-direction:row; align-items:flex-end">
                             <text class="stock">{{c.stock}}</text>
+                            <text style="font-size: 24px;color: #cccccc">张</text>
+                            </div>
                         </div>
                         <div class="infoBox">
                             <text class="couponTitle">{{c.couponName}}</text>

@@ -458,14 +458,15 @@
                                         okTitle: 'OK'
                                     });
                                     return
-                                }else if(_this.takeTotal <= 0){
-                                    _this.clicked = false;
-                                    modal.alert({
-                                        message: '回收桶数总数不能为0',
-                                        okTitle: 'OK'
-                                    });
-                                    return
                                 }
+//                                else if(_this.takeTotal <= 0){
+//                                    _this.clicked = false;
+//                                    modal.alert({
+//                                        message: '回收桶数总数不能为0',
+//                                        okTitle: 'OK'
+//                                    });
+//                                    return
+//                                }
                                 POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor,body).then(
                                     function (data) {
                                         _this.clicked = false;

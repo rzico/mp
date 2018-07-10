@@ -48,7 +48,7 @@
                     <div class="infoLines boder-bottom">
                         <div class="flex-row">
                             <text class="sub_title">订单编号: {{item.orderSn}}</text>
-                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.sn)">复制</text>
+                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.orderSn)">复制</text>
                         </div>
                         <div class="mt10 ">
                             <text class="sub_title">下单时间: {{item.createDate | watchCreateDate}}</text>

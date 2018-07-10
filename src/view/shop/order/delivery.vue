@@ -23,6 +23,22 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <div class="setting" @click="pickPattern()">
+                    <div class="flex-row">
+                        <text class="fz32">配送站点:  {{shopName}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="setting" @click="goMarki()">
+                    <div class="flex-row">
+                        <text class="fz32">配送人员:  {{markiName}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="setting" @click="">
                     <div class="flex-row">
                         <text class="fz32">货运单号:</text>
@@ -138,10 +154,16 @@
     export default {
         data: function () {
             return {
+                clicked:false,
                 begin:0,
                 isobject:'shipping',
                 trackingNo:'',
-                ordersList:[]
+                ordersList:[],
+                shopId:'',
+                shopName:'',
+                markiId:'',
+                markiName:'',
+                isSelf:false
             }
         },
         components: {
@@ -172,6 +194,45 @@
             }
         },
         methods: {
+            //            设置配送站
+            pickPattern:function () {
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success' && data.data != '') {
+                        _this.shopName = data.data.name;
+                        _this.shopId = data.data.id;
+                        _this.isSelf = data.data.isSelf;
+                        _this.markiName = '';
+                        _this.markiId = ''
+                    }
+                })
+            },
+            //            跳转配送员
+            goMarki:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                if(utils.isNull(this.shopId)){
+                    event.toast('请先选择配送站');
+                    _this.clicked = false;
+                    return
+                }
+                event.openURL(utils.locate('view/shop/shipping/marki.js?shopId='+ this.shopId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+                        _this.markiName = data.data.name;
+                        _this.markiId = data.data.id
+                    }
+                });
+            },
             open:function () {
                 let _this = this;
                 GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
@@ -214,7 +275,26 @@
             },
             sendGoods:function () {
                 let _this = this
-                POST('weex/member/order/shipping.jhtml?sn=' + this.orderSn + '&shippingMethod='+ this.isobject +'&trackingNo=' + encodeURIComponent(this.trackingNo)).then(
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                if(this.isobject == 'warehouse'){
+                    if(utils.isNull(this.shopId)){
+                        event.toast('请选择配送站点');
+                        _this.clicked = false;
+                        return
+                    }
+                    if(this.isSelf == true || this.isSelf == 'true'){
+                        if(utils.isNull(this.markiId)){
+                            event.toast('请选择配送人员');
+                            _this.clicked = false;
+                            return
+                        }
+                    }
+                }
+
+                POST('weex/member/order/shipping.jhtml?sn=' + this.orderSn +'&shopId='+this.shopId +'&adminId=' + this.markiId + '&shippingMethod='+ this.isobject +'&trackingNo=' + encodeURIComponent(this.trackingNo)).then(
                     function (data) {
                         if(data.type == 'success'){
                             let E = utils.message('success','发货成功','')

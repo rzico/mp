@@ -68,7 +68,7 @@
                 </div>
                 <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="menuBtn">优惠券</text>
+                    <text class="menuBtn">电子券</text>
                 </div>
                 <div class="menu" @click="godistribution()" v-if="filter('distribution')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>

@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="button" @click="complete()">
-                            <text class="fz40 primary">派单</text>
+                            <text class="fz40 primary">{{buttonText}}</text>
                         </div>
                     </div>
                 </div>
@@ -357,7 +357,9 @@
                 markiId:'',
                 shopId:'',
                 message:'',
-                roles:''
+                roles:'',
+                isPageType:false,
+                buttonText:'派单'
             }
         },
         filters:{
@@ -470,6 +472,11 @@
             utils.initIconFont();
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
+            this.isPageType = utils.getUrlParameter('isPageType');
+            if(this.isPageType == false || this.isPageType == 'false'){
+                this.title = '转派';
+                this.buttonText = '转派'
+            }
             this.open();
             this.permissions()
         },
@@ -569,6 +576,12 @@
                     _this.clicked = false;
                     return
                 }
+//                本水站的单不允许选择站点
+                if(this.isPageType == true || this.isPageType == 'true'){
+                    utils.debug(this.isPageType)
+                    _this.clicked = false;
+                    return
+                }
                     event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
                         _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
@@ -621,6 +634,13 @@
                 if(utils.isNull(this.shopId)){
                     event.toast('请选择配送站');
                     return
+                }
+                //                派单必须选择送水工
+                if(this.isPageType == true || this.isPageType == 'true'){
+                    if(utils.isNull(this.markiId)){
+                        event.toast('请选择配送人员');
+                        return
+                    }
                 }
                 POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
                         if(data.type == 'success'){

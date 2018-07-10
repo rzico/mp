@@ -177,6 +177,8 @@
                     return'刷卡支付'
                 }else if(val == 'cashPayPlugin'){
                     return'现金支付'
+                }else if(val == 'couponPayPlugin'){
+                    return'电子券支付'
                 }
             }
         },
@@ -207,7 +209,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['线下月结','刷卡支付','现金支付']
+                    items:['线下月结','刷卡支付','现金支付','电子券支付']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -218,6 +220,9 @@
                             _this.begin = e.data;
                         }else if(e.data == 2){
                             _this.isobject = 'cashPayPlugin';
+                            _this.begin = e.data;
+                        }else if(e.data == 3){
+                            _this.isobject = 'couponPayPlugin';
                             _this.begin = e.data;
                         }
                     }

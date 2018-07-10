@@ -14,18 +14,15 @@
                 </div>
             </div>
         </div>
-        <div class="addressBox" v-if="isShow">
+        <div class="addressBox pb30" v-if="isShow">
             <text class="address">{{member.areaName}}{{member.address}}</text>
-            <div class="flex-row mt30 bt30" >
-                <text class="memberName">{{member.consignee}}</text>
-                <text class="memberTel">{{member.phone}}</text>
-            </div>
         </div>
         <div class="memberCard" @click="gocard()">
             <text class="fz32" v-if="!isShow">点击选择会员</text>
             <div class="flex-row" v-if="isShow" >
             <image class="memberLogo" :src="memberlogo"></image>
                 <text class="fz28 ml20">{{memberName}}</text>
+                <text class="fz28 ml20">{{member.phone}}</text>
             </div>
             <text  :style="{fontFamily:'iconfont'}" style="color: #888;font-size: 32px">&#xe630;</text>
         </div>
@@ -66,10 +63,31 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
+                <div class="typeBox" @click="pickDate()">
+                    <text class="fz32">预约时间:</text>
+                    <div class="flex-row">
+                        <text class="typeBoxText">{{dateTime}}</text>
+                        <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="typeBox" @click="pickPattern()">
+                    <text class="fz32">配送站点:</text>
+                    <div class="flex-row">
+                        <text class="typeBoxText">{{member.shopName}}</text>
+                        <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="typeBox" @click="goMarki()">
+                    <text class="fz32">配送人员:</text>
+                    <div class="flex-row">
+                        <text class="typeBoxText">{{member.adminName}}</text>
+                        <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="floorBox" @click="chooseFloor()">
                     <text class="fz32">楼层:</text>
                     <div class="flex-row">
-                        <text class="floorBoxText">{{floor}}</text>
+                        <text class="floorBoxText">{{floor | wacthFloor}}</text>
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
@@ -94,6 +112,7 @@
         </div>
             <div style="height: 400px"></div>
         </scroller>
+        <date @confirm="confirmDate" @cancel="cancel" :isMask="isMask"></date>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -138,11 +157,13 @@
         align-items: center;
     }
     .address{
-        max-width:600px;
+        padding-left: 60px;
+        padding-right: 60px;
+        text-align:center;
         font-size: 32px;
         line-height:32px;
         color: white;
-        lines:1;
+        lines:2;
         text-overflow: ellipsis;
     }
     .memberName{
@@ -340,6 +361,7 @@
     import utils from '../../../assets/utils.js'
     import { POST, GET } from '../../../assets/fetch'
     import navbar from '../../../include/navbar.vue'
+    import date from '../../../widget/date.vue'
     const picker = weex.requireModule('picker');
     const modal = weex.requireModule('modal');
     var animationPara;//执行动画的消息
@@ -365,11 +387,13 @@
                 addressId:'',
                 memberlogo:'',
                 memberName:'',
-                goodsName:''
+                goodsName:'',
+                dateTime:'',
+                isMask:false
             }
         },
         components: {
-            navbar
+            navbar,date
         },
         props: {
             title: {default: "补单"},
@@ -382,6 +406,8 @@
                     return'刷卡支付'
                 }else if(val == 'cashPayPlugin'){
                     return'现金支付'
+                }else if(val == 'couponPayPlugin'){
+                    return'电子券支付'
                 }
             },
             watchSendType:function (val) {
@@ -393,6 +419,13 @@
                     return'线下自提'
                 }else if(val == 'cardbkg'){
                     return'虚拟商品'
+                }
+            },
+            wacthFloor(e){
+                if(e == 0){
+                    return '有电梯'
+                }else{
+                    return e
                 }
             }
         },
@@ -409,6 +442,16 @@
             goback(){
                 event.closeURL();
             },
+            pickDate(){
+              this.isMask = true
+            },
+            confirmDate(e){
+                this.isMask = false;
+                this.dateTime = e
+            },
+            cancel(){
+                this.isMask = false;
+            },
 //            跳转备注快速话语
             linkTo: function () {
                 if (this.clicked) {
@@ -422,7 +465,43 @@
                         _this.memoData = data.data.listName;
                     }
                 })
-
+            },
+//            设置配送站
+            pickPattern:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success' && data.data != '') {
+                        _this.member.shopName = data.data.name;
+                        _this.member.shopId = data.data.id;
+                        _this.member.adminName = '';
+                        _this.member.adminId = ''
+                    }
+                })
+            },
+//            跳转配送员
+            goMarki:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                if(utils.isNull(this.member.shopId)){
+                    event.toast('请先选择配送站');
+                    _this.clicked = false;
+                    return
+                }
+                event.openURL(utils.locate('view/shop/shipping/marki.js?shopId='+ this.member.shopId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+                        _this.member.adminName = data.data.name;
+                        _this.member.adminId = data.data.id
+                    }
+                });
             },
             //            获取member信息跟商品合计
             getInfo:function () {
@@ -431,6 +510,7 @@
                     if (data.type == 'success') {
                         _this.member = data.data.receiver;
                         _this.floor = data.data.receiver.level;
+                        _this.beginTwo = data.data.receiver.level;
                         _this.addressId = data.data.receiver.id;
                         _this.effectivePrice = data.data.price;//  商品合计
                     } else {
@@ -445,7 +525,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['线下月结','刷卡支付','现金支付']
+                    items:['线下月结','刷卡支付','现金支付','电子券支付']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -457,6 +537,9 @@
                         }else if(e.data == 2){
                             _this.isobject = 'cashPayPlugin';
                             _this.begin = e.data;
+                        }else if(e.data == 3){
+                            _this.isobject = 'couponPayPlugin';
+                            _this.begin = e.data;
                         }
                     }
                 })
@@ -466,34 +549,37 @@
                 let _this = this
                 picker.pick({
                     index:_this.beginTwo,
-                    items:[1,2,3,4,5,6,7,8,9]
+                    items:[0,1,2,3,4,5,6,7,8,9]
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.floor = 1;
+                            _this.floor = 0;
                             _this.beginTwo = e.data;
                         }else if(e.data == 1){
-                            _this.floor = 2;
+                            _this.floor = 1;
                             _this.beginTwo = e.data;
                         }else if(e.data == 2){
-                            _this.floor = 3;
+                            _this.floor = 2;
                             _this.beginTwo = e.data;
                         }else if(e.data == 3){
-                            _this.floor = 4;
+                            _this.floor = 3;
                             _this.beginTwo = e.data;
                         }else if(e.data == 4){
-                            _this.floor = 5;
+                            _this.floor = 4;
                             _this.beginTwo = e.data;
                         }else if(e.data == 5){
-                            _this.floor = 6;
+                            _this.floor = 5;
                             _this.beginTwo = e.data;
                         }else if(e.data == 6){
-                            _this.floor = 7;
+                            _this.floor = 6;
                             _this.beginTwo = e.data;
                         }else if(e.data == 7){
-                            _this.floor = 8;
+                            _this.floor = 7;
                             _this.beginTwo = e.data;
                         }else if(e.data == 8){
+                            _this.floor = 8;
+                            _this.beginTwo = e.data;
+                        }else if(e.data == 9){
                             _this.floor = 9;
                             _this.beginTwo = e.data;
                         }
@@ -760,11 +846,20 @@
                     event.toast('请先设置地址');
                     _this.clicked = false;
                     return
+                }else if (utils.isNull(this.member.shopId)) {
+                    event.toast('请选择配送站点');
+                    _this.clicked = false;
+                    return
+                }else if (utils.isNull(this.member.adminId)) {
+                    event.toast('请选择配送员');
+                    _this.clicked = false;
+                    return
                 }
-                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId).then(function (res) {
+                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.member.shopId+'&adminId='+_this.member.adminId+'&level='+_this.floor).then(function (res) {
                     if (res.type == 'success') {
 //                        如果实付金额为0，则不走后面的流程
                         if(res.data.amountPayable == 0){
+                            _this.clicked = false;
                             modal.alert({
                                 message: '确认成功',
                                 okTitle: '知道了'
@@ -773,64 +868,35 @@
                             _this.getInfo();
                         }else {
                             var orderSn = res.data.sn;
-                            //                        获取付款sn
-                            POST('weex/member/order/payment.jhtml?sn='+res.data.sn).then(function (mes) {
+                            POST('weex/member/order/save.jhtml?sn='+orderSn+'&paymentPluginId='+_this.isobject +'&shippingMethod='+ _this.sendObject).then(function (mes) {
+                                _this.clicked = false;
                                 if (mes.type == 'success') {
-//                                    确认订单
-                                    POST('/payment/submit.jhtml?sn=' + mes.data.sn +'&paymentPluginId=' +_this.isobject).then(
-                                        function (data) {
-                                            if(data.type == 'success'){
-//                                                发货
-                                                POST('weex/member/order/shipping.jhtml?sn=' + orderSn + '&shippingMethod='+ _this.sendObject).then(
-                                                    function (data) {
-                                                        if(data.type == 'success'){
-                                                            modal.alert({
-                                                                message: '确认成功',
-                                                                okTitle: '知道了'
-                                                            })
-                                                            _this.cartList();
-                                                            _this.getInfo();
-                                                            _this.clicked = false;
-                                                        }else{
-//                                                            因为失败 订单已经提交，所以刷新购物车列表与商品合计
-                                                            _this.cartList();
-                                                            _this.getInfo();
-                                                            modal.alert({
-                                                                message: data.content,
-                                                                okTitle: '知道了'
-                                                            })
-                                                            _this.clicked = false;
-                                                        }
-                                                    },function (err) {
-                                                        event.toast(err.content);
-                                                    }
-                                                )
-                                            }else{
-//                                                因为失败 订单已经提交，所以刷新购物车列表与商品合计
-                                                _this.cartList();
-                                                _this.getInfo();
-                                                event.toast(data.content);
-                                                _this.clicked = false;
-                                            }
-                                        },function (err) {
-                                            event.toast(err.content);
-                                        })
-                                } else {
-//                                    因为失败 订单已经提交，所以刷新购物车列表与商品合计
+                                    modal.alert({
+                                        message: '确认成功',
+                                        okTitle: '知道了'
+                                    })
                                     _this.cartList();
                                     _this.getInfo();
-                                    event.toast(mes.content);
-                                    _this.clicked = false;
+                                }else{
+                                    modal.alert({
+                                        message: mes.content,
+                                        okTitle: '知道了'
+                                    })
+                                    _this.cartList();
+                                    _this.getInfo();
                                 }
                             }, function (err) {
-                                event.toast(err.content)
+                                event.toast(err.content);
+                                _this.clicked = false;
                             })
                         }
                     } else {
                         event.toast(res.content);
+                        _this.clicked = false;
                     }
                 }, function (err) {
-                    event.toast(err.content)
+                    event.toast(err.content);
+                    _this.clicked = false;
                 })
             }
         }
