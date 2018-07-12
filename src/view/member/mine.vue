@@ -412,6 +412,7 @@
         flex-direction: row;
         justify-content: space-between;
         position: relative;
+        background-color: rgba(255,255,255,0.5);
     }
     .circleWrap {
         width: 710px;
