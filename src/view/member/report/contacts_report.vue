@@ -51,27 +51,15 @@
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
             <div class="bottomCell">
-                <text class="fz32 fontStrong">商品合计: ¥{{summarylist[0].price}}</text>
+                <text class="fz32 fontStrong">货款合计: ¥{{summarylist[0].cost}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">积分抵扣: ¥{{summarylist[0].pointDiscount}}</text>
-                <text class="fz28 ">优惠折扣: ¥{{summarylist[0].couponDiscount}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">电子券抵扣: ¥{{summarylist[0].exchangeDiscount}}</text>
-                <text class="fz28 ">调价: ¥{{summarylist[0].offsetAmount}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">运费: ¥{{summarylist[0].freight}}</text>
-                <text class="fz28 fontStrong">营业额: ¥{{summarylist[0].amount}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">商品成本: ¥{{summarylist[0].cost}}</text>
-                <text class="fz28 ">平台佣金: ¥{{summarylist[0].fee}}</text>
+                <text class="fz28 ">楼层工资: ¥{{summarylist[0].levelFreight}}</text>
+                <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">配送费: ¥{{summarylist[0].shippingFreight}}</text>
-                <text class="fz28 fontStrong">净利润: ¥{{summarylist[0].profit}}</text>
+                <text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>
             </div>
         </div>
     </div>
@@ -168,10 +156,10 @@
     .bottomTotal{
         align-items: center;
         width: 750px;
-        height: 630px;
+        height: 330px;
         background-color: white;
         position: fixed;
-        bottom:-500px;
+        bottom:-200px;
         left: 0;
         border-top-width: 1px;
         border-color: #ccc;
@@ -352,7 +340,7 @@
                     _this.isIcon = false;// 当向上滑动时把变量置为false，达到再次点击div时触发的是收回动画
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-500)',
+                            transform: 'translateY(-200)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -387,7 +375,7 @@
                     }else{
                         animation.transition(animationPara, {
                             styles: {
-                                transform: 'translateY(-500)',
+                                transform: 'translateY(-200)',
                             },
                             duration: 350, //ms
                             timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -425,10 +413,6 @@
                 var _this = this;
 
                 GET('weex/member/report/shipping_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
-                    modal.alert({
-                        message: res,
-                        okTitle: 'OK'
-                    });
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
                             _this.reportList = res.data.data.data;
@@ -489,11 +473,14 @@
             },
 //            判断水站是否重复,并且在最后一个显示统计
             isTotal(index){
-                if(index != 0){
+
                     if(index<(this.reportList.length-1) && this.reportList[index].sellerId == this.reportList[index+1].sellerId){
                         return false;
+                    } else {
+                        return index==(this.reportList.length-1);
                     }
-                }
+
+
                 return true;
             }
         },

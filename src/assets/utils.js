@@ -1,6 +1,7 @@
 /**
  * Created by zwwill on 2017/8/27.
  */
+var modal = weex.requireModule('modal');
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weixin.rzico.com';
@@ -540,7 +541,7 @@ let utilsFunc = {
         return timeObj;
     },
     resolveTimeObj:function (obj) {
-       return new Date(obj.y,obj.m - 1,obj.d,obj.h,obj.i,obj.s).getTime();
+       return new Date(obj.y,obj.m-1,obj.d).getTime();
     },
     // 点击一次增加一月
     incMonth: function(date) {
@@ -570,6 +571,7 @@ let utilsFunc = {
             obj.m = obj.m-1;
         }
         return this.resolveTimeObj(obj);
+
     },
     trunceDate:function(date) {
         var obj = this.resolvetime(date);
@@ -606,7 +608,7 @@ let utilsFunc = {
         var obj = this.resolvetime(date);
 
         // 必须要先转为整型，否者快速操作时会出错
-        obj.y = parseInt(obj.y) - 1;
+        obj.y =obj.y - 1;
 
         return this.resolveTimeObj(obj);
     },
@@ -614,7 +616,7 @@ let utilsFunc = {
     incYears: function(date) {
         var obj = this.resolvetime(date);
         // 必须要先转为整型，否者快速操作时会出错
-        obj.y = parseInt(obj.y) + 1;
+        obj.y = obj.y + 1;
 
         return this.resolveTimeObj(obj);
     },
@@ -624,6 +626,7 @@ let utilsFunc = {
             return value;
         }
         let timeObj = this.resolvetimefmt(value);
+        var d = JSON.stringify(timeObj)
         return timeObj.y + '-' + timeObj.m + '-' + timeObj.d
     },
     //返回格式 2017-09
