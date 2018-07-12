@@ -6,7 +6,7 @@
                 <noData :noDataHint="noDataHint"></noData>
             </cell>
             <cell :style="{minHeight:screenHeight + 'px'}">
-                <div  v-for="c in list">
+                <div  v-for="(c,index) in list">
                     <!--默认显示-->
                 <div class="setting" v-if="c.show == true">
                     <div class="titile">
@@ -22,15 +22,8 @@
                 </div>
                     <!--隐藏显示-->
                     <div class="setting" v-if="c.show == false && hasList">
-                        <div class="titile">
+                        <div class="titileTwo" @click="showContol(index)">
                             <text class="fz32">{{c.name}}</text>
-                        </div>
-                        <div class="money">
-                            <text class="fz32">送出</text>
-                            <input type="number" placeholder="输入桶数" class="input" v-model="c.give" />
-                            <text class="monyeTextthree fz32">桶，收回</text>
-                            <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
-                            <text class="monyeTextthree fz32">桶</text>
                         </div>
                     </div>
                 </div>
@@ -136,6 +129,18 @@
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
         /*border-radius: 15px;*/
+        padding-left: 30px;
+        padding-right: 30px;
+        background-image: linear-gradient(to right, pink,#5eb0fd);
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 100px;
+    }
+    .titileTwo{
+        /*border-top-left-radius: 15px;*/
+        /*border-top-right-radius: 15px;*/
+        border-radius: 15px;
         padding-left: 30px;
         padding-right: 30px;
         background-image: linear-gradient(to right, pink,#5eb0fd);
@@ -326,6 +331,10 @@
                 })
 
             },
+            showContol(index){
+                this.list[index].show = true;
+                this.hasList = false
+            },
             open:function () {
                 let _this = this
                 GET('weex/member/barrel/list.jhtml?shippingId='+this.shippingId,
@@ -441,8 +450,10 @@
                                     if(utils.isNull(item.take)){
                                         item.take = 0
                                     }
-                                    _this.giveTotal = _this.giveTotal + item.give;
-                                    _this.takeTotal = _this.takeTotal + item.take;
+                                    if(item.show == true){
+                                        _this.giveTotal = _this.giveTotal + item.give;
+                                    }
+//                                    _this.takeTotal = _this.takeTotal + item.take;
                                     body.push({
                                         id:item.id,
                                         quantity:item.give,

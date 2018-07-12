@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime"></report_header>
+        <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
             <div class="tableOne">
                 <text class="tableText">品名</text>
@@ -9,6 +9,9 @@
                 <text class="tableText">数量</text>
             </div>
             <div class="tableThree">
+                <text class="tableText">成本</text>
+            </div>
+            <div class="tableFour">
                 <text class="tableText">金额</text>
             </div>
         </div>
@@ -16,43 +19,51 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell v-for="(c,index) in reportList.data" ref="adoptPull" >
+            <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="contentCell" >
                     <text class="shopName">{{c.name}}</text>
-                    <text class="number">X{{c.quantity}}</text>
+                    <text class="number">{{c.quantity}}</text>
+                    <text class="cost">¥{{c.cost}}</text>
                     <text class="money">¥{{c.amount}}</text>
                 </div>
             </cell>
-            <!--<cell v-if="reportList.data.length!=0">-->
-                <!--<div class="list"></div>-->
-            <!--</cell>-->
+            <cell v-if="reportList.length == 0" >
+                <noData > </noData>
+            </cell>
+            <cell>
+                <div style="height: 130px"></div>
+            </cell>
 
         </list>
 
-        <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="reportList != null">
+        <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist.length>0">
             <!--点击上箭头或向上滑动展开-->
             <div class="iconBox">
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
             <div class="bottomCell">
-                <text class="fz32">合计: ¥{{reportList.summary[0].price}}</text>
+                <text class="fz32 fontStrong">商品合计: ¥{{summarylist[0].price}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">营业额: ¥{{reportList.summary[0].amount}}</text>
-                <text class="fz28 ">付款金额: ¥{{reportList.summary[0].amountPayable}}</text>
+                <text class="fz28 ">积分抵扣: ¥{{summarylist[0].pointDiscount}}</text>
+                <text class="fz28 ">优惠折扣: ¥{{summarylist[0].couponDiscount}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">运费: ¥{{reportList.summary[0].freight}}</text>
-                <text class="fz28 ">佣金: ¥{{reportList.summary[0].fee}}</text>
+                <text class="fz28 ">电子券抵扣: ¥{{summarylist[0].exchangeDiscount}}</text>
+                <text class="fz28 ">调价: ¥{{summarylist[0].offsetAmount}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">积分抵扣: ¥{{reportList.summary[0].pointDiscount}}</text>
-                <text class="fz28 ">优惠折扣: ¥{{reportList.summary[0].couponDiscount}}</text>
+                <text class="fz28 ">运费: ¥{{summarylist[0].freight}}</text>
+                <text class="fz28 fontStrong">营业额: ¥{{summarylist[0].amount}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">电子券抵扣: ¥{{reportList.summary[0].exchangeDiscount}}</text>
-                <text class="fz28 ">调价: ¥{{reportList.summary[0].offsetAmount}}</text>
+                <text class="fz28 ">商品成本: ¥{{summarylist[0].cost}}</text>
+                <text class="fz28 ">平台佣金: ¥{{summarylist[0].fee}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">配送费: ¥{{summarylist[0].shippingFreight}}</text>
+                <text class="fz28 fontStrong">净利润: ¥{{summarylist[0].profit}}</text>
             </div>
         </div>
     </div>
@@ -65,6 +76,9 @@
         background-color: white;
 
     }
+    .fontStrong{
+        font-weight: bold;
+    }
     .classBox{
         height: 80px;
         width: 750px;
@@ -75,7 +89,7 @@
         border-bottom-color: #ccc;
     }
     .tableOne{
-        width:375px;
+        width:225px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -91,7 +105,15 @@
         border-right-color: #777;
     }
     .tableThree{
-        width:225px;
+        width:187.5px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        border-right-width: 1px;
+        border-right-color: #777;
+    }
+    .tableFour{
+        width:187.5px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -103,10 +125,10 @@
     .bottomTotal{
         align-items: center;
         width: 750px;
-        height: 530px;
+        height: 630px;
         background-color: white;
         position: fixed;
-        bottom:-400px;
+        bottom:-500px;
         left: 0;
         border-top-width: 1px;
         border-color: #ccc;
@@ -155,23 +177,30 @@
         align-items: center;
     }
     .shopName{
-        font-size: 32px;
-        width: 375px;
+        font-size: 30px;
+        width: 225px;
         padding-left: 30px;
         text-align: left;
         lines:1;
         text-overflow: ellipsis;
     }
     .number{
-        font-size: 32px;
+        font-size: 30px;
         width: 150px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;
     }
+    .cost{
+        font-size: 30px;
+        width: 187.5px;
+        text-align: right;
+        lines:1;
+        text-overflow: ellipsis;
+    }
     .money{
-        font-size: 32px;
-        width: 225px;
+        font-size: 30px;
+        width: 187.5px;
         padding-right: 30px;
         text-align: right;
         lines:1;
@@ -193,6 +222,7 @@
         data:function(){
             return{
                 reportList:null,
+                summarylist:[],
                 refreshing: false,
                 loading: 'hide',
                 pageStart:0,
@@ -202,7 +232,7 @@
                 hadUpdate:false,
                 isIcon:true,
                 timeDate:'',
-                pageName:'测试报表',
+                pageName:'订单统计',
                 beginTime:'',
                 endTime:''
             }
@@ -257,6 +287,27 @@
                 this.pageStart = 0 ;
                 this.open()
             },
+            //            点击日报
+            reportDayClick(data){
+                this.beginTime = data.beginTime;
+                this.endTime = data.endTime;
+                this.pageStart = 0 ;
+                this.open()
+            },
+//            点击月报
+            reportMonthClick(data){
+                this.beginTime = data.beginTime;
+                this.endTime = data.endTime;
+                this.pageStart = 0 ;
+                this.open()
+            },
+//            点击年报
+            reportYearsClick(data){
+                this.beginTime = data.beginTime;
+                this.endTime = data.endTime;
+                this.pageStart = 0 ;
+                this.open()
+            },
             onpanmove:function (e,index) {
 //                获取当前点击的元素。
                 var _this = this;
@@ -264,7 +315,7 @@
                     _this.isIcon = false;// 当向上滑动时把变量置为false，达到再次点击div时触发的是收回动画
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-400)',
+                            transform: 'translateY(-500)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -299,7 +350,7 @@
                 }else{
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-400)',
+                            transform: 'translateY(-500)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -337,19 +388,16 @@
                 var _this = this;
 
                 GET('weex/member/report/order_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
-                    modal.alert({
-                        message: res,
-                        okTitle: 'OK'
-                    });
                     if (res.type=="success") {
-                        if (res.data.start==0) {
-                            _this.reportList = res.data.data;
+                        if (_this.pageStart==0) {
+                            _this.reportList = res.data.data.data;
+                            _this.summarylist = res.data.data.summary
                         } else {
-                            res.data.data.forEach(function (item) {
+                            res.data.data.data.forEach(function (item) {
                                 _this.reportList.push(item);
                             })
                         }
-                        _this.pageStart = res.data.data.start+res.data.data.data.length;
+                        _this.pageStart = _this.pageStart+res.data.data.data.length;
                     } else {
                         event.toast(res.content);
                     }

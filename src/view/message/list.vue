@@ -476,7 +476,7 @@
                                 if(message.type == 'success'){
                                     if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
                                         event.setReadMessage(item.userId,function(data) {
-                                            if (data.type == 'success') {
+                                            if (data.type == 'success') { 
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                                                     _this.clicked = false;
                                                 });

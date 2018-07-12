@@ -137,6 +137,7 @@
         },
         data: function () {
             return {
+                clicked:false,
                 timeDate:'',
                 showTime:'',
                 isStyle:'day',
@@ -166,8 +167,8 @@
             },
         },
         created(){
-            this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
-            this.showTime = utils.ymdtimefmt(Date.parse(new Date()));
+            this.timeDate = utils.resolveTimeObj(utils.resolvetime(Math.round(new Date().getTime())));
+            this.showTime = utils.ymdtimefmt(this.timeDate);
         },
         mounted(){
 
@@ -182,36 +183,43 @@
             },
             //            点击减少一天时间
             deductTime:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
                 var beginTime = '';
                 var endTime = '';
                 if(this.isStyle == 'day') {
-//                先把时间转为时间戳
-                    this.timeDate = Date.parse(this.timeDate);
+                    _this.clicked = false;
 //                运算减去一天
-                    this.timeDate = (this.timeDate / 1000 - 86400) * 1000;
+                    this.timeDate = utils.decDate(this.timeDate);
 //                把时间戳转换为时间
-                    this.timeDate = utils.ymdtimefmt(this.timeDate);
-                    this.showTime = this.timeDate;
-                    beginTime = this.timeDate+ ' ' +'00:00:00';
-                    endTime = this.timeDate+ ' ' +'23:59:59';
+                    this.showTime = utils.ymdtimefmt(this.timeDate);
+                    beginTime = this.showTime+ ' ' +'00:00:00';
+                    endTime = this.showTime+ ' ' +'23:59:59';
                 }else if(this.isStyle == 'month'){
-                    this.timeDate = utils.reduceMonth(this.timeDate);
-                    this.showTime = this.timeDate;
-//                    先把时间转为时间戳
-                    this.showTime = Date.parse(this.showTime);
-//                    把时间戳转换为时间 2017-9
-                    this.showTime = utils.ymtimefmt(this.showTime);
-                    beginTime = this.timeDate+ ' ' +'00:00:00';
-                    endTime = this.timeDate+ ' ' +'23:59:59';
+                    _this.clicked = false;
+                    let d = utils.trunceDate(this.timeDate);
+                    this.timeDate = utils.decMonth(d);
+//                  把时间戳转换为时间 2017-9
+                    this.showTime = utils.ymtimefmt(d);
+
+                    beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
+                    var e = utils.decMonth(d);
+                     e = utils.decDate(e);
+                    endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
                 }else if(this.isStyle == 'years'){
-                    this.timeDate = utils.reduceYears(this.timeDate);
-                    this.showTime = this.timeDate;
-//                    先把时间转为时间戳
-                    this.showTime = Date.parse(this.showTime);
-//                    把时间戳转换为时间 2017
-                    this.showTime = utils.ytimefmt(this.showTime);
-                    beginTime = this.timeDate+ ' ' +'00:00:00';
-                    endTime = this.timeDate+ ' ' +'23:59:59';
+                    _this.clicked = false;
+                    let d = utils.trunceMonth(this.timeDate);
+                    this.timeDate = utils.decYears(d);
+//                  把时间戳转换为时间 2017-9
+                    this.showTime = utils.ytimefmt(d);
+
+                    beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
+                    var e = utils.decYears(d);
+                     e = utils.decDate(e);
+                    endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
                 }
                 var data ={
                     beginTime:beginTime,
@@ -221,36 +229,43 @@
             },
 //            点击增加一天时间
             addTime:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
                 var beginTime = '';
                 var endTime = '';
-                if(this.isStyle == 'day'){
-                    //                先把时间转为时间戳
-                    this.timeDate = Date.parse(this.timeDate);
-//                运算增加一天
-                    this.timeDate = (this.timeDate/1000+86400)*1000;
+                if(this.isStyle == 'day') {
+                    _this.clicked = false;
+//                运算减去一天
+                    this.timeDate = utils.incDate(this.timeDate);
 //                把时间戳转换为时间
-                    this.timeDate = utils.ymdtimefmt(this.timeDate);
-                    this.showTime = this.timeDate;
-                    beginTime = this.timeDate+ ' ' +'00:00:00';
-                    endTime = this.timeDate+ ' ' +'23:59:59';
+                    this.showTime = utils.ymdtimefmt(this.timeDate);
+                    beginTime = this.showTime+ ' ' +'00:00:00';
+                    endTime = this.showTime+ ' ' +'23:59:59';
                 }else if(this.isStyle == 'month'){
-                    this.timeDate = utils.increaseMonth(this.timeDate);
-                    this.showTime = this.timeDate;
-//                    先把时间转为时间戳
-                    this.showTime = Date.parse(this.showTime);
-//                    把时间戳转换为时间 2017-9
-                    this.showTime = utils.ymtimefmt(this.showTime);
-                    beginTime = this.timeDate+ ' ' +'00:00:00';
-                    endTime = this.timeDate+ ' ' +'23:59:59';
+                    _this.clicked = false;
+                    let d = utils.trunceDate(this.timeDate);
+                    this.timeDate = utils.incMonth(d);
+//                  把时间戳转换为时间 2017-9
+                    this.showTime = utils.ymtimefmt(d);
+
+                    beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
+                    var e = utils.incMonth(d);
+                    e = utils.decDate(e);
+                    endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
                 }else if(this.isStyle == 'years'){
-                    this.timeDate = utils.increaseYears(this.timeDate);
-                    this.showTime = this.timeDate;
-//                    先把时间转为时间戳
-                    this.showTime = Date.parse(this.showTime);
-//                    把时间戳转换为时间 2017
-                    this.showTime = utils.ytimefmt(this.showTime);
-                    beginTime = this.timeDate+ ' ' +'00:00:00';
-                    endTime = this.timeDate+ ' ' +'23:59:59';
+                    _this.clicked = false;
+                    let d = utils.trunceMonth(this.timeDate);
+                    this.timeDate = utils.incYears(d);
+//                  把时间戳转换为时间 2017-9
+                    this.showTime = utils.ytimefmt(d);
+
+                    beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
+                    var e = utils.incYears(d);
+                     e = utils.decDate(e);
+                    endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
                 }
                 var data ={
                     beginTime:beginTime,
@@ -259,45 +274,82 @@
                 this.$emit("addTime",data);
             },
             iconTime () {
+                this.isStyle = 'day';
+                this.showTime = utils.ymdtimefmt(this.timeDate);
                 var _this = this;
-                picker.pickDate({
-                    value: _this.timeDate
-                }, function (e) {
-                    if (e.result == 'success') {
-                        _this.timeDate = e.data;
-                        _this.showTime = e.data;
-                    }
-                });
                 var beginTime = '';
                 var endTime = '';
-                beginTime = this.timeDate+ ' ' +'00:00:00';
-                endTime = this.timeDate+ ' ' +'23:59:59';
+                picker.pickDate({
+                    value: _this.showTime
+                }, function (e) {
+                    if (e.result == 'success') {
+                        _this.showTime = e.data;
+                        beginTime = _this.showTime+ ' ' +'00:00:00';
+                        endTime = _this.showTime+ ' ' +'23:59:59';
+                        var data ={
+                            beginTime:beginTime,
+                            endTime:endTime,
+                        };
+                        _this.$emit("iconTime",data);
+                    }else {
+                        beginTime = _this.showTime+ ' ' +'00:00:00';
+                        endTime = _this.showTime+ ' ' +'23:59:59';
+                        var data ={
+                            beginTime:beginTime,
+                            endTime:endTime,
+                        };
+                        _this.$emit("iconTime",data);
+                    }
+                });
+            },
+            reportDayClick:function () {
+                var beginTime = '';
+                var endTime = '';
+                this.isStyle = 'day';
+                this.showTime = utils.ymdtimefmt(this.timeDate);
+                beginTime = this.showTime+ ' ' +'00:00:00';
+                endTime = this.showTime+ ' ' +'23:59:59';
                 var data ={
                     beginTime:beginTime,
                     endTime:endTime,
                 };
-                this.$emit("iconTime",data);
-            },
-            reportDayClick:function () {
-                this.isStyle = 'day';
-                this.showTime = this.timeDate;
+                this.$emit("reportDayClick",data);
             },
             reportMonthClick:function () {
+                var beginTime = '';
+                var endTime = '';
                 this.isStyle = 'month';
-                this.showTime = this.timeDate;
-//                    先把时间转为时间戳
-                this.showTime = Date.parse(this.showTime);
 //                    把时间戳转换为时间 2017-9
-                this.showTime = utils.ymtimefmt(this.showTime);
+                this.showTime = utils.ymtimefmt(this.timeDate);
+                let d = utils.trunceDate(this.timeDate);
+                beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
+                var e = utils.incMonth(d);
+                e = utils.decDate(e);
+                endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
+                var data ={
+                    beginTime:beginTime,
+                    endTime:endTime,
+                };
+                this.$emit("reportMonthClick",data);
             },
             reportYearsClick:function () {
+                var beginTime = '';
+                var endTime = '';
                 this.isStyle = 'years';
-                this.showTime = this.timeDate;
-//                    先把时间转为时间戳
-                this.showTime = Date.parse(this.showTime);
 //                    把时间戳转换为时间 2017-9
-                this.showTime = utils.ytimefmt(this.showTime);
+                this.showTime = utils.ytimefmt(this.timeDate);
+                let d = utils.trunceMonth(this.timeDate);
+                beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
+                var e = utils.incYears(d);
+                e = utils.decDate(e);
+                endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
+                var data ={
+                    beginTime:beginTime,
+                    endTime:endTime,
+                };
+                this.$emit("reportYearsClick",data);
             },
+
 //methods 方法到此为止
         },
     }

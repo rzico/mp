@@ -76,7 +76,7 @@
                 </div>
                 <div class="menu" @click="deposit()" v-if="filter('money')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">收银</text>
+                    <text class="menuBtn">统计</text>
                 </div>
                 <div class="menu" @click="shop()" v-if="filter('shop')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
@@ -640,7 +640,7 @@
                     _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {_this.clicked =false});
+                event.openURL(utils.locate("view/member/report/index.js"),function (e) {_this.clicked =false});
             },
             goIndex:function () {
                 GET("weex/member/topic/owner.jhtml",function (res) {

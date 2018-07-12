@@ -279,12 +279,12 @@
                     return;
                 }
                 this.clicked = true;
-                if(this.isobject == 'warehouse'){
-                    if(utils.isNull(this.shopId)){
-                        event.toast('请选择配送站点');
-                        _this.clicked = false;
-                        return
-                    }
+                if(this.isobject == 'warehouse' && !utils.isNull(this.shopId)){
+//                    if(utils.isNull(this.shopId)){
+//                        event.toast('请选择配送站点');
+//                        _this.clicked = false;
+//                        return
+//                    }
                     if(this.isSelf == true || this.isSelf == 'true'){
                         if(utils.isNull(this.markiId)){
                             event.toast('请选择配送人员');

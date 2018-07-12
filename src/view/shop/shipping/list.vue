@@ -369,6 +369,7 @@
                 shopId:'',
                 isMarki:'',
                 markiId:'',
+                isSelf:false,
                 message:'',
                 ids:[],
                 totalSingle:0,
@@ -503,10 +504,13 @@
                     event.toast('请选择配送站');
                     _this.clicked = false;
                     return
-                }else if(utils.isNull(this.markiId)){
-                    event.toast('请选择配送人员');
-                    _this.clicked = false;
-                    return
+                }
+                if(this.isSelf == true || this.isSelf == 'true'){
+                    if(utils.isNull(this.markiId)){
+                        event.toast('请选择配送人员');
+                        _this.clicked = false;
+                        return
+                    }
                 }
                 POST('weex/member/shipping/batch_dispatch.jhtml?ids='+ _this.ids+'&shopId='+_this.shopId+'&adminId='+_this.markiId +'&memo=' +encodeURIComponent(_this.message)).then(
                     function (data) {
@@ -547,6 +551,7 @@
                     if(data.type == 'success' && data.data != '') {
                         _this.isPattern = data.data.name;
                         _this.shopId = data.data.id;
+                        _this.isSelf = data.data.isSelf;
                         _this.isMarki = '';
                         _this.markiId = ''
                     }

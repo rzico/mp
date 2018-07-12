@@ -31,7 +31,8 @@
                 <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType"  @setting="goAttribute" @goFans="goFans"></topic_header>
             <!--顶部个人信息栏-->
             <!--收藏，钱包，关注-->
-                <div class="comWrap" style="margin-top: 410px">
+                <div class="contentBoxTwo">
+                <div class="comWrap" >
                     <div class=" flexColTwo" style="width: 236.66px" @click="goCollect()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe65d;</text>
                         <text class="iconfontText ">收藏</text>
@@ -45,7 +46,7 @@
                         <text class="iconfontText ">关注</text>
                     </div>
                 </div>
-
+                </div>
             <!-- 我的订单 -->
             <div class="contentBox" v-if="member.activated && member.hasShop && filter('order')">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goOrderList()">
@@ -232,7 +233,7 @@
                     </div>
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="goreport()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>
-                        <text class="iconfontText mt20">测试报表</text>
+                        <text class="iconfontText mt20">统计报表</text>
                     </div>
                     <!--<div class="iconBox flexCol mt20"  @click="beginShare()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>-->
@@ -295,6 +296,14 @@
         margin-left: 20px;
         margin-right: 20px;
         background-color: white;
+        border-radius: 20px;
+    }
+    .contentBoxTwo{
+        width: 710px;
+        margin-top: 410px;
+        margin-left: 20px;
+        margin-right: 20px;
+        background-color: rgba(255,255,255,0.5);
         border-radius: 20px;
     }
     .shippingNumberBox{
@@ -975,7 +984,7 @@
                 );
             },
             goreport(){
-                event.openURL(utils.locate('view/member/report/report.js'), function(data) {
+                event.openURL(utils.locate('view/member/report/index.js'), function(data) {
 
                     }
                 );

@@ -5,7 +5,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
-const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 const appName = 'water';// app类型  water 或 yundian
 let utilsFunc = {
     // app类型
@@ -505,86 +505,118 @@ let utilsFunc = {
         }
         return timeObj;
     },
+    resolvetime:function (value) {
+        if(this.isNull(value)){
+            return value;
+        }
+//value 传进来是个整数型，要判断是10位还是13位需要转成字符串。这边的方法是检测13位的时间戳 所以要*1000；并且转回整型。安卓下，时间早了8个小时
+        if(value.toString().length == 10){
+            value = parseInt(value) * 1000;
+        }else{
+            value = parseInt(value);
+        }
+// 返回处理后的值
+        var    date = new Date(value);
+
+        var    d2 = Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate(),date.getUTCHours(),date.getUTCMinutes(),date.getUTCSeconds());
+
+        date = new Date(d2+28800000);
+
+        var    y = date.getUTCFullYear();
+        var    m = date.getUTCMonth() + 1;
+        var    d = date.getUTCDate();
+        var    h = date.getUTCHours();
+        var    i = date.getUTCMinutes();
+        var    s = date.getUTCSeconds();
+
+        let timeObj = {
+            y:y,
+            m:m,
+            d:d,
+            h:h,
+            i:i,
+            s:s
+        }
+        return timeObj;
+    },
+    resolveTimeObj:function (obj) {
+       return new Date(obj.y,obj.m - 1,obj.d,obj.h,obj.i,obj.s).getTime();
+    },
     // 点击一次增加一月
-    increaseMonth: function(date) {
-        // data格式为2017-09-01
-        var arr = date.split('-');
-        var year = arr[0]; //获取当前日期的年份
-        var month = arr[1]; //获取当前日期的月份
-        var day = arr[2]; //获取当前日期的日
-        var days = new Date(year, month, 0);
-        days = days.getDate(); //获取当前日期中的月的天数
-        var year2 = year;
-        var month2 = parseInt(month) + 1;
-        if (month2 == 13) {
-            year2 = parseInt(year2) + 1;
-            month2 = 1;
-        }
-        var day2 = day;
-        var days2 = new Date(year2, month2, 0);
-        days2 = days2.getDate();
-        if (day2 > days2) {
-            day2 = days2;
-        }
-        if (month2 < 10) {
-            month2 = '0' + month2;
+    incMonth: function(date) {
+        var obj =  this.resolvetime(date);
+        // 必须转为整型，否则快速点击会出现问题
+        obj.m =  parseInt(obj.m);
+        obj.y =  parseInt(obj.y);
+        if (obj.m  >= 12) {
+            obj.y = obj.y + 1;
+            obj.m = 1;
+        } else {
+            obj.m = obj.m+1;
         }
 
-        var t2 = year2 + '-' + month2 + '-' + day2;
-        return t2;
+        return this.resolveTimeObj(obj);
     },
     // 点击一次减一月
-    reduceMonth: function(date) {
-        // data格式为2017-09-01
-        var arr = date.split('-');
-        var year = arr[0]; //获取当前日期的年份
-        var month = arr[1]; //获取当前日期的月份
-        var day = arr[2]; //获取当前日期的日
-        var days = new Date(year, month, 0);
-        days = days.getDate(); //获取当前日期中月的天数
-        var year2 = year;
-        var month2 = parseInt(month) - 1;
-        if (month2 == 0) {
-            year2 = parseInt(year2) - 1;
-            month2 = 12;
+    decMonth: function(date) {
+        var obj = this.resolvetime(date);
+        // 必须转为整型，否则快速点击会出现问题
+        obj.m =  parseInt(obj.m);
+        obj.y =  parseInt(obj.y);
+        if (obj.m <= 1) {
+            obj.y = obj.y - 1;
+            obj.m = 12;
+        } else {
+            obj.m = obj.m-1;
         }
-        var day2 = day;
-        var days2 = new Date(year2, month2, 0);
-        days2 = days2.getDate();
-        if (day2 > days2) {
-            day2 = days2;
-        }
-        if (month2 < 10) {
-            month2 = '0' + month2;
-        }
-        var t2 = year2 + '-' + month2 + '-' + day2;
-        return t2;
+        return this.resolveTimeObj(obj);
+    },
+    trunceDate:function(date) {
+        var obj = this.resolvetime(date);
+
+        obj.d = 1;
+        obj.h = 0;
+        obj.i = 0;
+        obj.s = 0;
+        return this.resolveTimeObj(obj);
+    },
+    trunceMonth:function(date) {
+        var obj = this.resolvetime(date);
+        obj.m = 1;
+        obj.d = 1;
+        obj.h = 0;
+        obj.i = 0;
+        obj.s = 0;
+        return this.resolveTimeObj(obj);
+    },
+    // 减一天
+    decDate: function(date) {
+
+        return (date / 1000 - 86400) * 1000;
+
+    },
+    // 增一天
+    incDate: function(date) {
+
+        return (date / 1000 + 86400) * 1000;
+
     },
     // 点击一次减一年
-    reduceYears: function(date) {
-        // data格式为2017-09-01
-        var arr = date.split('-');
-        var year = arr[0]; //获取当前日期的年份
-        var month = arr[1]; //获取当前日期的月份
-        var day = arr[2]; //获取当前日期的日
-        var year2 = parseInt(year) - 1;
-        var month2 = month;
-        var day2 = day;
-        var t2 = year2 + '-' + month2 + '-' + day2;
-        return t2;
+    decYears: function(date) {
+        var obj = this.resolvetime(date);
+
+        // 必须要先转为整型，否者快速操作时会出错
+        obj.y = parseInt(obj.y) - 1;
+
+        return this.resolveTimeObj(obj);
     },
     // 点击一次增加一年
-    increaseYears: function(date) {
-        // data格式为2017-09-01
-        var arr = date.split('-');
-        var year = arr[0]; //获取当前日期的年份
-        var month = arr[1]; //获取当前日期的月份
-        var day = arr[2]; //获取当前日期的日
-        var year2 = parseInt(year) + 1;
-        var month2 = month;
-        var day2 = day;
-        var t2 = year2 + '-' + month2 + '-' + day2;
-        return t2;
+    incYears: function(date) {
+        var obj = this.resolvetime(date);
+        // 必须要先转为整型，否者快速操作时会出错
+        obj.y = parseInt(obj.y) + 1;
+
+        return this.resolveTimeObj(obj);
     },
     //返回格式 2017-09-01
     ymdtimefmt:function(value){
