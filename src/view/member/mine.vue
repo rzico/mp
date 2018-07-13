@@ -406,6 +406,7 @@
     .comWrap {
         width: 710px;
         padding: 20px;
+        border-radius: 20px;
         flex-direction: row;
         justify-content: space-between;
         position: relative;
