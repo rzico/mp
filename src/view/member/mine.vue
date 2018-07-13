@@ -33,15 +33,15 @@
             <!--收藏，钱包，关注-->
                 <div class="contentBoxTwo">
                 <div class="comWrap" >
-                    <div class=" flexColTwo" style="width: 236.66px" @click="goCollect()">
+                    <div class=" flexColTwo" style="width: 223.33px" @click="goCollect()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe65d;</text>
                         <text class="iconfontText ">收藏</text>
                     </div>
-                    <div class=" flexColTwo"  style="width: 236.66px" @click="goWallet()">
+                    <div class=" flexColTwo"  style="width: 223.33px" @click="goWallet()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe63e;</text>
                         <text class="iconfontText ">钱包</text>
                     </div>
-                    <div class=" flexColTwo"  style="width: 236.66px" @click="goFocus()">
+                    <div class=" flexColTwo"  style="width: 223.33px" @click="goFocus()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe870;</text>
                         <text class="iconfontText ">关注</text>
                     </div>
@@ -177,15 +177,19 @@
                     <!--</div>-->
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
                         <text :style="{fontFamily:'iconfont'}"  class="iconfontSize" style="color: #5A427C">&#xe6e8;</text>
-                        <text class="iconfontText mt20">人工补单</text>
+                        <text class="iconfontText mt20">人工报单</text>
                     </div>
-                    <div class="iconBox flexCol mt20"   v-if="member.activated && member.hasShop && filter('order')" @click="goOrderList()">
-                        <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe665;</text>
-                        <text class="iconfontText mt20">订单管理</text>
-                    </div>
-                    <div class="iconBox flexCol mt20"  v-if="member.activated && member.hasShop && filter('shipping')" @click="shippingManage()">
-                        <text :style="{fontFamily:'iconfont'}" style=" color: #996600" class="iconfontSize">&#xe66e;</text>
-                        <text class="iconfontText mt20">送货管理</text>
+                    <!--<div class="iconBox flexCol mt20"   v-if="member.activated && member.hasShop && filter('order')" @click="goOrderList()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe665;</text>-->
+                        <!--<text class="iconfontText mt20">订单管理</text>-->
+                    <!--</div>-->
+                    <!--<div class="iconBox flexCol mt20"  v-if="member.activated && member.hasShop && filter('shipping')" @click="shippingManage()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #996600" class="iconfontSize">&#xe66e;</text>-->
+                        <!--<text class="iconfontText mt20">送货管理</text>-->
+                    <!--</div>-->
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('manage')"  @click="goodsManage()" >
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #cc66cc" class="iconfontSize">&#xe667;</text>
+                        <text class="iconfontText mt20">商品管理</text>
                     </div>
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('dragon')" @click="dragon()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe664;</text>
@@ -194,6 +198,10 @@
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('review')" @click="goReviewManage()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe666;</text>
                         <text class="iconfontText mt20">评价管理</text>
+                    </div>
+                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('shop')" @click="shop()">
+                        <text :style="{fontFamily:'iconfont'}" style="color: #336666" class="iconfontSize">&#xe66d;</text>
+                        <text class="iconfontText mt20">店铺管理</text>
                     </div>
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="gocard()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #cc3300" class="iconfontSize">&#xe66a;</text>
@@ -206,14 +214,6 @@
                     <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('distribution')" @click="godistribution()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #cc9900" class="iconfontSize">&#xe668;</text>
                         <text class="iconfontText mt20">新营销</text>
-                    </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('manage')"  @click="goodsManage()" >
-                        <text :style="{fontFamily:'iconfont'}" style=" color: #cc66cc" class="iconfontSize">&#xe667;</text>
-                        <text class="iconfontText mt20">商品管理</text>
-                    </div>
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('shop')" @click="shop()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #336666" class="iconfontSize">&#xe66d;</text>
-                        <text class="iconfontText mt20">店铺管理</text>
                     </div>
                     <div class="iconBox flexCol mt20"  v-if="!member.hasShop && !member.activated" @click="goShop()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
@@ -303,7 +303,7 @@
         margin-top: 410px;
         margin-left: 20px;
         margin-right: 20px;
-        background-color: rgba(255,255,255,0.5);
+        background-color: white;
         border-radius: 20px;
     }
     .shippingNumberBox{
@@ -405,10 +405,8 @@
 
     .comWrap {
         width: 710px;
-        padding-top: 20px;
-        padding-left: 20px;
-        padding-right: 20px;
-        padding-bottom: 20px;
+        padding: 20px;
+        border-radius: 20px;
         flex-direction: row;
         justify-content: space-between;
         position: relative;
@@ -581,6 +579,14 @@
                 if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201') {
                     _this.updateUserInfo();
                 }
+                if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10200') {
+//                   获取订单数量
+                    _this.getCount();
+                }
+                if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10213') {
+//                   获取运单数量
+                    this.getShippingConut();
+                }
             });
         },
         ////        dom呈现完执行滚动一下
@@ -724,12 +730,10 @@
                 POST("weex/member/roles.jhtml").then(function (mes) {
                     if (mes.type=="success") {
                         _this.roles = mes.data;
-                        if (utils.isRoles("3",_this.roles)) {
 //                            开启定时器，每分钟定位一次经纬度
                             _this.time = setInterval(function () {
                                 _this.getGps()
-                            },100000);
-                        }
+                            },60000);
                     } else {
                         event.toast(mes.content);
                     }

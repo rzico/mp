@@ -55,13 +55,13 @@
                         </div>
                     </div>
                     <div class="infoLines pb10">
-                        <text class="sub_title ">支付方式: {{item.paymentMethod | watchPayMethod}}</text>
+                        <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt0">
                         <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
                     </div>
                     <div class="infoLines pb10">
-                        <text class="sub_title ">配送方式: {{item.shippingMethod | watchShippingMethod}}</text>
+                        <text class="sub_title ">配送方式: {{item.shippingMethod}}</text>
                     </div>
                     <div class="infoLines pt0 pb10">
                         <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>

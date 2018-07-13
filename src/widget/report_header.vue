@@ -167,6 +167,8 @@
             },
         },
         created(){
+            utils.initIconFont();
+            var _this = this
             this.timeDate = utils.resolveTimeObj(utils.resolvetime(Math.round(new Date().getTime())));
             this.showTime = utils.ymdtimefmt(this.timeDate);
         },
@@ -201,23 +203,25 @@
                 }else if(this.isStyle == 'month'){
                     _this.clicked = false;
                     let d = utils.trunceDate(this.timeDate);
-                    this.timeDate = utils.decMonth(d);
+                    d = utils.decMonth(d);
+                    this.timeDate = d;
 //                  把时间戳转换为时间 2017-9
                     this.showTime = utils.ymtimefmt(d);
 
                     beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
-                    var e = utils.decMonth(d);
+                    var e = utils.incMonth(d);
                      e = utils.decDate(e);
                     endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
                 }else if(this.isStyle == 'years'){
                     _this.clicked = false;
                     let d = utils.trunceMonth(this.timeDate);
-                    this.timeDate = utils.decYears(d);
+                    d = utils.decYears(d);
+                    this.timeDate = d;
 //                  把时间戳转换为时间 2017-9
                     this.showTime = utils.ytimefmt(d);
 
                     beginTime = utils.ymdtimefmt(d)+ ' ' +'00:00:00';
-                    var e = utils.decYears(d);
+                    var e = utils.incYears(d);
                      e = utils.decDate(e);
                     endTime = utils.ymdtimefmt(e)+ ' ' +'23:59:59';
                 }
@@ -247,7 +251,8 @@
                 }else if(this.isStyle == 'month'){
                     _this.clicked = false;
                     let d = utils.trunceDate(this.timeDate);
-                    this.timeDate = utils.incMonth(d);
+                    d = utils.incMonth(d);
+                    _this.timeDate = d;
 //                  把时间戳转换为时间 2017-9
                     this.showTime = utils.ymtimefmt(d);
 
@@ -258,7 +263,8 @@
                 }else if(this.isStyle == 'years'){
                     _this.clicked = false;
                     let d = utils.trunceMonth(this.timeDate);
-                    this.timeDate = utils.incYears(d);
+                    d = utils.incYears(d);
+                    this.timeDate = d;
 //                  把时间戳转换为时间 2017-9
                     this.showTime = utils.ytimefmt(d);
 

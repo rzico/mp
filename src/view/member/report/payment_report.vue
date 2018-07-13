@@ -245,9 +245,9 @@
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
-            this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
-            this.beginTime = this.timeDate+ ' ' +'00:00:00';
-            this.endTime = this.timeDate+ ' ' +'23:59:59';
+            var timeDate = utils.ymdtimefmt(Date.parse(new Date()));
+            this.beginTime = timeDate+ ' ' +'00:00:00';
+            this.endTime = timeDate+ ' ' +'23:59:59';
             this.open();
         },
 //        dom呈现完执行滚动一下
@@ -385,10 +385,6 @@
             },
             open:function () {
                 var _this = this;
-//                modal.alert({
-//                    message: 'weex/member/report/payment_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,
-//                    okTitle: 'OK'
-//                });
                 GET('weex/member/report/payment_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {

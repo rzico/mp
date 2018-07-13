@@ -443,6 +443,7 @@
                         if(data.type == 'success'){
                             if(data.data == true){
                                 var body = [];
+                                var isTrue = 0;
                                 _this.list.forEach(function(item,index){
                                     if(utils.isNull(item.give)){
                                         item.give = 0
@@ -452,6 +453,7 @@
                                     }
                                     if(item.show == true){
                                         _this.giveTotal = _this.giveTotal + item.give;
+                                        isTrue = isTrue+1
                                     }
 //                                    _this.takeTotal = _this.takeTotal + item.take;
                                     body.push({
@@ -462,13 +464,16 @@
                                     });
                                 });
                                 body = JSON.stringify(body);
-                                if(_this.giveTotal <= 0){
-                                    _this.clicked = false;
-                                    modal.alert({
-                                        message: '送出桶数总数不能为0',
-                                        okTitle: 'OK'
-                                    });
-                                    return
+//                                有显示品牌时才去控制
+                                if(isTrue != 0){
+                                    if(_this.giveTotal <= 0){
+                                        _this.clicked = false;
+                                        modal.alert({
+                                            message: '送出桶数总数不能为0',
+                                            okTitle: 'OK'
+                                        });
+                                        return
+                                    }
                                 }
 //                                else if(_this.takeTotal <= 0){
 //                                    _this.clicked = false;

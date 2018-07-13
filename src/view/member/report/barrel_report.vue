@@ -36,21 +36,23 @@
 
         </list>
 
-        <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist != null">
+        <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist != null ">
             <!--点击上箭头或向上滑动展开-->
             <div class="iconBox">
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
             <div class="bottomCell">
-                <text class="fz32">收款合计: ¥{{total}}</text>
+                <text class="typeName">合计</text>
+                <text class="refund">回桶: {{returnQuantityTotal}}</text>
+                <text class="amount">出桶: {{quantityTotal}}</text>
             </div>
             <list style="max-height: 500px">
                 <cell class="" v-for="t in summarylist">
                     <div class="bottomCellTwo">
                         <text class="typeName">{{t.barrelName}}</text>
-                        <text class="refund">回桶: ¥{{t.returnQuantity}}</text>
-                        <text class="amount">出桶: ¥{{t.quantity}}</text>
+                        <text class="refund">回桶: {{t.returnQuantity}}</text>
+                        <text class="amount">出桶: {{t.quantity}}</text>
                     </div>
                 </cell>
             </list>
@@ -126,8 +128,7 @@
         background-color: #f5f5f5;
         flex-direction: row;
         align-items: center;
-        justify-content: flex-end;
-        padding-right: 30px;
+        justify-content: space-between;
         border-bottom-width:1px;
         border-color:#cccccc;
     }
@@ -233,7 +234,9 @@
                 timeDate:'',
                 pageName:'空桶结算',
                 beginTime:'',
-                endTime:''
+                endTime:'',
+                quantityTotal:0,
+                returnQuantityTotal:0
             }
         },
         components: {
@@ -387,16 +390,13 @@
                 var _this = this;
                 GET('weex/member/report/barrel_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
-                        modal.alert({
-                            message: res,
-                            okTitle: 'OK'
-                                   });
                         if (_this.pageStart==0) {
-                            var total = 0;
+                            _this.returnQuantityTotal = 0 ;
+                            _this.quantityTotal = 0 ;
                             res.data.data.summary.forEach(function (item) {
-                                total = total+item.amount
+                                _this.returnQuantityTotal = _this.returnQuantityTotal+item.returnQuantity;
+                                _this.quantityTotal = _this.quantityTotal+item.quantity;
                             })
-                            _this.total = total;
                             _this.reportList = res.data.data.data;
                             _this.summarylist = res.data.data.summary
                         } else {
