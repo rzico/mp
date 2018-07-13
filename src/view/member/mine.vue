@@ -406,6 +406,7 @@
     .comWrap {
         width: 710px;
         padding: 20px;
+        border-radius: 20px;
         flex-direction: row;
         justify-content: space-between;
         position: relative;
@@ -577,6 +578,14 @@
             globalEvent.addEventListener("onMessage", function(e) {
                 if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201') {
                     _this.updateUserInfo();
+                }
+                if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10200') {
+//                   获取订单数量
+                    _this.getCount();
+                }
+                if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10213') {
+//                   获取运单数量
+                    this.getShippingConut();
                 }
             });
         },
