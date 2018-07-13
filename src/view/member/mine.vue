@@ -579,6 +579,14 @@
                 if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201') {
                     _this.updateUserInfo();
                 }
+                if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10200') {
+//                   获取订单数量
+                    _this.getCount();
+                }
+                if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10213') {
+//                   获取运单数量
+                    this.getShippingConut();
+                }
             });
         },
         ////        dom呈现完执行滚动一下
