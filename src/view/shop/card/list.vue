@@ -286,6 +286,7 @@
 </style>
 
 <script>
+    const modal = weex.requireModule('modal');
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'

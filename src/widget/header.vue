@@ -14,13 +14,27 @@
                 </div>
                 <text class="signature">{{userSign}}</text>
             </div>
+            <div class="wallet" @click="goWallet" v-if="showType">
+                <text class="walletText" style="padding-top: 3px">钱包</text>
+                <text :style="{fontFamily:'iconfont'}" class="walletText ml20">&#xe630;</text>
+            </div>
             <div class="fansBox" :class="[headerFans()]">
-                <text class="fans" @click="goFans">{{fans}}</text>
-                <text class="fansText" @click="goFans">粉丝</text>
-                <div class="focusBox" v-if="focusType">
-                    <text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>
-                    <text class="focusText">关注</text>
+                <div class="mr20" style="align-items: center" @click="goCollect">
+                    <text class="fans">{{collect}}</text>
+                    <text class="fansText">收藏</text>
                 </div>
+                <div class="mr20" style="align-items: center" @click="goFocus">
+                    <text class="fans">{{focus}}</text>
+                    <text class="fansText">关注</text>
+                </div>
+                <div class="" style="align-items: center" @click="goFans">
+                <text class="fans" >{{fans}}</text>
+                <text class="fansText">粉丝</text>
+                </div>
+                <!--<div class="focusBox" >-->
+                    <!--<text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>-->
+                    <!--<text class="focusText">关注</text>-->
+                <!--</div>-->
             </div>
         </div>
 
@@ -103,7 +117,7 @@
         color: white;
     }
     .fansBox{
-        flex-direction: column;
+        flex-direction: row;
         align-items:flex-end;
         position: absolute;
         right: 30px;
@@ -121,7 +135,7 @@
         color: #fff;
     }
    .fansText{
-       font-size: 26px;
+       font-size: 22px;
        color: #fff;
    }
     .focusBox{
@@ -144,6 +158,27 @@
        font-size: 28px;
        color:#fff;
    }
+    .wallet{
+        padding-left: 30px;
+        position: absolute;
+        top: 200px;
+        right:0;
+        height: 60px;
+        width: 150px;
+        flex-direction: row;
+        align-items: center;
+        border-top-left-radius: 80px;
+        border-bottom-left-radius: 80px;
+        border-top-width: 5px;
+        border-left-width: 5px;
+        border-bottom-width: 5px;
+        border-color: #eeeeee;
+        background-image: linear-gradient(to right, #EB4E40,#ff700b);
+    }
+    .walletText{
+        font-size: 22px;
+        color: white;
+    }
 </style>
 <script>
     import navbar from '../include/navbar.vue';
@@ -164,8 +199,10 @@
             }
         },
         props: {
-            focusType:false,
+            showType:false,
             fans:0,
+            focus:0,
+            collect:0,
             logo:{},
             imgBg: '',
             occupation:'',
@@ -201,13 +238,21 @@
                 let dc = utils.topicBgImg();
                 return dc;
             },
+            goWallet: function () {
+                this.$emit("goWallet");
+            },
             setting: function () {
                 this.$emit("setting");
             },
             goFans: function () {
                 this.$emit("goFans");
             },
-
+            goFocus: function () {
+                this.$emit("goFocus");
+            },
+            goCollect: function () {
+                this.$emit("goCollect");
+            },
 //methods 方法到此为止
         },
     }

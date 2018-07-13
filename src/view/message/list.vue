@@ -199,6 +199,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
+    const audio = weex.requireModule('audio');
     import { POST, GET ,SCAN } from '../../assets/fetch';
     import utils from '../../assets/utils';
     import {dom,event,stream} from '../../weex.js';
@@ -325,6 +326,30 @@
 //                    用户消息没有userId。只有id。
                 e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
                 _this.addMessage(e.data);
+////                audio.play('http://music.163.com/song/media/outer/url?id=5247677.mp3');
+//                utils.debug(e.data)
+                if (e.data.data.userId=='gm_10200') {
+                   if (e.data.data.content=='买家付款成功') {
+                       audio.play(utils.remote('resources/mp3/1.mp3'));
+                   } else
+                   if (e.data.data.content=='亲，有客户催单了，请及时处理') {
+                        audio.play(utils.remote('resources/mp3/2.mp3'));
+                   }
+                } else if (e.data.data.userId=='gm_10213') {
+                    if (e.data.data.content.indexOf('预约单安排至')!=-1) {
+                       audio.play(utils.remote('resources/mp3/4.mp3'));
+                    } else
+                    if (e.data.data.content.indexOf('订单安排至')!=-1) {
+                       audio.play(utils.remote('resources/mp3/1.mp3'));
+                    } else
+                    if (e.data.data.content.indexOf('已指派送货员')!=-1) {
+                       audio.play(utils.remote('resources/mp3/1.mp3'));
+                     } else
+                      if (e.data.data.content.indexOf('订单退回至')!=-1) {
+                         audio.play(utils.remote('resources/mp3/6.mp3'));
+                       }
+                }
+
             });
             //           添加好友消息红点控制
             globalEvent.addEventListener("onNewFriendChange", function (e) {
