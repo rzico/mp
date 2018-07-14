@@ -1308,7 +1308,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/friend/fans.js'), function(data) {
+                event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId), function(data) {
                         _this.clicked = false;
                         if (data.type == 'success' && data.data != '') {
 

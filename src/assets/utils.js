@@ -6,7 +6,7 @@ const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
-const debug = true;//删掉该属性时请查找该页所有debug变量并删除变量
+const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 const appName = 'water';// app类型  water 或 yundian
 let utilsFunc = {
     // app类型
@@ -352,6 +352,21 @@ let utilsFunc = {
                 return 'fansBox';
             }else if(s == 'IPhoneX'){
                 return 'fansBoxIPHONEX';
+            }else{
+                return s;
+            }
+        }
+    },
+    //   新会员首页 专栏 顶部操作栏
+    topicOperation:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'operationBox';
+            }else if(s == 'IPhoneX'){
+                return 'operationBoxIPHONEX';
             }else{
                 return s;
             }

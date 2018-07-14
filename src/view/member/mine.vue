@@ -17,18 +17,19 @@
                     <div style="width: 50px;">
                     </div>
                 </div>
+                <!--导航栏设置-->
+                <div class=" rightTop " :class="[classTop()]" @click="goOption()">
+                    <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
+                </div>
             </div>
-            <!--导航栏设置-->
-            <div class=" rightTop " :class="[classTop()]" @click="goOption()">
-                <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
-            </div>
+
         </div>
 
         <scroller show-scrollbar="false" offset-accuracy="0" ref="scrollerRef" @loadmore="onloading" loadmoreoffset="2000" @scroll="scrollHandler" :scrollable="canScroll">
             <div class="" style="position: relative">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;" @appear="toponappear"></div>
-                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focus="focusNum" :collect="collectNum" :showType="showType"  @setting="goAttribute" @goFans="goFans" @goCollect="goCollect" @goFocus="goFocus" @goWallet="goWallet"></topic_header>
+                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focus="focusNum" :collect="collectNum" :showType="showType"  @setting="goAttribute" @goFans="goFans" @goCollect="goCollect" @goFocus="goFocus" @goWallet="goWallet" @goManage="goOption" @goShare="beginShare"></topic_header>
             <!--顶部个人信息栏-->
             <!--收藏，钱包，关注-->
                 <div style=" margin-top: 410px;">
@@ -258,6 +259,10 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    /*遮罩层*/
+    .mask{
+        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;background-color:rgba(000,000,000,0.4);
+    }
     .wrapper{
         position: absolute;
         top: 0;
@@ -347,7 +352,7 @@
         color: #444;
     }
     .rightTop {
-        position: fixed;
+        position: absolute;
         top: 44px;
         right: 0;
         /*width: 110px;*/
@@ -489,7 +494,7 @@
                 shippingConut:[],
                 shopId:'#',
                 hasHeaderInfo:true,
-                time:''
+                time:null
             }
         },
         components: {
@@ -550,6 +555,14 @@
                 }
             }
         },
+        beforeDestory() {
+            var _this = this;
+//            页面销毁时解除定时器
+            if (!utils.isNull(this.time))  {
+                clearInterval(this.time);
+                this.time = null;
+            }
+        },
         created: function() {
             let _this = this;
             utils.initIconFont();
@@ -562,8 +575,8 @@
             this.openArticle();
 //            获取权限
             this.permissions();
-//             获取经纬度
-            this.getGps();
+////             获取经纬度
+//            this.getGps();
 //            获取店铺是否完善
             this.open();
 //            获取订单数量
@@ -733,7 +746,7 @@
 //                            开启定时器，每分钟定位一次经纬度
                             _this.time = setInterval(function () {
                                 _this.getGps()
-                            },600000);
+                            },120000);
                     } else {
                         event.toast(mes.content);
                     }

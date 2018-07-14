@@ -19,7 +19,7 @@
             <cell v-else v-for="(item,index) in ordersList">
                 <div class="goodsLine mt20">
                     <div class="space-between goodsHead" >
-                        <div class="flex-row" @click="goAuthor(item.memberId)">
+                        <div class="flex-row">
                             <image :src="item.logo | watchLogo" class="shopImg"></image>
                             <text class="title ml20 mr20">{{item.name}}</text>
                             <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -297,7 +297,7 @@
             catagoryChange:function(index,id){
 //                event.toast(id);
                 var _this = this;
-                if(_this.whichCorpus == index){
+                if(_this.whichCorpus === index){
                     return;
                 }
                 _this.whichCorpus = index;
