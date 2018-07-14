@@ -14,13 +14,39 @@
                 </div>
                 <text class="signature">{{userSign}}</text>
             </div>
-            <div class="fansBox" :class="[headerFans()]">
-                <text class="fans" @click="goFans">{{fans}}</text>
-                <text class="fansText" @click="goFans">粉丝</text>
-                <div class="focusBox" v-if="focusType">
-                    <text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>
-                    <text class="focusText">关注</text>
+            <!--<div class="wallet" @click="goWallet" v-if="showType">-->
+                <!--<text class="walletText" style="padding-top: 3px">钱包</text>-->
+                <!--<text :style="{fontFamily:'iconfont'}" class="walletText ml20">&#xe630;</text>-->
+            <!--</div>-->
+            <div class="operationBox" :class="[operationBox()]" v-if="showType">
+                <div class="walletBox" @click="goWallet">
+                    <text :style="{fontFamily:'iconfont'}" class="walletIco mr10">&#xe63e;</text>
+                    <text class="walletBoxText" style="padding-top: 2px">钱包</text>
                 </div>
+                <div class="settingBox"  @click="goManage">
+                    <text  class="settingBoxText" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                </div>
+                <div class="shareBox" @click="goShare">
+                    <text  class="shareBoxText" :style="{fontFamily:'iconfont'}">&#xe692;</text>
+                </div>
+            </div>
+            <div class="fansBox" :class="[headerFans()]">
+                <div class="mr20 flex-row" @click="goCollect">
+                    <text class="fans mr10">{{collect}}</text>
+                    <text class="fansText">收藏</text>
+                </div>
+                <div class="mr20 flex-row"  @click="goFocus">
+                    <text class="fans mr10">{{focus}}</text>
+                    <text class="fansText">关注</text>
+                </div>
+                <div class="flex-row"  @click="goFans">
+                <text class="fans mr10" >{{fans}}</text>
+                <text class="fansText">粉丝</text>
+                </div>
+                <!--<div class="focusBox" >-->
+                    <!--<text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>-->
+                    <!--<text class="focusText">关注</text>-->
+                <!--</div>-->
             </div>
         </div>
 
@@ -83,6 +109,9 @@
         font-size: 36px;
         font-weight: bold;
         color: white;
+        max-width: 250px;
+        lines:1;
+        text-overflow: ellipsis;
     }
     .jobBox{
         margin-left: 15px;
@@ -103,25 +132,25 @@
         color: white;
     }
     .fansBox{
-        flex-direction: column;
+        flex-direction: row;
         align-items:flex-end;
         position: absolute;
         right: 30px;
-        top: 325px;
+        top: 300px;
     }
    .fansBoxIPHONEX{
        flex-direction: column;
        align-items:flex-end;
        position: absolute;
        right: 30px;
-       top: 335px;
+       top: 310px;
    }
     .fans{
-        font-size: 32px;
+        font-size: 28px;
         color: #fff;
     }
    .fansText{
-       font-size: 26px;
+       font-size: 24px;
        color: #fff;
    }
     .focusBox{
@@ -144,6 +173,84 @@
        font-size: 28px;
        color:#fff;
    }
+    .wallet{
+        padding-left: 30px;
+        position: absolute;
+        top: 200px;
+        right:0;
+        height: 60px;
+        width: 150px;
+        flex-direction: row;
+        align-items: center;
+        border-top-left-radius: 80px;
+        border-bottom-left-radius: 80px;
+        border-top-width: 5px;
+        border-left-width: 5px;
+        border-bottom-width: 5px;
+        border-color: #eeeeee;
+        background-image: linear-gradient(to right, #EB4E40,#ff700b);
+    }
+    .walletText{
+        font-size: 22px;
+        color: white;
+    }
+    .operationBox{
+        position: absolute;
+        top: 210px;
+        right:20px;
+        flex-direction: row;
+        align-items: center;
+    }
+   .operationBoxIPHONEX{
+       position: absolute;
+       top: 220px;
+       right:20px;
+       flex-direction: row;
+       align-items: center;
+   }
+    .walletBox{
+        height: 60px;
+        width: 120px;
+        background-color: rgba(102,102,102,0.8);
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
+    .walletBoxText{
+        font-size: 24px;
+        color: #eee;
+    }
+    .settingBox{
+        height: 60px;
+        width: 60px;
+        background-color: rgba(102,102,102,0.8);
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        border-radius: 5px;
+    }
+   .settingBoxText{
+       font-size: 32px;
+       color: #eee;
+   }
+    .shareBox{
+        height: 60px;
+        width: 60px;
+        background-color: rgba(102,102,102,0.8);
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+    }
+   .shareBoxText{
+       font-size: 32px;
+       color: #eee;
+   }
+    .walletIco{
+        font-size: 30px;
+        color: #eee;
+    }
 </style>
 <script>
     import navbar from '../include/navbar.vue';
@@ -164,8 +271,10 @@
             }
         },
         props: {
-            focusType:false,
+            showType:false,
             fans:0,
+            focus:0,
+            collect:0,
             logo:{},
             imgBg: '',
             occupation:'',
@@ -191,6 +300,11 @@
                 let dc = utils.topicInfo();
                 return dc;
             },
+            //            监听设备型号,控制顶部操作栏
+            operationBox: function() {
+                let dc = utils.topicOperation();
+                return dc;
+            },
             //            监听设备型号,控制顶部人物粉丝栏
             headerFans: function() {
                 let dc = utils.topicFans();
@@ -201,13 +315,27 @@
                 let dc = utils.topicBgImg();
                 return dc;
             },
+            goWallet: function () {
+                this.$emit("goWallet");
+            },
+            goManage:function () {
+                this.$emit("goManage");
+            },
+            goShare:function () {
+                this.$emit("goShare");
+            },
             setting: function () {
                 this.$emit("setting");
             },
             goFans: function () {
                 this.$emit("goFans");
             },
-
+            goFocus: function () {
+                this.$emit("goFocus");
+            },
+            goCollect: function () {
+                this.$emit("goCollect");
+            },
 //methods 方法到此为止
         },
     }

@@ -17,17 +17,6 @@
             </cell>
             <!--导航栏-->
             <cell v-else v-for="(item,index) in shippingList">
-                <!--如果分类重复就不渲染该区域-->
-                <!--<div v-if="item.status == 'unconfirmed'">-->
-                <!--<div class="cell-header cell-line space-between" v-if="isRepeat(index) " :class="[index == 0 ? 'mt20' : '']">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="title" >{{item.groupName}}</text>-->
-                    <!--</div>-->
-                    <!--<div class="selected mr20">-->
-                        <!--<text :style="{fontFamily:'iconfont'}" class="selectedIcon primary">&#xe64d;</text>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
                 <div class="goodsLine mt20">
                     <div class="space-between goodsHead" >
                         <div class="flex-row">
@@ -77,7 +66,7 @@
                             <div class="flex-row" v-if="item.isSelf == true">
                                 <text class="title footText " @click="trunSend(item.orderSn,item.sn)">转派</text>
                             </div>
-                            <div class="flex-row" v-if="item.isSelf == false">
+                            <div class="flex-row" v-else>
                                 <text class="title footText " @click="rejected(item.sn)">驳回</text>
                             </div>
                             </div>
@@ -405,23 +394,26 @@
         },
         created(){
             utils.initIconFont();
-            if(!utils.isNull(utils.getUrlParameter('index'))){
-                this.whichCorpus = utils.getUrlParameter('index')
+            let d = utils.getUrlParameter('index')
+            if(!utils.isNull(d)){
+                this.whichCorpus = d
             }
-            if(!utils.isNull(utils.getUrlParameter('productCategoryId'))){
-                this.productCategoryId = utils.getUrlParameter('productCategoryId')
+            let e = utils.getUrlParameter('productCategoryId')
+            if(!utils.isNull(e)){
+                this.productCategoryId = e
 //                把字符串转换成整型，否则switch识别不了
                 this.productCategoryId = parseInt(this.productCategoryId)
-                this.pageStart = 0;
             }
-            this.open();
+            this.pageStart = 0;
             this.permissions()
+            this.open();
 
         },
         methods:{
             //            权限过滤器
             filter(e) {
                 var _this = this;
+                if(!utils.isNull(this.roles)){
                 if (e == 'unconfirmed') {
 //                    派单等
                     if (utils.isRoles("12", _this.roles)) {
@@ -444,19 +436,16 @@
                         return false
                     }
                 }
-            },
-            //判断分类是否重复
-            isRepeat(index){
-                if(index != 0){
-                    if(this.shippingList[index].groupName == this.shippingList[index - 1].groupName){
-                        return false;
-                    }
+                }else{
+                    return false
                 }
-                return true;
             },
             checkChoose(index){
-                return (this.shippingList[index].choose == true);
-
+                if(this.shippingList.length > index){
+                    return (this.shippingList[index].choose == true);
+                }else{
+                    return false
+                }
             },
 //            单选
             singleChoose(index,groupName){
@@ -636,9 +625,11 @@
 //            },
             //分类切换
             catagoryChange:function(index,id){
+                utils.debug(this.whichCorpus)
+                utils.debug(index)
 //                event.toast(id);
                 var _this = this;
-                if(_this.whichCorpus == index){
+                if(_this.whichCorpus === index){
                     return;
                 }
                 _this.whichCorpus = index;
@@ -670,13 +661,9 @@
                     function (res) {
                         if (res.type=="success") {
                             if (res.data.start == 0) {
-                                res.data.data.forEach(function (item) {
-                                    item.choose = false;
-                                });
                                 _this.shippingList = res.data.data;
                             } else {
                                 res.data.data.forEach(function (item) {
-                                    item.choose = false;
                                     _this.shippingList.push(item);
                                 });
                             }

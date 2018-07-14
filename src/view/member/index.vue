@@ -48,7 +48,7 @@
             <div class="" style="position: relative">
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position:absolute;top: 0;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>
-                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focusType="focusType" @setting="goTopic" @goFans="goFans"></topic_header>
+                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign" :occupation="occupation" :imgBg="imgBg" :fans="fans" :focus="focusNum" :collect="collectNum" :showType="showType"  @setting="goTopic" @goFans="goFans" @goCollect="goCollect" @goFocus="goFocus" @goWallet="goWallet"></topic_header>
             <!--顶部个人信息栏-->
             <div  style="margin-top: 410px">
                 <div  class="corpusBox">
@@ -655,7 +655,7 @@
                 imgBg:'',
                 occupation:'',
                 fans:0,
-                focusType:false,
+                showType:false,
                 power:false,
                 isOwner:false,//                是否是店主
                 isStatus:'error'//                是否激活店铺
@@ -1308,7 +1308,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/friend/fans.js'), function(data) {
+                event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId), function(data) {
                         _this.clicked = false;
                         if (data.type == 'success' && data.data != '') {
 

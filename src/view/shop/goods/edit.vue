@@ -66,7 +66,7 @@
                             <input type="number" v-model="item.price" @input="oninput(item,index)" return-key-type="next" class="lineContent specification pr10" placeholder="商品销售价" />
                             <!--2个价格中间的框-->
                             <div style="width: 1px;height: 40px" class="boder-left"></div>
-                            <input type="number" v-model="cost" @input="oninput(item,index)" return-key-type="next" class="lineContent specification"  placeholder="商品成本价" />
+                            <input type="number" v-model="item.cost" @input="oninput(item,index)" return-key-type="next" class="lineContent specification"  placeholder="商品成本价" />
                         </div>
                         <div class="inputLine flex-row">
                             <text class="title">库存</text>

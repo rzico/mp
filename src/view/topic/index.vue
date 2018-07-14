@@ -54,45 +54,12 @@
             <!--</refresh>-->
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
-
-            <!--</transition-group>-->
             <!--顶部个人信息栏-->
-            <div class="topBox bkg-primary" :class="[headerInfo()]" ref='topBox'>
-                <!--背景图片-->
-                <image   class="backgroundImage" :class="[headerBgImg()]" :src="bgImgUrl"></image>
-                <!--遮罩层-->
-                <!--<image class="backgroundMask" :src="maskUrl"></image>-->
-                <div  class="topHead">
-                    <!--用户头像-->
-                    <image class="testImage" :src="imageUrl" ></image>
-                    <!--个性签名 用户昵称-->
-                    <div style="align-items: center;padding-bottom:20px" @click="goAttribute()">
-                        <!--用户昵称-->
-                        <text class="userName">{{userName}}</text>
-                        <!--用户签名-->
-                        <text class="userSign">{{userSign}}</text>
-                    </div>
-                </div>
-                <!--功能按钮-->
-                <div class="topBtnBox">
-                    <div class="topBtnSmallBox " style="min-width: 120px" @click="goFocus()">
-                        <text class="topBtn topBtnBigFont">{{focusNum}}</text>
-                        <text class=" topBtn " >关注</text>
-                    </div>
-                    <div class="topBtnSmallBox "  @click="goCollect()">
-                        <!--钱包两边的白色边框-->
-                        <div  class="leftBtnBorder topBtnBorder" ></div>
-                        <div  class="rightBtnBorder topBtnBorder" ></div>
-                        <text class="topBtn topBtnBigFont">{{collectNum}}</text>
-                        <text class="topBtn">收藏</text>
-                    </div>
-                    <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFans()">
-                        <text class="topBtn topBtnBigFont">{{fansNum}}</text>
-                        <text class="topBtn">粉丝</text>
-                    </div>
-                </div>
+            <div class="topBox bkg-primary">
+                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign"  :imgBg="bgImgUrl" :fans="fansNum" :focus="focusNum" :collect="collectNum" :showType="showType"  @goFans="goFans" @goCollect="goCollect" @goFocus="goFocus"></topic_header>
             </div>
-            <div >
+                <!--</transition-group>-->
+            <div>
                 <div  class="corpusBox"  >
                     <scroller scroll-direction="horizontal"  show-scrollbar="false"  class="corpusScroll">
                         <div class="articleClass">
@@ -515,9 +482,7 @@
     }
     .topBox{
         position: relative;
-        padding-top:40px;
-        height: 420px;
-        background-color: black;
+        height: 410px;
     }
     .topBtnBox{
         flex-direction: row;
@@ -586,6 +551,7 @@
     import noData from '../../include/noData.vue';
     import utils from '../../assets/utils';
     import { POST, GET } from '../../assets/fetch'
+    import topic_header from '../../widget/header.vue';
     import filters from '../../filters/filters.js'
     var animationPara;//执行动画的文章
     var scrollTop = 0;
@@ -630,7 +596,7 @@
                 clicked:false,
                 bottomNum:0,
                 noDataHint:"暂无文章",
-
+                showType:false
             }
         },
         filters:{
@@ -643,7 +609,7 @@
             }
         },
         components: {
-            noData
+            noData,topic_header
         },
         created:function () {
             utils.initIconFont();
@@ -670,6 +636,7 @@
                     if(!utils.isNull(data.data.autograph)){
                         _this.userSign = data.data.autograph;
                     }
+
                     _this.collectNum = data.data.favorite;
                     _this.focusNum = data.data.follow;
                     _this.isFocus = data.data.followed;

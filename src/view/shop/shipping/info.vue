@@ -88,11 +88,11 @@
                             <text class="sub_title">+ 送货工资</text>
                             <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between pb10">
+                        <div class=" space-between pb10" v-if="filter('shippingFreight')">
                             <text class="sub_title">+ 配送运费</text>
                             <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between ">
+                        <div class=" space-between " v-if="filter('cost')">
                             <text class="sub_title">+ 货款结算</text>
                             <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
                         </div>
@@ -282,6 +282,7 @@
                 shippingSn:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
+                roles:''
             }
         },
         props: {
@@ -396,8 +397,43 @@
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
             this.open();
+            this.permissions();
         },
         methods: {
+            //            权限过滤器
+            filter(e) {
+                var _this = this;
+                if (e == 'shippingFreight') {
+//                    派单等
+                    if (utils.isRoles("12", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                } else if (e == 'cost') {
+//                    送达
+                    if (utils.isRoles("12", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }else{
+                    return false
+                }
+            },
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             open:function () {
                 let _this = this;
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {

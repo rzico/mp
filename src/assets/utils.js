@@ -357,6 +357,21 @@ let utilsFunc = {
             }
         }
     },
+    //   新会员首页 专栏 顶部操作栏
+    topicOperation:function () {
+        let s = this.device();
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s == 'V1'){
+                return 'operationBox';
+            }else if(s == 'IPhoneX'){
+                return 'operationBoxIPHONEX';
+            }else{
+                return s;
+            }
+        }
+    },
 
     //    判断设备型号为fix定位的元素添加高度 (会员首页 作者专栏 顶部设置跟返回按钮)
     addBgImg:function () {
