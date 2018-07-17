@@ -13,7 +13,6 @@ let utilsFunc = {
     appType(){
         return appName;
     },
-
     initIconFont () {
         let domModule = weex.requireModule('dom');
         domModule.addRule('fontFace', {

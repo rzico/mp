@@ -106,7 +106,7 @@
                         <text class="sub_title ">配送站点: {{item.shopName}}</text>
                     </div>
                     <div class="infoLines pt0 pb10">
-                        <text class="sub_title ">配送人员: {{item.track.name}}  {{item.track.mobile}}</text>
+                        <text class="sub_title ">配送人员: {{item.adminName}}</text>
                     </div>
                     <div class="infoLines pt0 pb10">
                         <text class="sub_title ">送货工资: ¥{{item.adminFreight | currencyfmt}}</text>

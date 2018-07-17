@@ -3,15 +3,15 @@
         <div class="wallet-panel bkg-primary" :style="objHeader()">
             <div class="flex-column" @click="scan()">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
-                <text class="headerText mt10">扫一扫</text>
+                <text class="headerText mt20">扫一扫</text>
             </div>
             <div class="flex-column" @click="contolInput">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe673;</text>
-                <text class="headerText mt10">收银</text>
+                <text class="headerText mt20">收银</text>
             </div>
             <div class="flex-column" @click="showQrcode">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
-                <text class="headerText mt10">二维码</text>
+                <text class="headerText mt20">二维码</text>
             </div>
         </div>
         <scroller class="scroller">
@@ -149,7 +149,7 @@
                     <text class="menuBtn">送货</text>
                 </div>
 
-                <div class="menu" @click="gocard()">
+                <div class="menu" @click="gocard()" v-if="filter('card')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">会员卡</text>
                 </div>
@@ -505,15 +505,11 @@
         created() {
             var _this = this;
             utils.initIconFont();
-//            获取订单数量
-            this.getCount();
-//            获取运单数量
-            this.getShippingConut();
             this.isIndex = (utils.getUrlParameter("index")=='true');
             this.view();
-            globalEvent.addEventListener("onCashierChange", function (e) {
-                _this.view();
-            });
+//            globalEvent.addEventListener("onCashierChange", function (e) {
+//                _this.view();
+//            });
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10212'){
@@ -528,16 +524,46 @@
                     _this.getShippingConut();
                 }
             });
-            this.permissions()
         },
         methods: {
 //            显示收银
             contolInput(){
-                this.inputShow = !this.inputShow
+                var _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.view()
+                    return
+                }else{
+                    this.inputShow = !this.inputShow
+                }
+
             },
 //            调自身二维码
             showQrcode: function (e) {
-                this.$refs.qrcode.show();
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                if (utils.isNull(_this.shopId)) {
+                    _this.view()
+                    if(utils.isNull(_this.shopId)) {
+                        modal.alert({
+                            message: '无店铺授权',
+                            okTitle: 'OK'
+                        })
+                        _this.clicked = false
+                        return
+
+                    }
+                }
+                event.openURL(utils.locate('view/shop/card/add.js'), function(data) {
+                        _this.clicked = false;
+                    }
+                );
             },
 
 //            触发二维码方法
@@ -743,7 +769,14 @@
                     }else{
                         return false
                     }
-                } else if(e == 'coupon'){
+                } else if(e == 'card'){
+//                    会员卡
+                    if (!utils.isNull(_this.shopId)) {
+                        return true
+                    }else{
+                        return false
+                    }
+                }else if(e == 'coupon'){
 //                    优惠券
                     if (utils.isRoles("12",_this.roles)) {
                         return true
@@ -991,6 +1024,14 @@
                    if (res.type=="success") {
                        _this.cashier = res.data;
                        _this.shopId = res.data.shopId;
+                       if(res.data.status == 'success'){
+//                           获取订单数量
+                           _this.getCount();
+//                           获取运单数量
+                           _this.getShippingConut();
+//                           获取权限
+                           _this.permissions()
+                       }
                    } else {
                        event.toast(res.content);
                    }
