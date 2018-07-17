@@ -2,8 +2,10 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" > </navbar>
         <div class="contentBox">
-            <div class="info"  v-for="(item,index) in ordersList" >
-                <div class="flex-row goodsBody " v-for="goods in item.orderItems">
+            <div class="info" >
+                <scroller style="max-height:400px">
+                <div class="" v-for="(goods,index) in ordersList.orderItems">
+                <div class="flex-row goodsBody ">
                     <image :src="goods.thumbnail" class="goodsImg"></image>
                     <div class="goodsInfo" >
                         <text class="title goodsName">{{goods.name}}</text>
@@ -15,6 +17,9 @@
                         </div>
                     </div>
                 </div>
+                </div>
+                </scroller>
+                <!--<text class="totalText">共{{total}}件商品</text>-->
                 <div class="setting" @click="pickPay">
                     <div class="flex-row">
                         <text class="fz32">发货方式:  {{isobject | watchType}}</text>
@@ -71,7 +76,7 @@
         width: 650px;
         background-color: white;
         border-radius: 15px;
-        box-shadow:0px 0px  10px 5px #aaa;
+        /*box-shadow:0px 0px  10px 5px #aaa;*/
         position: absolute;
         left: 50px;
         top: 200px;
@@ -163,7 +168,8 @@
                 shopName:'',
                 markiId:'',
                 markiName:'',
-                isSelf:false
+                isSelf:false,
+                total:0
             }
         },
         components: {
@@ -238,7 +244,8 @@
                 GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
-                        _this.ordersList.push(data.data);
+                        _this.ordersList = data.data;
+
                     }else{
                         event.toast(data.content);
                     }
