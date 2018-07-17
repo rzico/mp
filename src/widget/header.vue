@@ -196,21 +196,21 @@
     }
     .operationBox{
         position: absolute;
-        top: 210px;
+        top: 200px;
         right:20px;
         flex-direction: row;
         align-items: center;
     }
    .operationBoxIPHONEX{
        position: absolute;
-       top: 220px;
+       top: 210px;
        right:20px;
        flex-direction: row;
        align-items: center;
    }
     .walletBox{
-        height: 60px;
-        width: 120px;
+        height: 70px;
+        width: 140px;
         background-color: rgba(102,102,102,0.8);
         flex-direction: row;
         align-items: center;
@@ -223,8 +223,8 @@
         color: #eee;
     }
     .settingBox{
-        height: 60px;
-        width: 60px;
+        height: 70px;
+        width: 70px;
         background-color: rgba(102,102,102,0.8);
         align-items: center;
         justify-content: center;
@@ -236,8 +236,8 @@
        color: #eee;
    }
     .shareBox{
-        height: 60px;
-        width: 60px;
+        height: 70px;
+        width: 70px;
         background-color: rgba(102,102,102,0.8);
         align-items: center;
         justify-content: center;

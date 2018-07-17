@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="addressBox pb30" v-if="isShow">
+        <div class="addressBox bkg-primary pb30" v-if="isShow">
             <text class="address">{{member.areaName}}{{member.address}}</text>
         </div>
         <div class="memberCard" @click="gocard()">
@@ -73,14 +73,14 @@
                 <div class="typeBox" @click="pickPattern()">
                     <text class="fz32">配送站点:</text>
                     <div class="flex-row">
-                        <text class="typeBoxText">{{member.shopName}}</text>
+                        <text class="typeBoxText">{{shopName}}</text>
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
                 <div class="typeBox" @click="goMarki()">
                     <text class="fz32">配送人员:</text>
                     <div class="flex-row">
-                        <text class="typeBoxText">{{member.adminName}}</text>
+                        <text class="typeBoxText">{{adminName}}</text>
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
             </div>
 
         </div>
-        <div class="button" v-if="isShow" @click="confirm()">
+        <div class="button bkg-primary" v-if="isShow" @click="confirm()">
             <text class="buttonText">确认</text>
         </div>
             <div style="height: 400px"></div>
@@ -152,7 +152,6 @@
     }
     .addressBox{
         width: 750px;
-        background-color: #5eb0fd;
         flex-direction: column;
         align-items: center;
     }
@@ -317,14 +316,12 @@
         margin-right: 50px;
         margin-top: 30px;
         margin-bottom: 30px;
-        background-color: #5eb0fd;
         align-items: center;
         justify-content: center;
         border-radius: 15px;
     }
     .button:active {
         background-color:#ccc;
-        color:#5eb0fd;
     }
     .buttonText{
         font-size: 40px;
@@ -389,7 +386,12 @@
                 memberName:'',
                 goodsName:'',
                 dateTime:'',
-                isMask:false
+                isMask:false,
+                isSelf:false,
+                shopName:'',
+                shopId:'',
+                adminName:'',
+                adminId:'',
             }
         },
         components: {
@@ -476,10 +478,11 @@
                 event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
                     _this.clicked = false;
                     if(data.type == 'success' && data.data != '') {
-                        _this.member.shopName = data.data.name;
-                        _this.member.shopId = data.data.id;
-                        _this.member.adminName = '';
-                        _this.member.adminId = ''
+                        _this.shopName = data.data.name;
+                        _this.shopId = data.data.id;
+                        _this.isSelf = data.data.isSelf;
+                        _this.adminName = '';
+                        _this.adminId = ''
                     }
                 })
             },
@@ -490,16 +493,16 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                if(utils.isNull(this.member.shopId)){
+                if(utils.isNull(this.shopId)){
                     event.toast('请先选择配送站');
                     _this.clicked = false;
                     return
                 }
-                event.openURL(utils.locate('view/shop/shipping/marki.js?shopId='+ this.member.shopId),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/marki.js?shopId='+ this.shopId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
-                        _this.member.adminName = data.data.name;
-                        _this.member.adminId = data.data.id
+                        _this.adminName = data.data.name;
+                        _this.adminId = data.data.id
                     }
                 });
             },
@@ -509,6 +512,10 @@
                 POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId).then(function (data) {
                     if (data.type == 'success') {
                         _this.member = data.data.receiver;
+                        _this.shopName = data.data.receiver.shopName;
+                        _this.shopId = data.data.receiver.shopId;
+                        _this.adminName = data.data.receiver.adminName;
+                        _this.adminId = data.data.receiver.adminId;
                         _this.floor = data.data.receiver.level;
                         _this.beginTwo = data.data.receiver.level;
                         _this.addressId = data.data.receiver.id;
@@ -846,16 +853,19 @@
                     event.toast('请先设置地址');
                     _this.clicked = false;
                     return
-                }else if (utils.isNull(this.member.shopId)) {
+                }else if (utils.isNull(this.shopId)) {
                     event.toast('请选择配送站点');
                     _this.clicked = false;
                     return
-                }else if (utils.isNull(this.member.adminId)) {
-                    event.toast('请选择配送员');
-                    _this.clicked = false;
-                    return
                 }
-                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.member.shopId+'&adminId='+_this.member.adminId+'&level='+_this.floor).then(function (res) {
+                if(this.isSelf == true || this.isSelf == 'true'){
+                    if (utils.isNull(this.adminId)) {
+                        event.toast('请选择配送员');
+                        _this.clicked = false;
+                        return
+                    }
+                }
+                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&level='+_this.floor).then(function (res) {
                     if (res.type == 'success') {
 //                        如果实付金额为0，则不走后面的流程
                         if(res.data.amountPayable == 0){
@@ -868,7 +878,7 @@
                             _this.getInfo();
                         }else {
                             var orderSn = res.data.sn;
-                            POST('weex/member/order/save.jhtml?sn='+orderSn+'&paymentPluginId='+_this.isobject +'&shippingMethod='+ _this.sendObject).then(function (mes) {
+                            POST('weex/member/order/save.jhtml?sn='+orderSn+'&paymentPluginId='+_this.isobject +'&shippingMethod='+ _this.sendObject +'&shopId='+_this.shopId+'&adminId='+_this.adminId).then(function (mes) {
                                 _this.clicked = false;
                                 if (mes.type == 'success') {
                                     modal.alert({

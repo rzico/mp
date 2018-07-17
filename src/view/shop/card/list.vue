@@ -450,23 +450,44 @@
 
             open:function () {
                 var _this = this;
-                GET('weex/member/card/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
-                    if (mes.type == 'success') {
-                        if (_this.pageStart==0) {
-                            _this.lists = mes.data.data;
-                        } else {
-                            mes.data.data.forEach(function(item){
-                                _this.lists.push(item);
-                            })
-                        }
-                        _this.pageStart = mes.data.start+mes.data.data.length;
+                if(this.choose == false){
+                    GET('weex/member/card/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
+                        if (mes.type == 'success') {
+                            if (_this.pageStart==0) {
+                                _this.lists = mes.data.data;
+                            } else {
+                                mes.data.data.forEach(function(item){
+                                    _this.lists.push(item);
+                                })
+                            }
+                            _this.pageStart = mes.data.start+mes.data.data.length;
 
-                    } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content)
-                })
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content)
+                    })
+                }else{
+                    GET('weex/member/card/list.jhtml?type=query&pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
+                        if (mes.type == 'success') {
+                            if (_this.pageStart==0) {
+                                _this.lists = mes.data.data;
+                            } else {
+                                mes.data.data.forEach(function(item){
+                                    _this.lists.push(item);
+                                })
+                            }
+                            _this.pageStart = mes.data.start+mes.data.data.length;
+
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content)
+                    })
+                }
+
             },
             searchCard:function () {
                 var _this = this;

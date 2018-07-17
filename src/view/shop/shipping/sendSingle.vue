@@ -578,7 +578,6 @@
                 }
 //                本水站的单不允许选择站点
                 if(this.isPageType == true || this.isPageType == 'true'){
-                    utils.debug(this.isPageType)
                     _this.clicked = false;
                     return
                 }

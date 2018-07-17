@@ -47,7 +47,7 @@
                 </div>
                 <div class="addressBox flex-row mt20">
                     <div style="width: 70px;">
-0                        <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
+                        <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>
                     <div style="width: 630px">
                         <div class="flex-row">
