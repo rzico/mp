@@ -197,7 +197,7 @@
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
                         <text class="iconfontText mt20">我要开店</text>
                     </div>
-                    <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated" @click="activated()">
+                    <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated && filterApp()" @click="activated()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65" class="iconfontSize">&#xe6ce;</text>
                         <text class="iconfontText mt20">激活店铺</text>
                     </div>
@@ -562,10 +562,6 @@
             this.permissions();
 //            获取店铺是否完善
             this.open();
-//            获取订单数量
-            this.getCount();
-//            获取运单数量
-            this.getShippingConut();
             //            监听用户信息的变化。
             globalEvent.addEventListener("onUserInfoChange", function(e) {
                 _this.updateUserInfo();
@@ -601,7 +597,15 @@
         //            }
         //        },
         methods: {
+//            当前是水达人时关闭激活店铺
+            filterApp(){
+                if(utils.appType == 'water'){
+                    return false
+                }else{
+                    return true
+                }
 
+            },
 //            权限过滤器
             filter(e){
                 var _this = this;

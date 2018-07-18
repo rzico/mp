@@ -83,6 +83,7 @@
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
+                            <text class="title footText mr20" v-if="hasMap(item.lat,item.lng)" @click="goMap(item.lat,item.lng)">一键导航</text>
                             <text class="title footText " @click="delivery(item.orderSn,item.sn,item.id)">送达</text>
                         </div>
                     </div>
@@ -322,6 +323,7 @@
 
 </style>
 <script>
+    const map = weex.requireModule('map');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     import {dom,event,animation,storage} from '../../../weex.js';
@@ -410,6 +412,31 @@
 
         },
         methods:{
+//            是否显示导航
+            hasMap(lat,lng){
+                if(!utils.isNull(lat) && !utils.isNull(lng)){
+                    return true
+                }else {
+                    return false
+                }
+            },
+//            开启导航
+            goMap(lat,lng){
+                event.getLocation(function (res) {
+                    if(res.type == 'success'){
+                        var data = {
+                            slat :res.data.lat,
+                            slon :res.data.lng,
+                            dlat :lat,
+                            dlon :lng,
+                            type :4
+                        };
+                        map.startNaviGao(data)
+                    }else {
+                        event.toast('定位失败，请开启GPS')
+                    }
+                })
+            },
             //            权限过滤器
             filter(e) {
                 var _this = this;
