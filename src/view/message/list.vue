@@ -333,10 +333,13 @@
 //                utils.debug(e.data)
 
                 if (e.data.data.userId=='gm_10200') {
-                   if (e.data.data.content=='买家付款成功') {
+                    if (e.data.data.content.indexOf('<预约单>买家付款成功')!=-1) {
+                        _this.soundfile = utils.locate('resources/mp3/4.mp3');
+                    } else
+                   if (e.data.data.content.indexOf('买家付款成功')!=-1) {
                        _this.soundfile = utils.locate('resources/mp3/1.mp3');
                    } else
-                   if (e.data.data.content=='亲，有客户催单了，请及时处理') {
+                   if (e.data.data.content.indexOf('亲，有客户催单了，请及时处理')!=-1) {
                        _this.soundfile = utils.locate('resources/mp3/2.mp3');
                    }
                 } else if (e.data.data.userId=='gm_10213') {
@@ -351,7 +354,10 @@
                      } else
                       if (e.data.data.content.indexOf('订单退回至')!=-1) {
                           _this.soundfile = utils.locate('resources/mp3/6.mp3');
-                       }
+                       } else
+                      if (e.data.data.content.indexOf('亲，有客户催单了，请及时处理')!=-1) {
+                          _this.soundfile = utils.locate('resources/mp3/2.mp3');
+                      }
                 }
 
                 if (!utils.isNull(_this.soundfile)) {

@@ -592,6 +592,7 @@
             },
             //            获取经纬度
             getGps:function(){
+
                 let _this = this
                 var uId = event.getUId();
                 event.getLocation(function (data) {

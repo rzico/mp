@@ -300,10 +300,8 @@
                                         }
                                     )
                                 } else {
-//                                    event.toast(message.content);
+                                    event.toast(message.content);
                                 }
-                            },function (err) {
-                                event.toast(err.content);
                             })
                         }
                     })

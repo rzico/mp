@@ -21,7 +21,7 @@
         </div>
     <div class="timeBox bkg-primary">
         <div class="leftBox">
-            <div class="deduct" @click="deductTime()"><text class="fz40" style="color: #fff" >—</text> </div>
+            <div class="deduct" @click="deductTime()"><text class="fz40" style="color: #fff" >-</text> </div>
             <div class="timeContent"><text class="fz28" style="color: #fff">{{showTime}}</text> </div>
             <div class="add" @click="addTime()"><text class="fz40" style="color: #fff">+</text> </div>
         </div>
@@ -112,7 +112,7 @@
     }
     .timeContent{
         height: 60px;
-        width: 150px;
+        width: 170px;
         align-items: center;
         justify-content: center;
         border-color: #fff;

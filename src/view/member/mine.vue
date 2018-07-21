@@ -599,7 +599,7 @@
         methods: {
 //            当前是水达人时关闭激活店铺
             filterApp(){
-                if(utils.appType == 'water'){
+                if(utils.appType() == 'water'){
                     return false
                 }else{
                     return true

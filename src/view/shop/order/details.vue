@@ -89,6 +89,9 @@
                         <div class="mt10 ">
                             <text class="sub_title">下单时间: {{item.createDate | watchCreateDate}}</text>
                         </div>
+                        <div class="mt10 " v-if="item.deliveryDate != '' && item.deliveryDate != null">
+                            <text class="sub_title">送达时间: {{item.deliveryDate | watchCreateDate}}</text>
+                        </div>
                     </div>
                     <div class="infoLines pb10">
                         <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>

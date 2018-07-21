@@ -344,6 +344,10 @@
                                 item.give = '';
                                 item.take = '';
                                 item.noteInput = '';
+                                if(item.show == true){
+                                    item.give = item.quantity;
+                                    item.take = item.returnQuantity;
+                                }
                                 _this.list.push(item);
                             });
                         } else {

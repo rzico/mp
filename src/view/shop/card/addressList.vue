@@ -1,11 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting"> </navbar>
-        <!--<navbar :title="title"  @goback="goback" v-if="choose"> </navbar>-->
-        <!--<div class="code" @click="scan" v-if="!choose">-->
-            <!--<text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>-->
-            <!--<text class="headText" style="font-size: 28px;color: #cccccc">搜索会员卡</text>-->
-        <!--</div>-->
+        <navbar :title="title"  @goback="goback"> </navbar>
         <div class="searchBOX" @click="">
             <div class="search_box flex5">
                 <div class="flex-start">
@@ -19,53 +14,47 @@
             </div>
         </div>
         <div style="background-color: white;border-top-width: 1px;border-color: #ccc">
-        <!--<div class="addFriend" @click="add" v-if="!choose">-->
-            <!--<div class="flex-row ">-->
-                <!--<text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe70f;</text>-->
-                <!--<text class="title ml20 " >扫码领卡</text>-->
-            <!--</div>-->
-            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-        <!--</div>-->
-        <div class="addCard" @click="addCard()" >
-            <div class="flex-row ">
-                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
-                <text class="title ml20 " >新增会员</text>
+            <div class="addCard" @click="addCard()" >
+                <div class="flex-row ">
+                    <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62a;</text>
+                    <text class="title ml20 " >新增会员</text>
+                </div>
+                <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-                <cell v-for="num in lists" >
-                    <div class="addFriendsBorder">
-                        <div class="friendsLine" @click="jump(num)">
-                            <div class="image">
-                                <image :src="num.logo" class="friendsImage"></image>
-                                <!--<text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>-->
-                            </div>
-                            <div class="friendsName">
-                                <text class="lineTitle ">{{num.mobile}} (卡号:{{num.code | watchCode}})</text>
-                                <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 590px">
-                                    <div style="flex-direction: row;align-items: center">
-                                    <text class="realName">{{num.name}}</text>
-                                    <div class="label"><text class="labelText">{{num.type | watchType}}</text> </div>
-                                    <div :class="[vipClass(num.vip)]"><text class="labelText">{{num.vip | watchVip}}</text> </div>
-                                    </div>
-                                </div>
-                                <text class="recommendedTitle"  v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
-                            </div>
-                        </div>
+            <cell v-for="c in lists" >
+                <div class="addressLine" @click="jump(c)">
+                    <text class="addressName">{{c.address}}</text>
+                    <div class="flex-row mt20">
+                        <text class="name mr30">{{c.consignee}}</text>
+                        <text class="mobile">{{c.phone}}</text>
                     </div>
-                </cell>
+                </div>
+            </cell>
         </list>
     </div>
 </template>
 
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .addCard{
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 36px;
+        padding-right: 30px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: white;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: #ccc;
+    }
     /*<!--搜索栏-->*/
 
     .searchCancelText{
@@ -110,164 +99,30 @@
 
     /*======================*/
 
-    .label{
-        height: 28px;
-        align-items: center;
-        justify-content: center;
-        border-radius: 5px;
-        background-color: #5eb0fd;
-        padding-left:5px;
-        padding-right: 5px;
-        margin-left: 10px;
-    }
-    .labelText{
-        color: white;
-        font-size: 24px;
-    }
-    .rightTop{
-        height: 96px;width: 98px;align-items: center;justify-content: center;margin-top: 5px;
-    }
-    .nav_ico {
-        font-size: 50px;
-        color: #fff;
-    }
-    .userBox{
-        flex-direction: row;
-        align-items: center;
-    }
-    .nw{
-        width: 750px;
-    }
-
-    .iconfont{
-        color: #cccccc;
-        margin-top: 5px;
-        margin-right: 20px;
-        font-size: 28px;
-    }
-    .code{
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        background-color: white;
-        height: 60px;
-        margin-right: 20px;
-        margin-left: 20px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        border-width: 1px;
-        border-color: #cccccc;
-        border-radius: 10px;
-    }
-    .addFriend {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        margin-left: 36px;
-        padding-right: 30px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        background-color: white;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
-    }
-    .addCard{
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding-left: 36px;
-        padding-right: 30px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        background-color: white;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        border-bottom-color: #ccc;
-    }
     .list {
         background-color: white;
     }
-
-    .friendsName{
-        /*height:90px;*/
-        margin-top: 15px;
-        margin-bottom: 15px;
-        justify-content: space-between;
-    }
-    .realName{
-        color: #888;
-        font-size: 30px;
-        margin-left: 20px;
-    }
-    .friendsImage{
-        margin-top: 20px ;
-        height: 80px;
-        width:80px;
-    }
-    .image{
-        height: 100px;
-        width: 100px;
-    }
-    .addFriendsBorder{
+    .addressLine{
+        padding: 30px;
+        background-color: white;
         border-bottom-width: 1px;
         border-style: solid;
         border-color: rgba(153,153,153,0.2);
-        justify-content: space-between;
-        flex-direction: row;
-        align-items: center;
+        justify-content: center;
+        flex-direction: column;
     }
-    .friendsLine{
-        padding-left: 30px;
-        /*height:120px;*/
-        background-color: #fff;
-        flex-direction: row;
-        flex:5;
-    }
-    .lineTitle{
-        font-size: 34px;
-        margin-left: 20px;
-        lines:1;
+    .addressName{
+        font-size: 32px;
+        lines:2;
         text-overflow: ellipsis;
-        max-width: 600px;
     }
-    .recommendedTitle{
+    .name{
         font-size: 28px;
-        margin-left: 20px;
-        color: #888;
-        lines:1;
-        text-overflow: ellipsis;
-        max-width: 600px;
+        color: #888888;
     }
-    .vip1 {
-        height: 28px;
-        align-items: center;
-        justify-content: center;
-        border-radius: 5px;
-        background-color: silver;
-        padding-left:5px;
-        padding-right: 5px;
-        margin-left: 10px;
-    }
-    .vip2 {
-        height: 28px;
-        align-items: center;
-        justify-content: center;
-        border-radius: 5px;
-        background-color: gold;
-        padding-left:5px;
-        padding-right: 5px;
-        margin-left: 10px;
-    }
-    .vip3 {
-        height: 28px;
-        align-items: center;
-        justify-content: center;
-        border-radius: 5px;
-        background-color: #6EBCE9;
-        padding-left:5px;
-        padding-right: 5px;
-        margin-left: 10px;
+    .mobile{
+        font-size: 28px;
+        color: #888888;
     }
 </style>
 
@@ -300,19 +155,17 @@
                 refreshImg:utils.locate('resources/images/loading.png'),
                 choose:false,
                 keyword:'',
-                searchHint: "输入手机号、卡号、姓名搜索",
+                searchHint: "输入手机、卡号、收货地址搜索",
                 searchOrCancel:'取消',
                 doSearch:false,//    是否处于搜索状态
             }
         },
         props: {
-            title: { default: "会员卡"},
-            noDataHint: { default: "尚未添加会员卡"},
-            complete:{ default:"设置"}
+            title: { default: "收货地址"},
+            noDataHint: { default: "暂无收货地址"},
         },
         created() {
             utils.initIconFont();
-            this.choose = !utils.isNull(utils.getUrlParameter('choose'));
             this.open();
             this.permissions()
         },
@@ -354,7 +207,7 @@
                 this.searchOrCancel = '取消'
                 let _this = this;
                 this.lists = [];
-                this.noDataHint = "输入查找卡号、手机号、姓名";
+                this.noDataHint = "输入查找卡号、手机号、收货地址";
 //                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
 //                    _this.doReset();
 //                    if(res.type == 'success'){
@@ -367,7 +220,7 @@
                 this.keyword = e.value;
                 this.searchOrCancel = '搜索';
                 this.lists = [];
-                this.noDataHint = "输入查找卡号、手机号、姓名";
+                this.noDataHint = "输入查找卡号、手机号、收货地址";
                 if(e.value.length == 0){
                     this.searchOrCancel = '取消'
                 }
@@ -436,27 +289,7 @@
 
             open:function () {
                 var _this = this;
-                    GET('weex/member/card/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
-                        if (mes.type == 'success') {
-                            if (_this.pageStart==0) {
-                                _this.lists = mes.data.data;
-                            } else {
-                                mes.data.data.forEach(function(item){
-                                    _this.lists.push(item);
-                                })
-                            }
-                            _this.pageStart = mes.data.start+mes.data.data.length;
-
-                        } else {
-                            event.toast(mes.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content)
-                    })
-            },
-            searchCard:function () {
-                var _this = this;
-                GET('weex/member/card/list.jhtml?type=query&pageStart='+this.pageStart +'&pageSize='+this.pageSize+'&searchValue='+ encodeURI(_this.keyword),function (mes) {
+                GET('weex/member/receiver/list.jhtml?pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
                     if (mes.type == 'success') {
                         if (_this.pageStart==0) {
                             _this.lists = mes.data.data;
@@ -465,7 +298,27 @@
                                 _this.lists.push(item);
                             })
                         }
-                        _this.noDataHint = '会员不存在';
+                        _this.pageStart = mes.data.start+mes.data.data.length;
+
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            searchCard:function () {
+                var _this = this;
+                GET('weex/member/receiver/list.jhtml?type=query&pageStart='+this.pageStart +'&pageSize='+this.pageSize+'&keyword='+ encodeURI(_this.keyword),function (mes) {
+                    if (mes.type == 'success') {
+                        if (_this.pageStart==0) {
+                            _this.lists = mes.data.data;
+                        } else {
+                            mes.data.data.forEach(function(item){
+                                _this.lists.push(item);
+                            })
+                        }
+                        _this.noDataHint = '暂无该地址';
                         _this.pageStart = mes.data.start+mes.data.data.length;
 
                     } else {
@@ -553,21 +406,13 @@
                 event.closeURL();
             },
 
-            jump:function (num) {
+            jump:function (c) {
                 let _this =this;
-                if(_this.choose != true){
-                event.openURL(utils.locate('view/shop/card/view.js?id='+num.id),function () {
-                    _this.onrefresh()
-                })
-                }else{
                     var E = {
-                        memberId:num.memberId,
-                        memberlogo:num.logo,
-                        memberName:num.name
+                        memberId:c.memberId,
                     }
                     let backData = utils.message('success','选择成功',E);
                     event.closeURL(backData);
-                }
             },
             add:function() {
                 event.openURL(utils.locate("view/shop/card/add.js"),function (message) {

@@ -30,7 +30,7 @@
                 </div>
             </div>
             <!--必须用一个div把区域跟详细地址包住，不能注释，否者渲染时会出现位置错乱-->
-            <div class="" v-if="hasAddress">
+            <div class="">
                 <div class="location" @click="location()" >
                     <div class="flex-row">
                         <text class="title ml10">区域地址:</text>
@@ -50,18 +50,18 @@
                     </div>
                 </div>
             </div>
-            <div class="gpsBox" @click="getGps()" v-if="!hasChange && !hasAddress">
-                <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-                <text class="fz28" style="color:#999">点击定位</text>
-            </div>
-            <div class="changeGpsBox"  v-if="hasChange">
-                <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-                <text class="changeAddress">{{detailed}}</text>
-                <div class="changeBox" @click="getGps()">
-                    <text class="changeIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="changeText">修改</text>
-                </div>
-            </div>
+            <!--<div class="gpsBox" @click="getGps()" v-if="!hasChange && !hasAddress">-->
+                <!--<text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>-->
+                <!--<text class="fz28" style="color:#999">点击定位</text>-->
+            <!--</div>-->
+            <!--<div class="changeGpsBox"  v-if="hasChange">-->
+                <!--<text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>-->
+                <!--<text class="changeAddress">{{detailed}}</text>-->
+                <!--<div class="changeBox" @click="getGps()">-->
+                    <!--<text class="changeIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>-->
+                    <!--<text class="changeText">修改</text>-->
+                <!--</div>-->
+            <!--</div>-->
             </div>
         <div class="button mt30 ml30 mr30" @click="complete()">
             <text class="fz40" style="color: white">确认</text>
