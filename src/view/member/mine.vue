@@ -205,7 +205,7 @@
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
                         <text class="iconfontText mt20">修改资料</text>
                     </div>
-                    <div class="iconBox flexCol mt20"  @click="dragon()">
+                    <div class="iconBox flexCol mt20" v-if="filterApp()"  @click="dragon()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe664;</text>
                         <text class="iconfontText mt20">接龙管理</text>
                     </div>

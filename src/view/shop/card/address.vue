@@ -167,9 +167,10 @@
             utils.initIconFont();
             this.cardId = utils.getUrlParameter('cardId');
             this.memberId = utils.getUrlParameter('memberId');
+            this.getGps();
             if(utils.isNull(this.cardId)){
                 this.cardId = '';
-                this.title = '新增会员'
+                this.title = '新增会员';
             }else{
                 this.openView()
             }
@@ -289,8 +290,8 @@
                         }, function (err) {
                             event.toast(err.content)
                         })
-                        _this.hasChange = false;
-                        _this.hasAddress = true
+//                        _this.hasChange = false;
+//                        _this.hasAddress = true
 
                     }else {
                         event.toast('定位失败，请开启GPS');
