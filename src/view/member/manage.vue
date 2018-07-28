@@ -195,7 +195,7 @@
 
         <payment ref="payment" @notify="notify"></payment>
         <div v-if="showShare"  key="share">
-            <div class="mask" @touchstart="maskTouch"></div>
+            <div class="maskLayer" @touchstart="maskTouch"></div>
             <share @doShare="doShare" @doCancel="doCancel"></share>
         </div>
     </div>

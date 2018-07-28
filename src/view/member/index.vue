@@ -60,7 +60,7 @@
                         <!--用户头像-->
                         <image class="testImage" :src="imageUrl" ></image>
                         <!--个性签名 用户昵称-->
-                        <div style="align-items: center;padding-bottom:20px" @click="goAttribute()" >
+                        <div style="align-items: center;padding-bottom:20px" @click="goAttribute()">
                             <!--用户昵称-->
                             <text class="userName">{{userName}}</text>
                             <!--用户签名-->
@@ -88,7 +88,6 @@
                             <text class="topBtn">关注</text>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -548,7 +547,7 @@
         position: relative;
         padding-top:40px;
         height: 420px;
-        background-color: black;
+        /*background-color: black;*/
     }
     .topBtnBox{
         flex-direction: row;
@@ -765,6 +764,8 @@
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
                 if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10201'){
+                    _this.updateUserInfo();
+                }else if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10202' && e.data.data.content.indexOf('获得红包') != -1){
                     _this.updateUserInfo();
                 }
             });
@@ -1220,7 +1221,7 @@
                 let opacityDegree = Math.floor((scrollTop - scrollTopNum)/14)/10;
 //                modal.toast({message:opacityDegree,duration:0.1});
                 if(opacityDegree > 1){
-                    opacityDegree = 1;
+                        opacityDegree = 1;
                 }
                 if(opacityDegree > 0.4){
 //                    event.changeWindowsBar("true");
@@ -1733,7 +1734,7 @@
                 var _this = this;
                 GET('weex/member/article/list.jhtml?isDraft=false' + '&timeStamp=' + _this.lastDownLoadtamp + '&pageStart=' + this.listCurrent + '&pageSize=' + this.listPageSize,function (data) {
                     if(data.type == 'success' && data.data.data != ''){
-                        if(data.data.start == 0 ){
+                        if(data.data.start == 0){
 //                           将本次时间戳缓存起来
                             storage.setItem('lastDownLoadtamp' + _this.UId,data.data.data[0].modifyDate.toString());
                         }

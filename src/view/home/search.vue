@@ -4,13 +4,13 @@
         <searchNav  :searchHint="searchHint" @oninput="oninput" :keyword="keyword" @search="search"  ref="childFind"> </searchNav><!--搜索栏-->
         <div  class="confm  bt20" v-if="isInput() && !isSearch" @click="search(keyword)">
             <text class="ico " :style="{fontFamily:'iconfont'}">&#xe611;</text>
-            <text class="title">搜索: {{keyword}} </text>
+            <text class="title searCtrl">搜索: {{keyword}} </text>
         </div>
         <div v-else>
             <div v-if="keyword == ''">
                 <!--搜索历史-->
                 <div class="searchBox bt20"  v-if="historyList != ''">
-                    <div class="space-between searchHead" >
+                    <div class="space-between searchHead">
                         <text class="gray fz26">搜索历史</text>
                         <text class="ico gray cleanHistory fz28" :style="{fontFamily:'iconfont'}" @click="cleanHistory">&#xe60a;</text>
                     </div>
@@ -52,7 +52,7 @@
             </div>
         </div>
         <!--数据显示-->
-        <scroller v-if="isSearch"  @loadmore="onloading" loadmoreoffset="50" >
+        <scroller v-if="isSearch"  @loadmore="onloading" loadmoreoffset="50">
             <!--<refresh class="refresh" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
             <!--<text class="indicator">{{refreshState}}</text>-->
             <!--</refresh>-->
@@ -170,6 +170,11 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .searCtrl{
+        width:600px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
     .fz26{
         font-size: 26px;
     }

@@ -608,7 +608,7 @@
                 var options = {
                     isCrop: true,
                     width: 5,
-                    height: 2
+                    height: 4
                 };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数
@@ -626,7 +626,7 @@
                 var options = {
                     isCrop: true,
                     width: 5,
-                    height: 2
+                    height: 4
                 };
                 album.cropHeadImg(
                     //选完图片后触发回调函数
@@ -649,7 +649,7 @@
 //                    utils.debug(res.type);
 //                    utils.debug(res.data.value.thumbnail);
                     if(res.type == 'success' && !utils.isNull(res.data)){
-                        album.cropHeadImg(res.data.value.thumbnail,5,2,function (data){
+                        album.cropHeadImg(res.data.value.thumbnail,5,4,function (data){
                             if(data.type == 'success'){
                                 _this.sliderList.push({
                                     thumbnailImage:data.data.originalPath,
@@ -688,7 +688,7 @@
                 let _this = this;
                 event.openURL(utils.locate('view/shop/goods/manage.js?from=shuffling'),function (res) {
                     if(res.type == 'success' && !utils.isNull(res.data) ){
-                        album.cropHeadImg(res.data.thumbnail,5,2,function (data){
+                        album.cropHeadImg(res.data.thumbnail,5,4,function (data){
                             if(data.type == 'success'){
                                 _this.sliderList.push({
                                     thumbnailImage:data.data.originalPath,

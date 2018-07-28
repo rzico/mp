@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper bg" v-if="isShow" @click="close('error')">
-        <div class="box"  >
+        <div class="box" >
             <div class="nav">
                 <div class="flex1 flex-center" @click="close('error')">
                     <text class="close" :style="{fontFamily:'iconfont'}" >&#xe60a;</text>
@@ -52,7 +52,6 @@
             </div>
             <text class="updatePassword" @click="updatePassword()">忘记密码？点击重置密码。</text>
         </div>
-
     </div>
 </template>
 <style lang="less" src="../style/wx.less"/>
@@ -259,7 +258,6 @@
                 _this.isPwd = false;
                 _this.clearPwd();
                 GET("payment/view.jhtml?sn="+_this.sn,function (res) {
-//                    utils.debug(res);
                     _this.info = res.data;
                     _this.isShow = true;
                 },function (err) {
@@ -273,12 +271,12 @@
                     timer = null;
                 }
                 //globalEvent.removeEventListener("onResume");
-                _this.$emit("notify",e);
                 if(this.isReceiveSn == 0 ){
                     _this.isShow = false;
                 }else{
                     _this.$emit("paymentClose");
                 }
+                _this.$emit('notify',e);
             },
             comfrm () {
                 let _this = this;
@@ -293,10 +291,9 @@
                     this.payment("weixinAppPlugin");
                     setTimeout(function () {
                         if(this.isReceiveSn != 0 ){
-                            _this.$emit("paymentClose");
+                            _this.$emit("paymentClose",'redBagNoclose');
                         }
                     },1500)
-
                 }
             },
             balance(pwd) {
@@ -316,14 +313,13 @@
                                              function (data) {
                                                  if (data.type=="success") {
                                                      if (data.data=="0000") {
-                                                         _this.close(utils.message("success","success"));
+                                                         _this.close(utils.message("success","success","success"));
                                                      } else {
                                                          if (data.data=="0001") {
                                                              _this.close(utils.message("error","error"));
                                                          }
                                                      }
                                                  }
-
                                              },
                                              function (err) {
 
@@ -349,7 +345,7 @@
             },
             payment (plugId) {
                 var _this = this;
-                POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId="+plugId).then(
+                POST("payment/submit.jhtml?sn="+this.sn+"&paymentPluginId=" + plugId).then(
                     function (data) {
                         if (data.type=="success") {
                             event.wxAppPay(data.data,function (e) {
@@ -358,7 +354,7 @@
                                         function (mes) {
                                             if (mes.type=="success") {
                                                 if (mes.data=="0000") {
-                                                    _this.close(utils.message("success","success"));
+                                                    _this.close(utils.message("success","success","success"));
                                                 } else
                                                 if (mes.data=="0001") {
                                                     _this.close(utils.message("error","error"));
@@ -367,6 +363,7 @@
                                                     _this.close(utils.message("error","error"));
                                                 }
                                             } else {
+
                                                 _this.close(utils.message("error","error"));
                                             }
                                         },
@@ -404,7 +401,6 @@
 //                                });
                             })
                         } else {
-
                             event.toast(data.content);
                             _this.close("error");
                         }

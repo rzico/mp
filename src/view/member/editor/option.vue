@@ -83,6 +83,20 @@
             <div class="sub-panel">
                 <text class="sub_title">投稿后，被选用文章将获得大量展示机会</text>
             </div>
+            <div class="cell-row cell-line" @click="chooseRedbag()">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title ml10">文章红包</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{isRedBag}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-panel">
+                <text class="sub_title">设置红包后，阅读您文章的人将有机会打开红包</text>
+            </div>
             <div class="fill">
             </div>
         </scroller>
@@ -94,7 +108,6 @@
         </div>
         <!--遮罩-->
         <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
-
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -144,8 +157,9 @@
                 categoryName:'生活',
                 category:7,
                 clicked:false,
+                isRedBag:'无',
+                redBagData:'',
             }
-
         },
         created(){
             var _this = this;
@@ -167,6 +181,13 @@
                             _this.categoryName = data.data.articleCategory.name;
                         } if(!utils.isNull(data.data.articleCategory.id)){
                             _this.category = data.data.articleCategory.id;
+                        }
+                    }
+//                    红包
+                    if(!utils.isNull(data.data.articleRedPackage)){
+                        _this.redBagData = data.data.articleRedPackage;
+                        if(!utils.isNull(data.data.articleRedPackage.pay) && data.data.articleRedPackage.pay  ){
+                            _this.isRedBag = '已设置'
                         }
                     }
 //                    投稿
@@ -248,6 +269,23 @@
             },
             setup: function (e) {
             },
+            chooseRedbag(){
+                if (this.clicked || this.isRedBag == '已设置') {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500);
+                event.openURL(utils.locate('view/member/editor/redBag.js?articleId=' + this.articleId + '&redBagData=' + encodeURIComponent(JSON.stringify(_this.redBagData))),
+                    function (data) {
+                        if(data.type == 'success' && data.data != '') {
+                            _this.isRedBag = '已设置'
+                        }
+                    }
+                );
+            },
 //            跳转至选择范围
             goScope:function () {
                 if (this.clicked) {
@@ -258,7 +296,7 @@
                 event.openURL(utils.locate('view/member/editor/scope.js?checkId=' + this.scope),
 //                event.openURL('http://192.168.2.157:8081/scope.weex.js?checkId=' + _this.scope,
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.scope = parseInt(data.data.checkId);
                             if (data.data.checkId == 2 && !utils.isNull(data.data.password)) {
@@ -278,7 +316,7 @@
                 event.openURL(utils.locate('widget/list.js?listId=' + this.category + '&type=article_category'),
 //                event.openURL('http://192.168.2.157:8081/category.weex.js?categoryId=' + _this.category + '&type=article_category',
                     function (data) {
-                    _this.clicked = false;
+                        _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.category = parseInt(data.data.listId);
                             _this.categoryName = data.data.listName;
@@ -336,7 +374,6 @@
                 }
                 this.clicked = true;
                 var _this = this;
-
                 _this.toSendArticle = true;
                 _this.currentPro = 0;//当前进度
                 _this.proTotal = 1;//总的进度
@@ -353,8 +390,6 @@
                         }
                     }
                 },200);
-
-
                 var authorityData ='';
                 switch (this.scope){
                     case 0 ://公开

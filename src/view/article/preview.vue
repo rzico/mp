@@ -33,12 +33,12 @@
                 </div>
             </div>
             <!--模版-->
-            <div  v-if="!templateChoose && isSelf == 1">
+            <div  v-if="!templateChoose && isSelf == 1 && !showMoneyBox ">
                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
                 <text class="templateText templateIcon textTemplateIcon" :style="{bottom:bottomNum + 135}" @click="chooseTemplate()">模版</text>
             </div>
             <!--收藏-->
-            <div class="templateIcon templateIconWH"  :style="{bottom:bottomNum + 135}" @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect">
+            <div class="templateIcon templateIconWH"  :style="{bottom:bottomNum + 135}" @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect && !showMoneyBox">
                 <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe65d;</text>
                 <text class="templateText collectText" >收藏</text>
             </div>
@@ -129,14 +129,162 @@
                 <div class="maskLayer" @touchstart="maskTouch"></div>
                 <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
-
             <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
+        <!--红包窗口-->
+        <transition name="bounce">
+            <div class="moneyBox" @click="closeRedBag()" v-if="showMoneyBox">
+                <div class="moneyInfoBox" >
+                    <div class="redBagHead"></div>
+                    <image class="authorLogo" :src="redBagAuthorLogo"></image>
+                    <div class="flex-row">
+                        <text class="authorName">{{redBagAuthor | watchRedBagAuthor}}的红包</text>
+                        <text class="pinIcon ml5" v-if="redPackageType == 'RAN'" :style="{fontFamily:'iconfont'}">&#xe769;</text>
+                    </div>
+                    <div>
+                        <text class="hopeText">恭喜发财,大吉大利</text>
+                    </div>
+                    <div class="flex-row flex-end redPriceBox">
+                        <text class="moneyNum">{{priceNum}}</text>
+                        <text class="yuanText">元</text>
+                    </div>
+                    <div @click="goWallet()">
+                        <text class="redEndText">已存入钱包,可前往钱包提现</text>
+                    </div>
+                </div>
+            </div>
+        </transition>
         <buyGoods  ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId"  ></buyGoods>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+
+    /*       以下红包   =====*/
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
+    .bounce-enter-active {
+        animation: bounce-in .5s;
+    }
+    .bounce-leave-active {
+        animation: bounce-in .5s reverse;
+    }
+    @keyframes bounce-in {
+        0% {
+            transform: scale(0);
+        }
+        50% {
+            transform: scale(1.5);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .pinIcon{
+        color: coral;
+        font-size: 32px;
+    }
+
+    .redBagHead{
+        width:500px;
+        height:200px;
+        position: absolute;
+        border-bottom-left-radius: 150px;
+        border-bottom-right-radius: 150px;
+        /*border-radius: 40% /  0 0 100% 100%;*/
+        top: 0;
+        background-color: #D34E38;
+        z-index: -1;
+    }
+
+     .authorLogo{
+        width: 100px;
+        height: 100px;
+        margin-top: 70px;
+        border-radius: 5px;
+        /*border: 1px solid coral;*/
+        border-style: solid;
+        border-width: 1px;
+        border-color: coral;
+    }
+
+    .moneyBox{
+        position: fixed;
+        z-index: 1;
+        right:0;
+        bottom:0;
+        top: 0;
+        left: 0;
+        background-color: rgba(0,0,0,0.8);
+        color: #000;
+    }
+
+    .authorName{
+        font-weight: 800;
+        font-size: 32px;
+        margin-top: 45px;
+        margin-bottom: 45px;
+    }
+
+    .hopeText{
+        font-size: 28px;
+    }
+    .redPriceBox{
+        margin-top: 70px;
+        margin-bottom: 40px;
+    }
+    .yuanText{
+        font-size: 24px;
+        padding-top: 20px;
+    }
+    .redEndText{
+        font-size: 28px;
+        color: #6f87b8;
+        margin-top: 30px;
+    }
+    /*.moneyInfoBox :nth-child(4){*/
+        /*font-size: 14px;*/
+    /*}*/
+
+    /*.moneyInfoBox :nth-child(5){*/
+        /*margin-top: 20px;*/
+        /*margin-bottom: 20px;*/
+    /*}*/
+
+    .moneyNum{
+        font-size: 66px;
+        font-weight: 600;
+    }
+
+    /*.moneyInfoBox :nth-child(6){*/
+        /*font-size: 14px;*/
+        /*color: #6F87B8;*/
+    /*}*/
+
+    .moneyInfoBox {
+        position: fixed;
+        z-index: 2000000000;
+        width: 500px;
+        min-height: 700px;
+        top: 380px;
+        left: 125px;
+        background-color: #EFEFEF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        /*padding:70px 0 25px  0;*/
+        padding-top: 70px;
+        padding-bottom: 25px;
+    }
+/*       以上红包   =====*/
+
+
     .fullWidth{
         width: 750px;
     }
@@ -329,6 +477,12 @@
     export default {
         data:function () {
             return{
+                redPackageType:'RAN',
+                isShareTime:false,
+                priceNum:0,
+                showMoneyBox:false,
+                redBagAuthor:'',
+                redBagAuthorLogo:utils.locate('resources/images/background.png'),
                 templateName:'经典',
                 initTemplateName:'经典',
                 templateSn:'1001',
@@ -374,6 +528,16 @@
             title: { default: ""},
             complete:{ default : ''},
         },
+        filters:{
+            watchRedBagAuthor:function (value) {
+                //              如果用户名称过长，便截取拼成名字
+                if((utils.getLength(value) > 18)){
+                    return utils.changeStr(value);
+                }else{
+                    return value;
+                }
+            }
+        },
         created(){
             var _this = this;
             utils.initIconFont();
@@ -413,6 +577,11 @@
             )
             GET('weex/article/preview.jhtml?id=' + this.articleId,function (data) {
                 if( data.type=='success' && data.data != ''){
+
+//                    07/25
+                    _this.redBagAuthorLogo = data.data.logo;
+                    _this.redBagAuthor = data.data.nickName;
+
                     _this.memberId = data.data.memberId;
                     _this.reviewNum = data.data.review;
                     _this.rewardNum = data.data.reward;
@@ -440,7 +609,6 @@
                                             _this.initTemplateName = item.name;
                                         }
                                     })
-
 //                                    if(item.templates.sn == _this.templateSn){
 //                                        _this.templateName = item.name;
 //                                    }
@@ -477,6 +645,7 @@
             pageDestroy:function(){
                 globalEvent.removeEventListener("buyGood");
                 globalEvent.removeEventListener("saveImage");
+                globalEvent.removeEventListener("redBag");
             },
             pageShow:function(){
                     let _this = this;
@@ -485,6 +654,16 @@
 //                utils.debug(e);
                     _this.goodId = e.goodId;
                     _this.buyShow = true;
+                });
+
+//            红包领取控制
+                globalEvent.addEventListener("redBag", function (e) {
+                    if(_this.isShareTime){
+                        _this.redPackageType = e.type;
+                        _this.takeRedBag();
+                    }else{
+                        event.toast('分享该文章到微信朋友圈后才可打开红包');
+                    }
                 });
 //            图片保存控制
                 globalEvent.addEventListener("saveImage", function (e) {
@@ -497,7 +676,6 @@
                         }
                     })
                 });
-
             },
             articleOutBoxTop:function () {
                 let dc = utils.artOutTop();
@@ -991,6 +1169,9 @@
                                         event.toast('文章链接已复制到剪贴板');
                                     }else if(shareType == 'browser'){
                                     }else{
+                                        if(shareType == 'timeline'){
+                                            _this.isShareTime = true;
+                                        }
                                         event.toast('分享成功');
                                     }
                                     return;
@@ -1195,6 +1376,7 @@
                 }
                 if(e.type == 'success'){
                     event.toast('赞赏成功');
+                    this.rewardNum ++;
                 }else{
                     event.toast('网络不稳定');
                 }
@@ -1204,6 +1386,40 @@
             },
             goPay(id){
                 this.payment(id,"weixinAppPlugin");
+            },
+            closeRedBag:function () {
+                this.showMoneyBox =  false;
+            },
+            goWallet:function () {
+                var _this =this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                event.openURL(utils.locate('view/member/wallet/index.js'),
+                    function (data) {
+                    }
+                );
+            },
+            takeRedBag:function () {
+                let _this = this;
+                POST("weex/member/article/getRedPackage.jhtml?articleId=" + this.articleId).then(
+                    function (res) {
+                        if (res.type=='success') {
+                            _this.priceNum = res.data;
+//                            _this.isShareTime = true;
+                            _this.showMoneyBox = true;
+                        }else{
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    }
+                )
             }
 //            复制文章\
 //            copyArticle(){

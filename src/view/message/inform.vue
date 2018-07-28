@@ -125,7 +125,7 @@
                         </div>
                     </div>
                     <div>
-                        <div v-if="!item.thumLoading"  class="coverImg coverAbsoTop " ></div>
+                        <div v-if="!item.thumLoading"  class="coverImg coverAbsoTop"></div>
                         <image class="coverImg" resize="cover" :src="item.ext.thumbnail | watchThumbnail" ></image>
                     </div>
                 </div>
@@ -169,7 +169,7 @@
                 </div>
                 <div class="lineBoxBorder"></div>
             </cell>
-            <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id,item)">
+            <cell v-if="messageType == 'gm_10206' || messageType == 'gm_10207' || messageType == 'gm_10208'" v-for="item in dataList"  @click="goLink(item.id)">
                 <!--收藏--> <!--分享提醒--><!--赞赏--><!--文章提醒-->
                 <div class="lineBox pt20 pb20">
                     <div class="onlyFlexRow">
@@ -567,7 +567,7 @@
                 this.getAllInform();
             },
 //            前往链接
-            goLink(id,item){
+            goLink(id){
                 if (this.clicked) {
                     return;
                 }

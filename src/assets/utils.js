@@ -502,6 +502,21 @@ let utilsFunc = {
         }
         return text;
     },
+    //金额保留两位小数点
+    currencyfmt:function(value) {
+        if (value == '' || value == null || value == undefined) {
+            return value;
+        }
+        // 返回处理后的值
+        if (value != null) {
+            if (value == 0) {
+                return value;
+            } else {
+                var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
+                return price;
+            }
+        }
+    },
 };
 
 export default utilsFunc;

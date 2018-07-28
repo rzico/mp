@@ -161,7 +161,7 @@
                         <!--文章内容-->
                         <div class="paraText">
                             <!--判断是否有文字，没有文字就显示  "点击添加文字"-->
-                            <text class="paraTextSize">{{item.textAreaTitle}}</text>
+                            <text class="paraTextSize">{{item.title}}</text>
                         </div>
                     </div>
                 </div>
@@ -1085,25 +1085,26 @@
 
 //                            表单
                         if(!utils.isNull(articleData.forms)){
-                            articleData.forms.forEach(function (item) {
-                                //选项
-                                let optionBox = [];
-                                item.options.forEach(function (value) {
-                                    optionBox.push({
-                                        textAreaMessage:value,
-                                        textHeight:'48',
-                                        rowsNum:'1',
-                                        editSign:-1,
-                                        autofocus:false,
-                                    })
-                                })
+//                            articleData.forms.forEach(function (item) {
+//                                //选项
+//                                let optionBox = [];
+//                                item.options.forEach(function (value) {
+//                                    optionBox.push({
+//                                        textAreaMessage:value,
+//                                        editSign:-1,
+//                                        autofocus:false,
+//                                    })
+//                                })
+////
+//
+//                                _this.tableList.push({
+//                                    textAreaTitle:item.title,
+//                                    textAreabutton:item.buttonName,
+//                                    pageBox:optionBox
+//                                })
+//                            })
 
-                                _this.tableList.push({
-                                    textAreaTitle:item.title,
-                                    textAreabutton:item.buttonName,
-                                    pageBox:optionBox
-                                })
-                            })
+                            _this.tableList.push(articleData.forms[0]);
                         }
 
                     }else{
@@ -1668,15 +1669,29 @@
 //                    投票选项
                     let voteOptions = [];
                     let tableValues = [];
-                    item.pageBox.forEach(function (value) {
-                        voteOptions.push(value.textAreaMessage);
-                        tableValues.push('');
+                    item.options.forEach(function (value) {
+                        if(value.type == 'option'){
+                            voteOptions.push(value.textAreaMessage);
+                            tableValues.push('');
+                        }else if(value.type == 'single'){
+                            voteOptions.push(value.title);
+                            let a = '';
+                            value.single.forEach(function(mes,index){
+                                if(index + 1 >= value.single.length){
+                                    a  += mes.textAreaMessage;
+                                }else{
+                                    a  += mes.textAreaMessage + ',';
+                                }
+                            })
+                            tableValues.push(a);
+                        }
+
                     })
                     _this.tableData.push({
-                        title:item.textAreaTitle,
-                        buttonName:item.textAreabutton,
+                        title:item.title,
+                        buttonName:item.buttonName,
                         options:voteOptions,
-                        values:tableValues
+                        values:tableValues,
                     })
                 });
 
@@ -1759,6 +1774,7 @@
                 var _this = this;
 //                将页面上的数据存储起来
                 this.savePage();
+//                this.tableList[0].options = JSON.stringify(this.tableList[0].options);
 //                判断是再次编辑还是初次编辑;
                 let sendId =  utils.isNull(_this.articleId) ? _this.timestamp : _this.articleId;
                 let articleData = {
@@ -1773,7 +1789,6 @@
                     isDraft:false,
                 };
 
-                utils.debug(_this.articleTemplates);
 //                转成json字符串后上传服务器
                 articleData = JSON.stringify(articleData);
 //                网络请求，保存文章
@@ -2409,6 +2424,42 @@
                     }
                 });
             },
+
+            choogeTableList(){
+                let _this = this;
+                if(utils.isNull(this.tableData)){
+                    this.tableData = this.tableList;
+                }
+                    let voteData = this.tableData[0];
+                    let optionBox = [];
+                    voteData.values.forEach(function (mes,mesIndex) {
+                        if(utils.isNull(mes)){
+                            optionBox.push({
+                                type:'option',
+                                textAreaMessage:voteData.options[mesIndex],
+                                autofocus:false,
+                            })
+                        }else{
+                            let a = mes.split(',');
+                            let b = [];
+                            for(let i = 0; i < a.length; i++){
+                                b.push({
+                                    textAreaMessage:a[i],
+                                    autofocus:false,
+                                    choose:false,
+                                })
+                            }
+                            optionBox.push({
+                                type:'single',
+                                title:voteData.options[mesIndex],
+                                single:b,
+                            })
+                        }
+                    })
+                    voteData.options = optionBox;
+                    return voteData;
+            },
+
 //            编辑表单
             editTable:function (index) {
                 //防止重复点击按钮
@@ -2420,7 +2471,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                let voteData = JSON.stringify(_this.tableList[index]);
+                let voteData = JSON.stringify(this.choogeTableList());
                 storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/table.js?name=voteData'),function (message) {
@@ -2431,11 +2482,10 @@
                         _this.tableList.splice(index,0,message.data);
 //                    添加修改标志
                         _this.hadChange = 1;
-//                        if(utils.isNull(_this.articleId)){
-//                        临时保存到缓存
-                        _this.saveDraft();
 //                        }
                     }
+//                   保存缓存
+                    _this.saveDraft();
                 });
             },
             //            跳转投票页面
