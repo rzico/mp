@@ -1,13 +1,13 @@
 <template>
     <div class="wrapper">
-        <headerNav @search="gosearch" @menu="menu" v-if="isHeader"></headerNav>
-        <liveHeader @search="gosearch" @menu="menu" @doLive="doLive" v-if="!isHeader"></liveHeader>
+        <!--<headerNav @search="gosearch" @menu="menu" v-if="isHeader"></headerNav>-->
+        <!--<liveHeader @search="gosearch" @menu="menu" @doLive="doLive" v-if="!isHeader"></liveHeader>-->
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="tabRef" @corpusChange="corpusChange"></tabNav>
         <slider class="pageBox" :style="{top:pageBoxTop + 'px'}" style="width: 750px" infinite="false"  :class="[pageTop()]" @change="onSliderChange" :index="whichCorpus">
             <div v-for="(item,index) in corpusList" class="categoryBox">
                 <hotsCategory  v-if="item.name == '热点' && item.load == 1"  :articleCategoryId="item.id" @scrollHandler="onScrollHandler" @toponappear="onToponappear"></hotsCategory>
                 <circleCategory v-else-if="item.name == '圈子' && uId != 0 && item.load == 1"    :articleCategoryId="item.id" ></circleCategory>
-                <othersCategory v-else-if=" item.load == 1"    :articleCategoryId="item.id" ></othersCategory>
+                <!--<othersCategory v-else-if=" item.load == 1"    :articleCategoryId="item.id" ></othersCategory>-->
             </div>
         </slider>
         <div v-if="showMenu" >
@@ -97,7 +97,7 @@
                         item.load = 0
 //                        }
                     })
-                    _this.corpusList = data.data;
+//                    _this.corpusList = data.data;
                     _this.corpusList.splice(0,0,{
                         id:'',
                         name:"热点",

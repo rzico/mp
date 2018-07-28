@@ -55,8 +55,8 @@
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果-->
             <div style="position: absolute;top: 0px;left: 0;width: 1px;height: 1px;opacity: 0" @appear="toponappear"></div>
             <!--顶部个人信息栏-->
-            <div class="topBox bkg-primary">
-                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign"  :imgBg="bgImgUrl" :fans="fansNum" :focus="focusNum" :collect="collectNum" :showType="showType"  @goFans="goFans" @goCollect="goCollect" @goFocus="goFocus"></topic_header>
+            <div class="topBox">
+                <topic_header :logo="imageUrl" :userName="userName" :userSign="userSign"  :imgBg="topicBg" :fans="fansNum" :focus="focusNum" :collect="collectNum" :showType="showType"  @goFans="goFans" @goCollect="goCollect" @goFocus="goFocus"></topic_header>
             </div>
                 <!--</transition-group>-->
             <div>
@@ -596,7 +596,8 @@
                 clicked:false,
                 bottomNum:0,
                 noDataHint:"暂无文章",
-                showType:false
+                showType:false,
+                topicBg:''
             }
         },
         filters:{
@@ -636,7 +637,11 @@
                     if(!utils.isNull(data.data.autograph)){
                         _this.userSign = data.data.autograph;
                     }
-
+                    if(utils.isNull(data.data.thumbnail)){
+                        _this.topicBg = utils.locate('resources/images/background.png')
+                    }else{
+                        _this.topicBg = data.data.thumbnail;
+                    }
                     _this.collectNum = data.data.favorite;
                     _this.focusNum = data.data.follow;
                     _this.isFocus = data.data.followed;

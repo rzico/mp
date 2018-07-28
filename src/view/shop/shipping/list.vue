@@ -64,14 +64,14 @@
                         <div class="flex-row">
                             <div class="flex-row" v-if="totalSingle <=1">
                             <div class="flex-row" v-if="item.isSelf == true">
-                                <text class="title footText " @click="trunSend(item.orderSn,item.sn)">转派</text>
+                                <text class="title footText " @click="trunSend(item.orderSn,item.sn,item.isSelf)">转派</text>
                             </div>
                             <div class="flex-row" v-else>
                                 <text class="title footText " @click="rejected(item.sn)">驳回</text>
                             </div>
                             </div>
                             <div class="flex-row" v-if="totalSingle <=1">
-                            <text class="title footText " @click="sendSingle(item.orderSn,item.sn)">派单</text>
+                            <text class="title footText " @click="sendSingle(item.orderSn,item.sn,item.isSelf)">派单</text>
                             </div>
                         <div class="flex-row" v-else>
                             <text class="title footText " @click="openMask(item.orderSn,item.sn)">批量派单</text>
@@ -83,6 +83,7 @@
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
+                            <text class="title footText mr20" v-if="hasMap(item.lat,item.lng)" @click="goMap(item.lat,item.lng)">一键导航</text>
                             <text class="title footText " @click="delivery(item.orderSn,item.sn,item.id)">送达</text>
                         </div>
                     </div>
@@ -322,6 +323,7 @@
 
 </style>
 <script>
+    const map = weex.requireModule('map');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     import {dom,event,animation,storage} from '../../../weex.js';
@@ -410,6 +412,31 @@
 
         },
         methods:{
+//            是否显示导航
+            hasMap(lat,lng){
+                if(!utils.isNull(lat) && !utils.isNull(lng)){
+                    return true
+                }else {
+                    return false
+                }
+            },
+//            开启导航
+            goMap(lat,lng){
+                event.getLocation(function (res) {
+                    if(res.type == 'success'){
+                        var data = {
+                            slat :res.data.lat,
+                            slon :res.data.lng,
+                            dlat :lat,
+                            dlon :lng,
+                            type :4
+                        };
+                        map.startNaviGao(data)
+                    }else {
+                        event.toast('定位失败，请开启GPS')
+                    }
+                })
+            },
             //            权限过滤器
             filter(e) {
                 var _this = this;
@@ -750,7 +777,7 @@
                 });
             },
             //            跳转派单
-            sendSingle:function (orderSn,sn) {
+            sendSingle:function (orderSn,sn,isSelf) {
                 if (this.clicked) {
                     return;
                 }
@@ -765,7 +792,7 @@
                     return
                 }
                     this.isPageType = true
-                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType  +'&isSelf='+isSelf),function (data) {
                     _this.clicked = false;
                     if(data.type == 'success'){
                         _this.pageStart = 0;
@@ -777,7 +804,7 @@
                 });
             },
             //            跳转转派
-            trunSend:function (orderSn,sn) {
+            trunSend:function (orderSn,sn,isSelf) {
                 if (this.clicked) {
                     return;
                 }
@@ -792,7 +819,7 @@
                     return
                 }
                 this.isPageType = false;
-                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType +'&isSelf='+isSelf),function (data) {
                     _this.clicked = false;
                     if(data.type == 'success'){
                         _this.pageStart = 0;

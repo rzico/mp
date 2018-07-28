@@ -345,7 +345,7 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false
-                    _this.view();
+                    _this.permissions()
                 }, 1000)
             },
             goback: function (e) {

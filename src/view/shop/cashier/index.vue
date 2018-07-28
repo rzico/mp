@@ -11,7 +11,7 @@
             </div>
             <div class="flex-column" @click="showQrcode">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
-                <text class="headerText mt20">二维码</text>
+                <text class="headerText mt20">推广码</text>
             </div>
         </div>
         <scroller class="scroller">
@@ -592,6 +592,7 @@
             },
             //            获取经纬度
             getGps:function(){
+
                 let _this = this
                 var uId = event.getUId();
                 event.getLocation(function (data) {

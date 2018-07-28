@@ -344,6 +344,10 @@
                                 item.give = '';
                                 item.take = '';
                                 item.noteInput = '';
+                                if(item.show == true){
+                                    item.give = item.quantity;
+                                    item.take = item.returnQuantity;
+                                }
                                 _this.list.push(item);
                             });
                         } else {
@@ -483,20 +487,38 @@
 //                                    });
 //                                    return
 //                                }
-                                POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor,body).then(
-                                    function (data) {
-                                        _this.clicked = false;
-                                        if(data.type == 'success'){
-                                            let E = utils.message('success','送达成功','');
-                                            event.closeURL(E);
-                                        }else{
-                                            event.toast(data.content);
-                                        }
-                                    },
-                                    function (err) {
-                                        _this.clicked = false;
-                                        event.toast(err.content);
-                                    })
+                                //            获取经纬度
+                                var uId = event.getUId();
+                                event.getLocation(function (e) {
+                                    if(e.type == 'success'){
+                                        POST("/lbs/location.jhtml?lng=" + e.data.lng + "&lat=" +e.data.lat +'&memberId=' + uId).then(function (mes) {
+                                            if (mes.type == 'success') {
+
+                                            } else {
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            event.toast(err.content)
+                                        });
+                                        POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor + "&lng=" + e.data.lng + "&lat=" +e.data.lat,body).then(
+                                            function (res) {
+                                                _this.clicked = false;
+                                                if(res.type == 'success'){
+                                                    let E = utils.message('success','送达成功','');
+                                                    event.closeURL(E);
+                                                }else{
+                                                    event.toast(res.content);
+                                                }
+                                            },
+                                            function (err) {
+                                                _this.clicked = false;
+                                                event.toast(err.content);
+                                            })
+                                    }else {
+                                        event.toast('定位失败，请开启GPS')
+                                    }
+                                })
+
                             }else {
                                 _this.clicked = false;
                                 event.toast('该订单他人正在操作，请稍后...')

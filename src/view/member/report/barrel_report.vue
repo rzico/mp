@@ -400,7 +400,10 @@
                             _this.reportList = res.data.data.data;
                             _this.summarylist = res.data.data.summary
                         } else {
-                            _this.reportList.push(res.data.data.data);
+                            res.data.data.data.forEach(function (item) {
+                                _this.reportList.push(item);
+                            })
+//                            _this.reportList.push(res.data.data.data);
                         }
                         _this.pageStart = _this.pageStart+res.data.data.data.length;
 

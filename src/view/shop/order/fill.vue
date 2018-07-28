@@ -20,8 +20,8 @@
         <div class="memberCard" @click="gocard()">
             <text class="fz32" v-if="!isShow">点击选择会员</text>
             <div class="flex-row" v-if="isShow" >
-            <image class="memberLogo" :src="memberlogo"></image>
-                <text class="fz28 ml20">{{memberName}}</text>
+            <!--<image class="memberLogo" :src="memberlogo"></image>-->
+                <text class="fz28 ml20">{{member.consignee}}</text>
                 <text class="fz28 ml20">{{member.phone}}</text>
             </div>
             <text  :style="{fontFamily:'iconfont'}" style="color: #888;font-size: 32px">&#xe630;</text>
@@ -398,7 +398,7 @@
             navbar,date
         },
         props: {
-            title: {default: "补单"},
+            title: {default: "报单"},
         },
         filters: {
             watchType:function (val) {
@@ -514,8 +514,8 @@
                         _this.member = data.data.receiver;
                         _this.shopName = data.data.receiver.shopName;
                         _this.shopId = data.data.receiver.shopId;
-                        _this.adminName = data.data.receiver.adminName;
-                        _this.adminId = data.data.receiver.adminId;
+//                        _this.adminName = data.data.receiver.adminName;
+//                        _this.adminId = data.data.receiver.adminId;
                         _this.floor = data.data.receiver.level;
                         _this.beginTwo = data.data.receiver.level;
                         _this.addressId = data.data.receiver.id;
@@ -624,11 +624,11 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/shop/card/list.js?choose="+this.choose),function (data) {
+                event.openURL(utils.locate("view/shop/card/addressList.js"),function (data) {
                     _this.clicked = false
                     if(data.type == 'success'){
-                        _this.memberlogo = data.data.memberlogo;
-                        _this.memberName = data.data.memberName;
+//                        _this.memberlogo = data.data.memberlogo;
+//                        _this.memberName = data.data.memberName;
 //                        可能会出现会员id为0的情况，0为无效会员
                         if(data.data.memberId != 0){
                             _this.memberId = data.data.memberId;
@@ -874,6 +874,7 @@
                                 message: '确认成功',
                                 okTitle: '知道了'
                             })
+                            _this.isShow = false;
                             _this.cartList();
                             _this.getInfo();
                         }else {
@@ -885,6 +886,7 @@
                                         message: '确认成功',
                                         okTitle: '知道了'
                                     })
+                                    _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
                                 }else{
@@ -892,6 +894,7 @@
                                         message: mes.content,
                                         okTitle: '知道了'
                                     })
+                                    _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
                                 }

@@ -30,7 +30,7 @@
                 </div>
             </div>
             <!--必须用一个div把区域跟详细地址包住，不能注释，否者渲染时会出现位置错乱-->
-            <div class="" v-if="hasAddress">
+            <div class="">
                 <div class="location" @click="location()" >
                     <div class="flex-row">
                         <text class="title ml10">区域地址:</text>
@@ -50,18 +50,18 @@
                     </div>
                 </div>
             </div>
-            <div class="gpsBox" @click="getGps()" v-if="!hasChange && !hasAddress">
-                <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-                <text class="fz28" style="color:#999">点击定位</text>
-            </div>
-            <div class="changeGpsBox"  v-if="hasChange">
-                <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-                <text class="changeAddress">{{detailed}}</text>
-                <div class="changeBox" @click="getGps()">
-                    <text class="changeIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                    <text class="changeText">修改</text>
-                </div>
-            </div>
+            <!--<div class="gpsBox" @click="getGps()" v-if="!hasChange && !hasAddress">-->
+                <!--<text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>-->
+                <!--<text class="fz28" style="color:#999">点击定位</text>-->
+            <!--</div>-->
+            <!--<div class="changeGpsBox"  v-if="hasChange">-->
+                <!--<text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>-->
+                <!--<text class="changeAddress">{{detailed}}</text>-->
+                <!--<div class="changeBox" @click="getGps()">-->
+                    <!--<text class="changeIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>-->
+                    <!--<text class="changeText">修改</text>-->
+                <!--</div>-->
+            <!--</div>-->
             </div>
         <div class="button mt30 ml30 mr30" @click="complete()">
             <text class="fz40" style="color: white">确认</text>
@@ -167,9 +167,10 @@
             utils.initIconFont();
             this.cardId = utils.getUrlParameter('cardId');
             this.memberId = utils.getUrlParameter('memberId');
+            this.getGps();
             if(utils.isNull(this.cardId)){
                 this.cardId = '';
-                this.title = '新增会员'
+                this.title = '新增会员';
             }else{
                 this.openView()
             }
@@ -279,7 +280,7 @@
                         _this.lng = data.data.lng;
                         _this.lat = data.data.lat;
                         _this.addressName = data.data.province + data.data.city +data.data.district;
-                        _this.detailed = data.data.address;
+//                        _this.detailed = data.data.address;
                         GET("/lbs/get.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat,function (mes) {
                             if (mes.type == 'success') {
                                 _this.areaId = mes.data.areaId;
@@ -289,8 +290,8 @@
                         }, function (err) {
                             event.toast(err.content)
                         })
-                        _this.hasChange = false;
-                        _this.hasAddress = true
+//                        _this.hasChange = false;
+//                        _this.hasAddress = true
 
                     }else {
                         event.toast('定位失败，请开启GPS');
@@ -325,7 +326,7 @@
                     event.toast('请输入详细地址')
                     return
                 }
-                POST("weex/member/receiver/add.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&memberId='+this.memberId+'&level='+this.floor).then(function (mes) {
+                POST("weex/member/receiver/add.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+encodeURIComponent(this.phone) +"&lat="+ this.lng + "&lat=" +this.lat+'&memberId='+this.memberId+'&level='+this.floor).then(function (mes) {
                     if (mes.type == 'success') {
                         let E = utils.message('success','添加成功','')
                         event.closeURL(E);

@@ -21,7 +21,7 @@
             </refresh>
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="contentCell" >
-                    <text class="shopName">{{c.memberId}}</text>
+                    <text class="shopName">{{c.memberName}}</text>
                     <text class="number">{{c.typeName}}</text>
                     <text class="returnMoney">¥{{c.refund}}</text>
                     <text class="money">¥{{c.amount}}</text>
@@ -387,7 +387,7 @@
                 var _this = this;
                 GET('weex/member/report/payment_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
-                        if (_this.pageStart==0) {
+                        if ( _this.pageStart==0) {
                             var total = 0;
                             res.data.data.summary.forEach(function (item) {
                                 total = total+item.amount
@@ -396,9 +396,21 @@
                             _this.reportList = res.data.data.data;
                             _this.summarylist = res.data.data.summary
                         } else {
-                            _this.reportList.push(res.data.data.data);
+                            res.data.data.data.forEach(function (item) {
+                                _this.reportList.push(item);
+                            })
+
+//                            _this.reportList.push(res.data.data.data);
                         }
                         _this.pageStart = _this.pageStart+res.data.data.data.length;
+//                        modal.alert({
+//                            message: res.data.data.data.length,
+//                            okTitle: 'OK'
+//                        });
+//                        modal.alert({
+//                            message: 'page'+_this.pageStart,
+//                            okTitle: 'OK'
+//                        });
 
                     } else {
                         event.toast(res.content);
@@ -414,7 +426,7 @@
 //            下拉刷新
             onrefresh:function (event) {
                 var _this = this;
-                _this.pageStart = 0;
+
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
@@ -436,6 +448,7 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false
+                    _this.pageStart = 0;
                     _this.open();
                 }, 1000)
             },

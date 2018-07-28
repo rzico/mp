@@ -359,6 +359,7 @@
                 message:'',
                 roles:'',
                 isPageType:false,
+                isSelf:false,
                 buttonText:'派单'
             }
         },
@@ -473,6 +474,7 @@
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
             this.isPageType = utils.getUrlParameter('isPageType');
+            this.isSelf = utils.getUrlParameter('isSelf');
             if(this.isPageType == false || this.isPageType == 'false'){
                 this.title = '转派';
                 this.buttonText = '转派'
@@ -576,11 +578,8 @@
                     _this.clicked = false;
                     return
                 }
-//                本水站的单不允许选择站点
-                if(this.isPageType == true || this.isPageType == 'true'){
-                    _this.clicked = false;
-                    return
-                }
+//                本水站的单允许选择站点
+                if(this.isSelf == true || this.isSelf == 'true'){
                     event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
                         _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
@@ -590,6 +589,8 @@
                             _this.markiId = ''
                         }
                     })
+                }
+
             },
             //            跳转备注快速话语
             linkTo: function () {

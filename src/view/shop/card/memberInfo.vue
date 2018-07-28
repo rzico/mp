@@ -62,7 +62,7 @@
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between " @click="goAddress()">
                     <div class="flex-row">
-                        <text class="title ml10">收获地址</text>
+                        <text class="title ml10">收货地址</text>
                     </div>
                     <div class="flex-row flex-end" >
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
