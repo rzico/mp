@@ -280,7 +280,7 @@
                         _this.lng = data.data.lng;
                         _this.lat = data.data.lat;
                         _this.addressName = data.data.province + data.data.city +data.data.district;
-                        _this.detailed = data.data.address;
+//                        _this.detailed = data.data.address;
                         GET("/lbs/get.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat,function (mes) {
                             if (mes.type == 'success') {
                                 _this.areaId = mes.data.areaId;
@@ -326,7 +326,7 @@
                     event.toast('请输入详细地址')
                     return
                 }
-                POST("weex/member/receiver/add.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&memberId='+this.memberId+'&level='+this.floor).then(function (mes) {
+                POST("weex/member/receiver/add.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+encodeURIComponent(this.phone) +"&lat="+ this.lng + "&lat=" +this.lat+'&memberId='+this.memberId+'&level='+this.floor).then(function (mes) {
                     if (mes.type == 'success') {
                         let E = utils.message('success','添加成功','')
                         event.closeURL(E);

@@ -398,7 +398,7 @@
             navbar,date
         },
         props: {
-            title: {default: "补单"},
+            title: {default: "报单"},
         },
         filters: {
             watchType:function (val) {
@@ -874,6 +874,7 @@
                                 message: '确认成功',
                                 okTitle: '知道了'
                             })
+                            _this.isShow = false;
                             _this.cartList();
                             _this.getInfo();
                         }else {
@@ -885,6 +886,7 @@
                                         message: '确认成功',
                                         okTitle: '知道了'
                                     })
+                                    _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
                                 }else{
@@ -892,6 +894,7 @@
                                         message: mes.content,
                                         okTitle: '知道了'
                                     })
+                                    _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
                                 }

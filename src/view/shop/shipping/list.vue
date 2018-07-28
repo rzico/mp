@@ -64,14 +64,14 @@
                         <div class="flex-row">
                             <div class="flex-row" v-if="totalSingle <=1">
                             <div class="flex-row" v-if="item.isSelf == true">
-                                <text class="title footText " @click="trunSend(item.orderSn,item.sn)">转派</text>
+                                <text class="title footText " @click="trunSend(item.orderSn,item.sn,item.isSelf)">转派</text>
                             </div>
                             <div class="flex-row" v-else>
                                 <text class="title footText " @click="rejected(item.sn)">驳回</text>
                             </div>
                             </div>
                             <div class="flex-row" v-if="totalSingle <=1">
-                            <text class="title footText " @click="sendSingle(item.orderSn,item.sn)">派单</text>
+                            <text class="title footText " @click="sendSingle(item.orderSn,item.sn,item.isSelf)">派单</text>
                             </div>
                         <div class="flex-row" v-else>
                             <text class="title footText " @click="openMask(item.orderSn,item.sn)">批量派单</text>
@@ -777,7 +777,7 @@
                 });
             },
             //            跳转派单
-            sendSingle:function (orderSn,sn) {
+            sendSingle:function (orderSn,sn,isSelf) {
                 if (this.clicked) {
                     return;
                 }
@@ -792,7 +792,7 @@
                     return
                 }
                     this.isPageType = true
-                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType  +'&isSelf='+isSelf),function (data) {
                     _this.clicked = false;
                     if(data.type == 'success'){
                         _this.pageStart = 0;
@@ -804,7 +804,7 @@
                 });
             },
             //            跳转转派
-            trunSend:function (orderSn,sn) {
+            trunSend:function (orderSn,sn,isSelf) {
                 if (this.clicked) {
                     return;
                 }
@@ -819,7 +819,7 @@
                     return
                 }
                 this.isPageType = false;
-                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/sendSingle.js?orderSn=' + orderSn + '&sn='+sn +'&isPageType='+ this.isPageType +'&isSelf='+isSelf),function (data) {
                     _this.clicked = false;
                     if(data.type == 'success'){
                         _this.pageStart = 0;
