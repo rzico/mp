@@ -256,7 +256,7 @@
                 hadUpdate:false,
                 isIcon:true,
                 timeDate:'',
-                pageName:'配送结算',
+                pageName:'派单结算',
                 beginTime:'',
                 endTime:''
             }
@@ -412,7 +412,7 @@
             open:function () {
                 var _this = this;
 
-                GET('weex/member/report/shipping_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
+                GET('weex/member/report/shipping_summary.jhtml?type=owner&beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
                             _this.reportList = res.data.data.data;
@@ -474,11 +474,11 @@
 //            判断水站是否重复,并且在最后一个显示统计
             isTotal(index){
 
-                    if(index<(this.reportList.length-1) && this.reportList[index].sellerId == this.reportList[index+1].sellerId){
-                        return false;
-                    } else {
-                        return index==(this.reportList.length-1);
-                    }
+                if(index<(this.reportList.length-1) && this.reportList[index].sellerId == this.reportList[index+1].sellerId){
+                    return false;
+                } else {
+                    return index==(this.reportList.length-1);
+                }
 
 
                 return true;

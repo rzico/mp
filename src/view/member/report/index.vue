@@ -20,7 +20,11 @@
                 </div>
                 <div class="menu" @click="contacts_report()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">往来结算</text>
+                    <text class="menuBtn">配送结算</text>
+                </div>
+                <div class="menu" @click="sendSingle_report()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
+                    <text class="menuBtn">派单结算</text>
                 </div>
                 <div class="menu" @click="barrel_report()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
@@ -304,6 +308,14 @@
                 this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate("view/member/report/contacts_report.js"),function (e) {_this.clicked = false});
+            },
+            sendSingle_report:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/member/report/sendSingle_report.js"),function (e) {_this.clicked = false});
             },
             barrel_report:function () {
                 if (this.clicked==true) {

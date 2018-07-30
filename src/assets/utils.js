@@ -7,7 +7,7 @@ const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'http://weixin.rzico.com';
 const event = weex.requireModule('event');
 const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
-const appName = 'yudian';// app类型  water 或 yundian
+const appName = 'yundian';// app类型  water 或 yundian
 let utilsFunc = {
     // app类型
     appType(){
