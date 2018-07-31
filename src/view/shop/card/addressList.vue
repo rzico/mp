@@ -219,7 +219,6 @@
                 this.isSearch = false;
                 this.keyword = e.value;
                 this.searchOrCancel = '搜索';
-                this.lists = [];
                 this.noDataHint = "输入查找卡号、手机号、收货地址";
                 if(e.value.length == 0){
                     this.searchOrCancel = '取消'
@@ -234,13 +233,15 @@
             },
 //            点击右上角取消或者搜索按钮
             noSearch:function () {
+                var _this = this;
                 this.inputBlur();
                 if(this.searchOrCancel == '取消'){
                     this.pageStart = 0;
                     this.doSearch = false;
                     this.open();
                 }else{
-                    this.searchCard()
+                    _this.pageStart = 0;
+                    _this.searchCard()
                 }
             },
             //            获取权限
