@@ -227,22 +227,24 @@
         align-items: center;
     }
     .numberInput{
+        padding-left: 5px;
         width: 80px;
         height: 80px;
         line-height: 70px;
         font-size: 28px;
         border-width: 1px;
         border-color: #cccccc;
-        text-align: center;
+        /*text-align: center;*/
     }
     .moneyInput{
+        padding-left: 5px;
         width: 80px;
         height: 80px;
         line-height: 70px;
         font-size: 28px;
         border-width: 1px;
         border-color: #cccccc;
-        text-align: center;
+        /*text-align: center;*/
     }
     .moneyBox{
         border-top-width: 5px;
@@ -433,7 +435,16 @@
         },
         created() {
             utils.initIconFont();
+//            清空购物车
+            POST('weex/cart/clear.jhtml').then(function (res) {
+                if (res.type == 'success') {
 
+                } else {
+                    event.toast(res.content);
+                }
+            }, function (err) {
+                event.toast(err.content)
+            })
         },
         methods: {
             //            监听设备型号,控制导航栏高度
@@ -527,6 +538,19 @@
                     event.toast(err.content)
                 })
             },
+//           获取商品合计
+            getmoneyTotal:function () {
+                var _this = this;
+                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId).then(function (data) {
+                    if (data.type == 'success') {
+                        _this.effectivePrice = data.data.price;//  商品合计
+                    } else {
+                        event.toast(data.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
             //            选择付款方式
             pickPay:function () {
                 let _this = this
@@ -592,6 +616,7 @@
                         }
                     }
                 })
+                _this.getmoneyTotal();
             },
             //            选择发货方式
             pickSend:function () {
@@ -633,7 +658,7 @@
                         if(data.data.memberId != 0){
                             _this.memberId = data.data.memberId;
                             _this.addressId = '';
-                            _this.getInfo()
+                            _this.getInfo();
                         }else{
                             event.toast('无效会员')
                             return
@@ -675,6 +700,11 @@
                 var _this = this;
                 GET('weex/cart/list.jhtml?',function (mes) {
                     if (mes.type == 'success') {
+                        mes.data.cartItems.forEach(function (item) {
+                            if(item.quantity == 0){
+                                item.quantity = ''
+                            }
+                        })
                         _this.cart = mes.data.cartItems;
                     } else {
                         event.toast(mes.content);
@@ -686,7 +716,7 @@
             //            加入购物车
             addCart:function (id) {
                 var _this = this;
-                POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=1').then(function (res) {
+                POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0').then(function (res) {
                     if (res.type == 'success') {
 //                        当购物车列表大于3条数据时再做操作
                         if(_this.cart.length > 3){
@@ -707,7 +737,7 @@
 
                         }
                         _this.cartList();
-                        _this.getInfo()
+                        _this.getmoneyTotal();
                     } else {
                         event.toast(res.content);
                     }
@@ -737,7 +767,7 @@
                 POST('weex/cart/edit.jhtml?id='+id+'&quantity='+num).then(function (res) {
                     if (res.type == 'success') {
                         _this.cartList();
-                        _this.getInfo()
+                        _this.getmoneyTotal();
                     } else {
                         event.toast(res.content);
                     }
@@ -751,7 +781,7 @@
                 POST('weex/cart/edit.jhtml?id='+id+'&quantity='+num+'&price='+price).then(function (res) {
                     if (res.type == 'success') {
                         _this.cartList();
-                        _this.getInfo();
+                        _this.getmoneyTotal();
                     } else {
                         event.toast(res.content);
                     }
@@ -831,7 +861,7 @@
                             }
 //                            _this.cart.splice(index,1);
                             _this.cartList();
-                            _this.getInfo()
+                            _this.getmoneyTotal();
                         } else {
                             event.toast(mes.content);
                         }
@@ -865,6 +895,21 @@
                         return
                     }
                 }
+                var mesTotal = 0;
+                _this.cart.forEach(function (item) {
+                    if(utils.isNull(item.quantity) || item.quantity == 0){
+                        mesTotal = mesTotal + 1;
+                    }
+                })
+                if(mesTotal>0){
+                    modal.alert({
+                        message: '商品数量不能为空或0',
+                        okTitle: '知道了'
+                    });
+                    _this.clicked = false;
+                    return
+                }
+
                 POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&level='+_this.floor).then(function (res) {
                     if (res.type == 'success') {
 //                        如果实付金额为0，则不走后面的流程

@@ -32,7 +32,9 @@
                     <div style="width: 630px">
                         <div class="flex-row">
                             <text class="title">{{item.receiver.consignee}}</text>
-                            <text class="title ml20">{{item.receiver.phone}}</text>
+                        </div>
+                        <div class="flex-row mt10">
+                            <text class="title">{{item.receiver.phone}}</text>
                             <text class="sub_title copyBtn copyBorder ml20"  @click="callPhone(item.receiver.phone)">拨号</text>
                         </div>
                         <div class="mt10">
@@ -122,6 +124,9 @@
                     </div>
                     <div class="infoLines boder-bottom pt10">
                         <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
+                    </div>
+                    <div class="infoLines boder-bottom pt10">
+                        <text class="sub_title ">派单留言: {{item.shippingMemo}}</text>
                     </div>
                     <div class="infoLines boder-bottom ">
                         <text class="sub_title ">买家留言: {{item.orderMemo}}</text>

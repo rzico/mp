@@ -3,16 +3,19 @@
         <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
             <div class="tableOne">
-                <text class="tableText">水站</text>
+                <text class="tableText">品牌</text>
             </div>
             <div class="tableOne">
-                <text class="tableText">品牌</text>
+                <text class="tableText">类型</text>
+            </div>
+            <div class="tableTwo">
+                <text class="tableText">出桶</text>
             </div>
             <div class="tableTwo">
                 <text class="tableText">回桶</text>
             </div>
             <div class="tableThree">
-                <text class="tableText">出桶</text>
+                <text class="tableText">欠桶</text>
             </div>
         </div>
         <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList != null">
@@ -20,11 +23,24 @@
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
-                <div class="contentCell" >
+                <div class="titleCell"  v-if="isSellerName(index)">
                     <text class="shopName">{{c.sellerName}}</text>
+                </div>
+                <div class="contentCell" >
+                    <div class="contentSmallCell">
                     <text class="number">{{c.barrelName}}</text>
-                    <text class="returnMoney">{{c.returnQuantity}}</text>
-                    <text class="money">{{c.quantity}}</text>
+                    <text class="number">派单</text>
+                    <text class="returnMoney">{{c.sQuantity}}</text>
+                    <text class="returnMoney">{{c.sReturnQuantity}}</text>
+                    <text class="money">{{c.sQuantity - c.sReturnQuantity}}</text>
+                    </div>
+                    <div class="contentSmallCell">
+                        <text class="number"></text>
+                        <text class="number">送货</text>
+                        <text class="returnMoney">{{c.quantity}}</text>
+                        <text class="returnMoney">{{c.returnQuantity}}</text>
+                        <text class="money">{{c.quantity - c.returnQuantity}}</text>
+                    </div>
                 </div>
             </cell>
             <cell v-if="reportList.length == 0" >
@@ -43,16 +59,38 @@
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
             <div class="bottomCell">
-                <text class="typeName">合计</text>
-                <text class="refund">回桶: {{returnQuantityTotal}}</text>
-                <text class="amount">出桶: {{quantityTotal}}</text>
+                <div class="contentSmallCell">
+                <text class="number">合计</text>
+                <text class="number">派单</text>
+                <text class="returnMoney">{{sQuantityTotal}}</text>
+                <text class="returnMoney">{{sReturnQuantityTotal}}</text>
+                <text class="money">{{sQuantityTotal - sReturnQuantityTotal}}</text>
+                </div>
+                <div class="contentSmallCell">
+                    <text class="number"></text>
+                    <text class="number">送货</text>
+                    <text class="returnMoney">{{quantityTotal}}</text>
+                    <text class="returnMoney">{{returnQuantityTotal}}</text>
+                    <text class="money">{{quantityTotal - returnQuantityTotal}}</text>
+                </div>
             </div>
             <list style="max-height: 500px">
                 <cell class="" v-for="t in summarylist">
                     <div class="bottomCellTwo">
-                        <text class="typeName">{{t.barrelName}}</text>
-                        <text class="refund">回桶: {{t.returnQuantity}}</text>
-                        <text class="amount">出桶: {{t.quantity}}</text>
+                        <div class="contentSmallCell">
+                        <text class="number">{{t.barrelName}}</text>
+                            <text class="number">派单</text>
+                        <text class="returnMoney">{{t.sQuantity}}</text>
+                        <text class="returnMoney">{{t.sReturnQuantity}}</text>
+                        <text class="money">{{t.sQuantity - t.sReturnQuantity}}</text>
+                        </div>
+                        <div class="contentSmallCell">
+                            <text class="number"></text>
+                            <text class="number">送货</text>
+                            <text class="returnMoney">{{t.quantity}}</text>
+                            <text class="returnMoney">{{t.returnQuantity}}</text>
+                            <text class="money">{{t.quantity - t.returnQuantity}}</text>
+                        </div>
                     </div>
                 </cell>
             </list>
@@ -85,7 +123,7 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:187.5px;
+        width:125px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -93,7 +131,7 @@
         border-right-color: #777;
     }
     .tableThree{
-        width:187.5px;
+        width:125px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -108,7 +146,7 @@
         height: 630px;
         background-color: white;
         position: fixed;
-        bottom:-500px;
+        bottom:-440px;
         left: 0;
         border-top-width: 1px;
         border-color: #ccc;
@@ -123,41 +161,48 @@
         justify-content: center;
     }
     .bottomCell{
-        height: 100px;
+        height: 160px;
         width: 750px;
         background-color: #f5f5f5;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
         border-bottom-width:1px;
         border-color:#cccccc;
     }
     .bottomCellTwo{
-        height: 100px;
+        height: 160px;
         width: 750px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
         border-bottom-width:1px;
         border-color:#cccccc;
     }
     .totalIcon{
         font-size: 80px;
     }
-    .contentCell{
-        height: 100px;
+    .titleCell{
+        height: 80px;
         width: 750px;
-        background-color: white;
-        border-bottom-width: 1px;
-        border-color: #cccccc;
+        background-color: #ccc;
         flex-direction: row;
         align-items: center;
     }
+    .contentCell{
+        height: 160px;
+        width: 750px;
+        background-color: white;
+        flex-direction: column;
+        align-items: center;
+    }
+    .contentSmallCell{
+        height: 80px;
+        width: 750px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-color: #cccccc;
+    }
     .shopName{
-        font-size: 30px;
-        width: 187.5px;
-        padding-left: 30px;
-        text-align: center;
+        font-size: 32px;
+        margin-left: 30px;
         lines:1;
         text-overflow: ellipsis;
     }
@@ -170,7 +215,7 @@
     }
     .money{
         font-size: 30px;
-        width: 187.5px;
+        width: 125px;
         padding-right: 30px;
         text-align: right;
         lines:1;
@@ -178,14 +223,13 @@
     }
     .returnMoney{
         font-size: 30px;
-        width: 187.5px;
+        width: 125px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;
     }
     .typeName{
         font-size: 28px;
-        width: 225px;
         padding-left: 30px;
         text-align: left;
         lines:1;
@@ -193,14 +237,14 @@
     }
     .refund{
         font-size: 28px;
-        width: 262.5px;
+        width: 200px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;
     }
     .amount{
         font-size: 28px;
-        width: 262.5px;
+        width: 200px;
         padding-right: 30px;
         text-align: right;
         lines:1;
@@ -236,7 +280,10 @@
                 beginTime:'',
                 endTime:'',
                 quantityTotal:0,
-                returnQuantityTotal:0
+                returnQuantityTotal:0,
+                sQuantityTotal:0,
+                sReturnQuantityTotal:0,
+
             }
         },
         components: {
@@ -317,7 +364,7 @@
                     _this.isIcon = false;// 当向上滑动时把变量置为false，达到再次点击div时触发的是收回动画
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-500)',
+                            transform: 'translateY(-440)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -352,7 +399,7 @@
                     }else{
                         animation.transition(animationPara, {
                             styles: {
-                                transform: 'translateY(-500)',
+                                transform: 'translateY(-440)',
                             },
                             duration: 350, //ms
                             timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -383,6 +430,15 @@
 //                获取当前点击的元素。
                 animationPara =  e.currentTarget;
             },
+            //判断水站是否重复
+            isSellerName(index){
+                if(index != 0){
+                    if(this.reportList[index].sellerName == this.reportList[index - 1].sellerName){
+                        return false;
+                    }
+                }
+                return true;
+            },
             goback: function (e) {
                 event.closeURL();
             },
@@ -392,15 +448,23 @@
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
                             _this.returnQuantityTotal = 0 ;
+                            _this.sReturnQuantityTotal = 0 ;
                             _this.quantityTotal = 0 ;
+                            _this.sQuantityTotal = 0 ;
                             res.data.data.summary.forEach(function (item) {
                                 _this.returnQuantityTotal = _this.returnQuantityTotal+item.returnQuantity;
                                 _this.quantityTotal = _this.quantityTotal+item.quantity;
+                                _this.sReturnQuantityTotal = _this.sReturnQuantityTotal+item.sReturnQuantity;
+                                _this.sQuantityTotal = _this.sQuantityTotal+item.sQuantity;
                             })
+//                            res.data.data.data.forEach(function (item) {
+//                                item.oweQuantity  = item.quantity - item.returnQuantity;
+//                            })
                             _this.reportList = res.data.data.data;
                             _this.summarylist = res.data.data.summary
                         } else {
                             res.data.data.data.forEach(function (item) {
+//                                item.oweQuantity  = item.quantity - item.returnQuantity;
                                 _this.reportList.push(item);
                             })
 //                            _this.reportList.push(res.data.data.data);
