@@ -919,8 +919,13 @@
                                 message: '确认成功',
                                 okTitle: '知道了'
                             })
+                            _this.shopName = '';
+                            _this.shopId = '';
                             _this.memoData = '';
                             _this.dateTime = '';
+                            _this.floor = '';
+                            _this.adminName = '';
+                            _this.adminId = '';
                             _this.isShow = false;
                             _this.cartList();
                             _this.getInfo();
@@ -933,8 +938,13 @@
                                         message: '确认成功',
                                         okTitle: '知道了'
                                     })
+                                    _this.shopName = '';
+                                    _this.shopId = '';
                                     _this.memoData = '';
                                     _this.dateTime = '';
+                                    _this.floor = '';
+                                    _this.adminName = '';
+                                    _this.adminId = '';
                                     _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
@@ -943,7 +953,13 @@
                                         message: mes.content,
                                         okTitle: '知道了'
                                     })
+                                    _this.shopName = '';
+                                    _this.shopId = '';
                                     _this.memoData = '';
+                                    _this.dateTime = '';
+                                    _this.floor = '';
+                                    _this.adminName = '';
+                                    _this.adminId = '';
                                     _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
