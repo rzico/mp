@@ -2,9 +2,8 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="headerBox">
-            <text class="headerBoxTime ">2018年7月</text>
             <div class="headerBoxBottom">
-                <text class="headerBoxTotal">合计:  总金额 88900.00  总单 800</text>
+                <text class="headerBoxTotal">合计:  2人</text>
                 <text class="searchIcon " :style="{fontFamily:'iconfont'}">&#xe611;</text>
             </div>
         </div>
@@ -12,15 +11,15 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-        <cell class="contentBox">
-            <div class="cell">
-                <div class="info">
-                    <text class="cellTitle">普通客户（单号:1023141）</text>
-                    <text class="cellSubTitle">2018年7月10日  18:30:22</text>
+            <cell class="contentBox">
+                <div class="cell">
+                    <div class="info">
+                        <text class="cellTitle">小刘（工号:1023141）</text>
+                        <text class="cellSubTitle">2018年7月10日  18:30:22</text>
+                    </div>
+                    <text class="position">店长</text>
                 </div>
-                <text class="money">8090.00</text>
-            </div>
-        </cell>
+            </cell>
         </list>
     </div>
 </template>
@@ -43,18 +42,14 @@
         height: 100px;
         padding-left: 30px;
         padding-right: 30px;
-        border-bottom-width: 1px;
-        border-bottom-color: #cccccc;
-    }
-    .headerBoxTime{
-        font-size: 32px;
-        color: #5eb0fd;
     }
     .headerBoxBottom{
+        width: 690px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        margin-top: 15px;
+        border-bottom-width: 1px;
+        border-bottom-color: #cccccc;
     }
     .headerBoxTotal{
         font-size: 32px;
@@ -89,9 +84,9 @@
         color: #999999;
         margin-top: 15px;
     }
-    .money{
-        font-size:28px;
-        color: #555;
+    .position{
+        font-size:32px;
+        color:  #5eb0fd;
     }
 </style>
 <script>
@@ -110,7 +105,7 @@
             }
         },
         props: {
-            title:{default:'销售明细'}
+            title:{default:'人员维护'}
         },
         created() {
             utils.initIconFont();

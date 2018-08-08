@@ -5,7 +5,11 @@
             <text class="headerBoxTime ">2018年7月</text>
             <div class="headerBoxBottom">
                 <text class="headerBoxTotal">合计:  总金额 88900.00  总单 800</text>
-                <text class="searchIcon " :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                <text class="searchText">单据筛选</text>
+            </div>
+            <div class="chooseBox">
+                <text class="chooseCell">全部</text>
+                <text class="chooseCell">销售专柜</text>
             </div>
         </div>
         <list class="list "  @loadmore="onloading" loadmoreoffset="180">
@@ -60,9 +64,24 @@
         font-size: 32px;
         color: red;
     }
-    .searchIcon{
-        font-size: 32px;
+    .searchText{
+        font-size: 28px;
         color: #5eb0fd;
+    }
+    .chooseBox{
+        background-color: #cccccc;
+        position: absolute;
+        bottom: 0px;
+        right: 0;
+    }
+    .chooseCell{
+        width: 250px;
+        height: 80px;
+        align-items: center;
+        justify-content: center;
+    }
+    .chooseCell:active {
+        background-color: #999;
     }
     .contentBox{
         flex-direction: column;
@@ -110,7 +129,7 @@
             }
         },
         props: {
-            title:{default:'销售明细'}
+            title:{default:'收支统计'}
         },
         created() {
             utils.initIconFont();

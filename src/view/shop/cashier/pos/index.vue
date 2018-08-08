@@ -18,12 +18,12 @@
                 <input  class="input" type="password" placeholder="请输入登陆密码"/>
             </div>
         </div>
-        <div class="button">
+        <div class="button bkg-primary" @click="linkToLogin()">
             <text class="buttonText">登陆</text>
         </div>
     </div>
 </template>
-<style lang="less" src="../style/wx.less"/>
+<style lang="less" src="../../../../style/wx.less"/>
 <style>
     .wrapper{
         position: absolute;
@@ -38,15 +38,17 @@
     .headerBox{
         flex-direction: row;
         align-items: center;
+        margin-top: 200px;
     }
     .headerIcon{
         font-size: 80px;
     }
     .headerTitle{
         font-size:40px;
-        margin-left: 100px;
+        margin-left: 50px;
     }
     .inputBox{
+        margin-top: 100px;
         flex-direction: column;
         align-items: center;
     }
@@ -61,26 +63,28 @@
         font-size: 60px;
     }
     .input{
-        width: 400px;
+        padding-left:20px;
+        width: 500px;
         height: 80px;
         line-height: 78px;
     }
     .button{
-        width: 480px;
+        width: 580px;
         height: 80px;
         border-radius: 15px;
         align-items: center;
         justify-content: center;
+        margin-top: 100px;
     }
     .buttonText{
-        font-size:40px;
+        font-size:32px;
     }
 </style>
 <script>
-    import navbar from '../include/navbar.vue';
-    import { POST, GET } from '../assets/fetch';
+    import navbar from '../../../../include/navbar.vue';
+    import { POST, GET } from '../../../../assets/fetch';
     var event = weex.requireModule('event');
-    import utils from '../assets/utils';
+    import utils from '../../../../assets/utils';
     export default {
         components: {
             navbar,
@@ -97,7 +101,9 @@
             utils.initIconFont();
         },
         methods:{
-
+            linkToLogin(){
+                event.openURL(utils.locate("view/shop/cashier/pos/home/index.js"),function (e) {});
+            },
         }
     }
 </script>

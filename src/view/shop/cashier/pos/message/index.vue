@@ -2,9 +2,7 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="headerBox">
-            <text class="headerBoxTime ">2018年7月</text>
             <div class="headerBoxBottom">
-                <text class="headerBoxTotal">合计:  总金额 88900.00  总单 800</text>
                 <text class="searchIcon " :style="{fontFamily:'iconfont'}">&#xe611;</text>
             </div>
         </div>
@@ -12,15 +10,20 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-        <cell class="contentBox">
-            <div class="cell">
-                <div class="info">
-                    <text class="cellTitle">普通客户（单号:1023141）</text>
-                    <text class="cellSubTitle">2018年7月10日  18:30:22</text>
+            <cell class="contentBox">
+                <div class="cell">
+                        <text class="cellTitle">系统通知</text>
+                        <text class="cellSubTitle">关于国庆节商场安全工作安排</text>
+                    <div class="cellBottom">
+                            <text class="position">2018年7月10日  18:30:22</text>
+                            <text class="position">安检部</text>
+                        <div class="flex-row">
+                            <text class="position">已读</text>
+                            <text class="fz32" style="color: #5eb0fd">反馈</text>
+                        </div>
+                    </div>
                 </div>
-                <text class="money">8090.00</text>
-            </div>
-        </cell>
+            </cell>
         </list>
     </div>
 </template>
@@ -40,26 +43,17 @@
         flex-direction: column;
         justify-content: center;
         width: 750px;
-        height: 100px;
+        height: 80px;
         padding-left: 30px;
         padding-right: 30px;
-        border-bottom-width: 1px;
-        border-bottom-color: #cccccc;
-    }
-    .headerBoxTime{
-        font-size: 32px;
-        color: #5eb0fd;
     }
     .headerBoxBottom{
+        width: 690px;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
-        margin-top: 15px;
+        justify-content: flex-end;
     }
-    .headerBoxTotal{
-        font-size: 32px;
-        color: red;
-    }
+
     .searchIcon{
         font-size: 32px;
         color: #5eb0fd;
@@ -70,28 +64,28 @@
         padding-left: 30px;
     }
     .cell{
+        flex-direction: column;
+        justify-content: space-between;
+        width: 690px;
+        height: 200px;
+        border-bottom-width: 1px;
+        border-bottom-color: #cccccc;
+    }
+    .cellBottom{
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         width: 690px;
-        height: 120px;
-        border-bottom-width: 1px;
-        border-bottom-color: #cccccc;
-    }
-    .info{
-        flex-direction: column;
     }
     .cellTitle{
         font-size:32px;
     }
     .cellSubTitle{
-        font-size:28px;
-        color: #999999;
-        margin-top: 15px;
+        font-size:32px;
     }
-    .money{
-        font-size:28px;
-        color: #555;
+    .position{
+        font-size:32px;
+        color:  #999;
     }
 </style>
 <script>
@@ -110,7 +104,7 @@
             }
         },
         props: {
-            title:{default:'销售明细'}
+            title:{default:'系统消息'}
         },
         created() {
             utils.initIconFont();
