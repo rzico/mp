@@ -474,14 +474,14 @@
 //            判断水站是否重复,并且在最后一个显示统计
             isTotal(index){
 
-                if(index<(this.reportList.length-1) && this.reportList[index].sellerId == this.reportList[index+1].sellerId){
-                    return false;
+                if ((index==(this.reportList.length-1)) ||
+                    ((index<(this.reportList.length-1) && this.reportList[index].sellerId != this.reportList[index+1].sellerId) )
+                )  {
+                    return true;
                 } else {
-                    return index==(this.reportList.length-1);
+                    return false;
                 }
 
-
-                return true;
             }
         },
 
