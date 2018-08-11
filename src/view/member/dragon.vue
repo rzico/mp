@@ -24,7 +24,6 @@
                             </div>
                             <div class="delDate" >
                                 <text class="sub_date mt20 pb15">{{item.createDate | timeDatefmtMinutes}}</text>
-
                             </div>
                             <div class="buttonBox">
                                 <div class="OnButton"  @click="delReview(item.id,index)"  v-if="item.status == 'closed'"><text class="fz26" style="color: #333" >删除</text></div>

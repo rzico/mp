@@ -213,14 +213,6 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe666;</text>
                         <text class="iconfontText mt20">评价管理</text>
                     </div>
-                    <div class="iconBox flexCol mt20" @click="doLive()">
-                        <text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe644;</text>
-                        <text class="iconfontText mt20">我要直播</text>
-                    </div>
-                    <div class="iconBox flexCol mt20"  @click="seeLive()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe74c;</text>
-                        <text class="iconfontText mt20">观看直播</text>
-                    </div>
                     <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('employee')" @click="employee()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999933" class="iconfontSize">&#xe66c;</text>-->
                         <!--<text class="iconfontText mt20">员工管理</text>-->
@@ -606,38 +598,6 @@
         //            }
         //        },
         methods: {
-            //            我要直播
-            doLive(){
-                let _this = this;
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
-                GET('weex/live/check.jhtml?memberId=' + event.getUId(),function (data) {
-//                            开始直播
-                        livePlayer.toPlayLiveRoom(data.data.liveId,true,false,function(mes){});
-
-                },function (err) {
-                    event.toast(err.content);
-                })
-            },
-            seeLive(){
-                let _this = this;
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/live/index.js'),
-                    function (data) {
-                    }
-                );
-            },
 //            当前是水达人时关闭激活店铺
             filterApp(){
                 if(utils.appType() == 'water'){

@@ -15,7 +15,9 @@
                     <div style="width: 630px">
                         <div class="flex-row">
                             <text class="title">{{item.receiver.consignee}}</text>
-                            <text class="title ml20">{{item.receiver.phone}}</text>
+                        </div>
+                        <div class="flex-row mt10">
+                            <text class="title">{{item.receiver.phone}}</text>
                             <text class="sub_title copyBtn copyBorder ml20"  @click="callPhone(item.receiver.phone)">拨号</text>
                         </div>
                         <div class="mt10">
@@ -72,6 +74,9 @@
                     <div class="infoLines pt0 pb10">
                         <text class="sub_title ">配送站点: {{item.shopName}}</text>
                     </div>
+                    <div class="infoLines pt0 pb10">
+                        <text class="sub_title ">销售站点: {{item.sellerName}}</text>
+                    </div>
                     <div class="infoLines pt0 pb0">
                         <text class="sub_title ">配送人员: {{item.track.name}}  {{item.track.mobile}}</text>
                     </div>
@@ -79,7 +84,7 @@
                         <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
                     </div>
                     <div class="infoLines pb10 ">
-                        <text class="sub_title ">留言: {{item.memo}}</text>
+                        <text class="sub_title ">派单留言: {{item.memo}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt0">
                         <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
@@ -100,7 +105,14 @@
                             <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
                         </div>
                     </div>
+                    <div class="priceLine flex-end">
+                        <div class="flex-row">
+                            <text class="title mr20">应收金额:</text>
+                            <text class="title" style="color: red">¥{{item.amountPayable | currencyfmt}}</text>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </scroller>
 

@@ -167,10 +167,10 @@
             utils.initIconFont();
             this.cardId = utils.getUrlParameter('cardId');
             this.memberId = utils.getUrlParameter('memberId');
-            this.getGps();
             if(utils.isNull(this.cardId)){
                 this.cardId = '';
                 this.title = '新增会员';
+                this.getGps();
             }else{
                 this.openView()
             }
