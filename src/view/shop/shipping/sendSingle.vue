@@ -589,6 +589,8 @@
                             _this.markiId = ''
                         }
                     })
+                }else {
+                    _this.clicked = false;
                 }
 
             },
