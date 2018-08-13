@@ -127,14 +127,14 @@
                 timeId:0,
                 titleDate:[{id:1,time:'今天'},{id:2,time:'明天'},{id:3,time:'后天'},],
                 timeData:[
-                    {id:1,time:'00.00-01.00'},
-                    {id:2,time:'01.00-02.00'},
-                    {id:3,time:'02.00-03.00'},
-                    {id:4,time:'03.00-04.00'},
-                    {id:5,time:'04.00-05.00'},
-                    {id:6,time:'05.00-06.00'},
-                    {id:7,time:'06.00-07.00'},
-                    {id:8,time:'07.00-08.00'},
+//                    {id:1,time:'00.00-01.00'},
+//                    {id:2,time:'01.00-02.00'},
+//                    {id:3,time:'02.00-03.00'},
+//                    {id:4,time:'03.00-04.00'},
+//                    {id:5,time:'04.00-05.00'},
+//                    {id:6,time:'05.00-06.00'},
+//                    {id:7,time:'06.00-07.00'},
+//                    {id:8,time:'07.00-08.00'},
                     {id:9,time:'08.00-09.00'},
                     {id:10,time:'09.00-10.00'},
                     {id:11,time:'10.00-11.00'},
@@ -166,23 +166,24 @@
         methods: {
             chooseTime(id){
                 this.timeId = id;
-                if(id == 1){
-                    this.time = '00:00:00'
-                }else if(id == 2){
-                    this.time = '01:00:00'
-                }else if(id == 3){
-                    this.time = '02:00:00'
-                }else if(id == 4){
-                    this.time = '03:00:00'
-                }else if(id == 5){
-                    this.time = '04:00:00'
-                }else if(id == 6){
-                    this.time = '05:00:00'
-                }else if(id == 7){
-                    this.time = '06:00:00'
-                }else if(id == 8){
-                    this.time = '07:00:00'
-                }else if(id == 9){
+//                if(id == 1){
+//                    this.time = '00:00:00'
+//                }else if(id == 2){
+//                    this.time = '01:00:00'
+//                }else if(id == 3){
+//                    this.time = '02:00:00'
+//                }else if(id == 4){
+//                    this.time = '03:00:00'
+//                }else if(id == 5){
+//                    this.time = '04:00:00'
+//                }else if(id == 6){
+//                    this.time = '05:00:00'
+//                }else if(id == 7){
+//                    this.time = '06:00:00'
+//                }else if(id == 8){
+//                    this.time = '07:00:00'
+//                }else
+                if(id == 9){
                     this.time = '08:00:00'
                 }else if(id == 10){
                     this.time = '09:00:00'
