@@ -2,11 +2,11 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="content">
-            <div class="cell" @click="linkTInfo()">
+            <div class="cell" @click="linkToPos()">
                 <text class="cellTitle">pos机注册</text>
                 <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
-            <div class="cell" @click="linkToDaily()">
+            <div class="cell" @click="linkToTemplate()">
                 <text class="cellTitle">打印模版</text>
                 <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
@@ -35,7 +35,7 @@
         align-items: center;
         justify-content: space-between;
         width: 710px;
-        height: 100px;
+        height: 120px;
         padding-left: 20px;
         padding-right: 20px;
         border-bottom-width: 1px;
@@ -64,7 +64,7 @@
             }
         },
         props: {
-            title:{default:'人员管理'}
+            title:{default:'系统设置'}
         },
         created() {
             utils.initIconFont();
@@ -73,11 +73,11 @@
             goback: function (e) {
                 event.closeURL();
             },
-            linkTInfo(){
-                event.openURL(utils.locate("view/shop/cashier/pos/admin/info.js"),function (e) {});
+            linkToPos(){
+                event.openURL(utils.locate("view/shop/cashier/pos/setting/add_Pos.js"),function (e) {});
             },
-            linkToDaily(){
-                event.openURL(utils.locate("view/shop/cashier/pos/admin/role.js"),function (e) {});
+            linkToTemplate(){
+                event.openURL(utils.locate("view/shop/cashier/pos/setting/template.js"),function (e) {});
             }
         }
     }

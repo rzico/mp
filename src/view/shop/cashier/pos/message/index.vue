@@ -15,7 +15,7 @@
                         <text class="cellTitle">系统通知</text>
                         <text class="cellSubTitle">关于国庆节商场安全工作安排</text>
                     <div class="cellBottom">
-                            <text class="position">2018年7月10日  18:30:22</text>
+                            <text class="position">2018/7/10 18:30:22</text>
                             <text class="position">安检部</text>
                         <div class="flex-row">
                             <text class="position">已读</text>
@@ -86,6 +86,7 @@
     .position{
         font-size:32px;
         color:  #999;
+        margin-right: 20px;
     }
 </style>
 <script>

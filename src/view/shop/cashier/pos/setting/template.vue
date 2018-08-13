@@ -2,12 +2,16 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="content">
-            <div class="cell" @click="linkTInfo()">
-                <text class="cellTitle">人员信息维护</text>
+            <div class="cell" @click="">
+                <text class="cellTitle">零售小票模版</text>
                 <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
-            <div class="cell" @click="linkToDaily()">
-                <text class="cellTitle">角色权限维护</text>
+            <div class="cell" @click="">
+                <text class="cellTitle">销售统计报表模板</text>
+                <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+            </div>
+            <div class="cell" @click="">
+                <text class="cellTitle">日常收支统计表模板</text>
                 <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
@@ -64,7 +68,7 @@
             }
         },
         props: {
-            title:{default:'人员管理'}
+            title:{default:'打印模版设置'}
         },
         created() {
             utils.initIconFont();
@@ -73,8 +77,8 @@
             goback: function (e) {
                 event.closeURL();
             },
-            linkTInfo(){
-                event.openURL(utils.locate("view/shop/cashier/pos/admin/info.js"),function (e) {});
+            linkToPos(){
+                event.openURL(utils.locate("view/shop/cashier/pos/setting/add_Pos.js"),function (e) {});
             },
             linkToDaily(){
                 event.openURL(utils.locate("view/shop/cashier/pos/admin/role.js"),function (e) {});

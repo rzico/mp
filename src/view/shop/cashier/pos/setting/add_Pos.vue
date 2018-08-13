@@ -1,16 +1,16 @@
 <template>
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
-        <div class="content">
-            <div class="cell" @click="linkTInfo()">
-                <text class="cellTitle">人员信息维护</text>
-                <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+            <div class="contentBox">
+                <div class="cell">
+                    <text class="cellName">POS机号</text>
+                    <input class="input" type="number" placeholder="请输入POS机号"/>
+                </div>
+                <div class="cell">
+                    <text class="cellName">服务器地址</text>
+                    <input class="input" type="email" placeholder="请输入服务器地址"/>
+                </div>
             </div>
-            <div class="cell" @click="linkToDaily()">
-                <text class="cellTitle">角色权限维护</text>
-                <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-            </div>
-        </div>
     </div>
 </template>
 <style lang="less" src="../../../../../style/wx.less"/>
@@ -25,34 +25,35 @@
         background-color:#fff;
         /*align-items: center;*/
     }
-    .content{
+    .contentBox{
         flex-direction: column;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-right: 30px;
+        padding-left: 30px;
     }
     .cell{
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        width: 710px;
+        width: 690px;
         height: 120px;
-        padding-left: 20px;
-        padding-right: 20px;
         border-bottom-width: 1px;
         border-bottom-color: #cccccc;
     }
-    .cellTitle{
+    .cellName{
         font-size: 32px;
+        width: 190px;
     }
-    .cellIcon{
+    .input{
+        width: 500px;
+        height: 80px;
+        line-height: 78px;
         font-size: 32px;
-        color: #999999;
     }
 </style>
 <script>
     import navbar from '../../../../../include/navbar.vue';
     import { POST, GET } from '../../../../../assets/fetch';
-    var event = weex.requireModule('event');
+    import {dom,event,animation} from '../../../../../weex.js';
     import utils from '../../../../../assets/utils';
     export default {
         components: {
@@ -60,11 +61,12 @@
         },
         data() {
             return {
-
+                refreshImg:utils.locate('resources/images/loading.png'),
+                refreshing: false,
             }
         },
         props: {
-            title:{default:'人员管理'}
+            title:{default:'POS机注册'}
         },
         created() {
             utils.initIconFont();
@@ -73,12 +75,6 @@
             goback: function (e) {
                 event.closeURL();
             },
-            linkTInfo(){
-                event.openURL(utils.locate("view/shop/cashier/pos/admin/info.js"),function (e) {});
-            },
-            linkToDaily(){
-                event.openURL(utils.locate("view/shop/cashier/pos/admin/role.js"),function (e) {});
-            }
         }
     }
 </script>

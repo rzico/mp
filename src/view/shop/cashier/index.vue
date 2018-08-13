@@ -177,10 +177,6 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
                     <text class="menuBtn">系统</text>
                 </div>
-                <div class="menu" @click="amap()" >
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
-                    <text class="menuBtn">地图</text>
-                </div>
                 <div class="content">
                     <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
                     <text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>
@@ -867,9 +863,6 @@
             },
             system(){
                 event.openURL(utils.locate("view/shop/cashier/pos/index.js"),function (e) {});
-            },
-            amap(){
-                event.openURL(utils.locate("view/shop/cashier/amap.js"),function (e) {});
             },
             shop:function () {
                 if (this.clicked==true) {

@@ -35,7 +35,7 @@
         align-items: center;
         justify-content: space-between;
         width: 710px;
-        height: 100px;
+        height: 120px;
         padding-left: 20px;
         padding-right: 20px;
         border-bottom-width: 1px;

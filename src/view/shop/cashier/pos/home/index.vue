@@ -25,11 +25,11 @@
                 <text class="contentIcon primary" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                 <text class="buttonText">系统消息</text>
             </div>
-            <div class="buttonBox">
+            <div class="buttonBox" @click='linkToSetting'>
                 <text class="contentIcon primary" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                 <text class="buttonText">系统设置</text>
             </div>
-            <div class="buttonBox">
+            <div class="buttonBox" @click='linkToPassword'>
                 <text class="contentIcon primary" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                 <text class="buttonText">密码修改</text>
             </div>
@@ -37,9 +37,9 @@
                 <text class="contentIcon primary" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                 <text class="buttonText">银联签到</text>
             </div>
-            <div class="buttonBox">
+            <div class="buttonBox" @click="goback">
                 <text class="contentIcon primary" :style="{fontFamily:'iconfont'}">&#xe628;</text>
-                <text class="buttonText">系统退</text>
+                <text class="buttonText">系统退出</text>
             </div>
         </div>
     </div>
@@ -116,6 +116,9 @@
             utils.initIconFont();
         },
         methods:{
+            goback: function (e) {
+                event.closeURL();
+            },
             classHeader:function () {
                 let dc = utils.device();
 
@@ -132,7 +135,11 @@
             },
             linkToSetting(){
                 event.openURL(utils.locate("view/shop/cashier/pos/setting/index.js"),function (e) {});
+            },
+            linkToPassword(){
+                event.openURL(utils.locate("view/shop/cashier/pos/password/index.js"),function (e) {});
             }
+
         }
     }
 </script>
