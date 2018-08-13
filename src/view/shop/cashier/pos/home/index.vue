@@ -5,7 +5,7 @@
             <text class="headerTitle">xxx门店开单系统</text>
         </div>
         <div class="contentBox">
-            <div class="buttonBox">
+            <div class="buttonBox" @click='linkToOrder'>
                 <text class="contentIcon primary" :style="{fontFamily:'iconfont'}">&#xe628;</text>
                 <text class="buttonText">销售开单</text>
             </div>
@@ -123,6 +123,9 @@
                 let dc = utils.device();
 
                 return dc
+            },
+            linkToOrder(){
+                event.openURL(utils.locate("view/shop/cashier/pos/order/index.js"),function (e) {});
             },
             linkToReport(){
                 event.openURL(utils.locate("view/shop/cashier/pos/report/index.js"),function (e) {});
