@@ -7,6 +7,7 @@
             <text class="three">③ 激活  </text>
             <text class="four">④ 交易测试</text>
         </div>
+        <scroller>
         <div class="appellation">
             <text class="vendorName">商家名称</text>
             <div style="flex-direction: row;align-items: center">
@@ -65,6 +66,8 @@
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
+        <div style="height: 750px"></div>
+        </scroller>
         <div class="button bkg-primary" @click="goComplete">
             <text class="buttonText">下一步</text>
         </div>
