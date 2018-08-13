@@ -2,38 +2,27 @@
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" ></navbar>
         <div class="headerMemberInfo">
-            <text class="fz24 mr20" style="color: #999999">流水号:1234567890</text>
-            <text class="fz24" style="color: #999999">用户:张某某</text>
+            <text class="fz24" style="color: #999999">支付状态显示区域</text>
         </div>
         <div class="classHeader">
-            <text class="classOne">No</text>
-            <text class="classTwo">优惠码</text>
-            <text class="classThree">名称</text>
-            <text class="classFour">价格</text>
-            <text class="classFive">折扣</text>
-            <text class="classSix">数量</text>
-            <text class="classSeven">优惠</text>
-            <text class="classEight">小计</text>
+            <text class="classOne">编号</text>
+            <text class="classTwo">名称</text>
+            <text class="classThree">金额</text>
         </div>
         <div class="orderContent">
             <list>
-            <cell class="orderCell">
-                <text class="orderCellOne">99</text>
-                <text class="orderCellTwo">123456</text>
-                <text class="orderCellThree">耐克超跑嗷</text>
-                <text class="orderCellFour">10000</text>
-                <text class="orderCellFive">95</text>
-                <text class="orderCellSix">99</text>
-                <text class="orderCellSeven">50</text>
-                <text class="orderCellEight">95000</text>
-            </cell>
+                <cell class="orderCell">
+                    <text class="orderCellOne">1</text>
+                    <text class="orderCellTwo">微信支付</text>
+                    <text class="orderCellThree">600</text>
+                </cell>
             </list>
         </div>
         <div class="orderTotal">
-            <text class="orderCellFive">合计</text>
-            <text class="orderCellSix">1</text>
-            <text class="orderCellSeven">50</text>
-            <text class="orderCellEight">950</text>
+            <text class="orderTotalText">应付: 3950.00</text>
+            <text class="orderTotalText">已付: 3000.00</text>
+            <text class="orderTotalText" style="color: red">未付: 950.00</text>
+            <text class="orderTotalText">找零: 0.00</text>
         </div>
         <div class="couponBox">
             <div class="inputBox" @click="controlCursor">
@@ -42,30 +31,7 @@
                 <text class="cursor" v-if="isCursor">|</text>
             </div>
             <div class="couponTotal">
-                <div class="flex-end">
-                <div class="couponTotalBox mr20" @click="controlPrice">
-                    <text class="couponTotalBoxTitle">价格</text>
-                    <text class="couponTotalBoxSubTitle">1000</text>
-                </div>
-                <div class="couponTotalBox" @click="controlNumber">
-                    <text class="couponTotalBoxTitle">数量</text>
-                    <text class="couponTotalBoxSubTitle">1</text>
-                </div>
-                </div>
-                <div class="flex-row">
-                <div class="couponTotalBox mr20" @click="controlDiscount">
-                    <text class="couponTotalBoxTitle" style="color:#5eb0fd">折扣</text>
-                    <text class="couponTotalBoxSubTitle">95</text>
-                </div>
-                <div class="couponTotalBox mr20" @click="controlMoney">
-                    <text class="couponTotalBoxTitle">金额</text>
-                    <text class="couponTotalBoxSubTitle">950</text>
-                </div>
-                <div class="couponTotalBox" @click="controlCoupon">
-                    <text class="couponTotalBoxTitle">优惠</text>
-                    <text class="couponTotalBoxSubTitle">50</text>
-                </div>
-                </div>
+                <text class="couponTotalBoxTitle">应付 =未付时，当前单据为可凑单</text>
             </div>
         </div>
         <div class="buttonBox">
@@ -88,13 +54,13 @@
                 <div class="buttonCellBox">
                     <text class="buttonCellBoxText">6</text>
                 </div>
-                <div class="buttonCellBoxBorderNull" @click="linkToConfirm">
+                <div class="buttonCellBoxBorderNull">
                     <text class="buttonCellBoxText">确定</text>
                 </div>
             </div>
             <div class="buttonBoxCellTwo">
                 <div class="buttonCellBox">
-                    <text class="buttonCellBoxText">abc</text>
+                    <text class="buttonCellBoxText">00</text>
                 </div>
                 <div class="buttonCellBox">
                     <text class="buttonCellBoxText">7</text>
@@ -117,25 +83,25 @@
             </div>
             <div class="buttonBoxCellTwo">
                 <div class="buttonCellBoxTwo">
-                    <text class="buttonCellBoxText">清空</text>
-                </div>
-                <div class="buttonCellBoxTwo " @click="linkToMember">
-                    <text class="buttonCellBoxText">会员</text>
+                    <text class="buttonCellBoxText">现金</text>
                 </div>
                 <div class="buttonCellBoxTwo ">
-                    <text class="buttonCellBoxText">挂单</text>
+                    <text class="buttonCellBoxText">微信</text>
                 </div>
                 <div class="buttonCellBoxTwo ">
-                    <text class="buttonCellBoxText">取单</text>
+                    <text class="buttonCellBoxText">支付宝</text>
                 </div>
                 <div class="buttonCellBoxTwo ">
-                    <text class="buttonCellBoxText">查单</text>
+                    <text class="buttonCellBoxText">银联</text>
                 </div>
                 <div class="buttonCellBoxTwo ">
-                    <text class="buttonCellBoxText">帮助</text>
+                    <text class="buttonCellBoxText">积分</text>
                 </div>
-                <div class="buttonCellBoxBorderNullTwo " @click="linkToEnd">
-                    <text class="buttonCellBoxText">结账</text>
+                <div class="buttonCellBoxTwo ">
+                    <text class="buttonCellBoxText">抵用券</text>
+                </div>
+                <div class="buttonCellBoxBorderNullTwo ">
+                    <text class="buttonCellBoxText">礼卡</text>
                 </div>
             </div>
         </div>
@@ -170,50 +136,24 @@
         align-items: center;
     }
     .classOne{
-        width: 60px;
+        width: 100px;
         font-size: 28px;
         text-align: center;
-
     }
     .classTwo{
-        width: 115px;
+        width: 325px;
         font-size: 28px;
         text-align: center;
     }
     .classThree{
-        width: 135px;
-        font-size: 28px;
-        text-align: center;
-    }
-    .classFour{
-        width: 100px;
-        font-size: 28px;
-        text-align: center;
-    }
-    .classFive{
-        width: 80px;
-        font-size: 28px;
-        text-align: center;
-    }
-    .classSix{
-        width: 80px;
-        font-size: 28px;
-        text-align: center;
-    }
-    .classSeven{
-        width: 80px;
-        font-size: 28px;
-        text-align: center;
-    }
-    .classEight{
-        width: 100px;
+        width: 325px;
         font-size: 28px;
         text-align: center;
     }
     .orderContent{
         flex-direction: column;
         width: 750px;
-        height: 498px;
+        height: 558px;
         background-color: white;
     }
     .orderCell{
@@ -223,73 +163,43 @@
         align-items: center;
     }
     .orderCellOne{
-        width: 60px;
+        width: 100px;
         font-size: 24px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
     .orderCellTwo{
-        width: 115px;
-        font-size: 24px;
+        width: 325px;
+        font-size: 28px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
     .orderCellThree{
-        width: 135px;
-        font-size: 24px;
+        width: 325px;
+        font-size: 28px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
-    .orderCellFour{
-        width: 100px;
+    .orderTotalText{
         font-size: 24px;
-        text-align: center;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .orderCellFive{
-        width: 80px;
-        font-size: 24px;
-        text-align: center;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .orderCellSix{
-        width: 80px;
-        font-size: 24px;
-        text-align: center;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .orderCellSeven{
-        width: 80px;
-        font-size: 24px;
-        text-align: center;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .orderCellEight{
-        width: 100px;
-        font-size: 24px;
-        text-align: center;
-        lines:1;
-        text-overflow: ellipsis;
     }
     .orderTotal{
         background-color: #ccc;
         width: 750px;
         height: 80px;
+        padding-left: 20px;
+        padding-right: 20px;
         flex-direction: row;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
     }
     .couponBox{
         background-color: white;
         width: 750px;
-        height: 160px;
+        height: 100px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
@@ -318,13 +228,12 @@
         left: 50px;
     }
     .couponTotal{
-        flex-direction: column;
-        justify-content: center;
+        flex-direction: row;
+        align-items: center;
     }
     .couponTotalBox{
         flex-direction: row;
         align-items: center;
-        height: 80px;
     }
     .couponTotalBoxTitle{
         font-size: 24px;
@@ -416,7 +325,7 @@
             }
         },
         props: {
-            title:{default:'XXXX专柜'}
+            title:{default:'销售结账'}
         },
         created() {
             utils.initIconFont();
@@ -432,36 +341,6 @@
             goback: function (e) {
                 event.closeURL();
             },
-            linkToEnd(){
-                this.isCursor = false;
-                this.inputText = '请输入优惠码';
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                event.openURL(utils.locate("view/shop/cashier/pos/order/end.js"),function (e) {});
-            },
-            linkToMember(){
-                this.isCursor = false;
-                this.inputText = '请输入优惠码';
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                event.openURL(utils.locate("view/shop/cashier/pos/order/members.js"),function (e) {});
-            },
-            linkToConfirm(){
-                this.isCursor = false;
-                this.inputText = '请输入优惠码';
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                event.openURL(utils.locate("view/shop/cashier/pos/order/confirm.js"),function (e) {});
-            },
             controlCursor(){
                 let _this = this;
                 this.isCursor = true;
@@ -470,51 +349,6 @@
                 this.CursorTime = setInterval(function () {
                     _this.isCursor = !_this.isCursor;
                 },500);
-            },
-            controlPrice(){
-                this.isCursor = false;
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                this.inputText = '请输入价格'
-            },
-            controlNumber(){
-                this.isCursor = false;
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                this.inputText = '请输入数量'
-            },
-            controlDiscount(){
-                this.isCursor = false;
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                this.inputText = '请输入折扣'
-            },
-            controlMoney(){
-                this.isCursor = false;
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                this.inputText = '请输入金额'
-            },
-            controlCoupon(){
-                this.isCursor = false;
-                //解除定时器
-                if (!utils.isNull(this.CursorTime))  {
-                    clearInterval(this.CursorTime);
-                    this.CursorTime = null;
-                }
-                this.inputText = '请输入优惠'
             },
         }
     }
