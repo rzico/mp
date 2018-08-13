@@ -22,7 +22,7 @@
                         <div class="flex-row">
                             <image :src="item.logo | watchLogo" class="shopImg"></image>
                             <div class="">
-                                <text class="title ml20 mr20">{{item.consignee}}</text>
+                                <text class="consignee ml20 mr20">{{item.consignee}}</text>
                                 <text class="address">{{item.address}}</text>
                             </div>
                             <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
@@ -135,6 +135,12 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .consignee{
+        font-size: 32px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
     .address{
         font-size: 26px;
         margin-left: 20px;

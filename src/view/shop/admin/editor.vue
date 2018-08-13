@@ -216,7 +216,7 @@
                     if (mes.type == 'success') {
                         _this.shops = mes.data.data
                     } else {
-                        event.toast(res.content);
+                        event.toast(mes.content);
                     }
                 }, function (err) {
                     event.toast(err.content)
