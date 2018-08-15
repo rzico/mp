@@ -131,12 +131,12 @@
                 </div>
             </div>
             <div class="sub-panel ml20 mt10">
-                <text class="sub_title">设置该商品的配送方式</text>
+                <text class="sub_title">设置该商品的类型</text>
             </div>
             <div class="cell-row cell-line mt10" @click="pickType()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
-                        <text class="title">配送方式</text>
+                        <text class="title">商品类型</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title">{{isobject | watchType}}</text>
@@ -435,11 +435,11 @@
         filters: {
             watchType:function (val) {
                 if(val == 'product'){
-                    return'普通快递'
-                }else if(val == 'warehouse'){
-                    return'同城配送'
+                    return'商品'
+                }else if(val == 'water'){
+                    return'桶装水'
                 }else if(val == 'dummy'){
-                    return'虚拟物品'
+                    return'月卡'
                 }
             }
         },
@@ -492,14 +492,14 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['普通快递','同城配送','虚拟物品']
+                    items:['商品','桶装水','月卡']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
                             _this.isobject = 'product';
                             _this.begin = e.data;
                         }else if(e.data == 1){
-                            _this.isobject = 'warehouse';
+                            _this.isobject = 'water';
                             _this.begin = e.data;
                         }else if(e.data == 2){
                             _this.isobject = 'dummy';

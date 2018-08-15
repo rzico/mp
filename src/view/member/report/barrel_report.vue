@@ -5,7 +5,7 @@
             <div class="tableOne">
                 <text class="tableText">品牌</text>
             </div>
-            <div class="tableOne">
+            <div class="tableTwo">
                 <text class="tableText">类型</text>
             </div>
             <div class="tableTwo">
@@ -13,6 +13,9 @@
             </div>
             <div class="tableTwo">
                 <text class="tableText">回桶</text>
+            </div>
+            <div class="tableTwo">
+                <text class="tableText">押桶</text>
             </div>
             <div class="tableThree">
                 <text class="tableText">欠桶</text>
@@ -26,20 +29,22 @@
                 <div class="titleCell"  v-if="isSellerName(index)">
                     <text class="shopName">{{c.sellerName}}</text>
                 </div>
-                <div class="contentCell" >
+                <div class="contentCell" @click="linkToDetail(c.barrelId,c.sellerId)" >
                     <div class="contentSmallCell">
                     <text class="number">{{c.barrelName}}</text>
-                    <text class="number">派单</text>
+                    <text class="contentCellType">派单</text>
                     <text class="returnMoney">{{c.sQuantity}}</text>
                     <text class="returnMoney">{{c.sReturnQuantity}}</text>
-                    <text class="money">{{c.sQuantity - c.sReturnQuantity}}</text>
+                        <text class="returnMoney">{{c.sPledgeQuantity}}</text>
+                    <text class="money">{{c.sQuantity - c.sReturnQuantity - c.sPledgeQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="number"></text>
-                        <text class="number">送货</text>
+                        <text class="contentCellType">送货</text>
                         <text class="returnMoney">{{c.quantity}}</text>
                         <text class="returnMoney">{{c.returnQuantity}}</text>
-                        <text class="money">{{c.quantity - c.returnQuantity}}</text>
+                        <text class="returnMoney">{{c.pledgeQuantity}}</text>
+                        <text class="money">{{c.quantity - c.returnQuantity - c.pledgeQuantity}}</text>
                     </div>
                 </div>
             </cell>
@@ -60,18 +65,20 @@
             </div>
             <div class="bottomCell">
                 <div class="contentSmallCell">
-                <text class="number">合计</text>
-                <text class="number">派单</text>
-                <text class="returnMoney">{{sQuantityTotal}}</text>
-                <text class="returnMoney">{{sReturnQuantityTotal}}</text>
-                <text class="money">{{sQuantityTotal - sReturnQuantityTotal}}</text>
+                    <text class="number">合计</text>
+                    <text class="contentCellType">派单</text>
+                    <text class="returnMoney">{{sQuantityTotal}}</text>
+                    <text class="returnMoney">{{sReturnQuantityTotal}}</text>
+                    <text class="returnMoney">{{sPledgeQuantityTotal}}</text>
+                    <text class="money">{{sQuantityTotal - sReturnQuantityTotal - sPledgeQuantityTotal}}</text>
                 </div>
                 <div class="contentSmallCell">
                     <text class="number"></text>
-                    <text class="number">送货</text>
+                    <text class="contentCellType">送货</text>
                     <text class="returnMoney">{{quantityTotal}}</text>
                     <text class="returnMoney">{{returnQuantityTotal}}</text>
-                    <text class="money">{{quantityTotal - returnQuantityTotal}}</text>
+                    <text class="returnMoney">{{pledgeQuantityTotal}}</text>
+                    <text class="money">{{quantityTotal - returnQuantityTotal - pledgeQuantityTotal}}</text>
                 </div>
             </div>
             <list style="max-height: 500px">
@@ -79,17 +86,19 @@
                     <div class="bottomCellTwo">
                         <div class="contentSmallCell">
                         <text class="number">{{t.barrelName}}</text>
-                            <text class="number">派单</text>
-                        <text class="returnMoney">{{t.sQuantity}}</text>
-                        <text class="returnMoney">{{t.sReturnQuantity}}</text>
-                        <text class="money">{{t.sQuantity - t.sReturnQuantity}}</text>
+                            <text class="contentCellType">派单</text>
+                            <text class="returnMoney">{{t.sQuantity}}</text>
+                            <text class="returnMoney">{{t.sReturnQuantity}}</text>
+                            <text class="returnMoney">{{t.sPledgeQuantity}}</text>
+                            <text class="money">{{t.sQuantity - t.sReturnQuantity - t.sPledgeQuantity}}</text>
                         </div>
                         <div class="contentSmallCell">
                             <text class="number"></text>
-                            <text class="number">送货</text>
+                            <text class="contentCellType">送货</text>
                             <text class="returnMoney">{{t.quantity}}</text>
                             <text class="returnMoney">{{t.returnQuantity}}</text>
-                            <text class="money">{{t.quantity - t.returnQuantity}}</text>
+                            <text class="returnMoney">{{t.pledgeQuantity}}</text>
+                            <text class="money">{{t.quantity - t.returnQuantity -t.pledgeQuantity}}</text>
                         </div>
                     </div>
                 </cell>
@@ -123,7 +132,7 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:125px;
+        width:112.5px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -131,7 +140,7 @@
         border-right-color: #777;
     }
     .tableThree{
-        width:125px;
+        width:112.5px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -215,7 +224,7 @@
     }
     .money{
         font-size: 30px;
-        width: 125px;
+        width: 112.5px;
         padding-right: 30px;
         text-align: right;
         lines:1;
@@ -223,8 +232,15 @@
     }
     .returnMoney{
         font-size: 30px;
-        width: 125px;
+        width: 112.5px;
         text-align: right;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .contentCellType{
+        font-size: 30px;
+        width: 112.5px;
+        text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
@@ -265,6 +281,7 @@
     export default {
         data:function(){
             return{
+                clicked:false,
                 reportList:null,
                 summarylist:null,
                 refreshing: false,
@@ -281,9 +298,10 @@
                 endTime:'',
                 quantityTotal:0,
                 returnQuantityTotal:0,
+                pledgeQuantityTotal:0,
                 sQuantityTotal:0,
                 sReturnQuantityTotal:0,
-
+                sPledgeQuantityTotal:0,
             }
         },
         components: {
@@ -451,11 +469,15 @@
                             _this.sReturnQuantityTotal = 0 ;
                             _this.quantityTotal = 0 ;
                             _this.sQuantityTotal = 0 ;
+                            _this.pledgeQuantityTotal = 0;
+                            _this.sPledgeQuantityTotal = 0;
                             res.data.data.summary.forEach(function (item) {
                                 _this.returnQuantityTotal = _this.returnQuantityTotal+item.returnQuantity;
                                 _this.quantityTotal = _this.quantityTotal+item.quantity;
+                                _this.pledgeQuantityTotal = _this.pledgeQuantityTotal + item.pledgeQuantity;
                                 _this.sReturnQuantityTotal = _this.sReturnQuantityTotal+item.sReturnQuantity;
                                 _this.sQuantityTotal = _this.sQuantityTotal+item.sQuantity;
+                                _this.sPledgeQuantityTotal = _this.sPledgeQuantityTotal + item.sPledgeQuantity;
                             })
 //                            res.data.data.data.forEach(function (item) {
 //                                item.oweQuantity  = item.quantity - item.returnQuantity;
@@ -510,6 +532,17 @@
                     _this.open();
                 }, 1000)
             },
+
+            linkToDetail(barrelId,sellerId){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('view/member/report/barrel_detail.js?barrelId='+barrelId+'&sellerId='+sellerId), function (data) {
+                    _this.clicked = false;
+                })
+            }
         },
 
     }

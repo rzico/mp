@@ -14,23 +14,52 @@
                             <text class="fz28">{{c.name}}</text>
                         </div>
                         <div class="money">
-                            <text class="fz28">送出</text>
-                            <input type="number" placeholder="输入桶数" class="input" v-model="c.quantity" />
-                            <text class="monyeTextthree fz28">桶，收回</text>
+                            <text class="fz28">送出 {{c.quantity}} 桶，收回</text>
                             <input type="number" placeholder="输入桶数" class="input" v-model="c.returnQuantity" />
+                            <text class="monyeTextthree fz28">桶，押</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.pledgeQuantity" />
                             <text class="monyeTextthree fz28">桶</text>
                         </div>
                     </div>
                 </div>
                 <div class="header mt20 flex-row">
                     <div class="priceLine">
+                        <div class=" space-between  bt10 headerCellBg">
+                            <text class="sub_title">应收金额:{{item.amountPayable}}元(上期欠款:{{item.arrears}}元)</text>
+                            <div class="flex-row">
+                                <text class="fz28">实收金额:</text>
+                                <input class="amountInput" type="number" placeholder="请输入金额" v-model="amountData"/>
+                            </div>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg">
+                            <text class="sub_title">应收水票:{{item.paperPayable}}张(上期欠票:{{item.ticket}}张)</text>
+                            <div class="flex-row">
+                                <text class="fz28">实收水票:</text>
+                                <input class="amountInput" type="number" placeholder="请输入张数" v-model="paperData"/>
+                            </div>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg">
+                            <text class="sub_title">应收押金:{{item.pledgePayable}}元</text>
+                            <div class="flex-row">
+                                <text class="fz28">实收押金:</text>
+                                <input class="amountInput" type="number" placeholder="请输入金额" v-model="pledgeData"/>
+                            </div>
+                        </div>
                         <div class=" space-between  bt10 headerCellBg cell_height" @click="chooseFloor">
                             <text class="sub_title">楼层:</text>
-                            <text class="sub_title">{{ordersList[0].receiver.level}}</text>
+                            <text class="sub_title">{{item.receiver.level}}</text>
                         </div>
                         <div class=" space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title">运费:</text>
                             <text class="sub_title">{{item.freight}}</text>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">配送费用:</text>
+                            <text class="sub_title">{{item.shippingFreight}}</text>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">送货工资:</text>
+                            <text class="sub_title">{{item.adminFreight + item.levelFreight}}</text>
                         </div>
                         <!--<div class=" space-between  bt10 headerCellBg cell_height" @click="pickObject()">-->
                             <!--<text class="sub_title">结算方式</text>-->
@@ -127,6 +156,13 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .amountInput{
+        font-size: 28px;
+        color: red;
+        width: 150px;
+        height: 50px;
+        line-height: 48px;
+    }
     .setting{
         background-color: white;
         margin-left: 25px;
@@ -169,7 +205,7 @@
 
     .input{
         padding-left: 20px;
-        width: 150px;
+        width: 120px;
         font-size: 28px;
         color: red;
         height: 100px;
@@ -341,7 +377,10 @@
                 clicked:false,
                 isobject:'线下月结',
                 shopMoney:0,
-                message:''
+                message:'',
+                amountData:'',
+                paperData:'',
+                pledgeData:''
             }
         },
         props: {
@@ -512,13 +551,13 @@
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
-                        data.data.shippingBarrels.forEach(function (item) {
-                            if(utils.isNull(item.quantity) || item.quantity ==0){
-                                item.quantity=''
-                            }if(utils.isNull(item.returnQuantity) || item.returnQuantity ==0){
-                                item.returnQuantity=''
-                            }
-                        })
+//                        data.data.shippingBarrels.forEach(function (item) {
+//                            if(utils.isNull(item.returnQuantity) || item.returnQuantity ==0){
+//                                item.returnQuantity=''
+//                            }if(utils.isNull(item.pledgeQuantity) || item.pledgeQuantity ==0){
+//                                item.pledgeQuantity=''
+//                            }
+//                        })
                             _this.ordersList.push(data.data);
 
                     }else{
@@ -612,6 +651,55 @@
                     _this.clicked = false;
                     return
                 }
+                if(utils.isNull(_this.amountData)){
+                    modal.alert({
+                        message: '请输入实收金额',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false;
+                    return
+                }else if(utils.isNull(_this.paperData)){
+                    modal.alert({
+                        message: '请输入实收水票'+_this.paperData,
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false;
+                    return
+                }else if(utils.isNull(_this.pledgeData)){
+                    modal.alert({
+                        message: '请输入实收押金'+_this.pledgeData,
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false;
+                    return
+                }
+                //                先把金额转为整型
+                var amountData = parseInt(_this.amountData);
+                var paperData = parseInt(_this.paperData);
+                var pledgeData = parseInt(_this.pledgeData);
+                        if((_this.ordersList[0].amountPayable + _this.ordersList[0].arrears) < amountData  ){
+                        modal.alert({
+                            message: '实收金额不能大于应收金额与上期欠款的总和',
+                            okTitle: 'OK'
+                        })
+                        _this.clicked = false;
+                        return
+                    } else if((_this.ordersList[0].paperPayable + _this.ordersList[0].ticket) < paperData  ) {
+                        modal.alert({
+                            message: '实收水票不能大于应收水票与上期欠票的总和',
+                            okTitle: 'OK'
+                        })
+                        _this.clicked = false;
+                        return
+                }else if(pledgeData != _this.ordersList[0].pledgePayable && pledgeData != 0){
+                    modal.alert({
+                        message: '实收押金必须等于应收押金或为0',
+                        okTitle: 'OK'
+                    })
+                    _this.clicked = false;
+                    return
+                }
+                var amountPaid = amountData + pledgeData;
 //                modal.confirm({
 //                    message: '确认核销吗 ?',
 //                    okTitle: '确认',
@@ -630,17 +718,19 @@
                                         item.quantity = 0;
                                     }if(utils.isNull(item.returnQuantity)){
                                         item.returnQuantity = 0;
+                                    }if(utils.isNull(item.pledgeQuantity)){
+                                        item.pledgeQuantity = 0;
                                     }
                                     body.push({
                                         id:item.barrelId,
                                         quantity:item.quantity,
                                         returnQuantity:item.returnQuantity,
-
+                                        pledgeQuantity:item.pledgeQuantity
                                     });
                                 });
                                 body = JSON.stringify(body);
 
-                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level,body).then(
+                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level+'&amountPaid='+amountPaid + '&paperPaid='+paperData,body).then(
                                     function (data) {
                                         _this.clicked = false;
                                         if(data.type == 'success'){

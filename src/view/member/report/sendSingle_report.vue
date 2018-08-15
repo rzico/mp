@@ -24,14 +24,18 @@
                     <text class="money">¥{{c.cost}}</text>
                 </div>
                 <div class="totalBox"  v-if="isTotal(index)">
-                    <div class="totalCell"><text class="fz32 fontStrong">货款合计: ¥{{c.subTotal}}</text> </div>
+                    <!--<div class="totalCell"><text class="fz32 fontStrong">货款合计: ¥{{c.subTotal}}</text> </div>-->
                     <div class="totalCellTwo">
-                        <text class="fz32">楼层工资: ¥{{c.levelFreight}}</text>
-                        <text class="fz32">送货工资: ¥{{c.adminFreight}}</text>
+                        <text class="fz32">货款收入: ¥{{c.cost}}</text>
+                        <text class="fz32">代收现金: ¥{{c.cash}}</text>
                     </div>
                     <div class="totalCellTwo">
-                        <text class="fz32 fontStrong">配送费: ¥{{c.shippingFreight}}</text>
-                        <text class="fz32 fontStrong">送货利润: ¥{{c.profit}}</text>
+                        <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
+                        <text class="fz32">代收水票: {{c.paper}}</text>
+                    </div>
+                    <div class="totalCellTwo">
+                        <text class="fz32">送货工资: ¥{{c.adminFreight}}</text>
+                        <text class="fz32">送货利润: ¥{{c.profit}}</text>
                     </div>
                 </div>
             </cell>
@@ -50,15 +54,19 @@
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
-            <div class="bottomCell">
-                <text class="fz32 fontStrong">货款合计: ¥{{summarylist[0].cost}}</text>
+            <!--<div class="bottomCell">-->
+                <!--<text class="fz32 fontStrong">货款合计: ¥{{summarylist[0].cost}}</text>-->
+            <!--</div>-->
+            <div class="bottomCellTwo">
+                <text class="fz28 ">货款收入: ¥{{summarylist[0].cost}}</text>
+                <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">楼层工资: ¥{{summarylist[0].levelFreight}}</text>
+                <text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>
+                <text class="fz28 ">代收水票: {{summarylist[0].adminFreight}}</text>
+            </div>
+            <div class="bottomCellTwo">
                 <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">配送费: ¥{{summarylist[0].shippingFreight}}</text>
                 <text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>
             </div>
         </div>
