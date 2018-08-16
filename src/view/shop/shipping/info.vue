@@ -58,6 +58,12 @@
                         <div class="mt10 " v-if="item.deliveryDate != '' && item.deliveryDate != null">
                             <text class="sub_title">送达时间: {{item.deliveryDate | watchCreateDate}}</text>
                         </div>
+                        <div class="mt10 ">
+                            <text class="sub_title">预约时间: {{item.hopeDate | watchCreateDate}}</text>
+                        </div>
+                        <div class="mt10 ">
+                            <text class="sub_title">销售站点: {{item.sellerName}}</text>
+                        </div>
                     </div>
                     <div class="infoLines pb10">
                         <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>
@@ -75,13 +81,7 @@
                         <text class="sub_title ">配送站点: {{item.shopName}}</text>
                     </div>
                     <div class="infoLines pt0 pb10">
-                        <text class="sub_title ">销售站点: {{item.sellerName}}</text>
-                    </div>
-                    <div class="infoLines pt0 pb0">
                         <text class="sub_title ">配送人员: {{item.track.name}}  {{item.track.mobile}}</text>
-                    </div>
-                    <div class="infoLines boder-bottom pt10">
-                        <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
                     </div>
                     <div class="infoLines pb10 ">
                         <text class="sub_title ">派单留言: {{item.memo}}</text>
@@ -105,14 +105,21 @@
                             <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
                         </div>
                     </div>
-                    <div class="priceLine flex-end">
-                        <div class="flex-row">
-                            <text class="title mr20">应收金额:</text>
-                            <text class="title" style="color: red">¥{{item.amountPayable | currencyfmt}}</text>
+                    <div class="priceLine ">
+                        <div class="space-between pb10">
+                            <text class="fz28 ">应收金额:¥{{item.amountPayable | currencyfmt}}(上期欠款:¥{{item.arrears | currencyfmt}})</text>
+                            <text class="fz28 ">实收金额:¥{{item.amountPaid | currencyfmt}}</text>
                         </div>
-                    </div>
+                        <div class="space-between pb10">
+                            <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
+                            <text class="fz28 ">实收水票:{{item.paperPaid}}</text>
+                        </div>
+                        <div class="space-between">
+                            <text class="fz28">应收押金:¥{{item.pledgePayable}}</text>
+                            <text class="fz28 ">实收押金:¥{{item.pledgePaid}}</text>
+                        </div>
                 </div>
-
+                </div>
             </div>
         </scroller>
 
@@ -293,7 +300,6 @@
                 pageStart: 0,
                 pageSize: 15,
 //            refreshImg:utils.locate('resources/images/loading.png'),
-                orderSN:'',
                 shippingSn:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
@@ -409,7 +415,6 @@
         },
         created() {
             utils.initIconFont();
-            this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
             this.open();
             this.permissions();

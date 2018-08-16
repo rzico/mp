@@ -29,7 +29,7 @@
                 <div class="titleCell">
                     <text class="shopName">{{c.name}}  {{c.address}}  {{c.phone}}</text>
                 </div>
-                <div class="contentCell" >
+                <div class="contentCell" @click="linkToView(c.sn)" >
                     <div class="contentSmallCell">
                         <text class="number">{{c.completeDate | watchDate}}</text>
                         <text class="contentCellType">派单</text>
@@ -51,9 +51,9 @@
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
-            <cell>
-                <div style="height: 130px"></div>
-            </cell>
+            <!--<cell>-->
+                <!--<div style="height: 130px"></div>-->
+            <!--</cell>-->
 
         </list>
 
@@ -277,13 +277,14 @@
     export default {
         data:function(){
             return{
+                clicked:false,
                 reportList:null,
                 summarylist:null,
                 refreshing: false,
                 loading: 'hide',
                 pageStart:0,
                 pageSize:20,
-                noLoading:true,
+                noLoading:false,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
                 isIcon:true,
@@ -464,6 +465,10 @@
             },
             open:function () {
                 var _this = this;
+                if (this.noLoading) {
+                    return;
+                }
+                this.noLoading = true;
                 GET('weex/member/report/barrel_detail_report.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize+'&barrelId='+_this.barrelId +'&sellerId='+_this.sellerId,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
@@ -473,12 +478,14 @@
                                 _this.reportList.push(item);
                             })
                         }
-                        _this.pageStart = _this.pageStart+res.data.data.data.length;
-
+                        _this.pageStart = _this.pageStart+res.data.data.length;
+                        _this.noLoading = false;
                     } else {
+                        _this.noLoading = false;
                         event.toast(res.content);
                     }
                 }, function (err) {
+                    _this.noLoading = false;
                     event.toast(err.content);
                 })
             },
@@ -514,6 +521,19 @@
                     _this.open();
                 }, 1000)
             },
+            linkToView(sn){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shipping/info.js?sn=' + sn ),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            }
         },
 
     }

@@ -1,14 +1,7 @@
 <template>
     <div class="wrapper">
-        <div class="wallet-panel bkg-primary">
-            <text class="balance"></text>
-            <!--<text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goIndex()" v-if="isIndex">&#xe628;</text>-->
-            <text class="ico_big exit" :style="{fontFamily:'iconfont'}" @click="goback()">&#xe60a;</text>
-        </div>
+        <navbar :title="title" @goback="goback" > </navbar>
         <scroller class="scroller">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
             <div class="menubox">
                 <div class="menu" @click="order_report()" >
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
@@ -33,6 +26,10 @@
                 <div class="menu" @click="money_report()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">收银统计</text>
+                </div>
+                <div class="menu" @click="arrears_report()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                    <text class="menuBtn">欠款统计</text>
                 </div>
             </div>
         </scroller>
@@ -235,6 +232,7 @@
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters.js'
     import {dom,event,animation} from '../../../weex.js';
+    import navbar from '../../../include/navbar.vue'
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
@@ -260,9 +258,10 @@
             }
         },
         components: {
+            navbar
         },
         props: {
-            title: { default: "收银台" }
+            title: { default: "统计" }
         },
         created() {
             var _this = this;
@@ -332,6 +331,14 @@
                 this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate("view/shop/deposit/deposit.js"),function (e) {_this.clicked = false});
+            },
+            arrears_report:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/member/report/arrears_report.js"),function (e) {_this.clicked = false});
             },
 //            下拉刷新
             onrefresh (event) {

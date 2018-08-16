@@ -2,70 +2,89 @@
     <div class="wrapper">
         <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
-            <div class="tableOne">
-                <text class="tableText">品牌</text>
-            </div>
             <div class="tableTwo">
-                <text class="tableText">数量</text>
+                <text class="tableText">时间</text>
             </div>
-            <div class="tableThree">
-                <text class="tableText">货款</text>
+            <div class="tableOne">
+                <text class="tableText">月结</text>
+            </div>
+            <div class="tableOne">
+                <text class="tableText">欠款</text>
+            </div>
+            <div class="tableOne">
+                <text class="tableText">欠票</text>
             </div>
         </div>
-        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList != null">
+        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList.length != 0">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
-                <div class="shopNameTitle" v-if="isSellerName(index)" @click="linkToDetail(c.sellerId)"><text class="fz32">{{c.sellerName}}</text> </div>
-                <div class="contentCell" >
-                    <text class="shopName">{{c.name}}</text>
-                    <text class="number">{{c.quantity}}</text>
-                    <text class="money">¥{{c.cost}}</text>
-                </div>
-                <div class="totalBox"  v-if="isTotal(index)" @click="linkToDetail(c.sellerId)">
-                    <div class="totalCellTwo">
-                        <text class="fz32">货款收入: ¥{{c.cost}}</text>
-                        <text class="fz32">代收现金: ¥{{c.cash}}</text>
-                    </div>
-                    <div class="totalCellTwo">
-                        <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
-                        <text class="fz32">代收水票: {{c.paper}}</text>
-                    </div>
-                    <div class="totalCellTwo">
-                        <text class="fz32">送货工资: ¥{{c.adminFreight}}</text>
-                        <text class="fz32">送货利润: ¥{{c.profit}}</text>
+                <div class="contentCell" @click="linkToView(c.sn)" >
+                    <div class="contentSmallCell">
+                        <text class="contentCellTypeTwo">{{c.completeDate | watchDate}}</text>
+                        <text class="contentCellType">{{c.monthPay}}</text>
+                        <text class="contentCellType">{{c.arrears}}</text>
+                        <text class="contentCellType">{{c.paper}}</text>
                     </div>
                 </div>
             </cell>
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
-            <cell>
-                <div style="height: 130px"></div>
-            </cell>
+            <!--<cell>-->
+            <!--<div style="height: 130px"></div>-->
+            <!--</cell>-->
 
         </list>
 
-        <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist.length>0">
-            <!--点击上箭头或向上滑动展开-->
-            <div class="iconBox">
-                <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
-                <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">货款收入: ¥{{summarylist[0].cost}}</text>
-                <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>
-                <text class="fz28 ">代收水票: {{summarylist[0].adminFreight}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
-                <text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>
-            </div>
-        </div>
+        <!--<div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist != null ">-->
+        <!--&lt;!&ndash;点击上箭头或向上滑动展开&ndash;&gt;-->
+        <!--<div class="iconBox">-->
+        <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>-->
+        <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>-->
+        <!--</div>-->
+        <!--<div class="bottomCell">-->
+        <!--<div class="contentSmallCell">-->
+        <!--<text class="number">合计</text>-->
+        <!--<text class="contentCellType">派单</text>-->
+        <!--<text class="returnMoney">{{sQuantityTotal}}</text>-->
+        <!--<text class="returnMoney">{{sReturnQuantityTotal}}</text>-->
+        <!--<text class="returnMoney">{{sPledgeQuantityTotal}}</text>-->
+        <!--<text class="money">{{sQuantityTotal - sReturnQuantityTotal - sPledgeQuantityTotal}}</text>-->
+        <!--</div>-->
+        <!--<div class="contentSmallCell">-->
+        <!--<text class="number"></text>-->
+        <!--<text class="contentCellType">送货</text>-->
+        <!--<text class="returnMoney">{{quantityTotal}}</text>-->
+        <!--<text class="returnMoney">{{returnQuantityTotal}}</text>-->
+        <!--<text class="returnMoney">{{pledgeQuantityTotal}}</text>-->
+        <!--<text class="money">{{quantityTotal - returnQuantityTotal - pledgeQuantityTotal}}</text>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<list style="max-height: 500px">-->
+        <!--<cell class="" v-for="t in summarylist">-->
+        <!--<div class="bottomCellTwo">-->
+        <!--<div class="contentSmallCell">-->
+        <!--<text class="number">{{t.barrelName}}</text>-->
+        <!--<text class="contentCellType">派单</text>-->
+        <!--<text class="returnMoney">{{t.sQuantity}}</text>-->
+        <!--<text class="returnMoney">{{t.sReturnQuantity}}</text>-->
+        <!--<text class="returnMoney">{{t.sPledgeQuantity}}</text>-->
+        <!--<text class="money">{{t.sQuantity - t.sReturnQuantity - t.sPledgeQuantity}}</text>-->
+        <!--</div>-->
+        <!--<div class="contentSmallCell">-->
+        <!--<text class="number"></text>-->
+        <!--<text class="contentCellType">送货</text>-->
+        <!--<text class="returnMoney">{{t.quantity}}</text>-->
+        <!--<text class="returnMoney">{{t.returnQuantity}}</text>-->
+        <!--<text class="returnMoney">{{t.pledgeQuantity}}</text>-->
+        <!--<text class="money">{{t.quantity - t.returnQuantity -t.pledgeQuantity}}</text>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</cell>-->
+        <!--</list>-->
+        <!--</div>-->
     </div>
 
 </template>
@@ -76,9 +95,6 @@
         background-color: white;
 
     }
-    .fontStrong{
-        font-weight: bold;
-    }
     .classBox{
         height: 80px;
         width: 750px;
@@ -88,20 +104,8 @@
         border-bottom-width: 1px;
         border-bottom-color: #ccc;
     }
-    .titleBox{
-        flex-direction: column;
-        align-items: center;
-    }
-    .shopNameTitle{
-        height: 80px;
-        width: 750px;
-        padding-left: 30px;
-        flex-direction: row;
-        align-items: center;
-        background-color: #cccccc;
-    }
     .tableOne{
-        width:375px;
+        width:175px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -109,14 +113,6 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:150px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border-right-width: 1px;
-        border-right-color: #777;
-    }
-    .tableThree{
         width:225px;
         flex-direction: row;
         align-items: center;
@@ -124,8 +120,8 @@
         border-right-width: 1px;
         border-right-color: #777;
     }
-    .tableFour{
-        width:187.5px;
+    .tableThree{
+        width:160px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -134,36 +130,13 @@
         font-size: 28px;
         color: #444;
     }
-    .totalCell{
-        height: 100px;
-        width: 750px;
-        background-color: #f5f5f5;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        padding-right: 30px;
-        border-bottom-width:1px;
-        border-color:#cccccc;
-    }
-    .totalCellTwo{
-        height: 100px;
-        width: 750px;
-        background-color: #f5f5f5;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding-left: 30px;
-        padding-right: 30px;
-        border-bottom-width:1px;
-        border-color:#cccccc;
-    }
     .bottomTotal{
         align-items: center;
         width: 750px;
-        height: 330px;
+        height: 630px;
         background-color: white;
         position: fixed;
-        bottom:-200px;
+        bottom:-440px;
         left: 0;
         border-top-width: 1px;
         border-color: #ccc;
@@ -178,57 +151,110 @@
         justify-content: center;
     }
     .bottomCell{
-        height: 100px;
+        height: 160px;
         width: 750px;
         background-color: #f5f5f5;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        padding-right: 30px;
+        flex-direction: column;
         border-bottom-width:1px;
         border-color:#cccccc;
     }
     .bottomCellTwo{
-        height: 100px;
+        height: 160px;
         width: 750px;
-        padding-left: 30px;
-        padding-right: 30px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
         border-bottom-width:1px;
         border-color:#cccccc;
     }
     .totalIcon{
         font-size: 80px;
     }
-    .contentCell{
-        height: 100px;
+    .titleCell{
+        height: 80px;
         width: 750px;
-        background-color: white;
-        border-bottom-width: 1px;
-        border-color: #cccccc;
+        background-color: #ccc;
         flex-direction: row;
         align-items: center;
     }
-    .shopName{
-        font-size: 30px;
-        width: 375px;
+    .contentCell{
+        width: 750px;
+        background-color: white;
+        flex-direction: column;
+        align-items: center;
+    }
+    .contentSmallCell{
+        height: 80px;
+        width: 750px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-color: #cccccc;
+    }
+    .address{
+        width: 750px;
         padding-left: 30px;
-        text-align: left;
+        padding-right: 30px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .shopName{
+        font-size: 32px;
+        margin-left: 30px;
         lines:1;
         text-overflow: ellipsis;
     }
     .number{
         font-size: 30px;
         width: 150px;
-        text-align: right;
+        text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
     .money{
         font-size: 30px;
+        width: 112.5px;
+        padding-right: 30px;
+        text-align: right;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .returnMoney{
+        font-size: 30px;
+        width: 160px;
+        text-align: center;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .contentCellType{
+        font-size: 30px;
+        width: 175px;
+        text-align: center;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .contentCellTypeTwo{
+        font-size: 30px;
         width: 225px;
+        text-align: center;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .typeName{
+        font-size: 28px;
+        padding-left: 30px;
+        text-align: left;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .refund{
+        font-size: 28px;
+        width: 200px;
+        text-align: right;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .amount{
+        font-size: 28px;
+        width: 200px;
         padding-right: 30px;
         text-align: right;
         lines:1;
@@ -249,8 +275,9 @@
     export default {
         data:function(){
             return{
+                clicked:false,
                 reportList:null,
-                summarylist:[],
+                summarylist:null,
                 refreshing: false,
                 loading: 'hide',
                 pageStart:0,
@@ -260,9 +287,15 @@
                 hadUpdate:false,
                 isIcon:true,
                 timeDate:'',
-                pageName:'配送结算',
+                pageName:'欠款明细',
                 beginTime:'',
-                endTime:''
+                endTime:'',
+                quantityTotal:0,
+                returnQuantityTotal:0,
+                pledgeQuantityTotal:0,
+                sQuantityTotal:0,
+                sReturnQuantityTotal:0,
+                sPledgeQuantityTotal:0,
             }
         },
         components: {
@@ -271,9 +304,15 @@
         props: {
 
         },
+        filters: {
+            watchDate:function (val) {
+                return utils.ymdtimefmt(val);
+            }
+        },
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
+            this.memberId = utils.getUrlParameter('memberId')
             this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
             this.beginTime = this.timeDate+ ' ' +'00:00:00';
             this.endTime = this.timeDate+ ' ' +'23:59:59';
@@ -281,18 +320,18 @@
         },
 //        dom呈现完执行滚动一下
         updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
+////            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
+//            if(this.hadUpdate){
+//                return;
+//            }
+//            this.hadUpdate = true;
+////            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
+//            if(!utils.isIosSystem()){
+//                const el = this.$refs.adoptPull//跳转到相应的cell
+//                dom.scrollToElement(el, {
+//                    offset: -119
+//                })
+//            }
         },
         methods: {
 //            点击减少时间
@@ -309,14 +348,13 @@
                 this.pageStart = 0 ;
                 this.open()
             },
-//            时间选择器
             iconTime (data) {
                 this.beginTime = data.beginTime;
                 this.endTime = data.endTime;
                 this.pageStart = 0 ;
                 this.open()
             },
-//            点击日报
+            //            点击日报
             reportDayClick(data){
                 this.beginTime = data.beginTime;
                 this.endTime = data.endTime;
@@ -344,7 +382,7 @@
                     _this.isIcon = false;// 当向上滑动时把变量置为false，达到再次点击div时触发的是收回动画
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-200)',
+                            transform: 'translateY(-440)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -379,7 +417,7 @@
                     }else{
                         animation.transition(animationPara, {
                             styles: {
-                                transform: 'translateY(-200)',
+                                transform: 'translateY(-440)',
                             },
                             duration: 350, //ms
                             timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -410,23 +448,31 @@
 //                获取当前点击的元素。
                 animationPara =  e.currentTarget;
             },
+            //判断水站是否重复
+            isSellerName(index){
+                if(index != 0){
+                    if(this.reportList[index].sellerName == this.reportList[index - 1].sellerName){
+                        return false;
+                    }
+                }
+                return true;
+            },
             goback: function (e) {
                 event.closeURL();
             },
             open:function () {
                 var _this = this;
-
-                GET('weex/member/report/shipping_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
+                GET('weex/member/report/arrears_detail_report.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize+'&memberId='+_this.memberId,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
-                            _this.reportList = res.data.data.data;
-                            _this.summarylist = res.data.data.summary
+                            _this.reportList = res.data.data;
                         } else {
-                            res.data.data.data.forEach(function (item) {
+                            res.data.data.forEach(function (item) {
                                 _this.reportList.push(item);
                             })
                         }
-                        _this.pageStart = _this.pageStart+res.data.data.data.length;
+                        _this.pageStart = _this.pageStart+res.data.data.length;
+
                     } else {
                         event.toast(res.content);
                     }
@@ -466,35 +512,19 @@
                     _this.open();
                 }, 1000)
             },
-//            判断水站是否重复
-            isSellerName(index){
-                if(index != 0){
-                    if(this.reportList[index].sellerId == this.reportList[index - 1].sellerId){
-                        return false;
-                    }
-                }
-                return true;
-            },
-//            判断水站是否重复,并且在最后一个显示统计
-            isTotal(index){
 
-                if ((index==(this.reportList.length-1)) ||
-                    ((index<(this.reportList.length-1) && this.reportList[index].sellerId != this.reportList[index+1].sellerId) )
-                )  {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            linkToDetail(sellerId){
+            linkToView(sn){
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                var _this = this;
-                event.openURL(utils.locate('view/member/report/contacts_detail.js?sellerId='+sellerId), function (data) {
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shipping/info.js?sn=' + sn ),function (data) {
                     _this.clicked = false;
-                })
+                    if(data.type=='success') {
+
+                    }
+                });
             }
         },
 
