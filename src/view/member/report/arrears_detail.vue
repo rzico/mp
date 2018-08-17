@@ -15,7 +15,7 @@
                 <text class="tableText">欠票</text>
             </div>
         </div>
-        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList.length != 0">
+        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList != null">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>

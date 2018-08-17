@@ -219,6 +219,7 @@
         border-color: #cccccc;
     }
     .address{
+        font-size: 32px;
         width: 750px;
         padding-left: 30px;
         padding-right: 30px;

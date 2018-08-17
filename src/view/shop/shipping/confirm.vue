@@ -24,23 +24,26 @@
                 </div>
                 <div class="header mt20 flex-row">
                     <div class="priceLine">
+                        <div class="paymentMethodBox">
+                            <text class="sub_title ">支付方式: {{item.paymentMethod | watchPayMethod}}</text>
+                        </div>
                         <div class=" space-between  bt10 headerCellBg">
                             <text class="sub_title">应收金额:{{item.amountPayable}}元(上期欠款:{{item.arrears}}元)</text>
-                            <div class="flex-row">
+                            <div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">
                                 <text class="fz28">实收金额:</text>
                                 <input class="amountInput" type="number" placeholder="请输入金额" v-model="amountData"/>
                             </div>
                         </div>
                         <div class=" space-between  bt10 headerCellBg">
                             <text class="sub_title">应收水票:{{item.paperPayable}}张(上期欠票:{{item.ticket}}张)</text>
-                            <div class="flex-row">
+                            <div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">
                                 <text class="fz28">实收水票:</text>
                                 <input class="amountInput" type="number" placeholder="请输入张数" v-model="paperData"/>
                             </div>
                         </div>
                         <div class=" space-between  bt10 headerCellBg">
                             <text class="sub_title">应收押金:{{item.pledgePayable}}元</text>
-                            <div class="flex-row">
+                            <div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">
                                 <text class="fz28">实收押金:</text>
                                 <input class="amountInput" type="number" placeholder="请输入金额" v-model="pledgeData"/>
                             </div>
@@ -276,6 +279,12 @@
         width: 690px;
     }
     /**/
+    .paymentMethodBox{
+        width: 690px;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 20px;
+    }
     /*<!--订单 支付方式 信息行-->*/
     .infoWhiteColor{
         background-color: #fff;
@@ -551,13 +560,13 @@
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
-//                        data.data.shippingBarrels.forEach(function (item) {
-//                            if(utils.isNull(item.returnQuantity) || item.returnQuantity ==0){
-//                                item.returnQuantity=''
-//                            }if(utils.isNull(item.pledgeQuantity) || item.pledgeQuantity ==0){
-//                                item.pledgeQuantity=''
-//                            }
-//                        })
+                            if(data.data.amountPayable + data.data.arrears == 0){
+                                _this.amountData = 0
+                            }if(data.data.paperPayable + data.data.ticket == 0){
+                                _this.paperData = 0
+                            }if(data.data.pledgePayable == 0){
+                                _this.pledgeData = 0
+                            }
                             _this.ordersList.push(data.data);
 
                     }else{
