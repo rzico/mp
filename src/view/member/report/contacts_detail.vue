@@ -1,71 +1,79 @@
 <template>
     <div class="wrapper">
         <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
-        <div class="classBox">
-            <div class="tableOne">
-                <text class="tableText">品牌</text>
-            </div>
-            <div class="tableTwo">
-                <text class="tableText">数量</text>
-            </div>
-            <div class="tableThree">
-                <text class="tableText">货款</text>
-            </div>
-        </div>
+        <!--<div class="classBox">-->
+            <!--<div class="tableOne">-->
+                <!--<text class="tableText">品牌</text>-->
+            <!--</div>-->
+            <!--<div class="tableTwo">-->
+                <!--<text class="tableText">数量</text>-->
+            <!--</div>-->
+            <!--<div class="tableThree">-->
+                <!--<text class="tableText">货款</text>-->
+            <!--</div>-->
+        <!--</div>-->
         <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList != null">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
-                <div class="shopNameTitle" v-if="isSellerName(index)" @click="linkToDetail(c.sellerId)"><text class="fz32">{{c.sellerName}}</text> </div>
-                <div class="contentCell" >
-                    <text class="shopName">{{c.name}}</text>
-                    <text class="number">{{c.quantity}}</text>
-                    <text class="money">¥{{c.cost}}</text>
-                </div>
-                <div class="totalBox"  v-if="isTotal(index)" @click="linkToDetail(c.sellerId)">
+                <div class="shopNameTitle"><text class="fz32">{{c.name}}  {{c.phone}}  {{c.address}}</text> </div>
+                <!--<div class="contentCell" >-->
+                    <!--<text class="shopName">{{c.name}}</text>-->
+                    <!--<text class="number">{{c.quantity}}</text>-->
+                    <!--<text class="money">¥{{c.cost}}</text>-->
+                <!--</div>-->
+                <div class="totalBox" @click="linkToView(c.sn)">
                     <div class="totalCellTwo">
-                        <text class="fz32">货款收入: ¥{{c.cost}}</text>
-                        <text class="fz32">代收现金: ¥{{c.cash}}</text>
+                        <text class="fz32">{{c.completeDate | watchDate}}</text>
+                        <text class="fz32">货款: ¥{{c.cost}}</text>
+                    </div>
+                    <div class="totalCellTwo">
+                        <text class="fz32">应收金额: ¥{{c.amountPayable}}(上期欠款:¥{{c.arrears}})</text>
+                        <text class="fz32">实收金额: ¥{{c.amountPaid}}</text>
+                    </div>
+                    <div class="totalCellTwo">
+                        <text class="fz32">应收水票: {{c.paperPayable}}(上期欠票:{{c.ticket}})</text>
+                        <text class="fz32">实收水票: {{c.paperPaid}}</text>
+                    </div>
+                    <div class="totalCellTwo">
+                        <text class="fz32">应收押金: ¥{{c.pledgePayable}}</text>
+                        <text class="fz32">实收押金: ¥{{c.pledgePaid}}</text>
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
-                        <text class="fz32">代收水票: {{c.paper}}</text>
-                    </div>
-                    <div class="totalCellTwo">
-                        <text class="fz32">送货工资: ¥{{c.adminFreight}}</text>
-                        <text class="fz32">送货利润: ¥{{c.profit}}</text>
+                        <text class="fz32">代发工资: ¥{{c.adminFreight}}(楼层费:¥{{c.levelFreight}})</text>
                     </div>
                 </div>
             </cell>
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
-            <cell>
-                <div style="height: 130px"></div>
-            </cell>
+            <!--<cell>-->
+                <!--<div style="height: 130px"></div>-->
+            <!--</cell>-->
 
         </list>
 
-        <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist.length>0">
-            <!--点击上箭头或向上滑动展开-->
-            <div class="iconBox">
-                <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
-                <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">货款收入: ¥{{summarylist[0].cost}}</text>
-                <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>
-                <text class="fz28 ">代收水票: {{summarylist[0].adminFreight}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
-                <text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>
-            </div>
-        </div>
+        <!--<div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist.length>0">-->
+            <!--&lt;!&ndash;点击上箭头或向上滑动展开&ndash;&gt;-->
+            <!--<div class="iconBox">-->
+                <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>-->
+                <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>-->
+            <!--</div>-->
+            <!--<div class="bottomCellTwo">-->
+                <!--<text class="fz28 ">货款收入: ¥{{summarylist[0].cost}}</text>-->
+                <!--<text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>-->
+            <!--</div>-->
+            <!--<div class="bottomCellTwo">-->
+                <!--<text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>-->
+                <!--<text class="fz28 ">代收水票: {{summarylist[0].adminFreight}}</text>-->
+            <!--</div>-->
+            <!--<div class="bottomCellTwo">-->
+                <!--<text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>-->
+                <!--<text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 
 </template>
@@ -249,6 +257,7 @@
     export default {
         data:function(){
             return{
+                clicked:false,
                 reportList:null,
                 summarylist:[],
                 refreshing: false,
@@ -260,9 +269,10 @@
                 hadUpdate:false,
                 isIcon:true,
                 timeDate:'',
-                pageName:'配送结算',
+                pageName:'配送明细',
                 beginTime:'',
-                endTime:''
+                endTime:'',
+                sellerId:''
             }
         },
         components: {
@@ -271,9 +281,15 @@
         props: {
 
         },
+        filters: {
+            watchDate:function (val) {
+                return utils.ymdtimefmt(val);
+            }
+        },
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
+            this.sellerId = utils.getUrlParameter('sellerId');
             this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
             this.beginTime = this.timeDate+ ' ' +'00:00:00';
             this.endTime = this.timeDate+ ' ' +'23:59:59';
@@ -416,17 +432,16 @@
             open:function () {
                 var _this = this;
 
-                GET('weex/member/report/shipping_summary.jhtml?type=shipping&beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
+                GET('weex/member/report/shipping_detail_report.jhtml?type=shipping&beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize+'&sellerId='+_this.sellerId,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
-                            _this.reportList = res.data.data.data;
-                            _this.summarylist = res.data.data.summary
+                            _this.reportList = res.data.data
                         } else {
-                            res.data.data.data.forEach(function (item) {
+                            res.data.data.forEach(function (item) {
                                 _this.reportList.push(item);
                             })
                         }
-                        _this.pageStart = _this.pageStart+res.data.data.data.length;
+                        _this.pageStart = _this.pageStart+res.data.data.length;
                     } else {
                         event.toast(res.content);
                     }
@@ -486,15 +501,18 @@
                     return false;
                 }
             },
-            linkToDetail(sellerId){
+            linkToView(sn){
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                var _this = this;
-                event.openURL(utils.locate('view/member/report/contacts_detail.js?sellerId='+sellerId), function (data) {
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shipping/info.js?sn=' + sn ),function (data) {
                     _this.clicked = false;
-                })
+                    if(data.type=='success') {
+
+                    }
+                });
             }
         },
 

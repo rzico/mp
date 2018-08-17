@@ -13,10 +13,10 @@
                         <text class="fz32">{{c.name}}</text>
                     </div>
                     <div class="money">
-                        <text class="fz32">送出</text>
-                        <input type="number" placeholder="输入桶数" class="input" v-model="c.give" />
-                        <text class="monyeTextthree fz32">桶，收回</text>
+                        <text class="fz32">送出 {{c.give}} 桶，收回</text>
                         <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
+                        <text class="monyeTextthree fz32">桶，押</text>
+                        <input type="number" placeholder="输入桶数" class="input" v-model="c.pledgeQuantity" />
                         <text class="monyeTextthree fz32">桶</text>
                     </div>
                 </div>
@@ -36,12 +36,21 @@
                 </div>
                 <!--详情-->
                 <div class="info" >
-                    <text class="herderText">本单工资</text>
+                    <text class="herderText">应收现金</text>
                     <div class="flex-row">
                         <text style="font-size: 65px">¥  </text>
-                        <text class="herderAmount">{{adminFreight | currencyfmt}}</text>
+                        <text class="herderAmount">{{cashRecvable}}</text>
                     </div>
-                    <text class="herderSn">收货地址: {{areaName}}{{address}}</text>
+                    <div class="flex-row" style="width: 590px">
+                        <text class="fz30" style="color: #999">应收金额: {{amountPayable}}元</text>
+                        <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
+                    </div>
+                    <div class="flex-row mt10" style="width: 590px">
+                        <text class="fz30" style="color: #999">应收水票: {{paperPayable}}张</text>
+                        <text class="fz30" style="color: #999">（上期欠票  {{ticket}}张）</text>
+                    </div>
+                    <text class="herderSn mt10">应收押金: {{pledgePayable}}元</text>
+                    <text class="herderSn mt10">收货地址: {{areaName}}{{address}}</text>
                     <text class="herderSn mt10">收货姓名: {{consignee}}</text>
                     <text class="herderSn mt10" @click="callPhone">收货电话: {{phone}}</text>
                     <div class="messageSetting" @click="chooseFloor">
@@ -169,7 +178,7 @@
 
     .input{
         padding-left: 20px;
-        width: 150px;
+        width: 120px;
         font-size: 28px;
         color: red;
         height: 100px;
@@ -243,7 +252,13 @@
                 phone:'',
                 hasList:false,
                 giveTotal:0,
-                takeTotal:0
+                takeTotal:0,
+                amountPayable:'',
+                arrears:'',
+                paperPayable:'',
+                ticket:'',
+                pledgePayable:'',
+                cashRecvable:''
             }
         },
         created: function () {
@@ -334,7 +349,7 @@
             showContol(index){
                 this.list[index].show = true;
                 this.hasList = false
-            },
+            },　
             open:function () {
                 let _this = this
                 GET('weex/member/barrel/list.jhtml?shippingId='+this.shippingId,
@@ -362,12 +377,18 @@
                 let _this = this;
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
-                        _this.adminFreight = data.data.adminFreight;
+                        _this.cashRecvable = data.data.cashRecvable;
                         _this.areaName = data.data.receiver.areaName;
                         _this.address = data.data.receiver.address;
                         _this.floor = data.data.receiver.level;
                         _this.consignee = data.data.receiver.consignee;
                         _this.phone = data.data.receiver.phone;
+                        _this.amountPayable = data.data.amountPayable ;// 应付金额
+                        _this.arrears = data.data.arrears ; //  上期欠款
+                        _this.paperPayable = data.data.paperPayable;//   应收水票
+                        _this.ticket = data.data.ticket;// 上期欠票
+                        _this.pledgePayable = data.data.pledgePayable//  应收押金
+
 
                     }else{
                         event.toast(data.content);
@@ -455,6 +476,9 @@
                                     if(utils.isNull(item.take)){
                                         item.take = 0
                                     }
+                                    if(utils.isNull(item.pledgeQuantity)){
+                                        item.pledgeQuantity = 0
+                                    }
                                     if(item.show == true){
                                         _this.giveTotal = _this.giveTotal + item.give;
                                         isTrue = isTrue+1
@@ -464,6 +488,7 @@
                                         id:item.id,
                                         quantity:item.give,
                                         returnQuantity:item.take,
+                                        pledgeQuantity:item.pledgeQuantity
 
                                     });
                                 });

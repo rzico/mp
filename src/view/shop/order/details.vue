@@ -94,6 +94,12 @@
                         <div class="mt10 " v-if="item.deliveryDate != '' && item.deliveryDate != null">
                             <text class="sub_title">送达时间: {{item.deliveryDate | watchCreateDate}}</text>
                         </div>
+                        <div class="mt10 " v-if="item.hopeDate != '' && item.hopeDate != null">
+                            <text class="sub_title">预约时间: {{item.hopeDate | watchCreateDate}}</text>
+                        </div>
+                        <div class="mt10 ">
+                            <text class="sub_title">销售站点: {{item.sellerName}}</text>
+                        </div>
                     </div>
                     <div class="infoLines pb10">
                         <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>
@@ -112,18 +118,6 @@
                     </div>
                     <div class="infoLines pt0 pb10">
                         <text class="sub_title ">配送人员: {{item.adminName}}</text>
-                    </div>
-                    <div class="infoLines pt0 pb10">
-                        <text class="sub_title ">送货工资: ¥{{item.adminFreight | currencyfmt}}</text>
-                    </div>
-                    <div class="infoLines pt0 pb10">
-                        <text class="sub_title ">配送运费: ¥{{item.shippingFreight | currencyfmt}}</text>
-                    </div>
-                    <div class="infoLines pt0 pb0">
-                        <text class="sub_title ">货款结算: ¥{{item.cost | currencyfmt}}</text>
-                    </div>
-                    <div class="infoLines boder-bottom pt10">
-                        <text class="sub_title ">预约时间: {{item.hopeDate | watchCreateDate}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt10">
                         <text class="sub_title ">派单留言: {{item.shippingMemo}}</text>
@@ -150,9 +144,17 @@
                             <text class="sub_title">电子券支付</text>
                             <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
                         </div>
-                        <div class=" space-between mt10" >
-                            <text class="sub_title">+ 本单运费</text>
-                            <text class="sub_title">¥{{item.freight | currencyfmt}}</text>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">+ 送货工资</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10" v-if="filter('shippingFreight')">
+                            <text class="sub_title">+ 配送运费</text>
+                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10" v-if="filter('cost')">
+                            <text class="sub_title">+ 货款结算</text>
+                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
                         </div>
                     </div>
                     <div class="priceLine flex-end">
@@ -223,6 +225,8 @@
         border-style: solid;
     }
     .logBox{
+        width: 630px;
+        overflow: hidden;
         display:flex;
         flex-direction: row;
         justify-content:space-between;
@@ -390,6 +394,7 @@
                 orderSN:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
+                roles:''
             }
         },
         props: {
@@ -503,8 +508,43 @@
             utils.initIconFont();
             this.orderSn = utils.getUrlParameter('sn');
             this.open();
+            this.permissions()
         },
         methods: {
+            //            权限过滤器
+            filter(e) {
+                var _this = this;
+                if (e == 'shippingFreight') {
+//                    派单等
+                    if (utils.isRoles("12", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                } else if (e == 'cost') {
+//                    送达
+                    if (utils.isRoles("12", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }else{
+                    return false
+                }
+            },
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/roles.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        _this.roles = mes.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             open:function () {
                 let _this = this;
                 GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
