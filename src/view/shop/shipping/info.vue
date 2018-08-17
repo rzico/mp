@@ -58,7 +58,7 @@
                         <div class="mt10 " v-if="item.deliveryDate != '' && item.deliveryDate != null">
                             <text class="sub_title">送达时间: {{item.deliveryDate | watchCreateDate}}</text>
                         </div>
-                        <div class="mt10 ">
+                        <div class="mt10 " v-if="item.hopeDate != '' && item.hopeDate != null">
                             <text class="sub_title">预约时间: {{item.hopeDate | watchCreateDate}}</text>
                         </div>
                         <div class="mt10 ">

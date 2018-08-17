@@ -432,7 +432,7 @@
             open:function () {
                 var _this = this;
 
-                GET('weex/member/report/shipping_detail_report.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize+'&sellerId='+_this.sellerId,function (res) {
+                GET('weex/member/report/shipping_detail_report.jhtml?type=shipping&beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize+'&sellerId='+_this.sellerId,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
                             _this.reportList = res.data.data

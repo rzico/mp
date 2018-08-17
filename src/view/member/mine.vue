@@ -118,7 +118,7 @@
             <!-- 我的文章 -->
             <div class="contentBox" v-if="filter('topic')">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goMemberIndex()">
-                    <text class="fz30">我的专栏</text>
+                    <text class="fz30">我的文章</text>
                     <div class="flex-row">
                     <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
                     <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>

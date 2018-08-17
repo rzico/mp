@@ -17,13 +17,13 @@
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
-                <div class="shopNameTitle" v-if="isSellerName(index)"><text class="fz32">{{c.sellerName}}</text> </div>
+                <div class="shopNameTitle" v-if="isSellerName(index)" @click="linkToDetail(c.sellerId)"><text class="fz32">{{c.sellerName}}</text> </div>
                 <div class="contentCell" >
                     <text class="shopName">{{c.name}}</text>
                     <text class="number">{{c.quantity}}</text>
                     <text class="money">¥{{c.cost}}</text>
                 </div>
-                <div class="totalBox"  v-if="isTotal(index)">
+                <div class="totalBox"  v-if="isTotal(index)" @click="linkToDetail(c.sellerId)">
                     <!--<div class="totalCell"><text class="fz32 fontStrong">货款合计: ¥{{c.subTotal}}</text> </div>-->
                     <div class="totalCellTwo">
                         <text class="fz32">货款收入: ¥{{c.cost}}</text>
@@ -63,7 +63,7 @@
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>
-                <text class="fz28 ">代收水票: {{summarylist[0].adminFreight}}</text>
+                <text class="fz28 ">代收水票: {{summarylist[0].paper}}</text>
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
@@ -490,6 +490,16 @@
                     return false;
                 }
 
+            },
+            linkToDetail(sellerId){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('view/member/report/sendSingle_detail.js?sellerId='+sellerId), function (data) {
+                    _this.clicked = false;
+                })
             }
         },
 

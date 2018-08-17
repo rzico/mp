@@ -23,11 +23,11 @@
                 <text class="tableTextTwo">欠票</text>
             </div>
         </div>
-        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList.length != 0">
+        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList !=null">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <cell v-for="(c,index) in reportList" ref="adoptPull" >
+            <cell v-for="(c,index) in reportList" ref="adoptPull">
                 <!--<div class="titleCell"  v-if="isSellerName(index)">-->
                     <!--<text class="shopName">水站名</text>-->
                 <!--</div>-->

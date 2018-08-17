@@ -63,13 +63,6 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="typeBox" @click="pickDate()">
-                    <text class="fz32">预约时间:</text>
-                    <div class="flex-row">
-                        <text class="typeBoxText">{{dateTime}}</text>
-                        <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
-                    </div>
-                </div>
                 <div class="typeBox">
                     <div class="flex-row">
                         <text class="fz32">应收押金:</text>
@@ -94,6 +87,13 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
+                <div class="typeBox" @click="pickDate()">
+                    <text class="fz32">预约时间:</text>
+                    <div class="flex-row">
+                        <text class="typeBoxText">{{dateTime}}</text>
+                        <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="floorBox" @click="chooseFloor()">
                     <text class="fz32">楼层:</text>
                     <div class="flex-row">
@@ -112,11 +112,11 @@
                 </div>
             </div>
             <div class="moneyBox">
-                <div class="flex-row space-between">
+                <div class="flex-row space-between pb10">
                      <text class="moneyBoxText">应收金额: {{amountPayable}}元</text>
                      <text class="moneyBoxText">上期欠款: {{arrears}}元</text>
                 </div>
-                <div class="flex-row space-between">
+                <div class="flex-row space-between pb10">
                     <text class="moneyBoxText">应收水票: {{paperPayable}}张</text>
                     <text class="moneyBoxText">上期欠票: {{ticket}}张</text>
                 </div>
@@ -398,8 +398,8 @@
                 product:[],
                 effectivePrice:0,
                 quantity:0,
-                paymentPluginId:'',
-                paymentPluginName:'请设置付款方式',
+                paymentPluginId:'cashPayPlugin',
+                paymentPluginName:'现金支付',
                 sendObject:'warehouse',
                 floor:0,
                 begin:0,
@@ -542,7 +542,7 @@
             //            获取member信息跟商品合计
             getInfo:function () {
                 var _this = this;
-                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId).then(function (data) {
+                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId).then(function (data) {
                     if (data.type == 'success') {
                         _this.member = data.data.receiver;
                         _this.shopName = data.data.receiver.shopName;
@@ -567,7 +567,7 @@
 //           获取商品合计
             getmoneyTotal:function () {
                 var _this = this;
-                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId).then(function (data) {
+                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId).then(function (data) {
                     if (data.type == 'success') {
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
@@ -601,9 +601,9 @@
                                 _this.begin = e.data;
                                 _this.paymentPluginId = _this.payId[dataIndex];
                                 _this.paymentPluginName = _this.payName[dataIndex]
-
                             }
                         })
+                        _this.getmoneyTotal()
                     } else {
                         event.toast(mes.content);
                     }
