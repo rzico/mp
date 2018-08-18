@@ -9,7 +9,7 @@
                 <text class="herderSn">下单时间: {{item.createDate | watchCreateDate}}</text>
                 <div class="setting" @click="pickPay">
                     <div class="flex-row">
-                        <text class="fz32">付款方式:  {{isobject | watchType}}</text>
+                        <text class="fz32">付款方式:  {{paymentPluginName}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -153,11 +153,13 @@
         data: function () {
             return {
                 begin:0,
-                isobject:'monthPayPlugin',
                 ordersList:[],
                 amount:'',
-                tranSn:''
-
+                tranSn:'',
+                payName:[],
+                payId:[],
+                paymentPluginId:'',
+                paymentPluginName:'请选择付款方式'
             }
         },
         components: {
@@ -170,17 +172,6 @@
             watchCreateDate: function (value) {
                 return utils.ymdhistimefmt(value);
             },
-            watchType:function (val) {
-                if(val == 'monthPayPlugin'){
-                    return'线下月结'
-                }else if(val == 'bankPayPlugin'){
-                    return'刷卡支付'
-                }else if(val == 'cashPayPlugin'){
-                    return'现金支付'
-                }else if(val == 'couponPayPlugin'){
-                    return'电子券支付'
-                }
-            }
         },
         created() {
             utils.initIconFont();
@@ -207,29 +198,40 @@
             //            选择付款方式
             pickPay:function () {
                 let _this = this
-                picker.pick({
-                    index:_this.begin,
-                    items:['线下月结','刷卡支付','现金支付','电子券支付']
-                }, e => {
-                    if (e.result == 'success') {
-                        if (e.data == 0){
-                            _this.isobject = 'monthPayPlugin';
-                            _this.begin = e.data;
-                        }else if(e.data == 1){
-                            _this.isobject = 'bankPayPlugin';
-                            _this.begin = e.data;
-                        }else if(e.data == 2){
-                            _this.isobject = 'cashPayPlugin';
-                            _this.begin = e.data;
-                        }else if(e.data == 3){
-                            _this.isobject = 'couponPayPlugin';
-                            _this.begin = e.data;
-                        }
+//                获取支付方式
+                _this.payName =[];
+                _this.payId = [];
+                GET('payment/plugin.jhtml',function (mes) {
+                    if (mes.type == 'success') {
+                        mes.data.forEach(function (item) {
+                            _this.payName.push(item.name);
+                            _this.payId.push(item.paymentPluginId)
+                        })
+                        picker.pick({
+                            index:_this.begin,
+                            items: _this.payName
+                        }, e => {
+                            if (e.result == 'success') {
+                                var dataIndex = e.data;
+                                _this.begin = e.data;
+                                _this.paymentPluginId = _this.payId[dataIndex];
+                                _this.paymentPluginName = _this.payName[dataIndex]
+                            }
+                        })
+                        _this.getmoneyTotal()
+                    } else {
+                        event.toast(mes.content);
                     }
-                })
+                }, function (err) {
+                    event.toast(err.content)
+                });
             },
             submit:function (amount) {
                 let _this = this;
+                if(utils.isNull(this.paymentPluginId)){
+                    event.toast('请选择付款方式')
+                    return
+                }
                 if(utils.isNull(this.amount)){
                     event.toast('请输入金额')
                     return
@@ -240,10 +242,11 @@
                     event.toast('请输入凭证号')
                     return
                 }
+
                 POST('weex/member/order/payment.jhtml?sn=' + this.orderSn +'&tranSn' + encodeURIComponent(this.tranSn)).then(
                     function (data) {
                     if(data.type == 'success'){
-                        POST('/payment/submit.jhtml?sn=' + data.data.sn +'&paymentPluginId=' +_this.isobject).then(
+                        POST('/payment/submit.jhtml?sn=' + data.data.sn +'&paymentPluginId=' +_this.paymentPluginId).then(
                             function (data) {
                                 if(data.type == 'success'){
                                     let E = utils.message('success','确认成功','')

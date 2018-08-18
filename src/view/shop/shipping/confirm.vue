@@ -25,7 +25,7 @@
                 <div class="header mt20 flex-row">
                     <div class="priceLine">
                         <div class="paymentMethodBox">
-                            <text class="sub_title ">支付方式: {{item.paymentMethod | watchPayMethod}}</text>
+                            <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>
                         </div>
                         <div class=" space-between  bt10 headerCellBg">
                             <text class="sub_title">应收金额:{{item.amountPayable}}元(上期欠款:{{item.arrears}}元)</text>
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     <div class="infoLines pb10">
-                        <text class="sub_title ">支付方式: {{item.paymentMethod | watchPayMethod}}</text>
+                        <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>
                     </div>
                     <div class="infoLines boder-bottom pt0">
                         <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
@@ -660,33 +660,38 @@
                     _this.clicked = false;
                     return
                 }
-                if(utils.isNull(_this.amountData)){
-                    modal.alert({
-                        message: '请输入实收金额',
-                        okTitle: 'OK'
-                    })
-                    _this.clicked = false;
-                    return
-                }else if(utils.isNull(_this.paperData)){
-                    modal.alert({
-                        message: '请输入实收水票'+_this.paperData,
-                        okTitle: 'OK'
-                    })
-                    _this.clicked = false;
-                    return
-                }else if(utils.isNull(_this.pledgeData)){
-                    modal.alert({
-                        message: '请输入实收押金'+_this.pledgeData,
-                        okTitle: 'OK'
-                    })
-                    _this.clicked = false;
-                    return
-                }
+
                 //                先把金额转为整型
                 var amountData = parseInt(_this.amountData);
                 var paperData = parseInt(_this.paperData);
                 var pledgeData = parseInt(_this.pledgeData);
-                        if((_this.ordersList[0].amountPayable + _this.ordersList[0].arrears) < amountData  ){
+                if(_this.ordersList[0].paymentPluginId == 'ticketPayPlugin' || _this.ordersList[0].paymentPluginId == 'couponPayPlugin' || _this.ordersList[0].paymentPluginId == 'cashPayPlugin')
+                {
+                    if(utils.isNull(_this.amountData)){
+                        modal.alert({
+                            message: '请输入实收金额',
+                            okTitle: 'OK'
+                        })
+                        _this.clicked = false;
+                        return
+                    }else if(utils.isNull(_this.paperData)){
+                        modal.alert({
+                            message: '请输入实收水票',
+                            okTitle: 'OK'
+                        })
+                        _this.clicked = false;
+                        return
+                    }else if(utils.isNull(_this.pledgeData)){
+                        modal.alert({
+                            message: '请输入实收押金',
+                            okTitle: 'OK'
+                        })
+                        _this.clicked = false;
+                        return
+                    }
+
+
+                    if((_this.ordersList[0].amountPayable + _this.ordersList[0].arrears) < amountData  ){
                         modal.alert({
                             message: '实收金额不能大于应收金额与上期欠款的总和',
                             okTitle: 'OK'
@@ -700,13 +705,14 @@
                         })
                         _this.clicked = false;
                         return
-                }else if(pledgeData != _this.ordersList[0].pledgePayable && pledgeData != 0){
-                    modal.alert({
-                        message: '实收押金必须等于应收押金或为0',
-                        okTitle: 'OK'
-                    })
-                    _this.clicked = false;
-                    return
+                    }else if(pledgeData != _this.ordersList[0].pledgePayable && pledgeData != 0){
+                        modal.alert({
+                            message: '实收押金必须等于应收押金或为0',
+                            okTitle: 'OK'
+                        })
+                        _this.clicked = false;
+                        return
+                    }
                 }
                 var amountPaid = amountData + pledgeData;
 //                modal.confirm({
