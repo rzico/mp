@@ -600,10 +600,10 @@
                                 var dataIndex = e.data;
                                 _this.begin = e.data;
                                 _this.paymentPluginId = _this.payId[dataIndex];
-                                _this.paymentPluginName = _this.payName[dataIndex]
+                                _this.paymentPluginName = _this.payName[dataIndex];
+                                _this.getmoneyTotal()
                             }
                         })
-                        _this.getmoneyTotal()
                     } else {
                         event.toast(mes.content);
                     }
