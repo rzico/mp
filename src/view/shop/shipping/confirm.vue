@@ -1,10 +1,7 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"  @goback="goback" ></navbar>
-        <scroller   @loadmore="onloading" loadmoreoffset="50">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
+        <scroller >
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
             <div v-else v-for="(item,index) in ordersList" :class="[item.status == 'unpaid' || item.status == 'refunding' || item.status ==  'unshipped' || item.status ==  'returning' ? 'hasPb100' : '']" >
@@ -41,13 +38,13 @@
                                 <input class="amountInput" type="number" placeholder="请输入张数" v-model="paperData"/>
                             </div>
                         </div>
-                        <div class=" space-between  bt10 headerCellBg">
-                            <text class="sub_title">应收押金:{{item.pledgePayable}}元</text>
-                            <div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">
-                                <text class="fz28">实收押金:</text>
-                                <input class="amountInput" type="number" placeholder="请输入金额" v-model="pledgeData"/>
-                            </div>
-                        </div>
+                        <!--<div class=" space-between  bt10 headerCellBg">-->
+                            <!--<text class="sub_title">应收押金:{{item.pledgePayable}}元</text>-->
+                            <!--<div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">-->
+                                <!--<text class="fz28">实收押金:</text>-->
+                                <!--<input class="amountInput" type="number" placeholder="请输入金额" v-model="pledgeData"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class=" space-between  bt10 headerCellBg cell_height" @click="chooseFloor">
                             <text class="sub_title">楼层:</text>
                             <text class="sub_title">{{item.receiver.level}}</text>
@@ -55,6 +52,10 @@
                         <div class=" space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title">运费:</text>
                             <text class="sub_title">{{item.freight}}</text>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">押金:</text>
+                            <text class="sub_title">{{item.pledgePayable}}</text>
                         </div>
                         <div class=" space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title">配送费用:</text>
@@ -564,8 +565,6 @@
                                 _this.amountData = '0'
                             }if( (data.data.paperPayable + data.data.ticket) == 0){
                                 _this.paperData = '0'
-                            }if(data.data.pledgePayable == 0){
-                                _this.pledgeData = '0'
                             }
                             _this.ordersList.push(data.data);
 
@@ -663,13 +662,11 @@
                 if(_this.ordersList[0].paymentPluginId != 'ticketPayPlugin' && _this.ordersList[0].paymentPluginId != 'couponPayPlugin' && _this.ordersList[0].paymentPluginId != 'cashPayPlugin') {
                     _this.amountData = '0';
                     _this.paperData = '0';
-                    _this.pledgeData = '0'
                 }
 
                     //                先把金额转为整型
                 var amountData = parseInt(_this.amountData);
                 var paperData = parseInt(_this.paperData);
-                var pledgeData = parseInt(_this.pledgeData);
                 if(_this.ordersList[0].paymentPluginId == 'ticketPayPlugin' || _this.ordersList[0].paymentPluginId == 'couponPayPlugin' || _this.ordersList[0].paymentPluginId == 'cashPayPlugin')
                 {
                     if(utils.isNull(_this.amountData)){
@@ -682,13 +679,6 @@
                     }else if(utils.isNull(_this.paperData)){
                         modal.alert({
                             message: '请输入实收水票',
-                            okTitle: 'OK'
-                        })
-                        _this.clicked = false;
-                        return
-                    }else if(utils.isNull(_this.pledgeData)){
-                        modal.alert({
-                            message: '请输入实收押金',
                             okTitle: 'OK'
                         })
                         _this.clicked = false;
@@ -710,24 +700,8 @@
                         })
                         _this.clicked = false;
                         return
-                    }else if(pledgeData != _this.ordersList[0].pledgePayable && pledgeData != 0){
-                        modal.alert({
-                            message: '实收押金必须等于应收押金或为0',
-                            okTitle: 'OK'
-                        })
-                        _this.clicked = false;
-                        return
                     }
                 }
-                var amountPaid = amountData + pledgeData;
-//                modal.confirm({
-//                    message: '确认核销吗 ?',
-//                    okTitle: '确认',
-//                    cancelTitle:'取消',
-//                    duration: 0.3
-//                }, function (value) {
-//                    console.log('confirm callback', value)
-//                })
                 POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
 
                         if(data.type == 'success'){
@@ -750,7 +724,7 @@
                                 });
                                 body = JSON.stringify(body);
 
-                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level+'&amountPaid='+amountPaid + '&paperPaid='+paperData,body).then(
+                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level+'&amountPaid='+amountData + '&paperPaid='+paperData,body).then(
                                     function (data) {
                                         _this.clicked = false;
                                         if(data.type == 'success'){
@@ -770,10 +744,12 @@
                             }
 
                         }else{
+                            _this.clicked = false;
                             event.toast(data.content);
                         }
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     })
             },

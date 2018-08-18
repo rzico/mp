@@ -46,10 +46,10 @@
                         <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
                     </div>
                     <div class="flex-row mt10" style="width: 590px">
-                        <text class="fz30" style="color: #999">应收水票: {{paperPayable}}张</text>
+                        <text class="fz30" :class="[paperClass()]" >应收水票: {{paperPayable}}张</text>
                         <text class="fz30" style="color: #999">（上期欠票  {{ticket}}张）</text>
                     </div>
-                    <text class="herderSn mt10">应收押金: {{pledgePayable}}元</text>
+                    <text class="herderSn mt10">空桶押金: {{pledgePayable}}元</text>
                     <text class="herderSn mt10">收货地址: {{areaName}}{{address}}</text>
                     <text class="herderSn mt10">收货姓名: {{consignee}}</text>
                     <text class="herderSn mt10" @click="callPhone">收货电话: {{phone}}</text>
@@ -85,6 +85,12 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .color999{
+        color: #999;
+    }
+    .colorRed{
+        color: red;
+    }
     .iconBox{
         margin-top: 25px;
         width:750px;
@@ -286,6 +292,15 @@
             }
         },
         methods: {
+            paperClass:function () {
+                if (this.cashRecvable == '0' || this.cashRecvable == 0) {
+                    return "colorRed";
+                } else if (this.cashRecvable != '0' || this.cashRecvable != 0) {
+                    return "color999";
+                } else {
+                    return "color999";
+                }
+            },
             contorlList(){
               this.hasList = !this.hasList
             },
@@ -518,11 +533,13 @@
                                     if(e.type == 'success'){
                                         POST("/lbs/location.jhtml?lng=" + e.data.lng + "&lat=" +e.data.lat +'&memberId=' + uId).then(function (mes) {
                                             if (mes.type == 'success') {
-
+                                                _this.clicked = false;
                                             } else {
+                                                _this.clicked = false;
                                                 event.toast(mes.content);
                                             }
                                         }, function (err) {
+                                            _this.clicked = false;
                                             event.toast(err.content)
                                         });
                                         POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor + "&lng=" + e.data.lng + "&lat=" +e.data.lat,body).then(
@@ -555,6 +572,7 @@
                         }
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     })
             }

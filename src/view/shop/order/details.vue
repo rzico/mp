@@ -148,6 +148,10 @@
                             <text class="sub_title">+ 送货工资</text>
                             <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
                         </div>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">+ 空桶押金</text>
+                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
+                        </div>
                         <div class=" space-between mt10" v-if="filter('shippingFreight')">
                             <text class="sub_title">+ 配送运费</text>
                             <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
@@ -157,10 +161,22 @@
                             <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
                         </div>
                     </div>
-                    <div class="priceLine flex-end">
-                        <div class="flex-row">
-                            <text class="title mr20">订单合计:</text>
-                            <text class="title" style="color: red">¥{{item.amount | currencyfmt}}</text>
+                    <div class="priceLine">
+                        <div class="flex-row pb10">
+                            <text class="fz28 mr20">订单合计:</text>
+                            <text class="fz28" style="color: red">¥{{item.amount | currencyfmt}}</text>
+                        </div>
+                        <div class="space-between pb10">
+                            <text class="fz28 ">应收金额:¥{{item.amountPayable | currencyfmt}}(上期欠款:¥{{item.arrears | currencyfmt}})</text>
+                            <text class="fz28 ">实收金额:¥{{item.amountPaid | currencyfmt}}</text>
+                        </div>
+                        <div class="space-between pb10">
+                            <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
+                            <text class="fz28 ">实收水票:{{item.paperPaid}}</text>
+                        </div>
+                        <div class="space-between">
+                            <text class="fz28">应收押金:¥{{item.pledgePayable}}</text>
+                            <text class="fz28 ">实收押金:¥{{item.pledgePaid}}</text>
                         </div>
                     </div>
                 </div>

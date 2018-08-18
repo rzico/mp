@@ -632,15 +632,21 @@
                 },
 //            完成
             complete:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 let _this =this
                 if(utils.isNull(this.shopId)){
                     event.toast('请选择配送站');
+                    _this.clicked = false;
                     return
                 }
                 //                派单必须选择送水工
                 if(this.isPageType == true || this.isPageType == 'true'){
                     if(utils.isNull(this.markiId)){
                         event.toast('请选择配送人员');
+                        _this.clicked = false;
                         return
                     }
                 }
@@ -649,6 +655,7 @@
                         if(data.data == true){
                             POST('weex/member/shipping/dispatch.jhtml?sn='+_this.shippingSn+'&shopId='+_this.shopId+'&adminId='+_this.markiId +'&memo=' +encodeURIComponent(_this.message)).then(
                                 function (data) {
+                                    _this.clicked = false;
                                     if(data.type == 'success'){
                                         let E = utils.message('success','派单成功','')
                                         event.closeURL(E);
@@ -657,17 +664,21 @@
                                     }
                                 },
                                 function (err) {
+                                    _this.clicked = false;
                                     event.toast(err.content);
                                 })
                         }else {
+                            _this.clicked = false;
                             event.toast('该订单他人正在操作，请稍后...')
                         }
 
                         }else{
+                            _this.clicked = false;
                             event.toast(data.content);
                         }
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     })
             }

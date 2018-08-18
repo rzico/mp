@@ -30,18 +30,17 @@
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">应收金额: ¥{{c.amountPayable}}(上期欠款:¥{{c.arrears}})</text>
-                        <text class="fz32">实收金额: ¥{{c.amountPaid}}</text>
+                        <text class="fz32">代收现金: ¥{{c.amountPaid}}</text>
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">应收水票: {{c.paperPayable}}(上期欠票:{{c.ticket}})</text>
-                        <text class="fz32">实收水票: {{c.paperPaid}}</text>
+                        <text class="fz32">代收水票: {{c.paperPaid}}</text>
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">应收押金: ¥{{c.pledgePayable}}</text>
-                        <text class="fz32">实收押金: ¥{{c.pledgePaid}}</text>
+                        <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
                     </div>
                     <div class="totalCellTwo">
-                        <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
                         <text class="fz32">代发工资: ¥{{c.adminFreight}}(楼层费:¥{{c.levelFreight}})</text>
                     </div>
                 </div>
