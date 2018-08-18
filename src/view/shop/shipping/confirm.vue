@@ -560,12 +560,12 @@
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
-                            if(data.data.amountPayable + data.data.arrears == 0){
-                                _this.amountData = 0
-                            }if(data.data.paperPayable + data.data.ticket == 0){
-                                _this.paperData = 0
+                            if( (data.data.amountPayable + data.data.arrears) == 0){
+                                _this.amountData = '0'
+                            }if( (data.data.paperPayable + data.data.ticket) == 0){
+                                _this.paperData = '0'
                             }if(data.data.pledgePayable == 0){
-                                _this.pledgeData = 0
+                                _this.pledgeData = '0'
                             }
                             _this.ordersList.push(data.data);
 
@@ -660,8 +660,13 @@
                     _this.clicked = false;
                     return
                 }
+                if(_this.ordersList[0].paymentPluginId != 'ticketPayPlugin' && _this.ordersList[0].paymentPluginId != 'couponPayPlugin' && _this.ordersList[0].paymentPluginId != 'cashPayPlugin') {
+                    _this.amountData = '0';
+                    _this.paperData = '0';
+                    _this.pledgeData = '0'
+                }
 
-                //                先把金额转为整型
+                    //                先把金额转为整型
                 var amountData = parseInt(_this.amountData);
                 var paperData = parseInt(_this.paperData);
                 var pledgeData = parseInt(_this.pledgeData);

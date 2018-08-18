@@ -957,11 +957,12 @@
                     return
                 }
 
-                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&level='+_this.floor).then(function (res) {
+                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&level='+_this.floor).then(function (res) {
                     if (res.type == 'success') {
 //                        如果实付金额为0，则不走后面的流程
                         if(res.data.amountPayable == 0){
                             _this.clicked = false;
+
                             modal.alert({
                                 message: '确认成功',
                                 okTitle: '知道了'
