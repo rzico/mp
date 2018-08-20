@@ -977,7 +977,9 @@
                                     _this.adminId = '';
                                     _this.barrel  = '';
                                     _this.deposit = '';
-                                    _this.paymentPluginId = '';
+                                    _this.begin =0;
+                                    _this.paymentPluginId = 'cashPayPlugin';
+                                    _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
@@ -995,7 +997,9 @@
                                     _this.adminId = '';
                                     _this.barrel  = '';
                                     _this.deposit = '';
-                                    _this.paymentPluginId = '';
+                                    _this.begin =0;
+                                    _this.paymentPluginId = 'cashPayPlugin';
+                                    _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
                                     _this.cartList();
                                     _this.getInfo();
