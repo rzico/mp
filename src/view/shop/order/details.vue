@@ -123,7 +123,7 @@
                         <text class="sub_title ">派单留言: {{item.shippingMemo}}</text>
                     </div>
                     <div class="infoLines boder-bottom ">
-                        <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
+                        <text class="sub_title ">买家留言: {{item.memo}}</text>
                     </div>
                 </div>
                 <div class="mt20  infoWhiteColor" >
