@@ -160,7 +160,8 @@
                 cardId:'',
                 id:'',
                 begin:0,
-                floor:0
+                floor:0,
+                clicked:false,
             }
         },
         created() {
@@ -310,23 +311,32 @@
                 })
             },
             complete(){
-                let _this = this;
+                var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 if(utils.isNull(this.id) && !utils.isNull(this.cardId)){
 //                    这个是新增地址
                 if(utils.isNull(this.name)){
                     event.toast('请输入用户姓名')
+                    _this.clicked = false;
                     return
                 }else if(utils.isNull(this.phone)){
                     event.toast('请输入联系电话')
+                    _this.clicked = false;
                     return
                 }else if(utils.isNull(this.areaId)){
                     event.toast('请选择区域地址')
+                    _this.clicked = false;
                     return
                 }else if(utils.isNull(this.detailed)){
                     event.toast('请输入详细地址')
+                    _this.clicked = false;
                     return
                 }
                 POST("weex/member/receiver/add.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+encodeURIComponent(this.phone) +"&lat="+ this.lng + "&lat=" +this.lat+'&memberId='+this.memberId+'&level='+this.floor).then(function (mes) {
+                    _this.clicked = false;
                     if (mes.type == 'success') {
                         let E = utils.message('success','添加成功','')
                         event.closeURL(E);
@@ -334,24 +344,30 @@
                         event.toast(mes.content);
                     }
                 }, function (err) {
+                    _this.clicked = false;
                     event.toast(err.content)
                 })
                 }else if(utils.isNull(this.id) && utils.isNull(this.cardId)){
 //                    这个时候是新增会员
                     if(utils.isNull(this.name)){
                         event.toast('请输入用户姓名')
+                        _this.clicked = false;
                         return
                     }else if(utils.isNull(this.phone)){
                         event.toast('请输入联系电话')
+                        _this.clicked = false;
                         return
                     }else if(utils.isNull(this.areaId)){
                         event.toast('请选择区域地址')
+                        _this.clicked = false;
                         return
                     }else if(utils.isNull(this.detailed)){
                         event.toast('请输入详细地址')
+                        _this.clicked = false;
                         return
                     }
                     POST("weex/member/receiver/addcard.jhtml?isDefault=true&areaId="+this.areaId+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&level='+this.floor).then(function (mes) {
+                        _this.clicked = false;
                         if (mes.type == 'success') {
                             let E = utils.message('success','添加成功','')
                             event.closeURL(E);
@@ -359,38 +375,43 @@
                             event.toast(mes.content);
                         }
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast(err.content)
                     })
                 }else if(!utils.isNull(this.id) && !utils.isNull(this.cardId)){
-                    _this.etidor()
+                    //            修改
+                    if(utils.isNull(this.name)){
+                        event.toast('请输入用户姓名')
+                        _this.clicked = false;
+                        return
+                    }else if(utils.isNull(this.phone)){
+                        event.toast('请输入联系电话')
+                        _this.clicked = false;
+                        return
+                    }else if(utils.isNull(this.areaId)){
+                        event.toast('请选择区域地址')
+                        _this.clicked = false;
+                        return
+                    }else if(utils.isNull(this.detailed)){
+                        event.toast('请输入详细地址')
+                        _this.clicked = false;
+                        return
+                    }
+                    POST("weex/member/receiver/update.jhtml?isDefault=true&areaId="+this.areaId+'&id='+this.id+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+ encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&level='+this.floor).then(function (mes) {
+                        _this.clicked = false;
+                        if (mes.type == 'success') {
+                            let E = utils.message('success','修改成功','')
+                            event.closeURL(E);
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        _this.clicked = false;
+                        event.toast(err.content)
+                    })
                 }
             },
-//            修改接口
-            etidor(){
-                if(utils.isNull(this.name)){
-                    event.toast('请输入用户姓名')
-                    return
-                }else if(utils.isNull(this.phone)){
-                    event.toast('请输入联系电话')
-                    return
-                }else if(utils.isNull(this.areaId)){
-                    event.toast('请选择区域地址')
-                    return
-                }else if(utils.isNull(this.detailed)){
-                    event.toast('请输入详细地址')
-                    return
-                }
-                POST("weex/member/receiver/update.jhtml?isDefault=true&areaId="+this.areaId+'&id='+this.id+'&address='+ encodeURIComponent(this.detailed) +'&consignee='+ encodeURIComponent(this.name)+'&phone='+this.phone +"&lat="+ this.lng + "&lat=" +this.lat+'&level='+this.floor).then(function (mes) {
-                    if (mes.type == 'success') {
-                        let E = utils.message('success','修改成功','')
-                        event.closeURL(E);
-                    } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content)
-                })
-            }
+
 
         }
     }

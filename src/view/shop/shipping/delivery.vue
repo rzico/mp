@@ -72,7 +72,7 @@
                             <div class="chooseBox"><text class="fz28 primary">快速话语</text> </div>
                         </div>
                     </div>
-                    <div class="button mt30" style="width: 530px" @click="goComplete()">
+                    <div class="button mt30" style="width: 530px" @click="goComplete()" v-if="isButton">
                         <text class="fz40" style="color:#fff;">确认送达</text>
                     </div>
                 </div>
@@ -81,10 +81,63 @@
                 <div style="height:100px"></div>
             </cell>
         </list>
+        <div class="codeMask" v-if="isMask" @click="maskChick">
+            <div class="codeBox">
+                <div class="downCode" @click="downCodeMask">
+                    <text class="downCodeIcon" :style="{fontFamily:'iconfont'}">&#xe60a;</text>
+                </div>
+                <image class="codeImg" :src="qrcode"></image>
+                <div class="codeTextBox">
+                    <text class="codeText">扫码签收</text>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .codeMask{
+        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;
+        background-color: rgba(000,000,000,0.4);
+        align-items: center;
+        justify-content: center;
+    }
+    .codeBox{
+        background-color: white;
+        width:550px;
+        height:650px;
+        border-radius: 15px;
+        align-items: center;
+        justify-content: center;
+        /*position: absolute;*/
+        /*left:75px;*/
+        /*top:300px;*/
+    }
+    .downCode{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    .downCodeIcon{
+        font-size: 45px;
+        color: #999999;
+    }
+    .codeImg{
+        width: 450px;
+        height: 450px;
+    }
+    .codeTextBox{
+        width: 300px;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 50px;
+        left: 125px;
+    }
+    .codeText{
+        font-size: 28px;
+        color: #888888;
+    }
     .color999{
         color: #999;
     }
@@ -264,7 +317,10 @@
                 paperPayable:'',
                 ticket:'',
                 pledgePayable:'',
-                cashRecvable:''
+                cashRecvable:'',
+                isMask:false,
+                isButton:true,
+                qrcode:''
             }
         },
         created: function () {
@@ -292,6 +348,13 @@
             }
         },
         methods: {
+            maskChick:function () {
+              return
+            },
+            downCodeMask(){
+              this.isMask = false;
+                this.isButton = false
+            },
             paperClass:function () {
                 if (this.cashRecvable == '0' || this.cashRecvable == 0) {
                     return "colorRed";
@@ -546,8 +609,10 @@
                                             function (res) {
                                                 _this.clicked = false;
                                                 if(res.type == 'success'){
-                                                    let E = utils.message('success','送达成功','');
-                                                    event.closeURL(E);
+//                                                    let E = utils.message('success','送达成功','');
+//                                                    event.closeURL(E);
+                                                    _this.qrcode = utils.website("/q/show.jhtml?url=" + encodeURI("http://weixin.rzico.com/q/818807"+ _this.shippingSn+ ".jhtml"));
+                                                    _this.isMask = true
                                                 }else{
                                                     event.toast(res.content);
                                                 }
