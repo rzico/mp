@@ -9,7 +9,7 @@
                     <div style="width: 50px;">
                     </div>
                     <!--导航栏名字头像-->
-                    <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'white'" >
+                    <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'white'">
                         <image class="headImg" :src="imageUrl"></image>
                         <text class="navText" >{{userName | watchNickName}}</text>
                     </div>
@@ -18,9 +18,9 @@
                 </div>
             </div>
             <!--导航栏设置-->
-            <div  class=" rightTop " :class="[classTop()]" @click="goManage()">
+            <div  class=" rightTop" :class="[classTop()]" @click="goManage()">
                 <!--<text  :style="{fontFamily:'iconfont',color:settingColor}" style="font-size:50px;">&#xe62d;</text>-->
-                <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
+                <text :style="{fontFamily:'iconfont'}" style="font-size:50px;color: #fff">&#xe62d;</text>
             </div>
             <!--绑定动画-->
             <!--只能多写一个顶部栏。否则无法适应-->
@@ -49,11 +49,13 @@
             <!--</div>-->
             <!--判断是否到顶部，关闭那个顶部导航栏显示效果 scroller 用  6.27号已弃用-->
             <!--<div style="position:absolute;top: 120px;width: 1px;height: 1px;opacity: 0;"  @appear="toponappear"></div>-->
-            <div ref="listSlide" >
-                <!--顶部个人信息栏-->
-                <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox' @appear="hideTopLine()">
+            <div ref="listSlide">
+                <!--顶部个人信息栏bkg-primary-->
+                <div class="topBox "  :class="[headerInfo()]" ref='topBox' @appear="hideTopLine()">
                     <!--背景图片-->
-                    <image class="backgroundImage" :class="[headerBgImg()]"  :src="bgImgUrl"></image>
+
+                    <div  v-if="!bgImgLoading"  class="backgroundImage coverAbsoTop " :class="[headerBgImg()]" ></div>
+                    <image class="backgroundImage" :class="[headerBgImg()]"   @load="onbgImageLoad()" resize="cover" :src="bgImgUrl"></image>
                     <!--遮罩层-->
                     <!--<image class="backgroundMask" :src="maskUrl"></image>-->
                     <div class="topHead" >
@@ -73,6 +75,7 @@
                             <text class="topBtn topBtnBigFont">{{collectNum}}</text>
                             <text class=" topBtn " >收藏</text>
                         </div>
+                        <!--ios上架注释-->
                         <div class="topBtnSmallBox walletLayout"  @click="goWallet()">
                             <!--钱包两边的白色边框-->
                             <div  class="leftBtnBorder topBtnBorder" ></div>
@@ -90,11 +93,10 @@
                     </div>
                 </div>
             </div>
-
             <div>
-                <div  class="corpusBox" >
-                    <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll">
-                        <div class="articleClass">
+                <div  class="corpusBox">
+                    <scroller scroll-direction="horizontal" show-scrollbar="false" class="corpusScroll" >
+                        <div class="articleClass" >
                             <text @click="corpusChange(index,item.id)" class="allArticle" v-for="(item,index) in corpusList" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                         </div>
                     </scroller>
@@ -104,7 +106,7 @@
                 </div>
                 <div class="boder-bottom" style="width: 750px"></div>
                 <!--文章模块-->
-                <div :style="{minHeight:screenHeight + 'px'}" >
+                <div :style="{minHeight:screenHeight + 'px'}">
                     <!--绑定动画-->
                     <div class="articleBox"  v-for="(item,index) in articleList" :key="index" @click="goArticle(item,index)" @touchstart="ontouchstart($event,index)" @swipe="onpanmove($event,index)">
                         <!--<div class="articleBox" v-for="item in articleList" @click="goArticle(item.id)" @swipe="swipeHappen($event)"> @panmove="onpanmove($event,index)"-->
@@ -144,7 +146,7 @@
                                     <text class="rightHiddenText">编辑</text>
                                 </div>
                                 <div class="rightHiddenIconBox" @click="jumpDelete(item,index)">
-                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}" >&#xe652;</text>
+                                    <text class="rightHiddenIcon redColor" :style="{fontFamily:'iconfont'}">&#xe652;</text>
                                     <text class="rightHiddenText redColor" >删除</text>
                                 </div>
                             </div>
@@ -194,17 +196,18 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </scroller>
         <!--遮罩-->
-        <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
+        <process  v-if="toSendArticle" :processWidth="processWidth" maskNoBg="yes" :currentPro="currentPro" :proTotal="proTotal"></process>
     </div>
 </template>
-
 <style lang="less" src="../../style/wx.less"/>
 <style scoped >
+    .sendMask{
+        background-color: red !important;
+    }
     .bkg-444{
         background-color: #444444;
     }
@@ -383,6 +386,7 @@
         background-color: #fff;
         margin-bottom: 15px;
     }
+
     .rightHidden{
         position: absolute;
         right: 0px;
@@ -391,12 +395,12 @@
         width: 330px;
         /*height:533px ;*/
         height: 608px;
-
         /*height:457px ;*/
         /*height:502px ;*/
         /*align-items: center;*/
         /*justify-content:space-around;*/
     }
+
     .relevantImage {
         flex-direction: row;
         font-size: 32px;
@@ -535,6 +539,7 @@
         width:750px;
         top:0;
         height:420px;
+        opacity: 0.7;
         /*filter: blur(4px);*/
         /*opacity: 1;*/
         /*-moz-filter: blur(4px);*/
@@ -644,7 +649,8 @@
                 moneyNum:0,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.png'),
-                bgImgUrl:utils.locate('resources/images/background.png'),
+                bgImgUrl:'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/backgroundMp.png',
+//                bgImgUrl:utils.locate('resources/images/loading.png'),
 //                maskUrl:utils.locate('resources/images/frosted.png'),
 //                id:'334',
                 showLoading: 'hide',
@@ -675,7 +681,7 @@
                 currentPro:0,//当前进度
                 proTotal:0,//总的进度
                 processWidth:0,//进度条宽度
-
+                bgImgLoading:false,
             }
         },
         components: {
@@ -982,9 +988,11 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + id),function (message) {
+                setTimeout(function () {
                     _this.clicked = false;
-//                    _this.updateArticle();
+                },1500)
+                event.router(utils.locate('view/member/editor/editor.js?articleId=' + id ),function (message) {
+
                 });
 
 //                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
@@ -998,10 +1006,12 @@
                 }
                 this.clicked = true;
                 var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/member/editor/chooseCorpus.js?corpusId=' + item.value.articleOption.articleCatalog.id + '&articleId=' + item.key),
 //                event.openURL('http://192.168.2.157:8081/chooseCorpus.weex.js?corpusId=' + item.value.articleOption.articleCatalog.id,
                     function (data) {
-                        _this.clicked = false;
                         if(data.type == 'success' && data.data != ''){
                             item.value.articleOption.articleCatalog.id = data.data.corpusId;
                             item.value.articleOption.articleCatalog.name = data.data.corpusName;1
@@ -1455,7 +1465,7 @@
                     _this.updateUserInfo();
                 }, 1000);
             },
-//            还原
+//            还原，恢复
             jumpRestore(item,index){
                 if (this.clicked) {
                     return;
@@ -1797,6 +1807,10 @@
                 if(this.processWidth >= 500){
                     this.processWidth = 500;
                 }
+            },
+//            封面加载出来
+            onbgImageLoad(){
+                this.bgImgLoading = true;
             },
         }
     }

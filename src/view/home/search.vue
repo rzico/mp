@@ -76,7 +76,7 @@
                             <div class="singleUserBox"  v-for="(item,index) in searchList.friend" v-if="index <= 9" @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div >
-                                    <text class="title fz28 bt15">{{item.name | watchNickName}}</text>
+                                    <text class="title fz28 bt15 lines-ellipsis-two">{{item.name | watchNickName}}</text>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +97,7 @@
                             <div class="flex-row "  @click="goAuthor(item.id)">
                                 <image class="logo" :src="item.logo | watchFriendLogo"></image>
                                 <div style="width: 460px;">
-                                    <text class="title ml20">{{item.name | watchNickName}}</text>
+                                    <text class="title ml20 lines-ellipsis">{{item.name | watchNickName}}</text>
                                     <text class="sub_title ml20 mt20 autoLimit">{{item.autograph}}</text>
                                 </div>
                                 <div style="width: 130px;">

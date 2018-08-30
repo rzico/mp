@@ -93,7 +93,7 @@
                         <!--加号跟功能盒子-->
                         <div class="addBox" @click="clearIconBox()">
                             <!--加号 *** 此处v-if需要一个空div包着，否则频繁切换v-if会导致样式错乱-->
-                            <div v-if="item.show"   >
+                            <div v-if="item.show" >
                                 <div class="plusSignBox" @click="showIconBox(index)">
                                     <text class="plusSign" :style="{fontFamily:'iconfont'}" >&#xe618;</text>
                                 </div>
@@ -146,7 +146,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!--表单-->
                 <div  v-for="(item,index) in tableList"  class="voteMargin" @click="editTable(index)">
                     <div class="paraBox paraBoxHeight">
@@ -168,8 +167,8 @@
 
                 <!--添加商品-->
                 <!--<div class="paraBox flexRow " @click="addLinkPara(paraList.length)">-->
-                    <!--<text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe640;</text>-->
-                    <!--<text class="addVote">添加商品</text>-->
+                <!--<text class="addVote addVoteIcon " :style="{fontFamily:'iconfont'}">&#xe640;</text>-->
+                <!--<text class="addVote">添加商品</text>-->
                 <!--</div>-->
 
                 <!--添加投票-->
@@ -180,8 +179,8 @@
 
                 <!--添加表单-->
                 <div class="paraBox flexRow " @click="goTable()" v-if="tableList.length == 0">
-                <text class="addVote addVoteIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                <text class="addVote pt2">添加表单</text>
+                    <text class="addVote addVoteIcon" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                    <text class="addVote pt2">添加表单</text>
                 </div>
             </cell>
             <!--用来撑起底部空白区域-->
@@ -223,7 +222,7 @@
             </div>
         </div>
         <!--完成文章遮罩-->
-        <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
+        <process  v-if="toSendArticle" :processWidth="processWidth"  :currentPro="currentPro" :proTotal="proTotal" ></process>
         <!--等待遮罩-->
         <!--<waiting  v-if="waitShow"></waiting>-->
     </div>
@@ -554,7 +553,7 @@
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     import process from '../../../widget/process.vue';
-//    import waiting from '../../../widget/waiting.vue';
+    //    import waiting from '../../../widget/waiting.vue';
     const storage = weex.requireModule('storage');
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
@@ -625,8 +624,10 @@
                 if(utils.isNull(value)){
                     return value;
                 }
+//                将div换成\n
+                let takeEnterIos=value.replace(/<div>/g,"\n");
 //                将h1-h5换成\n
-                let takeEnter=value.replace(/<\/h[0-9]>/g,"\n");
+                let takeEnter = takeEnterIos.replace(/<\/h[0-9]>/g,"\n");
 //                将html标签替换，可能遗留空格
                 let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
 //                将空格 &nbsp; 替换成 。
@@ -685,7 +686,6 @@
                                 _this.currentPro = 0;//当前进度
                                 _this.proTotal = 1;//总的进度
                                 _this.processWidth = 0;//进度条宽度
-
                                 _this.processWidth = _this.processWidth  + (50 * Math.random());
 //                                  利用定时器 模拟进度条效果
                                 var timer = setInterval(function () {
@@ -1103,6 +1103,35 @@
 //                                    pageBox:optionBox
 //                                })
 //                            })
+                            let middleData = articleData.forms[0];
+                            if(middleData.options.length > 0 && utils.isNull(middleData.options[0].type)){
+                                let optionBox = [];
+                                middleData.values.forEach(function (mes,mesIndex) {
+                                    if(utils.isNull(mes)){
+                                        optionBox.push({
+                                            type:'option',
+                                            textAreaMessage:middleData.options[mesIndex],
+                                            autofocus:false,
+                                        })
+                                    }else{
+                                        let a = mes.split(',');
+                                        let b = [];
+                                        for(let i = 0; i < a.length; i++){
+                                            b.push({
+                                                textAreaMessage:a[i],
+                                                autofocus:false,
+                                                choose:false,
+                                            })
+                                        }
+                                        optionBox.push({
+                                            type:'single',
+                                            title:middleData.options[mesIndex],
+                                            single:b,
+                                        })
+                                    }
+                                })
+                                articleData.forms[0].options = optionBox;
+                            }
 
                             _this.tableList.push(articleData.forms[0]);
                         }
@@ -1277,17 +1306,16 @@
                     _this.clicked = false;
                     if(data.data != ''){
                         data.data  = utils.filteremoji(data.data);
-                        //                将h1-h5换成\n
-                        let takeEnter=data.data.replace(/<\/h[0-9]>/g,"\n");
-//                将html标签替换，可能遗留空格
-                        let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
-//                将空格 &nbsp; 替换成 。
-                        let spaceText=nbspText.replace(/&nbsp;/g," ");
-//                将空格替换掉
-                         spaceText= spaceText.replace(/^\s+|\s+$/g, '')
-
+//                        //                将h1-h5换成\n
+//                        let takeEnter=data.data.replace(/<\/h[0-9]>/g,"\n");
+////                将html标签替换，可能遗留空格
+//                        let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
+////                将空格 &nbsp; 替换成 。
+//                        let spaceText=nbspText.replace(/&nbsp;/g," ");
+////                将空格替换掉
+//                         spaceText= spaceText.replace(/^\s+|\s+$/g, '')
 //                    将返回回来的html数据赋值进去
-                        _this.paraList[index].paraText = spaceText;
+                        _this.paraList[index].paraText = data.data;
                         _this.hadChange = 1;
 //                        if(utils.isNull(_this.articleId)){
 //                        临时保存到缓存
@@ -1664,6 +1692,7 @@
                     id:musicId
                 }
 
+
 //                表单组
                 this.tableList.forEach(function (item) {
 //                    投票选项
@@ -1685,7 +1714,6 @@
                             })
                             tableValues.push(a);
                         }
-
                     })
                     _this.tableData.push({
                         title:item.title,
@@ -1874,19 +1902,15 @@
                 },1500)
                 event.openEditor('',function (data) {
                     if(data.type == 'success' && data.data != ''){
-
                         data.data  = utils.filteremoji(data.data);
-                        //                将h1-h5换成\n
-                        let takeEnter=data.data.replace(/<\/h[0-9]>/g,"\n");
-//                将html标签替换，可能遗留空格
-                        let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
-//                将空格 &nbsp; 替换成 。
-                        let spaceText=nbspText.replace(/&nbsp;/g," ");
-//                将空格替换掉
-                        spaceText= spaceText.replace(/^\s+|\s+$/g,'')
-
-
-
+//                        //                将h1-h5换成\n
+//                        let takeEnter=data.data.replace(/<\/h[0-9]>/g,"\n");
+////                将html标签替换，可能遗留空格
+//                        let nbspText=takeEnter.replace(/<\/?.+?>/g,"");
+////                将空格 &nbsp; 替换成 。
+//                        let spaceText=nbspText.replace(/&nbsp;/g," ");
+////                将空格替换掉
+//                        spaceText= spaceText.replace(/^\s+|\s+$/g,'')
                         let textImg = utils.locate('resources/images/text.png');
 //                    将返回回来的html数据赋值进
                         let newPara = {
@@ -1895,7 +1919,7 @@
 //                                    小缩略图
                             thumbnailImage:textImg,
 //                        paraText:_this.checkInput(data.data),
-                            paraText:spaceText,
+                            paraText:data.data,
                             mediaType: "image",
                             show:true,
                             //          对象id
@@ -2425,39 +2449,41 @@
                 });
             },
 
-            choogeTableList(){
+            changeTableList(){
                 let _this = this;
                 if(utils.isNull(this.tableData)){
                     this.tableData = this.tableList;
                 }
-                    let voteData = this.tableData[0];
-                    let optionBox = [];
-                    voteData.values.forEach(function (mes,mesIndex) {
-                        if(utils.isNull(mes)){
+                let voteData = this.tableData[0];
+                let optionBox = [];
+                if(voteData.options.length > 0 && utils.isNull(voteData.options[0].type)) {
+                    voteData.values.forEach(function (mes, mesIndex) {
+                        if (utils.isNull(mes)) {
                             optionBox.push({
-                                type:'option',
-                                textAreaMessage:voteData.options[mesIndex],
-                                autofocus:false,
+                                type: 'option',
+                                textAreaMessage: voteData.options[mesIndex],
+                                autofocus: false,
                             })
-                        }else{
+                        } else {
                             let a = mes.split(',');
                             let b = [];
-                            for(let i = 0; i < a.length; i++){
+                            for (let i = 0; i < a.length; i++) {
                                 b.push({
-                                    textAreaMessage:a[i],
-                                    autofocus:false,
-                                    choose:false,
+                                    textAreaMessage: a[i],
+                                    autofocus: false,
+                                    choose: false,
                                 })
                             }
                             optionBox.push({
-                                type:'single',
-                                title:voteData.options[mesIndex],
-                                single:b,
+                                type: 'single',
+                                title: voteData.options[mesIndex],
+                                single: b,
                             })
                         }
                     })
                     voteData.options = optionBox;
-                    return voteData;
+                }
+                return voteData;
             },
 
 //            编辑表单
@@ -2471,7 +2497,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                let voteData = JSON.stringify(this.choogeTableList());
+                let voteData = JSON.stringify(this.changeTableList());
                 storage.setItem('voteData', voteData);
 //                event.openURL('http://192.168.2.157:8081/vote.weex.js?name=voteData',function (message) {
                 event.openURL(utils.locate('view/member/editor/table.js?name=voteData'),function (message) {

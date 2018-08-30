@@ -1,33 +1,31 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title"@goback="goback"></navbar>
-        <list  class="whiteColor"  @loadmore="onloading" loadmoreoffset="50">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+        <list class="whiteColor" @loadmore="onloading" loadmoreoffset="50">
+            <refresh class="refreshBox" @refresh="onrefresh"   :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell v-if="dataList.length == 0">
-                <noData :noDataHint="noDataHint" ndBgColor="#fff" ></noData>
+                <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
             </cell>
-            <!--赞赏-->
+            <!--点赞-->
             <cell  v-else v-for="item in dataList"  @click="goAuthor(item.memberId)">
                 <div class="lineBox" >
-
-                <div class="flex-row">
-                    <image class="headImg" :src="item.logo" ></image>
-                    <div class="userInfo">
-                        <text class="fz30 nameColor" >{{item.nickName}}</text>
-                        <!--<text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
-                        <text   class="infoText" >赞赏了你 {{item.amount}} 元</text>
-                        <text class="sub_title fz24">{{item.createDate | timefmtOther}}</text>
+                    <div class="flex-row">
+                        <image class="headImg" :src="item.logo" ></image>
+                        <div class="userInfo">
+                            <text class="fz30 nameColor" >{{item.nickName}}</text>
+                            <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                            <text class="sub_title fz24">{{item.createDate | datemoretimefmt}}</text>
+                        </div>
                     </div>
-                </div>
-                <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
+                    <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->
                 </div>
             </cell>
         </list>
     </div>
 </template>
-<style lang="less" src="../../../style/wx.less"/>
+<style lang="less" src="../../style/wx.less"/>
 <style>
     .whiteColor{
         background-color: #fff;
@@ -72,15 +70,14 @@
     .fz30{
         font-size: 30px;
     }
-
 </style>
 <script>
-    import navbar from '../../../include/navbar.vue';
-    import {dom,event,storage,stream,animation} from '../../../weex.js';
-    import utils from '../../../assets/utils';
-    import { POST, GET } from '../../../assets/fetch'
-    import noData from '../../../include/noData.vue'
-    import filters from '../../../filters/filters.js'
+    import navbar from '../../include/navbar.vue';
+    import {dom,event,storage,stream,animation} from '../../weex.js';
+    import utils from '../../assets/utils';
+    import { POST, GET } from '../../assets/fetch'
+    import noData from '../../include/noData.vue'
+    import filters from '../../filters/filters.js'
     export default {
         data(){
             return{
@@ -90,7 +87,7 @@
                 pageStart:0,
                 pageSize:15,
                 articleId:'',
-                title:'0人赞赏',
+                title:'0人看过',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
             }
@@ -98,24 +95,24 @@
         components: {
             navbar,noData
         },
+        props:{
+            noDataHint:{default:'暂时无人看过'},
+        },
         created(){
             let _this = this;
             utils.initIconFont();
             this.articleId = utils.getUrlParameter('articleId');
             this.getAllLaud();
         },
-        props:{
-            noDataHint:{default:'暂时无人赞赏'},
-        },
         methods:{
 //            获取点赞列表
             getAllLaud(){
                 let _this = this;
-                GET('weex/reward/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
+                GET('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
                         if (_this.pageStart == 0) {
                             _this.dataList = data.data.data;
-                            _this.title = data.data.recordsTotal + '人赞赏';
+                            _this.title = data.data.recordsTotal + '人看过';
                         }else{
                             data.data.data.forEach(function (item) {
                                 _this.dataList.push(item);
@@ -131,7 +128,7 @@
                 })
             },
             onloading:function () {
-////            获取黑名单列表
+////            获取点赞列表
                 this.getAllLaud();
             },
             onrefresh:function () {
@@ -178,6 +175,27 @@
                     _this.clicked = false;
                 });
             },
+//            onloading:function () {
+//                var _this = this;
+//                _this.showLoading = true;
+////                _this.loadingState = "正在加载数据";
+//                setTimeout(() => {
+//                    _this.listCurrent = _this.listCurrent + _this.pageSize;
+//                    GET('weex/laud/list.jhtml?articleId=' + this.articleId +'&pageStart=' + _this.listCurrent + '&pageSize=' + _this.pageSize,function (data) {
+//                        if(data.type == 'success' && data.data.data != '' ){
+//                            data.data.data.forEach(function (item) {
+//                                _this.dataList.push(item);
+//                            })
+//                        }else if(data.type == 'success' && data.data.data == '' ){
+//                        }else{
+//                            event.toast(data.content);
+//                        }
+//                    },function (err) {
+//                        event.toast(err.content);
+//                    })
+//                    _this.showLoading = false;
+//                }, 1500)
+//            },
         }
 
     }

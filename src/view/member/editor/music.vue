@@ -45,20 +45,22 @@
         color: #888;
     }
     .paraTransition-enter-active, .paraTransition-leave-active {
-        transition: all 0.05s;
+        /*transition: all 0.05s;*/
+        transition: all 0.15s;
     }
     .paraTransition-leave-to{
-        transform: translateY(-50px);
+        transform: translateY(-150px);
         opacity: 0;
     }
     .paraTransition-enter{
-        transform: translateY(-50px);
+        transform: translateY(-150px);
         opacity: 0;
     }
     .paraTransition-enter-to{
         transform: translateY(0px);
         opacity: 1;
     }
+
     .musicTotal{
         color: #999;
         font-size: 24px;

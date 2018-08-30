@@ -45,7 +45,7 @@
                                 <!--多行文本-->
                                 <div class="textareaBox">
                                     <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                                    <input class="textareaClass ml10 "   placeholder='单选框标题(如:请选择幼儿园班级)' autofocus="true" v-model="data.title"  />
+                                    <input class="textareaClass ml10"   placeholder='单选框标题(如:请选择幼儿园班级)' autofocus="true" v-model="data.title"  />
                                 </div>
                                 <!--删除按钮-->
                                 <text class="closeIcon" :style="{fontFamily:'iconfont'}"  @click="deleteOptions(mesIndex)">&#xe60a;</text>
@@ -56,7 +56,7 @@
                                 <!--多行文本-->
                                 <div class="textareaBox">
                                     <!--<textarea class="textareaClass " placeholder="选项1" data-id="1" v-model="textAreaMessage[1].text"  @input="oninput"  :style="{height:textHeight[1].height + 'px'}"  :rows="rowsNum[1].rows"></textarea>-->
-                                    <input class="textareaClass ml10 fz30"   placeholder='选项描述(如:幼儿园大/小班)' :autofocus="item.autofocus" v-model="item.textAreaMessage"  />
+                                    <input class="textareaClass ml10 fz30"   placeholder='选项描述(如:幼儿园大/小班)' :autofocus="item.autofocus" v-model="item.textAreaMessage"/>
                                 </div>
                                 <!--<div v-if="isLastSingle(index,data)">-->
                                 <div v-if="index >= 2">
@@ -98,20 +98,19 @@
                     <div class="voteTell addBottomBorder">
                         <text class=" tellSize previewLine">{{vote.title | watchPreviewTitle}}</text>
                     </div>
-
                     <div v-for="(data,mesIndex) in vote.options">
                         <!--输入栏-->
                         <div class="voteTell addBottomBorder optionsBox" v-if="data.type == 'option'">
                             <!--勾选圆形-->
                             <text class="fz50 ml20" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
                             <!--多行文本-->
-                            <div class="textareaBox" >
-                                <input class="textareaClass ml10"   :placeholder='setPreviewPlaceholder(mesIndex,data)'   />
+                            <div class="textareaBox">
+                                <input class="textareaClass ml10"  :placeholder='setPreviewPlaceholder(mesIndex,data)'   />
                             </div>
                             <text class="closeIcon"></text>
                         </div>
                         <!--单选-->
-                        <div  class="addBottomBorder" v-else-if="data.type == 'single'">
+                        <div class="addBottomBorder" v-else-if="data.type == 'single'">
                             <div class="voteTell optionsBox">
                                 <!--勾选圆形-->
                                 <text class="fz48 ml20" :style="{fontFamily:'iconfont'}">&#xe609;</text>
@@ -294,13 +293,31 @@
             if(utils.isNull(vote)){
 //               添加新的投票
                 this.voteList.push({
-                    title:'',
-                    buttonName:'',
+                    title:'填写报名信息',
+                    buttonName:'立即报名',
                     options:[
                         {
                             type:'option',
-                            textAreaMessage:'',
+                            textAreaMessage:'姓名',
                             autofocus:false,
+                        },
+                        {
+                            type:'option',
+                            textAreaMessage:'电话',
+                            autofocus:false,
+                        },
+                        {
+                            type:'single',
+                            title:'性别',
+                            single:[{
+                                textAreaMessage:'男',
+                                autofocus:false,
+                                choose:false,
+                            },{
+                                textAreaMessage:'女',
+                                autofocus:false,
+                                choose:false,
+                            }]
                         }
                     ],
                     values:['']

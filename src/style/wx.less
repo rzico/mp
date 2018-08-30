@@ -41,6 +41,10 @@
     font-size: 26px;
     color: @font-gray;
 }
+
+.fz24{
+    font-size: 24px;
+}
 .fz26{
     font-size: 26px;
 }
@@ -516,6 +520,17 @@
     width: 40px;
     margin-left: 150px;
 }
+
+
+
+/** 按钮不可点击 **/
+
+.disableBg{
+    background-color:@border-gray ;
+}
+
+
+
 /**默认按钮类型**/
 .button {
     font-size: 32px;
@@ -575,6 +590,10 @@
    text-overflow: ellipsis;
 }
 
+.lines-ellipsis-two {
+    lines:2;
+    text-overflow: ellipsis;
+}
 //导航适配
 .V1 {
     height: 146px;
@@ -716,6 +735,12 @@
     background-color: rgba(0,0,0,0.8);
     align-items: center;
     justify-content: center;
+    border-style:solid;
+    border-width:1px;
+}
+
+.noBgColor{
+    background-color: rgba(255,255,255,0.8);
 }
 
 //懒加载蓝色底图

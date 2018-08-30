@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
-        <scroller class="scroller">
+        <navbar :title="title" @goback="goback"></navbar>
+        <scroller class="scroller" v-if="member.hasTopic != null">
             <div class="cell-row ">
                 <div class="cell-logo" @click="attribute()">
                     <div class="flex-start">
@@ -31,43 +31,43 @@
                     </div>
                 </div>
                 <!--<div class="cell-panel space-between" :class="[member.hasTopic?'':'cell-clear']" @click="setCompanyInfo()">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe657;</text>-->
-                        <!--<text class="title ml10">企业信息</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-row flex-start">-->
+                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe657;</text>-->
+                <!--<text class="title ml10">企业信息</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
                 <!--<div class="cell-panel space-between" :class="[member.hasTopic?'':'cell-clear']" @click="allowLogin()">-->
-                    <!--<div class="flex-row flex-start">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe657;</text>-->
-                        <!--<text class="title ml10">授权登录</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-row flex-start">-->
+                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe657;</text>-->
+                <!--<text class="title ml10">授权登录</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
                 <!--上架注释的-->
                 <div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="topic()">
-                <div class="flex-row">
-                <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
-                <text class="title ml10">我的专栏</text>
-                </div>
-                <div class="flex-row flex-end">
-                <text class="sub_title">{{member.topic}}</text>
-                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                </div>
+                    <div class="flex-row">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>
+                        <text class="title ml10">我的专栏</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title">{{member.topic}}</text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                 </div>
                 <!--<div class="cell-panel space-between cell-clear" v-if="member.hasTopic"  @click="activate()">-->
-                    <!--<div class="flex-row">-->
-                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>-->
-                        <!--<text class="title ml10">开通专栏</text>-->
-                    <!--</div>-->
-                    <!--<div class="flex-row flex-end">-->
-                        <!--<text class="sub_title">{{member.topic}}</text>-->
-                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                    <!--</div>-->
+                <!--<div class="flex-row">-->
+                <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a4;</text>-->
+                <!--<text class="title ml10">开通专栏</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row flex-end">-->
+                <!--<text class="sub_title">{{member.topic}}</text>-->
+                <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
             <!--魔篇-->
@@ -99,26 +99,26 @@
 
 
             <div class="cell-row ">
-                <!--上架注释的-->
+                <!--ios上架注释的-->
                 <div class="cell-panel space-between " @click="orderManage()" v-if="hasuseCashier()">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
-                        <text class="title ml10">订单管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
+                <div class="flex-row flex-start">
+                <text class="ico" :style="{fontFamily:'iconfont'}">&#xe600;</text>
+                <text class="title ml10">订单管理</text>
+                </div>
+                <div class="flex-row flex-end">
+                <text class="sub_title"></text>
+                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
                 </div>
                 <div class="cell-panel space-between " @click="goodsManage()" v-if="hasuseCashier()">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
-                        <text class="title ml10">商品管理</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
+                <div class="flex-row flex-start">
+                <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6a7;</text>
+                <text class="title ml10">商品管理</text>
+                </div>
+                <div class="flex-row flex-end">
+                <text class="sub_title"></text>
+                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
                 </div>
                 <div class="cell-panel space-between " @click="goReviewManage()">
                     <div class="flex-row flex-start">
@@ -130,7 +130,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between cell-clear" @click="goTableManage()">
+                <div class="cell-panel space-between " @click="goTableManage()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>
                         <text class="title ml10">表单管理</text>
@@ -140,6 +140,17 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <!--<div class="cell-panel space-between cell-clear" @click="goBrowseManage()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe629;</text>-->
+                        <!--<text class="title ml10">文章浏览记录</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title"></text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+
                 <!--投票管理暂未开发，关闭连接-->
                 <!--<div class="cell-panel space-between  cell-clear">-->
                 <!--<div class="flex-row flex-start">-->
@@ -162,7 +173,7 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between " @click="gmchat()">
+                <div class="cell-panel space-between" @click="gmchat()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe65a;</text>
                         <text class="title ml10">联系客服</text>
@@ -252,7 +263,7 @@
         },
         data() {
             return {
-                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:false,useCashier:false},
+                member:{nickName:"未登录",logo:utils.locate("logo.png"),autograph:"点击设置签名",topic:"未开通",hasTopic:null,useCashier:false},
                 showShare:false,
                 clicked:false,
                 isuseCashier:false,
@@ -473,6 +484,21 @@
                     _this.clicked = false;
                 }, 1500);
                 event.openURL(utils.locate('view/member/tableManage.js'),
+                    function (data) {
+                    }
+                );
+            },
+//            表单管理
+            goBrowseManage:function (e) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500);
+                event.openURL(utils.locate('view/member/browseManage.js'),
                     function (data) {
                     }
                 );

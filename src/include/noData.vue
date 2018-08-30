@@ -1,11 +1,11 @@
 <template>
     <div class="noData" :style="{backgroundColor:ndBgColor,paddingBottom:pdNumber+'px'}">
-                <text class="noData_ico" :style="{fontFamily:'iconfont'}">&#xe615;</text>
+                <text class="noData_ico" :style="{fontFamily:'iconfont'}">&#xe65e;</text>
+        <!--<text class="noData_ico" :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
                 <text class="noData_hint">{{noDataHint}}</text>
     </div>
  </template>
 <style lang="less" src="../style/wx.less"/>
-
 <style scoped>
     .noData {
         padding-top:250px;

@@ -45,7 +45,7 @@
     }
 </style>
 <script>
-    const dom = weex.requireModule('dom')
+    const dom = weex.requireModule('dom');
     import headerNav from './header.vue';
     import circleCategory from './circle.vue';
     import othersCategory from './others.vue';

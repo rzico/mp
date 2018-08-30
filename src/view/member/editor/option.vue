@@ -70,19 +70,7 @@
             <div class="sub-panel">
                 <text class="sub_title">开启后读者可以对文章进行评论</text>
             </div>
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">投稿</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <switch class="switch" :checked="contributeSwitch" @change="contributeChange"></switch>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-panel">
-                <text class="sub_title">投稿后，被选用文章将获得大量展示机会</text>
-            </div>
+
             <div class="cell-row cell-line" @click="chooseRedbag()">
                 <div class="cell-panel space-between cell-clear">
                     <div class="flex-row">
@@ -97,14 +85,28 @@
             <div class="sub-panel">
                 <text class="sub_title">设置红包后，阅读您文章的人将有机会打开红包</text>
             </div>
+            <div class="cell-row cell-line">
+                <div class="cell-panel space-between cell-clear">
+                    <div class="flex-row">
+                        <text class="title ml10">我同意</text>
+                        <text class="title primary" @click="agreeRules()">《用户使用协议》</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <switch class="switch" :checked="isAgreeRules" @change="rulesChange"></switch>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-panel">
+                <text class="sub_title">认真阅读并同意协议后才可发布文章</text>
+            </div>
             <div class="fill">
             </div>
         </scroller>
         <!--<div class="footer button-panel" @click="goDone()">-->
         <!--<text class="button">完成</text>-->
         <!--</div>-->
-        <div  class="footer button-panel posiAbsolute" >
-            <text class="button" @click="goDone()">完成</text>
+        <div  class="footer button-panel posiAbsolute">
+            <text class="button " :class="[isAgreeRules ? 'bkg-primary' : 'disableBg']" @click="goDone()">完成</text>
         </div>
         <!--遮罩-->
         <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
@@ -113,6 +115,7 @@
 <style lang="less" src="../../../style/wx.less"/>
 
 <style scoped>
+
     .posiAbsolute{
         position: absolute;
     }
@@ -159,6 +162,7 @@
                 clicked:false,
                 isRedBag:'无',
                 redBagData:'',
+                isAgreeRules:false,
             }
         },
         created(){
@@ -186,7 +190,7 @@
 //                    红包
                     if(!utils.isNull(data.data.articleRedPackage)){
                         _this.redBagData = data.data.articleRedPackage;
-                        if(!utils.isNull(data.data.articleRedPackage.pay) && data.data.articleRedPackage.pay  ){
+                        if(!utils.isNull(data.data.articleRedPackage.pay) && data.data.articleRedPackage.pay ){
                             _this.isRedBag = '已设置'
                         }
                     }
@@ -235,6 +239,18 @@
             },function (err) {
                 event.toast(err.content);
             })
+
+            var findRules = {
+                type:'agreeRules',
+                key:'0'
+            }
+            event.find(findRules,function (rulesData) {
+                if(rulesData.type == 'success' && rulesData.data != ''){
+                            _this.isAgreeRules = JSON.parse(rulesData.data.value);
+                }
+            })
+
+
         },
         filters:{
             watchScope(value){
@@ -263,6 +279,12 @@
             title: { default: "选项" }
         },
         methods: {
+            agreeRules:function () {
+                event.openURL(utils.locate('view/member/editor/rules.js'),
+                    function (data) {
+                    }
+                );
+            },
             goback: function (e) {
                 event.closeURL();
 //                event.closeRouter();
@@ -350,11 +372,31 @@
             commentsChange:function (e) {
                 this.commentsSwitch = e.value;
             },
+//            协议开关
+            rulesChange:function(e){
+                let _this = this;
+                this.isAgreeRules = e.value;
+                let rulesOptions = {
+                    type:'agreeRules',
+                    key:'0',
+                    value:e.value.toString(),
+                    sort:'0',
+                    keyword:''
+                }
+                event.save(rulesOptions,function(data){
+                    if(data.type == 'success' && !utils.isNull(_this.articleId)){
+                    }else if(data.type == 'success'){
+
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+            },
 //            投稿开关
             contributeChange:function (e) {
                 this.contributeSwitch = e.value;
             },
-//            清楚掉假的进度条。清空假进度条，关闭定时器.
+//            清除掉假的进度条。清空假进度条，关闭定时器.
             clearDummyProcess(timer){
 //                                        解除定时器
                 if (!utils.isNull(timer))  {
@@ -374,6 +416,14 @@
                 }
                 this.clicked = true;
                 var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+
+                if(!this.isAgreeRules){
+                    event.toast('请阅读并同意用户协议')
+                    return;
+                }
                 _this.toSendArticle = true;
                 _this.currentPro = 0;//当前进度
                 _this.proTotal = 1;//总的进度
@@ -479,9 +529,7 @@
                         event.toast(data.content);
                         _this.clearDummyProcess(timer);
                     }
-                    _this.clicked = false;
                 },function (err) {
-                    _this.clicked = false;
                     event.toast(err.content);
                     _this.clearDummyProcess(timer);
                 })

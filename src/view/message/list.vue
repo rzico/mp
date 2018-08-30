@@ -167,7 +167,8 @@
     .friendName{
         lines:1;
         text-overflow: ellipsis;
-        font-size: 32px;
+        /*font-size: 32px;*/
+        font-size: 30px;
     }
     .messageText{
         /*padding-top: 8px;*/
@@ -182,10 +183,13 @@
         lines:1;
         text-overflow:ellipsis;
         color: #999;
-        font-size: 26px;
-        padding-right: 20px;
+        /*font-size: 26px;*/
+        font-size: 24px;
+        line-height:24px;
+        /*padding-right: 20px;*/
         /*width:625px;*/
-        width:620px;
+        /*width:620px;*/
+        width:590px;
     }
     .friendsImageBox{
         flex: 1;
@@ -220,7 +224,6 @@
     import filters from '../../filters/filters.js';
     var globalEvent = weex.requireModule('globalEvent');
     const animation = weex.requireModule('animation');
-
     var animationPara;//执行动画的消息
     export default {
         data:function(){
@@ -262,7 +265,7 @@
                     case 'gm_10203':
                         return '评论回复';
                         break;
-                    case 'gm_1024':
+                    case 'gm_10204':
                         return '点赞提醒';
                         break;
                     case 'gm_10205':
@@ -357,7 +360,6 @@
         methods:{
             onrefresh:function () {
                 var _this = this;
-
                 _this.pageStart = 0;
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
@@ -381,6 +383,9 @@
                     })
                     this.refreshing = false
 //                    _this.getAllInform();
+
+//            读取未读消息
+//                    event.getUnReadMessage();
                 }, 1000)
             },
             classHeader:function () {
@@ -421,6 +426,7 @@
 //                                        _weex.data.logo = _weex.data.logo.substring(0,indexNum) + _weex.data.userId;
 //                                    }
                                 }
+
                                 if(utils.isNull(_weex.data.nickName)){
                                     _weex.data.nickName = JSONData.nickName;
                                 }

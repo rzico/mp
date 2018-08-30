@@ -22,7 +22,7 @@
                 <text  :style="{fontFamily:'iconfont'}" style="font-size:38px;color:#fff">&#xe669;</text>
             </div>
             <!--导航栏菜单栏-->
-            <div class="backMenu"  :class="[classTop()]" style="right: 0px;" @click="goManage()">
+            <div class="backMenu" :class="[classTop()]" style="right: 0px;" @click="goManage()">
                 <text  :style="{fontFamily:'iconfont'}" style="font-size:50px;;color:#fff">&#xe72b;</text>
             </div>
             <!--绑定动画-->
@@ -57,10 +57,11 @@
             <!--</transition-group>-->
             <!--顶部个人信息栏-->
             <!--,bgImageLoad ? 'bkg-primary' : 'bkg-white'-->
-            <div class="topBox bkg-primary"  :class="[headerInfo()]" ref='topBox'>
+            <div class="topBox"  :class="[headerInfo()]" ref='topBox'>
                 <!--背景图片-->
                 <!--@load="onImageLoad(item)"-->
-                <image   class="backgroundImage" :class="[headerBgImg()]"    :src="bgImgUrl"></image>
+                <div  v-if="!bgImgLoading"  class="backgroundImage coverAbsoTop"  :class="[headerBgImg()]" ></div>
+                <image   class="backgroundImage" :class="[headerBgImg()]"  @load="onbgImageLoad()" resize="cover"   :src="bgImgUrl"></image>
                 <!--遮罩层-->
                 <!--<image class="backgroundMask" :src="maskUrl"></image>-->
                 <div  class="topHead">
@@ -87,7 +88,7 @@
                         <text class="topBtn topBtnBigFont">{{collectNum}}</text>
                         <text class="topBtn">收藏</text>
                     </div>
-                    <div class="topBtnSmallBox"  style=";min-width: 120px" @click="goFans()">
+                    <div class="topBtnSmallBox"  style="min-width: 120px" @click="goFans()">
                         <text class="topBtn topBtnBigFont">{{fansNum}}</text>
                         <text class="topBtn">粉丝</text>
                     </div>
@@ -118,7 +119,8 @@
                         </div>
                         <!--文章封面-->
                         <div style="position: relative">
-                            <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
+                            <div  v-if="!item.loading"  class="articleCover coverAbsoTop "></div>
+                            <image :src="item.thumbnail" @load="onImageLoad(item)"  resize="cover" class="articleCover"></image>
                         </div>
                         <!--文章底部-->
                         <div class="articleFoot">
@@ -515,8 +517,8 @@
         width:750px;
         top:0;
         height:420px;
-        filter: blur(4px);
-        opacity: 1;
+        /*filter: blur(4px);*/
+        opacity: 0.7;
     }
     .topBox{
         position: relative;
@@ -613,7 +615,8 @@
                 fansNum:0,
                 focusNum:0,
                 imageUrl:utils.locate('resources/images/background.png'),
-                bgImgUrl:utils.locate('resources/images/background.png'),
+//                bgImgUrl:utils.locate('resources/images/backgroundMp.png'),
+                bgImgUrl:'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/backgroundMp.png',
                 showLoading: 'hide',
                 corpusList:[{
                     name:'全部',
@@ -636,7 +639,7 @@
                 bottomNum:0,
                 noDataHint:"暂无文章",
 //                bgImageLoad:false,
-
+                bgImgLoading:false,
             }
         },
         filters:{
@@ -741,6 +744,8 @@
                             _this.middleList = [];
                         }
                         data.data.data.forEach(function (item) {
+                            //   （配合懒加载）
+                            item.loading = false;
                             if(utils.isNull(item.thumbnail)){
                             }else{
                                 item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
@@ -1062,6 +1067,15 @@
 //            onImageLoad(){
 //                this.bgImageLoad = true;
 //            }
+
+//            背景封面加载出来
+            onbgImageLoad(){
+                this.bgImgLoading = true;
+            },
+            //            文章封面加载出来
+            onImageLoad(item){
+                item.loading = true;
+            },
         }
     }
 </script>

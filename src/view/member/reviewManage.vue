@@ -11,7 +11,7 @@
             <!--导航栏-->
             <cell v-else v-for="(item,index) in reviewList">
                 <div class="lineBox">
-                    <div class="flexRow" >
+                    <div class="flexRow">
                         <image class="headImg" :src="item.logo" @click="goAuthor(item.memberId)"></image>
                         <div class="userInfo">
                             <text class="fz32 nameColor" >{{item.nickName}}</text>
@@ -21,7 +21,7 @@
                                 <text class="sub_date pt20 pr30 pl20 pb15" @click="delReview(item.id,index)" >删除</text>
                             </div>
                             <div style='flex-direction: row;width: 615px;' >
-                                <text   style="margin-top: 2px;font-size: 26px" :style="{fontFamily:'iconfont'}">&#xe62e;</text>
+                                <text  style="margin-top: 2px;font-size: 26px" :style="{fontFamily:'iconfont'}">&#xe62e;</text>
                                 <text class="sub_date pb15 articleTitle pr30  ml10">{{item.title}}</text>
                             </div>
                         </div>

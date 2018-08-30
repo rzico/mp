@@ -16,7 +16,7 @@
                     <div class="userInfo">
                         <text class="fz30 nameColor" >{{item.nickName}}</text>
                         <text   class="infoText" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                        <text class="sub_title">{{item.createDate | timefmtOther}}</text>
+                        <text class="sub_title fz24">{{item.createDate | timefmtOther}}</text>
                     </div>
                 </div>
                 <!--<image class="coverImg" src="https://img.alicdn.com/tps/TB1z.55OFXXXXcLXXXXXXXXXXXX-560-560.jpg"></image>-->

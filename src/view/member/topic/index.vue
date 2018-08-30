@@ -155,7 +155,7 @@
         <!--动画无效-->
         <!--<transition name="slide-fade-share" mode="out-in">-->
         <div v-if="showShare"  key="share">
-            <div class="mask" @touchstart="maskTouch"></div>
+            <div class="maskLayer" @touchstart="maskTouch"></div>
             <share @doShare="doShare" @doCancel="doCancel"></share>
         </div>
         <!--模版内容-->
@@ -269,6 +269,9 @@
             }
         },
         methods: {
+            maskTouch(){
+                this.showShare = false;
+            },
             //            获取状态
             open:function () {
                 var _this = this;

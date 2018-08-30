@@ -14,7 +14,7 @@
                 </div>
             </div>
             <!--点赞 评论 分享-->
-            <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
+            <div class="footBox bkg-white" :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
                 <div class="bottomBtnBox"  @click="goLaud()">
                     <text class="fz26fff fzz45 " :class="[isLaud ? 'primary' : '']" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
                     <text class="fz26fff " :class="[isLaud ? 'primary' : '']">点赞 {{laudNum}}</text>
@@ -123,6 +123,10 @@
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
                         <text class="fz28 pl10">分享</text>
                     </div>
+                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="report">-->
+                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
+                    <!--<text class="fz28 pl10">举报</text>-->
+                    <!--</div>-->
                 </div>
             </div>
             <div v-if="showShare"  key="share" >
@@ -131,59 +135,64 @@
             </div>
             <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
+
         <!--红包窗口-->
-        <transition name="bounce">
-            <div class="moneyBox" @click="closeRedBag()" v-if="showMoneyBox">
-                <div class="moneyInfoBox" >
-                    <div class="redBagHead"></div>
-                    <image class="authorLogo" :src="redBagAuthorLogo"></image>
-                    <div class="flex-row">
-                        <text class="authorName">{{redBagAuthor | watchRedBagAuthor}}的红包</text>
-                        <text class="pinIcon ml5" v-if="redPackageType == 'RAN'" :style="{fontFamily:'iconfont'}">&#xe769;</text>
+        <div class="moneyBox" v-if="showMoneyBox1" @click="closeRedBag()"   >
+            <div v-for="item in forAnimation">
+                <!--添加动画-->
+                <transition-group name="paraTransition" tag="div">
+                    <div class="moneyInfoBox" key="redBagKey"v-if="showMoneyBox">
+                        <div class="redBagHead" ></div>
+                        <image class="authorLogo" :src="redBagAuthorLogo"></image>
+                        <div class="flex-row">
+                            <text class="authorName">{{redBagAuthor | watchRedBagAuthor}}的红包</text>
+                            <text class="pinIcon ml5" v-if="redPackageType == 'RAN'" :style="{fontFamily:'iconfont'}">&#xe769;</text>
+                        </div>
+                        <div>
+                            <text class="hopeText">恭喜发财,大吉大利</text>
+                        </div>
+                        <div class="flex-row flex-end redPriceBox">
+                            <text class="moneyNum">{{priceNum}}</text>
+                            <text class="yuanText">元</text>
+                        </div>
+                        <div @click="goWallet()">
+                            <text class="redEndText">已存入钱包,可前往钱包提现</text>
+                        </div>
                     </div>
-                    <div>
-                        <text class="hopeText">恭喜发财,大吉大利</text>
-                    </div>
-                    <div class="flex-row flex-end redPriceBox">
-                        <text class="moneyNum">{{priceNum}}</text>
-                        <text class="yuanText">元</text>
-                    </div>
-                    <div @click="goWallet()">
-                        <text class="redEndText">已存入钱包,可前往钱包提现</text>
-                    </div>
-                </div>
+                </transition-group>
             </div>
-        </transition>
-        <buyGoods  ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId"  ></buyGoods>
+        </div>
+        <!--<waitingBox  v-if="waitingShow"></waitingBox>-->
+        <buyGoods ref="buy" v-if="buyShow" @goPay="goPay" @maskHide="maskHide" :goodId="goodId"></buyGoods>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
 
-    /*       以下红包   =====*/
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
+
+    .paraTransition-enter-active, .paraTransition-leave-active {
+        /*transition: all 0.05s;*/
+        transition: all 0.3s;
     }
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    .paraTransition-leave-to{
+        /*transform: translateY(-150px);*/
+        transform: scale(0.1);
         opacity: 0;
     }
-    .bounce-enter-active {
-        animation: bounce-in .5s;
+    .paraTransition-enter{
+        /*transform: translateY(-150px);*/
+        transform: scale(0.1);
+        opacity: 0;
     }
-    .bounce-leave-active {
-        animation: bounce-in .5s reverse;
+    .paraTransition-enter-to{
+        /*transform: translateY(0px);*/
+        transform: scale(1);
+        opacity: 1;
     }
-    @keyframes bounce-in {
-        0% {
-            transform: scale(0);
-        }
-        50% {
-            transform: scale(1.5);
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
+
+
+
+
 
     .pinIcon{
         color: coral;
@@ -202,7 +211,7 @@
         z-index: -1;
     }
 
-     .authorLogo{
+    .authorLogo{
         width: 100px;
         height: 100px;
         margin-top: 70px;
@@ -248,12 +257,12 @@
         margin-top: 30px;
     }
     /*.moneyInfoBox :nth-child(4){*/
-        /*font-size: 14px;*/
+    /*font-size: 14px;*/
     /*}*/
 
     /*.moneyInfoBox :nth-child(5){*/
-        /*margin-top: 20px;*/
-        /*margin-bottom: 20px;*/
+    /*margin-top: 20px;*/
+    /*margin-bottom: 20px;*/
     /*}*/
 
     .moneyNum{
@@ -262,8 +271,8 @@
     }
 
     /*.moneyInfoBox :nth-child(6){*/
-        /*font-size: 14px;*/
-        /*color: #6F87B8;*/
+    /*font-size: 14px;*/
+    /*color: #6F87B8;*/
     /*}*/
 
     .moneyInfoBox {
@@ -282,7 +291,7 @@
         padding-top: 70px;
         padding-bottom: 25px;
     }
-/*       以上红包   =====*/
+    /*       以上红包   =====*/
 
 
     .fullWidth{
@@ -462,6 +471,7 @@
 
 <script>
     const album = weex.requireModule('album');
+    const animation = weex.requireModule('animation');
     const modal = weex.requireModule('modal');
     const dom = weex.requireModule('dom');
     const globalEvent = weex.requireModule('globalEvent');
@@ -470,6 +480,7 @@
     import utils from '../../assets/utils';
     import reward from '../../widget/rewardDialog.vue';
     import buyGoods from '../../widget/buyGoods.vue';
+//    import waitingBox from '../../widget/waiting.vue';
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch'
@@ -477,6 +488,9 @@
     export default {
         data:function () {
             return{
+//                waitingShow:false,
+                showMoneyBox1:false,
+                forAnimation:[''],
                 redPackageType:'RAN',
                 isShareTime:false,
                 priceNum:0,
@@ -522,7 +536,8 @@
             }
         },
         components: {
-            navbar,share,reward,buyGoods
+            navbar,share,reward,buyGoods,
+//            waitingBox
         },
         props: {
             title: { default: ""},
@@ -547,7 +562,6 @@
             if(utils.previewBottom() != '' && utils.previewBottom() == 'IPhoneX'){
                 this.bottomNum =parseInt(event.deviceInfo().bottomHeight) * 2;
             }
-
 //            this.screenHeight = utils.fullScreen(305 );
             this.screenHeight = utils.fullScreen(237 + this.bottomNum);
             this.scrollHeight = utils.fullScreen(137);
@@ -556,8 +570,6 @@
             if(!utils.isNull(isPublish)){
                 this.publish = isPublish;
             }
-
-
 //            获取该文章的模版
             POST('weex/article/template.jhtml?id=' + this.articleId).then(
                 function (data) {
@@ -577,22 +589,9 @@
             )
             GET('weex/article/preview.jhtml?id=' + this.articleId,function (data) {
                 if( data.type=='success' && data.data != ''){
-
-//                    07/25
-                    _this.redBagAuthorLogo = data.data.logo;
-                    _this.redBagAuthor = data.data.nickName;
-
-                    _this.memberId = data.data.memberId;
-                    _this.reviewNum = data.data.review;
-                    _this.rewardNum = data.data.reward;
-                    _this.laudNum = data.data.laud;
-                    _this.isLaud = data.data.hasLaud;
-                    _this.isCollect = data.data.hasFavorite;
-                    _this.shareNum = data.data.share;
-                    _this.authorInfo = data.data;
-                    _this.isReward = data.data.isReward;
-                    _this.isReview = data.data.isReview;
                     let uId = event.getUId();
+                    _this.memberId = data.data.memberId;
+
 //            判断是否作者本人
                     if(uId == _this.memberId){
                         _this.isSelf = 1;
@@ -619,7 +618,34 @@
                         })
                     }else{
                         _this.isSelf = 0;
+                        //判断已发布过的文章是否被作者修改过，删除或者未发布
+                        if(!data.data.isPublish){
+                            event.toast('该文章作者正在修改。')
+                            //===!
+                            if(utils.isNull(utils.getUrlParameter('isRouter'))){
+                                event.closeURL();
+                            }else{
+                                event.closeRouter();
+                            }
+                            return;
+                            //在这边直接调用goback方法 不起作用
+//                            _this.goBack();
+                        }
                     }
+
+//                    07/25
+                    _this.redBagAuthorLogo = data.data.logo;
+                    _this.redBagAuthor = data.data.nickName;
+
+                    _this.reviewNum = data.data.review;
+                    _this.rewardNum = data.data.reward;
+                    _this.laudNum = data.data.laud;
+                    _this.isLaud = data.data.hasLaud;
+                    _this.isCollect = data.data.hasFavorite;
+                    _this.shareNum = data.data.share;
+                    _this.authorInfo = data.data;
+                    _this.isReward = data.data.isReward;
+                    _this.isReview = data.data.isReview;
                     if(_this.publish == 'false'){
                         _this.publish = false;
                         _this.complete = '编辑';
@@ -648,7 +674,7 @@
                 globalEvent.removeEventListener("redBag");
             },
             pageShow:function(){
-                    let _this = this;
+                let _this = this;
 //            商品购买控制
                 globalEvent.addEventListener("buyGood", function (e) {
 //                utils.debug(e);
@@ -658,6 +684,16 @@
 
 //            红包领取控制
                 globalEvent.addEventListener("redBag", function (e) {
+//                    _this.waitingShow = true;
+//                    setTimeout(function () {
+//                        _this.showMoneyBox1 = true;
+//                        _this.waitingShow = false;
+//                        setTimeout(function () {
+//                            _this.showMoneyBox = true;
+//                        },100)
+//                    },100)
+//                    return;
+
                     if(_this.isShareTime){
                         _this.redPackageType = e.type;
                         _this.takeRedBag();
@@ -1102,9 +1138,9 @@
                 });
             },
 //            举报
-            report(){
-                event.toast('举报');
-            },
+//            report(){
+//                event.toast('举报');
+//            },
 //            分享
             doShare(id){
                 let _this = this;
@@ -1183,6 +1219,9 @@
                                                 event.toast('文章链接已复制到剪贴板');
                                             }else if(shareType == 'browser'){
                                             }else{
+                                                if(shareType == 'timeline'){
+                                                    _this.isShareTime = true;
+                                                }
                                                 event.toast('分享成功');
                                             }
                                             _this.shareNum ++ ;
@@ -1220,6 +1259,19 @@
                         event.toast(data.content);
                     }
                 });
+            },
+//            举报
+            report(){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                event.toast("举报成功");
+                _this.isOperation = false;
             },
 //            删除文章
             deleteArticle(){
@@ -1388,7 +1440,11 @@
                 this.payment(id,"weixinAppPlugin");
             },
             closeRedBag:function () {
+                let _this = this;
                 this.showMoneyBox =  false;
+                setTimeout(function () {
+                    _this.showMoneyBox1 = false;
+                },300)
             },
             goWallet:function () {
                 var _this =this;
@@ -1411,7 +1467,10 @@
                         if (res.type=='success') {
                             _this.priceNum = res.data;
 //                            _this.isShareTime = true;
-                            _this.showMoneyBox = true;
+                            _this.showMoneyBox1 = true;
+                            setTimeout(function () {
+                                _this.showMoneyBox = true;
+                            },100)
                         }else{
                             event.toast(res.content);
                         }
@@ -1420,7 +1479,7 @@
                         event.toast(err.content);
                     }
                 )
-            }
+            },
 //            复制文章\
 //            copyArticle(){
 //                POST('weex/member/article/grabarticle.jhtml').then(

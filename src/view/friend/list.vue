@@ -63,7 +63,7 @@
                 </div>
                 <!--</div>-->
             </cell>
-            <cell v-for="friend in friendsList" ref="listref" >
+            <cell v-for="friend in friendsList" ref="listref">
                     <!--姓氏首字母-->
                     <div class="letterBox" v-if="friend.name != ''">
                         <text class="nameLetter">{{friend.letter}}</text>
@@ -225,7 +225,7 @@
     .friendsName{
         height:84px;
         margin-top: 8px;
-        justify-content: space-between;
+        justify-content: space-around;
     }
     .letterBox{
         width:750px;
@@ -247,7 +247,8 @@
     }
     .realName{
         color: #888;
-        font-size: 28px;
+        /*font-size: 24px;*/
+        font-size: 24px;
         margin-left: 20px;
     }
     .friendsImage{
@@ -269,6 +270,7 @@
         /*width:750px;*/
         background-color: #fff;
         flex-direction: row;
+
     }
     .listBody{
         background-color: #fff;
@@ -290,7 +292,8 @@
         font-size: 80px;
     }
     .lineTitle{
-        font-size: 32px;
+        /*font-size: 32px;*/
+        font-size: 30px;
         margin-left: 20px;
     }
 </style>

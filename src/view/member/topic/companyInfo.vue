@@ -359,19 +359,19 @@
             //            立即提交
             submitNow() {
                 if(utils.isNull(this.companyInfo.name)){
-                    event.toast('请填写公司名');
+                    event.toast('请填写企业名');
                     return;
                 }else if(utils.isNull(this.companyInfo.logo) || this.companyInfo == utils.locate('resources/images/background.png')){
-                    event.toast('请设置公司头像');
+                    event.toast('请设置企业头像');
                     return;
-                }else if(utils.isNull(this.companyInfo.area)){
-                    event.toast('请设置公司所在地');
+                }else if(utils.isNull(this.companyInfo.area.name)){
+                    event.toast('请设置企业所在地区');
                     return;
                 }else if(utils.isNull(this.companyInfo.address)){
-                    event.toast('请设置公司详细地址');
+                    event.toast('请设置企业详细地址');
                     return;
                 }else if(utils.isNull(this.companyInfo.phone)){
-                    event.toast('请设置公司电话');
+                    event.toast('请设置企业电话');
                     return;
                 }
 //                else if(utils.isNull(this.companyInfo.image)){
