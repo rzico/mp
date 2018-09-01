@@ -43,17 +43,17 @@
                     </div>
                 </div>
                 <div class="goodsLine mt20">
-                    <div class="space-between goodsHead boder-bottom" @click="goAuthor(item.memberId)">
-                        <div class="flex-row">
-                            <image :src="item.logo" class="shopImg"></image>
-                            <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
+                    <!--<div class="space-between goodsHead boder-bottom" @click="goAuthor(item.memberId)">-->
                         <!--<div class="flex-row">-->
-                        <!--<text class="sub_title" style="color: #666" :style="{fontFamily:'iconfont'}">联系卖家 </text>-->
-                        <!--<text class="sub_title primary"  :style="{fontFamily:'iconfont'}">&#xe628;</text>-->
+                            <!--<image :src="item.logo" class="shopImg"></image>-->
+                            <!--<text class="title ml20 mr20">{{item.name}}</text>-->
+                            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                         <!--</div>-->
-                    </div>
+                        <!--&lt;!&ndash;<div class="flex-row">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<text class="sub_title" style="color: #666" :style="{fontFamily:'iconfont'}">联系卖家 </text>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<text class="sub_title primary"  :style="{fontFamily:'iconfont'}">&#xe628;</text>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
                     <div class="flex-row goodsBody " v-for="goods in item.orderItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
                         <div class="goodsInfo" >

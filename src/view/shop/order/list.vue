@@ -49,8 +49,10 @@
                     <div class="space-between goodsHead" >
                         <div class="flex-row">
                             <image :src="item.logo | watchLogo" class="shopImg"></image>
-                            <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            <div class="">
+                                <text class="consignee ml20 mr20">{{item.consignee}}</text>
+                                <text class="address">{{item.address}}</text>
+                            </div>
                         </div>
                         <div >
                             <text class="title red">{{item.statusDescr}}</text>
@@ -137,6 +139,19 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .consignee{
+        font-size: 32px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .address{
+        font-size: 26px;
+        margin-left: 20px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
     /*<!---->*/
     /*动画*/
     .component-fade-top-enter-active{
@@ -442,8 +457,6 @@
                 this.isSearch = true;
                 this.pageStart = 0;
                 this.searchOrCancel = '取消';
-                this.productCategoryId = 1;
-                this.whichCorpus = 0;
                 this.open();
             },
 //            点击右上角取消或者搜索按钮

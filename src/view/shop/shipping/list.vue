@@ -566,8 +566,6 @@
                 this.isSearch = true;
                 this.pageStart = 0;
                 this.searchOrCancel = '取消';
-                this.productCategoryId = 1;
-                this.whichCorpus = 0;
                 this.open();
             },
 //            点击右上角取消或者搜索按钮

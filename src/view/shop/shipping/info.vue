@@ -26,13 +26,13 @@
                     </div>
                 </div>
                 <div class="goodsLine mt20">
-                    <div class="space-between goodsHead boder-bottom">
-                        <div class="flex-row">
-                            <image :src="item.logo" class="shopImg"></image>
-                            <text class="title ml20 mr20">{{item.name}}</text>
-                            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
-                        </div>
-                    </div>
+                    <!--<div class="space-between goodsHead boder-bottom">-->
+                        <!--<div class="flex-row">-->
+                            <!--<image :src="item.logo" class="shopImg"></image>-->
+                            <!--<text class="title ml20 mr20">{{item.name}}</text>-->
+                            <!--&lt;!&ndash;<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>&ndash;&gt;-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="flex-row goodsBody " v-for="goods in item.shippingItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
                         <div class="goodsInfo" >
