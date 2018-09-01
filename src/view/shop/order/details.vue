@@ -43,17 +43,17 @@
                     </div>
                 </div>
                 <div class="goodsLine mt20">
-                    <div class="space-between goodsHead boder-bottom" @click="goAuthor(item.memberId)">
-                        <div class="flex-row">
-                            <image :src="item.logo" class="shopImg"></image>
-                            <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
+                    <!--<div class="space-between goodsHead boder-bottom" @click="goAuthor(item.memberId)">-->
                         <!--<div class="flex-row">-->
-                        <!--<text class="sub_title" style="color: #666" :style="{fontFamily:'iconfont'}">联系卖家 </text>-->
-                        <!--<text class="sub_title primary"  :style="{fontFamily:'iconfont'}">&#xe628;</text>-->
+                            <!--<image :src="item.logo" class="shopImg"></image>-->
+                            <!--<text class="title ml20 mr20">{{item.name}}</text>-->
+                            <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                         <!--</div>-->
-                    </div>
+                        <!--&lt;!&ndash;<div class="flex-row">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<text class="sub_title" style="color: #666" :style="{fontFamily:'iconfont'}">联系卖家 </text>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<text class="sub_title primary"  :style="{fontFamily:'iconfont'}">&#xe628;</text>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
                     <div class="flex-row goodsBody " v-for="goods in item.orderItems">
                         <image :src="goods.thumbnail" class="goodsImg"></image>
                         <div class="goodsInfo" >
@@ -123,7 +123,7 @@
                         <text class="sub_title ">派单留言: {{item.shippingMemo}}</text>
                     </div>
                     <div class="infoLines boder-bottom ">
-                        <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
+                        <text class="sub_title ">买家留言: {{item.memo}}</text>
                     </div>
                 </div>
                 <div class="mt20  infoWhiteColor" >
@@ -148,6 +148,10 @@
                             <text class="sub_title">+ 送货工资</text>
                             <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
                         </div>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">+ 空桶押金</text>
+                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
+                        </div>
                         <div class=" space-between mt10" v-if="filter('shippingFreight')">
                             <text class="sub_title">+ 配送运费</text>
                             <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
@@ -157,10 +161,22 @@
                             <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
                         </div>
                     </div>
-                    <div class="priceLine flex-end">
-                        <div class="flex-row">
-                            <text class="title mr20">订单合计:</text>
-                            <text class="title" style="color: red">¥{{item.amount | currencyfmt}}</text>
+                    <div class="priceLine">
+                        <div class="flex-row pb10">
+                            <text class="fz28 mr20">订单合计:</text>
+                            <text class="fz28" style="color: red">¥{{item.amount | currencyfmt}}</text>
+                        </div>
+                        <div class="space-between pb10">
+                            <text class="fz28 ">应收金额:¥{{item.amountPayable | currencyfmt}}(上期欠款:¥{{item.arrears | currencyfmt}})</text>
+                            <text class="fz28 ">实收金额:¥{{item.amountPaid | currencyfmt}}</text>
+                        </div>
+                        <div class="space-between pb10">
+                            <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
+                            <text class="fz28 ">实收水票:{{item.paperPaid}}</text>
+                        </div>
+                        <div class="space-between">
+                            <text class="fz28">应收押金:¥{{item.pledgePayable}}</text>
+                            <text class="fz28 ">实收押金:¥{{item.pledgePaid}}</text>
                         </div>
                     </div>
                 </div>

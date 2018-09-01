@@ -435,11 +435,13 @@
         filters: {
             watchType:function (val) {
                 if(val == 'product'){
-                    return'商品'
+                    return'普通商品'
                 }else if(val == 'water'){
-                    return'桶装水'
+                    return'桶装水类'
                 }else if(val == 'dummy'){
-                    return'月卡'
+                    return'虚拟商品'
+                }else if(val == 'gift'){
+                    return'赠品'
                 }
             }
         },
@@ -492,7 +494,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['商品','桶装水','月卡']
+                    items:['普通商品','桶装水类','虚拟商品','赠品']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -503,6 +505,9 @@
                             _this.begin = e.data;
                         }else if(e.data == 2){
                             _this.isobject = 'dummy';
+                            _this.begin = e.data;
+                        }else if(e.data == 3){
+                            _this.isobject = 'gift';
                             _this.begin = e.data;
                         }
                     }

@@ -46,10 +46,10 @@
                         <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
                     </div>
                     <div class="flex-row mt10" style="width: 590px">
-                        <text class="fz30" style="color: #999">应收水票: {{paperPayable}}张</text>
+                        <text class="fz30" :class="[paperClass()]" >应收水票: {{paperPayable}}张</text>
                         <text class="fz30" style="color: #999">（上期欠票  {{ticket}}张）</text>
                     </div>
-                    <text class="herderSn mt10">应收押金: {{pledgePayable}}元</text>
+                    <text class="herderSn mt10">空桶押金: {{pledgePayable}}元</text>
                     <text class="herderSn mt10">收货地址: {{areaName}}{{address}}</text>
                     <text class="herderSn mt10">收货姓名: {{consignee}}</text>
                     <text class="herderSn mt10" @click="callPhone">收货电话: {{phone}}</text>
@@ -72,7 +72,7 @@
                             <div class="chooseBox"><text class="fz28 primary">快速话语</text> </div>
                         </div>
                     </div>
-                    <div class="button mt30" style="width: 530px" @click="goComplete()">
+                    <div class="button mt30" style="width: 530px" @click="goComplete()" v-if="isButton">
                         <text class="fz40" style="color:#fff;">确认送达</text>
                     </div>
                 </div>
@@ -81,10 +81,69 @@
                 <div style="height:100px"></div>
             </cell>
         </list>
+        <div class="codeMask" v-if="isMask" @click="maskChick">
+            <div class="codeBox">
+                <div class="downCode" @click="downCodeMask">
+                    <text class="downCodeIcon" :style="{fontFamily:'iconfont'}">&#xe60a;</text>
+                </div>
+                <image class="codeImg" :src="qrcode"></image>
+                <div class="codeTextBox">
+                    <text class="codeText">扫码签收</text>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .codeMask{
+        position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px;
+        background-color: rgba(000,000,000,0.4);
+        align-items: center;
+        justify-content: center;
+    }
+    .codeBox{
+        background-color: white;
+        width:550px;
+        height:650px;
+        border-radius: 15px;
+        align-items: center;
+        justify-content: center;
+        /*position: absolute;*/
+        /*left:75px;*/
+        /*top:300px;*/
+    }
+    .downCode{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    .downCodeIcon{
+        font-size: 45px;
+        color: #999999;
+    }
+    .codeImg{
+        width: 450px;
+        height: 450px;
+    }
+    .codeTextBox{
+        width: 300px;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 50px;
+        left: 125px;
+    }
+    .codeText{
+        font-size: 28px;
+        color: #888888;
+    }
+    .color999{
+        color: #999;
+    }
+    .colorRed{
+        color: red;
+    }
     .iconBox{
         margin-top: 25px;
         width:750px;
@@ -258,7 +317,10 @@
                 paperPayable:'',
                 ticket:'',
                 pledgePayable:'',
-                cashRecvable:''
+                cashRecvable:'',
+                isMask:false,
+                isButton:true,
+                qrcode:''
             }
         },
         created: function () {
@@ -286,6 +348,22 @@
             }
         },
         methods: {
+            maskChick:function () {
+              return
+            },
+            downCodeMask(){
+              this.isMask = false;
+                this.isButton = false
+            },
+            paperClass:function () {
+                if (this.cashRecvable == '0' || this.cashRecvable == 0) {
+                    return "colorRed";
+                } else if (this.cashRecvable != '0' || this.cashRecvable != 0) {
+                    return "color999";
+                } else {
+                    return "color999";
+                }
+            },
             contorlList(){
               this.hasList = !this.hasList
             },
@@ -518,19 +596,23 @@
                                     if(e.type == 'success'){
                                         POST("/lbs/location.jhtml?lng=" + e.data.lng + "&lat=" +e.data.lat +'&memberId=' + uId).then(function (mes) {
                                             if (mes.type == 'success') {
-
+                                                _this.clicked = false;
                                             } else {
+                                                _this.clicked = false;
                                                 event.toast(mes.content);
                                             }
                                         }, function (err) {
+                                            _this.clicked = false;
                                             event.toast(err.content)
                                         });
                                         POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor + "&lng=" + e.data.lng + "&lat=" +e.data.lat,body).then(
                                             function (res) {
                                                 _this.clicked = false;
                                                 if(res.type == 'success'){
-                                                    let E = utils.message('success','送达成功','');
-                                                    event.closeURL(E);
+//                                                    let E = utils.message('success','送达成功','');
+//                                                    event.closeURL(E);
+                                                    _this.qrcode = utils.website("/q/show.jhtml?url=" + encodeURI("http://weixin.rzico.com/q/818807"+ _this.shippingSn+ ".jhtml"));
+                                                    _this.isMask = true
                                                 }else{
                                                     event.toast(res.content);
                                                 }
@@ -555,6 +637,7 @@
                         }
                     },
                     function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     })
             }

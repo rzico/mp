@@ -24,9 +24,10 @@
                     <text class="money">¥{{c.cost}}</text>
                 </div>
                 <div class="totalBox"  v-if="isTotal(index)" @click="linkToDetail(c.sellerId)">
-                    <div class="totalCellTwo">
-                        <text class="fz32">货款收入: ¥{{c.cost}}</text>
-                        <text class="fz32">代收现金: ¥{{c.cash}}</text>
+                    <div class="totalCell">
+                        <text class="shopName">合计:</text>
+                        <text class="number">{{c.subQuantity}}</text>
+                        <text class="money">¥{{c.subTotal}}</text>
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
@@ -35,6 +36,9 @@
                     <div class="totalCellTwo">
                         <text class="fz32">送货工资: ¥{{c.adminFreight}}</text>
                         <text class="fz32">送货利润: ¥{{c.profit}}</text>
+                    </div>
+                    <div class="totalCellTwo">
+                        <text class="fz32">代收现金: ¥{{c.cash}}</text>
                     </div>
                 </div>
             </cell>
@@ -53,9 +57,10 @@
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">货款收入: ¥{{summarylist[0].cost}}</text>
-                <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
+            <div class="totalCell">
+                <text class="shopName">合计:</text>
+                <text class="number">{{summarylist[0].subQuantity}}</text>
+                <text class="money">¥{{summarylist[0].subTotal}}</text>
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>
@@ -64,6 +69,9 @@
             <div class="bottomCellTwo">
                 <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
                 <text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
             </div>
         </div>
     </div>
@@ -140,8 +148,6 @@
         background-color: #f5f5f5;
         flex-direction: row;
         align-items: center;
-        justify-content: flex-end;
-        padding-right: 30px;
         border-bottom-width:1px;
         border-color:#cccccc;
     }
@@ -160,10 +166,10 @@
     .bottomTotal{
         align-items: center;
         width: 750px;
-        height: 330px;
+        height: 430px;
         background-color: white;
         position: fixed;
-        bottom:-200px;
+        bottom:-300px;
         left: 0;
         border-top-width: 1px;
         border-color: #ccc;
@@ -344,7 +350,7 @@
                     _this.isIcon = false;// 当向上滑动时把变量置为false，达到再次点击div时触发的是收回动画
                     animation.transition(animationPara, {
                         styles: {
-                            transform: 'translateY(-200)',
+                            transform: 'translateY(-300)',
                         },
                         duration: 350, //ms
                         timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好
@@ -379,7 +385,7 @@
                     }else{
                         animation.transition(animationPara, {
                             styles: {
-                                transform: 'translateY(-200)',
+                                transform: 'translateY(-300)',
                             },
                             duration: 350, //ms
                             timingFunction: 'ease-in-out',//350 duration配合这个效果目前较好

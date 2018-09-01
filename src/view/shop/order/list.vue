@@ -1,6 +1,34 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goback="goback" ></navbar>
+        <!--<navbar :title="title"  @goback="goback" ></navbar>-->
+        <div class="header"  :class="[classHeader()]">
+            <transition name="component-fade-top" mode="out-in">
+                <div class="pageTop" v-if="!doSearch">
+                    <div class="nav_back " @click="goback()">
+                        <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
+                    </div>
+                    <div class="nav">
+                        <text class="nav_title">{{title}}</text>
+                        <div class="navRightBox"  @click="goSearch()">
+                            <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
+                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                        </div>
+                    </div>
+                </div>
+                <div v-else  class="search">
+                    <div class="search_box flex5">
+                        <div class="flex-start">
+                            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
+                            <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
+                        </div>
+                        <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
+                    </div>
+                    <div class="flex-center flex1" @click="noSearch()">
+                        <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
+                    </div>
+                </div>
+            </transition>
+        </div>
         <div  class="corpusBox">
             <scroller scroll-direction="horizontal"  class="corpusScroll">
                 <div class="articleClass" v-for="(item,index) in catagoryList" >
@@ -21,8 +49,10 @@
                     <div class="space-between goodsHead" >
                         <div class="flex-row">
                             <image :src="item.logo | watchLogo" class="shopImg"></image>
-                            <text class="title ml20 mr20">{{item.name}}</text>
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            <div class="">
+                                <text class="consignee ml20 mr20">{{item.consignee}}</text>
+                                <text class="address">{{item.address}}</text>
+                            </div>
                         </div>
                         <div >
                             <text class="title red">{{item.statusDescr}}</text>
@@ -109,6 +139,108 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .consignee{
+        font-size: 32px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .address{
+        font-size: 26px;
+        margin-left: 20px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    /*<!---->*/
+    /*动画*/
+    .component-fade-top-enter-active{
+        transition: all 0.2s;
+    }
+    .component-fade-top-leave-active {
+        transition: all 0.2s;
+    }
+    .component-fade-top-leave-to{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    .component-fade-top-enter-to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+    .component-fade-top-enter{
+        transform: translateX(0px);
+        opacity: 0;
+    }
+    /**/
+    .pageTop{
+        flex-direction: row;
+    }
+    /*<!--搜索栏-->*/
+
+    .searchCancelText{
+        color: #fff;
+    }
+    .search {
+        position:sticky;
+        background:#eee;
+        /*height: 100px;*/
+        flex-direction: row;
+        flex:1;
+    }
+    .search_box {
+        margin-top:20px;
+        margin-left:20px;
+        margin-right:20px;
+        margin-bottom:20px;
+        padding-left: 20px;
+        height: 60px;
+        border-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+        border-radius:8px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+    }
+    .clearBuf {
+        width:58px;
+        height:58px;
+        text-align: center;
+        padding-top: 10px;
+    }
+    .search_input {
+        margin-left: 20px;
+        font-size:32px;
+        line-height: 58px;
+        height: 58px;
+        width:400px;
+    }
+    /*<!--顶部导航栏-->*/
+    .navRightBox{
+        min-width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+    }
+    .nav_ico {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
+    }
+    .nav_CompleteIcon{
+        /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+        font-size: 44px;
+        line-height: 44px;
+        color: #FFFFFF;
+    }
+
+
     .footMore{
         width: 206px;align-items: center;
     }
@@ -250,6 +382,10 @@
                 whichCorpus:0,
                 productCategoryId:1,
                 clicked:false,
+                doSearch:false,
+                keyword:'',
+                searchHint: "输入收货人、电话、地址",
+                searchOrCancel:'取消',
             }
         },
         props:{
@@ -292,6 +428,60 @@
             this.open();
         },
         methods:{
+            //            前往搜索
+            goSearch:function () {
+                this.doSearch = true;
+                this.searchOrCancel = '取消'
+                let _this = this;
+                this.ordersList = [];
+                this.noDataHint = "输入收货人、电话、地址";
+//                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
+//                    _this.doReset();
+//                    if(res.type == 'success'){
+//
+//                    }
+//                });
+            },
+            oninput:function (e) {
+                this.isSearch = false;
+                this.keyword = e.value;
+                this.searchOrCancel = '搜索';
+                this.ordersList = [];
+                this.noDataHint = "输入收货人、电话、地址";
+                if(e.value.length == 0){
+                    this.searchOrCancel = '取消'
+                }
+            },
+            search: function (e) {
+                var _this = this;
+                this.isSearch = true;
+                this.pageStart = 0;
+                this.searchOrCancel = '取消';
+                this.open();
+            },
+//            点击右上角取消或者搜索按钮
+            noSearch:function () {
+                this.inputBlur();
+                if(this.searchOrCancel == '取消'){
+                    this.pageStart = 0;
+                    this.doSearch = false;
+                    this.noDataHint = "暂无订单";
+                    this.open();
+                }else{
+                    this.search();
+                }
+            },
+            inputBlur(){
+                this.$refs['searchBar'].blur();
+            },
+            //          清空关键字
+            clearBuf:function () {
+                this.keyword = '';
+            },
+            classHeader:function () {
+                let dc = utils.device();
+                return dc
+            },
 
             //分类切换
             catagoryChange:function(index,id){
@@ -331,7 +521,7 @@
                         status = '';
                         break;
                 }
-                GET('weex/member/order/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,
+                GET('weex/member/order/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' +this.keyword,
                     function (res) {
                         if (res.type=="success") {
                             if (res.data.start == 0) {
