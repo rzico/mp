@@ -556,7 +556,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/report/arrears_detail.js?memberId='+memberId), function (data) {
+                event.openURL(utils.locate('view/member/report/arrears_detail.js?memberId='+memberId+'&beginTime='+this.beginTime+'&endTime='+this.endTime), function (data) {
                     _this.clicked = false;
                 })
             }

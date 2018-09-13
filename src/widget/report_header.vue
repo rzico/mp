@@ -147,7 +147,8 @@
             }
         },
         props: {
-            pageName:''
+            pageName:'',
+            pageTime:''
         },
         filters:{
             watchDay: function (value) {
@@ -173,7 +174,13 @@
             this.showTime = utils.ymdtimefmt(this.timeDate);
         },
         mounted(){
-
+            if(!utils.isNull(this.pageTime)){
+                var date = this.pageTime;
+//                先把时间的-替换为/，new date 只认2018/09/08格式
+                date = date.replace(/-/g,'/');
+                this.timeDate = new Date(date).getTime();
+                this.showTime = utils.ymdtimefmt(this.timeDate);
+            }
         },
         methods: {
             classHeader:function () {
@@ -290,6 +297,9 @@
                 }, function (e) {
                     if (e.result == 'success') {
                         _this.showTime = e.data;
+                        var date = _this.showTime;
+                        date = date.replace(/-/g,'/');
+                        _this.timeDate = new Date(date).getTime();
                         beginTime = _this.showTime+ ' ' +'00:00:00';
                         endTime = _this.showTime+ ' ' +'23:59:59';
                         var data ={

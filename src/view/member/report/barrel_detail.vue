@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
+        <report_header :pageName="pageName" :pageTime="pageTime"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
             <div class="tableOne">
                 <text class="tableText">时间</text>
@@ -297,7 +297,8 @@
                 sQuantityTotal:0,
                 sReturnQuantityTotal:0,
                 barrelId:'',
-                sellerId:''
+                sellerId:'',
+                pageTime:''
             }
         },
         components: {
@@ -319,6 +320,11 @@
             this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
             this.beginTime = this.timeDate+ ' ' +'00:00:00';
             this.endTime = this.timeDate+ ' ' +'23:59:59';
+            if(!utils.isNull(utils.getUrlParameter('beginTime')) && !utils.isNull(utils.getUrlParameter('endTime'))){
+                this.beginTime = utils.getUrlParameter('beginTime');
+                this.endTime = utils.getUrlParameter('endTime');
+                this.pageTime = utils.getUrlParameter('beginTime');
+            }
             this.open();
         },
 //        dom呈现完执行滚动一下

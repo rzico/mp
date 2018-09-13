@@ -539,7 +539,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/report/barrel_detail.js?barrelId='+barrelId+'&sellerId='+sellerId), function (data) {
+                event.openURL(utils.locate('view/member/report/barrel_detail.js?barrelId='+barrelId+'&sellerId='+sellerId+'&beginTime='+this.beginTime+'&endTime='+this.endTime), function (data) {
                     _this.clicked = false;
                 })
             }
