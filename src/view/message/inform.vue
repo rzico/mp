@@ -540,9 +540,12 @@
                 let _this = this;
                 POST('weex/member/message/go.jhtml?id='+ id).then(function(data){
                     if(data.type == 'success'){
-                        event.openURL(data.data,function(){
+                        if(!utils.isNull(data.data)){
+                            event.openURL(data.data,function(){
 
-                        })
+                            })
+                        }
+
                     }else{
                         event.toast(data.content);
                     }
