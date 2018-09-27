@@ -432,6 +432,10 @@
                     this.title =  '线下收款';
                     this.bgWhite = false;
                     break;
+                case 'gm_10213':
+                    this.title =  '运单提醒';
+                    this.bgWhite = false;
+                    break;
                 default:
                     this.title = '消息助手';
                     this.bgWhite = true;
