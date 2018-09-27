@@ -521,7 +521,7 @@
                         status = '';
                         break;
                 }
-                GET('weex/member/order/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' +this.keyword,
+                GET('weex/member/order/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' + encodeURIComponent(this.keyword),
                     function (res) {
                         if (res.type=="success") {
                             if (res.data.start == 0) {

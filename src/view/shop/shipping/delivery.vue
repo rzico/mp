@@ -611,7 +611,7 @@
                                                 if(res.type == 'success'){
 //                                                    let E = utils.message('success','送达成功','');
 //                                                    event.closeURL(E);
-                                                    _this.qrcode = utils.website("/q/show.jhtml?url=" + encodeURI("http://weixin.rzico.com/q/818807"+ _this.shippingSn+ ".jhtml"));
+                                                    _this.qrcode = utils.website("/q/show.jhtml?url=" + encodeURI("http://weixin.xmsdar.com/q/818807"+ _this.shippingSn+ ".jhtml"));
                                                     _this.isMask = true
                                                 }else{
                                                     event.toast(res.content);
