@@ -753,6 +753,7 @@
             },
             //            加入购物车
             addCart:function (id) {
+
                 var _this = this;
                 POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0'+'&memberId=' +this.memberId).then(function (res) {
                     if (res.type == 'success') {
