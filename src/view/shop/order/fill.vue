@@ -754,7 +754,7 @@
             //            加入购物车
             addCart:function (id) {
                 var _this = this;
-                POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0').then(function (res) {
+                POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0'+'&memberId=' +this.memberId).then(function (res) {
                     if (res.type == 'success') {
 //                        当购物车列表大于3条数据时再做操作
                         if(_this.cart.length > 3){
