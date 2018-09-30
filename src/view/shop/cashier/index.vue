@@ -650,6 +650,7 @@
                             }else if(res.data.type =='818807'){
                                 _this.scanSend(res.data.sn)
                             }
+
                         } else {
                             event.toast(res.content);
                         }
