@@ -33,7 +33,7 @@
                 </div>
             </cell>
         </list>
-        <div class="mask" v-if="isMask" @click="downMask()">
+        <div class="mask" v-if="isMask">
             <div class="editorBox">
                 <text class="fz40 mt30">编辑桶</text>
                 <div class="editorCell">
@@ -335,7 +335,7 @@
                                 _this.lists.push(item);
                             })
                         }
-                        _this.pageStart = mes.data.start+mes.data.data.length;
+                        _this.pageStart =  _this.lists.length;
                     } else {
                         event.toast(mes.content);
                     }
