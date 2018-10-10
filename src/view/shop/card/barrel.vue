@@ -33,7 +33,7 @@
                 </div>
             </cell>
         </list>
-        <div class="mask" v-if="isMask" @click="downMask()">
+        <div class="mask" v-if="isMask" >
             <div class="editorBox">
                 <text class="fz40 mt30">编辑桶</text>
                 <div class="editorCell">

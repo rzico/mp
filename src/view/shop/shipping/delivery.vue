@@ -605,25 +605,35 @@
                                             _this.clicked = false;
                                             event.toast(err.content)
                                         });
-                                        POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor + "&lng=" + e.data.lng + "&lat=" +e.data.lat,body).then(
-                                            function (res) {
+                                    }else {
+                                        POST("/lbs/location.jhtml?lng=0&lat=0&memberId=" + uId).then(function (mes) {
+                                            if (mes.type == 'success') {
                                                 _this.clicked = false;
-                                                if(res.type == 'success'){
+                                            } else {
+                                                _this.clicked = false;
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            _this.clicked = false;
+                                            event.toast(err.content)
+                                        });
+                                    }
+                                    POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor + "&lng=" + e.data.lng + "&lat=" +e.data.lat,body).then(
+                                        function (res) {
+                                            _this.clicked = false;
+                                            if(res.type == 'success'){
 //                                                    let E = utils.message('success','送达成功','');
 //                                                    event.closeURL(E);
-                                                    _this.qrcode = utils.website("/q/show.jhtml?url=" + encodeURI("http://weixin.xmsdar.com/q/818807"+ _this.shippingSn+ ".jhtml"));
-                                                    _this.isMask = true
-                                                }else{
-                                                    event.toast(res.content);
-                                                }
-                                            },
-                                            function (err) {
-                                                _this.clicked = false;
-                                                event.toast(err.content);
-                                            })
-                                    }else {
-                                        event.toast('定位失败，请开启GPS')
-                                    }
+                                                _this.qrcode = utils.website("/q/show.jhtml?url=" + encodeURI("http://weixin.xmsdar.com/q/818807"+ _this.shippingSn+ ".jhtml"));
+                                                _this.isMask = true
+                                            }else{
+                                                event.toast(res.content);
+                                            }
+                                        },
+                                        function (err) {
+                                            _this.clicked = false;
+                                            event.toast(err.content);
+                                        })
                                 })
 
                             }else {
