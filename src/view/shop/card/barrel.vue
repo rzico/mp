@@ -335,7 +335,7 @@
                                 _this.lists.push(item);
                             })
                         }
-                        _this.pageStart = mes.data.start+mes.data.data.length;
+                        _this.pageStart = _this.lists.length;
                     } else {
                         event.toast(mes.content);
                     }

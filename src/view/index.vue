@@ -17,7 +17,7 @@
                     <text class="btn-text" value="收钱码登录">收钱码登录</text>
                 </div>
             </div>
-            <div class="space-between" style="margin-top: 40px;" v-if="isNoPos()">
+            <div class="space-between" style="margin-top: 40px;" >
                 <text class="title gray bw" @click="login()">其他方式登录</text>
                 <text class="title gray bw" @click="goback()">关闭随便看看</text>
             </div>

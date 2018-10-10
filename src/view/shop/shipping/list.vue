@@ -15,29 +15,29 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="doSearch && !isKeyDate"  class="search">
-                    <div class="search_box flex5">
-                        <div class="flex-start">
-                            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                            <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
-                        </div>
-                        <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
-                    </div>
-                    <div class="flex-center flex1" @click="noSearch()">
-                        <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
-                    </div>
-                </div>
-                <div class="pageTop" v-if="doSearch && isKeyDate">
-                    <div class="nav_back " @click="goback()">
-                        <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
-                    </div>
-                    <div class="nav">
-                        <text class="nav_title">{{keyDate}}</text>
-                        <div class="navRightBox"  @click="pickDate()">
-                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe63c;</text>
-                        </div>
-                    </div>
-                </div>
+                <!--<div v-if="doSearch && !isKeyDate"  class="search">-->
+                    <!--<div class="search_box flex5">-->
+                        <!--<div class="flex-start">-->
+                            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>-->
+                            <!--<input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>-->
+                        <!--</div>-->
+                        <!--<text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-center flex1" @click="noSearch()">-->
+                        <!--<text class="fz32 searchCancelText" >{{searchOrCancel}}</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="pageTop" v-if="doSearch && isKeyDate">-->
+                    <!--<div class="nav_back " @click="goback()">-->
+                        <!--<text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>-->
+                    <!--</div>-->
+                    <!--<div class="nav">-->
+                        <!--<text class="nav_title">{{keyDate}}</text>-->
+                        <!--<div class="navRightBox"  @click="pickDate()">-->
+                            <!--<text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe63c;</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </transition>
         </div>
         <div  class="corpusBox">
@@ -173,19 +173,19 @@
                 </div>
             </div>
         </div>
-        <div class="mask" v-if="printMask">
+        <div class="mask" v-if="printMask" @click="printMaskTap()">
             <div class="printBox">
                 <text class="maskTitle mt50">打印</text>
                 <text class="fz32 mt30" v-if="printList.length == 0">共 {{recordsTotal}} 单</text>
                 <text class="fz32 mt30" v-if="printList.length != 0">{{printIdx}} / {{printList.length}}</text>
-                <div class="flex-row">
+                <div class="flex-row mt20">
                     <text class="fz32">第</text>
                     <input class="printInput" type="number" placeholder="输入数量" v-model="beginNumber"/>
                     <text class="fz32">单  到  第</text>
                     <input class="printInput" type="number" placeholder="输入数量" v-model="endNumber"/>
                     <text class="fz32">单</text>
                 </div>
-                <text class="printMes">打印单数单次不可超过一万单</text>
+                <text class="printMes mt30">打印单数单次不可超过一万单</text>
                 <div class="printButton">
                     <div class="printButtonLeft" @click="downPrint">
                         <text class="printButtonText">取消</text>
@@ -349,8 +349,8 @@
     .printInput{
         font-size: 32px;
         width: 150px;
-        height: 100px;
-        line-height: 100px;
+        height: 60px;
+        line-height: 60px;
         text-align: center;
         border-bottom-color: #999999;
         border-bottom-width: 1px;
@@ -607,7 +607,9 @@
                 isKeyDate:false,
                 printList:[],
                 printIdx:0,
-                recordsTotal:0
+                recordsTotal:0,
+                keyAdminId:'',
+                keyShopId:'',
             }
         },
         props:{
@@ -654,6 +656,9 @@
 
         },
         methods:{
+            printMaskTap(){
+                return
+            },
 //            关闭打印
             downPrint(){
                 this.printMask = false;
@@ -662,8 +667,8 @@
             openPrint(){
                 this.printIdx = 0;
                 this.printList = [];
-                this.beginNumber = '';
-                this.endNumber = '';
+                this.beginNumber = 1;
+                this.endNumber = this.recordsTotal;
                 this.printMask = true;
             },
             printData(idx) {
@@ -673,7 +678,7 @@
                   GET('weex/member/shipping/print.jhtml?sn='+sn+"&seqno="+idx, function (data) {
                           if(data.type == 'success'){
                               _this.printIdx = idx+1;
-//                              printer.print(data.data);
+                              printer.print(data.data);
                               setTimeout(
                                   function (){
                                      _this.printData(idx+1);
@@ -697,20 +702,17 @@
             },
 //            打印
             print(){
+                var _this = this;
                 if (this.clicked || this.printIdx > 0) {
                     return;
                 }
                 this.clicked = true;
-                this.beginNumber = parseInt(this.beginNumber);
-                this.endNumber = parseInt(this.endNumber);
-                if(this.beginNumber == this.endNumber){
-                    modal.alert({
-                        message: '不能输入相同的序号',
-                        okTitle: 'OK'
-                    });
-                    _this.clicked = false;
-                    return
-                }else if(this.beginNumber > this.endNumber){
+                if(!utils.isNull(this.beginNumber)){
+                    this.beginNumber = parseInt(this.beginNumber);
+                }if(!utils.isNull(this.endNumber)){
+                    this.endNumber = parseInt(this.endNumber);
+                }
+                 if(this.beginNumber > this.endNumber){
                     modal.alert({
                         message: '起始单量不得大于终止单量',
                         okTitle: 'OK'
@@ -725,7 +727,6 @@
                     _this.clicked = false;
                     return
                 }
-                var _this = this;
                 var status = '';
                 switch(this.productCategoryId){
                     case 1:
@@ -744,7 +745,8 @@
                         status = '';
                         break;
                 }
-                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + this.beginNumber + '&pageSize=' + this.endNumber +'&keyword=' +encodeURIComponent(this.keyword),
+                var begin = this.beginNumber - 1;
+                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + begin + '&pageSize=' + this.endNumber +'&keyword=' +encodeURIComponent(this.keyword),
                     function (res) {
                         if (res.type=="success") {
                             if (res.data.start == 0) {
@@ -792,21 +794,12 @@
                 var _this = this;
                 event.openURL(utils.locate('widget/search.js'), function (data) {
                     _this.clicked = false;
-//                    if(data.type == 'success' && data.data != '') {
-//
-//                    }
-                })
-            },
-            pickDate(){
-                var _this = this;
-                picker.pickDate({
-                    value: _this.keyDate
-                }, function (e) {
-                    if (e.result == 'success') {
-                        var date = e.data;
-                        date = parseInt(new Date(date).getTime()/1000);
-                        _this.keyDate = filters.ymdtimefmt(date);
-                        event.toast( _this.keyDate)
+                    if(data.type == 'success' && data.data != '') {
+                        _this.keyword = data.data.keyword;
+                        _this.keyAdminId = data.data.adminId;
+                        _this.keyShopId = data.data.shopId;
+                        _this.keyDate = data.data.time;
+                        _this.open()
                     }
                 })
             },
@@ -1122,7 +1115,8 @@
                         status = '';
                         break;
                 }
-                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' +encodeURIComponent(this.keyword),
+                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' +encodeURIComponent(this.keyword) +'&estimateDate='+encodeURIComponent(this.keyDate)
+                    +'&shopId='+this.keyShopId +'&adminId='+this.keyAdminId,
                     function (res) {
 
                         if (res.type=="success") {
