@@ -557,6 +557,8 @@
                         _this.arrears = data.data.arrears ; //  上期欠款
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
+                        //                        先请求购物车列表
+                        _this.cartList();
                     } else {
                         event.toast(data.content);
                     }
@@ -701,8 +703,6 @@
                             event.toast('无效会员')
                             return
                         }
-//                        先请求购物车列表
-                        _this.cartList();
                         _this.isShow = true
                     }
                 });
@@ -981,7 +981,6 @@
                                     _this.paymentPluginId = 'cashPayPlugin';
                                     _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
-                                    _this.cartList();
                                     _this.getInfo();
                                 }else{
                                     modal.alert({
@@ -1001,7 +1000,6 @@
                                     _this.paymentPluginId = 'cashPayPlugin';
                                     _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
-                                    _this.cartList();
                                     _this.getInfo();
                                 }
                             }, function (err) {
