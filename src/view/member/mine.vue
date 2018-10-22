@@ -161,10 +161,10 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe628;</text>-->
                         <!--<text class="iconfontText mt20">店铺管理</text>-->
                     <!--</div>-->
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize" style="color: #5A427C">&#xe6e8;</text>
-                        <text class="iconfontText mt20">人工报单</text>
-                    </div>
+                    <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}"  class="iconfontSize" style="color: #5A427C">&#xe6e8;</text>-->
+                        <!--<text class="iconfontText mt20">人工报单</text>-->
+                    <!--</div>-->
                     <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="gocard()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #cc3300" class="iconfontSize">&#xe66a;</text>-->
                         <!--<text class="iconfontText mt20">会员卡</text>-->
@@ -205,10 +205,10 @@
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
                         <text class="iconfontText mt20">修改资料</text>
                     </div>
-                    <div class="iconBox flexCol mt20" v-if="filterApp()"  @click="dragon()">
-                        <text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe664;</text>
-                        <text class="iconfontText mt20">接龙管理</text>
-                    </div>
+                    <!--<div class="iconBox flexCol mt20" v-if="filterApp()"  @click="dragon()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe664;</text>-->
+                        <!--<text class="iconfontText mt20">接龙管理</text>-->
+                    <!--</div>-->
                     <div class="iconBox flexCol mt20"  @click="goReviewManage()">
                         <text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe666;</text>
                         <text class="iconfontText mt20">评价管理</text>

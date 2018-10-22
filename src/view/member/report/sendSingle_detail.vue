@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
+        <report_header :pageName="pageName" :pageTime="pageTime" @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <!--<div class="classBox">-->
         <!--<div class="tableOne">-->
         <!--<text class="tableText">品牌</text>-->
@@ -12,7 +12,7 @@
         <!--<text class="tableText">货款</text>-->
         <!--</div>-->
         <!--</div>-->
-        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList != null">
+        <list   loadmoreoffset="180" v-if="reportList != null">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
@@ -45,6 +45,7 @@
                     </div>
                 </div>
             </cell>
+            <loading @loading="onloading"></loading>
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
@@ -271,7 +272,8 @@
                 pageName:'派单明细',
                 beginTime:'',
                 endTime:'',
-                sellerId:''
+                sellerId:'',
+                pageTime:''
             }
         },
         components: {
@@ -292,6 +294,11 @@
             this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
             this.beginTime = this.timeDate+ ' ' +'00:00:00';
             this.endTime = this.timeDate+ ' ' +'23:59:59';
+            if(!utils.isNull(utils.getUrlParameter('beginTime')) && !utils.isNull(utils.getUrlParameter('endTime'))){
+                this.beginTime = utils.getUrlParameter('beginTime');
+                this.endTime = utils.getUrlParameter('endTime');
+                this.pageTime = utils.getUrlParameter('beginTime');
+            }
             this.open();
         },
 //        dom呈现完执行滚动一下

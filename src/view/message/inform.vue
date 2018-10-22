@@ -432,6 +432,10 @@
                     this.title =  '线下收款';
                     this.bgWhite = false;
                     break;
+                case 'gm_10213':
+                    this.title =  '运单提醒';
+                    this.bgWhite = false;
+                    break;
                 default:
                     this.title = '消息助手';
                     this.bgWhite = true;
@@ -536,9 +540,12 @@
                 let _this = this;
                 POST('weex/member/message/go.jhtml?id='+ id).then(function(data){
                     if(data.type == 'success'){
-                        event.openURL(data.data,function(){
+                        if(!utils.isNull(data.data)){
+                            event.openURL(data.data,function(){
 
-                        })
+                            })
+                        }
+
                     }else{
                         event.toast(data.content);
                     }

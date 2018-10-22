@@ -21,7 +21,7 @@
                 <text class="tableText">欠桶</text>
             </div>
         </div>
-        <list   @loadmore="onloading" loadmoreoffset="180" v-if="reportList != null">
+        <list  loadmoreoffset="180" v-if="reportList != null">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
@@ -48,6 +48,7 @@
                     </div>
                 </div>
             </cell>
+            <loading @loading="onloading"></loading>
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
@@ -539,7 +540,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/report/barrel_detail.js?barrelId='+barrelId+'&sellerId='+sellerId), function (data) {
+                event.openURL(utils.locate('view/member/report/barrel_detail.js?barrelId='+barrelId+'&sellerId='+sellerId+'&beginTime='+encodeURIComponent(this.beginTime)+'&endTime='+encodeURIComponent(this.endTime)), function (data) {
                     _this.clicked = false;
                 })
             }

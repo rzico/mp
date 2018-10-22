@@ -557,6 +557,7 @@
                         _this.arrears = data.data.arrears ; //  上期欠款
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
+                        _this.cartList();
                     } else {
                         event.toast(data.content);
                     }
@@ -604,6 +605,7 @@
                                 _this.getmoneyTotal()
                             }
                         })
+
                     } else {
                         event.toast(mes.content);
                     }
@@ -700,8 +702,6 @@
                             event.toast('无效会员')
                             return
                         }
-//                        先请求购物车列表
-                        _this.cartList();
                         _this.isShow = true
                     }
                 });
@@ -752,8 +752,9 @@
             },
             //            加入购物车
             addCart:function (id) {
+
                 var _this = this;
-                POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0').then(function (res) {
+                POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0'+'&memberId=' +this.memberId).then(function (res) {
                     if (res.type == 'success') {
 //                        当购物车列表大于3条数据时再做操作
                         if(_this.cart.length > 3){
@@ -959,28 +960,6 @@
 
                 POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&level='+_this.floor).then(function (res) {
                     if (res.type == 'success') {
-//                        如果实付金额为0，则不走后面的流程
-                        if(res.data.amountPayable == 0){
-                            _this.clicked = false;
-
-                            modal.alert({
-                                message: '确认成功',
-                                okTitle: '知道了'
-                            })
-                            _this.shopName = '';
-                            _this.shopId = '';
-                            _this.memoData = '';
-                            _this.dateTime = '';
-                            _this.floor = '';
-                            _this.adminName = '';
-                            _this.adminId = '';
-                            _this.barrel  = '';
-                            _this.deposit = '';
-                            _this.paymentPluginId = '';
-                            _this.isShow = false;
-                            _this.cartList();
-                            _this.getInfo();
-                        }else {
                             var orderSn = res.data.sn;
                             POST('weex/member/order/save.jhtml?sn='+orderSn+'&paymentPluginId='+_this.paymentPluginId +'&shippingMethod='+ _this.sendObject +'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (mes) {
                                 _this.clicked = false;
@@ -998,9 +977,10 @@
                                     _this.adminId = '';
                                     _this.barrel  = '';
                                     _this.deposit = '';
-                                    _this.paymentPluginId = '';
+                                    _this.begin =0;
+                                    _this.paymentPluginId = 'cashPayPlugin';
+                                    _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
-                                    _this.cartList();
                                     _this.getInfo();
                                 }else{
                                     modal.alert({
@@ -1016,16 +996,16 @@
                                     _this.adminId = '';
                                     _this.barrel  = '';
                                     _this.deposit = '';
-                                    _this.paymentPluginId = '';
+                                    _this.begin =0;
+                                    _this.paymentPluginId = 'cashPayPlugin';
+                                    _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
-                                    _this.cartList();
                                     _this.getInfo();
                                 }
                             }, function (err) {
                                 event.toast(err.content);
                                 _this.clicked = false;
                             })
-                        }
                     } else {
                         event.toast(res.content);
                         _this.clicked = false;

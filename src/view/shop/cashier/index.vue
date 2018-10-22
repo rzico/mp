@@ -175,8 +175,12 @@
                 </div>
                 <!--<div class="menu" @click="system()" >-->
                     <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>-->
-                    <!--<text class="menuBtn">系统</text>-->
+                    <!--<text class="menuBtn">地图</text>-->
                 <!--</div>-->
+                <div class="menu" @click="ceshi()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
+                    <text class="menuBtn">测试</text>
+                </div>
                 <div class="content">
                     <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
                     <text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>
@@ -570,28 +574,94 @@
                 );
             },
 
+//            扫码搜索会员
+            scanFindCard(code){
+                GET('weex/member/card/infobycode.jhtml?code='+code,function (mes) {
+                    if (mes.type == 'success') {
+                        var id = mes.data.card.id;
+                        event.openURL(utils.locate('view/shop/card/view.js?id='+id),function (message) {
+
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            //            扫码核销优惠券
+            scanCoupon(code,captcha){
+                GET('weex/member/couponCode/use.jhtml?code='+code +'&captcha='+captcha,function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            //            扫码送达
+            scanSend(sn){
+                let _this = this
+                var uId = event.getUId();
+                event.getLocation(function (data) {
+                    if(data.type == 'success'){
+                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
+                        if (mes.type == 'success') {
+                            modal.alert({
+                                message: mes.content,
+                                okTitle: 'OK'
+                            })
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content)
+                    })
+                    }else {
+                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
+                            if (mes.type == 'success') {
+                                modal.alert({
+                                    message: mes.content,
+                                    okTitle: 'OK'
+                                })
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                    }
+                })
+
+            },
+
+
 //            触发二维码方法
             scan:function () {
                 let _this=this
                 event.scan(function (message) {
-                    utils.readScan(message.data,function (data) {
-                        if(data.data.type == '818801'){
-                            var code =data.data.code;
-                            GET('weex/member/card/infobycode.jhtml?code='+code,function (mes) {
-                                if (mes.type == 'success') {
-                                    var id = mes.data.card.id;
-                                    event.openURL(utils.locate('view/shop/card/view.js?id='+id),function (message) {
+                    GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
+                        if (res.type=="success") {
+                            if(res.data.type =='818801'|| res.data.type =='818802'){
+                                _this.scanFindCard(res.data.code)
+                            }else if(res.data.type =='818803'){
+                                _this.scanCoupon(res.data.code,res.data.captcha)
+                            }else if(res.data.type =='818807'){
+                                _this.scanSend(res.data.sn)
+                            }
 
-                                    })
-                                } else {
-                                    event.toast(res.content);
-                                }
-                            }, function (err) {
-                                event.toast(err.content)
-                            })
+                        } else {
+                            event.toast(res.content);
                         }
-                    })
 
+                    }, function (err) {
+                        event.toast(err.content);
+                    })
                 });
             },
             //            获取经纬度
@@ -862,7 +932,10 @@
                 event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
             },
             system(){
-                event.openURL(utils.locate("view/shop/cashier/pos/index.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/cashier/amap.js"),function (e) {});
+            },
+            ceshi(){
+                event.openURL(utils.locate("view/shop/cashier/ceshi.js"),function (e) {});
             },
             shop:function () {
                 if (this.clicked==true) {
