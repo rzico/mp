@@ -453,8 +453,10 @@
                             if (_this.pageStart == 0) {
                                 data.data.data.forEach(function(item) {
                                     if (!utils.isNull(item.ext)) {
-                                        item.ext = Base64.decode(item.ext)
-                                        item.ext = JSON.parse(item.ext);
+                                        var b = Base64.decode(item.ext);
+                                        if(!utils.isNull(b)){
+                                            item.ext = JSON.parse(b);
+                                        }
                                     }
 //                                    手机用户登录可能未设置logo和nickName
                                     if(utils.isNull(item.nickName)){
