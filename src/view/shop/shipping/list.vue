@@ -15,18 +15,29 @@
                         </div>
                     </div>
                 </div>
-                <div v-else  class="search">
-                    <div class="search_box flex5">
-                        <div class="flex-start">
-                            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                            <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
-                        </div>
-                        <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
-                    </div>
-                    <div class="flex-center flex1" @click="noSearch()">
-                        <text class="fz32 searchCancelText" >{{searchOrCancel}}</text>
-                    </div>
-                </div>
+                <!--<div v-if="doSearch && !isKeyDate"  class="search">-->
+                    <!--<div class="search_box flex5">-->
+                        <!--<div class="flex-start">-->
+                            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>-->
+                            <!--<input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>-->
+                        <!--</div>-->
+                        <!--<text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-center flex1" @click="noSearch()">-->
+                        <!--<text class="fz32 searchCancelText" >{{searchOrCancel}}</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="pageTop" v-if="doSearch && isKeyDate">-->
+                    <!--<div class="nav_back " @click="goback()">-->
+                        <!--<text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>-->
+                    <!--</div>-->
+                    <!--<div class="nav">-->
+                        <!--<text class="nav_title">{{keyDate}}</text>-->
+                        <!--<div class="navRightBox"  @click="pickDate()">-->
+                            <!--<text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe63c;</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </transition>
         </div>
         <div  class="corpusBox">
@@ -34,6 +45,9 @@
                 <div class="articleClass" v-for="(item,index) in catagoryList" >
                     <text @click="catagoryChange(index,item.id)" class="allArticle" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
+            </div>
+            <div class="print bkg-primary" @click="openPrint">
+                <text class="printText">打印</text>
             </div>
         </div>
         <list  @loadmore="onloading" loadmoreoffset="50">
@@ -156,6 +170,29 @@
                 </div>
                 <div class="button" @click="moreSingle()">
                     <text class="fz40 primary">批量派单</text>
+                </div>
+            </div>
+        </div>
+        <div class="mask" v-if="printMask" @click="printMaskTap()">
+            <div class="printBox">
+                <text class="maskTitle mt50">打印</text>
+                <text class="fz32 mt30" v-if="printList.length == 0">共 {{recordsTotal}} 单</text>
+                <text class="fz32 mt30" v-if="printList.length != 0">{{printIdx}} / {{printList.length}}</text>
+                <div class="flex-row mt20">
+                    <text class="fz32">第</text>
+                    <input class="printInput" type="number" placeholder="输入数量" v-model="beginNumber"/>
+                    <text class="fz32">单  到  第</text>
+                    <input class="printInput" type="number" placeholder="输入数量" v-model="endNumber"/>
+                    <text class="fz32">单</text>
+                </div>
+                <text class="printMes mt30">打印单数单次不可超过一万单</text>
+                <div class="printButton">
+                    <div class="printButtonLeft" @click="downPrint">
+                        <text class="printButtonText">取消</text>
+                    </div>
+                    <div class="printButtonRight" @click="print()">
+                        <text class="printButtonText">打印</text>
+                    </div>
                 </div>
             </div>
         </div>
@@ -298,6 +335,64 @@
         border-radius: 10px;
         background-color: white;
     }
+    .printBox{
+        position: absolute;
+        top: 200px;
+        left: 30px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        background-color: white;
+        overflow: hidden;
+    }
+    .printInput{
+        font-size: 32px;
+        width: 150px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+        border-bottom-color: #999999;
+        border-bottom-width: 1px;
+    }
+    .printMes{
+        font-size: 28px;
+        color: #888;
+        margin-bottom: 50px;
+    }
+    .printButton{
+        height:110px;
+        width: 690px;
+        border-top-width: 2px;
+        border-top-color: #5eb0fd;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    .printButtonLeft{
+        height: 110px;
+        width: 345px;
+        align-items: center;
+        justify-content: center;
+        border-right-width: 2px;
+        border-right-color: #5eb0fd;
+    }
+    .printButtonLeft:active{
+        background-color: #cccccc;
+    }
+    .printButtonRight{
+        height: 110px;
+        width: 345px;
+        align-items: center;
+        justify-content: center;
+    }
+    .printButtonRight:active{
+        background-color: #cccccc;
+    }
+    .printButtonText{
+        font-size: 40px;
+        color: #5eb0fd;
+    }
     .button{
         height:80px;
         width: 568px;
@@ -429,10 +524,22 @@
         height:98px;
         background-color:#fff;
     }
-    .corpusBox{
-        flex-direction: column;
+    .print{
+        width: 120px;
+        height: 70px;
+        border-radius: 10px;
         align-items: center;
         justify-content: center;
+        margin-right: 30px;
+    }
+    .printText{
+        font-size: 32px;
+        color: #fff;
+    }
+    .corpusBox{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         width: 750px;
         height:100px;
         border-bottom-width: 1px;
@@ -445,11 +552,13 @@
 </style>
 <script>
     const map = weex.requireModule('map');
+    const picker = weex.requireModule('picker');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     import {dom,event,animation,storage} from '../../../weex.js';
     import { POST, GET } from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
+    const printer = weex.requireModule('print');
     import noData from '../../../include/noData.vue';
     var modal = weex.requireModule('modal');
     export default {
@@ -491,6 +600,16 @@
                 keyword:'',
                 searchHint: "输入收货人、电话、地址",
                 searchOrCancel:'取消',
+                beginNumber:'',
+                endNumber:'',
+                printMask:false,
+                keyDate:'',
+                isKeyDate:false,
+                printList:[],
+                printIdx:0,
+                recordsTotal:0,
+                keyAdminId:'',
+                keyShopId:'',
             }
         },
         props:{
@@ -537,19 +656,152 @@
 
         },
         methods:{
+            printMaskTap(){
+                return
+            },
+//            关闭打印
+            downPrint(){
+                this.printMask = false;
+            },
+//            打开打印
+            openPrint(){
+                this.printIdx = 0;
+                this.printList = [];
+                this.beginNumber = 1;
+                this.endNumber = this.recordsTotal;
+                this.printMask = true;
+            },
+            printData(idx) {
+               var _this = this;
+              if (idx<this.printList.length) {
+                  let sn = this.printList[idx].sn;
+                  GET('weex/member/shipping/print.jhtml?sn='+sn+"&seqno="+idx, function (data) {
+                          if(data.type == 'success'){
+                              _this.printIdx = idx+1;
+                              printer.print(data.data);
+                              setTimeout(
+                                  function (){
+                                     _this.printData(idx+1);
+                                  },
+                                  1500);
+
+                          }else{
+                              event.toast(data.content);
+                          }
+                      },
+                      function (err) {
+                          event.toast(err.content);
+                      })
+
+              } else {
+                  this.printMask = false;
+                  event.toast('打印已完成');
+              }
+
+
+            },
+//            打印
+            print(){
+                var _this = this;
+                if (this.clicked || this.printIdx > 0) {
+                    return;
+                }
+                this.clicked = true;
+                if(!utils.isNull(this.beginNumber)){
+                    this.beginNumber = parseInt(this.beginNumber);
+                }if(!utils.isNull(this.endNumber)){
+                    this.endNumber = parseInt(this.endNumber);
+                }
+                 if(this.beginNumber > this.endNumber){
+                    modal.alert({
+                        message: '起始单量不得大于终止单量',
+                        okTitle: 'OK'
+                    });
+                    _this.clicked = false;
+                    return
+                }else if(this.beginNumber<0 || this.endNumber<0){
+                    modal.alert({
+                        message: '单量不得为负数',
+                        okTitle: 'OK'
+                    });
+                    _this.clicked = false;
+                    return
+                }
+                var status = '';
+                switch(this.productCategoryId){
+                    case 1:
+                        status = 'unconfirmed';
+                        break;
+                    case 2:
+                        status = 'hope';
+                        break;
+                    case 3:
+                        status = 'confirmed';
+                        break;
+                    case 4:
+                        status = 'completed';
+                        break;
+                    default:
+                        status = '';
+                        break;
+                }
+                var begin = this.beginNumber - 1;
+                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + begin + '&pageSize=' + this.endNumber +'&keyword=' +encodeURIComponent(this.keyword),
+                    function (res) {
+                        if (res.type=="success") {
+                            if (res.data.start == 0) {
+                                _this.printList = res.data.data;
+                            } else {
+                                res.data.data.forEach(function (item) {
+                                    _this.printList.push(item);
+                                });
+                            }
+                            _this.printData(0);
+                            _this.clicked = false;
+                        } else {
+                            _this.clicked = false;
+                            event.toast(res.content);
+                        }
+
+                    }, function (err) {
+                        _this.clicked = false;
+                        event.toast(err.content);
+                    })
+            },
             //            前往搜索
             goSearch:function () {
-                this.doSearch = true;
-                this.searchOrCancel = '取消'
-                let _this = this;
-                this.ordersList = [];
-                this.noDataHint = "输入收货人、电话、地址";
-//                event.openURL(utils.locate('view/shop/goods/search.js'), function (res) {
-//                    _this.doReset();
-//                    if(res.type == 'success'){
-//
+//                picker.pick({
+//                    items:['关键词搜索','送货时间搜索']
+//                }, e => {
+//                    if (e.result == 'success') {
+//                        if (e.data == 0) {
+//                            _this.doSearch = true;
+//                            _this.searchOrCancel = '取消';
+//                            _this.ordersList = [];
+//                            _this.noDataHint = "输入收货人、电话、地址";
+//                        } else{
+//                            _this.doSearch = true;
+//                            _this.isKeyDate = true;
+//                            _this.pickDate()
+//                        }
 //                    }
-//                });
+//                })
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('widget/search.js'), function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success' && data.data != '') {
+                        _this.keyword = data.data.keyword;
+                        _this.keyAdminId = data.data.adminId;
+                        _this.keyShopId = data.data.shopId;
+                        _this.keyDate = data.data.time;
+                        _this.open()
+                    }
+                })
             },
             oninput:function (e) {
                 this.isSearch = false;
@@ -863,8 +1115,10 @@
                         status = '';
                         break;
                 }
-                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' +encodeURIComponent(this.keyword),
+                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' +encodeURIComponent(this.keyword) +'&estimateDate='+encodeURIComponent(this.keyDate)
+                    +'&shopId='+this.keyShopId +'&adminId='+this.keyAdminId,
                     function (res) {
+
                         if (res.type=="success") {
                             if (res.data.start == 0) {
                                 _this.shippingList = res.data.data;
@@ -874,6 +1128,7 @@
                                 });
                             }
                             _this.pageStart = res.data.start+res.data.data.length;
+                            _this.recordsTotal = res.data.recordsTotal
                         } else {
                             event.toast(res.content);
                         }

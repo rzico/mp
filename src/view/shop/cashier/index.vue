@@ -175,8 +175,12 @@
                 </div>
                 <!--<div class="menu" @click="system()" >-->
                     <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>-->
-                    <!--<text class="menuBtn">系统</text>-->
+                    <!--<text class="menuBtn">地图</text>-->
                 <!--</div>-->
+                <div class="menu" @click="ceshi()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
+                    <text class="menuBtn">测试</text>
+                </div>
                 <div class="content">
                     <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
                     <text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>
@@ -650,6 +654,7 @@
                             }else if(res.data.type =='818807'){
                                 _this.scanSend(res.data.sn)
                             }
+
                         } else {
                             event.toast(res.content);
                         }
@@ -927,7 +932,10 @@
                 event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
             },
             system(){
-                event.openURL(utils.locate("view/shop/cashier/pos/index.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/cashier/amap.js"),function (e) {});
+            },
+            ceshi(){
+                event.openURL(utils.locate("view/shop/cashier/ceshi.js"),function (e) {});
             },
             shop:function () {
                 if (this.clicked==true) {

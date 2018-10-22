@@ -557,7 +557,6 @@
                         _this.arrears = data.data.arrears ; //  上期欠款
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
-                        //                        先请求购物车列表
                         _this.cartList();
                     } else {
                         event.toast(data.content);
@@ -753,6 +752,7 @@
             },
             //            加入购物车
             addCart:function (id) {
+
                 var _this = this;
                 POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0'+'&memberId=' +this.memberId).then(function (res) {
                     if (res.type == 'success') {
