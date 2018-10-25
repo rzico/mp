@@ -40,7 +40,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <!--顶部分类标题-->
             <div style="background-color: #fff;width: 750px;"v-if="isSearch">
@@ -58,8 +57,11 @@
             <!--</refresh>-->
             <!--顶部标题分类栏-->
             <div class="mt20" :style="{minHeight:screenHeight + 'px'}">
-                <!--无数据提示-->
-                <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
+                <transition name="noDataAnima" tag="div">
+                    <noData :noDataHint="noDataHint" v-if="isEmpty() && keyword != '' && isSearch"></noData>
+                </transition>
+                <transition name="operaAnima" tag="div">
+                    <!--无数据提示-->
                 <!--相关专栏-->
                 <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 0" class="bt30 ">
                     <!--类别-->
@@ -82,6 +84,9 @@
                         </div>
                     </div>
                 </div>
+                </transition>
+
+                <transition name="operaAnima" tag="div" >
                 <!--更多专栏搜索-->
                 <div  v-if="this.searchList.friend.length != 0 && this.whichCorpus == 2" class="bt30">
                     <!--朋友-->
@@ -117,18 +122,20 @@
                         </div>
                     </div>
                 </div>
+                </transition>
+                <transition-group name="operaAnima" tag="div" >
                 <!--文章-->
-                <div  v-for="(item,index) in searchList.article" >
+                <div  v-for="(item,index) in searchList.article" key="articleAnK">
                     <!--类别-->
                     <div  v-if="isRepeat(index)" class="pl30 pr30 bgWhite">
-                        <div class="typeTextBox " >
-                            <text class="sub_title fz32 pb10" >相关文章</text>
+                        <div class="typeTextBox">
+                            <text class="sub_title fz32 pb10">相关文章</text>
                         </div>
                         <div class="borderBottom"></div>
                     </div>
                     <div class="contentBox">
                         <!--文章-->
-                        <div class="collectBox " :class="[index != 0 ? 'borderTop' : '']" @click="goArticle(item.id)">
+                        <div class="collectBox" :class="[index != 0 ? 'borderTop' : '']" @click="goArticle(item.id)">
                             <!--名字与日期-->
                             <div class="nameDate">
                                 <div class="nameImg" @click="goAuthor(item.authorId)">
@@ -138,7 +145,6 @@
                                 <text class="authorName">{{item.createDate | timeDatefmt}}</text>
                             </div>
                             <div class="flex-row">
-
                                 <div  v-if="!item.loading"  class="articleImg coverAbsoTop " ></div>
                                 <!--文章封面-->
                                 <image resize="cover" class="articleImg" :src="item.thumbnail |watchThumbnail"   @load="onImageLoad(item)"  ></image>
@@ -161,6 +167,7 @@
                         </div>
                     </div>
                 </div>
+                </transition-group>
             </div>
             <!--<loading class="loading" @loading="onloading" :display="showLoading ? 'show' : 'hide'">-->
             <!--<text class="indicator">加载中...</text>-->
@@ -170,6 +177,41 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+
+    /*!*无数据动画*!*/
+    .noDataAnima-enter-active{
+        /*transition: all 0.05s;*/
+        transition: all 1.2s;
+    }
+
+    .noDataAnima-enter{
+        opacity: 0;
+    }
+
+    .noDataAnima-enter-to{
+        opacity: 1;
+    }
+
+    /*!*操作动画*!*/
+    .operaAnima-enter-active{
+        /*transition: all 0.05s;*/
+        transition: all 0.05s;
+    }
+
+    .operaAnima-enter{
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    .operaAnima-enter-to{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+
+
+
+
     .searCtrl{
         width:600px;
         lines:1;

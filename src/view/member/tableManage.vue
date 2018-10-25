@@ -9,28 +9,57 @@
                 <noData :noDataHint="noDataHint" ndBgColor="#fff"></noData>
             </cell>
             <!--导航栏-->
-            <cell v-for="(item,index) in articleList" :key="index">
-                <div class="articleBox"   @click="chooseArticle(item,index)" >
-                    <!--<text>{{item}}</text>-->
-                    <div class="atricleHead" >
-                        <text class="articleTitle">{{item.title}}</text>
-                    </div>
-                    <!--文章封面-->
-                    <div style="position: relative">
-                        <image :src="item.thumbnail" resize="cover" class="articleCover"></image>
-                    </div>
-                    <!--文章底部-->
-                    <div class="articleFoot">
-                        <div>
-                            <text class="articleDate" >{{item.modifyDate | timeDatefmt}}</text>
-                        </div>
-                        <div class="relevantInfo" >
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                            <text class="relevantText">{{item.hits}}</text>
-                            <text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                            <text class="relevantText">{{item.laud}}</text>
-                            <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                            <text class="relevantText">{{item.review}}</text>
+            <!--<cell v-for="(item,index) in articleList" :key="index">-->
+                <!--<div class="articleBox"   @click="chooseArticle(item,index)" >-->
+                    <!--&lt;!&ndash;<text>{{item}}</text>&ndash;&gt;-->
+                    <!--<div class="atricleHead" >-->
+                        <!--<text class="articleTitle">{{item.title}}</text>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;文章封面&ndash;&gt;-->
+                    <!--<div style="position: relative">-->
+                        <!--<image :src="item.thumbnail" resize="cover" class="articleCover"></image>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;文章底部&ndash;&gt;-->
+                    <!--<div class="articleFoot">-->
+                        <!--<div>-->
+                            <!--<text class="articleDate" >{{item.modifyDate | timeDatefmt}}</text>-->
+                        <!--</div>-->
+                        <!--<div class="relevantInfo" >-->
+                            <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                            <!--<text class="relevantText">{{item.hits}}</text>-->
+                            <!--<text class="relevantImage " style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                            <!--<text class="relevantText">{{item.laud}}</text>-->
+                            <!--<text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                            <!--<text class="relevantText">{{item.review}}</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</cell>-->
+            <cell v-for="(item,index) in articleList" :key="index" class="contentBox">
+                <div class="collectBox " :class="[index != 0 ? 'borderTop' : '']" @click="chooseArticle(item,index)">
+                    <!--名字与日期-->
+                    <!--<div class="nameDate">-->
+                        <!--<div class="nameImg" @click="goAuthor(item.authorId)">-->
+                            <!--<image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>-->
+                            <!--<text class="authorName ml10">{{item.author | watchNickName}}</text>-->
+                        <!--</div>-->
+                        <!--<text class="authorName">{{item.createDate | timeDatefmt}}</text>-->
+                    <!--</div>-->
+                    <div class="flex-row">
+                        <div  v-if="!item.loading" class="articleImg coverAbsoTop"></div>
+                        <!--文章封面-->
+                        <image resize="cover" class="articleImg" :src="item.thumbnail " @load="onImageLoad(item)"></image>
+                        <!--文章相关信息。标题点赞...-->
+                        <div class="articleInfo">
+                            <text class="fz30 articleTitle">{{item.title}} </text>
+                            <div class="relevantInfo">
+                                <text class="relevantImage" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
+                                <text class="relevantText">{{item.hits}}</text>
+                                <text class="relevantImage ml20" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
+                                <text class="relevantText">{{item.laud}}</text>
+                                <text class="relevantImage ml20" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
+                                <text class="relevantText">{{item.review}}</text>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -40,6 +69,26 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    /*<!--收藏-->*/
+    .nameImg{
+        flex-direction: row;
+        align-items: center;
+        height: 80px;
+        padding-right: 20px;
+    }
+    .articleTitle{
+        color: #444;
+        lines:2;
+        text-overflow: ellipsis;
+    }
+    .authorName {
+        font-size: 28px;
+        color: #888;
+    }
+    .authorImg{
+        width: 40px;height: 40px;
+        border-radius: 20px;
+    }
     .relevantImage {
         flex-direction: row;
         font-size: 32px;
@@ -56,52 +105,57 @@
         flex-direction: row;
         align-items: center;
     }
-    .articleFoot {
+    .articleInfo{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        height: 150px;
+        width: 400px;
+        margin-left: 20px;
+        margin-right: 20px;
+        justify-content: space-between;
+    }
+    .articleImg{
+        width: 250px;
+        height: 150px;
+        border-radius: 5px;
+    }
+    .nameDate{
         flex-direction: row;
         justify-content: space-between;
-        width: 690px;
+        height: 80px;
         align-items: center;
-        margin-left: 30px;
+        width: 690px;
     }
-    .articleDate {
-        font-size: 24px;
-        color: #888;
+    .collectBox{
+        padding-top: 45px;
+        padding-bottom: 15px;
     }
-    .articleCover {
-        /*height: 300px;*/
-        /*height: 345px;*/
-        height: 375px;
-        /*width:690px;*/
-        width: 750px;
-        /*border-radius: 5px;*/
-        margin-top: 30px;
-        margin-bottom: 30px;
+    .nameColor{
+        color: steelblue;
     }
-    .articleBox {
-        background-color: #ffffff;
-        /*padding-left: 30px;*/
-        padding-top: 30px;
+    .contentBox{
+        flex-direction: row;
+        padding-left: 30px;
         padding-right: 30px;
-        padding-bottom: 30px;
-        /*margin-bottom: 10px;*/
-        border-bottom-style: solid;
-        border-bottom-width: 10px;
-        border-color: #eeeeee;
-        /*========= 9.27*/
-        width:1080px;
-        display: inline-block
+        background-color: #fff;
+        flex-wrap: wrap;
+    }
+    .typeTextBox{
+        background-color: #ffffff;
+        padding-top: 30px;
+    }
+    .h {
+        height: 160px;
+    }
+    .logo {
+        width:100px;
+        height: 100px;
+        border-radius: 5px;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
 
-    .atricleHead {
-        flex-direction: row;
-        align-items: center;
-        margin-left: 30px;
-    }
-    .articleTitle {
-        width:600px;
-        font-size: 36px;
-        margin-left: 10px;
-    }
+
 </style>
 <script>
     import navbar from '../../include/navbar.vue';
@@ -137,27 +191,6 @@
             noData,
             searchNav
         },
-        filters:{
-            watchCatetory:function (value) {
-                if(utils.isNull(value)){
-                    return '生活';
-                }else{
-                    return value;
-                }
-            },
-            watchThumbnail:function (value) {
-//                    没过滤前是原图
-                return utils.thumbnail(value,750,375);
-            },
-            watchNickName:function (value) {
-                if(utils.isNull(value)){
-                    return 'author';
-                }else{
-                    //              如果用户名称过长，便截取拼成名字
-                    return utils.changeStrLast(value,5);
-                }
-            }
-        },
         created(){
             utils.initIconFont();
             this.getAllArticle();
@@ -180,8 +213,9 @@
                         data.data.data.forEach(function (item) {
                             if(utils.isNull(item.thumbnail)){
                             }else{
-                                item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                                item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
                             }
+                            item.loading = false;
                             _this.middleList.push(item);
                         });
 

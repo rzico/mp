@@ -695,6 +695,7 @@
                     })
                 }else{
                     _this.clicked = false;
+//                    utils.debug(userId);
                     event.toast('系统繁忙');
                 };
             },

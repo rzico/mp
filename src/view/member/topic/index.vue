@@ -595,6 +595,11 @@
             },
             //            小程序一键授权
             appletAgree() {
+
+                if(this.isNoActivate()){
+                    event.toast('请先点亮专栏特权');
+                    return;
+                }
                 if(this.steped4){
                     return;
                 }
@@ -606,11 +611,21 @@
             },
 //            小程序轮播图
             appletShuffling(){
+
+                if(this.isNoActivate()){
+                    event.toast('请先点亮专栏特权');
+                    return;
+                }
                 event.openURL(utils.locate("view/member/topic/shuffling.js"),function (message) {
                 });
             },
             //            小程序信息设置
             appletCopy(){
+                if(this.isNoActivate()){
+                    event.toast('请先点亮专栏特权');
+                    return;
+                }
+
                 event.openURL(utils.locate("view/member/topic/companyInfo.js"),function (message) {
                 });
 

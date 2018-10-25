@@ -165,7 +165,8 @@
             <div v-if="isOperation ">
                 <div class="mask" @touchstart="maskTouch"></div>
                 <div class="operationBox"  style="width: 230px;">
-                    <div class="arrowUp" >
+                    <text class="showBg"></text>
+                    <div class="arrowUp">
                         <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
                     </div>
                     <div class="flex-row pt25 pb25  textActive " style="width: 230px;padding-left: 21px;padding-right: 21px" v-if="friendStatus=='black'" @click="doBlack()">
@@ -210,7 +211,9 @@
         position: fixed;top: 145px;right:30px;
     }
     .operationBox{
-        position: fixed;top: 150px;right: 15px;background-color:#fff;border-radius: 20px;padding-top: 20px;padding-bottom: 20px;
+        position: fixed;top: 150px;right: 15px;
+        /*background-color:#fff;border-radius: 20px;*/
+        padding-top: 20px;padding-bottom: 20px;
     }
 
 

@@ -33,33 +33,36 @@
                 </div>
             </div>
             <!--模版-->
-            <div  v-if="!templateChoose && isSelf == 1 && !showMoneyBox ">
+            <div  v-if="!templateChoose && isSelf == 1 && !showMoneyBox">
                 <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
                 <text class="templateText templateIcon textTemplateIcon" :style="{bottom:bottomNum + 135}" @click="chooseTemplate()">模版</text>
             </div>
             <!--收藏-->
-            <div class="templateIcon templateIconWH"  :style="{bottom:bottomNum + 135}" @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect && !showMoneyBox">
-                <text class="templateText collectIcon"  :style="{fontFamily:'iconfont'}">&#xe65d;</text>
+            <div class="templateIcon templateIconWH" :style="{bottom:bottomNum + 135}" @click="collectArticle()" key="collectIcon" v-if="isSelf == 0 && !isCollect && !showMoneyBox">
+                <text class="templateText collectIcon" :style="{fontFamily:'iconfont'}">&#xe65d;</text>
                 <text class="templateText collectText" >收藏</text>
             </div>
-            <transition name="slide-fade" mode="out-in">
+
+
+            <!--<div v-for="item in forAnimation">-->
+            <div class="templateBtn" :style="{bottom:bottomNum + 300}" v-if="isSelf == 1 && templateChoose" >
+                <!--<div class="btnTextBox">-->
+                <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
+                <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
+                <!--</div>-->
+                <!--<div class="btnTextBox"  @click="chooseComplete()">-->
+                <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
+                <text class=" btnTextBox btnTextSize btnTextColor"  @click="chooseComplete()" :style="{fontFamily:'iconfont'}">&#xe64d; 完成</text>
+                <!--<text class="btnTextSize btnTextColor" style="padding-left: 10px"></text>-->
+                <!--</div>-->
+            </div>
+            <transition name="tempAnima" tag="div">
                 <!--模版内容-->
-                <div class="templateBox" v-if="isSelf == 1 && templateChoose"  key="templateContent" :style="{paddingBottom:bottomNum}">
-                    <div class="templateBtn" :style="{bottom:bottomNum + 300}">
-                        <!--<div class="btnTextBox">-->
-                        <!--<text class="btnTextSize" :style="{fontFamily:'iconfont'}">&#xe608;</text>-->
-                        <!--<text class="btnTextSize " style="padding-left: 10px">图上字下</text>-->
-                        <!--</div>-->
-                        <!--<div class="btnTextBox"  @click="chooseComplete()">-->
-                        <!--用text标签加上radius 在if重复渲染后不会出现渲染过程-->
-                        <text class=" btnTextBox btnTextSize btnTextColor"  @click="chooseComplete()" :style="{fontFamily:'iconfont'}">&#xe64d; 完成</text>
-                        <!--<text class="btnTextSize btnTextColor" style="padding-left: 10px"></text>-->
-                        <!--</div>-->
-                    </div>
+                <div class="templateBox" v-if="isSelf == 1 && templateChoose"  :style="{paddingBottom:bottomNum}">
                     <div>
                         <div>
                             <!--模版样图-->
-                            <scroller  class="templateImgBox"  scroll-direction="horizontal" >
+                            <scroller  class="templateImgBox" scroll-direction="horizontal">
                                 <div   v-for="(thumImg,index) in templateList" style="flex-direction: row"  :ref="thumImg.name">
                                     <image v-for="(item,index) in thumImg.templates" @appear="thumImgAppear(thumImg.name)" :src="item.thumbnial" resize="cover"  :class="[item.sn == templateSn ? 'imgActive': '','templateImg']" @click="tickImage(item.sn,item.id,thumImg.name)"></image>
                                 </div>
@@ -74,75 +77,91 @@
                     </div>
                 </div>
             </transition>
+            <!--</div>-->
+
+            <!--key="operationBox"-->
             <div v-if="isOperation && isSelf == 1">
                 <div class="maskLayer" @touchstart="maskTouch"></div>
-                <div class="showBox"  style="width: 230px;">
-                    <text class="showBg"></text>
-                    <div class="arrowUp" >
-                        <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
-                    </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive "  @click="operationEditor">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                        <text class="fz28 pl10">编辑</text>
-                    </div>
-                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="copyArticle()">-->
-                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
-                    <!--<text class="fz28 pl10">复制</text>-->
-                    <!--</div>-->
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="deleteArticle()">
-                        <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe652;</text>
-                        <text class="fz28 pl10 primary">删除</text>
-                    </div>
-                    <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
-                        <text class="fz28 pl10">生成长图</text>
-                    </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                        <text class="fz28 pl10">文章设置</text>
-                    </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                        <text class="fz28 pl10">分享</text>
-                    </div>
+                <div v-for="item in forAnimation">
+                    <transition-group name="operaAnima" tag="div">
+                        <div class="showBox"  style="width: 230px;" key="operationBox" v-if="isOperation1">
+                            <text class="showBg"></text>
+                            <!--<div class="arrowUp">-->
+                            <!--<text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>-->
+                            <!--</div>-->
+                            <div class="flex-row pt25 pb25 pl35 pr35 textActive "  @click="operationEditor">
+                                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                                <text class="fz28 pl10">编辑</text>
+                            </div>
+                            <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="copyArticle()">-->
+                            <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                            <!--<text class="fz28 pl10">复制</text>-->
+                            <!--</div>-->
+                            <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="deleteArticle()">
+                                <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe652;</text>
+                                <text class="fz28 pl10 primary">删除</text>
+                            </div>
+                            <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
+                            <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">
+                                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
+                                <text class="fz28 pl10">生成长图</text>
+                            </div>
+                            <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
+                                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                                <text class="fz28 pl10">文章设置</text>
+                            </div>
+                            <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
+                                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                                <text class="fz28 pl10">分享</text>
+                            </div>
+                        </div>
+                    </transition-group>
                 </div>
             </div>
             <div v-if="isOperation  && isSelf == 0">
                 <div class="maskLayer" @touchstart="maskTouch"></div>
-                <div class="showBox" style="width: 230px;">
-                    <text class="showBg"></text>
-                    <div class="arrowUp" >
-                        <text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>
-                    </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive " @click="goAuthor">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                        <text class="fz28 pl10">作者主页</text>
-                    </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
-                        <text class="fz28 pl10">分享</text>
-                    </div>
-                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="report">-->
-                    <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
-                    <!--<text class="fz28 pl10">举报</text>-->
-                    <!--</div>-->
+                <div v-for="item in forAnimation">
+                    <transition-group name="operaAnima" tag="div" >
+                        <div class="showBox" style="width: 230px;"  key="operationBox" v-if="isOperation1">
+                            <text class="showBg"></text>
+                            <!--<div class="arrowUp">-->
+                            <!--<text class="fz40" style="color: #fff;" :style="{fontFamily:'iconfont'}">&#xe64e;</text>-->
+                            <!--</div>-->
+                            <div class="flex-row pt25 pb25 pl35 pr35 textActive " @click="goAuthor">
+                                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
+                                <text class="fz28 pl10">作者主页</text>
+                            </div>
+                            <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
+                                <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
+                                <text class="fz28 pl10">分享</text>
+                            </div>
+                            <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="report">-->
+                            <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe615;</text>-->
+                            <!--<text class="fz28 pl10">举报</text>-->
+                            <!--</div>-->
+                        </div>
+                    </transition-group>
                 </div>
             </div>
-            <div v-if="showShare"  key="share" >
+            <div v-if="showShare"  key="share">
                 <div class="maskLayer" @touchstart="maskTouch"></div>
-                <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
             </div>
+            <transition name="shareAnima" tag="div">
+                <div v-if="showShare">
+                    <share @doShare="doShare" :isSelf="isSelf" @doCancel="doCancel"></share>
+                </div>
+            </transition>
+
             <reward ref="reward" v-if="rewardShow" @close="close" @rewardNumber="sendReward" ></reward>
         </div>
 
         <!--红包窗口-->
-        <div class="moneyBox" v-if="showMoneyBox1" @click="closeRedBag()"   >
+        <div class="moneyBox" v-if="showMoneyBox1" @click="closeRedBag()">
             <div v-for="item in forAnimation">
                 <!--添加动画-->
                 <transition-group name="paraTransition" tag="div">
                     <div class="moneyInfoBox" key="redBagKey"v-if="showMoneyBox">
-                        <div class="redBagHead" ></div>
+                        <div class="redBagHead"></div>
                         <image class="authorLogo" :src="redBagAuthorLogo"></image>
                         <div class="flex-row">
                             <text class="authorName">{{redBagAuthor | watchRedBagAuthor}}的红包</text>
@@ -169,7 +188,78 @@
 <style lang="less" src="../../style/wx.less"/>
 <style>
 
+    /*分享选择动画*/
+    .tempAnima-enter-active {
+        transition: all 0.15s;
+    }
 
+    .tempAnima-enter{
+        transform: translateY(150px);
+        opacity: 0;
+    }
+
+    .tempAnima-enter-to{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+
+    /*模版选择动画*/
+    .tempAnima-enter-active, .tempAnima-leave-active {
+        transition: all 0.15s;
+    }
+
+    .tempAnima-leave-to{
+        transform: translateY(150px);
+        opacity: 0;
+    }
+
+    .tempAnima-leave{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+    .tempAnima-enter{
+        transform: translateY(150px);
+        opacity: 0;
+    }
+
+    .tempAnima-enter-to{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+    /*!*操作动画*!*/
+    .operaAnima-enter-active, .operaAnima-leave-active {
+        /*transition: all 0.05s;*/
+        transition: all 0.1s;
+    }
+
+    .operaAnima-leave-to{
+        transform: translateY(0px);
+        opacity: 0;
+    }
+
+    .operaAnima-leave{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+    .operaAnima-enter{
+        transform: translateY(0px);
+        opacity: 0;
+    }
+
+    .operaAnima-enter-to{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+
+
+
+
+    /* <!--红包动画-->*/
     .paraTransition-enter-active, .paraTransition-leave-active {
         /*transition: all 0.05s;*/
         transition: all 0.3s;
@@ -480,7 +570,7 @@
     import utils from '../../assets/utils';
     import reward from '../../widget/rewardDialog.vue';
     import buyGoods from '../../widget/buyGoods.vue';
-//    import waitingBox from '../../widget/waiting.vue';
+    //    import waitingBox from '../../widget/waiting.vue';
     const webview = weex.requireModule('webview');
     const event = weex.requireModule('event');
     import { POST, GET } from '../../assets/fetch'
@@ -489,6 +579,7 @@
         data:function () {
             return{
 //                waitingShow:false,
+                isOperation1:false,
                 showMoneyBox1:false,
                 forAnimation:[''],
                 redPackageType:'RAN',
@@ -932,6 +1023,9 @@
 
                 }else{
                     this.isOperation = true;
+                    setTimeout(function () {
+                        _this.isOperation1 = true;
+                    },100)
                 }
             },
 //            点击操作里的编辑
@@ -960,7 +1054,12 @@
             },
 //            触碰遮罩层
             maskTouch(){
-                this.isOperation = false;
+                let _this = this;
+//                this.isOperation = false;
+                this.isOperation1 = false;
+                setTimeout(function () {
+                    _this.isOperation = false;
+                },150)
                 this.showShare = false;
             },
 //            取消分享

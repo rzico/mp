@@ -783,7 +783,7 @@
 ////            获取文章列表
                 this.getAllArticle();
 //                强制触发上啦加载
-                this.$refs.listDom.resetLoadmore();
+//                this.$refs.listDom.resetLoadmore();
             },
             onrefresh:function () {
                 var _this = this;

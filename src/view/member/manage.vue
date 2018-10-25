@@ -20,7 +20,7 @@
             </div>
             <!--芸店-->
             <!--cell-line-->
-            <div class="cell-row ">
+            <div class="cell-row">
                 <div class="cell-panel space-between"@click="option()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe651;</text>
@@ -201,9 +201,7 @@
                     </div>
                 </div>
             </div>
-
         </scroller>
-
         <payment ref="payment" @notify="notify"></payment>
         <div v-if="showShare"  key="share">
             <div class="maskLayer" @touchstart="maskTouch"></div>

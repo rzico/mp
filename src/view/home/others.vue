@@ -188,7 +188,7 @@
                 let _this = this;
                 GET('weex/article/list.jhtml?articleCategoryId=' + this.articleCategoryId + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,function (data) {
                     if(data.type == 'success' && data.data.data != '' ){
-                        data.data.data.forEach(function (item) {
+                        data.data.data.forEach(function (item,index) {
 //                             （配合懒加载）
                             item.loading = false;
                             if(!utils.isNull(item.thumbnail)){
@@ -214,6 +214,8 @@
                             _this.articleList = data.data.data;
                         }
                         _this.pageStart = data.data.start + data.data.data.length;
+//                       强制触发上啦加载
+//                        this.$refs.listDom.resetLoadmore();
                     }else  if(data.type == 'success' && data.data.data == '' ){
                     }else{
                         event.toast(data.content);
@@ -253,8 +255,6 @@
             onloading:function () {
 ////            获取文章列表
                 this.getAllArticle();
-//                强制触发上啦加载
-                this.$refs.listDom.resetLoadmore();
             },
             onrefresh:function () {
                 var _this = this;

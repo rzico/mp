@@ -494,10 +494,10 @@
         padding-bottom: 200px;
     }
 
-
     .noActive{
         border-bottom-width:0px;
     }
+
     .articleClass{
         flex-direction: row;
         padding-left: 10px;
@@ -513,12 +513,15 @@
         padding-left: 20px;
         padding-right: 20px;
     }
+
     .leftBtnBorder{
         left: 0;
     }
+
     .rightBtnBorder{
         right: 0;
     }
+
     .topBtnBorder{
         position:absolute;
         height: 40px;
@@ -554,6 +557,7 @@
         height: 420px;
         /*background-color: black;*/
     }
+
     .topBtnBox{
         flex-direction: row;
         align-items: center;
@@ -982,23 +986,6 @@
                     event.toast(err.content);
                 })
             },
-            jumpEditor:function (id) {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                var _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
-                event.router(utils.locate('view/member/editor/editor.js?articleId=' + id ),function (message) {
-
-                });
-
-//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
-////                    _this.updateArticle();
-//                })
-            },
 //            右侧隐藏栏里跳转文集
             jumpCorpus:function (item) {
                 if (this.clicked) {
@@ -1038,10 +1025,25 @@
                     }
                 );
             },
+            jumpEditor:function (id) {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                event.router(utils.locate('view/member/editor/editor.js?articleId=' + id ),function (message) {
 
+                });
+//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + id,function () {
+////                    _this.updateArticle();
+//                })
+            },
 //            前往文章
             goArticle(item,index){
-                if (this.clicked) {
+                if (this.clicked){
                     return;
                 }
                 this.clicked = true;

@@ -36,17 +36,17 @@
                 <!--&lt;!&ndash;</div>-->
                 <div class="collectBox " :class="[index != 0 ? 'borderTop' : '']" @click="chooseArticle(item.id)">
                     <!--名字与日期-->
-                    <div class="nameDate">
-                        <div class="nameImg" @click="goAuthor(item.authorId)">
-                            <image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>
-                            <text class="authorName ml10">{{item.author | watchNickName}}</text>
-                        </div>
-                        <text class="authorName">{{item.createDate | timeDatefmt}}</text>
-                    </div>
+                    <!--<div class="nameDate">-->
+                        <!--<div class="nameImg" @click="goAuthor(item.authorId)">-->
+                            <!--<image resize="cover" class="authorImg" :src="item.logo | watchLogo"></image>-->
+                            <!--<text class="authorName ml10">{{item.author | watchNickName}}</text>-->
+                        <!--</div>-->
+                        <!--<text class="authorName">{{item.createDate | timeDatefmt}}</text>-->
+                    <!--</div>-->
                     <div class="flex-row">
                         <div  v-if="!item.loading" class="articleImg coverAbsoTop"></div>
                         <!--文章封面-->
-                        <image resize="cover" class="articleImg" :src="item.thumbnail |watchThumbnail" @load="onImageLoad(item)"></image>
+                        <image resize="cover" class="articleImg" :src="item.thumbnail " @load="onImageLoad(item)"></image>
                         <!--文章相关信息。标题点赞...-->
                         <div class="articleInfo">
                             <text class="fz30 articleTitle">{{item.title}} </text>
@@ -188,8 +188,8 @@
         width: 690px;
     }
     .collectBox{
-        padding-top: 15px;
-        padding-bottom: 45px;
+        padding-top: 45px;
+        padding-bottom: 15px;
     }
     .nameColor{
         color: steelblue;
@@ -250,46 +250,6 @@
             noData,
             searchNav
         },
-        filters:{
-            watchCatetory:function (value) {
-                if(utils.isNull(value)){
-                    return '生活';
-                }else{
-                    return value;
-                }
-            },
-//            watchThumbnail:function (value) {
-////                    没过滤前是原图
-//                return utils.thumbnail(value,750,375);
-//            },
-//            watchNickName:function (value) {
-//                if(utils.isNull(value)){
-//                    return 'author';
-//                }else{
-//                    //              如果用户名称过长，便截取拼成名字
-//                    return utils.changeStrLast(value,5);
-//                }
-//            },
-            watchThumbnail:function (value) {
-                return utils.thumbnail(value,250,150);
-            },
-            watchLogo:function (value) {
-                if(utils.isNull(value)){
-                    return utils.locate('resources/images/background.png');
-                }
-                return utils.thumbnail(value,40,40);
-            },
-            watchNickName:function (value) {
-                if(utils.isNull(value)){
-                    return 'author';
-                }else{
-                    return value;
-                }
-            },
-            watchFriendLogo:function (value) {
-                return utils.thumbnail(value,100,100);
-            }
-        },
         created(){
             utils.initIconFont();
             this.getAllArticle();
@@ -312,8 +272,9 @@
                         data.data.data.forEach(function (item) {
                             if(utils.isNull(item.thumbnail)){
                             }else{
-                                item.thumbnail = utils.thumbnail(item.thumbnail,750,375);
+                                item.thumbnail = utils.thumbnail(item.thumbnail,250,150);
                             }
+                            item.loading = false;
                             _this.middleList.push(item);
                         });
 
