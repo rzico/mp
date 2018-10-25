@@ -63,7 +63,7 @@
                         </div>
                         <div class=" space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title">送货工资:</text>
-                            <text class="sub_title">{{item.adminFreight + item.levelFreight}}</text>
+                            <text class="sub_title">{{item.adminFreight}}(楼层费:{{item.levelFreight}})</text>
                         </div>
                         <!--<div class=" space-between  bt10 headerCellBg cell_height" @click="pickObject()">-->
                             <!--<text class="sub_title">结算方式</text>-->
