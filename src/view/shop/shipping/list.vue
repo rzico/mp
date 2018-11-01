@@ -98,13 +98,14 @@
                     </div>
                     <div class="flex-row space-between goodsFoot" v-if="item.status == 'unconfirmed'  && filter('unconfirmed')">
                         <div class="flex-row">
-                        <div class="selected" @click="singleChoose(index,item.groupName)">
-                            <text :style="{fontFamily:'iconfont'}" class="selectedIcon primary" v-if="checkChoose(index)">&#xe64d;</text>
-                        </div>
-                            <text class="fz32 ml20" @click="singleChoose(index)">{{item.groupName}}</text>
+                        <!--<div class="selected" @click="singleChoose(index,item.groupName)">-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="selectedIcon primary" v-if="checkChoose(index)">&#xe64d;</text>-->
+                        <!--</div>-->
+                            <!--<text class="fz32 ml20" @click="singleChoose(index)">{{item.groupName}}</text>-->
+                            <text class="fz28" style="color: #999999">NO.{{index+1}}</text>
                         </div>
                         <div class="flex-row">
-                            <div class="flex-row" v-if="totalSingle <=1">
+                            <div class="flex-row">
                             <div class="flex-row" v-if="item.isSelf == true">
                                 <text class="title footText " @click="trunSend(item.orderSn,item.sn,item.isSelf)">转派</text>
                             </div>
@@ -112,12 +113,12 @@
                                 <text class="title footText " @click="rejected(item.sn)">驳回</text>
                             </div>
                             </div>
-                            <div class="flex-row" v-if="totalSingle <=1">
+                            <div class="flex-row">
                             <text class="title footText " @click="sendSingle(item.orderSn,item.sn,item.isSelf)">派单</text>
                             </div>
-                        <div class="flex-row" v-else>
-                            <text class="title footText " @click="openMask(item.orderSn,item.sn)">批量派单</text>
-                        </div>
+                        <!--<div class="flex-row" v-else>-->
+                            <!--<text class="title footText " @click="openMask(item.orderSn,item.sn)">批量派单</text>-->
+                        <!--</div>-->
                         </div>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'dispatch' && filter('dispatch')">
@@ -675,7 +676,8 @@
                var _this = this;
               if (idx<this.printList.length) {
                   let sn = this.printList[idx].sn;
-                  GET('weex/member/shipping/print.jhtml?sn='+sn+"&seqno="+idx, function (data) {
+                  let dx = idx +this.beginNumber;
+                  GET('weex/member/shipping/print.jhtml?sn='+sn+"&seqno="+  dx, function (data) {
                           if(data.type == 'success'){
                               _this.printIdx = idx+1;
                               printer.print(data.data);
