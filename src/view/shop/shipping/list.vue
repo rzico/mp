@@ -746,8 +746,9 @@
                         status = '';
                         break;
                 }
-                var begin = this.beginNumber - 1;
-                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + begin + '&pageSize=' + this.endNumber +'&keyword=' +encodeURIComponent(this.keyword),
+                var pageStart = this.beginNumber - 1;
+                var pageSize =  this.endNumber-this.beginNumber+1;
+                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + pageStart + '&pageSize=' + pageSize +'&keyword=' +encodeURIComponent(this.keyword),
                     function (res) {
                         if (res.type=="success") {
                             _this.printList = res.data.data;
