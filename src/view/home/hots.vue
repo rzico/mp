@@ -665,7 +665,6 @@
                             item.loading = false;
 //                             （配合懒加载）
                             item.loadingImg = '';
-
 //                            模版id重新填充打乱
                             if(_this.templateIndexList.length == 0 ){
                                 _this.templateIndexList = _this.shuffle([0,1,5,6,7]);
@@ -689,14 +688,14 @@
                                 item.author = utils.changeStrLast(item.author);
                             }
 ////                          填充轮播图
-                            if(_this.pageStart == 0 && !utils.isNull(item.tags) && _this.imageList.length < 5){
-                                for(var i = 0;i < item.tags.length; i ++){
-                                    if(item.tags[i].id == 5){
+                            if(_this.pageStart == 0 && _this.imageList.length < 5 && item.showMap ){
+//                                for(var i = 0;i < item.tags.length; i ++){
+//                                    if(item.tags[i].id == 5){
                                         middleList.push(item);
                                         data.data.data.splice(index,1);
-                                        break;
-                                    }
-                                }
+//                                        break;
+//                                    }
+//                                }
                             }
 //                                <!--不能用过滤器,在上啦加载push时 会渲染不出来，具体原因还得分析-->
                             if(!utils.isNull(item.thumbnail)) {
