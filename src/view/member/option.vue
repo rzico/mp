@@ -13,6 +13,9 @@
                     </div>
                 </div>
             </div>
+            <div class="sub-panel" @click="goHome()">
+                <text class="sub_title">回到首页测试</text>
+            </div>
             <div class="sub-panel">
                 <text class="sub_title">从服务器获取所有已发布的文章</text>
             </div>
@@ -195,6 +198,10 @@
         methods: {
             goback: function (e) {
                 event.closeURL()
+            },
+            goHome:function () {
+                event.switchTab(0)
+
             },
 //            执行下载代码
             doDownLoad(){
