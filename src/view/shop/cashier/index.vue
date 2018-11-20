@@ -7,7 +7,7 @@
             </div>
             <div class="flex-column" @click="linkToFill">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>
-                <text class="headerText mt20">报单</text>
+                <text class="headerText mt20">报 单</text>
             </div>
             <div class="flex-column" @click="showQrcode">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>

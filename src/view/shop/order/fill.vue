@@ -923,11 +923,7 @@
                     event.toast('请先设置地址');
                     _this.clicked = false;
                     return
-                }else if (utils.isNull(this.shopId)) {
-                    event.toast('请选择配送站点');
-                    _this.clicked = false;
-                    return
-                }else if (utils.isNull(this.paymentPluginId)) {
+                } else if (utils.isNull(this.paymentPluginId)) {
                     event.toast('请选择支付方式');
                     _this.clicked = false;
                     return
@@ -938,13 +934,20 @@
                 if(utils.isNull(_this.barrel)){
                     _this.barrel = 0
                 }
-                if(this.isSelf == true || this.isSelf == 'true'){
-                    if (utils.isNull(this.adminId)) {
-                        event.toast('请选择配送员');
+                if (this.version == 2){
+                    if (utils.isNull(this.shopId)) {
+                        event.toast('请选择配送站点');
                         _this.clicked = false;
                         return
+                    }else if(this.isSelf == true || this.isSelf == 'true'){
+                        if (utils.isNull(this.adminId)) {
+                            event.toast('请选择配送员');
+                            _this.clicked = false;
+                            return
+                        }
                     }
                 }
+
                 var mesTotal = 0;
                 _this.cart.forEach(function (item) {
                     if(utils.isNull(item.quantity) || item.quantity == 0){
