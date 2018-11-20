@@ -66,11 +66,11 @@
                 <div class="typeBox" v-if="version == 2">
                     <div class="flex-row">
                         <text class="fz32">应收押金:</text>
-                        <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit"/>
+                        <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>
                     </div>
                     <div class="flex-row">
                         <text class="fz32">押桶数:</text>
-                        <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel" />
+                        <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel" @change="getmoneyTotal"/>
                     </div>
                 </div>
                 <div class="typeBox" @click="pickPattern()" v-if="version == 2">
@@ -94,13 +94,13 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
-                <div class="floorBox" @click="chooseFloor()">
-                    <text class="fz32">楼层:</text>
-                    <div class="flex-row">
-                        <text class="floorBoxText">{{floor | wacthFloor}}</text>
-                        <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="floorBox" @click="chooseFloor()">-->
+                    <!--<text class="fz32">楼层:</text>-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="floorBoxText">{{floor | wacthFloor}}</text>-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="memoBox" >
                     <text class="fz32">备注:</text>
                     <div class="flex-row">
@@ -570,7 +570,7 @@
 //           获取商品合计
             getmoneyTotal:function () {
                 var _this = this;
-                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId).then(function (data) {
+                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (data) {
                     if (data.type == 'success') {
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
@@ -959,7 +959,7 @@
                     _this.clicked = false;
                     return
                 }
-                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&level='+_this.floor+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
+                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
                     if (res.type == 'success') {
                                     modal.alert({
                                         message: '确认成功',
