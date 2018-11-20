@@ -411,6 +411,7 @@
                 let _this =this;
                     var E = {
                         memberId:c.memberId,
+                        addressId:c.id,
                     }
                     let backData = utils.message('success','选择成功',E);
                     event.closeURL(backData);
