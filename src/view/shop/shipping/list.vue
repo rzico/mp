@@ -85,12 +85,12 @@
                         </div>
                     </div>
                     <div class="flex-row goodsTotalPrice boder-bottom">
-                        <div v-if="productCategoryId != 2">
-                            <text class="sub_title">下单时间:{{item.createDate | watchCreateDate}}</text>
-                        </div>
-                        <div v-if="productCategoryId == 2">
-                            <text class="sub_title">预约时间:{{item.hopeDate | watchCreateDate}}</text>
-                        </div>
+                        <!--<div v-if="productCategoryId != 2">-->
+                            <text class="sub_title">NO.{{index+1}} 订单号:{{item.orderSn}}</text>
+                        <!--</div>-->
+                        <!--<div v-if="productCategoryId == 2">-->
+                            <!--<text class="sub_title">预约时间:{{item.hopeDate | watchCreateDate}}</text>-->
+                        <!--</div>-->
                         <div class="flex-row">
                             <text class="sub_title mr20">共{{item.quantity}}件商品</text>
                             <!--<text class="title">合计:¥ {{item.amount | currencyfmt}}</text>-->
@@ -102,7 +102,7 @@
                             <!--<text :style="{fontFamily:'iconfont'}" class="selectedIcon primary" v-if="checkChoose(index)">&#xe64d;</text>-->
                         <!--</div>-->
                             <!--<text class="fz32 ml20" @click="singleChoose(index)">{{item.groupName}}</text>-->
-                            <text class="fz28" style="color: #999999">NO.{{index+1}}</text>
+                            <text class="fz28" style="color: #999999"></text>
                         </div>
                         <div class="flex-row">
                             <div class="flex-row">
@@ -686,7 +686,6 @@
                                      _this.printData(idx+1);
                                   },
                                   1500);
-
                           }else{
                               event.toast(data.content);
                           }
@@ -747,17 +746,12 @@
                         status = '';
                         break;
                 }
-                var begin = this.beginNumber - 1;
-                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + begin + '&pageSize=' + this.endNumber +'&keyword=' +encodeURIComponent(this.keyword),
+                var pageStart = this.beginNumber - 1;
+                var pageSize =  this.endNumber-this.beginNumber+1;
+                GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + pageStart + '&pageSize=' + pageSize +'&keyword=' +encodeURIComponent(this.keyword),
                     function (res) {
                         if (res.type=="success") {
-                            if (res.data.start == 0) {
-                                _this.printList = res.data.data;
-                            } else {
-                                res.data.data.forEach(function (item) {
-                                    _this.printList.push(item);
-                                });
-                            }
+                            _this.printList = res.data.data;
                             _this.printData(0);
                             _this.clicked = false;
                         } else {

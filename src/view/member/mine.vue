@@ -136,6 +136,12 @@
                         <text class="articleImgText">{{a.title}}</text>
                     </div>
                     </div>
+                    <div class=" articleBox" @click="jumpEditor()">
+                        <div class="articleIconBox">
+                            <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
+                        </div>
+                        <text class="articleImgText">发表文章</text>
+                    </div>
                     <div class="unArticleBox" v-if="articleThree.length == 0" @click="jumpEditor()">
                         <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
                         <text class="fz26 mt10" style="color: #cccccc">点击发表文章</text>
@@ -161,10 +167,10 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe628;</text>-->
                         <!--<text class="iconfontText mt20">店铺管理</text>-->
                     <!--</div>-->
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize" style="color: #5A427C">&#xe6e8;</text>
-                        <text class="iconfontText mt20">人工报单</text>
-                    </div>
+                    <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}"  class="iconfontSize" style="color: #5A427C">&#xe6e8;</text>-->
+                        <!--<text class="iconfontText mt20">人工报单</text>-->
+                    <!--</div>-->
                     <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="gocard()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #cc3300" class="iconfontSize">&#xe66a;</text>-->
                         <!--<text class="iconfontText mt20">会员卡</text>-->
@@ -276,7 +282,7 @@
         margin-top: 15px;
         font-size: 26px;
         color: #444;
-        width: 150px;
+        max-width: 150px;
         lines:2;
         text-overflow: ellipsis;
     }
@@ -324,6 +330,15 @@
         border-radius: 10px;
         border-width: 1px;
         border-color: #eeeeee;
+    }
+    .articleIconBox{
+        height: 150px;
+        width: 150px;
+        border-radius: 10px;
+        border-width: 1px;
+        border-color: #eeeeee;
+        align-items: center;
+        justify-content: center;
     }
     .iconBox{
         width: 167.5px;
@@ -813,7 +828,7 @@
                 GET('weex/member/article/list.jhtml?authorId='+this.UId,function (data) {
                     if (data.type == "success") {
                         data.data.data.forEach(function (item,index) {
-                            if(index <= 3){
+                            if(index <= 2){
                                 item.thumbnail = utils.thumbnail(item.thumbnail,150,150);
                                 _this.articleThree.push(item)
                             }
@@ -861,6 +876,7 @@
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/editor.js'), function(message) {
                     _this.clicked = false;
+                    _this.articleThree = [],
                     _this.openArticle();
                 });
             },
