@@ -1145,7 +1145,7 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {
+                    function (e) {
                         _this.clicked = false;
                     }
                 )
