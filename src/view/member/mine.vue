@@ -827,12 +827,15 @@
                 var _this = this;
                 GET('weex/member/article/list.jhtml?authorId='+this.UId,function (data) {
                     if (data.type == "success") {
+                        var arr = []
                         data.data.data.forEach(function (item,index) {
                             if(index <= 2){
                                 item.thumbnail = utils.thumbnail(item.thumbnail,150,150);
-                                _this.articleThree.push(item)
+                                arr.push(item)
                             }
                         })
+                        _this.articleThree = arr;
+
                     }else {
                         event.toast(data.content);
                     }
@@ -876,7 +879,6 @@
                 var _this = this;
                 event.openURL(utils.locate('view/member/editor/editor.js'), function(message) {
                     _this.clicked = false;
-                    _this.articleThree = [],
                     _this.openArticle();
                 });
             },

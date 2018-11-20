@@ -52,20 +52,20 @@
                 <!--<text class="sub_title">你有了自已的微信、小程序专栏</text>-->
             <!--</div>-->
 
-            <div class="cell-row cell-line" @click="sendQrcode()">
-                <div class="cell-panel space-between cell-clear">
-                    <div class="flex-row">
-                        <text class="title ml10">推广二维码</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">{{setQrcode}}</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-            </div>
-            <div class="sub-panel">
-                <text class="sub_title">分享后文章自动加上二维码，有助于打造个人品牌</text>
-            </div>
+            <!--<div class="cell-row cell-line" @click="sendQrcode()">-->
+                <!--<div class="cell-panel space-between cell-clear">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">推广二维码</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{setQrcode}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="sub-panel">-->
+                <!--<text class="sub_title">分享后文章自动加上二维码，有助于打造个人品牌</text>-->
+            <!--</div>-->
 
         </scroller>
 
@@ -175,16 +175,17 @@
             let _this = this;
 //            获取用户id
             this.UId = event.getUId();
-            event.getCacheSize(function (data) {
-                _this.storageNum = data.data.total;
-            })
+            _this.storageNum =10;
+//            event.getCacheSize(function (data) {
+//                _this.storageNum = data.data.total;
+//            })
             GET('weex/member/option.jhtml',function (data) {
                 if(data.type == 'success'){
                     _this.blackNum = data.data.black;
-                    if(!utils.isNull(data.data.qrcode)){
-                        _this.setQrcode = '已设置';
-                    }
-                    _this.hasTopic = data.data.hasTopic;
+//                    if(!utils.isNull(data.data.qrcode)){
+//                        _this.setQrcode = '已设置';
+//                    }
+//                    _this.hasTopic = data.data.hasTopic;
                 }else{
                     event.toast(data.content)
                 }
