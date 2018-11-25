@@ -9,6 +9,8 @@ const event = weex.requireModule('event');
 const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 const appName = 'water';// app类型  water 或 yundian
 let utilsFunc = {
+    //0 标准版 1生鲜版 2桶装水
+    version:2,
     // app类型
     appType(){
         return appName;

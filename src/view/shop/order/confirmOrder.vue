@@ -218,6 +218,7 @@
                                 _this.paymentPluginName = _this.payName[dataIndex]
                             }
                         })
+                        _this.getmoneyTotal()
                     } else {
                         event.toast(mes.content);
                     }

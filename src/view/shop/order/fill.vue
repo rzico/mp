@@ -63,24 +63,24 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="typeBox">
+                <div class="typeBox" v-if="version == 2">
                     <div class="flex-row">
                         <text class="fz32">应收押金:</text>
-                        <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit"/>
+                        <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>
                     </div>
                     <div class="flex-row">
                         <text class="fz32">押桶数:</text>
-                        <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel"/>
+                        <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel" @change="getmoneyTotal"/>
                     </div>
                 </div>
-                <div class="typeBox" @click="pickPattern()">
+                <div class="typeBox" @click="pickPattern()" v-if="version == 2">
                     <text class="fz32">配送站点:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{shopName}}</text>
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
-                <div class="typeBox" @click="goMarki()">
+                <div class="typeBox" @click="goMarki()" v-if="version == 2">
                     <text class="fz32">配送人员:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{adminName}}</text>
@@ -94,13 +94,13 @@
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
-                <div class="floorBox" @click="chooseFloor()">
-                    <text class="fz32">楼层:</text>
-                    <div class="flex-row">
-                        <text class="floorBoxText">{{floor | wacthFloor}}</text>
-                        <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="floorBox" @click="chooseFloor()">-->
+                    <!--<text class="fz32">楼层:</text>-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="floorBoxText">{{floor | wacthFloor}}</text>-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="memoBox" >
                     <text class="fz32">备注:</text>
                     <div class="flex-row">
@@ -114,9 +114,9 @@
             <div class="moneyBox">
                 <div class="flex-row space-between pb10">
                      <text class="moneyBoxText">应收金额: {{amountPayable}}元</text>
-                     <text class="moneyBoxText">上期欠款: {{arrears}}元</text>
+                     <text class="moneyBoxText" v-if="version == 2">上期欠款: {{arrears}}元</text>
                 </div>
-                <div class="flex-row space-between pb10">
+                <div class="flex-row space-between pb10" v-if="version == 2">
                     <text class="moneyBoxText">应收水票: {{paperPayable}}张</text>
                     <text class="moneyBoxText">上期欠票: {{ticket}}张</text>
                 </div>
@@ -426,14 +426,15 @@
                 amountPayable:'',
                 arrears:'',
                 paperPayable:'',
-                ticket:''
+                ticket:'',
+                version:0
             }
         },
         components: {
             navbar,date
         },
         props: {
-            title: {default: "报单"},
+            title: {default: "人工报单"},
         },
         filters: {
             watchSendType:function (val) {
@@ -457,6 +458,7 @@
         },
         created() {
             utils.initIconFont();
+            this.version = utils.version;
 //            清空购物车
             POST('weex/cart/clear.jhtml').then(function (res) {
                 if (res.type == 'success') {
@@ -568,7 +570,7 @@
 //           获取商品合计
             getmoneyTotal:function () {
                 var _this = this;
-                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId).then(function (data) {
+                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (data) {
                     if (data.type == 'success') {
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
@@ -696,7 +698,7 @@
 //                        可能会出现会员id为0的情况，0为无效会员
                         if(data.data.memberId != 0){
                             _this.memberId = data.data.memberId;
-                            _this.addressId = '';
+                            _this.addressId = data.data.addressId;
                             _this.getInfo();
                         }else{
                             event.toast('无效会员')
@@ -921,11 +923,7 @@
                     event.toast('请先设置地址');
                     _this.clicked = false;
                     return
-                }else if (utils.isNull(this.shopId)) {
-                    event.toast('请选择配送站点');
-                    _this.clicked = false;
-                    return
-                }else if (utils.isNull(this.paymentPluginId)) {
+                } else if (utils.isNull(this.paymentPluginId)) {
                     event.toast('请选择支付方式');
                     _this.clicked = false;
                     return
@@ -936,13 +934,20 @@
                 if(utils.isNull(_this.barrel)){
                     _this.barrel = 0
                 }
-                if(this.isSelf == true || this.isSelf == 'true'){
-                    if (utils.isNull(this.adminId)) {
-                        event.toast('请选择配送员');
+                if (this.version == 2){
+                    if (utils.isNull(this.shopId)) {
+                        event.toast('请选择配送站点');
                         _this.clicked = false;
                         return
+                    }else if(this.isSelf == true || this.isSelf == 'true'){
+                        if (utils.isNull(this.adminId)) {
+                            event.toast('请选择配送员');
+                            _this.clicked = false;
+                            return
+                        }
                     }
                 }
+
                 var mesTotal = 0;
                 _this.cart.forEach(function (item) {
                     if(utils.isNull(item.quantity) || item.quantity == 0){
@@ -957,15 +962,10 @@
                     _this.clicked = false;
                     return
                 }
-
-                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&level='+_this.floor).then(function (res) {
+                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
                     if (res.type == 'success') {
-                            var orderSn = res.data.sn;
-                            POST('weex/member/order/save.jhtml?sn='+orderSn+'&paymentPluginId='+_this.paymentPluginId +'&shippingMethod='+ _this.sendObject +'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (mes) {
-                                _this.clicked = false;
-                                if (mes.type == 'success') {
                                     modal.alert({
-                                        message: '确认成功',
+                                        message: '订单提交成功',
                                         okTitle: '知道了'
                                     })
                                     _this.shopName = '';
@@ -982,32 +982,25 @@
                                     _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
                                     _this.getInfo();
-                                }else{
-                                    modal.alert({
-                                        message: mes.content,
-                                        okTitle: '知道了'
-                                    })
-                                    _this.shopName = '';
-                                    _this.shopId = '';
-                                    _this.memoData = '';
-                                    _this.dateTime = '';
-                                    _this.floor = '';
-                                    _this.adminName = '';
-                                    _this.adminId = '';
-                                    _this.barrel  = '';
-                                    _this.deposit = '';
-                                    _this.begin =0;
-                                    _this.paymentPluginId = 'cashPayPlugin';
-                                    _this.paymentPluginName = '现金支付';
-                                    _this.isShow = false;
-                                    _this.getInfo();
-                                }
-                            }, function (err) {
-                                event.toast(err.content);
-                                _this.clicked = false;
-                            })
                     } else {
-                        event.toast(res.content);
+                        modal.alert({
+                            message: res.content,
+                            okTitle: '知道了'
+                        })
+                        _this.shopName = '';
+                        _this.shopId = '';
+                        _this.memoData = '';
+                        _this.dateTime = '';
+                        _this.floor = '';
+                        _this.adminName = '';
+                        _this.adminId = '';
+                        _this.barrel  = '';
+                        _this.deposit = '';
+                        _this.begin =0;
+                        _this.paymentPluginId = 'cashPayPlugin';
+                        _this.paymentPluginName = '现金支付';
+                        _this.isShow = false;
+                        _this.getInfo();
                         _this.clicked = false;
                     }
                 }, function (err) {
