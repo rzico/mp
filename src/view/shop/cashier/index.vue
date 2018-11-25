@@ -5,9 +5,9 @@
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
                 <text class="headerText mt20">扫一扫</text>
             </div>
-            <div class="flex-column" @click="contolInput">
-                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe673;</text>
-                <text class="headerText mt20">收银</text>
+            <div class="flex-column" @click="linkToFill">
+                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>
+                <text class="headerText mt20">报 单</text>
             </div>
             <div class="flex-column" @click="showQrcode">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
@@ -540,6 +540,26 @@
                     this.inputShow = !this.inputShow
                 }
 
+            },
+            linkToFill(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.view()
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {
+                    _this.clicked =false
+                    _this.getCount()
+                });
             },
 //            调自身二维码
             showQrcode: function (e) {
