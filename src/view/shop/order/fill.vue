@@ -981,6 +981,7 @@
                                     _this.paymentPluginId = 'cashPayPlugin';
                                     _this.paymentPluginName = '现金支付';
                                     _this.isShow = false;
+                                    _this.clicked = false;
                                     _this.getInfo();
                     } else {
                         modal.alert({
