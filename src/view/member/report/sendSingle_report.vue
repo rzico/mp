@@ -13,9 +13,9 @@
             </div>
         </div>
         <list   loadmoreoffset="180" v-if="reportList != null">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
+            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--</refresh>-->
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="shopNameTitle" v-if="isSellerName(index)" @click="linkToDetail(c.sellerId)"><text class="fz32">{{c.sellerName}}</text> </div>
                 <div class="contentCell" >
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </cell>
-            <loading @loading="onloading"></loading>
+            <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
@@ -263,6 +263,7 @@
                 reportList:null,
                 summarylist:[],
                 refreshing: false,
+                loadinging:false,
                 loading: 'hide',
                 pageStart:0,
                 pageSize:20,
@@ -438,6 +439,9 @@
                             })
                         }
                         _this.pageStart = _this.pageStart+res.data.data.data.length;
+                        setTimeout(() => {
+                            _this.loadinging = false;
+                        }, 1000)
                     } else {
                         event.toast(res.content);
                     }
@@ -447,6 +451,7 @@
             },
 //            上拉加载
             onloading (event) {
+                this.loadinging = true
                 this.open();
             },
 //            下拉刷新

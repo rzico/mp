@@ -1,8 +1,8 @@
 <template>
 
         <div class="headerBox">
-            <image class="bgImg" :src="imgBg"></image>
-            <image class="img_heightMask" :src="img_heightMask"></image>
+            <image class="bgImg" :src="imgBg" @click="changeLogo"></image>
+            <image class="img_heightMask" :src="img_heightMask" @click="changeLogo"></image>
             <!--<image class="img_mask" :src="img_mask"></image>-->
             <div class="memberBox" :class="[headerInfo()]">
                 <image class="logo" :src="logo" @click="setting()"></image>
@@ -259,6 +259,7 @@
     import utils from '../assets/utils';
     import filters from '../filters/filters.js';
     import noData from '../include/noData.vue';
+    const album = weex.requireModule('album');
     export default {
         components: {
             noData,
@@ -295,6 +296,38 @@
 
         },
         methods: {
+            //            修改头像
+            changeLogo: function () {
+                var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options,function (ablum) {
+                        if(ablum.type == 'success') {
+                            event.upload(ablum.data.originalPath,function (message) {
+                                if (message.type == 'success') {
+                                    POST('weex/member/topic/update.jhtml?logo=' + encodeURIComponent(message.data) ).then(
+                                        function (mes) {
+                                            if (mes.type == "success") {
+                                                _this.imgBg = message.data;
+                                            } else {
+                                                event.toast(mes.content);
+                                            }
+                                        }, function (err) {
+                                            event.toast(err.content);
+                                        }
+                                    )
+                                } else {
+                                    event.toast(message.content);
+                                }
+                            })
+                        }
+                    })
+            },
             //            监听设备型号,控制顶部人物信息栏
             headerInfo: function() {
                 let dc = utils.topicInfo();

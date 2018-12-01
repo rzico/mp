@@ -136,7 +136,7 @@
                         <text class="articleImgText">{{a.title}}</text>
                     </div>
                     </div>
-                    <div class=" articleBox" @click="jumpEditor()">
+                    <div class=" articleBox" @click="jumpEditor()" v-if="articleThree.length != 0">
                         <div class="articleIconBox">
                             <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
                         </div>

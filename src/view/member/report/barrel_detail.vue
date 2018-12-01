@@ -22,9 +22,9 @@
             </div>
         </div>
         <list   loadmoreoffset="180" v-if="reportList != null">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
+            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--</refresh>-->
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="titleCell">
                     <text class="shopName">{{c.name}}  {{c.address}}  {{c.phone}}</text>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </cell>
-            <loading @loading="onloading"></loading>
+            <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
@@ -282,6 +282,7 @@
                 reportList:null,
                 summarylist:null,
                 refreshing: false,
+                loadinging:false,
                 loading: 'hide',
                 pageStart:0,
                 pageSize:20,
@@ -487,6 +488,9 @@
                         }
                         _this.pageStart = _this.pageStart+res.data.data.length;
                         _this.noLoading = false;
+                        setTimeout(() => {
+                            _this.loadinging = false;
+                        }, 1000)
                     } else {
                         _this.noLoading = false;
                         event.toast(res.content);
@@ -498,6 +502,7 @@
             },
 //            上拉加载
             onloading (event) {
+                this.loadinging = true
                 this.open();
             },
 //            下拉刷新

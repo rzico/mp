@@ -25,6 +25,7 @@ export function POST (path,body) {
 }
 
 export function GET (path,resolve,reject) {
+
     // let cacheParams = {
     //     type:'httpCache',//类型
     //     key:`${baseURL}${path}`,//关键址
@@ -36,6 +37,7 @@ export function GET (path,resolve,reject) {
     //        }
     //    }
     // })
+
     stream.fetch({
         method:'GET',
         url: `${baseURL}${path}`,
@@ -62,6 +64,7 @@ export function GET (path,resolve,reject) {
             })
         }
     }, () => {})
+
 }
 //二维码扫描
 export function SCAN (message,resolve,reject) {
