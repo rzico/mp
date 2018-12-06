@@ -258,6 +258,7 @@ Vue.filter('currencyfmt', function (value) {
     }
     // 返回处理后的值
     if (value != null) {
+        value = parseFloat(value)
         if(value == 0){
             return value.toFixed(2);
         }else{

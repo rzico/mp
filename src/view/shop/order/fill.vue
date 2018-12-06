@@ -544,7 +544,7 @@
             //            获取member信息跟商品合计
             getInfo:function () {
                 var _this = this;
-                POST('weex/member/order/calculate.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId).then(function (data) {
+                POST('weex/member/order/info.jhtml?memberId='+this.memberId +'&receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId).then(function (data) {
                     if (data.type == 'success') {
                         _this.member = data.data.receiver;
                         _this.shopName = data.data.receiver.shopName;
