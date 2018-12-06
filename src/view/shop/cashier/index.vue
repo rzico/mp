@@ -865,21 +865,21 @@
                     }
                 }else if(e == 'coupon'){
 //                    优惠券
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
                 } else if(e == 'distribution'){
 //                    新营销
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
                 } else if(e == 'manage'){
 //                    商品
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
@@ -899,8 +899,8 @@
                         return false
                     }
                 }else if(e == 'money'){
-//                    收银
-                    if (utils.isRoles("12",_this.roles)) {
+//                    报表
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
@@ -1005,7 +1005,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
+                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1061,7 +1061,7 @@
             },
             hasShop:function () {
                 let _this = this
-                if (utils.isRoles("12",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
+                if (utils.isRoles("1",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
                     return true
                 }else {
                     return false
@@ -1156,7 +1156,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("125",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'

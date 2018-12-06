@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting"> </navbar>
+        <navbar :title="title" @goback="goback" > </navbar>
         <!--<navbar :title="title"  @goback="goback" v-if="choose"> </navbar>-->
         <!--<div class="code" @click="scan" v-if="!choose">-->
             <!--<text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>-->
@@ -47,7 +47,8 @@
                                 <!--<text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>-->
                             </div>
                             <div class="friendsName">
-                                <text class="lineTitle ">{{num.mobile}} (卡号:{{num.code | watchCode}})</text>
+                                <text class="lineTitle ">{{num.mobile}}</text>
+                                <text class="lineTitle " v-if="num.mobile =='' || num.mobile == null">卡号:{{num.code | watchCode}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 590px">
                                     <div style="flex-direction: row;align-items: center">
                                     <text class="realName">{{num.name}}</text>
@@ -308,7 +309,6 @@
         props: {
             title: { default: "会员卡"},
             noDataHint: { default: "尚未添加会员卡"},
-            complete:{ default:"设置"}
         },
         created() {
             utils.initIconFont();
@@ -581,19 +581,7 @@
                     _this.open()
                 })
             },
-            setting:function () {
-                let _this = this;
-                if (!utils.isRoles("12",_this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    })
-                    return
-                }
-                event.openURL(utils.locate('view/shop/card/setting.js'),function () {
 
-                })
-            }
 
         }
     }
