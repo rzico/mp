@@ -34,6 +34,10 @@
                         <text class="name mr30">{{c.consignee}}</text>
                         <text class="mobile">{{c.phone}}</text>
                     </div>
+                    <div class="flex-row mt20">
+                        <text class="name mr30">{{c.card_name}}</text>
+                        <text class="mobile">NO.{{c.card_no}}</text>
+                    </div>
                 </div>
             </cell>
         </list>
