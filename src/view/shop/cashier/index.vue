@@ -5,9 +5,9 @@
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
                 <text class="headerText mt20">扫一扫</text>
             </div>
-            <div class="flex-column" @click="contolInput">
-                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe673;</text>
-                <text class="headerText mt20">收银</text>
+            <div class="flex-column" @click="linkToFill">
+                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>
+                <text class="headerText mt20">人工报单</text>
             </div>
             <div class="flex-column" @click="showQrcode">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
@@ -18,41 +18,41 @@
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
-            <div class="fontInput" v-if="hasShop()">
-                <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
-                <input class="input" type="number" placeholder="请输入消费金额" maxlength="7" v-model="amount" />
-                <text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>
-            </div>
-            <div class="buttombox"  v-if="hasInput()">
-                <div class="btn "  @click="payment('aliPayPlugin')">
-                    <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
-                    <text class="btn-text" value="支付宝">支付宝</text>
-                </div>
-                <div class="btn "  @click="payment('weixinPayPlugin')">
-                    <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信钱包">微信钱包</text>
-                </div>
-            </div>
-            <div class="buttombox"  v-if="hasInput()">
-                <div class="btn "  @click="payment('cardPayPlugin')">
-                    <text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                    <text class="btn-text" value="会员卡">会员卡</text>
-                </div>
-                <div class="btn "  @click="payment('balancePayPlugin')">
-                    <text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>
-                    <text class="btn-text" value="芸店钱包">芸店钱包</text>
-                </div>
-            </div>
-            <div class="buttombox"  v-if="hasInput()">
-                <div class="btn " @click="offline('bankPayPlugin')">
-                    <text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>
-                    <text class="btn-text" value="刷卡">刷卡(记账)</text>
-                </div>
-                <div class="btn " @click="offline('cashPayPlugin')">
-                    <text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>
-                    <text class="btn-text" value="现金">现金(记账)</text>
-                </div>
-            </div>
+            <!--<div class="fontInput" v-if="hasShop()">-->
+                <!--<text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>-->
+                <!--<input class="input" type="number" placeholder="请输入消费金额" maxlength="7" v-model="amount" />-->
+                <!--<text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>-->
+            <!--</div>-->
+            <!--<div class="buttombox"  v-if="hasInput()">-->
+                <!--<div class="btn "  @click="payment('aliPayPlugin')">-->
+                    <!--<text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>-->
+                    <!--<text class="btn-text" value="支付宝">支付宝</text>-->
+                <!--</div>-->
+                <!--<div class="btn "  @click="payment('weixinPayPlugin')">-->
+                    <!--<text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>-->
+                    <!--<text class="btn-text" value="微信钱包">微信钱包</text>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="buttombox"  v-if="hasInput()">-->
+                <!--<div class="btn "  @click="payment('cardPayPlugin')">-->
+                    <!--<text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
+                    <!--<text class="btn-text" value="会员卡">会员卡</text>-->
+                <!--</div>-->
+                <!--<div class="btn "  @click="payment('balancePayPlugin')">-->
+                    <!--<text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
+                    <!--<text class="btn-text" value="芸店钱包">芸店钱包</text>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="buttombox"  v-if="hasInput()">-->
+                <!--<div class="btn " @click="offline('bankPayPlugin')">-->
+                    <!--<text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>-->
+                    <!--<text class="btn-text" value="刷卡">刷卡(记账)</text>-->
+                <!--</div>-->
+                <!--<div class="btn " @click="offline('cashPayPlugin')">-->
+                    <!--<text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>-->
+                    <!--<text class="btn-text" value="现金">现金(记账)</text>-->
+                <!--</div>-->
+            <!--</div>-->
             <!-- 我的订单 -->
             <div class="contentBox" v-if="conutTotal != 0 && filter('order')">
                 <div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">
@@ -541,6 +541,26 @@
                 }
 
             },
+            linkToFill(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.view()
+                    _this.clicked = false
+                    return
+                }
+                event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {
+                    _this.clicked =false
+                    _this.getCount()
+                });
+            },
 //            调自身二维码
             showQrcode: function (e) {
                 if (this.clicked) {
@@ -845,21 +865,21 @@
                     }
                 }else if(e == 'coupon'){
 //                    优惠券
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
                 } else if(e == 'distribution'){
 //                    新营销
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
                 } else if(e == 'manage'){
 //                    商品
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
@@ -879,8 +899,8 @@
                         return false
                     }
                 }else if(e == 'money'){
-//                    收银
-                    if (utils.isRoles("12",_this.roles)) {
+//                    报表
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
@@ -985,7 +1005,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
+                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1041,7 +1061,7 @@
             },
             hasShop:function () {
                 let _this = this
-                if (utils.isRoles("12",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
+                if (utils.isRoles("1",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
                     return true
                 }else {
                     return false
@@ -1136,7 +1156,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("125",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'

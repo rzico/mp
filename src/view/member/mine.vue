@@ -136,6 +136,12 @@
                         <text class="articleImgText">{{a.title}}</text>
                     </div>
                     </div>
+                    <div class=" articleBox" @click="jumpEditor()" v-if="articleThree.length != 0">
+                        <div class="articleIconBox">
+                            <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
+                        </div>
+                        <text class="articleImgText">发表文章</text>
+                    </div>
                     <div class="unArticleBox" v-if="articleThree.length == 0" @click="jumpEditor()">
                         <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
                         <text class="fz26 mt10" style="color: #cccccc">点击发表文章</text>
@@ -161,10 +167,10 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe628;</text>-->
                         <!--<text class="iconfontText mt20">店铺管理</text>-->
                     <!--</div>-->
-                    <div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize" style="color: #5A427C">&#xe6e8;</text>
-                        <text class="iconfontText mt20">人工报单</text>
-                    </div>
+                    <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('fill')" @click="fill()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}"  class="iconfontSize" style="color: #5A427C">&#xe6e8;</text>-->
+                        <!--<text class="iconfontText mt20">人工报单</text>-->
+                    <!--</div>-->
                     <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop" @click="gocard()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #cc3300" class="iconfontSize">&#xe66a;</text>-->
                         <!--<text class="iconfontText mt20">会员卡</text>-->
@@ -276,8 +282,8 @@
         margin-top: 15px;
         font-size: 26px;
         color: #444;
-        width: 150px;
-        lines:2;
+        max-width: 150px;
+        lines:1;
         text-overflow: ellipsis;
     }
     .contentBox{
@@ -324,6 +330,15 @@
         border-radius: 10px;
         border-width: 1px;
         border-color: #eeeeee;
+    }
+    .articleIconBox{
+        height: 150px;
+        width: 150px;
+        border-radius: 10px;
+        border-width: 1px;
+        border-color: #eeeeee;
+        align-items: center;
+        justify-content: center;
     }
     .iconBox{
         width: 167.5px;
@@ -687,6 +702,7 @@
                     }else{
                         return false
                     }
+
                 } else if(e == 'topic'){
 //                    专栏
                     if (utils.isRoles("1",_this.roles)) {
@@ -704,6 +720,7 @@
                 let dc = utils.addTop();
                 return dc;
             },
+
             //            监听设备型号,控制导航栏高度
             classHeader: function() {
                 let dc = utils.device();
@@ -812,12 +829,15 @@
                 var _this = this;
                 GET('weex/member/article/list.jhtml?authorId='+this.UId,function (data) {
                     if (data.type == "success") {
+                        var arr = []
                         data.data.data.forEach(function (item,index) {
-                            if(index <= 3){
+                            if(index <= 2){
                                 item.thumbnail = utils.thumbnail(item.thumbnail,150,150);
-                                _this.articleThree.push(item)
+                                arr.push(item)
                             }
                         })
+                        _this.articleThree = arr;
+
                     }else {
                         event.toast(data.content);
                     }
@@ -1127,7 +1147,7 @@
                 this.clicked = true;
                 let _this = this;
                 event.openURL(utils.locate('view/article/preview.js?articleId=' + id  + '&publish=true' ),
-                    function () {
+                    function (e) {
                         _this.clicked = false;
                     }
                 )

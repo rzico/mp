@@ -223,7 +223,7 @@
                 if (this.quota==0) {
                     return 0;
                 } else {
-                    return Number(this.quota) - Number(this.service)
+                    return parseFloat(this.quota) - parseFloat(this.service)
                 }
             }
         },
@@ -305,7 +305,9 @@
                     POST('weex/member/transfer/calculate.jhtml?amount=' +this.quota ).then(
                         function (data) {
                             if (data.type == "success") {
-                                _this.service = data.data;
+                                if(!utils.isNull(data.data)){
+                                    _this.service = data.data;
+                                }
                             } else {
                                 event.toast(data.content);
                             }

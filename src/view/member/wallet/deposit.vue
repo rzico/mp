@@ -1,13 +1,15 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback"> </navbar>
-        <div class="cell-header total">
-            <text class="balance">{{cashier.thisMonth | currencyfmt}}</text>
-            <div class="wallet-title">
-                <text class="sub_title">本月（元）     </text>
-                <text class="sub_title">上月:{{cashier.lastMonth | currencyfmt}}</text>
+        <div class="header" :class="[classHeader(),border==true?'':'cb']" >
+            <div class="nav_back" @click="goback()">
+                <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
             </div>
-            <text class="day" :style="{fontFamily:'iconfont'}" @click="pickDate()">&#xe63c;</text>
+            <div class="nav">
+                <text class="nav_title">{{title}}</text>
+                <div class="navRightBox"  @click="pickDate()">
+                    <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}">&#xe63c;</text>
+                </div>
+            </div>
         </div>
         <list class="list "  @loadmore="onloading" loadmoreoffset="180">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -15,14 +17,12 @@
             </refresh>
             <cell v-for="(deposit,index) in depositList" ref="adoptPull">
                 <!--如果月份重复就不渲染该区域-->
-                <div class="cell-header cell-line space-between" v-if="isRepeat(index)" :class="[index == 0 ? 'mt20' : '']"  @click="summary(deposit.createDate)">
-                    <div class="flex-row flex-start">
-                        <text class="title" >{{deposit.createDate | monthfmt}}</text>
+                <div class="cellHeader cell-line" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
+                    <div class="pl20">
+                        <text class="fz32" >{{deposit.createDate | monthfmt}}</text>
+                        <text class='fz26' style="color: #888888">支出 ¥ {{sum.debit}}   收入 ¥ {{sum.credit}}</text>
                     </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="cell-row cell-clear" >
                     <div class="cell-panel newHeight"  :style="addBorder(index)">
@@ -53,6 +53,46 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .cb {
+        border-bottom-width: 0px;
+    }
+    .navRightBox{
+        min-width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+    }
+    .nav_bg {
+        width:750px;
+        height: 156px;
+        background-size: cover;
+        position: absolute;
+        top:0;
+    }
+    .nav_ico {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
+    }
+    .nav_CompleteIcon{
+        /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+        font-size: 44px;
+        line-height: 44px;
+        color: #FFFFFF;
+    }
+    .cellHeader{
+        width: 750px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: #eeeeee;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
     .newHeight{
         height: 130px;
     }
@@ -146,7 +186,7 @@
     export default {
         data:function(){
             return{
-                cashier:{today:0,yesterday:0,shopId:""},
+                sum:{credit:0,debit:0},
                 depositList:[],
                 refreshing: false,
                 loading: 'hide',
@@ -179,6 +219,11 @@
             }
         },
         methods: {
+            classHeader:function () {
+                let dc = utils.device();
+
+                return dc
+            },
             noData:function () {
                 return this.depositList.length==0;
             },
@@ -241,9 +286,9 @@
             open:function () {
                 var _this = this;
                 if (_this.pageStart==0) {
-                    GET("weex/member/deposit/view.jhtml",function (res) {
+                    GET("applet/member/deposit/view.jhtml",function (res) {
                         if (res.type=="success") {
-                            _this.cashier = res.data;
+                            _this.sum = res.data;
                         } else {
                             event.toast(res.content);
                         }
@@ -251,7 +296,7 @@
                         event.toast(err.content);
                     });
                 }
-                GET('weex/member/deposit/list.jhtml?billDate='+_this.billDate+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
+                GET('applet/member/deposit/list.jhtml?billDate='+_this.billDate+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                    if (res.type=="success") {
                        if (res.data.start==0) {
                            _this.depositList = res.data.data;
@@ -270,7 +315,7 @@
             },
             summary:function (m) {
                 let v =  utils.ymdtimefmt(m);
-                event.openURL(utils.locate('view/member/wallet/summary.js?billDate='+encodeURIComponent(v)),function () {
+                event.openURL(utils.locate('pages/member/wallet/summary.js?billDate='+encodeURIComponent(v)),function () {
 
                 })
             },

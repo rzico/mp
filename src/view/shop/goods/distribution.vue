@@ -14,6 +14,12 @@
                 <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
             </div>
         </div>
+        <div class="bgWhite addCorpus">
+            <div class="lineStyle pr30" @click="cardSetting()">
+                <text class="lineText">会员设置</text>
+                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
+            </div>
+        </div>
         <div>
             <text class="remind" >长按策略可进行排序,排序后请点击"完成"</text>
         </div>
@@ -596,6 +602,20 @@
                 event.openURL(utils.locate("view/shop/goods/distributionList.js"),function () {
                     _this.catagoryList =[]
                     _this.open()
+                })
+            },
+
+            cardSetting:function () {
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                event.openURL(utils.locate('view/shop/card/setting.js'),function () {
+
                 })
             }
         }

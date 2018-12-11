@@ -9,7 +9,7 @@
                     <div style="width: 50px;">
                     </div>
                     <!--导航栏名字头像-->
-                    <div class="userBox"  @click="goAttribute()" v-if="settingColor == 'white'" >
+                    <div class="userBox" v-if="settingColor == 'white'" >
                         <image class="headImg" :src="imageUrl"></image>
                         <text class="navText" >{{userName | watchNickName}}</text>
                     </div>
@@ -771,29 +771,29 @@
         methods: {
             //            专栏
             goTopic(){
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                if(this.isOwner == true ){
-                    event.openURL(utils.locate('view/member/topic/index.js'),
-                        function (data) {
-                            _this.clicked = false;
-                            if(data.type == 'success' && data.data != ''){
-
-                            }else{
-//                            return ;
-                            }
-                        }
-                    );
-                }else {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    });
-                    this.clicked = false;
-                }
+//                if (this.clicked) {
+//                    return;
+//                }
+//                this.clicked = true;
+//                let _this = this;
+//                if(this.isOwner == true ){
+//                    event.openURL(utils.locate('view/member/topic/index.js'),
+//                        function (data) {
+//                            _this.clicked = false;
+//                            if(data.type == 'success' && data.data != ''){
+//
+//                            }else{
+////                            return ;
+//                            }
+//                        }
+//                    );
+//                }else {
+//                    modal.alert({
+//                        message: '暂无权限',
+//                        okTitle: 'OK'
+//                    });
+//                    this.clicked = false;
+//                }
             },
             goback:function () {
                 event.closeURL();
