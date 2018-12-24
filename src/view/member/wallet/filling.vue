@@ -162,14 +162,33 @@
                 POST('weex/member/recharge/submit.jhtml?amount='+this.quota).then(
                     function (data) {
                         if (data.type == "success") {
-                            event.sendGlobalEvent('onUserInfoChange',data);
-//                            modal.alert({
-//                                message: '提交成功，请注意到账情况',
-//                                okTitle: '知道了'
-//                            }, function (value) {
-//                            })
-                            event.toast('提交成功，请注意到账情况');
-                            event.closeURL(data);
+                            POST("payment/submit.jhtml?sn="+data.data+"&paymentPluginId=weixinPayPlugin").then(
+                                function (res) {
+//                        utils.debug(data);
+                                    if (res.type=="success") {
+                                        event.wxAppPay(res.data,function (e) {
+                                            if (e.type=='success') {
+                                                POST("payment/query.jhtml?sn="+data.data).then(
+                                                    function (data) {
+                                                        event.closeURL();
+                                                    },
+                                                    function (err) {
+                                                        event.closeURL();
+                                                    }
+
+                                                )
+                                            } else {
+                                                event.toast('支付失败');
+                                            }
+                                        })
+                                    } else {
+                                        event.toast(res.content);
+                                    }
+                                },
+                                function (err) {
+                                    event.toast("网络不稳定");
+                                }
+                            )
                         } else {
                             event.toast(data.content);
                         }

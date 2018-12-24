@@ -35,7 +35,7 @@
                 <div class="cell-panel space-between cell-clear" @click="filling()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
-                        <text class="title ml10">充值</text>
+                        <text class="title ml10">钱包充值</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -209,25 +209,10 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                if (this.wallet.binded==false) {
+                event.openURL(utils.locate('view/member/wallet/filling.js'), function (message) {
                     _this.clicked = false
-                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
-                        _this.clicked = false
-                        if (message.type=='success') {
-                            _this.wallet.binded = true;
-                            _this.wallet.bankinfo = "已绑定";
-                            event.openURL(utils.locate('view/member/wallet/filling.js'), function () {
-                                _this.clicked = false
-                                _this.load();
-                            })
-                        }
-                    })
-                }  else {
-                    _this.clicked = false
-                    event.openURL(utils.locate('view/member/wallet/filling.js'), function (message) {
-                        _this.load();
-                    })
-                }
+                    _this.load();
+                })
             },
             reward:function () {
                 if (this.clicked==true) {
