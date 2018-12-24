@@ -172,8 +172,8 @@
             }
         },
         props: {
-            title: { default: "电子券"},
-            noDataHint: { default: "尚未拥有电子券"},
+            title: { default: "电子水票"},
+            noDataHint: { default: "尚未拥有电子水票"},
         },
         created() {
             utils.initIconFont();

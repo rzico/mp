@@ -35,17 +35,17 @@
         </list>
         <div class="mask" v-if="isMask" >
             <div class="editorBox">
-                <text class="fz40 mt30">编辑桶</text>
+                <text class="fz40 mt30">期初设置</text>
                 <div class="editorCell">
-                    <text class="fz32">押金:</text>
+                    <text class="fz32">期初押金:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入押金" autofocus="true" v-model="pledge"/>
                 </div>
                 <div class="editorCell">
-                    <text class="fz32">押桶:</text>
+                    <text class="fz32">期初押桶:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入押桶数量" v-model="mortgage"/>
                 </div>
                 <div class="editorCellTwo">
-                    <text class="fz32">借桶:</text>
+                    <text class="fz32">期初借桶:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入借桶数量" v-model="borrow"/>
                 </div>
                 <div class="bottomBox">
@@ -271,8 +271,8 @@
             }
         },
         props: {
-            title: { default: "我的桶"},
-            noDataHint: { default: "尚未拥有桶"},
+            title: { default: "空桶押金"},
+            noDataHint: { default: "尚未拥有空桶"},
         },
         created() {
             utils.initIconFont();

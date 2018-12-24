@@ -10,7 +10,7 @@
             <div class="search_box flex5">
                 <div class="flex-start">
                     <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                    <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
+                    <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" ref="searchBar" :placeholder="searchHint"/>
                 </div>
                 <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
             </div>
@@ -35,10 +35,10 @@
         </div>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list  class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="50">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
+        <list  class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="60">
+            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--</refresh>-->
                 <cell v-for="num in lists" >
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump(num)">

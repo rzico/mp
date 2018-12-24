@@ -11,17 +11,19 @@
                          <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
                     </div>
                     <text class="code" >NO.{{data.card.code | codefmt}}</text>
-                    <text class="balance" >{{data.card.balance | currencyfmt}}</text>
-                    <!--<div class="flex-center">-->
+                    <text class="balance" >￥{{data.card.balance | currencyfmt}}</text>
+                    <div class="flex-center">
+                        <text class="button bw" @click="fill()">充值</text>
+                        <text class="button bw" @click="refund()">退款</text>
                         <!--<text class="label" @click="fill()">充值</text>-->
                         <!--<text class="label" >|</text>-->
                         <!--<text class="label" @click="refund()" >退款</text>-->
-                    <!--</div>-->
+                    </div>
                 </div>
-                <div class="bbox">
-                    <text class="button bw" @click="fill()">充值</text>
-                    <text class="button bw" @click="refund()">退款</text>
-                </div>
+                <!--<div class="bbox">-->
+                    <!--<text class="button bw" @click="fill()">充值</text>-->
+                    <!--<text class="button bw" @click="refund()">退款</text>-->
+                <!--</div>-->
                 <div class="boxTwo">
                     <div class="cell"  @click="deposit()">
                         <text class="cellTitle">消费记录</text>
@@ -43,7 +45,7 @@
                         <text class="cellTitle">电子水票</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <div class="cell"  @click="goBarrel()" v-if="appType()">
+                    <div class="cell"  @click="goBarrel()">
                         <text class="cellTitle">空桶押金</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
@@ -191,12 +193,13 @@
         font-size: 32px;
     }
     .code {
-        margin-top: 40px;
+        margin-top: 20px;
         color:#fff;
         font-size: 30px;
     }
     .balance {
-        margin-top: 30px;
+        margin-top: 20px;
+        margin-bottom: 20px;
         color:red;
         font-size: 52px;
     }
