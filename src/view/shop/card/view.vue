@@ -12,11 +12,15 @@
                     </div>
                     <text class="code" >NO.{{data.card.code | codefmt}}</text>
                     <text class="balance" >{{data.card.balance | currencyfmt}}</text>
-                    <div class="flex-center">
-                        <text class="label" @click="fill()">充值</text>
-                        <text class="label" >|</text>
-                        <text class="label" @click="refund()" >退款</text>
-                    </div>
+                    <!--<div class="flex-center">-->
+                        <!--<text class="label" @click="fill()">充值</text>-->
+                        <!--<text class="label" >|</text>-->
+                        <!--<text class="label" @click="refund()" >退款</text>-->
+                    <!--</div>-->
+                </div>
+                <div class="bbox">
+                    <text class="button bw" @click="fill()">充值</text>
+                    <text class="button bw" @click="refund()">退款</text>
                 </div>
                 <div class="boxTwo">
                     <div class="cell"  @click="deposit()">
