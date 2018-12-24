@@ -81,7 +81,7 @@
                         <text class="title ml10">结算方式</text>
                     </div>
                     <div class="flex-row flex-end" >
-                        <text class="sub_title">{{data.card.paymentMethod | watchPayment}}</text>
+                        <text class="sub_title">{{data.card.cardType | watchCardType}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -215,11 +215,11 @@
                     return '普通'
                 }
             },
-            watchPayment:function (data) {
-                if(data == 'immediate'){
-                    return '现金结算'
-                }else if(data == 'monthly') {
-                    return '月度结算'
+            watchCardType:function (data) {
+                if(data == 'family'){
+                    return '个人用户'
+                }else if(data == 'company') {
+                    return '企业用户'
                 }
             },
         },
@@ -362,17 +362,17 @@
                 }
                 picker.pick({
                     index:_this.settlemenBegin,
-                    items:['现金结算','月度结算']
+                    items:['个人用户','企业用户']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
                             _this.settlemenBegin = e.data;
-                            _this.data.card.paymentMethod = 'immediate'
+                            _this.data.card.cardType = 'family'
                         }else if(e.data == 1){
                             _this.settlemenBegin = e.data;
-                            _this.data.card.paymentMethod = 'monthly'
+                            _this.data.card.cardType = 'company'
                         }
-                        POST('weex/member/card/update.jhtml?id='+_this.id+'&paymentMethod='+_this.data.card.paymentMethod).then(
+                        POST('weex/member/card/update.jhtml?id='+_this.id+'&cardType='+_this.data.card.cardType).then(
                             function (mes) {
                                 if (mes.type == "success") {
 

@@ -5,10 +5,10 @@
             <cell>
                 <div class="box bkg-primary">
                     <div class="flex-center">
-                      <text class="name" >{{data.card.name}}</text>
+                        <text class="name" >{{data.card.name}}</text>
                         <div class="labelType"><text class="labelText">{{data.card.type | watchType}}</text> </div>
                         <div :class="[vipClass(data.card.vip)]" style="margin-top: 60px"><text class="labelText">{{data.card.vip | watchVip}}</text> </div>
-                      <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
+                         <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
                     </div>
                     <text class="code" >NO.{{data.card.code | codefmt}}</text>
                     <text class="balance" >{{data.card.balance | currencyfmt}}</text>
@@ -40,11 +40,11 @@
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="goCouponCode()" >
-                        <text class="cellTitle">电子票</text>
+                        <text class="cellTitle">电子水票</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="goBarrel()" v-if="appType()">
-                        <text class="cellTitle">我的桶</text>
+                        <text class="cellTitle">空桶押金</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>

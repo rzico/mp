@@ -8,15 +8,16 @@
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
+        <div class="setting" @click="cardSetting()">
+            <div class="flex-row " style="align-items:center">
+                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                <text class="title ml20 " >充值活动设置</text>
+            </div>
+            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
         <div class="bgWhite addCorpus">
             <div class="lineStyle pr30" @click="jump()">
                 <text class="lineText">添加策略</text>
-                <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
-            </div>
-        </div>
-        <div class="bgWhite addCorpus">
-            <div class="lineStyle pr30" @click="cardSetting()">
-                <text class="lineText">会员设置</text>
                 <text  :style="{fontFamily:'iconfont'}" class="gray" style="font-size: 25px;">&#xe630;</text>
             </div>
         </div>

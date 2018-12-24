@@ -193,7 +193,7 @@
             },
             list: function () {
                 var _this = this;
-                GET("weex/member/receiver/list.jhtml?memberId="+this.memberId,function (res) {
+                GET("weex/member/receiver/mlist.jhtml?memberId="+this.memberId,function (res) {
                     if (res.type == 'success') {
                         _this.choose = res.data
                         if (_this.choose.length == 0 && _this.load) {
