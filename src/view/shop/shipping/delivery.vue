@@ -13,11 +13,28 @@
                         <text class="fz32">{{c.name}}</text>
                     </div>
                     <div class="money">
-                        <text class="fz32">送出 {{c.give}} 桶，收回</text>
-                        <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
-                        <text class="monyeTextthree fz32">桶，押</text>
-                        <input type="number" placeholder="输入桶数" class="input" v-model="c.pledgeQuantity" />
-                        <text class="monyeTextthree fz32">桶</text>
+                        <div class="flex-row">
+                            <text class="fz32">送出</text>
+                            <text class="number">{{c.give}}</text>
+                            <text class="fz32">桶</text>
+                        </div>
+                        <div class="flex-row">
+                            <text class="fz32">押</text>
+                            <text class="number" >{{c.pledgeQuantity}}</text>
+                            <text class="fz32">桶</text>
+                        </div>
+                    </div>
+                    <div class="money">
+                        <div class="flex-row">
+                            <text class="fz32">收回</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
+                            <text class="fz32">桶</text>
+                        </div>
+                        <div class="flex-row">
+                            <text class="fz32">退</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.refundsQuantity" />
+                            <text class="fz32">桶</text>
+                        </div>
                     </div>
                 </div>
                     <!--隐藏显示-->
@@ -219,11 +236,15 @@
     }
     .money{
         padding-left: 30px;
+        padding-right: 30px;
         border-top-width: 1px;
         border-color: #cccccc;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         height: 100px;
+        border-bottom-width: 1px;
+        border-bottom-color: #cccccc;
     }
     .note{
         padding-left: 30px;
@@ -234,10 +255,15 @@
     .monyeTextthree{
         padding-left: 20px;
     }
-
+    .number{
+        padding-left: 20px;
+        width: 150px;
+        font-size: 28px;
+        color: red;
+    }
     .input{
         padding-left: 20px;
-        width: 120px;
+        width: 150px;
         font-size: 28px;
         color: red;
         height: 100px;
@@ -566,8 +592,8 @@
                                         id:item.id,
                                         quantity:item.give,
                                         returnQuantity:item.take,
-                                        pledgeQuantity:item.pledgeQuantity
-
+                                        pledgeQuantity:item.pledgeQuantity,
+                                        refundsQuantity:item.refundsQuantity
                                     });
                                 });
                                 body = JSON.stringify(body);

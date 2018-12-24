@@ -17,10 +17,9 @@
             </refresh>
             <cell v-for="(deposit,index) in depositList" ref="adoptPull">
                 <!--如果月份重复就不渲染该区域-->
-                <div class="cellHeader cell-line" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
+                <div class="cellHeader cell-line" v-if="isRepeat(index)">
                     <div class="pl20">
                         <text class="fz32" >{{deposit.createDate | monthfmt}}</text>
-                        <text class='fz26' style="color: #888888" v-if="wacthDate(deposit.createDate)">支出 ¥ {{sum.debit}}   收入 ¥ {{sum.credit}}</text>
                     </div>
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
@@ -195,13 +194,14 @@
                 noLoading:true,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 hadUpdate:false,
+                id:0
             }
         },
         components: {
             navbar,noData
         },
         props: {
-            title: { default: "账单" }
+            title: { default: "电子票记录" }
         },
 //        dom呈现完执行滚动一下
         updated(){
@@ -232,18 +232,6 @@
                     return {color:'red'}
                 }  else {
                     return {color:'#000'}
-                }
-            },
-            wacthDate(e){
-                let res = utils.resolvetimefmt(e);
-                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
-                let m = tds.m - res.m;
-                let y = tds.y - tds.y;
-                if (y<1 && m<1) {
-//                    本月
-                    return true
-                }else {
-                    return false
                 }
             },
 //            是否添加底部边框
@@ -284,8 +272,7 @@
                         _this.billDate = e.data;
                         _this.title = "账单("+_this.billDate+")";
                         _this.pageStart=0;
-                        _this.open(0,function () {
-                        });
+                        _this.open();
                         setTimeout(() => {
                             _this.onrefresh()
                         }, 500)
@@ -297,43 +284,26 @@
             },
             open:function () {
                 var _this = this;
-                if (_this.pageStart==0) {
-                    GET("applet/member/deposit/view.jhtml",function (res) {
-                        if (res.type=="success") {
-                            _this.sum = res.data;
+                GET('weex/member/couponCodeGlide/list.jhtml?billDate='+_this.billDate+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize +'&id=' + this.id,function (res) {
+                    if (res.type=="success") {
+                        if (res.data.start==0) {
+                            _this.depositList = res.data.data;
                         } else {
-                            event.toast(res.content);
+                            res.data.data.forEach(function (item) {
+                                _this.depositList.push(item);
+                            })
                         }
-                    },function (err) {
-                        event.toast(err.content);
-                    });
-                }
-                GET('applet/member/deposit/list.jhtml?billDate='+_this.billDate+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
-                   if (res.type=="success") {
-                       if (res.data.start==0) {
-                           _this.depositList = res.data.data;
-                       } else {
-                           res.data.data.forEach(function (item) {
-                               _this.depositList.push(item);
-                           })
-                       }
-                       _this.pageStart = res.data.start+res.data.data.length;
-                   } else {
-                       event.toast(res.content);
-                   }
+                        _this.pageStart = res.data.start+res.data.data.length;
+                    } else {
+                        event.toast(res.content);
+                    }
                 }, function (err) {
                     event.toast(err.content);
                 })
             },
-            summary:function (m) {
-                let v =  utils.ymdtimefmt(m);
-                event.openURL(utils.locate('view/member/wallet/summary.js?billDate='+encodeURIComponent(v)),function () {
-
-                })
-            },
 //            上拉加载
             onloading (event) {
-              this.open();
+                this.open();
             },
 //            下拉刷新
             onrefresh:function (event) {
@@ -385,6 +355,7 @@
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
+            this.id= utils.getUrlParameter('id');
             this.open();
         }
     }

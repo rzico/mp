@@ -13,19 +13,26 @@
             <cell >
                 <div class="" v-for="c in lists">
                     <div class="contentBox">
-                        <div class="couponDiv">
-                            <div  style="flex-direction:row; align-items:flex-end">
-                            <text class="stock">{{c.stock}}</text>
-                            <text style="font-size: 24px;color: #cccccc">张</text>
+                        <div class="flex-row">
+                            <div class="couponDiv">
+                                <div  style="flex-direction:row; align-items:flex-end">
+                                <text class="stock">{{c.stock}}</text>
+                                <text style="font-size: 24px;color: #cccccc">张</text>
+                                </div>
+                            </div>
+                            <div class="infoBox">
+                                <text class="couponTitle">{{c.couponName}}</text>
+                                <div class="infoBottomBox">
+                                    <text class="price">¥ {{c.amount | currencyfmt}}</text>
+                                </div>
                             </div>
                         </div>
-                        <div class="infoBox">
-                            <text class="couponTitle">{{c.couponName}}</text>
-                            <div class="infoBottomBox">
-                                <text class="price">¥ {{c.amount | currencyfmt}}</text>
-                                <div class="pickBox" @click="settingNumber(c.id)">
-                                    <text class="fz28 primary">赠送</text>
-                                </div>
+                        <div class="buttonCell">
+                            <div class="pickBox mr30" @click="settingNumber(c.id)">
+                                <text class="fz28 primary">赠送</text>
+                            </div>
+                            <div class="pickBox mr30" @click="linkToInfo(c.id)">
+                                <text class="fz28 primary">详情</text>
                             </div>
                         </div>
                     </div>
@@ -58,18 +65,18 @@
         margin-left: 20px;
     }
     .contentBox{
-        height: 160px;
+        padding-top: 20px;
         margin-left: 20px;
         margin-right: 20px;
         margin-bottom: 20px;
         background-color: white;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
         border-radius: 15px;
     }
     .couponDiv{
         height:120px;
-        width: 160px;
+        width: 180px;
         padding-left:20px;
         padding-right:20px;
         border-right-width: 1px;
@@ -95,6 +102,16 @@
         height: 120px;
         width: 530px;
         padding-left: 20px;
+    }
+    .buttonCell{
+        margin-top: 10px;
+        width: 710px;
+        height: 80px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        border-top-color: #cccccc;
+        border-top-width: 1px;
     }
     .couponTitle{
         font-size: 32px;
@@ -142,6 +159,7 @@
         },
         data() {
             return   {
+                clicked:false,
                 refreshing:false,
                 lists:[],
                 pageSize:10,
@@ -196,6 +214,16 @@
                         }
                     }
                 })
+            },
+            linkToInfo(id){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/couponCodeDeposit.js?id='+id),function (data) {
+                    _this.clicked = false;
+                });
             },
             open:function () {
                 var _this = this;

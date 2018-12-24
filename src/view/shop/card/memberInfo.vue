@@ -60,22 +60,22 @@
             </div>
         </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between " @click="goAddress()">
-                    <div class="flex-row">
-                        <text class="title ml10">收货地址</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between " @click="gousers()">
-                    <div class="flex-row">
-                        <text class="title ml10">授权用户</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between " @click="goAddress()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">收货地址</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-panel space-between " @click="gousers()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">授权用户</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="cell-panel space-between cell-clear" @click="settlemenSetup()">
                     <div class="flex-row">
                         <text class="title ml10">结算方式</text>
@@ -86,24 +86,24 @@
                     </div>
                 </div>
             </div>
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between" :class="[appType() ? '':'cell-clear']" @click="goCouponCode()">
-                    <div class="flex-row">
-                        <text class="title ml10">电子票</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between cell-clear" @click="goBarrel()" v-if="appType()">
-                    <div class="flex-row">
-                        <text class="title ml10">我的桶</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="cell-row cell-line">-->
+                <!--<div class="cell-panel space-between" :class="[appType() ? '':'cell-clear']" @click="goCouponCode()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">电子票</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-panel space-between cell-clear" @click="goBarrel()" v-if="appType()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">我的桶</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         <div class="cell-row cell-line">
             <div class="cell-panel space-between">
                 <div class="flex-row">
