@@ -278,7 +278,7 @@
             navbar
         },
         props: {
-            title: {default: "新增优惠券"},
+            title: {default: "优惠券"},
 
         },
         created() {
@@ -336,9 +336,11 @@
                         };
                         if(mes.data.type =='fullcut'){
                             _this.beginTwo =0;
+                            _this.transform = '元';
                         }else if(mes.data.type =='discount'){
                             _this.beginTwo =1;
                             _this.bottomTransform = '请输入优惠折扣(输入0-10之间自然数)'
+                            _this.transform = '折'
                         }else{
                             _this.beginTwo =2;
                             _this.bottomTransform = '请选择兑换商品';

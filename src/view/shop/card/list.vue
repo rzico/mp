@@ -47,16 +47,16 @@
                                 <!--<text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>-->
                             </div>
                             <div class="friendsName">
-                                <text class="lineTitle ">{{num.mobile}}</text>
-                                <text class="lineTitle " v-if="num.mobile =='' || num.mobile == null">卡号:{{num.code | watchCode}}</text>
+                                <text class="lineTitle ">{{num.name}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 590px">
                                     <div style="flex-direction: row;align-items: center">
-                                    <text class="realName">{{num.name}}</text>
+                                    <text class="realName">{{num.mobile}}</text>
                                     <div class="label"><text class="labelText">{{num.type | watchType}}</text> </div>
                                     <div :class="[vipClass(num.vip)]"><text class="labelText">{{num.vip | watchVip}}</text> </div>
                                     </div>
                                 </div>
-                                <text class="recommendedTitle"  v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
+                                <text class="recommendedTitle">NO.{{num.code | watchCode}}</text>
+                                <text class="recommendedTitle" v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
                             </div>
                         </div>
                     </div>
@@ -577,8 +577,23 @@
             },
             addCard:function() {
                 var _this = this
-                event.openURL(utils.locate("view/shop/card/address.js"),function (message) {
-                    _this.open()
+                event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
+                    if (e.type=='success') {
+                        let ev = {
+                            areaName: e.data.areaName,
+                            address: e.data.building,
+                            areaId:e.data.areaId,
+                            latitude:e.data.latitude,
+                            longitude:e.data.longitude,
+                            memberId: 0
+                        }
+                        event.openURL(utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev)),function (res) {
+                            _this.pageStart = 0;
+                            _this.open();
+                        });
+
+                    }
+
                 })
             },
 

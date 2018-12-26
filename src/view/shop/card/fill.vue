@@ -17,16 +17,16 @@
                     </div>
                 </div>
             </div>
-            <div class="buttombox">
-                <div class="btn "  @click="payment('aliPayPlugin')">
-                    <text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>
-                    <text class="btn-text" value="支付宝">支付宝</text>
-                </div>
-                <div class="btn "  @click="payment('weixinPayPlugin')">
-                    <text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>
-                    <text class="btn-text" value="微信钱包">微信钱包</text>
-                </div>
-            </div>
+            <!--<div class="buttombox">-->
+                <!--<div class="btn "  @click="payment('aliPayPlugin')">-->
+                    <!--<text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>-->
+                    <!--<text class="btn-text" value="支付宝">支付宝</text>-->
+                <!--</div>-->
+                <!--<div class="btn "  @click="payment('weixinPayPlugin')">-->
+                    <!--<text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>-->
+                    <!--<text class="btn-text" value="微信钱包">微信钱包</text>-->
+                <!--</div>-->
+            <!--</div>-->
             <!--<div class="buttombox">-->
                 <!--<div class="btn "  @click="payment('cardPayPlugin')">-->
                     <!--<text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
