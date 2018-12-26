@@ -194,7 +194,7 @@
         created() {
             utils.initIconFont();
             let _this = this;
-            this.memberId = utils.getUrlParameter('memberId');
+            _this.memberId = utils.getUrlParameter('memberId');
             _this.areaName = utils.getUrlParameter("areaName");
             _this.address = utils.getUrlParameter("address");
             _this.areaId = utils.getUrlParameter("areaId");
