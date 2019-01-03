@@ -1072,6 +1072,7 @@
                         mesTotal = mesTotal + 1;
                     }
                 })
+
                 if(mesTotal>0){
                     modal.alert({
                         message: '商品数量不能为空或0',
@@ -1081,7 +1082,7 @@
                     return
                 }
 
-                if (_this.paymentPluginId=="weixinPayPlugin") {
+                if (_this.paymentPluginId=="weixinQRPlugin") {
                     event.scan(function (sc) {
                         if (sc.type=='success') {
                             _this.createOrder(sc.data);
