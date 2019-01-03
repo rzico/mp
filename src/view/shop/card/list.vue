@@ -559,7 +559,7 @@
                 let _this =this;
                 if(_this.choose != true){
                 event.openURL(utils.locate('view/shop/card/view.js?id='+num.id),function () {
-                    _this.onrefresh()
+//                    _this.onrefresh()
                 })
                 }else{
                     var E = {
@@ -578,6 +578,7 @@
             addCard:function() {
                 var _this = this
                 event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
+                    event.toast(JSON.stringify(e));
                     if (e.type=='success') {
                         let ev = {
                             areaName: e.data.areaName,

@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="vipsetup()"> </navbar>
         <list>
-            <cell>
+            <cell v-if="data!=null">
                 <div class="box bkg-primary">
                     <div class="flex-center">
                         <text class="name" >{{data.card.name}}</text>
@@ -261,7 +261,7 @@
             return {
                 id:"",
                 qrcode:"",
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,code:'392203232323'},},
+                data:null,
                 begin:0,
                 roles:'',
                 clicked:false,
