@@ -942,7 +942,7 @@
                     message: '付款中..',
                     duration: 0.5
                 })
-                POST("payment/query.jhtml?sn="+_this.sn).then(
+                POST("payment/query.jhtml?sn="+_this.paySn).then(
                     function (res) {
                         if (res.type=='success') {
                             if (res.data=='0000') {
