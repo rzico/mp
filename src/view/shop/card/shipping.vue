@@ -3,7 +3,7 @@
         <navbar title="送货记录" @goback="goback"> </navbar>
         <div class="classBox">
             <div class="tableOne">
-                <text class="tableText">品牌</text>
+                <text class="tableText">日期</text>
             </div>
             <div class="tableTwo">
                 <text class="tableText">送出</text>
@@ -27,9 +27,12 @@
             <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
             <!--</refresh>-->
             <cell  ref="adoptPull" >
-                <div class="contentCell" >
-                    <div class="contentSmallCell" v-for="c in list">
-                        <text class="number">{{c.name}}</text>
+                <div class="contentCell" v-for="(c,index) in list">
+                    <div class="contentSmallCellHeader" v-if="isRepeat(index)">
+                        <text >{{c.createDate | monthfmt}}</text>
+                    </div>
+                    <div class="contentSmallCell" >
+                        <text class="number">{{c.createDate | datetimefmt}}</text>
                         <text class="contentCellType">{{c.quantity}}</text>
                         <text class="contentCellType">{{c.returnQuantity}}</text>
                         <text class="contentCellType">{{c.pledgeQuantity}}</text>
@@ -148,6 +151,16 @@
         border-bottom-width: 1px;
         border-color: #cccccc;
     }
+    .contentSmallCellHeader{
+        padding-left:20px;
+        height: 60px;
+        width: 750px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-color: #cccccc;
+        background-color: #eee;
+    }
     .shopName{
         font-size: 32px;
         margin-left: 30px;
@@ -216,6 +229,7 @@
     import report_header from '../../../widget/report_header.vue';
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
+
     var animationPara;//执行动画的消息
     export default {
         data:function(){
@@ -229,7 +243,8 @@
                 pageSize:20,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 list:[],
-                id:0
+                id:0,
+                barrelId:0
             }
         },
         components: {
@@ -242,11 +257,38 @@
 //              页面创建时请求数据
             utils.initIconFont();
             this.id = utils.getUrlParameter('id');
+            this.barrelId = utils.getUrlParameter('barrelId');
             this.open()
         },
         methods: {
             goback: function (e) {
                 event.closeURL();
+            }, //判断月份是否重复
+            isRepeat(index){
+                if(index != 0){
+                    if(this.getDate(this.list[index].createDate) == this.getDate(this.list[index - 1].createDate)){
+                        return false;
+                    }
+                }
+                return true;
+            },
+            //            获取月份
+            getDate: function(value) {
+                let res = utils.resolvetimefmt(value);
+                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+                // 返回处理后的值
+                let m = tds.m - res.m;
+                let y = tds.y - res.y;
+                if (y<1 && m<1) {
+                    return "本月"
+                }
+                if (y<1 && m<2) {
+                    return "上月"
+                }
+                if (y<1) {
+                    return res.m +"月"
+                }
+                return res.y+"年"+ res.m +"月";
             },
             open:function () {
                 var _this = this;
@@ -254,7 +296,7 @@
                     return;
                 }
                 this.noLoading = true;
-                GET('weex/member/shippingBarrel/list.jhtml?pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize + '&id=' + this.id,function (res) {
+                GET('weex/member/shippingBarrel/list.jhtml?pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize + '&barrelId='+this.barrelId+'&id=' + this.id,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
                             _this.list = res.data.data
@@ -307,7 +349,7 @@
                     this.refreshing = false
                 }, 1000)
             },
-        },
+        }
 
     }
 </script>

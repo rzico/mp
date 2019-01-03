@@ -701,7 +701,7 @@
                         if(data.data.memberId != 0){
                             _this.memberId = data.data.memberId;
                             _this.addressId = data.data.addressId;
-                            _this.getInfo();
+                            _this.renew();
                         }else{
                             event.toast('无效会员')
                             return

@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="vipsetup()"> </navbar>
+        <navbar :title="title" :complete="complete" @goback="goback"> </navbar>
         <list>
             <cell v-if="data!=null">
                 <div class="box bkg-primary">
@@ -25,6 +25,14 @@
                     <!--<text class="button bw" @click="refund()">退款</text>-->
                 <!--</div>-->
                 <div class="boxTwo">
+                    <div class="cell"  @click="vipsetup()">
+                        <text class="cellTitle">详细资料</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="goAddress()">
+                        <text class="cellTitle">收货地址</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                     <div class="cell"  @click="deposit()">
                         <text class="cellTitle">消费记录</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -33,20 +41,12 @@
                         <text class="cellTitle">积分记录</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <div class="cell"  @click="linkToShipping()">
-                        <text class="cellTitle">送货记录</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                    <div class="cell"  @click="goAddress()">
-                        <text class="cellTitle">收货地址</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
                     <div class="cell"  @click="goCouponCode()" >
                         <text class="cellTitle">电子水票</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="goBarrel()">
-                        <text class="cellTitle">空桶押金</text>
+                        <text class="cellTitle">送货记录</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
@@ -344,16 +344,7 @@
                     _this.clicked =false
                 })
             },
-            linkToShipping:function () {
-                if (this.clicked==true) {
-                    return;
-                }
-                this.clicked = true;
-                var _this = this;
-                event.openURL(utils.locate("view/shop/card/shipping.js?id="+this.id),function (data) {
-                    _this.clicked =false
-                })
-            },
+
             goAddress(){
                 let _this = this;
                 if (!utils.isRoles("1",_this.roles)) {

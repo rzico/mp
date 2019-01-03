@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <navbar :title="title"  @goback="goback"  > </navbar>
-        <scroller class="scroller">
+        <scroller class="scroller" v-if="data!=null">
         <div class="cell-row cell-line">
             <div class="cell-logo">
                 <div class="flex-row flex-start">
@@ -78,7 +78,7 @@
                 <!--</div>-->
                 <div class="cell-panel space-between cell-clear" @click="settlemenSetup()">
                     <div class="flex-row">
-                        <text class="title ml10">结算方式</text>
+                        <text class="title ml10">用户类型</text>
                     </div>
                     <div class="flex-row flex-end" >
                         <text class="sub_title">{{data.card.cardType | watchCardType}}</text>
@@ -220,6 +220,8 @@
                     return '个人用户'
                 }else if(data == 'company') {
                     return '企业用户'
+                } else {
+                    return '个人用户'
                 }
             },
         },
@@ -230,7 +232,7 @@
                 begin:0,
                 typebegin:0,
                 settlemenBegin:0,
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:'',bindMobile:false,bindName:false,paymentMethod:''},},
+                data:null,
                 roles:"",
                 clicked:false
             }

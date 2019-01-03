@@ -17,7 +17,7 @@
             </refresh>
             <cell >
                 <div class="" v-for="c in lists">
-                    <div class="contentBox">
+                    <div class="contentBox" @click="linkToShipping(c.barrelId)">
                         <div class="couponDiv">
                             <image class="couponImg" :src="c.logo"></image>
                         </div>
@@ -271,8 +271,8 @@
             }
         },
         props: {
-            title: { default: "空桶押金"},
-            noDataHint: { default: "尚未拥有空桶"},
+            title: { default: "退货记录"},
+            noDataHint: { default: "尚未拥有记录"},
         },
         created() {
             utils.initIconFont();
@@ -341,6 +341,16 @@
                     }
                 }, function (err) {
                     event.toast(err.content)
+                })
+            },
+            linkToShipping:function (barrelId) {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate("view/shop/card/shipping.js?id="+this.cardId+"&barrelId="+barrelId),function (data) {
+                    _this.clicked =false
                 })
             },
             onloading (event) {
