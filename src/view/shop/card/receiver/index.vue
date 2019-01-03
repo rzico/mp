@@ -220,7 +220,7 @@
                 })
             },
 
-            newaddre: function (e) {
+            newaddre: function () {
                 var _this = this;
 
                     event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
