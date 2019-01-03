@@ -427,7 +427,9 @@
                 arrears:'',
                 paperPayable:'',
                 ticket:'',
-                version:0
+                version:0,
+                orderSn:'',
+                paySn:''
             }
         },
         components: {
@@ -911,6 +913,122 @@
                 )
             },
 
+            renew() {
+                var _this = this;
+                _this.shopName = '';
+                _this.shopId = '';
+                _this.memoData = '';
+                _this.dateTime = '';
+                _this.floor = '';
+                _this.adminName = '';
+                _this.adminId = '';
+                _this.barrel  = '';
+                _this.deposit = '';
+                _this.begin =0;
+                _this.paymentPluginId = 'cashPayPlugin';
+                _this.paymentPluginName = '现金支付';
+                if (_this.payId.length>0) {
+                    _this.paymentPluginId = _this.payId[0];
+                    _this.paymentPluginName = _this.payName[0];
+                }
+                _this.isShow = false;
+                _this.clicked = false;
+                _this.getInfo();
+            },
+
+            beginTimer:function () {
+                var _this = this;
+                modal.toast({
+                    message: '付款中..',
+                    duration: 0.5
+                })
+                POST("payment/query.jhtml?sn="+_this.sn).then(
+                    function (res) {
+                        if (res.type=='success') {
+                            if (res.data=='0000') {
+                                modal.alert({
+                                    message: '付款成功',
+                                    okTitle: '知道了'
+                                })
+                                _this.renew();
+                            } else
+                            if (res.data=='0001') {
+                                modal.alert({
+                                    message: '付款失败',
+                                    okTitle: '知道了'
+                                })
+                                _this.renew();
+                            } else {
+                                _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                            }
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    }
+                )
+            },
+            paymentOrder(orderSn,safeKey) {
+                var _this = this;
+                _this.orderSn = orderSn;
+                modal.toast({
+                    message: '付款中..',
+                    duration: 1
+                })
+                POST('weex/member/order/payment.jhtml?sn='+ orderSn).then( function(pay) {
+                    if (pay.type == 'success') {
+                        _this.paySn = pay.data.sn;
+                        POST("payment/submit.jhtml?sn="+_this.paySn+"&paymentPluginId="+_this.paymentPluginId+"&safeKey="+encodeURIComponent(safeKey)).then(
+                            function (data) {
+                                if (data.type=='success') {
+                                    _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                                } else {
+                                    modal.alert({
+                                        message: data.content,
+                                        okTitle: '知道了'
+                                    })
+                                }
+                            },function (err) {
+                                event.toast(err.content);
+                            }
+                        )
+                    } else {
+                        event.toast(pay.content)
+                    }
+                }, function(fail) {
+                    event.toast(fail.content)
+                })
+
+            },
+            createOrder(safeKey) {
+                var _this = this;
+                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
+                    if (res.type == 'success') {
+                        if (res.data.status=='unpaid') {
+                            _this.paymentOrder(res.data.sn,safeKey);
+                            _this.clicked = false;
+                        } else {
+                            modal.alert({
+                                message: '订单提交成功',
+                                okTitle: '知道了'
+                            })
+                            _this.renew();
+                        }
+
+                    } else {
+                        modal.alert({
+                            message: res.content,
+                            okTitle: '知道了'
+                        })
+                        _this.clicked = false;
+                    }
+                }, function (err) {
+                    event.toast(err.content);
+                    _this.clicked = false;
+                })
+            },
 //            确认
             confirm(){
                 if (this.clicked) {
@@ -962,52 +1080,18 @@
                     _this.clicked = false;
                     return
                 }
-                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
-                    if (res.type == 'success') {
-                                    modal.alert({
-                                        message: '订单提交成功',
-                                        okTitle: '知道了'
-                                    })
-                                    _this.shopName = '';
-                                    _this.shopId = '';
-                                    _this.memoData = '';
-                                    _this.dateTime = '';
-                                    _this.floor = '';
-                                    _this.adminName = '';
-                                    _this.adminId = '';
-                                    _this.barrel  = '';
-                                    _this.deposit = '';
-                                    _this.begin =0;
-                                    _this.paymentPluginId = 'cashPayPlugin';
-                                    _this.paymentPluginName = '现金支付';
-                                    _this.isShow = false;
-                                    _this.clicked = false;
-                                    _this.getInfo();
-                    } else {
-                        modal.alert({
-                            message: res.content,
-                            okTitle: '知道了'
-                        })
-                        _this.shopName = '';
-                        _this.shopId = '';
-                        _this.memoData = '';
-                        _this.dateTime = '';
-                        _this.floor = '';
-                        _this.adminName = '';
-                        _this.adminId = '';
-                        _this.barrel  = '';
-                        _this.deposit = '';
-                        _this.begin =0;
-                        _this.paymentPluginId = 'cashPayPlugin';
-                        _this.paymentPluginName = '现金支付';
-                        _this.isShow = false;
-                        _this.getInfo();
-                        _this.clicked = false;
-                    }
-                }, function (err) {
-                    event.toast(err.content);
-                    _this.clicked = false;
-                })
+
+                if (_this.paymentPluginId=="weixinPayPlugin") {
+                    event.scan(function (sc) {
+                        if (sc.type=='success') {
+                            _this.createOrder(sc.data);
+                        }
+                    })
+                } else {
+                    _this.createOrder("");
+                }
+
+
             }
         }
     }
