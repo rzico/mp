@@ -4,7 +4,7 @@
         <list show-scrollbar="false">
             <cell  v-if="choose.length !=0">
                 <div class='chooseAddre-father' v-for="(item,index) in choose">
-                    <div @click='information(index)' class='chooseAddre'>
+                    <div class='chooseAddre'>
                         <text class='chooseAddre-address'>{{item.areaName}},{{item.address}}</text>
                         <div class='chooseAddre-information'>
                             <text class="fz28"  style="color: #888"> {{item.consignee}}</text>
@@ -185,13 +185,15 @@
         created() {
             utils.initIconFont();
             this.memberId = utils.getUrlParameter('memberId')
-            this.list();
+            this.openlist();
         },
         methods: {
+
             goback() {
                 event.closeURL();
             },
-            list: function () {
+
+            openlist: function () {
                 var _this = this;
                 GET("weex/member/receiver/mlist.jhtml?memberId="+this.memberId,function (res) {
                     if (res.type == 'success') {
@@ -211,7 +213,7 @@
                 let ev =  { id: item.id, isDefault: !item.default,memberId: this.memberId};
                 POST("weex/member/receiver/default.jhtml?"+URIEncrypt(ev), null).then(function (res) {
                     if (res.type == 'success') {
-                        _this.list();
+                        _this.openlist();
                     } else {
                         event.toast(res.content);
                     }
@@ -233,8 +235,9 @@
                                 longitude:e.data.longitude,
                                 memberId: _this.memberId
                             }
+
                             event.openURL(utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev)),function (res) {
-                                _this.list();
+                                _this.openlist();
                             });
 
                         }
@@ -262,7 +265,7 @@
                 }
 
                 event.openURL(utils.locate("view/shop/card/receiver/edit/index.js?"+URIEncrypt(e)),function (res) {
-                    _this.list();
+                    _this.openlist();
                 });
             },
 
@@ -293,7 +296,7 @@
                     if (value=='删除') {
                         POST("weex/member/receiver/delete.jhtml?id="+item.id +'&memberId=' + this.memberId,null).then(function (res) {
                             if (res.type == 'success') {
-                                _this.list();
+                                _this.openlist();
                             } else {
                                 event.toast(res.content);
                             }

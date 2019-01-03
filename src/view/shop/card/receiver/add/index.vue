@@ -200,16 +200,16 @@
             _this.areaId = utils.getUrlParameter("areaId");
             _this.latitude = utils.getUrlParameter("latitude");
             _this.longitude = utils.getUrlParameter("longitude");
-            GET("applet/member/receiver/view.jhtml?id=0", function (res) {
-                if (res.type == 'success') {
-                    _this.consignee = res.data.consignee;
-                    _this.phone = res.data.phone;
-                } else {
-                    event.toast(res.content)
-                }
-            }, function (err) {
-                event.toast(err.content)
-            })
+//            GET("weex/member/receiver/view.jhtml?id=0&memberId="+ _this.memberId, function (res) {
+//                if (res.type == 'success') {
+//                    _this.consignee = res.data.consignee;
+//                    _this.phone = res.data.phone;
+//                } else {
+//                    event.toast(res.content)
+//                }
+//            }, function (err) {
+//                event.toast(err.content)
+//            })
 //            this.amapLinkTo();
 //            app.event.on("amap-picker",this.onChange)
         },
@@ -286,7 +286,7 @@
                         memberId:this.memberId
                    }
 
-                    POST('applet/member/receiver/add.jhtml?'+URIEncrypt(er), null).then(function (res) {
+                    POST('weex/member/receiver/add.jhtml?'+URIEncrypt(er), null).then(function (res) {
                         if (res.type == 'success') {
                             event.closeURL(res)
                         } else {

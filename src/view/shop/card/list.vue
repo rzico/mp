@@ -274,7 +274,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import { POST, GET } from '../../../assets/fetch'
+    import { POST, GET,URIEncrypt } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     import {dom,event,animation} from '../../../weex.js';
@@ -512,7 +512,7 @@
 ////            获取会员卡列表
                     this.open();
                 }else{
-//                        重新搜索会员卡
+//              重新搜索会员卡
                     this.searchCard();
                 }
 
@@ -578,23 +578,26 @@
             addCard:function() {
                 var _this = this
                 event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
-                    event.toast(JSON.stringify(e));
                     if (e.type=='success') {
+
                         let ev = {
                             areaName: e.data.areaName,
                             address: e.data.building,
-                            areaId:e.data.areaId,
-                            latitude:e.data.latitude,
-                            longitude:e.data.longitude,
+                            areaId: e.data.areaId,
+                            latitude: e.data.latitude,
+                            longitude: e.data.longitude,
                             memberId: 0
                         }
-                        event.openURL(utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev)),function (res) {
+
+
+                        let url = utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev));
+                        event.toast(url);
+                        event.openURL(url,function (res) {
                             _this.pageStart = 0;
                             _this.open();
                         });
 
                     }
-
                 })
             },
         }

@@ -229,10 +229,15 @@
                 this.longitude = parseFloat(arr[0]);
                 this.latitude = parseFloat(arr[1]);
 
-                this.regeocode.longitude = this.longitude;
-                this.regeocode.latitude = this.latitude;
                 this.regeocode.building = poi.address + poi.name
-                event.closeURL({type:'success',data:this.regeocode,content:"success"});
+                let ev = {
+                    areaName: this.regeocode.areaName,
+                    building: this.regeocode.building,
+                    areaId:this.regeocode.areaId,
+                    latitude:this.latitude,
+                    longitude:this.longitude
+                }
+                event.closeURL({type:'success',data:ev,content:"success"});
             },
             drawlbs() {
 

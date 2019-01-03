@@ -291,7 +291,7 @@
                         memberId:this.memberId
                    }
 
-                    POST('applet/member/receiver/update.jhtml?'+URIEncrypt(er), null).then(function (res) {
+                    POST('weex/member/receiver/update.jhtml?'+URIEncrypt(er), null).then(function (res) {
                         if (res.type == 'success') {
                             event.closeURL(res)
                         } else {
