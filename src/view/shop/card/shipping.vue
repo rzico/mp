@@ -32,7 +32,7 @@
                         <text >{{c.createDate | monthfmt}}</text>
                     </div>
                     <div class="contentSmallCell" >
-                        <text class="number">{{c.createDate | datetimefmt}}</text>
+                        <text class="number">{{c.createDate | ydfmt}}</text>
                         <text class="contentCellType">{{c.quantity}}</text>
                         <text class="contentCellType">{{c.returnQuantity}}</text>
                         <text class="contentCellType">{{c.pledgeQuantity}}</text>

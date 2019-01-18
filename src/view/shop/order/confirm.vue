@@ -12,7 +12,9 @@
                         </div>
                         <div class="money">
                             <text class="fz28">送出 {{c.quantity}} 桶，收回</text>
-                            <input type="number" placeholder="回桶数" class="input" v-model="c.returnQuantity" />
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.returnQuantity" />
+                            <text class="monyeTextthree fz28">桶，押</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.pledgeQuantity" />
                             <text class="monyeTextthree fz28">桶</text>
                         </div>
                     </div>
@@ -25,7 +27,7 @@
                         <div class=" space-between  bt10 headerCellBg">
                             <text class="sub_title">应收金额:{{item.amountPayable}}元(上期欠款:{{item.arrears}}元)</text>
                             <div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">
-                                <text class="fz28">实收现金:</text>
+                                <text class="fz28">实收金额:</text>
                                 <input class="amountInput" type="number" placeholder="请输入金额" v-model="amountData"/>
                             </div>
                         </div>
@@ -36,6 +38,13 @@
                                 <input class="amountInput" type="number" placeholder="请输入张数" v-model="paperData"/>
                             </div>
                         </div>
+                        <!--<div class=" space-between  bt10 headerCellBg">-->
+                            <!--<text class="sub_title">应收押金:{{item.pledgePayable}}元</text>-->
+                            <!--<div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">-->
+                                <!--<text class="fz28">实收押金:</text>-->
+                                <!--<input class="amountInput" type="number" placeholder="请输入金额" v-model="pledgeData"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
                         <div class=" space-between  bt10 headerCellBg cell_height" @click="chooseFloor">
                             <text class="sub_title">楼层:</text>
                             <text class="sub_title">{{item.receiver.level}}</text>

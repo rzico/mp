@@ -460,7 +460,23 @@
         },
         created() {
             utils.initIconFont();
+            var _this = this;
             this.version = utils.version;
+            _this.payName =[];
+            _this.payId = [];
+            GET('payment/plugin.jhtml',function (mes) {
+                if (mes.type == 'success') {
+                    mes.data.forEach(function (item) {
+                        _this.payName.push(item.name);
+                        _this.payId.push(item.paymentPluginId)
+                    })
+                } else {
+                    event.toast(mes.content);
+                }
+            }, function (err) {
+                event.toast(err.content)
+            });
+
 //            清空购物车
             POST('weex/cart/clear.jhtml').then(function (res) {
                 if (res.type == 'success') {
@@ -589,14 +605,6 @@
             pickPay:function () {
                 let _this = this
 //                获取支付方式
-                _this.payName =[];
-                _this.payId = [];
-                GET('payment/plugin.jhtml',function (mes) {
-                    if (mes.type == 'success') {
-                        mes.data.forEach(function (item) {
-                            _this.payName.push(item.name);
-                            _this.payId.push(item.paymentPluginId)
-                        })
                         picker.pick({
                             index:_this.begin,
                             items: _this.payName
@@ -610,12 +618,6 @@
                             }
                         })
 
-                    } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content)
-                });
 
             },
 //            选择楼层

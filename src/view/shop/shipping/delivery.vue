@@ -19,20 +19,8 @@
                             <text class="fz32">桶</text>
                         </div>
                         <div class="flex-row">
-                            <text class="fz32">押</text>
-                            <text class="number" >{{c.pledgeQuantity}}</text>
-                            <text class="fz32">桶</text>
-                        </div>
-                    </div>
-                    <div class="money">
-                        <div class="flex-row">
                             <text class="fz32">收回</text>
                             <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
-                            <text class="fz32">桶</text>
-                        </div>
-                        <div class="flex-row">
-                            <text class="fz32">退</text>
-                            <input type="number" placeholder="输入桶数" class="input" v-model="c.refundsQuantity" />
                             <text class="fz32">桶</text>
                         </div>
                     </div>
@@ -55,18 +43,25 @@
                 <div class="info" >
                     <text class="herderText">应收现金</text>
                     <div class="flex-row">
-                        <text style="font-size: 65px">¥  </text>
+                        <text style="font-size: 65px">¥</text>
                         <text class="herderAmount">{{cashRecvable}}</text>
+                    </div>
+                    <div class="flex-row" style="width: 590px">
+                        <div :class="[amountPaid>0?'checkboxAct':'checkbox']"><text class="fz28">已收</text>
+                            <text class="checkboxIcon" :style="{fontFamily:'iconfont'}" v-if="hasList">&#xe608;</text></div>
+                        <div :class="[amountPaid==0?'checkboxAct':'checkbox']"><text class="fz28">未收</text>
+                            <text class="checkboxIcon" :style="{fontFamily:'iconfont'}" v-if="hasList">&#xe608;</text></div>
                     </div>
                     <div class="flex-row" style="width: 590px">
                         <text class="fz30" style="color: #999">应收金额: {{amountPayable}}元</text>
                         <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
                     </div>
-                    <div class="flex-row mt10" style="width: 590px">
+                    <div class="flex-row mt10" style="width: 590px" v-if="paperPayable>0 || ticket>0">
                         <text class="fz30" :class="[paperClass()]" >应收水票: {{paperPayable}}张</text>
                         <text class="fz30" style="color: #999">（上期欠票  {{ticket}}张）</text>
                     </div>
-                    <text class="herderSn mt10">空桶押金: {{pledgePayable}}元</text>
+                    <text class="herderSn mt10" v-if="pledgePayable>0">空桶押金: {{pledgePayable}}元</text>
+                    <text class="herderSn mt10" v-if="pledgeQuantity>0">押桶数量: {{pledgeQuantity}}元</text>
                     <text class="herderSn mt10">收货地址: {{areaName}}{{address}}</text>
                     <text class="herderSn mt10">收货姓名: {{consignee}}</text>
                     <text class="herderSn mt10" @click="callPhone">收货电话: {{phone}}</text>
@@ -210,6 +205,33 @@
         border-radius: 15px;
         overflow: hidden;
     }
+    .checkbox {
+        width:80px;
+        height: 60px;
+        border-width: 1px;
+        border-color: #cccccc;
+        border-radius: 15px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .checkboxAct {
+        width:80px;
+        height: 60px;
+        border-width: 1px;
+        border-color: red;
+        border-radius: 15px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .checkboxIcon{
+        font-size: 40px;
+        position: absolute;
+        top:20px;
+        left:20px;
+    }
     .titile{
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
@@ -344,6 +366,7 @@
                 ticket:'',
                 pledgePayable:'',
                 cashRecvable:'',
+                amountPaid:'',
                 isMask:false,
                 isButton:true,
                 qrcode:''
