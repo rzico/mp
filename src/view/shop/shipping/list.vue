@@ -135,7 +135,7 @@
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
-                            <text class="title footText " @click="confirm(item.orderSn,item.sn)">核销</text>
+                            <text class="title footText " @click="confirm(item.orderSn,item.sn)">审核</text>
                         </div>
                     </div>
                 </div>
@@ -582,6 +582,9 @@
                 },{
                     name:'已送达',
                     id:4
+                },{
+                    name:'已完成',
+                    id:5
                 }],
                 whichCorpus:0,
                 productCategoryId:1,
@@ -737,9 +740,12 @@
                         status = 'hope';
                         break;
                     case 3:
-                        status = 'confirmed';
+                        status = 'dispatch';
                         break;
                     case 4:
+                        status = 'delivery';
+                        break;
+                    case 5:
                         status = 'completed';
                         break;
                     default:
@@ -1102,9 +1108,12 @@
                         status = 'hope';
                         break;
                     case 3:
-                        status = 'confirmed';
+                        status = 'dispatch';
                         break;
                     case 4:
+                        status = 'delivery';
+                        break;
+                    case 5:
                         status = 'completed';
                         break;
                     default:
