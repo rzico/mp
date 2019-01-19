@@ -9,9 +9,10 @@
                     </div>
                     <div class="nav">
                         <text class="nav_title">{{title}}</text>
-                        <div class="navRightBox"  @click="goSearch()">
+                        <div class="navRightBox" >
                             <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
-                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                            <text class="nav_CompleteIcon mr15"  :style="{fontFamily:'iconfont'}"   @click="goSearch()">&#xe611;</text>
+                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}"  @click="openPrint">&#xe699;</text>
                         </div>
                     </div>
                 </div>
@@ -46,9 +47,9 @@
                     <text @click="catagoryChange(index,item.id)" class="allArticle" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
             </div>
-            <div class="print bkg-primary" @click="openPrint">
-                <text class="printText">打印</text>
-            </div>
+            <!--<div class="print bkg-primary" @click="openPrint">-->
+                <!--<text class="printText">打印</text>-->
+            <!--</div>-->
         </div>
         <list  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -268,7 +269,7 @@
     }
     /*<!--顶部导航栏-->*/
     .navRightBox{
-        min-width: 92px;
+        flex-direction: row;
         height: 92px;
         align-items: center;
         justify-content: center;
@@ -511,7 +512,7 @@
         align-items: center;
         justify-content: center;
         /*flex: 1;*/
-        width: 125px;
+        width: 150px;
     }
     .allArticle{
         font-size: 31px;
