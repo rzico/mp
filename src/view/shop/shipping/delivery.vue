@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <!--列表按钮控制-->
-                <div class="iconBox" >
+                <div class="iconBox" v-if="hasWater==true">
                     <div class="icon" @click="contorlList()">
                     <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="!hasList">&#xe601;</text>
                     <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="hasList">&#xe608;</text>
@@ -41,22 +41,22 @@
                 </div>
                 <!--详情-->
                 <div class="info" >
-                    <div v-if="(amountPayable+arrears)>0">
+                    <div v-if="totalAmount>0">
                     <text class="herderText">应收现金</text>
                     <div class="flex-row">
                         <text style="font-size: 65px">¥</text>
-                        <text class="herderAmount">{{amountPayable+arrears}}</text>
+                        <text class="herderAmount">{{totalAmount}}</text>
                     </div>
                     <div class="flex-center" style="width: 590px">
                         <div :class="[amountPaid=='1'?'checkboxAct':'checkbox']" @click="amountPay('1')"><text class="fz28">已收</text></div>
                         <div :class="[amountPaid=='0'?'checkboxAct':'checkbox']" @click="amountPay('0')"><text class="fz28">未收</text></div>
                     </div>
                     </div>
-                    <div v-if="(paperPayable+ticket)>0">
+                    <div v-if="(totalPaper)>0">
                     <text class="herderText">应收水票</text>
                     <div class="flex-row">
                         <text style="font-size: 65px">¥</text>
-                        <text class="herderAmount">{{paperPayable+ticket}}</text>
+                        <text class="herderAmount">{{totalPaper}}</text>
                     </div>
                     <div class="flex-center" style="width: 590px">
                         <div :class="[paperPaid=='1'?'checkboxAct':'checkbox']" @click="paperPay('1')"><text class="fz28">已收</text></div>
@@ -377,6 +377,8 @@
                 arrears:'',
                 paperPayable:'',
                 ticket:'',
+                totalAmount:0,
+                totalPaper:0,
                 pledgePayable:'',
                 paymentPluginName:'',
                 amountPaid:'',
@@ -536,6 +538,10 @@
                         _this.phone = data.data.receiver.phone;
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
+
+                        _this.totalAmount = _this.amountPayable + _this.arrears;
+                        _this.totalPaper = _this.paperPayable + _this.ticket;
+
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.pledgePayable = data.data.pledgePayable//  应收押金
