@@ -52,7 +52,7 @@
                         <div :class="[amountPaid=='0'?'checkboxAct':'checkbox']" @click="amountPay('0')"><text class="fz28">未收</text></div>
                     </div>
                     </div>
-                    <div v-if="(totalPaper)>0">
+                    <div v-if="totalPaper>0">
                     <text class="herderText">应收水票</text>
                     <div class="flex-row">
                         <text style="font-size: 65px">¥</text>
@@ -64,11 +64,11 @@
                     </div>
                     </div>
 
-                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="(amountPayable+arrears)>0">
+                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="totalAmount>0">
                         <text class="fz30" style="color: #999">应收现金: {{amountPayable}}元</text>
                         <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
                     </div>
-                    <div class="flex-row mt10" style="width: 590px" v-if="(paperPayable+ticket)>0">
+                    <div class="flex-row mt10" style="width: 590px" v-if="totalPaper>0">
                         <text class="fz30" :class="[paperClass()]" >应收水票: {{paperPayable}}张</text>
                         <text class="fz30" style="color: #999">（上期欠票  {{ticket}}张）</text>
                     </div>
