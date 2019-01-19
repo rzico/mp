@@ -55,8 +55,8 @@
                     <div class="flex-column" v-if="totalPaper>0">
                         <text class="herderText">应收水票</text>
                         <div class="flex-row">
-                            <text style="font-size: 65px">¥</text>
-                            <text class="herderAmount">{{totalPaper}}</text>
+                            <text style="font-size: 65px"></text>
+                            <text class="herderAmount">{{totalPaper}}张</text>
                         </div>
                         <div class="flex-center" style="width: 590px">
                             <div :class="[paperPaid=='1'?'checkboxAct':'checkbox']" @click="paperPay('1')"><text class="fz28">已收</text></div>
@@ -539,9 +539,6 @@
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
 
-                        _this.totalAmount = _this.amountPayable + _this.arrears;
-                        _this.totalPaper = _this.paperPayable + _this.ticket;
-
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.pledgePayable = data.data.pledgePayable//  应收押金
@@ -549,6 +546,9 @@
                             _this.amountPayable = 0;
                             _this.arrears = 0;
                         }
+
+                        _this.totalAmount = _this.amountPayable + _this.arrears;
+                        _this.totalPaper = _this.paperPayable + _this.ticket;
                         _this.paymentPluginName = data.data.paymentMethod
                         _this.hasWater = data.data.hasWater;
                     }else{
