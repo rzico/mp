@@ -131,12 +131,12 @@
                             <text class="title footText " @click="delivery(item.orderSn,item.sn,item.id)">送达</text>
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'receive' && filter('receive')">
+                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'delivery' && filter('delivery')">
                         <div class="footMore">
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
-                            <text class="title footText " @click="confirm(item.orderSn,item.sn)">审核</text>
+                            <text class="title footText " @click="confirm(item.orderSn,item.sn,item.id)">审核</text>
                         </div>
                     </div>
                 </div>
@@ -1320,7 +1320,7 @@
                 });
             },
             //            跳转核销
-            confirm:function (orderSn,sn) {
+            confirm:function (orderSn,sn,shippingId) {
                 if (this.clicked) {
                     return;
                 }
@@ -1334,7 +1334,7 @@
                     _this.clicked = false;
                     return
                 }
-                event.openURL(utils.locate('view/shop/shipping/confirm.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/confirm.js?orderSn=' + orderSn + '&sn='+sn +'&shippingId=' + shippingId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
                         _this.pageStart = 0;
