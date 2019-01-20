@@ -546,6 +546,7 @@
                             _this.amountPayable = 0;
                             _this.arrears = 0;
                         }
+                        _this.pledgeQuantity = data.data.pledgeQuantity;
 
                         _this.totalAmount = _this.amountPayable + _this.arrears;
                         _this.totalPaper = _this.paperPayable + _this.ticket;
