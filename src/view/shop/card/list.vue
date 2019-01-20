@@ -591,7 +591,6 @@
 
 
                         let url = utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev));
-                        event.toast(url);
                         event.openURL(url,function (res) {
                             _this.pageStart = 0;
                             _this.open();
