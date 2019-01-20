@@ -15,7 +15,7 @@
                 <text class="tableText">回桶</text>
             </div>
             <div class="tableTwo">
-                <text class="tableText">押桶</text>
+                <text class="tableText">退桶</text>
             </div>
             <div class="tableThree">
                 <text class="tableText">欠桶</text>
@@ -35,16 +35,16 @@
                     <text class="contentCellType">派单</text>
                     <text class="returnMoney">{{c.sQuantity}}</text>
                     <text class="returnMoney">{{c.sReturnQuantity}}</text>
-                        <text class="returnMoney">{{c.sPledgeQuantity}}</text>
-                    <text class="money">{{c.sQuantity - c.sReturnQuantity - c.sPledgeQuantity}}</text>
+                    <text class="returnMoney">{{c.sRefundsQuantity}}</text>
+                    <text class="money">{{c.sQuantity - c.sReturnQuantity - c.sRefundsQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="number"></text>
                         <text class="contentCellType">送货</text>
                         <text class="returnMoney">{{c.quantity}}</text>
                         <text class="returnMoney">{{c.returnQuantity}}</text>
-                        <text class="returnMoney">{{c.pledgeQuantity}}</text>
-                        <text class="money">{{c.quantity - c.returnQuantity - c.pledgeQuantity}}</text>
+                        <text class="returnMoney">{{c.refundsQuantity}}</text>
+                        <text class="money">{{c.quantity - c.returnQuantity - c.refundsQuantity}}</text>
                     </div>
                 </div>
             </cell>
@@ -70,16 +70,16 @@
                     <text class="contentCellType">派单</text>
                     <text class="returnMoney">{{sQuantityTotal}}</text>
                     <text class="returnMoney">{{sReturnQuantityTotal}}</text>
-                    <text class="returnMoney">{{sPledgeQuantityTotal}}</text>
-                    <text class="money">{{sQuantityTotal - sReturnQuantityTotal - sPledgeQuantityTotal}}</text>
+                    <text class="returnMoney">{{sRefundsQuantityTotal}}</text>
+                    <text class="money">{{sQuantityTotal - sReturnQuantityTotal - sRefundsQuantityTotal}}</text>
                 </div>
                 <div class="contentSmallCell">
                     <text class="number"></text>
                     <text class="contentCellType">送货</text>
                     <text class="returnMoney">{{quantityTotal}}</text>
                     <text class="returnMoney">{{returnQuantityTotal}}</text>
-                    <text class="returnMoney">{{pledgeQuantityTotal}}</text>
-                    <text class="money">{{quantityTotal - returnQuantityTotal - pledgeQuantityTotal}}</text>
+                    <text class="returnMoney">{{refundsQuantityTotal}}</text>
+                    <text class="money">{{quantityTotal - returnQuantityTotal - refundsQuantityTotal}}</text>
                 </div>
             </div>
             <list style="max-height: 500px">
@@ -90,16 +90,16 @@
                             <text class="contentCellType">派单</text>
                             <text class="returnMoney">{{t.sQuantity}}</text>
                             <text class="returnMoney">{{t.sReturnQuantity}}</text>
-                            <text class="returnMoney">{{t.sPledgeQuantity}}</text>
-                            <text class="money">{{t.sQuantity - t.sReturnQuantity - t.sPledgeQuantity}}</text>
+                            <text class="returnMoney">{{t.sRefundsQuantity}}</text>
+                            <text class="money">{{t.sQuantity - t.sReturnQuantity - t.sRefundsQuantity}}</text>
                         </div>
                         <div class="contentSmallCell">
                             <text class="number"></text>
                             <text class="contentCellType">送货</text>
                             <text class="returnMoney">{{t.quantity}}</text>
                             <text class="returnMoney">{{t.returnQuantity}}</text>
-                            <text class="returnMoney">{{t.pledgeQuantity}}</text>
-                            <text class="money">{{t.quantity - t.returnQuantity -t.pledgeQuantity}}</text>
+                            <text class="returnMoney">{{t.refundsQuantity}}</text>
+                            <text class="money">{{t.quantity - t.returnQuantity -t.refundsQuantity}}</text>
                         </div>
                     </div>
                 </cell>
@@ -471,15 +471,15 @@
                             _this.sReturnQuantityTotal = 0 ;
                             _this.quantityTotal = 0 ;
                             _this.sQuantityTotal = 0 ;
-                            _this.pledgeQuantityTotal = 0;
-                            _this.sPledgeQuantityTotal = 0;
+                            _this.refundsQuantityTotal = 0;
+                            _this.sRefundsQuantityTotal = 0;
                             res.data.data.summary.forEach(function (item) {
                                 _this.returnQuantityTotal = _this.returnQuantityTotal+item.returnQuantity;
                                 _this.quantityTotal = _this.quantityTotal+item.quantity;
-                                _this.pledgeQuantityTotal = _this.pledgeQuantityTotal + item.pledgeQuantity;
+                                _this.refundsQuantityTotal = _this.refundsQuantityTotal + item.refundsQuantity;
                                 _this.sReturnQuantityTotal = _this.sReturnQuantityTotal+item.sReturnQuantity;
                                 _this.sQuantityTotal = _this.sQuantityTotal+item.sQuantity;
-                                _this.sPledgeQuantityTotal = _this.sPledgeQuantityTotal + item.sPledgeQuantity;
+                                _this.sRefundsQuantityTotal = _this.sRefundsQuantityTotal + item.sRefundsQuantity;
                             })
 //                            res.data.data.data.forEach(function (item) {
 //                                item.oweQuantity  = item.quantity - item.returnQuantity;
