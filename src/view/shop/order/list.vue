@@ -128,6 +128,7 @@
                         <div class="flex-row">
                             <!--<text class="title footText">查看物流</text>-->
                             <!--<text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>-->
+                            <text class="title footText " @click="shippingConfirm(item.sn)">核销</text>
                             <text class="title footText " @click="returnGoods(item.sn)">退货</text>
                         </div>
                     </div>
@@ -646,33 +647,31 @@
 //            确认订单
             confirmOrder:function (sn) {
                 let _this = this;
-//                modal.confirm({
-//                    message: '是否确认该订单?',
-//                    duration: 0.3,
-//                    okTitle:'确认',
-//                    cancelTitle:'取消',
-//                }, function (value) {
-//                    if(value == '确认'){
-//                        POST('weex/member/order/confirm.jhtml?sn=' + sn).then(
-//                            function (data) {
-//                                if(data.type == 'success'){
-//                                    _this.pageStart = 0;
-//                                    _this.open();
-//                                    event.toast('确认成功');
-//                                }else{
-//                                    event.toast(data.content);
-//                                }
-//                            },function (err) {
-//                                event.toast(err.content);
-//                            }
-//                        )
-//                    }
-//                })
+
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 event.openURL(utils.locate("view/shop/order/confirmOrder.js?sn=" + sn),function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success'){
+                        _this.pageStart = 0;
+                        _this.open();
+                        event.toast('确认成功');
+                    }else{
+
+                    }
+                });
+            },
+            //            确认订单
+            shippingConfirm:function (sn) {
+                let _this = this;
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/shop/order/shippingConfirm.js?orderSn=" + sn),function (data) {
                     _this.clicked = false;
                     if(data.type == 'success'){
                         _this.pageStart = 0;

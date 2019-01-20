@@ -889,7 +889,14 @@
                     } else {
                         return false
                     }
-                }else if (e == 'receive') {
+                } else if (e == 'delivery') {
+//                    送达
+                    if (utils.isRoles("123", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                } else if (e == 'receive') {
 //                    运单
                     if (utils.isRoles("12", _this.roles)) {
                         return true
@@ -1339,7 +1346,7 @@
                     if(data.type=='success') {
                         _this.pageStart = 0;
                         _this.open();
-                        event.toast('核销成功');
+                        event.toast('送达成功');
                     }
                 });
             },

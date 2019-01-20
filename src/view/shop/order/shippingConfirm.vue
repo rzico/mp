@@ -4,58 +4,60 @@
         <scroller >
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
-            <div v-else v-for="(item,index) in ordersList" :class="[item.status == 'unpaid' || item.status == 'refunding' || item.status ==  'unshipped' || item.status ==  'returning' ? 'hasPb100' : '']" >
+            <div v-else v-for="(item,index) in ordersList" >
                 <div  v-for="c in item.shippingBarrels">
                     <div class="setting">
                         <div class="titile">
                             <text class="fz28">{{c.name}}</text>
                         </div>
                         <div class="money">
-                            <text class="fz28">送出 {{c.quantity}} 桶，收回</text>
-                            <input type="number" placeholder="输入桶数" class="input" v-model="c.returnQuantity" />
-                            <text class="monyeTextthree fz28">桶，押</text>
-                            <input type="number" placeholder="输入桶数" class="input" v-model="c.pledgeQuantity" />
-                            <text class="monyeTextthree fz28">桶</text>
+                            <text class="fz28">送{{c.quantity}}桶，回{{c.quantity}}桶，押{{c.pledgeQuantity}}桶，退{{c.refundsQuantity}}桶</text>
                         </div>
                     </div>
                 </div>
                 <div class="header mt20 flex-row">
                     <div class="priceLine">
-                        <div class="paymentMethodBox">
+                        <div class="flex-column" v-if="item.amountPaid>0">
+                            <text class="herderText">实收现金</text>
+                            <div class="flex-row">
+                                <text style="font-size: 65px">¥</text>
+                                <text class="herderAmount">{{item.amountPaid}}</text>
+                            </div>
+                        </div>
+                        <div class="flex-column" v-if="item.paperPaid>0">
+                            <text class="herderText">实收水票</text>
+                            <div class="flex-row">
+                                <text style="font-size: 65px"></text>
+                                <text class="herderAmount">{{item.paperPaid}}张</text>
+                            </div>
+                        </div>
+
+                        <div class="space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title ">支付方式: {{item.paymentMethod}}</text>
                         </div>
-                        <div class=" space-between  bt10 headerCellBg">
-                            <text class="sub_title">应收金额:{{item.amountPayable}}元(上期欠款:{{item.arrears}}元)</text>
-                            <div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">
-                                <text class="fz28">实收金额:</text>
-                                <input class="amountInput" type="number" placeholder="请输入金额" v-model="amountData"/>
-                            </div>
-                        </div>
-                        <div class=" space-between  bt10 headerCellBg">
-                            <text class="sub_title">应收水票:{{item.paperPayable}}张(上期欠票:{{item.ticket}}张)</text>
-                            <div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">
-                                <text class="fz28">实收水票:</text>
-                                <input class="amountInput" type="number" placeholder="请输入张数" v-model="paperData"/>
-                            </div>
-                        </div>
-                        <!--<div class=" space-between  bt10 headerCellBg">-->
-                            <!--<text class="sub_title">应收押金:{{item.pledgePayable}}元</text>-->
-                            <!--<div class="flex-row" v-if="item.paymentPluginId == 'ticketPayPlugin' || item.paymentPluginId == 'couponPayPlugin' || item.paymentPluginId == 'cashPayPlugin'">-->
-                                <!--<text class="fz28">实收押金:</text>-->
-                                <!--<input class="amountInput" type="number" placeholder="请输入金额" v-model="pledgeData"/>-->
-                            <!--</div>-->
-                        <!--</div>-->
                         <div class=" space-between  bt10 headerCellBg cell_height" @click="chooseFloor">
-                            <text class="sub_title">楼层:</text>
-                            <text class="sub_title">{{item.receiver.level}}</text>
+                            <text class="sub_title">应收金额:</text>
+                            <text class="sub_title">{{item.amountPayable}}元(上期欠款:{{item.arrears}}元)</text>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg cell_height" @click="chooseFloor">
+                            <text class="sub_title">应收水票:</text>
+                            <text class="sub_title">{{item.paperPayable}}张(上期欠票:{{item.ticket}}张)</text>
                         </div>
                         <div class=" space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title">运费:</text>
                             <text class="sub_title">{{item.freight}}</text>
                         </div>
                         <div class=" space-between  bt10 headerCellBg cell_height">
-                            <text class="sub_title">押金:</text>
+                            <text class="sub_title">空桶押金:</text>
                             <text class="sub_title">{{item.pledgePayable}}</text>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">所在楼层:</text>
+                            <text class="sub_title">{{item.receiver.level}}</text>
+                        </div>
+                        <div class=" space-between  bt10 headerCellBg cell_height">
+                            <text class="sub_title">结算货款:</text>
+                            <text class="sub_title">{{item.cost}}</text>
                         </div>
                         <div class=" space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title">配送费用:</text>
@@ -65,10 +67,7 @@
                             <text class="sub_title">送货工资:</text>
                             <text class="sub_title">{{item.adminFreight}}(楼层费:{{item.levelFreight}})</text>
                         </div>
-                        <!--<div class=" space-between  bt10 headerCellBg cell_height" @click="pickObject()">-->
-                            <!--<text class="sub_title">结算方式</text>-->
-                            <!--<text class="sub_title">{{isobject}}</text>-->
-                        <!--</div>-->
+
                         <div class=" space-between  bt10 headerCellBg cell_height">
                             <text class="sub_title">备注:</text>
                             <input class="max_input" placeholder="请输入备注" v-model="message"/>
@@ -160,12 +159,20 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .herderText{
+        font-size: 32px;
+        color: #999;
+    }
     .amountInput{
         font-size: 28px;
         color: red;
         width: 150px;
         height: 50px;
         line-height: 48px;
+    }
+    .herderAmount{
+        font-size: 80px;
+        color:red;
     }
     .setting{
         background-color: white;
@@ -382,15 +389,12 @@
                 pageSize: 15,
                 begin:0,
                 beginTwo:0,
-                orderSN:'',
+                orderSn:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
                 isobject:'线下月结',
                 shopMoney:0,
-                message:'',
-                amountData:'',
-                paperData:'',
-                pledgeData:''
+                message:''
             }
         },
         props: {
@@ -558,14 +562,11 @@
             },
             open:function () {
                 let _this = this;
-                GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
+                GET('weex/member/shipping/calcView.jhtml?orderSn=' + this.orderSn,function (data) {
                     if(data.type == 'success'){
+                        _this.shippingSn = data.data.sn;
                         _this.ordersList = [];
-                            if( (data.data.amountPayable + data.data.arrears) == 0){
-                                _this.amountData = '0'
-                            }if( (data.data.paperPayable + data.data.ticket) == 0){
-                                _this.paperData = '0'
-                            }
+
                             _this.ordersList.push(data.data);
 
                     }else{
@@ -659,70 +660,28 @@
                     _this.clicked = false;
                     return
                 }
-                if(_this.ordersList[0].paymentPluginId != 'ticketPayPlugin' && _this.ordersList[0].paymentPluginId != 'couponPayPlugin' && _this.ordersList[0].paymentPluginId != 'cashPayPlugin') {
-                    _this.amountData = '0';
-                    _this.paperData = '0';
-                }
 
-                    //                先把金额转为整型
-                var amountData = parseInt(_this.amountData);
-                var paperData = parseInt(_this.paperData);
-                if(_this.ordersList[0].paymentPluginId == 'ticketPayPlugin' || _this.ordersList[0].paymentPluginId == 'couponPayPlugin' || _this.ordersList[0].paymentPluginId == 'cashPayPlugin')
-                {
-                    if(utils.isNull(_this.amountData)){
-                        modal.alert({
-                            message: '请输入实收金额',
-                            okTitle: 'OK'
-                        })
-                        _this.clicked = false;
-                        return
-                    }else if(utils.isNull(_this.paperData)){
-                        modal.alert({
-                            message: '请输入实收水票',
-                            okTitle: 'OK'
-                        })
-                        _this.clicked = false;
-                        return
-                    }
-
-
-                    if((_this.ordersList[0].amountPayable + _this.ordersList[0].arrears) < amountData  ){
-                        modal.alert({
-                            message: '实收金额不能大于应收金额与上期欠款的总和',
-                            okTitle: 'OK'
-                        })
-                        _this.clicked = false;
-                        return
-                    } else if((_this.ordersList[0].paperPayable + _this.ordersList[0].ticket) < paperData  ) {
-                        modal.alert({
-                            message: '实收水票不能大于应收水票与上期欠票的总和',
-                            okTitle: 'OK'
-                        })
-                        _this.clicked = false;
-                        return
-                    }
-                }
                 POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
 
                         if(data.type == 'success'){
                             if(data.data == true){
-                                var body = [];
-                                _this.ordersList[0].shippingBarrels.forEach(function(item,index){
-                                    if(utils.isNull(item.quantity)){
-                                        item.quantity = 0;
-                                    }if(utils.isNull(item.returnQuantity)){
-                                        item.returnQuantity = 0;
-                                    }if(utils.isNull(item.pledgeQuantity)){
-                                        item.pledgeQuantity = 0;
-                                    }
-                                    body.push({
-                                        id:item.barrelId,
-                                        quantity:item.quantity,
-                                        returnQuantity:item.returnQuantity,
-                                        pledgeQuantity:item.pledgeQuantity
-                                    });
-                                });
-                                body = JSON.stringify(body);
+//                                var body = [];
+//                                _this.ordersList[0].shippingBarrels.forEach(function(item,index){
+//                                    if(utils.isNull(item.quantity)){
+//                                        item.quantity = 0;
+//                                    }if(utils.isNull(item.returnQuantity)){
+//                                        item.returnQuantity = 0;
+//                                    }if(utils.isNull(item.pledgeQuantity)){
+//                                        item.pledgeQuantity = 0;
+//                                    }
+//                                    body.push({
+//                                        id:item.barrelId,
+//                                        quantity:item.quantity,
+//                                        returnQuantity:item.returnQuantity,
+//                                        pledgeQuantity:item.pledgeQuantity
+//                                    });
+//                                });
+//                                body = JSON.stringify(body);
 
                                 POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level+'&amountPaid='+amountData + '&paperPaid='+paperData,body).then(
                                     function (data) {
@@ -753,27 +712,7 @@
                         event.toast(err.content);
                     })
             },
-            //            更改结算方式
-            pickObject:function () {
-                let _this = this
-                picker.pick({
-                    index:_this.begin,
-                    items:['线下月结','刷卡支付','现金']
-                }, e => {
-                    if (e.result == 'success') {
-                        if (e.data == 0){
-                            _this.isobject = '线下月结';
-                            _this.begin = e.data;
-                        }else if(e.data == 1){
-                            _this.isobject = '刷卡支付';
-                            _this.begin = e.data;
-                        }else if(e.data == 2){
-                            _this.isobject = '现金';
-                            _this.begin = e.data;
-                        }
-                    }
-                })
-            },
+
         }
     }
 </script>

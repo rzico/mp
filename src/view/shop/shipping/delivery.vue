@@ -542,7 +542,7 @@
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.pledgePayable = data.data.pledgePayable//  应收押金
-                        if (_this.paymentPluginId!='cashPayPlugin') {
+                        if (data.data.paymentPluginId!='cashPayPlugin') {
                             _this.amountPayable = 0;
                             _this.arrears = 0;
                         }
