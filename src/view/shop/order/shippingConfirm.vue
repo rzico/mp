@@ -17,14 +17,14 @@
                 </div>
                 <div class="header mt20 flex-row">
                     <div class="priceLine">
-                        <div class="flex-column" v-if="item.amountPaid>0">
+                        <div class="flex-column" v-if="item.paymentPluginId=='cashPayPlugin' && (item.amountPayable>0 || item.arrears>0)">
                             <text class="herderText">实收现金</text>
                             <div class="flex-row">
                                 <text style="font-size: 65px">¥</text>
                                 <text class="herderAmount">{{item.amountPaid}}</text>
                             </div>
                         </div>
-                        <div class="flex-column" v-if="item.paperPaid>0">
+                        <div class="flex-column" v-if="item.paperPayable>0 || item.ticket>0">
                             <text class="herderText">实收水票</text>
                             <div class="flex-row">
                                 <text style="font-size: 65px"></text>
@@ -683,7 +683,7 @@
 //                                });
 //                                body = JSON.stringify(body);
 
-                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message),body).then(
+                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message),null).then(
                                     function (data) {
                                         _this.clicked = false;
                                         if(data.type == 'success'){
