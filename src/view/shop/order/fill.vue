@@ -63,9 +63,9 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="typeBox" v-if="version == 2">
+                <div class="typeBox" v-if="hasWater">
                     <div class="flex-row">
-                        <text class="fz32">应收押金:</text>
+                        <text class="fz32">收押金:</text>
                         <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>
                     </div>
                     <div class="flex-row">
@@ -73,14 +73,14 @@
                         <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel" @change="getmoneyTotal"/>
                     </div>
                 </div>
-                <div class="typeBox" @click="pickPattern()" v-if="version == 2">
+                <div class="typeBox" @click="pickPattern()">
                     <text class="fz32">配送站点:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{shopName}}</text>
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
-                <div class="typeBox" @click="goMarki()" v-if="version == 2">
+                <div class="typeBox" @click="goMarki()">
                     <text class="fz32">配送人员:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{adminName}}</text>
@@ -112,13 +112,11 @@
                 </div>
             </div>
             <div class="moneyBox">
-                <div class="flex-row space-between pb10">
-                     <text class="moneyBoxText">应收金额: {{amountPayable}}元</text>
-                     <text class="moneyBoxText" v-if="version == 2">上期欠款: {{arrears}}元</text>
+                <div class="flex-row space-between pb10" v-if="amountPayable>0 || arrears>0">
+                    <text class="moneyBoxText">应收金额: {{amountPayable}}元(其中上期欠款: {{arrears}}元)</text>
                 </div>
-                <div class="flex-row space-between pb10" v-if="version == 2">
-                    <text class="moneyBoxText">应收水票: {{paperPayable}}张</text>
-                    <text class="moneyBoxText">上期欠票: {{ticket}}张</text>
+                <div class="flex-row space-between pb10" v-if="paperPayable>0 || ticket>0">
+                    <text class="moneyBoxText">应收水票: {{paperPayable}}张(其中上期欠票: {{ticket}}张)</text>
                 </div>
             </div>
 
@@ -429,7 +427,8 @@
                 ticket:'',
                 version:0,
                 orderSn:'',
-                paySn:''
+                paySn:'',
+                hasWater:false
             }
         },
         components: {
@@ -594,6 +593,7 @@
                         _this.arrears = data.data.arrears ; //  上期欠款
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
+                        _this.hasWater = data.data.hasWater;
                     } else {
                         event.toast(data.content);
                     }
