@@ -15,7 +15,7 @@
                 <text class="tableText">回桶</text>
             </div>
             <div class="tableTwo">
-                <text class="tableText">押桶</text>
+                <text class="tableText">退桶</text>
             </div>
             <div class="tableThree">
                 <text class="tableText">欠桶</text>
@@ -35,16 +35,16 @@
                         <text class="contentCellType">派单</text>
                         <text class="returnMoney">{{c.sQuantity}}</text>
                         <text class="returnMoney">{{c.sReturnQuantity}}</text>
-                        <text class="returnMoney">{{c.sPledgeQuantity}}</text>
-                        <text class="money">{{c.sQuantity - c.sReturnQuantity - c.sPledgeQuantity}}</text>
+                        <text class="returnMoney">{{c.sRefundsQuantity}}</text>
+                        <text class="money">{{c.sQuantity - c.sReturnQuantity - c.sRefundsQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="number"></text>
                         <text class="contentCellType">送货</text>
                         <text class="returnMoney">{{c.quantity}}</text>
                         <text class="returnMoney">{{c.returnQuantity}}</text>
-                        <text class="returnMoney">{{c.pledgeQuantity}}</text>
-                        <text class="money">{{c.quantity - c.returnQuantity - c.pledgeQuantity}}</text>
+                        <text class="returnMoney">{{c.refundsQuantity}}</text>
+                        <text class="money">{{c.quantity - c.returnQuantity - c.refundsQuantity}}</text>
                     </div>
                 </div>
             </cell>

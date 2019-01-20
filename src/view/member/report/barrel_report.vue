@@ -300,10 +300,10 @@
                 endTime:'',
                 quantityTotal:0,
                 returnQuantityTotal:0,
-                pledgeQuantityTotal:0,
+                refundsQuantityTotal:0,
                 sQuantityTotal:0,
                 sReturnQuantityTotal:0,
-                sPledgeQuantityTotal:0,
+                sRefundsQuantityTotal:0,
             }
         },
         components: {
@@ -485,7 +485,7 @@
 //                                item.oweQuantity  = item.quantity - item.returnQuantity;
 //                            })
                             _this.reportList = res.data.data.data;
-                            _this.summarylist = res.data.data.summary
+                            _this.summarylist = res.data.data.summary;
                         } else {
                             res.data.data.data.forEach(function (item) {
 //                                item.oweQuantity  = item.quantity - item.returnQuantity;
