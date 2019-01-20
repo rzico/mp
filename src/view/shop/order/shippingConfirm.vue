@@ -11,7 +11,7 @@
                             <text class="fz28">{{c.name}}</text>
                         </div>
                         <div class="money">
-                            <text class="fz28">送{{c.quantity}}桶，回{{c.quantity}}桶，押{{c.pledgeQuantity}}桶，退{{c.refundsQuantity}}桶</text>
+                            <text class="fz28">送{{c.quantity}}桶，回{{c.returnQuantity}}桶，押{{c.pledgeQuantity}}桶，退{{c.refundsQuantity}}桶</text>
                         </div>
                     </div>
                 </div>
