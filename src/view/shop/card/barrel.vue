@@ -289,9 +289,9 @@
             openMask(c){
                 this.isMask = true;
                 this.barrelId = c.id;
-                this.pledge = c.pledge;
-                this.borrow = c.borrow;
-                this.mortgage = c.mortgage;
+                this.pledge = c.beginningPledge;
+                this.borrow = c.beginningBorrow;
+                this.mortgage = c.beginningMortgage;
             },
             confirm(){
                 var _this = this;
