@@ -128,8 +128,8 @@
                         <div class="flex-row">
                             <!--<text class="title footText">查看物流</text>-->
                             <!--<text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>-->
-                            <text class="title footText " @click="shippingConfirm(item.sn)">核销</text>
-                            <text class="title footText " @click="returnGoods(item.sn)">退货</text>
+                            <text class="title footText " @click="shippingConfirm(item.sn)" v-if="item.isShipping==true">核销</text>
+                            <text class="title footText " @click="returnGoods(item.sn)" v-if="item.isShipping==false">退货</text>
                         </div>
                     </div>
                 </div>

@@ -683,7 +683,7 @@
 //                                });
 //                                body = JSON.stringify(body);
 
-                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message) +'&level=' + _this.ordersList[0].receiver.level+'&amountPaid='+amountData + '&paperPaid='+paperData,body).then(
+                                POST('weex/member/shipping/completed.jhtml?sn='+_this.shippingSn+'&memo=' + encodeURIComponent(_this.message),body).then(
                                     function (data) {
                                         _this.clicked = false;
                                         if(data.type == 'success'){
