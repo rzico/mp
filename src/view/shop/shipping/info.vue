@@ -92,21 +92,18 @@
                 </div>
                 <div class="mt20  infoWhiteColor" >
                     <div class="priceLine boder-bottom">
-                        <div class=" space-between pb10">
-                            <text class="sub_title">+ 送货工资</text>
-                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between pb10">
-                            <text class="sub_title">+ 空桶押金</text>
-                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
-                        </div>
+
                         <div class=" space-between pb10" v-if="filter('shippingFreight')">
-                            <text class="sub_title">+ 配送运费</text>
+                            <text class="sub_title">配送运费</text>
                             <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
                         </div>
                         <div class=" space-between " v-if="filter('cost')">
-                            <text class="sub_title">+ 货款结算</text>
+                            <text class="sub_title">货款结算</text>
                             <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between pb10">
+                            <text class="sub_title">送货工资</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
                         </div>
                     </div>
                     <div class="priceLine ">

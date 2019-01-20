@@ -130,7 +130,15 @@
                     <div class="priceLine boder-bottom">
                         <div class="space-between">
                             <text class="sub_title">商品总额</text>
-                            <text class="sub_title">¥{{item.amount | currencyfmt}}</text>
+                            <text class="sub_title">¥{{item.price | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10" v-if="filter('cost')">
+                            <text class="sub_title">+ 运费(楼层费)</text>
+                            <text class="sub_title">¥ {{item.freight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">+ 空桶押金</text>
+                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
                         </div>
                         <div class=" space-between mt10 "v-if="item.couponDiscount != 0 && item.couponDiscount != '0'">
                             <text class="sub_title">优惠折扣</text>
@@ -144,24 +152,6 @@
                             <text class="sub_title">电子券支付</text>
                             <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
                         </div>
-                        <div class=" space-between mt10">
-                            <text class="sub_title">+ 送货工资</text>
-                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10">
-                            <text class="sub_title">+ 空桶押金</text>
-                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10" v-if="filter('shippingFreight')">
-                            <text class="sub_title">+ 配送运费</text>
-                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10" v-if="filter('cost')">
-                            <text class="sub_title">+ 货款结算</text>
-                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
-                        </div>
-                    </div>
-                    <div class="priceLine">
                         <div class="flex-row pb10">
                             <text class="fz28 mr20">订单合计:</text>
                             <text class="fz28" style="color: red">¥{{item.amount | currencyfmt}}</text>
@@ -174,10 +164,23 @@
                             <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
                             <text class="fz28 ">实收水票:{{item.paperPaid}}</text>
                         </div>
-                        <div class="space-between">
-                            <text class="fz28">应收押金:¥{{item.pledgePayable}}</text>
-                            <text class="fz28 ">实收押金:¥{{item.pledgePaid}}</text>
+
+                    </div>
+                    <div class="priceLine">
+
+                        <div class=" space-between mt10" v-if="filter('shippingFreight')">
+                            <text class="sub_title">配送运费</text>
+                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
                         </div>
+                        <div class=" space-between mt10" v-if="filter('cost')">
+                            <text class="sub_title">货款结算</text>
+                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">送货工资</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
+                        </div>
+
                     </div>
                 </div>
 

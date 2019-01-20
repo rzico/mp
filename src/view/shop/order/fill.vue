@@ -118,6 +118,18 @@
                 <div class="flex-row space-between pb10" v-if="paperPayable>0 || ticket>0">
                     <text class="moneyBoxText" style="color:red;">应收水票: {{paperPayable}}张(上期欠票: {{ticket}}张)</text>
                 </div>
+                <div class="flex-row space-between pb10" v-if="order!=null && order.freight>0">
+                    <text class="moneyBoxText" >运费(楼层费): {{order.freight}}元</text>
+                </div>
+                <div class="flex-row space-between pb10" v-if="order!=null && order.exchangeDiscount>0">
+                    <text class="moneyBoxText" >电子券支付: {{order.exchangeDiscount}}元</text>
+                </div>
+                <div class="flex-row space-between pb10" v-if="order!=null && order.couponDiscount>0">
+                    <text class="moneyBoxText" >优惠折扣: {{order.couponDiscount}}元</text>
+                </div>
+                <div class="flex-row space-between pb10" v-if="order!=null && order.pointDiscount>0">
+                    <text class="moneyBoxText" >积分支付: {{order.pointDiscount}}元</text>
+                </div>
             </div>
 
         </div>
@@ -263,10 +275,10 @@
     .moneyBox{
         border-top-width: 5px;
         border-color:#eee;
-        height: 100px;
         padding-top: 30px;
         flex-direction: column;
         justify-content: center;
+        margin-bottom: 20px;
     }
     .moneyBoxText{
         font-size: 32px;
@@ -428,7 +440,8 @@
                 version:0,
                 orderSn:'',
                 paySn:'',
-                hasWater:false
+                hasWater:false,
+                order:null,
             }
         },
         components: {
@@ -594,6 +607,7 @@
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.hasWater = data.data.hasWater;
+                        _this.order = data.data;
                     } else {
                         event.toast(data.content);
                     }

@@ -291,7 +291,7 @@
                 this.barrelId = c.id;
                 this.pledge = c.beginningPledge;
                 this.borrow = c.beginningBorrow;
-                this.mortgage = c.beginningMortgage;
+                this.mortgage = c.beginning;
             },
             confirm(){
                 var _this = this;
