@@ -8,6 +8,13 @@
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
+        <div class="setting" @click="cardSetting()">
+            <div class="flex-row " style="align-items:center">
+                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62d;</text>
+                <text class="title ml20 " >充值活动设置</text>
+            </div>
+            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
         <div class="bgWhite addCorpus">
             <div class="lineStyle pr30" @click="jump()">
                 <text class="lineText">添加策略</text>
@@ -596,6 +603,20 @@
                 event.openURL(utils.locate("view/shop/goods/distributionList.js"),function () {
                     _this.catagoryList =[]
                     _this.open()
+                })
+            },
+
+            cardSetting:function () {
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    return
+                }
+                event.openURL(utils.locate('view/shop/card/setting.js'),function () {
+
                 })
             }
         }

@@ -63,9 +63,9 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="typeBox" v-if="version == 2">
+                <div class="typeBox" v-if="hasWater">
                     <div class="flex-row">
-                        <text class="fz32">应收押金:</text>
+                        <text class="fz32">收押金:</text>
                         <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>
                     </div>
                     <div class="flex-row">
@@ -73,14 +73,14 @@
                         <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel" @change="getmoneyTotal"/>
                     </div>
                 </div>
-                <div class="typeBox" @click="pickPattern()" v-if="version == 2">
+                <div class="typeBox" @click="pickPattern()">
                     <text class="fz32">配送站点:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{shopName}}</text>
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
-                <div class="typeBox" @click="goMarki()" v-if="version == 2">
+                <div class="typeBox" @click="goMarki()">
                     <text class="fz32">配送人员:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{adminName}}</text>
@@ -112,13 +112,11 @@
                 </div>
             </div>
             <div class="moneyBox">
-                <div class="flex-row space-between pb10">
-                     <text class="moneyBoxText">应收金额: {{amountPayable}}元</text>
-                     <text class="moneyBoxText" v-if="version == 2">上期欠款: {{arrears}}元</text>
+                <div class="flex-row space-between pb10" v-if="amountPayable>0 || arrears>0">
+                    <text class="moneyBoxText" style="color:red;">应收金额: {{amountPayable}}元(上期欠款: {{arrears}}元)</text>
                 </div>
-                <div class="flex-row space-between pb10" v-if="version == 2">
-                    <text class="moneyBoxText">应收水票: {{paperPayable}}张</text>
-                    <text class="moneyBoxText">上期欠票: {{ticket}}张</text>
+                <div class="flex-row space-between pb10" v-if="paperPayable>0 || ticket>0">
+                    <text class="moneyBoxText" style="color:red;">应收水票: {{paperPayable}}张(上期欠票: {{ticket}}张)</text>
                 </div>
             </div>
 
@@ -427,7 +425,10 @@
                 arrears:'',
                 paperPayable:'',
                 ticket:'',
-                version:0
+                version:0,
+                orderSn:'',
+                paySn:'',
+                hasWater:false
             }
         },
         components: {
@@ -458,7 +459,23 @@
         },
         created() {
             utils.initIconFont();
+            var _this = this;
             this.version = utils.version;
+            _this.payName =[];
+            _this.payId = [];
+            GET('payment/plugin.jhtml',function (mes) {
+                if (mes.type == 'success') {
+                    mes.data.forEach(function (item) {
+                        _this.payName.push(item.name);
+                        _this.payId.push(item.paymentPluginId)
+                    })
+                } else {
+                    event.toast(mes.content);
+                }
+            }, function (err) {
+                event.toast(err.content)
+            });
+
 //            清空购物车
             POST('weex/cart/clear.jhtml').then(function (res) {
                 if (res.type == 'success') {
@@ -576,6 +593,7 @@
                         _this.arrears = data.data.arrears ; //  上期欠款
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
+                        _this.hasWater = data.data.hasWater;
                     } else {
                         event.toast(data.content);
                     }
@@ -587,14 +605,6 @@
             pickPay:function () {
                 let _this = this
 //                获取支付方式
-                _this.payName =[];
-                _this.payId = [];
-                GET('payment/plugin.jhtml',function (mes) {
-                    if (mes.type == 'success') {
-                        mes.data.forEach(function (item) {
-                            _this.payName.push(item.name);
-                            _this.payId.push(item.paymentPluginId)
-                        })
                         picker.pick({
                             index:_this.begin,
                             items: _this.payName
@@ -608,12 +618,6 @@
                             }
                         })
 
-                    } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content)
-                });
 
             },
 //            选择楼层
@@ -699,7 +703,7 @@
                         if(data.data.memberId != 0){
                             _this.memberId = data.data.memberId;
                             _this.addressId = data.data.addressId;
-                            _this.getInfo();
+                            _this.renew();
                         }else{
                             event.toast('无效会员')
                             return
@@ -911,6 +915,122 @@
                 )
             },
 
+            renew() {
+                var _this = this;
+                _this.shopName = '';
+                _this.shopId = '';
+                _this.memoData = '';
+                _this.dateTime = '';
+                _this.floor = '';
+                _this.adminName = '';
+                _this.adminId = '';
+                _this.barrel  = '';
+                _this.deposit = '';
+                _this.begin =0;
+                _this.paymentPluginId = 'cashPayPlugin';
+                _this.paymentPluginName = '现金支付';
+                if (_this.payId.length>0) {
+                    _this.paymentPluginId = _this.payId[0];
+                    _this.paymentPluginName = _this.payName[0];
+                }
+                _this.isShow = false;
+                _this.clicked = false;
+                _this.getInfo();
+            },
+
+            beginTimer:function () {
+                var _this = this;
+                modal.toast({
+                    message: '付款中..',
+                    duration: 0.5
+                })
+                POST("payment/query.jhtml?sn="+_this.paySn).then(
+                    function (res) {
+                        if (res.type=='success') {
+                            if (res.data=='0000') {
+                                modal.alert({
+                                    message: '付款成功',
+                                    okTitle: '知道了'
+                                })
+                                _this.renew();
+                            } else
+                            if (res.data=='0001') {
+                                modal.alert({
+                                    message: '付款失败',
+                                    okTitle: '知道了'
+                                })
+                                _this.renew();
+                            } else {
+                                _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                            }
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    }
+                )
+            },
+            paymentOrder(orderSn,safeKey) {
+                var _this = this;
+                _this.orderSn = orderSn;
+                modal.toast({
+                    message: '付款中..',
+                    duration: 1
+                })
+                POST('weex/member/order/payment.jhtml?sn='+ orderSn).then( function(pay) {
+                    if (pay.type == 'success') {
+                        _this.paySn = pay.data.sn;
+                        POST("payment/submit.jhtml?sn="+_this.paySn+"&paymentPluginId="+_this.paymentPluginId+"&safeKey="+encodeURIComponent(safeKey)).then(
+                            function (data) {
+                                if (data.type=='success') {
+                                    _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                                } else {
+                                    modal.alert({
+                                        message: data.content,
+                                        okTitle: '知道了'
+                                    })
+                                }
+                            },function (err) {
+                                event.toast(err.content);
+                            }
+                        )
+                    } else {
+                        event.toast(pay.content)
+                    }
+                }, function(fail) {
+                    event.toast(fail.content)
+                })
+
+            },
+            createOrder(safeKey) {
+                var _this = this;
+                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
+                    if (res.type == 'success') {
+                        if (res.data.status=='unpaid') {
+                            _this.paymentOrder(res.data.sn,safeKey);
+                            _this.clicked = false;
+                        } else {
+                            modal.alert({
+                                message: '订单提交成功',
+                                okTitle: '知道了'
+                            })
+                            _this.renew();
+                        }
+
+                    } else {
+                        modal.alert({
+                            message: res.content,
+                            okTitle: '知道了'
+                        })
+                        _this.clicked = false;
+                    }
+                }, function (err) {
+                    event.toast(err.content);
+                    _this.clicked = false;
+                })
+            },
 //            确认
             confirm(){
                 if (this.clicked) {
@@ -954,6 +1074,7 @@
                         mesTotal = mesTotal + 1;
                     }
                 })
+
                 if(mesTotal>0){
                     modal.alert({
                         message: '商品数量不能为空或0',
@@ -962,52 +1083,18 @@
                     _this.clicked = false;
                     return
                 }
-                POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
-                    if (res.type == 'success') {
-                                    modal.alert({
-                                        message: '订单提交成功',
-                                        okTitle: '知道了'
-                                    })
-                                    _this.shopName = '';
-                                    _this.shopId = '';
-                                    _this.memoData = '';
-                                    _this.dateTime = '';
-                                    _this.floor = '';
-                                    _this.adminName = '';
-                                    _this.adminId = '';
-                                    _this.barrel  = '';
-                                    _this.deposit = '';
-                                    _this.begin =0;
-                                    _this.paymentPluginId = 'cashPayPlugin';
-                                    _this.paymentPluginName = '现金支付';
-                                    _this.isShow = false;
-                                    _this.clicked = false;
-                                    _this.getInfo();
-                    } else {
-                        modal.alert({
-                            message: res.content,
-                            okTitle: '知道了'
-                        })
-                        _this.shopName = '';
-                        _this.shopId = '';
-                        _this.memoData = '';
-                        _this.dateTime = '';
-                        _this.floor = '';
-                        _this.adminName = '';
-                        _this.adminId = '';
-                        _this.barrel  = '';
-                        _this.deposit = '';
-                        _this.begin =0;
-                        _this.paymentPluginId = 'cashPayPlugin';
-                        _this.paymentPluginName = '现金支付';
-                        _this.isShow = false;
-                        _this.getInfo();
-                        _this.clicked = false;
-                    }
-                }, function (err) {
-                    event.toast(err.content);
-                    _this.clicked = false;
-                })
+
+                if (_this.paymentPluginId=="weixinQRPlugin") {
+                    event.scan(function (sc) {
+                        if (sc.type=='success') {
+                            _this.createOrder(sc.data);
+                        }
+                    })
+                } else {
+                    _this.createOrder("");
+                }
+
+
             }
         }
     }

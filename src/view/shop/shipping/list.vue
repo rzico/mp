@@ -9,9 +9,10 @@
                     </div>
                     <div class="nav">
                         <text class="nav_title">{{title}}</text>
-                        <div class="navRightBox"  @click="goSearch()">
+                        <div class="navRightBox" >
                             <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
-                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                            <text class="nav_CompleteIcon mr15"  :style="{fontFamily:'iconfont'}"   @click="goSearch()">&#xe611;</text>
+                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}"  @click="openPrint">&#xe699;</text>
                         </div>
                     </div>
                 </div>
@@ -46,9 +47,9 @@
                     <text @click="catagoryChange(index,item.id)" class="allArticle" :class = "[whichCorpus == index ? 'corpusActive' : 'noActive']">{{item.name}}</text>
                 </div>
             </div>
-            <div class="print bkg-primary" @click="openPrint">
-                <text class="printText">打印</text>
-            </div>
+            <!--<div class="print bkg-primary" @click="openPrint">-->
+                <!--<text class="printText">打印</text>-->
+            <!--</div>-->
         </div>
         <list  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -130,12 +131,12 @@
                             <text class="title footText " @click="delivery(item.orderSn,item.sn,item.id)">送达</text>
                         </div>
                     </div>
-                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'receive' && filter('receive')">
+                    <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'delivery' && filter('delivery')">
                         <div class="footMore">
                             <!--<text class="sub_title">删除</text>-->
                         </div>
                         <div class="flex-row">
-                            <text class="title footText " @click="confirm(item.orderSn,item.sn)">核销</text>
+                            <text class="title footText " @click="confirm(item.orderSn,item.sn,item.id)">审核</text>
                         </div>
                     </div>
                 </div>
@@ -268,7 +269,7 @@
     }
     /*<!--顶部导航栏-->*/
     .navRightBox{
-        min-width: 92px;
+        flex-direction: row;
         height: 92px;
         align-items: center;
         justify-content: center;
@@ -511,7 +512,7 @@
         align-items: center;
         justify-content: center;
         /*flex: 1;*/
-        width: 125px;
+        width: 150px;
     }
     .allArticle{
         font-size: 31px;
@@ -582,6 +583,9 @@
                 },{
                     name:'已送达',
                     id:4
+                },{
+                    name:'已完成',
+                    id:5
                 }],
                 whichCorpus:0,
                 productCategoryId:1,
@@ -737,9 +741,12 @@
                         status = 'hope';
                         break;
                     case 3:
-                        status = 'confirmed';
+                        status = 'dispatch';
                         break;
                     case 4:
+                        status = 'delivery';
+                        break;
+                    case 5:
                         status = 'completed';
                         break;
                     default:
@@ -882,7 +889,14 @@
                     } else {
                         return false
                     }
-                }else if (e == 'receive') {
+                } else if (e == 'delivery') {
+//                    送达
+                    if (utils.isRoles("123", _this.roles)) {
+                        return true
+                    } else {
+                        return false
+                    }
+                } else if (e == 'receive') {
 //                    运单
                     if (utils.isRoles("12", _this.roles)) {
                         return true
@@ -1102,9 +1116,12 @@
                         status = 'hope';
                         break;
                     case 3:
-                        status = 'confirmed';
+                        status = 'dispatch';
                         break;
                     case 4:
+                        status = 'delivery';
+                        break;
+                    case 5:
                         status = 'completed';
                         break;
                     default:
@@ -1310,7 +1327,7 @@
                 });
             },
             //            跳转核销
-            confirm:function (orderSn,sn) {
+            confirm:function (orderSn,sn,shippingId) {
                 if (this.clicked) {
                     return;
                 }
@@ -1324,12 +1341,12 @@
                     _this.clicked = false;
                     return
                 }
-                event.openURL(utils.locate('view/shop/shipping/confirm.js?orderSn=' + orderSn + '&sn='+sn),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/confirm.js?orderSn=' + orderSn + '&sn='+sn +'&shippingId=' + shippingId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
                         _this.pageStart = 0;
                         _this.open();
-                        event.toast('核销成功');
+                        event.toast('送达成功');
                     }
                 });
             },

@@ -192,6 +192,15 @@ Vue.filter('datetimefmt', function (value) {
 
 })
 
+//时间格式化 返回 09-30 03:07
+Vue.filter('ydfmt', function (value) {
+
+    let res = utils.resolvetimefmt(value);
+
+        return  res.m + '-' + res.d ;
+
+})
+
 //时间格式化 返回 09-30 03:07:56 2017-09-30 03:07:56
 Vue.filter('datemoretimefmt', function (value) {
     let res = utils.resolvetimefmt(value);

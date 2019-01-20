@@ -708,7 +708,7 @@ let utilsFunc = {
         // 返回处理后的值
         if (value != null) {
             if (value == 0) {
-                return value;
+                return value.toFixed(2);
             } else {
                 var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
                 return price;

@@ -1,35 +1,93 @@
 <template>
-    <div class="wrapper bkg-primary">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="vipsetup()"> </navbar>
-
-        <div class="box">
-            <div class="flex-center">
-              <text class="name" >{{data.card.name}}</text>
-                <div class="labelType"><text class="labelText">{{data.card.type | watchType}}</text> </div>
-                <div :class="[vipClass(data.card.vip)]" style="margin-top: 60px"><text class="labelText">{{data.card.vip | watchVip}}</text> </div>
-              <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
-            </div>
-            <text class="code" >NO.{{data.card.code | codefmt}}</text>
-            <text class="balance" >{{data.card.balance | currencyfmt}}</text>
-            <div class="flex-center">
-                <text class="label" @click="deposit()">消费记录</text>
-                <text class="label" >|</text>
-                <text class="label" @click="integral()" >积分记录</text>
-            </div>
-        </div>
-        <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
-        <div class="bbox">
-            <text class="button bw" @click="fill()">充值</text>
-            <text class="button bw" @click="refund()">退款</text>
-        </div>
-        <div class="content">
-            <text class="intro" >1.{{data.prerogative}}</text>
-            <text class="intro" >2.{{data.description}}</text>
-        </div>
+    <div class="wrapper">
+        <navbar :title="title" :complete="complete" @goback="goback"> </navbar>
+        <list>
+            <cell v-if="data!=null">
+                <div class="box bkg-primary">
+                    <div class="flex-center">
+                        <text class="name" >{{data.card.name}}</text>
+                        <div class="labelType"><text class="labelText">{{data.card.type | watchType}}</text> </div>
+                        <div :class="[vipClass(data.card.vip)]" style="margin-top: 60px"><text class="labelText">{{data.card.vip | watchVip}}</text> </div>
+                         <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
+                    </div>
+                    <text class="code" >NO.{{data.card.code | codefmt}}</text>
+                    <text class="balance" >￥{{data.card.balance | currencyfmt}}</text>
+                    <div class="flex-center">
+                        <text class="button bw" @click="fill()">充值</text>
+                        <text class="button bw" @click="refund()">退款</text>
+                        <!--<text class="label" @click="fill()">充值</text>-->
+                        <!--<text class="label" >|</text>-->
+                        <!--<text class="label" @click="refund()" >退款</text>-->
+                    </div>
+                </div>
+                <!--<div class="bbox">-->
+                    <!--<text class="button bw" @click="fill()">充值</text>-->
+                    <!--<text class="button bw" @click="refund()">退款</text>-->
+                <!--</div>-->
+                <div class="boxTwo">
+                    <div class="cell"  @click="vipsetup()">
+                        <text class="cellTitle">详细资料</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="goAddress()">
+                        <text class="cellTitle">收货地址</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="deposit()">
+                        <text class="cellTitle">消费记录</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="integral()">
+                        <text class="cellTitle">积分记录</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="goCouponCode()" >
+                        <text class="cellTitle">电子水票</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="goBarrel()">
+                        <text class="cellTitle">送货记录</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 750px;
+        background-color:#ffffff;
+    }
+    .cell{
+        width: 690px;
+        height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-bottom-width: 1px;
+        border-bottom-color: #ccc;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .cell:active{
+        background-color: #eee;
+    }
+    .cellTitle{
+        font-size: 32px;
+        color: #333;
+    }
+    .cellIcon{
+        font-size: 32px;
+        color: #999;
+    }
     .labelType{
         height: 28px;
         align-items: center;
@@ -46,14 +104,19 @@
         font-size: 24px;
     }
     .box {
-        margin-top: 100px;
-        width:650px;
-        margin-left: 50px;
+        margin-top: 80px;
+        width:600px;
+        margin-left: 75px;
+        border-radius: 20px;
+        align-items: center;
+        padding-bottom: 30px;
+    }
+    .boxTwo{
+        margin-top: 50px;
+        width:690px;
+        margin-left: 30px;
         background-color: #fff;
-        height:450px;
         border-radius: 10px;
-        border-color: #ccc;
-        border-width: 1px;
         align-items: center;
     }
     .bbox {
@@ -65,7 +128,7 @@
     .logo {
         /*margin-top: -40px;*/
         position: absolute;
-        top: 203px;
+        top: 40px;
         left:335px;
         width:80px;
         height:80px;
@@ -76,7 +139,7 @@
     }
     .name {
         margin-top: 60px;
-        color:#bbb;
+        color:#fff;
         font-size: 30px;
     }
     .vip1 {
@@ -130,20 +193,21 @@
         font-size: 32px;
     }
     .code {
-        margin-top: 40px;
-        color:#999;
+        margin-top: 20px;
+        color:#fff;
         font-size: 30px;
     }
     .balance {
-        margin-top: 50px;
+        margin-top: 20px;
+        margin-bottom: 20px;
         color:red;
         font-size: 52px;
     }
     .label {
-        margin-top: 60px;
+        margin-top: 40px;
         margin-left: 10px;
         margin-right: 10px;
-        color:#999;
+        color:#fff;
         height:60px;
         font-size: 32px;
     }
@@ -197,10 +261,11 @@
             return {
                 id:"",
                 qrcode:"",
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,code:'392203232323'},},
+                data:null,
                 begin:0,
                 roles:'',
-                clicked:false
+                clicked:false,
+                memberId:0
             }
         },
         created(){
@@ -210,6 +275,14 @@
             this.permissions()
         },
         methods: {
+            //            当前app状态
+            appType(){
+                if(utils.appType() == 'water'){
+                    return true
+                }else{
+                    return false
+                }
+            },
             classHeader:function () {
                 let dc = utils.device();
 
@@ -270,6 +343,70 @@
                 event.openURL(utils.locate("view/shop/card/integral.js?id="+this.id),function (data) {
                     _this.clicked =false
                 })
+            },
+
+            goAddress(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/receiver/index.js?memberId=' +this.memberId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
+            goCouponCode(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/couponCode.js?cardId='+this.id +'&logo='+this.data.card.logo),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
+            goBarrel(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+this.id),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
             },
             vipsetup:function () {
                 if (this.clicked==true) {
@@ -355,6 +492,7 @@
                             _this.begin =2
                         }
                         _this.data = res.data;
+                        _this.memberId = res.data.card.memberId
                     } else {
                         event.toast(res.content);
                     }

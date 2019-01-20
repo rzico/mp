@@ -462,6 +462,7 @@
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
+    var amap = weex.requireModule('map');
     export default {
         data() {
             return {
@@ -505,14 +506,16 @@
         created() {
             var _this = this;
             utils.initIconFont();
+            amap.startBackGroundLocationUpdates();
             this.isIndex = (utils.getUrlParameter("index")=='true');
             this.view();
+
 //            globalEvent.addEventListener("onCashierChange", function (e) {
 //                _this.view();
 //            });
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
-                if(!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10212'){
+                if(!utils.isNull(e.data.data.id)  && e.data.data.id == 'gm_10212'){
                     _this.view();
                 }
                 if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10200') {
@@ -676,27 +679,27 @@
                     })
                 });
             },
-            //            获取经纬度
-            getGps:function(){
-
-                let _this = this
-                var uId = event.getUId();
-                event.getLocation(function (data) {
-                    if(data.type == 'success'){
-                        POST("/lbs/location.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat +'&memberId=' + uId).then(function (mes) {
-                            if (mes.type == 'success') {
-
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
-                        })
-                    }else {
-                        event.toast('定位失败，请开启GPS')
-                    }
-                })
-            },
+//            //            获取经纬度
+//            getGps:function(){
+//
+//                let _this = this
+//                var uId = event.getUId();
+//                event.getLocation(function (data) {
+//                    if(data.type == 'success'){
+//                        POST("/lbs/location.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat +'&memberId=' + uId).then(function (mes) {
+//                            if (mes.type == 'success') {
+//
+//                            } else {
+//                                event.toast(mes.content);
+//                            }
+//                        }, function (err) {
+//                            event.toast(err.content)
+//                        })
+//                    }else {
+//                        event.toast('定位失败，请开启GPS')
+//                    }
+//                })
+//            },
             //            获取订单数量
             getCount(){
                 var _this = this
@@ -865,21 +868,21 @@
                     }
                 }else if(e == 'coupon'){
 //                    优惠券
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
                 } else if(e == 'distribution'){
 //                    新营销
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
                     }
                 } else if(e == 'manage'){
 //                    商品
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
@@ -899,8 +902,8 @@
                         return false
                     }
                 }else if(e == 'money'){
-//                    收银
-                    if (utils.isRoles("12",_this.roles)) {
+//                    报表
+                    if (utils.isRoles("1",_this.roles)) {
                         return true
                     }else{
                         return false
@@ -916,9 +919,9 @@
                     if (mes.type=="success") {
                         _this.roles = mes.data;
 //                        开启定时器，每两钟定位一次经纬度
-                        _this.gpsTime = setInterval(function () {
-                            _this.getGps()
-                        },120000);
+//                        _this.gpsTime = setInterval(function () {
+//                            _this.getGps()
+//                        },120000);
                     } else {
                         event.toast(mes.content);
                     }
@@ -1005,7 +1008,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
+                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1061,7 +1064,7 @@
             },
             hasShop:function () {
                 let _this = this
-                if (utils.isRoles("12",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
+                if (utils.isRoles("1",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
                     return true
                 }else {
                     return false
@@ -1156,7 +1159,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                if (!utils.isRoles("125",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'

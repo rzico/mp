@@ -283,7 +283,7 @@
         font-size: 26px;
         color: #444;
         max-width: 150px;
-        lines:2;
+        lines:1;
         text-overflow: ellipsis;
     }
     .contentBox{
@@ -702,6 +702,7 @@
                     }else{
                         return false
                     }
+
                 } else if(e == 'topic'){
 //                    专栏
                     if (utils.isRoles("1",_this.roles)) {
@@ -719,6 +720,7 @@
                 let dc = utils.addTop();
                 return dc;
             },
+
             //            监听设备型号,控制导航栏高度
             classHeader: function() {
                 let dc = utils.device();

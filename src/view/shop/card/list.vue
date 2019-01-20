@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting"> </navbar>
+        <navbar :title="title" @goback="goback" > </navbar>
         <!--<navbar :title="title"  @goback="goback" v-if="choose"> </navbar>-->
         <!--<div class="code" @click="scan" v-if="!choose">-->
             <!--<text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>-->
@@ -10,7 +10,7 @@
             <div class="search_box flex5">
                 <div class="flex-start">
                     <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-                    <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" autofocus="true" ref="searchBar" :placeholder="searchHint"/>
+                    <input class="search_input" type="text" return-key-type="done" v-model="keyword" @input="oninput" @return = "search" ref="searchBar" :placeholder="searchHint"/>
                 </div>
                 <text class="clearBuf ico_small gray" style="margin-top: 3px" :style="{fontFamily:'iconfont'}" @click="clearBuf">&#xe60a;</text>
             </div>
@@ -35,10 +35,10 @@
         </div>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
-        <list  class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="50">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
+        <list  class="list" v-if="isNoEmpty()"  @loadmore="onloading" loadmoreoffset="60">
+            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--</refresh>-->
                 <cell v-for="num in lists" >
                     <div class="addFriendsBorder">
                         <div class="friendsLine" @click="jump(num)">
@@ -47,15 +47,16 @@
                                 <!--<text :class="[vipClass(num.vip)]" :style="{fontFamily:'iconfont'}">{{vip(num.vip)}}</text>-->
                             </div>
                             <div class="friendsName">
-                                <text class="lineTitle ">{{num.mobile}} (卡号:{{num.code | watchCode}})</text>
+                                <text class="lineTitle ">{{num.name}}</text>
                                 <div style="flex-direction: row;justify-content: space-between;align-items: center;width: 590px">
                                     <div style="flex-direction: row;align-items: center">
-                                    <text class="realName">{{num.name}}</text>
+                                    <text class="realName">{{num.mobile}}</text>
                                     <div class="label"><text class="labelText">{{num.type | watchType}}</text> </div>
                                     <div :class="[vipClass(num.vip)]"><text class="labelText">{{num.vip | watchVip}}</text> </div>
                                     </div>
                                 </div>
-                                <text class="recommendedTitle"  v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
+                                <text class="recommendedTitle">NO.{{num.code | watchCode}}</text>
+                                <text class="recommendedTitle" v-if="num.promoter != ''">推荐人:{{num.promoter}}</text>
                             </div>
                         </div>
                     </div>
@@ -273,7 +274,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import { POST, GET } from '../../../assets/fetch'
+    import { POST, GET,URIEncrypt } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     import {dom,event,animation} from '../../../weex.js';
@@ -308,7 +309,6 @@
         props: {
             title: { default: "会员卡"},
             noDataHint: { default: "尚未添加会员卡"},
-            complete:{ default:"设置"}
         },
         created() {
             utils.initIconFont();
@@ -512,7 +512,7 @@
 ////            获取会员卡列表
                     this.open();
                 }else{
-//                        重新搜索会员卡
+//              重新搜索会员卡
                     this.searchCard();
                 }
 
@@ -559,7 +559,7 @@
                 let _this =this;
                 if(_this.choose != true){
                 event.openURL(utils.locate('view/shop/card/view.js?id='+num.id),function () {
-                    _this.onrefresh()
+//                    _this.onrefresh()
                 })
                 }else{
                     var E = {
@@ -577,24 +577,28 @@
             },
             addCard:function() {
                 var _this = this
-                event.openURL(utils.locate("view/shop/card/address.js"),function (message) {
-                    _this.open()
+                event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
+                    if (e.type=='success') {
+
+                        let ev = {
+                            areaName: e.data.areaName,
+                            address: e.data.building,
+                            areaId: e.data.areaId,
+                            latitude: e.data.latitude,
+                            longitude: e.data.longitude,
+                            memberId: 0
+                        }
+
+
+                        let url = utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev));
+                        event.openURL(url,function (res) {
+                            _this.pageStart = 0;
+                            _this.open();
+                        });
+
+                    }
                 })
             },
-            setting:function () {
-                let _this = this;
-                if (!utils.isRoles("12",_this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    })
-                    return
-                }
-                event.openURL(utils.locate('view/shop/card/setting.js'),function () {
-
-                })
-            }
-
         }
     }
 </script>
