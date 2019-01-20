@@ -506,7 +506,7 @@
         created() {
             var _this = this;
             utils.initIconFont();
-            amap.startBackGroundLocationUpdates();
+            //amap.startBackGroundLocationUpdates();
             this.isIndex = (utils.getUrlParameter("index")=='true');
             this.view();
 
