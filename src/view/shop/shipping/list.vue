@@ -522,7 +522,7 @@
     }
     .corpusScroll{
         flex-direction: row;
-        width: 500px;
+        width: 748px;
         height:98px;
         background-color:#fff;
     }

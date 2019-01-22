@@ -589,6 +589,7 @@
                         _this.arrears = data.data.arrears ; //  上期欠款
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
+                        _this.hasWater = data.data.hasWater;
                         _this.cartList();
                     } else {
                         event.toast(data.content);
