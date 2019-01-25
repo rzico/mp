@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="addressBox bkg-primary pb30" v-if="isShow">
+        <div class="addressBox bkg-primary pb30" v-if="isShow" @click="jump(cardId)">
             <text class="address">{{member.areaName}}{{member.address}}</text>
         </div>
         <div class="memberCard" @click="gocard()">
@@ -590,6 +590,7 @@
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.hasWater = data.data.hasWater;
+                        _this.cardId= data.data.cardId;
                         _this.cartList();
                     } else {
                         event.toast(data.content);
@@ -597,6 +598,14 @@
                 }, function (err) {
                     event.toast(err.content)
                 })
+            },
+            jump:function (id) {
+                let _this =this;
+
+                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
+
+                })
+
             },
 //           获取商品合计
             getmoneyTotal:function () {

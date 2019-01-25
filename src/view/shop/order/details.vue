@@ -25,7 +25,7 @@
                     <!--<p class=" marginTop5 titleColor">国内承运人: 京东快递</p>-->
                     <!--<p class=" marginTop5 titleColor">预计送达: 11月13日</p>-->
                 </div>
-                <div class="addressBox flex-row mt20">
+                <div class="addressBox flex-row mt20" @click="jump(item.cardId)">
                     <div style="width: 70px;">
                         <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>
@@ -550,6 +550,14 @@
                 }else{
                     return false
                 }
+            },
+            jump:function (id) {
+                let _this =this;
+
+                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
+
+                })
+
             },
             //            获取权限
             permissions:function () {

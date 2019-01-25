@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="addressBox flex-row mt20">
+                <div class="addressBox flex-row mt20" @click="jump(cardId)">
                     <div style="width: 70px;">
                         <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>
@@ -394,7 +394,8 @@
                 clicked:false,
                 isobject:'线下月结',
                 shopMoney:0,
-                message:''
+                message:'',
+                cardId:0
             }
         },
         props: {
@@ -566,8 +567,8 @@
                     if(data.type == 'success'){
                         _this.shippingSn = data.data.sn;
                         _this.ordersList = [];
-
-                            _this.ordersList.push(data.data);
+                        _this.cardId = data.data.cardId;
+                        _this.ordersList.push(data.data);
 
                     }else{
                         event.toast(data.content);
@@ -630,6 +631,14 @@
                 phone.tel(telPhone,function(){
                     return;
                 })
+            },
+            jump:function (id) {
+                let _this =this;
+
+                    event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
+
+                    })
+
             },
             //            获取权限
             permissions:function () {
