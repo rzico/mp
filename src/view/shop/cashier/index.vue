@@ -1167,7 +1167,7 @@
                     _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/member/report/index.js"),function (e) {_this.clicked =false});
+                event.openURL(utils.locate("view/shop/report/index.js"),function (e) {_this.clicked =false});
             },
             goIndex:function () {
                 GET("weex/member/topic/owner.jhtml",function (res) {

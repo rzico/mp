@@ -288,7 +288,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/member/report/order_report.js"),function (e) {_this.clicked =false});
+                event.openURL(utils.locate("view/shop/report/order_report.js"),function (e) {_this.clicked =false});
             },
             payment_report:function () {
                 if (this.clicked==true) {
@@ -296,7 +296,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/member/report/payment_report.js"),function (mes) {
+                event.openURL(utils.locate("view/shop/report/payment_report.js"),function (mes) {
                     _this.clicked =false
                 });
             },
@@ -306,7 +306,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/member/report/contacts_report.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/report/contacts_report.js"),function (e) {_this.clicked = false});
             },
             sendSingle_report:function () {
                 if (this.clicked==true) {
@@ -314,7 +314,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/member/report/sendSingle_report.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/report/sendSingle_report.js"),function (e) {_this.clicked = false});
             },
             barrel_report:function () {
                 if (this.clicked==true) {
@@ -322,7 +322,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/member/report/barrel_report.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/report/barrel_report.js"),function (e) {_this.clicked = false});
             },
             money_report:function () {
                 if (this.clicked==true) {
@@ -338,7 +338,7 @@
                 }
                 this.clicked = true;
                 let _this = this
-                event.openURL(utils.locate("view/member/report/arrears_report.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/report/arrears_report.js"),function (e) {_this.clicked = false});
             },
 //            下拉刷新
             onrefresh (event) {
