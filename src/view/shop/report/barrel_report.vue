@@ -35,16 +35,16 @@
                     <text class="contentCellType">派单</text>
                     <text class="returnMoney">{{c.sQuantity}}</text>
                     <text class="returnMoney">{{c.sReturnQuantity}}</text>
-                    <text class="returnMoney">{{c.sRefundsQuantity}}</text>
-                    <text class="money">{{c.sQuantity - c.sReturnQuantity - c.sRefundsQuantity}}</text>
+                    <text class="returnMoney">0</text>
+                    <text class="money">{{c.sQuantity - c.sReturnQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="number"></text>
                         <text class="contentCellType">送货</text>
                         <text class="returnMoney">{{c.quantity}}</text>
                         <text class="returnMoney">{{c.returnQuantity}}</text>
-                        <text class="returnMoney">{{c.refundsQuantity}}</text>
-                        <text class="money">{{c.quantity - c.returnQuantity - c.refundsQuantity}}</text>
+                        <text class="returnMoney">0</text>
+                        <text class="money">{{c.quantity - c.returnQuantity}}</text>
                     </div>
                 </div>
             </cell>
@@ -70,16 +70,16 @@
                     <text class="contentCellType">派单</text>
                     <text class="returnMoney">{{sQuantityTotal}}</text>
                     <text class="returnMoney">{{sReturnQuantityTotal}}</text>
-                    <text class="returnMoney">{{sRefundsQuantityTotal}}</text>
-                    <text class="money">{{sQuantityTotal - sReturnQuantityTotal - sRefundsQuantityTotal}}</text>
+                    <text class="returnMoney">0</text>
+                    <text class="money">{{sQuantityTotal - sReturnQuantityTotal}}</text>
                 </div>
                 <div class="contentSmallCell">
                     <text class="number"></text>
                     <text class="contentCellType">送货</text>
                     <text class="returnMoney">{{quantityTotal}}</text>
                     <text class="returnMoney">{{returnQuantityTotal}}</text>
-                    <text class="returnMoney">{{refundsQuantityTotal}}</text>
-                    <text class="money">{{quantityTotal - returnQuantityTotal - refundsQuantityTotal}}</text>
+                    <text class="returnMoney">0</text>
+                    <text class="money">{{quantityTotal - returnQuantityTotal}}</text>
                 </div>
             </div>
             <list style="max-height: 500px">
@@ -90,16 +90,16 @@
                             <text class="contentCellType">派单</text>
                             <text class="returnMoney">{{t.sQuantity}}</text>
                             <text class="returnMoney">{{t.sReturnQuantity}}</text>
-                            <text class="returnMoney">{{t.sRefundsQuantity}}</text>
-                            <text class="money">{{t.sQuantity - t.sReturnQuantity - t.sRefundsQuantity}}</text>
+                            <text class="returnMoney">0</text>
+                            <text class="money">{{t.sQuantity - t.sReturnQuantity}}</text>
                         </div>
                         <div class="contentSmallCell">
                             <text class="number"></text>
                             <text class="contentCellType">送货</text>
                             <text class="returnMoney">{{t.quantity}}</text>
                             <text class="returnMoney">{{t.returnQuantity}}</text>
-                            <text class="returnMoney">{{t.refundsQuantity}}</text>
-                            <text class="money">{{t.quantity - t.returnQuantity -t.refundsQuantity}}</text>
+                            <text class="returnMoney">0</text>
+                            <text class="money">{{t.quantity - t.returnQuantity}}</text>
                         </div>
                     </div>
                 </cell>
