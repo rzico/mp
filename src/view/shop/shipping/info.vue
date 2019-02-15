@@ -8,7 +8,7 @@
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
             <div v-else v-for="(item,index) in ordersList"  >
-                <div class="addressBox flex-row mt20"  @click="jump(item.cardId)">
+                <div class="addressBox flex-row mt20" >
                     <div style="width: 70px;">
                         <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>

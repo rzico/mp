@@ -9,7 +9,7 @@
                 <text class="tableText">类型</text>
             </div>
             <div class="tableTwo">
-                <text class="tableText">出桶</text>
+                <text class="tableText">送出</text>
             </div>
             <div class="tableTwo">
                 <text class="tableText">回桶</text>
@@ -35,16 +35,16 @@
                         <text class="contentCellType">派单</text>
                         <text class="returnMoney">{{c.sQuantity}}</text>
                         <text class="returnMoney">{{c.sReturnQuantity}}</text>
-                        <text class="returnMoney">{{c.sRefundsQuantity}}</text>
-                        <text class="money">{{c.sQuantity - c.sReturnQuantity - c.sRefundsQuantity}}</text>
+                        <text class="returnMoney">0</text>
+                        <text class="money">{{c.sQuantity - c.sReturnQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="number"></text>
                         <text class="contentCellType">送货</text>
                         <text class="returnMoney">{{c.quantity}}</text>
                         <text class="returnMoney">{{c.returnQuantity}}</text>
-                        <text class="returnMoney">{{c.refundsQuantity}}</text>
-                        <text class="money">{{c.quantity - c.returnQuantity - c.refundsQuantity}}</text>
+                        <text class="returnMoney">0</text>
+                        <text class="money">{{c.quantity - c.returnQuantity}}</text>
                     </div>
                 </div>
             </cell>
