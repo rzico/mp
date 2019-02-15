@@ -562,7 +562,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/report/arrears_detail.js?memberId='+memberId+'&beginTime='+encodeURIComponent(this.beginTime)+'&endTime='+encodeURIComponent(this.endTime)), function (data) {
+                event.openURL(utils.locate('view/shop/report/arrears_detail.js?memberId='+memberId+'&beginTime='+encodeURIComponent(this.beginTime)+'&endTime='+encodeURIComponent(this.endTime)), function (data) {
                     _this.clicked = false;
                 })
             }

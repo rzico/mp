@@ -504,7 +504,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/member/report/contacts_detail.js?sellerId='+sellerId+'&beginTime='+encodeURIComponent(this.beginTime)+'&endTime='+encodeURIComponent(this.endTime)), function (data) {
+                event.openURL(utils.locate('view/shop/report/contacts_detail.js?sellerId='+sellerId+'&beginTime='+encodeURIComponent(this.beginTime)+'&endTime='+encodeURIComponent(this.endTime)), function (data) {
                     _this.clicked = false;
                 })
             }
