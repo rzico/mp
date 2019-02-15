@@ -547,8 +547,13 @@
                             _this.arrears = 0;
                         }
 
-                        _this.amountPaid = data.data.amountPaid;
-                        _this.paperPaid = data.data.paperPaid;
+                        if (data.data.amountPaid>0) {
+                            _this.amountPaid = '1';
+                        }
+                        if (data.data.paperPaid>0) {
+                            _this.paperPaid = '1';
+                        }
+
 
                         _this.pledgeQuantity = data.data.pledgeQuantity;
 
