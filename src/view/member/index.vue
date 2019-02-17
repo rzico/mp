@@ -1662,6 +1662,57 @@
             maskTouch(){
                 this.showMenu = false;
             },
+
+
+            openImageAlbum() {
+                album.openAlbumMuti(
+                    //选完图片后触发回调函数
+                    function (data) {
+                        if(data.type == 'success'){
+                            let coverImage =  data.data[0].originalPath;
+                            var paraList = [];
+//                    data.data里存放的是用户选取的图片路径
+                            for(let i = 0;i < data.data.length;i++){
+                                paraList.push({
+                                    //原图
+                                    paraImage: data.data[i].originalPath,
+                                    //小缩略图
+                                    thumbnailImage: data.data[i].thumbnailSmallPath,
+                                    mediaType: "image",
+                                    paraText:'',
+                                    show:true,
+                                    serveThumbnail:'',
+//                                            对象id
+                                    id:0,
+//                                            第三方链接
+                                    url:'',
+                                });
+                            }
+
+                            let article = {
+                                coverImage:coverImage,
+                                title:"点击设置标题",
+                                paraList:paraList
+                            }
+                            storage.setItem("storageName",JSON.stringify(article), function (e) {
+                                if (e.result == 'success') {
+                                    event.openURL(utils.locate("view/editor/editor.js?mediaType=article"),function (data) {
+                                        if(data.type == 'success'){
+                                            let mes = utils.message('success','创建成功','');
+                                            event.sendGlobalEvent('createArticle',mes);
+                                            event.openURL(utils.locate("view/article/index.js?articleId="+data.data.id),function (data) {
+
+                                            })
+                                        }
+                                    })
+                                }
+                            });
+                        }else{
+                            event.closeURL();
+                        }
+                    }
+                )
+            },
         }
     }
 </script>
