@@ -549,10 +549,15 @@
 
                         if (data.data.amountPaid>0) {
                             _this.amountPaid = '1';
+                        } else {
+                            _this.amountPaid = '0';
                         }
                         if (data.data.paperPaid>0) {
                             _this.paperPaid = '1';
+                        } else {
+                            _this.paperPaid = '0';
                         }
+
 
                         _this.pledgeQuantity = data.data.pledgeQuantity;
 
