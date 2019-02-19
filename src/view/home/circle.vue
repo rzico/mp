@@ -53,7 +53,6 @@
                     <div class="flex-row bt15"  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
                         <text class="articleContent tempOneWidth" >{{item.htmlTag}}</text>
                     </div>
-
                     <!--文章底部-->
                     <!--<div class="articleFoot">-->
                         <div class="relevantInfo" v-if="item.articleSign != '样例'">

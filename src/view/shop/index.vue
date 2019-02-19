@@ -135,7 +135,15 @@
                     </div>
                 </div>
             </div>
-            <div class="menubox">
+            <div :class="[cashier.status == 'success' ? 'menubox':'menuboxTwo']">
+                <div class="menu" @click="goShop()" v-if="filter('openShop')">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
+                    <text class="menuBtn">我要开店</text>
+                </div>
+                <div class="menu" @click="goods()" v-if="filter('activedShop')">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
+                    <text class="menuBtn">激活店铺</text>
+                </div>
                 <div class="menu" @click="goods()" v-if="filter('manage')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
                     <text class="menuBtn">商品</text>
@@ -188,6 +196,7 @@
                 <text class="close_button" :style="{fontFamily:'iconfont' }">&#xe60a;</text>
             </div>
         </div>
+        <payment ref="payment" @notify="notify"></payment>
         <qrcode ref="qrcode" ></qrcode>
     </div>
 
@@ -444,6 +453,19 @@
         background-color: #fff;
         min-height: 900px;
     }
+    .menuboxTwo {
+        margin-top: 40px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width:690px;
+        margin-left: 30px;
+        border:1px;
+        border-top-left-radius: 20px;
+        border-top-right-radius:20px;
+        background-color: #fff;
+        min-height: 900px;
+    }
 
     .menu {
         flex-direction: column;
@@ -463,6 +485,7 @@
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
     var amap = weex.requireModule('map');
+    import payment from '../../include/payment.vue'
     export default {
         data() {
             return {
@@ -491,7 +514,7 @@
             }
         },
         components: {
-            qrcode
+            qrcode,payment
         },
         props: {
             title: { default: "收银台" }
@@ -842,10 +865,62 @@
                     }
                 );
             },
+            //            我要开店
+            goShop:function () {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
+                    _this.clicked = false;
+                    _this.view()
+                })
+            },
+            //            激活店铺
+            activated(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                POST('weex/member/topic/activate.jhtml').then(
+                    function (mes) {
+                        _this.clicked = false;
+                        if (mes.type == "success") {
+                            if (utils.isNull(mes.data)) {
+                                _this.view();
+                            } else {
+                                _this.$refs.payment.show(mes.data);
+                            }
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        _this.clicked = false;
+                        event.toast(err.content);
+                    }
+                )
+
+            },
             //            权限过滤器
             filter(e){
                 var _this = this;
-                if(e == 'order'){
+                if(e == 'openShop'){
+//                    开店
+                    if (utils.isNull(_this.shopId)|| _this.shopId ==0) {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'activedShop'){
+//                    开店
+                    if (!utils.isNull(_this.shopId)&&_this.shopId !=0 && _this.cashier.status != 'success') {
+                        return true
+                    }else{
+                        return false
+                    }
+                } else if(e == 'order'){
 //                    订单
                     if (utils.isRoles("12",_this.roles)) {
                         return true
