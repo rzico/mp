@@ -11,7 +11,7 @@
             </div>
             <div class="flex-column" @click="showQrcode">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
-                <text class="headerText mt20">推广码</text>
+                <text class="headerText mt20">邀请码</text>
             </div>
         </div>
         <scroller class="scroller">
@@ -151,15 +151,15 @@
 
                 <div class="menu" @click="gocard()" v-if="filter('card')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="menuBtn">会员卡</text>
+                    <text class="menuBtn">会员</text>
                 </div>
                 <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="menuBtn">电子券</text>
+                    <text class="menuBtn">优惠券</text>
                 </div>
                 <div class="menu" @click="godistribution()" v-if="filter('distribution')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
-                    <text class="menuBtn">新营销</text>
+                    <text class="menuBtn">营销</text>
                 </div>
                 <div class="menu" @click="deposit()" v-if="filter('money')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
@@ -173,11 +173,11 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
                     <text class="menuBtn">员工</text>
                 </div>
-                <div class="content">
-                    <text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>
-                    <text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>
-                    <text class="sub_title mt10">3.快速秒到,超过30秒没到账联系客服处理</text>
-                </div>
+                <!--<div class="content">-->
+                    <!--<text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>-->
+                    <!--<text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>-->
+                    <!--<text class="sub_title mt10">3.快速秒到,超过30秒没到账联系客服处理</text>-->
+                <!--</div>-->
             </div>
         </scroller>
         <div class="waiting" v-if="isShow()">
@@ -192,7 +192,7 @@
     </div>
 
 </template>
-<style lang="less" src="../../../style/wx.less"/>
+<style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .headerIcon{
         font-size: 60px;
@@ -454,11 +454,11 @@
 
 </style>
 <script>
-    import qrcode from '../../../include/qrcode.vue';
-    import { POST, GET ,SCAN} from '../../../assets/fetch'
-    import utils from '../../../assets/utils'
-    import filters from '../../../filters/filters.js'
-    import {dom,event,animation} from '../../../weex.js';
+    import qrcode from '../../include/qrcode.vue';
+    import { POST, GET ,SCAN} from '../../assets/fetch'
+    import utils from '../../assets/utils'
+    import filters from '../../filters/filters.js'
+    import {dom,event,animation} from '../../weex.js';
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');

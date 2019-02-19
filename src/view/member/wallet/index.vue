@@ -4,7 +4,7 @@
         <scroller class="scroller">
             <div class="wallet-panel bkg-primary">
                 <text class="wallet-title">钱包余额（元）</text>
-                <text class="balance">{{wallet.balance | currencyfmt}}</text>
+                <text class="balance">{{wallet.balance | watchBalance}}</text>
             </div>
             <div class="cashierBox" v-if="hasCashier">
                 <div class="cashier bkg-primary">收银台</div>
@@ -143,6 +143,16 @@
         components: {
             navbar
         },
+         filters:{
+             watchBalance(e){
+                 e = parseFloat(e);
+                 if(e==0||e=='0'){
+                     return '0.00'
+                 }else {
+                     return e.toFixed(2)
+                 }
+             }
+         },
         props: {
             title: { default: "钱包" }
         },

@@ -267,9 +267,9 @@ Vue.filter('currencyfmt', function (value) {
     }
     // 返回处理后的值
     if (value != null) {
-        value = parseFloat(value)
-        if(value == 0){
-            return value.toFixed(2);
+        value = parseFloat(value);
+        if(value == 0 || value == '0'){
+            return '0.00';
         }else{
             var price = (Math.round(value * Math.pow(10,2)) / Math.pow(10,2)).toFixed(2);
             return price;

@@ -23,10 +23,10 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">空桶结算</text>
                 </div>
-                <div class="menu" @click="money_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="menuBtn">收银统计</text>
-                </div>
+                <!--<div class="menu" @click="money_report()">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>-->
+                    <!--<text class="menuBtn">收银统计</text>-->
+                <!--</div>-->
                 <div class="menu" @click="arrears_report()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">欠款统计</text>

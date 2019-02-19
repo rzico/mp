@@ -144,7 +144,7 @@
         <process  v-if="toSendArticle" :processWidth="processWidth" :currentPro="currentPro" :proTotal="proTotal" ></process>
     </div>
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .videoIconBox{
         position: absolute;
@@ -388,10 +388,10 @@
 </style>
 
 <script>
-    import { POST, GET } from '../../assets/fetch'
-    import navbar from '../../components/header.vue';
-    import utils from '../../assets/utils';
-    import process from '../../widget/process.vue';
+    import { POST, GET } from '../../../assets/fetch'
+    import navbar from '../../../include/navbar.vue';
+    import utils from '../../../assets/utils';
+    import process from '../../../widget/process.vue';
     const storage = weex.requireModule('storage');
     const event = weex.requireModule('event');
     const album = weex.requireModule('album');
@@ -939,9 +939,8 @@
             goComplete:function () {
                 var _this = this;
                 if(this.setTitle == '点击设置标题'){
-//                    event.toast('请设置标题');
-//                    return;
-                    this.setTitle = ''
+                    event.toast('请设置标题');
+                    return;
                 }
 //                判断封面是否有值。
                 if(this.coverImage == utils.locate('resources/images/background.png')){
@@ -1657,8 +1656,8 @@
 //                ***** 单选裁剪 *****
                 var options = {
                     isCrop:true,
-                    width:0,
-                    height:0
+                    width:2,
+                    height:1
                 };
                 album.openAlbumSingle(
                     //选完图片后触发回调函数

@@ -4,10 +4,10 @@
 var modal = weex.requireModule('modal');
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'http://weixin.xmsdar.com';
+const websiteURL = 'https://small.rzico.com';
 const event = weex.requireModule('event');
 const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
-const appName = 'water';// app类型  water 或 yundian
+const appName = 'yundian';// app类型  water 或 yundian
 let utilsFunc = {
     //0 标准版 1生鲜版 2桶装水
     version:2,
@@ -123,7 +123,8 @@ let utilsFunc = {
     //获取文章URL地址
     articleUrl(template,id) {
         template = template == '' ? 't1001' : template;
-        return websiteURL + "/#/" + template + "?id=" + id;
+        let d = new Date();
+        return websiteURL + "/#/" + template + "?id=" + id +'&noticstr='+d.getTime();
     },
     debug(msg) {
         if (debug) {
@@ -370,6 +371,19 @@ let utilsFunc = {
                 return 'operationBoxIPHONEX';
             }else{
                 return s;
+            }
+        }
+    },
+    //判断设备型号
+    getHeaderHeight:function () {
+        let s = weex.config.env.deviceModel;
+        if (this.isNull(s)) {
+            return ""
+        } else {
+            if(s.indexOf("10,3")>0 || s.indexOf("10,6")>0){
+                return 156
+            } else {
+                return 136;
             }
         }
     },

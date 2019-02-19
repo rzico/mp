@@ -87,19 +87,19 @@
                             <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
                                 <text class="articleContent white" >{{item.htmlTag}}</text>
                             </div>
-                            <div class="space-between" >
-                                <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                    <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                    <text class="relevantText white">{{item.hits}}</text>
-                                    <text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                    <text class="relevantText white">{{item.laud}}</text>
-                                    <text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                    <text class="relevantText white">{{item.review}}</text>
-                                </div>
-                                <div>
-                                    <text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>
-                                </div>
-                            </div>
+                            <!--<div class="space-between" >-->
+                                <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
+                                    <!--<text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                                    <!--<text class="relevantText white">{{item.hits}}</text>-->
+                                    <!--<text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                                    <!--<text class="relevantText white">{{item.laud}}</text>-->
+                                    <!--<text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                                    <!--<text class="relevantText white">{{item.review}}</text>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
@@ -320,10 +320,10 @@
                     <!--使用组件加载完成事件与组件显示在屏幕上的事件实现图片懒加载,会先触发appear事件,再触发load事件,appear会重复触发(例如：1 2 3,先触发了1 2，在滑动到下方时触发了3，此时1被移动到屏幕外，再移动回顶部，1显示出来，会继续触发1的appear事件)-->
                     <image  :src="item.thumbnail"   @load="onImageLoad(item)" resize="cover" class="tempEightCover" ></image>
                     <div class="tempTwoMask"></div>
-                    <div class="tempTwoAuthor" @click="goAuthor(item.authorId)">
-                        <image :src="item.logo " resize="cover" class="authorImg"></image>
-                        <text class="authorName white">{{item.author}}</text>
-                    </div>
+                    <!--<div class="tempTwoAuthor" @click="goAuthor(item.authorId)">-->
+                        <!--<image :src="item.logo " resize="cover" class="authorImg"></image>-->
+                        <!--<text class="authorName white">{{item.author}}</text>-->
+                    <!--</div>-->
                     <div class="tempTwoContent"@click="goArticle(item.id)">
                         <!--只会显示出一个div,所以需要用个大div包住,-->
                         <div>
@@ -334,23 +334,23 @@
                             <!--<div class="flex-row mt20" v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
                             <!--<text class="articleContent">{{item.htmlTag}}</text>-->
                             <!--</div>-->
-                            <div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
-                                <text class="articleContent white" >{{item.htmlTag}}</text>
-                            </div>
+                            <!--<div class="flex-row bt20 "  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">-->
+                                <!--<text class="articleContent white" >{{item.htmlTag}}</text>-->
+                            <!--</div>-->
 
-                            <div class="space-between" >
-                                <div class="relevantInfo" v-if="item.articleSign != '样例'">
-                                    <text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>
-                                    <text class="relevantText white">{{item.hits}}</text>
-                                    <text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>
-                                    <text class="relevantText white">{{item.laud}}</text>
-                                    <text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>
-                                    <text class="relevantText white">{{item.review}}</text>
-                                </div>
-                                <div>
-                                    <text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>
-                                </div>
-                            </div>
+                            <!--<div class="space-between" >-->
+                                <!--<div class="relevantInfo" v-if="item.articleSign != '样例'">-->
+                                    <!--<text class="relevantImage white" :style="{fontFamily:'iconfont'}">&#xe6df;</text>-->
+                                    <!--<text class="relevantText white">{{item.hits}}</text>-->
+                                    <!--<text class="relevantImage  white" style="padding-bottom: 2px" :style="{fontFamily:'iconfont'}">&#xe60c;</text>-->
+                                    <!--<text class="relevantText white">{{item.laud}}</text>-->
+                                    <!--<text class="relevantImage  white" :style="{fontFamily:'iconfont'}">&#xe65c;</text>-->
+                                    <!--<text class="relevantText white">{{item.review}}</text>-->
+                                <!--</div>-->
+                                <!--<div>-->
+                                    <!--<text class="relevantText white ml20">{{item.createDate | dateweektimefmt}}</text>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
