@@ -257,7 +257,7 @@
             navbar
         },
         props: {
-            title: { default: "销售策略"},
+            title: { default: "设置"},
             complete: {default : "完成"},
         },
         created(){
