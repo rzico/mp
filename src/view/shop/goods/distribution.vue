@@ -2,17 +2,15 @@
     <scroller class="wrapper" >
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
         <div class="setting" @click="gosetting()">
-            <div class="flex-row " style="align-items:center">
-                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                <text class="title ml20 " >设置分成推广</text>
-            </div>
+            <text class="title " >设置分成推广</text>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <div class="setting" @click="cardSetting()">
-            <div class="flex-row " style="align-items:center">
-                <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                <text class="title ml20 " >充值活动设置</text>
-            </div>
+            <text class="title " >充值活动设置</text>
+            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+        </div>
+        <div class="setting" @click="openWebView()">
+            <text class="title " >芸打印机设置</text>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <div class="bgWhite addCorpus">
@@ -96,13 +94,13 @@
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .setting {
+        width: 750px;
+        height: 100px;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        padding-left: 36px;
+        padding-left: 30px;
         padding-right: 30px;
-        padding-top: 30px;
-        padding-bottom: 30px;
         background-color: white;
         border-top-width: 1px;
         border-top-style: solid;
@@ -242,6 +240,7 @@
     export default {
         data:function () {
             return{
+                clicked:false,
                 isShow:false,
                 isSort:0,
                 allTotal:69,
@@ -268,9 +267,27 @@
             this.open()
         },
         methods:{
+            openWebView(){
+                    let _this = this;
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    var data = 'http://wx.zhongwuyun.com/api/index'
+                event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(data)), function () {
+                    _this.clicked = false;
+                });
+            },
 //            设置分成推广
             gosetting:function () {
-                event.openURL(utils.locate("view/shop/goods/promote.js"),function (e) {});
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/shop/goods/promote.js"),function (e) {
+                    _this.clicked = false;
+                });
             },
             //            获取权限
             permissions:function () {

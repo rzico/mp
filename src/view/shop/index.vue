@@ -165,10 +165,6 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
                     <text class="menuBtn">优惠券</text>
                 </div>
-                <div class="menu" @click="godistribution()" v-if="filter('distribution')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
-                    <text class="menuBtn">营销</text>
-                </div>
                 <div class="menu" @click="deposit()" v-if="filter('money')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
                     <text class="menuBtn">统计</text>
@@ -180,6 +176,10 @@
                 <div class="menu" @click="employee()" v-if="filter('employee')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
                     <text class="menuBtn">员工</text>
+                </div>
+                <div class="menu" @click="godistribution()" v-if="filter('distribution')">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
+                    <text class="menuBtn">设置</text>
                 </div>
                 <!--<div class="content">-->
                     <!--<text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>-->
