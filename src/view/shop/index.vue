@@ -137,11 +137,11 @@
             </div>
             <div :class="[cashier.status == 'success' ? 'menubox':'menuboxTwo']">
                 <div class="menu" @click="goShop()" v-if="filter('openShop')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
+                    <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 60px">&#xe662;</text>
                     <text class="menuBtn">我要开店</text>
                 </div>
                 <div class="menu" @click="goods()" v-if="filter('activedShop')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
+                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 60px">&#xe6ce;</text>
                     <text class="menuBtn">激活店铺</text>
                 </div>
                 <div class="menu" @click="goods()" v-if="filter('manage')">
@@ -914,7 +914,7 @@
                         return false
                     }
                 } else if(e == 'activedShop'){
-//                    开店
+//                    激活
                     if (!utils.isNull(_this.shopId)&&_this.shopId !=0 && _this.cashier.status != 'success') {
                         return true
                     }else{

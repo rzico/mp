@@ -4,15 +4,15 @@
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
-            <text class="three">③ 激活  一</text>
-            <text class="four">④ 交易测试</text>
+            <text class="three">③ 设置  一</text>
+            <text class="four">④ 打印测试</text>
         </div>
         <div class="bind">
             <div class="iconfontDiv">
                 <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
             </div>
-            <text class="text">绑定完成，请完成交易测试</text>
-            <text class="sweepCode" @click="scan()">{{prompting}}</text>
+            <text class="text">绑定完成</text>
+            <text class="sweepCode" @click="openTest()">{{prompting}}</text>
         </div>
         <div class="button bkg-primary" @click="complete">
             <text class="buttonText">完成</text>
@@ -68,8 +68,8 @@
         margin-top: 40px;
     }
     .sweepCode{
-        font-size: 28px;
-        color: #999;
+        font-size: 32px;
+        color: #0088fb;
         margin-top: 40px;
         margin-bottom: 40px;
     }
@@ -103,7 +103,7 @@
     export default {
         data: function () {
             return{
-                prompting:'点击测试',
+                prompting:'打印测试',
                 clicked:false
             }
         },
@@ -126,42 +126,25 @@
                 let message = utils.message('success','成功','');
                 event.closeURL(message);
             },
-            scan:function() {
+            openTest:function() {
                 if (this.clicked==true) {
                     return;
                 }
                 this.clicked = true;
                 var _this=this
-                event.scan(function (message) {
-                    _this.clicked = false
-                    if (message.type=='error') {
-                        _this.clicked =false
-                        return;
-                    }
-                    utils.readScan(message.data,function (data) {
-                        if(data.type == 'success'){
-                            if (data.data.type!='818804') {
-                                event.toast("无效收钱码");
-                                _this.clicked =false
-                                return;
-                            }
-                            _this.code = data.data.code
-                            POST('weex/member/shop/test.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
-                                function (mes) {
-                                    if (mes.type == "success") {
-                                        event.closeURL(mes);
-                                    } else {
-                                        event.toast(mes.content);
-                                    }
-                                }, function (err) {
-                                    event.toast("网络不稳定");
-                                }
-                            )
+                POST('weex/member/shop/printerTest.jhtml?shopId='+_this.shopId).then(
+                    function (mes) {
+                        _this.clicked = false;
+                        if (mes.type == "success") {
+
                         } else {
-                            event.toast(data.content);
+                            event.toast(mes.content);
                         }
-                    })
-                });
+                    }, function (err) {
+                        _this.clicked = false;
+                        event.toast("网络不稳定");
+                    }
+                )
             }
         }
     }

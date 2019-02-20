@@ -65,7 +65,7 @@ let utilsFunc = {
     },
     //判空
     isNull (value) {
-        if (value == null || value == undefined || value == ''  || value == 'undefined') {
+        if (value == null || value == 'null' || value == undefined || value == ''  || value == 'undefined') {
             return true
         } else {
             return false

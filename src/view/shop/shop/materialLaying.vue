@@ -5,7 +5,7 @@
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
-            <text class="three">③ 激活  </text>
+            <text class="three">③ 设置  </text>
             <text class="four">④ 交易测试</text>
         </div>
         <scroller class="scroller">
@@ -356,7 +356,7 @@
                     function (mes) {
                         _this.clicked =false
                         if (mes.type == "success") {
-                            event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&code='+mes.data.code), function (message) {
+                            event.openURL(utils.locate('view/shop/shop/activate.js?shopId='+mes.data.id+'&p='+mes.data.p+'&u='+mes.data.u), function (message) {
                                 _this.clicked =false
                                 if (message.type == "success") {
                                     event.closeURL(message);
