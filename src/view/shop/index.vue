@@ -185,7 +185,7 @@
                 </div>
                 <div class="content">
                     <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
-                    <div class="flex-row">
+                    <div class="flex-row" style="flex-wrap:wrap">
                         <text class="sub_title mt10">2.点击缴活店铺，支付588元技术服务费</text>
                         <text class="sub_title mt10" style="color: #0088fb" @click="openWebView('芸店智能接单小票打印机')">《赠送芸店智能接单小票打印机》。</text>
                     </div>
