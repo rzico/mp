@@ -135,15 +135,7 @@
                     </div>
                 </div>
             </div>
-            <div :class="[cashier.status == 'success' ? 'menubox':'menuboxTwo']">
-                <div class="menu" @click="goShop()" v-if="filter('openShop')">
-                    <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 60px">&#xe662;</text>
-                    <text class="menuBtn">我要开店</text>
-                </div>
-                <div class="menu" @click="goods()" v-if="filter('activedShop')">
-                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 60px">&#xe6ce;</text>
-                    <text class="menuBtn">激活店铺</text>
-                </div>
+            <div class="menubox" v-if="cashier.status == 'success'">
                 <div class="menu" @click="goods()" v-if="filter('manage')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
                     <text class="menuBtn">商品</text>
@@ -181,11 +173,25 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
                     <text class="menuBtn">设置</text>
                 </div>
-                <!--<div class="content">-->
-                    <!--<text class="sub_title mt10">1.支持微信钱包、支付宝、店内会员卡、钱包</text>-->
-                    <!--<text class="sub_title mt10">2.单笔收钱金额不能超过5000元</text>-->
-                    <!--<text class="sub_title mt10">3.快速秒到,超过30秒没到账联系客服处理</text>-->
-                <!--</div>-->
+            </div>
+            <div class="menuboxTwo" v-if="cashier.status != 'success'">
+                <div class="menuTwo" @click="goShop()" v-if="filter('openShop')">
+                    <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 120px">&#xe662;</text>
+                    <text class="menuBtn">我要开店</text>
+                </div>
+                <div class="menuTwo" @click="goods()" v-if="filter('activedShop')">
+                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
+                    <text class="menuBtn">激活店铺</text>
+                </div>
+                <div class="content">
+                    <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
+                    <div class="flex-row">
+                        <text class="sub_title mt10">2.点击缴活店铺，支付588元技术服务费</text>
+                        <text class="sub_title mt10" style="color: #0088fb" @click="openWebView('芸店智能接单小票打印机')">《赠送芸店智能接单小票打印机》。</text>
+                    </div>
+
+                    <text class="sub_title mt10">3.下载专属二维码，开启新零售服务体验。</text>
+                </div>
             </div>
         </scroller>
         <div class="waiting" v-if="isShow()">
@@ -401,8 +407,9 @@
     }
 
     .content {
-        margin-left: 30px;
-        margin-top: 50px;
+        width: 690px;
+        padding-left: 30px;
+        margin-top: 100px;
     }
     .waiting {
         position:fixed;
@@ -455,9 +462,8 @@
     }
     .menuboxTwo {
         margin-top: 40px;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
         width:690px;
         margin-left: 30px;
         border:1px;
@@ -473,7 +479,11 @@
         width:229px;
         padding:40px;
     }
-
+    .menuTwo{
+        margin-top: 100px;
+        flex-direction: column;
+        align-items: center;
+    }
 </style>
 <script>
     import qrcode from '../../include/qrcode.vue';
@@ -552,6 +562,16 @@
             });
         },
         methods: {
+            openWebView(data){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(data)), function () {
+                    _this.clicked = false;
+                });
+            },
 //            显示收银
             contolInput(){
                 var _this = this;
