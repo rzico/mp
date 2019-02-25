@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goback="goback" ></navbar>
+        <navbar :title="title"  @goback="goback" completeIcon="&#xe699;" @goComplete="print()"></navbar>
         <scroller   @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
@@ -530,6 +530,30 @@
             this.permissions()
         },
         methods: {
+            //            打印
+            print(){
+                let _this = this;
+                modal.confirm({
+                    message: '确认打印？',
+                    duration: 0.3,
+                    okTitle:'确认',
+                    cancelTitle:'取消'
+                }, function (value) {
+                    if(value.result == '确认'){
+                        GET('weex/member/shipping/print.jhtml?sn='+_this.orderSn+"&seqno=1", function (data) {
+                                if(data.type == 'success'){
+                                    event.toast('打印成功')
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                event.toast(err.content);
+                            })
+                    }
+                })
+
+            },
             //            权限过滤器
             filter(e) {
                 var _this = this;
