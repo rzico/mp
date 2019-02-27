@@ -193,7 +193,7 @@
                 }else if(val == 'warehouse'){
                     return'同城配送'
                 }else if(val == 'pickup'){
-                    return'线下自提'
+                    return'到店自提'
                 }
             }
         },
@@ -239,7 +239,7 @@
             },
             open:function () {
                 let _this = this;
-                GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
+                GET('weex/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList = data.data;
@@ -259,7 +259,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['同城配送','普通快递','线下自提']
+                    items:['同城配送','普通快递','到店自提']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
