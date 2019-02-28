@@ -207,7 +207,7 @@
     </div>
 
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
     .headerIcon{
         font-size: 60px;
@@ -486,16 +486,16 @@
     }
 </style>
 <script>
-    import qrcode from '../../include/qrcode.vue';
-    import { POST, GET ,SCAN} from '../../assets/fetch'
-    import utils from '../../assets/utils'
-    import filters from '../../filters/filters.js'
-    import {dom,event,animation} from '../../weex.js';
+    import qrcode from '../../../include/qrcode.vue';
+    import { POST, GET ,SCAN} from '../../../assets/fetch'
+    import utils from '../../../assets/utils'
+    import filters from '../../../filters/filters.js'
+    import {dom,event,animation} from '../../../weex.js';
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
     var amap = weex.requireModule('map');
-    import payment from '../../include/payment.vue'
+    import payment from '../../../include/payment.vue'
     export default {
         data() {
             return {
