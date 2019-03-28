@@ -340,7 +340,7 @@
     import navbar from '../../include/navbar.vue';
     import {dom,event,storage,stream,animation} from '../../weex.js';
     import utils from '../../assets/utils';
-    let Base64 = require('js-base64').Base64;
+//    let Base64 = require('js-base64').Base64;
     import { POST, GET } from '../../assets/fetch'
     import noData from '../../include/noData.vue'
     import filters from '../../filters/filters.js'
@@ -452,12 +452,13 @@
                         if(data.type == 'success' && data.data.data != ''){
                             if (_this.pageStart == 0) {
                                 data.data.data.forEach(function(item) {
-                                    if (!utils.isNull(item.ext)) {
-                                        var b = Base64.decode(item.ext);
-                                        if(!utils.isNull(b)){
-                                            item.ext = JSON.parse(b);
-                                        }
-                                    }
+//                                    if (!utils.isNull(item.ext)) {
+//                                        var b = Base64.decode(item.ext);
+//                                        event.toast(b);
+//                                        if(!utils.isNull(b)){
+//                                            item.ext = JSON.parse(b);
+//                                        }
+//                                    }
 //                                    手机用户登录可能未设置logo和nickName
                                     if(utils.isNull(item.nickName)){
                                         item.nickName = '未填写';
@@ -471,9 +472,19 @@
                                 _this.dataList = data.data.data;
                             }else{
                                 data.data.data.forEach(function(item){
-                                    if(!utils.isNull(item.ext)){
-                                        item.ext = Base64.decode(item.ext)
-                                        item.ext = JSON.parse(item.ext);
+//                                    if(!utils.isNull(item.ext)){
+//                                        var b = Base64.decode(item.ext);
+//                                        if(!utils.isNull(b)){
+//                                            item.ext = JSON.parse(b);
+//                                        }
+//                                    }
+                                    //                                    手机用户登录可能未设置logo和nickName
+                                    if(utils.isNull(item.nickName)){
+                                        item.nickName = '未填写';
+                                    }
+                                    //                                    手机用户登录可能未设置logo和nickName
+                                    if(utils.isNull(item.logo)){
+                                        item.logo = utils.locate('resources/images/background.png');
                                     }
                                     _this.dataList.push(item);
                                 })

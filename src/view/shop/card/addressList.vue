@@ -35,8 +35,8 @@
                         <text class="mobile">{{c.phone}}</text>
                     </div>
                     <div class="flex-row mt20">
-                        <text class="name mr30">{{c.card_name}}</text>
-                        <text class="mobile">NO.{{c.card_no}}</text>
+                        <!--<text class="name mr30"></text>-->
+                        <text class="mobile">NO.{{c.cardNo}}(卡主:{{c.cardName}})</text>
                     </div>
                 </div>
             </cell>
@@ -132,7 +132,7 @@
 
 <script>
     const modal = weex.requireModule('modal');
-    import { POST, GET } from '../../../assets/fetch'
+    import { POST, GET, URIEncrypt } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     import {dom,event,animation} from '../../../weex.js';
@@ -426,8 +426,23 @@
             },
             addCard:function() {
                 var _this = this
-                event.openURL(utils.locate("view/shop/card/address.js"),function (message) {
-                    _this.open()
+                event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
+                    if (e.type=='success') {
+                        let ev = {
+                            areaName: e.data.areaName,
+                            address: e.data.building,
+                            areaId:e.data.areaId,
+                            latitude:e.data.latitude,
+                            longitude:e.data.longitude,
+                            memberId: 0
+                        }
+                        event.openURL(utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev)),function (res) {
+                            _this.pageStart = 0;
+                            _this.open();
+                        });
+
+                    }
+
                 })
             },
             setting:function () {

@@ -7,7 +7,7 @@
         <div class="nav">
             <text class="nav_title">{{title}}</text>
             <div class="flex-row" v-if="isSelf == 0 && authorInfo.nickName != 'initNickDefault'">
-                <image :src="authorInfo.logo | watchLogo" class="articleLogo"></image>
+                <image :src="authorInfo.logo | watchLogo" class="articleLogo" @click="goAuthor(authorInfo.memberId)"></image>
                 <text class="ml10 mr10 articleAuthorName" >{{authorInfo.nickName | watchNickName}}</text>
                 <text class="articleFocus  " v-if="!authorInfo.hasFollow" @click="doFocus()">关注</text>
             </div>
@@ -80,13 +80,14 @@
     import utils from '../../assets/utils'
     export default {
         props: {
+            clicked:false,
             title: { default: "" },
             complete:{default:''},
             showComplete:{default:true},
             border:{default:false},
             authorInfo:{
                 default: function () {
-                    return { title: '', logo:'initLogoDefault',nickName:'initNickDefault', createDate: null,hasFollow:true }
+                    return { title: '', logo:'initLogoDefault',nickName:'initNickDefault', createDate: null,hasFollow:true,memberId:0 }
                 }
             },
             isSelf:{
@@ -111,6 +112,18 @@
             }
         },
         methods: {
+            //            前往作者专栏
+            goAuthor(id){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                event.openURL(utils.locate("view/topic/index.js?id=" + id),function (message) {
+                    _this.clicked = false;
+                });
+//                event.openURL(utils.locate('view/member/author.js?id=5'),function () {})
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc

@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goback="goback" ></navbar>
+        <navbar :title="title"  @goback="goback" completeIcon="&#xe699;" @goComplete="print()"></navbar>
         <scroller   @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
@@ -25,7 +25,7 @@
                     <!--<p class=" marginTop5 titleColor">国内承运人: 京东快递</p>-->
                     <!--<p class=" marginTop5 titleColor">预计送达: 11月13日</p>-->
                 </div>
-                <div class="addressBox flex-row mt20">
+                <div class="addressBox flex-row mt20" @click="jump(item.cardId)">
                     <div style="width: 70px;">
                         <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>
@@ -130,7 +130,15 @@
                     <div class="priceLine boder-bottom">
                         <div class="space-between">
                             <text class="sub_title">商品总额</text>
-                            <text class="sub_title">¥{{item.amount | currencyfmt}}</text>
+                            <text class="sub_title">¥{{item.price | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10" v-if="filter('cost')">
+                            <text class="sub_title">+ 运费(楼层费)</text>
+                            <text class="sub_title">¥ {{item.freight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">+ 空桶押金</text>
+                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
                         </div>
                         <div class=" space-between mt10 "v-if="item.couponDiscount != 0 && item.couponDiscount != '0'">
                             <text class="sub_title">优惠折扣</text>
@@ -144,24 +152,6 @@
                             <text class="sub_title">电子券支付</text>
                             <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
                         </div>
-                        <div class=" space-between mt10">
-                            <text class="sub_title">+ 送货工资</text>
-                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10">
-                            <text class="sub_title">+ 空桶押金</text>
-                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10" v-if="filter('shippingFreight')">
-                            <text class="sub_title">+ 配送运费</text>
-                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10" v-if="filter('cost')">
-                            <text class="sub_title">+ 货款结算</text>
-                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
-                        </div>
-                    </div>
-                    <div class="priceLine">
                         <div class="flex-row pb10">
                             <text class="fz28 mr20">订单合计:</text>
                             <text class="fz28" style="color: red">¥{{item.amount | currencyfmt}}</text>
@@ -174,10 +164,23 @@
                             <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
                             <text class="fz28 ">实收水票:{{item.paperPaid}}</text>
                         </div>
-                        <div class="space-between">
-                            <text class="fz28">应收押金:¥{{item.pledgePayable}}</text>
-                            <text class="fz28 ">实收押金:¥{{item.pledgePaid}}</text>
+
+                    </div>
+                    <div class="priceLine">
+
+                        <div class=" space-between mt10" v-if="filter('shippingFreight')">
+                            <text class="sub_title">配送运费</text>
+                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
                         </div>
+                        <div class=" space-between mt10" v-if="filter('cost')">
+                            <text class="sub_title">货款结算</text>
+                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">送货工资</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
+                        </div>
+
                     </div>
                 </div>
 
@@ -527,6 +530,30 @@
             this.permissions()
         },
         methods: {
+            //            打印
+            print(){
+                let _this = this;
+                modal.confirm({
+                    message: '确认打印？',
+                    duration: 0.3,
+                    okTitle:'确认',
+                    cancelTitle:'取消'
+                }, function (value) {
+                    if(value.result == '确认'){
+                        GET('weex/member/shipping/print.jhtml?sn='+_this.orderSn+"&seqno=1", function (data) {
+                                if(data.type == 'success'){
+                                    event.toast('打印成功')
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                event.toast(err.content);
+                            })
+                    }
+                })
+
+            },
             //            权限过滤器
             filter(e) {
                 var _this = this;
@@ -547,6 +574,14 @@
                 }else{
                     return false
                 }
+            },
+            jump:function (id) {
+                let _this =this;
+
+                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
+
+                })
+
             },
             //            获取权限
             permissions:function () {

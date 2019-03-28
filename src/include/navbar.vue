@@ -6,9 +6,9 @@
         </div>
         <div class="nav">
             <text class="nav_title">{{title}}</text>
-            <div class="navRightBox"  v-if="showComplete" @click="goComplete('/')">
-                <text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>
-                <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-else>&#xe72b;</text>
+            <div class="navRightBox"  @click="goComplete('/')">
+                <text class="nav_Complete nav_title" v-if="completeIcon ==''">{{complete}}</text>
+                <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-else>{{getIco}}</text>
             </div>
          </div>
     </div>
@@ -56,12 +56,19 @@
 </style>
 <script>
     import utils from '../assets/utils'
+    var he = require('he');
     export default {
         props: {
             title: { default: "navbar" },
             complete:{default:''},
+            completeIcon:{default:''},
             showComplete:{default:true},
             border:{default:true}
+        },
+        computed: {
+            getIco: function() {
+                return he.decode(this.completeIcon)
+            }
         },
         methods: {
             classHeader:function () {

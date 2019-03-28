@@ -4,22 +4,23 @@
         <div class="head">
             <text class="one">① 新增  一</text>
             <text class="two">② 物料铺设  一</text>
-            <text class="three">③ 激活  </text>
+            <text class="three">③ 设置  </text>
             <text class="four">④ 交易测试</text>
         </div>
         <div class="bind">
             <div class="iconfontDiv">
                 <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
             </div>
-            <text class="text">激活店铺完成</text>
-            <text class="sweepCode">{{code}}</text>
-            <text class="sweepCodetwo" @click="scan()">{{prompting}}</text>
+            <text class="text">设置打印机</text>
+            <text class="sweepCode">{{u == '' ? '':'设备号:'+u}}</text>
+            <text class="sweepCodetwo">{{p == '' ? '':'设备密钥:'+p}}</text>
         </div>
-        <div class="button bkg-primary" @click="select">
-            <text class="buttonText">完成</text>
+        <div class="button bkg-primary" @click="scan()">
+            <text class="buttonText">{{prompting}}</text>
         </div>
         <div class="skipBox">
-        <text class="skipMessage" @click="skip()">暂无收款码，跳过该步骤</text>
+            <text class="skipMessage" @click="call('13860431130')">暂无打印机，购买热线 13860431130</text>
+            <text class="skipMessage mt50" @click="skip()">跳过</text>
         </div>
     </div>
 </template>
@@ -117,15 +118,18 @@
     var event = weex.requireModule('event');
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
-    import { POST, GET, SCAN } from '../../../assets/fetch'
+    import { POST, GET, SCAN } from '../../../assets/fetch';
+    const phone = weex.requireModule('phone');
 
     export default {
         data: function () {
             return{
-                prompting:'点击扫码',
+                prompting:'扫码绑定',
                 shopId:'',
                 code:'',
-                clicked:false
+                clicked:false,
+                u:'',
+                p:''
             }
         },
         components: {
@@ -138,30 +142,27 @@
         created() {
             utils.initIconFont();
             this.shopId = utils.getUrlParameter('shopId');
-            this.code = utils.getUrlParameter('code')+'';
-            if(utils.isNull(this.code)){
-                this.prompting='点击扫码'
-            }else {
-                this.prompting='点击修改二维码'
+            if(!utils.isNull(utils.getUrlParameter('u'))){
+                this.u = utils.getUrlParameter('u');
+                this.prompting = '重新绑定';
+            }
+            if(!utils.isNull(utils.getUrlParameter('p'))){
+                this.p = utils.getUrlParameter('p');
             }
         },
         methods:{
             goback:function () {
                 event.closeURL()
             },
-//            判断code是否有值，无值弹开扫一扫，有值回到列表
-            select:function () {
-                if(utils.isNull(this.code)) {
-                    this.scan()
-                }else {
-                    let message = utils.message('success','成功','');
-                    event.closeURL(message)
-                }
-            },
             //            跳过绑定二维码
             skip:function () {
                 let message = utils.message('success','成功','');
                 event.closeURL(message)
+            },
+            call(e){
+                phone.tel(e,function(){
+                    return;
+                })
             },
             scan:function() {
                 if (this.clicked==true) {
@@ -175,15 +176,9 @@
                         _this.clicked =false
                         return;
                     }
-                    utils.readScan(message.data,function (data) {
-                        if (data.type == 'success'){
-                            if (data.data.type!='818804') {
-                                event.toast("无效收钱码");
-                                _this.clicked =false
-                                return;
-                            }
-                            _this.code = data.data.code
-                            POST('weex/member/shop/bind.jhtml?shopId='+_this.shopId+'&code='+_this.code).then(
+                    _this.u = utils.getUrlParameter('m',message.data);
+                    _this.p = utils.getUrlParameter('p',message.data);
+                            POST('weex/member/shop/printer.jhtml?shopId='+_this.shopId+'&p='+_this.p + '&u='+_this.u).then(
                                 function (mes) {
                                     if (mes.type == "success") {
                                         event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
@@ -199,10 +194,6 @@
                                     event.toast("网络不稳定");
                                 }
                             )
-                        } else {
-                            event.toast(data.content);
-                        }
-                    })
                 });
             }
         }

@@ -17,7 +17,7 @@
             </refresh>
             <cell >
                 <div class="" v-for="c in lists">
-                    <div class="contentBox">
+                    <div class="contentBox" @click="linkToShipping(c.barrelId)">
                         <div class="couponDiv">
                             <image class="couponImg" :src="c.logo"></image>
                         </div>
@@ -35,17 +35,17 @@
         </list>
         <div class="mask" v-if="isMask" >
             <div class="editorBox">
-                <text class="fz40 mt30">编辑桶</text>
+                <text class="fz40 mt30">期初设置</text>
                 <div class="editorCell">
-                    <text class="fz32">押金:</text>
+                    <text class="fz32">期初押金:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入押金" autofocus="true" v-model="pledge"/>
                 </div>
                 <div class="editorCell">
-                    <text class="fz32">押桶:</text>
+                    <text class="fz32">期初押桶:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入押桶数量" v-model="mortgage"/>
                 </div>
                 <div class="editorCellTwo">
-                    <text class="fz32">借桶:</text>
+                    <text class="fz32">期初借桶:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入借桶数量" v-model="borrow"/>
                 </div>
                 <div class="bottomBox">
@@ -271,8 +271,8 @@
             }
         },
         props: {
-            title: { default: "我的桶"},
-            noDataHint: { default: "尚未拥有桶"},
+            title: { default: "退货记录"},
+            noDataHint: { default: "尚未拥有记录"},
         },
         created() {
             utils.initIconFont();
@@ -289,9 +289,9 @@
             openMask(c){
                 this.isMask = true;
                 this.barrelId = c.id;
-                this.pledge = c.pledge;
-                this.borrow = c.borrow;
-                this.mortgage = c.mortgage;
+                this.pledge = c.beginningPledge;
+                this.borrow = c.beginningBorrow;
+                this.mortgage = c.beginning;
             },
             confirm(){
                 var _this = this;
@@ -341,6 +341,16 @@
                     }
                 }, function (err) {
                     event.toast(err.content)
+                })
+            },
+            linkToShipping:function (barrelId) {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate("view/shop/card/shipping.js?id="+this.cardId+"&barrelId="+barrelId),function (data) {
+                    _this.clicked =false
                 })
             },
             onloading (event) {

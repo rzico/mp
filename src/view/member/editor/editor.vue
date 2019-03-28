@@ -104,9 +104,9 @@
                                     <text class="addVideo iconSize" :style="{fontFamily:'iconfont'}">&#xe624;</text>
                                 </div>
                                 <!--添加链接-->
-                                <div class="addIconBox addLinkPt" @click="addLinkPara(index + 1)">
-                                    <text class=" iconSize addLink" :style="{fontFamily:'iconfont'}">&#xe63f;</text>
-                                </div>
+                                <!--<div class="addIconBox addLinkPt" @click="addLinkPara(index + 1)">-->
+                                    <!--<text class=" iconSize addLink" :style="{fontFamily:'iconfont'}">&#xe63f;</text>-->
+                                <!--</div>-->
                             </div>
                         </div>
                     </div>
@@ -478,7 +478,7 @@
             navbar,process
         },
         props: {
-            title: { default: "编辑"},
+            title: { default: "发布"},
             complete:{default:"完成"}
         },
         created:function(){
@@ -493,149 +493,75 @@
             var bundleUrl = this.$getConfig().bundleUrl;
             var articleId = utils.getUrlParameter("articleId");
             var goodsId = utils.getUrlParameter("goodsId");
+            var mediaType = utils.getUrlParameter("mediaType");
+
+            _this.articleType = mediaType;
+            if (utils.isNull(mediaType)) {
+                _this.articleType = "article"
+            }
 
             if (!utils.isNull(goodsId)) {
                 _this.articleType = "product";
                 _this.goodsId = goodsId;
             }
 
-            //          创建文章编辑（首次）
-            if(utils.isNull(articleId) && utils.isNull(goodsId)){
-
-//                获取剪贴板内容,判断是否是公众号文章的链接.可将公众号上的文章内容获取下来并生成文章模版.
-                clipboard.getString(ret => {
-                    if(typeof ret.data != "object"  && (ret.data.indexOf('://mp.weixin.qq.com/s/') != -1 || ret.data.indexOf('://m.eqxiu.com/s/') != -1 )){
-                        modal.confirm({
-                            message: '是否生成已复制链接的文章?',
-                            duration: 0.3,
-                            okTitle:'生成',
-                            cancelTitle:'取消',
-                        }, function (value) {
-                            if(value == '生成'){
-                                _this.toSendArticle = true;
-                                _this.currentPro = 0;//当前进度
-                                _this.proTotal = 1;//总的进度
-                                _this.processWidth = 0;//进度条宽度
-
-                                _this.processWidth = _this.processWidth  + (50 * Math.random());
-//                                  利用定时器 模拟进度条效果
-                                var timer = setInterval(function () {
-                                    if(_this.processWidth < 500){
-                                        let middle = _this.processWidth  + (50 * Math.random()) ;
-                                        if(middle > 500){
-                                            _this.processWidth = 500;
-                                        }else{
-                                            _this.processWidth = middle;
-                                        }
-                                    }
-                                },500);
-
-//                               调用接口 获取公众号文章内容(仅支持图文)
-                                GET('weex/member/article/grabarticle.jhtml?articlePath=' + encodeURIComponent(ret.data),function (data) {
-                                    if(data.type == 'success' && !utils.isNull(data.data)){
-                                        _this.processWidth = 500;//进度条宽度
-                                        setTimeout(function () {
-//                                        清空剪贴板
-                                            clipboard.setString('');
-//                                        清空假进度条，关闭定时器
-                                            _this.clearDummyProcess(timer);
-////                                            判断是否有封面 后台返回的空会有空格。标题也要注意过滤空格
-                                            if(!utils.isNull(data.data.thumbnail) && !utils.isAllEmpty(data.data.thumbnail)){
-                                                _this.coverImage = data.data.thumbnail;
-                                            }
-//                                       将数据填充进页面
-                                            _this.templateGroup(data.data.templates,1);
-//                                           存储页面数据
-                                            _this.saveDraft();
-                                        },10)
-                                    }else if(data.type == 'success' && utils.isNull(data.data)){
-                                        event.toast('生成的文章内容为空,请换篇文章');
-//                                        清空剪贴板
-                                        clipboard.setString('');
-//                                        清空假进度条，关闭定时器
-                                        _this.clearDummyProcess(timer);
-                                        event.closeURL();
-                                    }else{
-//                                        清空假进度条，关闭定时器
-                                        _this.clearDummyProcess(timer);
-                                        event.toast(data.content);
-                                        event.closeURL();
-                                    }
-                                },function (err) {
-                                    event.toast(err.content);
-//                                        清空假进度条，关闭定时器
-                                    _this.clearDummyProcess(timer);
-                                    event.closeURL();
-                                })
-                                return;
-                            }else{
-                                clipboard.setString('');
-//                              进行原本逻辑。
-                                _this.firstEdit();
-                            }
-                        })
-                    }else{
-//                       进行原本逻辑。
-                        _this.firstEdit();
+            //创建文章编辑（首次）
+            if(utils.isNull(articleId)){
+                var articleDraft = utils.getUrlParameter("articleDraft");
+                if (utils.isNull(articleDraft)) {
+                    _this.newArticle();
+                } else {
+                    var draft = {
+                        type:'articleDraft',
+                        key:'0'
                     }
-                })
-
-
-
-            }else{//再次文章编辑
-                _this.delOnceDraft('noclose');
-                let storageName = utils.getUrlParameter('goodsStorageName');
-                if(utils.isNull(storageName)) {
-                    let options = {
-                        type:'article',
-                        key:articleId
-                    };
-                    _this.articleId = articleId;
-                    if(_this.articleId.length == 19){//19位的id为草稿文章
-                    }else{
-                        GET('weex/member/article/option.jhtml?id=' + _this.articleId,function (data) {
-                            if(data.type == 'success' && data.data != ''){
-                                _this.catalogId = data.data.articleCatalog.id;
-                            }
-                        },function (err) {
-                            event.toast(err.content);
-                            return;
-                        });
-                    };
-                    //从缓存读取数据 写入界面
-                    _this.readData(options);
-                }else {//读取商品缓存并写入页面之中。
-                    storage.getItem(storageName, function (e) {
-                        if (e.result == 'success') {
-                            var goodsInfo = JSON.parse(e.data);
-                            _this.coverImage =  goodsInfo.thumbnail;
-                            _this.setTitle = goodsInfo.name;
-//                    data.data里存放的是用户选取的图片路径
-                            _this.paraList.push({
-                                //原图
-                                paraImage: goodsInfo.thumbnail,
-                                //小缩略图
-                                thumbnailImage:goodsInfo.thumbnail,
-                                mediaType: "product",
-                                paraText:'',
-                                show:true,
-                                serveThumbnail:'',
-//                                            对象id
-                                id:goodsInfo.id,
-//                                            第三方链接
-                                url:'',
-                            });
-//                            存储页面数据
-                            _this.saveDraft();
-//                          把缓存删除
-                            storage.removeItem(storageName, e => {
-                            })
+                    event.find(draft,function (data) {
+                        if(data.type == 'success' && data.data != '') {
+                            var info = JSON.parse(data.data.value);
+                            _this.readData(info);
+                        } else {
+                            _this.newArticle();
                         }
                     });
-                };
+
+                }
+
+            }else{//再次文章编辑
+
+                    //从缓存读取数据 写入界面
+                _this.articleId = articleId;
+                _this.getServerArticle()
+
             };
         },
         methods: {
+            newArticle() {
+                var _this = this;
+                storage.getItem("storageName", function (e) {
+                    if (e.result == 'success') {
+                        var info = JSON.parse(e.data);
+                        _this.coverImage =  info.coverImage;
+                        _this.setTitle = info.title;
+                        info.paraList.forEach(function (item) {
+                            _this.paraList.push({
+                                //原图
+                                paraImage: item.paraImage,
+                                //小缩略图
+                                thumbnailImage: item.thumbnailImage,
+                                mediaType: item.mediaType,
+                                paraText: '',
+                                show: true,
+                                serveThumbnail: '',
+                                id: item.id,
+                                url: '',
+                            });
+                        })
+//                          把缓存删除
+                        storage.removeItem(storageName, e => {
+                        })
+                    }
+                });
+            },
 //            清楚掉假的进度条。清空假进度条，关闭定时器.
             clearDummyProcess(timer){
 //                                        解除定时器
@@ -686,7 +612,7 @@
 //                                            第三方链接
                                             url:'',
                                         });
-                                        _this.saveDraft();
+                                        //_this.saveDraft();
                                     }
                                 }else{
                                     event.closeURL();
@@ -727,19 +653,17 @@
                         url:paraUrl,
                     })
                 }
-
             },
-
             //从缓存读取数据 写入界面
-            readData(options){
+            readData(articleData) {
                 let _this =this;
-                event.find(options,function (data) {
-                    if(data.type == 'success' && data.data != ''){
-                        let articleData = JSON.parse(data.data.value);
-                        if(!utils.isNull(data.data.sort)){
-//                            保存置顶状态。
-                            _this.sortStatus = data.data.sort.substring(0,2);
-                        }
+//                event.find(options,function (data) {
+//                    if(data.type == 'success' && data.data != ''){
+//                        let articleData = JSON.parse(data.data.value);
+//                        if(!utils.isNull(data.data.sort)){
+////                            保存置顶状态。
+//                            _this.sortStatus = data.data.sort.substring(0,2);
+//                        }
                         _this.setTitle = articleData.title;
                         _this.coverImage = articleData.thumbnail;
                         if(!utils.isNull(articleData.music.name)){
@@ -801,49 +725,47 @@
                                 })
                             })
                         }
-
-                    }else{
-                        if(_this.articleId.length == 19){
-                            event.toast('本地数据已被删除')
-                            event.closeURL();
-                            return;
-                        }
-//                        从服务器获取文章信息并存入缓存
-                        _this.getServerArticle(function () {
-                                let options = {
-                                    type:'article',
-                                    key:_this.articleId
-                                };
-                                _this.readData(options)
-                            }
-                        )
-                    };
-                });
+//
+//                    }else{
+//                        if(_this.articleId.length == 19){
+//                            event.toast('本地数据已被删除')
+//                            event.closeURL();
+//                            return;
+//                        }
+////                        从服务器获取文章信息并存入缓存
+//                        _this.getServerArticle(function () {
+//                                let options = {
+//                                    type:'article',
+//                                    key:_this.articleId
+//                                };
+//                                _this.readData(options)
+//                            }
+//                        )
+//                    };
+//                });
             },
 //           从服务器获取文章信息并存入缓存
-            getServerArticle(callback){
+            getServerArticle(){
                 let _this = this;
                 GET('weex/member/article/view.jhtml?id=' + _this.articleId,function (res) {
                     if (res.data != '' && res.type == 'success') {
-//                                   将服务器的缩略图换成原图的缩略图
-//                                    res.data.templates.forEach(function (item) {
-//                                        item.thumbnail = utils.thumbnail(item.original,155,155);
-//                                    })
-                        let resDataStr = JSON.stringify(res.data);
-                        let saveData = {
-                            type: "article",
-                            key: res.data.id,
-                            value:resDataStr,
-                            sort: '0,' + res.data.modifyDate,
-                            keyword: ',[' + _this.catalogId + '],' + _this.setTitle + ','
-                        };
-                        event.save(saveData, function (data) {
-                            if (data.type == 'success') {
-                                callback();
-                            } else {
-                                event.toast(data.content);
-                            }
-                        })
+                        _this.readData(res.data);
+                        _this.saveDraft();
+//                        let resDataStr = JSON.stringify(res.data);
+//                        let saveData = {
+//                            type: "article",
+//                            key: 0,
+//                            value:resDataStr,
+//                            sort: '0,' + res.data.modifyDate,
+//                            keyword: ',[' + _this.catalogId + '],' + _this.setTitle + ','
+//                        };
+//                        event.save(saveData, function (data) {
+//                            if (data.type == 'success') {
+//                                callback();
+//                            } else {
+//                                event.toast(data.content);
+//                            }
+//                        })
                     }
                 },function (err) {
                     event.toast(err.content);
@@ -872,13 +794,10 @@
                 allPageData = JSON.stringify(allPageData);
                 var storageType;
                 var storageKey;
-                if(utils.isNull(this.articleId)){
-                    storageType = "articleDraft";
-                    storageKey = '0';
-                }else {
-                    storageType = "article";
-                    storageKey = this.articleId;
-                }
+
+                storageType = "articleDraft";
+                storageKey = '0';
+
                 let draftOptions = {
                     type:storageType,
                     key:storageKey,
@@ -950,23 +869,6 @@
                 this.clicked = true;
                 var _this = this;
 
-//                if(_this.paraList[index].mediaType == 'product'){
-//                    event.openURL(utils.locate('view/shop/goods/manage.js?from=editor'),function (data) {
-//                        if (data.type == 'success') {
-//                            _this.paraList[index].paraImage = data.data.thumbnail;
-//                            _this.paraList[index].thumbnailImage = data.data.thumbnail;
-//                            _this.paraList[index].paraText = data.data.name;
-////                    添加修改标志
-//                            _this.hadChange = 1;
-////                        if(utils.isNull(_this.articleId)){
-////                        临时保存到缓存
-//                            _this.saveDraft();
-////                        }
-//                        }
-//                    })
-//                    return;
-//                }
-
                 event.openEditor(_this.paraList[index].paraText,function (data) {
                     _this.clicked = false;
                     if(data.data != '') {
@@ -983,42 +885,15 @@
             //            返回
             goBack:function () {
                 let _this = this;
-//                判断是草稿还是已经发布文章
-                if(utils.isNull(this.articleId) || this.articleId.length == 19){
-                    modal.confirm({
-                        message: '请选择方式?',
-                        duration: 0.3,
-                        okTitle:'删除草稿',
-                        cancelTitle:'存草稿',
-                    }, function (value) {
-                        if(value == '存草稿'){
-                            if(utils.isNull(_this.articleId)){
-//                                生成6位随机数
-                                var Num="";
-                                for(var i=0;i<6;i++)
-                                {
-                                    Num += Math.floor(Math.random()*10);
-                                }
-                                //            获取当前时间戳 作为唯一标识符key
-                                _this.articleId = Math.round(new Date().getTime()) + Num;
-                            }
-                            _this.saveDraft(function () {
-                                _this.delOnceDraft();
-                            });
-                        }else if(value == '删除草稿'){
-                            _this.deleteDraft();
-                        }
-                    })
-                }else{
 //                    判断是否有修改过
                     if(this.hadChange == 1){
                         modal.confirm({
-                            message: '请选择方式?',
+                            message: '选择方式?',
                             duration: 0.3,
                             okTitle:'撤销编辑',
-                            cancelTitle:'存草稿',
+                            cancelTitle:'存为草稿',
                         }, function (value) {
-                            if(value == '存草稿'){
+                            if(value == '存为草稿'){
                                 _this.saveDraft(function () {
                                     let E = {
                                         isDone : 'complete'
@@ -1027,99 +902,36 @@
                                     event.closeURL(backData);
                                 });
                             }else if(value == '撤销编辑'){
-                                _this.getServerArticle(
-                                    function () {
-//                                    全局监听文章变动
-                                        let listenData = utils.message('success','文章改变','')
-                                        event.sendGlobalEvent('onArticleChange',listenData);
-                                        event.closeURL();
+                                _this.deleteDraft(function () {
+                                    let E = {
+                                        isDone : 'complete'
                                     }
-                                )
+                                    let backData = utils.message('error','取消',E);
+                                    event.closeURL(backData);
+                                });
                             }
                         })
-                    }else{
+                    }else {
                         event.closeURL();
                     }
-                }
             },
             //            删除临时缓存和草稿缓存
-            deleteDraft(close){
+            deleteDraft(callback){
                 let _this = this;
-                var storageType;
-                var storageKey;
-                if(utils.isNull(this.articleId)){
-                    storageType = "articleDraft";
-                    storageKey = '0';
-                }else {
-                    if(this.articleId.length != 19){
-                        return;
-                    }
-                    storageType = "article";
-                    storageKey = this.articleId;
-                }
-//                                    判断是否第一次编辑该文章
-                let findDel = {
-                    type:storageType,
-                    key:storageKey
-                }
-                event.find(findDel,function (delData) {
-                    if(delData.type == 'success' && delData.data != ''){
-                        //  将临时缓存删除;
-                        let delOption = {
-                            type:storageType,
-                            key:storageKey
-                        }
-                        event.delete(delOption,function (data) {
-                            if(data.type == 'success' && !utils.isNull(_this.articleId)){
-                                if(utils.isNull(close)){
-//                                    全局监听文章变动
-                                    let listenData = utils.message('success','文章改变','')
-                                    event.sendGlobalEvent('onArticleChange',listenData);
-                                    event.closeURL();
-                                }
-                            }else if(data.type == 'success'){
-                                if(utils.isNull(close)){
-                                    event.closeURL();
-                                }
-                            }
-                        });
-                    }else{
-                        event.toast(delData.content);
-                    }
-                });
-            },
-            //            删除临时缓存
-            delOnceDraft(close){
-                let _this = this;
-//   将临时草稿删除
+
                 let findDel = {
                     type:'articleDraft',
                     key:'0'
                 }
+
                 event.find(findDel,function (delData) {
                     if(delData.type == 'success' && delData.data != ''){
                         //  将临时缓存删除;
-                        let delOption = {
-                            type:'articleDraft',
-                            key:'0'
-                        }
-                        event.delete(delOption,function (data) {
-                            if(data.type == 'success' ){
-                                if(utils.isNull(close)){
-                                    let E = {
-                                        isDone : 'complete'
-                                    }
-                                    let backData = utils.message('success','成功',E);
-                                    event.closeURL(backData);
-                                }
-                            }else{
-                                event.toast(data.content);
-                            }
+                        event.delete(findDel,function (data) {
+                            callback(data)
                         });
                     }else{
-                        if(utils.isNull(close)){
-                            event.closeURL();
-                        }
+                        event.toast(delData.content);
                     }
                 });
             },
@@ -1141,15 +953,15 @@
                     if((item.mediaType == 'image' || item.mediaType == 'product')&& item.paraImage != ''){
                         imageNum ++;
                     }
-
-                    if (item.mediaType == 'video' && _this.articleType=='article') {
-                        _this.articleType = 'video';
+                    if (item.mediaType == 'video' ) {
+                        _this.articleType = "video"
+                        imageNum ++;
                     }
 
                 })
                 if(imageNum == 0){
 //                        modal.toast({message: '至少要保留一张图片', duration: 0.5});
-                    event.toast('至少要有一张图片');
+                    event.toast('不能保存空内容');
                     return;
                 }
 
@@ -1216,13 +1028,7 @@
                 if(!utils.isNull(_this.paraList[sendIndex].paraImage)){
                     frontUrl = _this.paraList[sendIndex].paraImage.substring(0,4);
                 }
-//                if(mediaType == 'image') {
-//                    modal.toast({message:frontUrl,duration:1});
-//                }else if(mediaType == 'video'){//如果是视频
-//                    frontUrl = _this.paraList[sendIndex].thumbnailImage.substring(0,5);
-//
-//                    modal.toast({message:frontUrl,duration:1});
-//                }
+
 //                判断是否已经是服务器图片
                 if(frontUrl == 'http'){
                     if(mediaType == 'image' || mediaType == 'product'){
@@ -1416,59 +1222,12 @@
 //                网络请求，保存文章
                 POST('weex/member/article/submit.jhtml?goodsId='+_this.goodsId+"&articleType="+_this.articleType,articleData).then(
                     function (res) {
-                        if(res.data != '' && res.type == 'success'){
-//                            _this.articleId = res.data.id;
-                            let resDataStr = JSON.stringify(res.data);
-                            let saveData = {
-                                type:"article",
-                                key:res.data.id,
-                                value:resDataStr,
-                                sort:_this.sortStatus + _this.timestamp,
-                                keyword:',['+ _this.catalogId + '],' + _this.setTitle + ','
-                            };
-//                1是置顶（默认倒序）  keyword ",[1],文章title,"
-                            event.save(saveData,function(data){
-                                if(data.type == 'success'){
-                                    _this.deleteDraft('noclose');
-//                                    event.closeURL();
-                                    _this.toSendArticle = false;
-//                                  防止重复点击
-                                    _this.clicked = false;
-//                                    全局监听文章变动
-                                    let listenData = utils.message('success','文章改变','');
-                                    event.sendGlobalEvent('onArticleChange',listenData);
-
-                                    if (_this.articleType=='article') {
-                                      event.openURL(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish),function (data) {
-                                        _this.currentPro = 0;//当前进度
-                                        _this.proTotal = 0;//总的进度
-                                        _this.processWidth = 0;//进度条宽度
-//                                        if(!utils.isNull(data.data.isDone) && data.data.isDone == ''){
-                                        let E = {
-                                            isDone : 'complete'
-                                        }
-                                        let backData = utils.message('success','成功',E);
-                                        event.closeURL(backData);
-//                                        }
-                                      })
-                                    } else {
-                                        let E = {
-                                            isDone : 'complete'
-                                        }
-                                        let backData = utils.message('success','成功',E);
-                                        event.closeURL(backData);
-                                    }
-//                                    event.router(utils.locate('view/article/preview.js?articleId=' + res.data.id + '&publish=' + _this.publish + '&isRouter=1'));
-                                }else{
-                                    _this.toSendArticle = false;
-//                防止重复点击
-                                    _this.clicked = false;
-                                    _this.currentPro = 0;//当前进度
-                                    _this.proTotal = 0;//总的进度
-                                    _this.processWidth = 0;//进度条宽度
-                                    event.toast(data.content);
-                                };
-                            });
+                        if(res.type == 'success'){
+                            _this.deleteDraft(function () {
+                                let backData = utils.message('success','成功',res.data);
+                                event.closeURL(backData)
+                            })
+                            _this.clicked = false;
                         }else{
                             event.toast(res.content);
                             _this.toSendArticle = false;

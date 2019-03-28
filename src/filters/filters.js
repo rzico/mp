@@ -192,6 +192,15 @@ Vue.filter('datetimefmt', function (value) {
 
 })
 
+//时间格式化 返回 09-30 03:07
+Vue.filter('ydfmt', function (value) {
+
+    let res = utils.resolvetimefmt(value);
+
+        return  res.m + '-' + res.d ;
+
+})
+
 //时间格式化 返回 09-30 03:07:56 2017-09-30 03:07:56
 Vue.filter('datemoretimefmt', function (value) {
     let res = utils.resolvetimefmt(value);
@@ -258,9 +267,9 @@ Vue.filter('currencyfmt', function (value) {
     }
     // 返回处理后的值
     if (value != null) {
-        value = parseFloat(value)
-        if(value == 0){
-            return value.toFixed(2);
+        value = parseFloat(value);
+        if(value == 0 || value == '0'){
+            return '0.00';
         }else{
             var price = (Math.round(value * Math.pow(10,2)) / Math.pow(10,2)).toFixed(2);
             return price;

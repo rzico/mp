@@ -4,7 +4,7 @@
         <scroller class="scroller">
             <div class="wallet-panel bkg-primary">
                 <text class="wallet-title">钱包余额（元）</text>
-                <text class="balance">{{wallet.balance | currencyfmt}}</text>
+                <text class="balance">{{wallet.balance | watchBalance}}</text>
             </div>
             <div class="cashierBox" v-if="hasCashier">
                 <div class="cashier bkg-primary">收银台</div>
@@ -22,10 +22,20 @@
                     </div>
                 </div>
 
-                <div class="cell-panel space-between cell-clear" @click="cashCard()">
+                <div class="cell-panel space-between" @click="cashCard()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
                         <text class="title ml10">提现到银行卡</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between cell-clear" @click="filling()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
+                        <text class="title ml10">钱包充值</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -133,6 +143,16 @@
         components: {
             navbar
         },
+         filters:{
+             watchBalance(e){
+                 e = parseFloat(e);
+                 if(e==0||e=='0'){
+                     return '0.00'
+                 }else {
+                     return e.toFixed(2)
+                 }
+             }
+         },
         props: {
             title: { default: "钱包" }
         },
@@ -192,6 +212,17 @@
                         _this.clicked =false
                     })
                 }
+            },
+            filling(){
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('view/member/wallet/filling.js'), function (message) {
+                    _this.clicked = false
+                    _this.load();
+                })
             },
             reward:function () {
                 if (this.clicked==true) {

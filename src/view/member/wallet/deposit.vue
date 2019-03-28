@@ -20,7 +20,7 @@
                 <div class="cellHeader cell-line" v-if="isRepeat(index)" @click="summary(deposit.createDate)">
                     <div class="pl20">
                         <text class="fz32" >{{deposit.createDate | monthfmt}}</text>
-                        <text class='fz26' style="color: #888888">支出 ¥ {{sum.debit}}   收入 ¥ {{sum.credit}}</text>
+                        <text class='fz26' style="color: #888888" v-if="wacthDate(deposit.createDate)">支出 ¥ {{sum.debit}}   收入 ¥ {{sum.credit}}</text>
                     </div>
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
@@ -234,6 +234,18 @@
                     return {color:'#000'}
                 }
             },
+            wacthDate(e){
+                let res = utils.resolvetimefmt(e);
+                let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
+                let m = tds.m - res.m;
+                let y = tds.y - tds.y;
+                if (y<1 && m<1) {
+//                    本月
+                    return true
+                }else {
+                    return false
+                }
+            },
 //            是否添加底部边框
             addBorder: function (index) {
                 let listLength = this.depositList.length;
@@ -315,7 +327,7 @@
             },
             summary:function (m) {
                 let v =  utils.ymdtimefmt(m);
-                event.openURL(utils.locate('pages/member/wallet/summary.js?billDate='+encodeURIComponent(v)),function () {
+                event.openURL(utils.locate('view/member/wallet/summary.js?billDate='+encodeURIComponent(v)),function () {
 
                 })
             },

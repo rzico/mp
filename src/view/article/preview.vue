@@ -7,11 +7,11 @@
             <!--网页:style="{height:screenHeight}"-->
             <web class="webView" ref="webView" :style="{bottom:bottomNum + 100}"  :src="webUrl" ></web>
             <!--下一步-->
-            <div v-if="!publish" >
-                <div class="footBox bkg-primary cb-top " :style="{height:bottomNum + 100}" @click="goOption()">
-                    <text class="nextStep">下一步</text>
-                </div>
-            </div>
+            <!--<div v-if="!publish" >-->
+                <!--<div class="footBox bkg-primary cb-top " :style="{height:bottomNum + 100}" @click="goOption()">-->
+                    <!--<text class="nextStep">下一步</text>-->
+                <!--</div>-->
+            <!--</div>-->
             <!--点赞 评论 分享-->
             <div class="footBox bkg-white"  :style="{height:bottomNum + 100,paddingBottom:bottomNum}" v-if="publish" >
                 <div class="bottomBtnBox" :style="{height:bottomNum + 100}" @click="goLaud()">
@@ -89,17 +89,17 @@
                         <text class="fz28 pl10 primary">删除</text>
                     </div>
                     <div class="boder-bottom " style="position: absolute;left: 25px;right: 25px;"></div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="goDragon()">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe6b5;</text>
-                        <text class="fz28 pl10">创建接龙</text>
-                    </div>
-                    <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">
-                        <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>
-                        <text class="fz28 pl10">生成长图</text>
-                    </div>
+                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="goDragon()">-->
+                        <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe6b5;</text>-->
+                        <!--<text class="fz28 pl10">创建接龙</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="longPic()">-->
+                        <!--<text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61a;</text>-->
+                        <!--<text class="fz28 pl10">生成长图</text>-->
+                    <!--</div>-->
                     <div class="flex-row pt25 pb25 pl35 pr35 textActive" @click="operationSet">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                        <text class="fz28 pl10">文章设置</text>
+                        <text class="fz28 pl10">设置</text>
                     </div>
                     <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
@@ -120,7 +120,7 @@
                     <!--</div>-->
                     <div class="flex-row pt25 pb25 pl35 pr35 textActive " @click="goAuthor">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                        <text class="fz28 pl10">作者主页</text>
+                        <text class="fz28 pl10">作者</text>
                     </div>
                     <div class="flex-row pt25 pb25 pl35 pr35 textActive"  @click="goShare(1)">
                         <text class="fz40" :style="{fontFamily:'iconfont'}">&#xe67d;</text>
@@ -134,23 +134,23 @@
             </div>
 
             <!--接龙-->
-            <div class="maskLayer" v-if="isDragonMask">
-                <div class="dragonBox">
-                    <text class="dragonTitle">创建接龙</text>
-                    <div class="titleBox">
-                        <text class="titleBoxText">标题:</text>
-                        <input class="dragonTitleInput" placeholder="请输入标题" v-model="dragonTitle"/>
-                    </div>
-                    <div class="typeBox" @click="pickdragon()">
-                        <text class="typeBoxTitle">类型:</text>
-                        <text class="dragonTypeText">{{dragonTypeText}}</text>
-                    </div>
-                    <div class="dragonButtonBox">
-                        <div class="leftButton" @click="OnDragon()"><text class="dragonButtonBoxText">取消</text> </div>
-                        <div class="rightButton" @click="dragonComplete()"> <text class="dragonButtonBoxText">确认</text></div>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="maskLayer" v-if="isDragonMask">-->
+                <!--<div class="dragonBox">-->
+                    <!--<text class="dragonTitle">创建接龙</text>-->
+                    <!--<div class="titleBox">-->
+                        <!--<text class="titleBoxText">标题:</text>-->
+                        <!--<input class="dragonTitleInput" placeholder="请输入标题" v-model="dragonTitle"/>-->
+                    <!--</div>-->
+                    <!--<div class="typeBox" @click="pickdragon()">-->
+                        <!--<text class="typeBoxTitle">类型:</text>-->
+                        <!--<text class="dragonTypeText">{{dragonTypeText}}</text>-->
+                    <!--</div>-->
+                    <!--<div class="dragonButtonBox">-->
+                        <!--<div class="leftButton" @click="OnDragon()"><text class="dragonButtonBoxText">取消</text> </div>-->
+                        <!--<div class="rightButton" @click="dragonComplete()"> <text class="dragonButtonBoxText">确认</text></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
         </div>
     </div>
@@ -533,15 +533,16 @@
                     }else{
                         _this.isSelf = 0;
                     }
-                    if(_this.publish == 'false'){
-                        _this.publish = false;
-                        _this.complete = '编辑';
-                        _this.title = '预览';
-                    }else if(_this.publish == 'true' && _this.isSelf == 1){
+//                    if(_this.publish == 'false'){
+//                        _this.publish = false;
+//                        _this.complete = '编辑';
+//                        _this.title = '预览';
+//                    }else
+                        if( _this.isSelf == 1){
                         _this.publish = true;
                         _this.complete = '操作';
-                        _this.title = '文章详情';
-                    }else if(_this.publish == 'true' && _this.isSelf == 0){
+                        _this.title = '预览';
+                    }else if(_this.isSelf == 0){
                         _this.publish = true;
                         _this.complete = 'textIcon';
                         _this.title = '';
@@ -819,35 +820,15 @@
 //            点击编辑
             goComplete(){
                 let _this = this;
-                if(!this.publish){
-                    if (this.clicked) {
-                        return;
-                    }
-                    this.clicked = true;
-                    setTimeout(function () {
-                        _this.clicked = false;
-                    },1500)
-                    event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-                        if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                            let E = {
-                                isDone : 'complete'
-                            }
-                            let backData = utils.message('success','成功',E);
-                            event.closeURL(backData);
-                        }
-                    })
-                }else{
-                    this.isOperation = true;
-                }
+                this.isOperation = true;
             },
 //            点击操作里的编辑
             operationEditor(){
+                let _this = this;
                 this.isOperation = false;
                 event.openURL(utils.locate('view/member/editor/editor.js?articleId=' + this.articleId),function (data) {
-//                event.openURL('http://192.168.2.157:8081/editor.weex.js?articleId=' + this.articleId,function () {
-//                    _this.updateArticle();
-                    if(!utils.isNull(data.data.isDone) && data.data.isDone == 'complete'){
-                        event.closeURL();
+                    if(data.type == 'success'){
+                        _this.webUrl = utils.articleUrl(_this.templateId,_this.articleId);
                     }
                 })
             },

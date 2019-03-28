@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goback="goback" ></navbar>
+        <navbar :title="title"  @goback="goback" completeIcon="&#xe699;" @goComplete="print()"></navbar>
         <scroller   @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
@@ -8,7 +8,7 @@
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
             <div v-else v-for="(item,index) in ordersList"  >
-                <div class="addressBox flex-row mt20">
+                <div class="addressBox flex-row mt20" >
                     <div style="width: 70px;">
                         <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>
@@ -92,21 +92,18 @@
                 </div>
                 <div class="mt20  infoWhiteColor" >
                     <div class="priceLine boder-bottom">
-                        <div class=" space-between pb10">
-                            <text class="sub_title">+ 送货工资</text>
-                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between pb10">
-                            <text class="sub_title">+ 空桶押金</text>
-                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
-                        </div>
+
                         <div class=" space-between pb10" v-if="filter('shippingFreight')">
-                            <text class="sub_title">+ 配送运费</text>
+                            <text class="sub_title">配送运费</text>
                             <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
                         </div>
                         <div class=" space-between " v-if="filter('cost')">
-                            <text class="sub_title">+ 货款结算</text>
+                            <text class="sub_title">货款结算</text>
                             <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between pb10">
+                            <text class="sub_title">送货工资</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
                         </div>
                     </div>
                     <div class="priceLine ">
@@ -420,6 +417,30 @@
             this.permissions();
         },
         methods: {
+            //            打印
+            print(){
+                let _this = this;
+                modal.confirm({
+                    message: '确认打印？',
+                    duration: 0.3,
+                    okTitle:'确认',
+                    cancelTitle:'取消'
+                }, function (value) {
+                    if(value.result == '确认'){
+                        GET('weex/member/shipping/print.jhtml?sn='+_this.shippingSn+"&seqno=1", function (data) {
+                                if(data.type == 'success'){
+                                    event.toast('打印成功')
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            },
+                            function (err) {
+                                event.toast(err.content);
+                            })
+                    }
+                })
+
+            },
             //            权限过滤器
             filter(e) {
                 var _this = this;
@@ -453,6 +474,14 @@
                 },function (err) {
                     event.toast(err.content);
                 });
+            },
+            jump:function (id) {
+                let _this =this;
+
+                event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
+
+                })
+
             },
             open:function () {
                 let _this = this;

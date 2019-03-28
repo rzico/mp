@@ -298,6 +298,9 @@
         methods: {
             //            修改头像
             changeLogo: function () {
+                if(!this.showType){
+                    return
+                }
                 var _this = this;
                 var options = {
                     isCrop:true,

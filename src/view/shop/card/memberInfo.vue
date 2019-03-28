@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <navbar :title="title"  @goback="goback"  > </navbar>
-        <scroller class="scroller">
+        <scroller class="scroller" v-if="data!=null">
         <div class="cell-row cell-line">
             <div class="cell-logo">
                 <div class="flex-row flex-start">
@@ -60,50 +60,50 @@
             </div>
         </div>
             <div class="cell-row cell-line">
-                <div class="cell-panel space-between " @click="goAddress()">
-                    <div class="flex-row">
-                        <text class="title ml10">收货地址</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between " @click="gousers()">
-                    <div class="flex-row">
-                        <text class="title ml10">授权用户</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between " @click="goAddress()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">收货地址</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-panel space-between " @click="gousers()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">授权用户</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="cell-panel space-between cell-clear" @click="settlemenSetup()">
                     <div class="flex-row">
-                        <text class="title ml10">结算方式</text>
+                        <text class="title ml10">用户类型</text>
                     </div>
                     <div class="flex-row flex-end" >
-                        <text class="sub_title">{{data.card.paymentMethod | watchPayment}}</text>
+                        <text class="sub_title">{{data.card.cardType | watchCardType}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </div>
-            <div class="cell-row cell-line">
-                <div class="cell-panel space-between" :class="[appType() ? '':'cell-clear']" @click="goCouponCode()">
-                    <div class="flex-row">
-                        <text class="title ml10">电子票</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between cell-clear" @click="goBarrel()" v-if="appType()">
-                    <div class="flex-row">
-                        <text class="title ml10">我的桶</text>
-                    </div>
-                    <div class="flex-row flex-end" >
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="cell-row cell-line">-->
+                <!--<div class="cell-panel space-between" :class="[appType() ? '':'cell-clear']" @click="goCouponCode()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">电子票</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-panel space-between cell-clear" @click="goBarrel()" v-if="appType()">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">我的桶</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end" >-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         <div class="cell-row cell-line">
             <div class="cell-panel space-between">
                 <div class="flex-row">
@@ -215,11 +215,13 @@
                     return '普通'
                 }
             },
-            watchPayment:function (data) {
-                if(data == 'immediate'){
-                    return '现金结算'
-                }else if(data == 'monthly') {
-                    return '月度结算'
+            watchCardType:function (data) {
+                if(data == 'family'){
+                    return '个人用户'
+                }else if(data == 'company') {
+                    return '企业用户'
+                } else {
+                    return '个人用户'
                 }
             },
         },
@@ -230,7 +232,7 @@
                 begin:0,
                 typebegin:0,
                 settlemenBegin:0,
-                data:{card:{logo:"./static/logo.png",name:"演示专栏(VIP1)",balance:3.44,mobile:'00000',code:'392203232323',point:0,shopName:'',type:'',promoter:'',bonus:'',bindMobile:false,bindName:false,paymentMethod:''},},
+                data:null,
                 roles:"",
                 clicked:false
             }
@@ -362,17 +364,17 @@
                 }
                 picker.pick({
                     index:_this.settlemenBegin,
-                    items:['现金结算','月度结算']
+                    items:['个人用户','企业用户']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
                             _this.settlemenBegin = e.data;
-                            _this.data.card.paymentMethod = 'immediate'
+                            _this.data.card.cardType = 'family'
                         }else if(e.data == 1){
                             _this.settlemenBegin = e.data;
-                            _this.data.card.paymentMethod = 'monthly'
+                            _this.data.card.cardType = 'company'
                         }
-                        POST('weex/member/card/update.jhtml?id='+_this.id+'&paymentMethod='+_this.data.card.paymentMethod).then(
+                        POST('weex/member/card/update.jhtml?id='+_this.id+'&cardType='+_this.data.card.cardType).then(
                             function (mes) {
                                 if (mes.type == "success") {
 

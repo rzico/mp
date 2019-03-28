@@ -13,11 +13,16 @@
                         <text class="fz32">{{c.name}}</text>
                     </div>
                     <div class="money">
-                        <text class="fz32">送出 {{c.give}} 桶，收回</text>
-                        <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
-                        <text class="monyeTextthree fz32">桶，押</text>
-                        <input type="number" placeholder="输入桶数" class="input" v-model="c.pledgeQuantity" />
-                        <text class="monyeTextthree fz32">桶</text>
+                        <div class="flex-row">
+                            <text class="fz32">送出</text>
+                            <text class="number">{{c.give}}</text>
+                            <text class="fz32">桶</text>
+                        </div>
+                        <div class="flex-row">
+                            <text class="fz32">收回</text>
+                            <input type="number" placeholder="输入桶数" class="input" v-model="c.take" />
+                            <text class="fz32">桶</text>
+                        </div>
                     </div>
                 </div>
                     <!--隐藏显示-->
@@ -28,7 +33,7 @@
                     </div>
                 </div>
                 <!--列表按钮控制-->
-                <div class="iconBox" >
+                <div class="iconBox" v-if="hasWater==true">
                     <div class="icon" @click="contorlList()">
                     <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="!hasList">&#xe601;</text>
                     <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="hasList">&#xe608;</text>
@@ -36,20 +41,42 @@
                 </div>
                 <!--详情-->
                 <div class="info" >
+                    <div class="flex-column" v-if="totalAmount>0">
                     <text class="herderText">应收现金</text>
                     <div class="flex-row">
-                        <text style="font-size: 65px">¥  </text>
-                        <text class="herderAmount">{{cashRecvable}}</text>
+                        <text style="font-size: 65px">¥</text>
+                        <text class="herderAmount">{{totalAmount}}</text>
                     </div>
-                    <div class="flex-row" style="width: 590px">
-                        <text class="fz30" style="color: #999">应收金额: {{amountPayable}}元</text>
+                    <div class="flex-center" style="width: 590px">
+                        <div :class="[amountPaid=='1'?'checkboxAct':'checkbox']" @click="amountPay('1')"><text class="fz28">已收</text></div>
+                        <div :class="[amountPaid=='0'?'checkboxAct':'checkbox']" @click="amountPay('0')"><text class="fz28">未收</text></div>
+                    </div>
+                    </div>
+                    <div class="flex-column" v-if="totalPaper>0">
+                    <text class="herderText">应收水票</text>
+                    <div class="flex-row">
+                        <text style="font-size: 65px"></text>
+                        <text class="herderAmount">{{totalPaper}}张</text>
+                    </div>
+                    <div class="flex-center" style="width: 590px">
+                        <div :class="[paperPaid=='1'?'checkboxAct':'checkbox']" @click="paperPay('1')"><text class="fz28">已收</text></div>
+                        <div :class="[paperPaid=='0'?'checkboxAct':'checkbox']" @click="paperPay('0')"><text class="fz28">未收</text></div>
+                    </div>
+                    </div>
+
+                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="totalAmount>0">
+                        <text class="fz30" style="color: #999">应收现金: {{amountPayable}}元</text>
                         <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
                     </div>
-                    <div class="flex-row mt10" style="width: 590px">
+                    <div class="flex-row mt10" style="width: 590px" v-if="totalPaper>0">
                         <text class="fz30" :class="[paperClass()]" >应收水票: {{paperPayable}}张</text>
                         <text class="fz30" style="color: #999">（上期欠票  {{ticket}}张）</text>
                     </div>
-                    <text class="herderSn mt10">空桶押金: {{pledgePayable}}元</text>
+                    <div class="flex-row mt10" style="width: 590px" v-if="pledgePayable>0 || pledgeQuantity>0">
+                        <text class="fz30" :class="[paperClass()]" >空桶押金: {{pledgePayable}}元</text>
+                        <text class="fz30" style="color: #999">（押桶数量: {{pledgeQuantity}}个）</text>
+                    </div>
+                    <text class="herderSn mt10">付款方式: {{paymentPluginName}}</text>
                     <text class="herderSn mt10">收货地址: {{areaName}}{{address}}</text>
                     <text class="herderSn mt10">收货姓名: {{consignee}}</text>
                     <text class="herderSn mt10" @click="callPhone">收货电话: {{phone}}</text>
@@ -193,6 +220,30 @@
         border-radius: 15px;
         overflow: hidden;
     }
+    .checkbox {
+        width:200px;
+        height: 60px;
+        border-width: 1px;
+        border-color: #cccccc;
+        border-radius:10px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin: 10px;
+    }
+
+    .checkboxAct {
+        width:200px;
+        height: 60px;
+        border-width: 1px;
+        border-color: red;
+        border-radius: 10px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background-color: #ff4a6c;
+        margin: 10px;
+    }
     .titile{
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
@@ -219,11 +270,15 @@
     }
     .money{
         padding-left: 30px;
+        padding-right: 30px;
         border-top-width: 1px;
         border-color: #cccccc;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         height: 100px;
+        border-bottom-width: 1px;
+        border-bottom-color: #cccccc;
     }
     .note{
         padding-left: 30px;
@@ -234,10 +289,15 @@
     .monyeTextthree{
         padding-left: 20px;
     }
-
+    .number{
+        padding-left: 20px;
+        width: 150px;
+        font-size: 28px;
+        color: red;
+    }
     .input{
         padding-left: 20px;
-        width: 120px;
+        width: 150px;
         font-size: 28px;
         color: red;
         height: 100px;
@@ -248,6 +308,7 @@
     }
     .herderAmount{
         font-size: 80px;
+        color:red;
     }
     .herderSn{
         font-size: 30px;
@@ -316,11 +377,16 @@
                 arrears:'',
                 paperPayable:'',
                 ticket:'',
+                totalAmount:0,
+                totalPaper:0,
                 pledgePayable:'',
-                cashRecvable:'',
+                paymentPluginName:'',
+                amountPaid:'',
+                paperPaid:'',
                 isMask:false,
                 isButton:true,
-                qrcode:''
+                qrcode:'',
+                hasWater:false
             }
         },
         created: function () {
@@ -372,6 +438,12 @@
                 phone.tel(this.phone,function(){
                     return;
                 })
+            },
+            amountPay:function (w) {
+               this.amountPaid = w;
+            },
+            paperPay:function (w) {
+               this.paperPaid = w;
             },
             onloading:function () {
 ////            获取订单列表
@@ -425,8 +497,12 @@
 
             },
             showContol(index){
-                this.list[index].show = true;
-                this.hasList = false
+                if (this.list[index].show==false) {
+                    this.list[index].show = true;
+                    this.list[index].give = 0;
+                    this.hasList = false
+                }
+
             },　
             open:function () {
                 let _this = this
@@ -455,7 +531,6 @@
                 let _this = this;
                 GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
                     if(data.type == 'success'){
-                        _this.cashRecvable = data.data.cashRecvable;
                         _this.areaName = data.data.receiver.areaName;
                         _this.address = data.data.receiver.address;
                         _this.floor = data.data.receiver.level;
@@ -463,11 +538,21 @@
                         _this.phone = data.data.receiver.phone;
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
+
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.pledgePayable = data.data.pledgePayable//  应收押金
+                        if (data.data.paymentPluginId!='cashPayPlugin') {
+                            _this.amountPayable = 0;
+                            _this.arrears = 0;
+                        }
+                        _this.pledgeQuantity = data.data.pledgeQuantity;
 
+                        _this.totalAmount = _this.amountPayable + _this.arrears;
+                        _this.totalPaper = _this.paperPayable + _this.ticket;
 
+                        _this.paymentPluginName = data.data.paymentMethod
+                        _this.hasWater = data.data.hasWater;
                     }else{
                         event.toast(data.content);
                     }
@@ -546,7 +631,6 @@
                         if(data.type == 'success'){
                             if(data.data == true){
                                 var body = [];
-                                var isTrue = 0;
                                 _this.list.forEach(function(item,index){
                                     if(utils.isNull(item.give)){
                                         item.give = 0
@@ -554,79 +638,25 @@
                                     if(utils.isNull(item.take)){
                                         item.take = 0
                                     }
-                                    if(utils.isNull(item.pledgeQuantity)){
-                                        item.pledgeQuantity = 0
-                                    }
-                                    if(item.show == true){
-                                        _this.giveTotal = _this.giveTotal + item.give;
-                                        isTrue = isTrue+1
-                                    }
-//                                    _this.takeTotal = _this.takeTotal + item.take;
+
                                     body.push({
                                         id:item.id,
                                         quantity:item.give,
                                         returnQuantity:item.take,
-                                        pledgeQuantity:item.pledgeQuantity
-
+                                        pledgeQuantity:item.pledgeQuantity,
+                                        refundsQuantity:item.refundsQuantity
                                     });
                                 });
                                 body = JSON.stringify(body);
-//                                有显示品牌时才去控制
-                                if(isTrue != 0){
-                                    if(_this.giveTotal <= 0){
-                                        _this.clicked = false;
-                                        modal.alert({
-                                            message: '送出桶数总数不能为0',
-                                            okTitle: 'OK'
-                                        });
-                                        return
-                                    }
-                                }
-//                                else if(_this.takeTotal <= 0){
-//                                    _this.clicked = false;
-//                                    modal.alert({
-//                                        message: '回收桶数总数不能为0',
-//                                        okTitle: 'OK'
-//                                    });
-//                                    return
-//                                }
-                                //            获取经纬度
-//                                var uId = event.getUId();
-//                                event.getLocation(function (e) {
-//                                    if(e.type == 'success'){
-//                                        POST("/lbs/location.jhtml?lng=" + e.data.lng + "&lat=" +e.data.lat +'&memberId=' + uId).then(function (mes) {
-//                                            if (mes.type == 'success') {
-//                                                _this.clicked = false;
-//                                            } else {
-//                                                _this.clicked = false;
-//                                                event.toast(mes.content);
-//                                            }
-//                                        }, function (err) {
-//                                            _this.clicked = false;
-//                                            event.toast(err.content)
-//                                        });
-//                                    }else {
-//                                        POST("/lbs/location.jhtml?lng=0&lat=0&memberId=" + uId).then(function (mes) {
-//                                            if (mes.type == 'success') {
-//                                                _this.clicked = false;
-//                                            } else {
-//                                                _this.clicked = false;
-//                                                event.toast(mes.content);
-//                                            }
-//                                        }, function (err) {
-//                                            _this.clicked = false;
-//                                            event.toast(err.content)
-//                                        });
-//                                    }
-                                    POST('weex/member/shipping/receive.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor + "&lng=0&lat=0",body).then(
+
+
+                                    POST('weex/member/shipping/delivery.jhtml?sn='+ _this.shippingSn +'&memo=' + encodeURIComponent(_this.noteInput) +'&level=' + _this.floor + "&amountPaid="+_this.amountPaid+ "&paperPaid="+_this.paperPaid+"&lng=0&lat=0",body).then(
                                         function (res) {
                                             _this.clicked = false;
                                             if(res.type == 'success'){
-//                                                    let E = utils.message('success','送达成功','');
-//                                                    event.closeURL(E);
-                                                _this.qrcode = utils.website("/q/show.jhtml?url=" + encodeURI("http://weixin.xmsdar.com/q/818807"+ _this.shippingSn+ ".jhtml"));
-                                                _this.isMask = true
-                                            }else{
+                                                    let E = utils.message('success','送达成功','');
+                                                    event.closeURL(E);
+                                            } else {
                                                 event.toast(res.content);
                                             }
                                         },

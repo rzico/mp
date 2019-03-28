@@ -1,12 +1,26 @@
 <template>
     <div class="wrapper">
-        <!--<headerNav @search="gosearch" @menu="menu" v-if="isHeader"></headerNav>-->
+        <!--头部-->
+        <div  class="headerCenter bkg-primary" :class="[classHeader()]" >
+            <div class="addressBox" >
+                <text :style="{fontFamily:'iconfont'}" class="gpsIcon">&#xe792;</text>
+                <text class="gpsText">{{address}}</text>
+            </div>
+            <div class="searchBox" @click="gosearch">
+                <text :style="{fontFamily:'iconfont'}" class="searchIcon">&#xe611;</text>
+                <text class="searchInput">请输入搜索内容</text>
+            </div>
+            <div class="moreBox" @click="menu">
+                <text :style="{fontFamily:'iconfont'}"  class="moreIcon" >&#xe618;</text>
+            </div>
+        </div>
+        <!--<headerNav @search="gosearch" @menu="menu" ></headerNav>-->
         <!--<liveHeader @search="gosearch" @menu="menu" @doLive="doLive" v-if="!isHeader"></liveHeader>-->
         <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="tabRef" @corpusChange="corpusChange"></tabNav>
-        <slider class="pageBox" :style="{top:pageBoxTop + 'px'}" style="width: 750px" infinite="false"  :class="[pageTop()]" @change="onSliderChange" :index="whichCorpus">
+        <slider class="pageBox" :style="{top:pageBoxTop+'px'}" infinite="false" @change="onSliderChange" :index="whichCorpus">
             <div v-for="(item,index) in corpusList" class="categoryBox">
-                <hotsCategory  v-if="item.name == '热点' && item.load == 1"  :articleCategoryId="item.id" @scrollHandler="onScrollHandler" @toponappear="onToponappear"></hotsCategory>
-                <circleCategory v-else-if="item.name == '圈子' && uId != 0 && item.load == 1"    :articleCategoryId="item.id" ></circleCategory>
+                <hotsCategory  v-if="item.name == '热点' && item.load == 1"  :articleCategoryId="item.id"></hotsCategory>
+                <circleCategory v-else-if="item.name == '关注' && uId != 0 && item.load == 1"    :articleCategoryId="item.id" ></circleCategory>
                 <!--<othersCategory v-else-if=" item.load == 1"    :articleCategoryId="item.id" ></othersCategory>-->
             </div>
         </slider>
@@ -32,12 +46,76 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style>
+    .headerCenter {
+        height: 136px;
+        padding-top: 44px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position:sticky;
+    }
+    .addressBox{
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-left: 30px;
+        width: 175px;
+        height: 60px;
+        border-radius: 80px;
+        background-color: rgba(42,42,44,0.2);
+    }
+    .moreBox{
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        width: 115px;
+        height: 92px;
+        padding-right: 30px;
+    }
+    .searchBox{
+        height: 60px;
+        width: 400px;
+        border-radius: 80px;
+        padding-left: 30px;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 30px;
+        background-color: rgba(42,42,44,0.2);
+    }
+    .gpsText{
+        font-size: 32px;
+        color: #eee;
+        max-width: 100px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .gpsIcon{
+        font-size: 32px;
+        color: #eee;
+    }
+    .searchIcon{
+        font-size: 32px;
+        color: #eee;
+    }
+    .moreIcon{
+        font-size: 46px;
+        color: #fff;
+    }
+    .searchInput{
+        max-width: 300px;
+        font-size: 32px;
+        color: #eee;
+        lines:1;
+        text-overflow: ellipsis;
+        padding-left: 10px;
+    }
     .maskLayer{
         position: fixed;top: 0px;left: 0px;right: 0px;bottom: 0px; background-color: rgba(0,0,0,0.4);
     }
     .pageBox{
+        width: 750px;
         position: fixed;
-        top: 338px;left: 0;bottom: 0;
+        left: 0;bottom: 0;
     }
     .categoryBox{
         width: 750px;
@@ -70,8 +148,9 @@
                 clicked:false,
                 uId:0,
                 isHeader:false,
-                pageBoxTop:338,
-                isMask:false
+                pageBoxTop:0,
+                isMask:false,
+                address:'定位中'
             }
         },
         components: {
@@ -86,8 +165,10 @@
 
         created(){
             utils.initIconFont();
+            this.pageBoxTop = utils.getHeaderHeight()+80;
             this.uId = event.getUId();
             var _this = this;
+            this.getGps();
             GET('article_category/list.jhtml',function (data) {
                 if(data.type == 'success' && data.data != ''){
                     data.data.forEach(function (item,index) {
@@ -106,7 +187,7 @@
                     if(_this.uId != 0){
                         _this.corpusList.splice(1,0,{
                             id:'',
-                            name:"圈子",
+                            name:"关注",
                             load:0
                         })
                     }
@@ -117,6 +198,22 @@
             })
         },
         methods: {
+            //            获取经纬度
+            getGps:function(){
+                let _this = this
+                event.getLocation(function (data) {
+                    if(data.type == 'success'){
+                        _this.address = data.data.district;
+                    }else {
+                        event.toast('定位失败，请开启GPS')
+                    }
+                })
+
+            },
+            classHeader:function () {
+                let dc = utils.device();
+                return dc
+            },
 //            开启直播弹窗
             doLive:function (e) {
                 this.isMask = e
@@ -124,19 +221,6 @@
 //            关闭直播弹窗
             cancelBox:function (e) {
                 this.isMask = e
-            },
-//            正常滑动控制
-            onScrollHandler:function (e) {
-                this.isHeader = e
-                if(this.isHeader == true){
-                    this.pageBoxTop =216
-                }else{
-                    this.pageBoxTop =338
-                }
-            },
-//            快速滑动回顶部控制
-            onToponappear:function (e) {
-                this.isHeader = e
             },
 //            滑动切换分类
             onSliderChange:function (e) {
@@ -153,11 +237,6 @@
                     const el = this.$refs.tabRef.$refs['corpus' + loca][0];
                     dom.scrollToElement(el, { offset: 0 });
                 }
-            },
-            //            监听设备型号,控制导航栏高度
-            pageTop:function () {
-                let dc = utils.pageTop();
-                return dc;
             },
 //            点击顶部分类时。
             corpusChange(index){
@@ -178,6 +257,9 @@
                     }
                 )
             },
+            minibarRightButtonClick () {
+                this.$refs['wxc-popover'].wxcPopoverShow();
+            },
 //            点击右上角菜单
             menu:function () {
                 this.showMenu = true;
@@ -196,11 +278,91 @@
 //            触发自组件的二维码方法
             scan:function () {
                 this.showMenu = false;
+                let _this=this
                 event.scan(function (message) {
-                    SCAN(message,function (data) {
-                    },function (err) {
+                    GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
+                        if (res.type=="success") {
+                            if(res.data.type =='818801'|| res.data.type =='818802'){
+                                _this.scanFindCard(res.data.code)
+                            }else if(res.data.type =='818803'){
+                                _this.scanCoupon(res.data.code,res.data.captcha)
+                            }else if(res.data.type =='818807'){
+                                _this.scanSend(res.data.sn)
+                            }
+
+                        } else {
+                            event.toast(res.content);
+                        }
+
+                    }, function (err) {
+                        event.toast(err.content);
                     })
                 });
+            },
+            //            扫码搜索会员
+            scanFindCard(code){
+                GET('weex/member/card/infobycode.jhtml?code='+code,function (mes) {
+                    if (mes.type == 'success') {
+                        var id = mes.data.card.id;
+                        event.openURL(utils.locate('view/shop/card/view.js?id='+id),function (message) {
+
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            //            扫码核销优惠券
+            scanCoupon(code,captcha){
+                GET('weex/member/couponCode/use.jhtml?code='+code +'&captcha='+captcha,function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            //            扫码送达
+            scanSend(sn){
+                let _this = this
+                var uId = event.getUId();
+                event.getLocation(function (data) {
+                    if(data.type == 'success'){
+                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
+                            if (mes.type == 'success') {
+                                modal.alert({
+                                    message: mes.content,
+                                    okTitle: 'OK'
+                                })
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                    }else {
+                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
+                            if (mes.type == 'success') {
+                                modal.alert({
+                                    message: mes.content,
+                                    okTitle: 'OK'
+                                })
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
+                    }
+                })
+
             },
 
         }

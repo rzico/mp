@@ -1,7 +1,0 @@
-#Wed Sep 13 11:46:49 CST 2017
-base.0=/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_984e6dd0c421a760b74f17ab3087212687bd3329
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_08ab4c4fe9ca6ab1aeee58315daccb00043b5722/classes.dex
-base.1=/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_08ab4c4fe9ca6ab1aeee58315daccb00043b5722
-file.0=/Users/macOS/Documents/mopian/mp/platforms/android/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_984e6dd0c421a760b74f17ab3087212687bd3329/classes.dex

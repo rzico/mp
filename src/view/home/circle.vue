@@ -53,7 +53,6 @@
                     <div class="flex-row bt15"  v-if="item.htmlTag != '' && item.htmlTag != null && item.htmlTag != undefined">
                         <text class="articleContent tempOneWidth" >{{item.htmlTag}}</text>
                     </div>
-
                     <!--文章底部-->
                     <!--<div class="articleFoot">-->
                         <div class="relevantInfo" v-if="item.articleSign != '样例'">
@@ -84,12 +83,12 @@
         item-size:15px;
     }
     .slideImage {
-        width: 750px;
+        width: 730px;
         /*height: 280px;*/
         height: 375px;
     }
     .slider {
-        width: 750px;
+        width: 730px;
         height: 375px;
         /*height: 280px;*/
     }
@@ -167,7 +166,7 @@
         left: 20px;
     }
     .articleCover {
-        width: 370px;
+        width: 360px;
         /*height: 370px;*/
         height: 460px;
         /*width:690px;*/

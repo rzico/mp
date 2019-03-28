@@ -161,7 +161,7 @@
             return {
                 clicked:false,
                 begin:0,
-                isobject:'shipping',
+                isobject:'warehouse',
                 trackingNo:'',
                 ordersList:[],
                 shopId:'',
@@ -193,9 +193,7 @@
                 }else if(val == 'warehouse'){
                     return'同城配送'
                 }else if(val == 'pickup'){
-                    return'线下自提'
-                }else if(val == 'cardbkg'){
-                    return'虚拟商品'
+                    return'到店自提'
                 }
             }
         },
@@ -241,7 +239,7 @@
             },
             open:function () {
                 let _this = this;
-                GET('website/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
+                GET('weex/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList = data.data;
@@ -261,20 +259,17 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['普通快递','同城配送','线下自提','虚拟商品']
+                    items:['同城配送','普通快递','到店自提']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.isobject = 'shipping';
+                            _this.isobject = 'warehouse';
                             _this.begin = e.data;
                         }else if(e.data == 1){
-                            _this.isobject = 'warehouse';
+                            _this.isobject = 'shipping';
                             _this.begin = e.data;
                         }else if(e.data == 2){
                             _this.isobject = 'pickup';
-                            _this.begin = e.data;
-                        }else if(e.data == 3){
-                            _this.isobject = 'cardbkg';
                             _this.begin = e.data;
                         }
                     }
