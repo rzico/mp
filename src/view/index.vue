@@ -8,7 +8,7 @@
         </div>
     </div>
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../style/wx.less"/>
 
 <style scoped>
     .memo {
@@ -22,10 +22,10 @@
 <script>
     const event = weex.requireModule('event');
     const storage = weex.requireModule('storage');
-    import { POST, GET } from '../../assets/fetch'
-    import utils from '../../assets/utils'
-    import navbar from '../../include/navbar.vue';
-    import mobile from '../../include/mobile.vue';
+    import { POST, GET } from '../assets/fetch'
+    import utils from '../assets/utils'
+    import navbar from '../include/navbar.vue';
+    import mobile from '../include/mobile.vue';
 
     export default {
         components: {
