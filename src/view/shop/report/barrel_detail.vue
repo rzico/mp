@@ -36,7 +36,7 @@
                         <text class="returnMoney">{{c.sQuantity}}</text>
                         <text class="returnMoney">{{c.sReturnQuantity}}</text>
                         <text class="returnMoney">0</text>
-                        <text class="money">{{c.sQuantity - c.sReturnQuantity}}</text>
+                        <text class="money">{{c.sReturnQuantity-c.sQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="number"></text>

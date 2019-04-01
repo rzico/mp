@@ -36,7 +36,7 @@
                     <text class="returnMoney">{{c.sQuantity}}</text>
                     <text class="returnMoney">{{c.sReturnQuantity}}</text>
                     <text class="returnMoney">0</text>
-                    <text class="money">{{c.sQuantity - c.sReturnQuantity}}</text>
+                    <text class="money">{{c.sReturnQuantity-c.sQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="number"></text>
@@ -71,7 +71,7 @@
                     <text class="returnMoney">{{sQuantityTotal}}</text>
                     <text class="returnMoney">{{sReturnQuantityTotal}}</text>
                     <text class="returnMoney">0</text>
-                    <text class="money">{{sQuantityTotal - sReturnQuantityTotal}}</text>
+                    <text class="money">{{sReturnQuantityTotal-sQuantityTotal}}</text>
                 </div>
                 <div class="contentSmallCell">
                     <text class="number"></text>
@@ -91,7 +91,7 @@
                             <text class="returnMoney">{{t.sQuantity}}</text>
                             <text class="returnMoney">{{t.sReturnQuantity}}</text>
                             <text class="returnMoney">0</text>
-                            <text class="money">{{t.sQuantity - t.sReturnQuantity}}</text>
+                            <text class="money">{{t.sReturnQuantity-t.sQuantity}}</text>
                         </div>
                         <div class="contentSmallCell">
                             <text class="number"></text>
