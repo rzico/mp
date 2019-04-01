@@ -548,9 +548,9 @@
 //            });
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
-                if(!utils.isNull(e.data.data.id)  && e.data.data.id == 'gm_10212'){
-                    _this.view();
-                }
+//                if(!utils.isNull(e.data.data.id)  && e.data.data.id == 'gm_10212'){
+//                    _this.view();
+//                }
                 if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10200') {
 //                   获取订单数量
                     _this.getCount();

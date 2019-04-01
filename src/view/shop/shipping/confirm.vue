@@ -74,7 +74,7 @@
                     </div>
                     <div class="flex-row mt10" style="width: 590px" v-if="pledgePayable>0 || pledgeQuantity>0">
                         <text class="fz30" :class="[paperClass()]" >空桶押金: {{pledgePayable}}元</text>
-                        <text class="fz30" style="color: #999">（押桶数量: {{pledgeQuantity}}元）</text>
+                        <text class="fz30" style="color: #999">（押桶数量: {{pledgeQuantity}}个）</text>
                     </div>
                     <text class="herderSn mt10">付款方式: {{paymentPluginName}}</text>
                     <text class="herderSn mt10">收货地址: {{areaName}}{{address}}</text>
