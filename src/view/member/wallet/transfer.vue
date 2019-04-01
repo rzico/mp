@@ -22,7 +22,7 @@
             <text class="maxQuota">{{message}}</text>
             <div class="fontInput">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
-                <input class="input" type="number" placeholder="" maxlength="7":autofocus="true" value="" @input="onmoney"  />
+                <input class="input" type="number" placeholder="" maxlength="7" :autofocus="true" value="" @input="onmoney"  />
             </div>
             <div class="maxQuotaServicefee">
                 <div class="servicefeeText" v-bind:style="{visibility:hide}">

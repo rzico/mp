@@ -1230,7 +1230,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                if (utils.isRoles("3",_this.roles)) {
+                if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1257,7 +1257,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                if (utils.isRoles("3",_this.roles)) {
+                if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1333,7 +1333,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                if (utils.isRoles("3",_this.roles)) {
+                if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
