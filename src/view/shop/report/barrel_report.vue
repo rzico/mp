@@ -14,9 +14,6 @@
             <div class="tableTwo">
                 <text class="tableText">回桶</text>
             </div>
-            <div class="tableTwo">
-                <text class="tableText">退桶</text>
-            </div>
             <div class="tableThree">
                 <text class="tableText">欠桶</text>
             </div>
@@ -35,7 +32,6 @@
                     <text class="contentCellType">派单</text>
                     <text class="returnMoney">{{c.sQuantity}}</text>
                     <text class="returnMoney">{{c.sReturnQuantity}}</text>
-                    <text class="returnMoney">0</text>
                     <text class="money">{{c.sReturnQuantity-c.sQuantity}}</text>
                     </div>
                     <div class="contentSmallCell">
@@ -43,7 +39,6 @@
                         <text class="contentCellType">送货</text>
                         <text class="returnMoney">{{c.quantity}}</text>
                         <text class="returnMoney">{{c.returnQuantity}}</text>
-                        <text class="returnMoney">0</text>
                         <text class="money">{{c.quantity - c.returnQuantity}}</text>
                     </div>
                 </div>
@@ -70,7 +65,6 @@
                     <text class="contentCellType">派单</text>
                     <text class="returnMoney">{{sQuantityTotal}}</text>
                     <text class="returnMoney">{{sReturnQuantityTotal}}</text>
-                    <text class="returnMoney">0</text>
                     <text class="money">{{sReturnQuantityTotal-sQuantityTotal}}</text>
                 </div>
                 <div class="contentSmallCell">
@@ -78,7 +72,6 @@
                     <text class="contentCellType">送货</text>
                     <text class="returnMoney">{{quantityTotal}}</text>
                     <text class="returnMoney">{{returnQuantityTotal}}</text>
-                    <text class="returnMoney">0</text>
                     <text class="money">{{quantityTotal - returnQuantityTotal}}</text>
                 </div>
             </div>
@@ -90,7 +83,6 @@
                             <text class="contentCellType">派单</text>
                             <text class="returnMoney">{{t.sQuantity}}</text>
                             <text class="returnMoney">{{t.sReturnQuantity}}</text>
-                            <text class="returnMoney">0</text>
                             <text class="money">{{t.sReturnQuantity-t.sQuantity}}</text>
                         </div>
                         <div class="contentSmallCell">
@@ -98,7 +90,6 @@
                             <text class="contentCellType">送货</text>
                             <text class="returnMoney">{{t.quantity}}</text>
                             <text class="returnMoney">{{t.returnQuantity}}</text>
-                            <text class="returnMoney">0</text>
                             <text class="money">{{t.quantity - t.returnQuantity}}</text>
                         </div>
                     </div>
@@ -133,7 +124,7 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:112.5px;
+        width:135px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -141,7 +132,7 @@
         border-right-color: #777;
     }
     .tableThree{
-        width:112.5px;
+        width:135px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -225,7 +216,7 @@
     }
     .money{
         font-size: 30px;
-        width: 112.5px;
+        width: 135px;
         padding-right: 30px;
         text-align: right;
         lines:1;
@@ -233,14 +224,14 @@
     }
     .returnMoney{
         font-size: 30px;
-        width: 112.5px;
+        width: 135px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;
     }
     .contentCellType{
         font-size: 30px;
-        width: 112.5px;
+        width: 135px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
