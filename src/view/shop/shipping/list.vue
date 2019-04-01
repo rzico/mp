@@ -952,6 +952,7 @@
                 });
             },
             moreSingle(){
+
                 let _this = this;
                 if (this.clicked) {
                     return;
