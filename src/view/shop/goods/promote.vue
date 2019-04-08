@@ -3,7 +3,7 @@
         <navbar :title="title"  @goback="goback" > </navbar>
         <div class="info">
             <text class="fz32 color999">开通分成推广,让推广者帮你推广商品,获得更多订单。</text>
-            <text class="fz32 color999">推广者包含个人以及芸店合作渠道。</text>
+            <text class="fz32 color999">推广者包含个人以及合作渠道。</text>
             <text class="fz32 color999">你只需为因推广者而成功售出的商品付出佣金,交易不成功无需支付任何费用。</text>
             <div class="setting" @click="pickPattern()">
                 <div class="flex-row">
