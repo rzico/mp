@@ -179,7 +179,7 @@
                     <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 120px">&#xe662;</text>
                     <text class="menuBtn">我要开店</text>
                 </div>
-                <div class="menuTwo" @click="goods()" v-if="filter('activedShop')">
+                <div class="menuTwo" @click="activated()" v-if="filter('activedShop')">
                     <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
                     <text class="menuBtn">激活店铺</text>
                 </div>
@@ -892,10 +892,21 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
-                    _this.clicked = false;
-                    _this.view()
-                })
+                if(this.cashier.hasRealName){
+                    event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
+                        _this.clicked = false;
+                        _this.view()
+                    })
+                }else {
+                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'),function (mes) {
+                        _this.clicked = false;
+                        if(mes.type=="success"){
+                            event.openURL(utils.locate('view/shop/shop/newShop.js'),function (res) {
+                                _this.view()
+                            })
+                        }
+                    })
+                }
             },
             //            激活店铺
             activated(){
@@ -1216,6 +1227,18 @@
                            _this.getShippingConut();
 //                           获取权限
                            _this.permissions()
+                           if(res.data.expire <7 && res.data.expire >0){
+                               modal.confirm({
+                                   message: '您的店铺将于'+res.data.expire+'天后到期',
+                                   duration: 0.3,
+                                   okTitle:'立即缴费',
+                                   cancelTitle:'暂不缴费'
+                               }, function (value) {
+                                   if(value.result == '立即缴费'){
+                                       _this.activated()
+                                   }
+                               })
+                           }
                        }
                    } else {
                        event.toast(res.content);
