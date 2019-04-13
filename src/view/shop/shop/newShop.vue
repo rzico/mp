@@ -24,32 +24,20 @@
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="location" @click="location" v-if="hasAddress">
+        <div class="location" @click="location">
             <div class="left">
-            <text class="businessLocation">所在区位</text>
+            <text class="businessLocation">所在地区</text>
             </div>
             <div class="right">
                 <text class="generalLocation">{{addressName}}</text>
                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="appellation"  v-if="hasAddress">
+        <div class="appellation"  >
             <text class="detailedAddress">详细地址</text>
             <div class="flex-row">
             <input type="text" placeholder="请输入详细地址" class="addressInput"  v-model="detailedAddress" @change="" @input="oninput4"/>
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-            </div>
-        </div>
-        <div class="gpsBox" @click="getGps()"  v-if="!hasChange && !hasAddress">
-            <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-            <text class="sub_title">点击定位</text>
-        </div>
-        <div class="changeGpsBox"  v-if="hasChange">
-            <text class="gpsIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-            <text class="changeAddress">{{detailedAddress}}</text>
-            <div class="changeBox" @click="getGps()">
-            <text class="changeIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                <text class="changeText">修改</text>
             </div>
         </div>
         <div class="appellation">
@@ -315,7 +303,6 @@
 //              =========================================
 //              具体地址
               addressName:'',
-              hasAddress:false,
               hasChange:false,
               category:1,
               industryName:'',
@@ -347,32 +334,6 @@
             }
         },
         methods:{
-//            获取经纬度
-            getGps:function(){
-                let _this = this
-                event.getLocation(function (data) {
-                    if(data.type == 'success'){
-                        _this.lng = data.data.lng;
-                        _this.lat = data.data.lat;
-                        _this.addressName = data.data.province + data.data.city +data.data.district;
-                        _this.detailedAddress = data.data.address;
-                        GET("/lbs/get.jhtml?lng=" + data.data.lng + "&lat=" +data.data.lat,function (mes) {
-                            if (mes.type == 'success') {
-                                _this.areaId = mes.data.areaId;
-                            } else {
-                                event.toast(res.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
-                        })
-                        _this.hasChange = false;
-                        _this.hasAddress = true
-                    }else {
-                        event.toast('定位失败，请开启GPS')
-                        _this.hasAddress = false
-                    }
-                })
-            },
             modification:function () {
                 var _this = this;
                 GET('weex/member/shop/view.jhtml?shopId='+_this.shopId,function (mes) {
@@ -427,10 +388,13 @@
             },
             location:function () {
                 var _this = this;
-                event.openURL(utils.locate('widget/city.js'), function (data) {
+                event.openURL(utils.locate('view/member/amap-picker/amap-picker.js?title='+encodeURIComponent('选择地址')+'&isPolygon=false'), function (data) {
                     if(data.type == 'success' && data.data !='' ) {
-                        _this.addressName = data.data.name
-                        _this.areaId = data.data.chooseId
+                        _this.addressName = data.data.areaName;
+                        _this.detailedAddress = data.data.building;
+                        _this.areaId = data.data.areaId;
+                        _this.lat = data.data.latitude;
+                        _this.lng = data.data.longitude;
                     }
                 })
             },
