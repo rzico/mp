@@ -223,7 +223,8 @@
 //                showMenu:false,
                 clicked:false,
                 time:null,
-                soundfile:null
+                soundfile:null,
+                unReadMessage:0
             }
         },
         components: {
@@ -301,6 +302,10 @@
 //            创建前
             var _this = this;
             utils.initIconFont();
+            //            设置底部导航未读消息原点
+            this.unReadMessage = event.getUnReadMessageCount();
+            var mesData = [0,0,0,this.unReadMessage,0];
+            event.setDots(mesData);
             let listoption = {
                 type:'message',//类型
                 keyword:'',//关键址
@@ -336,7 +341,9 @@
                     audio.play(_this.soundfile);
                     _this.soundfile = null;
                 }
-
+                _this.unReadMessage = event.getUnReadMessageCount();
+                var mesData = [0,0,0,_this.unReadMessage,0];
+                event.setDots(mesData);
             });
             //           添加好友消息红点控制
             globalEvent.addEventListener("onNewFriendChange", function (e) {

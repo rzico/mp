@@ -294,7 +294,7 @@
 
 <script>
     import {dom,event,stream} from '../../weex.js';
-    import {getLetter,dictFirstLetter} from '../../assets/letter';
+//    import {getLetter,dictFirstLetter} from '../../assets/letter';
     import navbar from '../../include/navbar.vue'
     import { POST, GET,SCAN } from '../../assets/fetch';
     import search from '../../include/search.vue';
@@ -505,9 +505,11 @@
                                 firstLetter = '#';
                             }else{
 //                          获取首字母
-                                firstLetter = getLetter.getFirstLetter(jsonData.nickName.substring(0,1));
+                                firstLetter = jsonData.letter;
                             }
-
+                            if(utils.isNull(firstLetter)){
+                                firstLetter='#'
+                            }
                             _this.friendsList.forEach(function (item) {
                                 if(item.letter == firstLetter){
                                     item.name.push(jsonData);
@@ -578,7 +580,7 @@
                                     })
                                 }else{
                                     _this.friendsList.forEach(function (item) {
-                                        if(item.letter == getLetter.getFirstLetter(friend.nickName.substring(0,1))){
+                                        if(item.letter == friend.letter){
                                             let option = {
                                                 type:'friend',
                                                 key:'u' + (10200 + friend.id),//用于之后删除好友方便查找key

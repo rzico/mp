@@ -58,15 +58,15 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between" @click="areaChoose">
-                    <div class="flex-row">
-                        <text class="title ml10">所在地</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">{{areaName}}</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between" @click="areaChoose">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">所在地</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{areaName}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="cell-panel space-between " @click="goAutograph">
                     <div class="flex-row">
                         <text class="title ml10">个性签名</text>
