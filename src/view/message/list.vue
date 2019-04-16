@@ -303,9 +303,6 @@
             var _this = this;
             utils.initIconFont();
             //            设置底部导航未读消息原点
-            this.unReadMessage = event.getUnReadMessageCount();
-            var mesData = [0,0,0,this.unReadMessage,0];
-            event.setDots(mesData);
             let listoption = {
                 type:'message',//类型
                 keyword:'',//关键址
@@ -354,6 +351,11 @@
                     }
                 })
             });
+
+            this.unReadMessage = event.getUnReadMessageCount();
+            var mesData = [0,0,0,this.unReadMessage,0];
+            event.setDots(mesData);
+
         },
 
         beforeMount(){
