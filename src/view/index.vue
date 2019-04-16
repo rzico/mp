@@ -1,8 +1,10 @@
 <template>
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
-        <mobile :title="mbtitle" :mobile="mobile" :value="value" @onSend="onSend" @onChange="onChange"> </mobile>
+        <mobile :title="mbtitle" :value="value" @onSend="onSend" @onChange="onChange"> </mobile>
         <div class="memo">
+            <text class="title">登录即注册,表示同意</text>
+            <text class="title" style="color:#0088fb">《用户注册协议》</text>
         </div>
     </div>
 </template>
@@ -18,12 +20,10 @@
     }
 </style>
 <script>
-    const modal = weex.requireModule('modal');
+    const event = weex.requireModule('event');
     const storage = weex.requireModule('storage');
-    import utils from '../assets/utils';
-    var stream = weex.requireModule('stream');
-    var event = weex.requireModule('event');
     import { POST, GET } from '../assets/fetch'
+    import utils from '../assets/utils'
     import navbar from '../include/navbar.vue';
     import mobile from '../include/mobile.vue';
 
@@ -33,58 +33,45 @@
         },
         props: {
             value: { default: "" },
-            title: { default: "绑定手机" },
-            mbtitle: { default: "绑定手机号" }
+            title: { default: "登录" },
+            mbtitle: { default: "手机验证码登录" }
         },
         created () {
             storage.getItem('mobile', event => {
                 if (event.data!="" && event.data!="undefined") {
                     this.value = event.data
-
                 }
             })
         },
         methods: {
             onSend: function (e) {
                 var _this = this;
-                if (utils.isNull(this.value)) {
-                    modal.alert({
-                        message: "请输入手机号",
-                        okTitle: '知道了'
-                    })
-                    return;
-                }
-                if (this.value.length!=11) {
-                    modal.alert({
-                        message: "请输入11位手机号",
-                        okTitle: '知道了'
-                    })
-                    return;
-                }
-                event.encrypt(_this.value, function (message){
-                    if (message.type == "success") {
-                        POST('weex/member/mobile/send_mobile.jhtml?mobile=' + message.data).then(
-                            function (weex) {
-                                if (weex.type == "success") {
-                                    event.openURL(utils.locate("view/member/mobile/captcha.js?mobile=" +_this.value) ,function (res) {
-                                        event.closeURL(res);
-                                    })
+                event.encrypt(_this.value,function (message) {
+                    if (message.type=="success") {
+                        POST('weex/login/send_mobile.jhtml?mobile=' + message.data).then(
+                            function (data) {
+                                if (data.type == "success") {
+                                    event.openURL(utils.locate('view/login/captcha.js?mobile=' +_this.value),function (e) {
+                                        event.closeURL(e);
+                                    });
                                 } else {
-                                    event.toast(weex.content)
+                                    event.toast(data.content);
                                 }
-
                             }, function (err) {
-                                event.toast(err.content)
-                            })
+                                event.toast("网络不稳定");
+                            }
+                        )
+                    } else {
+                        event.toast(message.content);
                     }
-                })
+                });
             },
             goback:function(e) {
-                event.closeURL();
+                let E = utils.message('success','成功','');
+                event.closeURL(E);
             },
             onChange: function (e) {
-                var _this = this;
-                _this.value = e
+                this.value = e;
             }
         }
     }

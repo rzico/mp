@@ -28,7 +28,7 @@
                 </div>
             </cell>
             <cell v-if="inPolygon==false">
-                <noData :noDataHint="'不在配送范围内'"></noData>
+                <noData :noDataHint="'不在配送范围内'" :ptNumber="100"></noData>
             </cell>
         </list>
     </div>
@@ -178,10 +178,9 @@
             if(!utils.isNull(isPolygon)){
                 this.isPolygon = (isPolygon=='true')
             }
-            event.toast(this.isPolygon)
             this.amapHeight = utils.fullScreen(136)/2;
             this.coverTop = this.amapHeight/2-30;
-            this.listHeight = utils.fullScreen(236);
+            this.listHeight = utils.fullScreen(utils.getHeaderHeight+100) - this.amapHeight;
             event.getLocation(function (e) {
                 if (e.type=='success') {
                     _this.longitude = e.data.lng;
@@ -211,14 +210,7 @@
             // 接口
             open_lbs: function () {
                 var _this = this
-                let E = {
-                    lat: this.latitude,
-                    lng: this.longitude,
-                    xmid: utils.xmid,
-                    isPolygon: _this.isPolygon
-                }
-                let Data = URIEncrypt(E);
-                GET("/lbs/regeoCode.jhtml?" + Data, function (res) {
+                GET("/lbs/regeoCode.jhtml?lat="+this.latitude + '&lng='+this.longitude +'&xmid=' +utils.xmid +'&isPolygon='+this.isPolygon, function (res) {
                     if (res.type == "success") {
                         _this.regeocode = res.data;
                         _this.inPolygon = res.data.inPolygon;
@@ -279,16 +271,9 @@
                 }, 500)
 
             },
-            searchPoi(e) {
+            searchPoi() {
                 var _this = this;
-                let E = {
-                    areaId: _this.regeocode.areaId,
-                    keyword: _this.keyword,
-                    xmid: utils.xmid,
-                    isPolygon: _this.isPolygon
-                }
-                let Data = URIEncrypt(E);
-                GET("/lbs/geoQuery.jhtml?" + Data, function (res) {
+                GET("/lbs/geoQuery.jhtml?areaId="+this.regeocode.areaId + '&keyword='+encodeURIComponent(this.keyword) +'&xmid=' +utils.xmid +'&isPolygon='+this.isPolygon, function (res) {
                         if (res.type == 'success') {
                             _this.regeocode.pois = res.data.pois;
                             _this.inPolygon = _this.regeocode.pois.length>0;

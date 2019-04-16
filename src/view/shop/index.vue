@@ -562,7 +562,6 @@
             });
             //            监听登陆成功.
             globalEvent.addEventListener("login", function (e) {
-                event.toast('登陆')
                 _this.view();
             });
             //            监听注销.

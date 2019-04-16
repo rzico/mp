@@ -11,7 +11,7 @@
         <div class="appellation">
             <text class="vendorName">商家名称</text>
             <div style="flex-direction: row;align-items: center">
-            <input type="text" placeholder="请输入商家名称" class="input" v-model="vendorName" @change="" @input="oninput"/>
+            <input type="text" placeholder="请输入商家名称" class="input" v-model="vendorName" />
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
@@ -36,21 +36,21 @@
         <div class="appellation"  >
             <text class="detailedAddress">详细地址</text>
             <div class="flex-row">
-            <input type="text" placeholder="请输入详细地址" class="addressInput"  v-model="detailedAddress" @change="" @input="oninput4"/>
+            <input type="text" placeholder="请输入详细地址" class="addressInput"  v-model="detailedAddress"/>
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
         <div class="appellation">
             <text class="contactName">联系姓名</text>
             <div style="flex-direction: row;align-items: center">
-            <input type="text" placeholder="请输入联系姓名" class="input" v-model="contactName" @change="" @input="oninput2"/>
+            <input type="text" placeholder="请输入联系姓名" class="input" v-model="contactName" @change="" />
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
         <div class="appellation">
             <text class="contactNumber">联系电话</text>
             <div style="flex-direction: row;align-items: center">
-            <input type="number" placeholder="请输入联系电话"  maxlength="11" class="input" v-model="contactNumber" @change="" @input="oninput3"/>
+            <input type="number" placeholder="请输入联系电话"  maxlength="11" class="input" v-model="contactNumber" />
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
@@ -358,22 +358,6 @@
                     event.toast(err.content)
                 })
             },
-            oninput:function (event){
-                this.vendorName = event.value;
-                console.log('oninput', event.value);
-            },
-            oninput2:function (event){
-                this.contactName = event.value;
-                console.log('oninput2', event.value);
-            },
-            oninput3:function (event){
-                this.contactNumber = event.value;
-                console.log('oninput3', event.value);
-            },
-            oninput4:function (event){
-                this.detailedAddress = event.value;
-                console.log('oninput4', event.value);
-            },
             goback:function () {
                 event.closeURL()
             },
@@ -404,28 +388,28 @@
                 }
                 this.clicked = true;
                 var _this=this;
-                if(_this.vendorName ==''){
+                if(utils.isNull(_this.vendorName)){
                     event.toast('商家名称未填写');
                     _this.clicked =false
                     return
-                }if(_this.industryName == ''){
+                }if(utils.isNull(_this.industryName)){
                     event.toast('所属行业未选择');
                     _this.clicked =false
                     return
-                }if(_this.addressName == ''){
+                }if(utils.isNull(_this.addressName)){
                     event.toast('商家区位未选择');
                     _this.clicked =false
                     return
-                }if(_this.detailedAddress == ''){
+                }if(utils.isNull(_this.detailedAddress)){
                     event.toast('商家地址未填写');
                     _this.clicked =false
                     return
                 }
-                if(_this.contactName == ''){
+                if(utils.isNull(_this.contactName)){
                     event.toast('联系姓名未填写');
                     _this.clicked =false
                     return
-                }if(_this.contactNumber == ''){
+                }if(utils.isNull(_this.contactNumber)){
                     event.toast('联系电话未填写');
                     _this.clicked =false
                     return
