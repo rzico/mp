@@ -860,6 +860,28 @@
                     _this.updateUserInfo();
                 }
             });
+            //            监听登陆成功.
+            globalEvent.addEventListener("login", function (e) {
+                _this.pageStart = 0;
+                //           获取用户信息;
+                _this.updateUserInfo();
+//            获取文集列表
+                _this.getCorpus();
+//            获取专栏信息
+                _this.openTopic();
+                _this.getAllArticle();
+            });
+            //            监听注销.
+            globalEvent.addEventListener("logout", function (e) {
+                _this.pageStart = 0;
+                //           获取用户信息;
+                _this.updateUserInfo();
+//            获取文集列表
+                _this.getCorpus();
+//            获取专栏信息
+                _this.openTopic();
+                _this.getAllArticle();
+            });
 
         },
 

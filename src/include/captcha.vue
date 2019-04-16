@@ -5,7 +5,7 @@
         </div>
 
         <div class="content">
-            <div style="flex-direction: row">
+            <div style="flex-direction: row;align-items: center">
             <text class="title">我们已向</text><text  class="number">{{tel}}</text>
             </div>
             <text class="title">发送验证码短信，请查看短信并输入验证码</text>

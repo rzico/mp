@@ -560,6 +560,15 @@
                     _this.getShippingConut();
                 }
             });
+            //            监听登陆成功.
+            globalEvent.addEventListener("login", function (e) {
+                event.toast('登陆')
+                _this.view();
+            });
+            //            监听注销.
+            globalEvent.addEventListener("logout", function (e) {
+                _this.view();
+            });
         },
         methods: {
             openWebView(data){
@@ -568,8 +577,11 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(data)), function () {
+                setTimeout(function () {
                     _this.clicked = false;
+                },1500)
+                event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(data)), function () {
+
                 });
             },
 //            显示收银
@@ -593,17 +605,18 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {
-                    _this.clicked =false
                     _this.getCount()
                 });
             },
@@ -614,6 +627,9 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (utils.isNull(_this.shopId)) {
                     _this.view()
                     if(utils.isNull(_this.shopId)) {
@@ -621,13 +637,12 @@
                             message: '无店铺授权',
                             okTitle: 'OK'
                         })
-                        _this.clicked = false
                         return
 
                     }
                 }
                 event.openURL(utils.locate('view/shop/card/add.js'), function(data) {
-                        _this.clicked = false;
+
                     }
                 );
             },
@@ -780,8 +795,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=0&productCategoryId=1'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -794,8 +811,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -808,8 +827,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -822,8 +843,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -836,8 +859,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=0&productCategoryId=1'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -850,8 +875,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=1&productCategoryId=2'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -864,8 +891,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=3'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -878,8 +907,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=4'), function(data) {
-                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -892,14 +923,15 @@
                 }
                 this.clicked = true;
                 let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if(this.cashier.hasRealName){
                     event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
-                        _this.clicked = false;
                         _this.view()
                     })
                 }else {
                     event.openURL(utils.locate('view/member/bank/bindFirstStep.js'),function (mes) {
-                        _this.clicked = false;
                         if(mes.type=="success"){
                             event.openURL(utils.locate('view/shop/shop/newShop.js'),function (res) {
                                 _this.view()
@@ -915,9 +947,11 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 POST('weex/member/topic/activate.jhtml').then(
                     function (mes) {
-                        _this.clicked = false;
                         if (mes.type == "success") {
                             if (utils.isNull(mes.data)) {
                                 _this.view();
@@ -928,7 +962,6 @@
                             event.toast(mes.content);
                         }
                     }, function (err) {
-                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )
@@ -1041,13 +1074,15 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
@@ -1058,13 +1093,15 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
@@ -1080,16 +1117,18 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {});
             },
             gocoupon:function () {
                 if (this.clicked==true) {
@@ -1097,16 +1136,18 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});
             },
             godistribution:function () {
                 if (this.clicked==true) {
@@ -1114,16 +1155,18 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {});
             },
             goods:function () {
                 if (this.clicked==true) {
@@ -1131,16 +1174,18 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/manage.js"),function (e) {_this.clicked = false});
+                event.openURL(utils.locate("view/shop/goods/manage.js"),function (e) {});
             },
             order:function () {
                 if (this.clicked==true) {
@@ -1148,17 +1193,18 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/order/list.js"),function (e) {
-                    _this.clicked = false
                     _this.getCount()
                     _this.getShippingConut();
                 });
@@ -1256,17 +1302,18 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("123",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/shipping/list.js"),function (e) {
-                    _this.clicked =false
                     _this.getCount()
                     _this.getShippingConut();
                 });
@@ -1277,12 +1324,14 @@
                 }
                 this.clicked = true;
                 let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
-                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/report/index.js"),function (e) {_this.clicked =false});

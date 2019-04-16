@@ -142,7 +142,6 @@
         align-items: center;
     }
     .messageTimeBox{
-        height: 45px;
         justify-content: center;
         flex: 2;
         align-items: flex-end;
@@ -163,7 +162,6 @@
         /*padding-bottom: 8px;*/
         flex:4;
         /*height: 100px;*/
-        height: 45px;
         justify-content: center;
         /*margin-left: 20px;*/
     }
@@ -302,30 +300,15 @@
 //            创建前
             var _this = this;
             utils.initIconFont();
-            //            设置底部导航未读消息原点
-            let listoption = {
-                type:'message',//类型
-                keyword:'',//关键址
-                orderBy:'desc',//"desc"降序 ,"asc"升序
-                current:0,
-                pageSize:0,
-            };
-            this.selfUserId = event.getUserId();
-//            读取本地缓存
-            event.findList(listoption,function (data) {
-                if(data.type == 'success' && data.data != ''){
-                    data.data.forEach(function (item) {
-//                        item.value = JSON.parse(item.value);
-                        _this.messageList.push(JSON.parse(item.value));
-//                        _this.messageList.push(item);
-                    })
-//                    })
-                }else if(data.type == 'success'){
-
-                }else{
-                    event.toast(data.content);
-                }
-            })
+            this.getStorage()
+            //            监听登陆成功.
+            globalEvent.addEventListener("login", function (e) {
+                _this.getStorage();
+            });
+            //            监听注销.
+            globalEvent.addEventListener("logout", function (e) {
+                _this.getStorage();
+            });
             globalEvent.addEventListener("onMessage", function (e) {
 //                    用户消息没有userId。只有id。
                 e.data.data.userId = utils.isNull(e.data.data.userId) ? e.data.data.id : e.data.data.userId;
@@ -374,6 +357,33 @@
             }
         },
         methods:{
+            getStorage(){
+                let _this =this;
+                this.messageList = [];
+                let listoption = {
+                    type:'message',//类型
+                    keyword:'',//关键址
+                    orderBy:'desc',//"desc"降序 ,"asc"升序
+                    current:0,
+                    pageSize:0,
+                };
+                this.selfUserId = event.getUserId();
+//            读取本地缓存
+                event.findList(listoption,function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        data.data.forEach(function (item) {
+//                        item.value = JSON.parse(item.value);
+                            _this.messageList.push(JSON.parse(item.value));
+//                        _this.messageList.push(item);
+                        })
+//                    })
+                    }else if(data.type == 'success'){
+
+                    }else{
+                        event.toast(data.content);
+                    }
+                })
+            },
             classHeader:function () {
                 let dc = utils.device();
                 return dc
