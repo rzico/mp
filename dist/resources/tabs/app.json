@@ -1,0 +1,47 @@
+{
+  "label": "1",
+  "color": "#707070",
+  "selectedColor": "#068F3D",
+  "borderStyle": "#ececec",
+  "backgroundColor": "#068F3D",
+  "style": "single",
+  "index": "file://pages/index/index.js",
+    "tabBar": [
+      {
+        "en": "Index",
+        "zh": "首页",
+        "text": "首页",
+        "path": "file://view/shop/cashier/index.js",
+        "icon": "tab1",
+        "requireAuth":"false",
+        "selectedIconPath": "tab1_focus"
+      },
+      {
+        "en": "VIP",
+        "zh": "会员",
+        "text": "会员",
+        "path": "file://view/friend/list.js",
+        "icon": "tab2",
+        "requireAuth":"true",
+        "selectedIconPath": "tab2_focus"
+      },
+      {
+        "en": "Message",
+        "zh": "消息",
+        "text": "消息",
+        "path": "file://view/message/list.js",
+        "icon": "tab3",
+        "requireAuth":"true",
+        "selectedIconPath": "tab3_focus"
+      },
+      {
+        "en": "Mine",
+        "zh": "我的",
+        "text": "我的",
+        "path": "file,://view/member/mine.js",
+        "icon": "tab4",
+        "requireAuth":"true",
+        "selectedIconPath": "tab4_focus"
+      }
+    ]
+}
