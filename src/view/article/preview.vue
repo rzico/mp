@@ -1127,35 +1127,21 @@
                     cancelTitle:'取消',
                 }, function (value) {
                     if(value == '删除'){
-                        let findData = {
-                            type:'article',
-                            key:_this.articleId
-                        }
-                        event.find(findData,function (item) {
-                            if(item.type == 'success' && item.data!=''){
-                                item.data.value = JSON.parse(item.data.value);
-                                item.data.value.articleOption.articleCatalog.id = 99;
-                                item.data.value.articleOption.articleCatalog.name = '回收站';
-                                let saveData = {
-                                    type:item.data.type,
-                                    key:item.data.key,
-                                    value:JSON.stringify(item.data.value),
-                                    sort:'0,0000000000',
-                                    keyword:',[99],' + item.data.value.title + ','
+                        POST('weex/member/article/delete.jhtml?articleId=' + _this.articleId).then(
+                            function (e) {
+                                if (e.type == 'success') {
+                                    event.toast('删除成功');
+                                    let listenData = utils.message('success','文章改变','');
+                                    event.sendGlobalEvent('onArticleChange',listenData);
+                                    event.closeURL();
+                                } else {
+                                    event.toast(e.content);
                                 }
-                                event.save(saveData,function(data){
-                                    if(data.type == 'success'){
-                                        event.toast('删除成功');
-//                                    全局监听文章变动
-                                        let listenData = utils.message('success','文章改变','')
-                                        event.sendGlobalEvent('onArticleChange',listenData);
-                                        event.closeURL();
-                                    }else{
-                                        event.toast(data.content);
-                                    };
-                                });
-                            };
-                        });
+                            },
+                            function (err) {
+                                event.toast(err.content);
+                            }
+                        )
                     };
                 });
             },
