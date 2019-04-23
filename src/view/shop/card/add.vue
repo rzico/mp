@@ -106,7 +106,7 @@
         created(){
             utils.initIconFont();
             this.load();
-            this.saveImage = utils.website("/spread/show.jhtml?id=&uid="+ event.getUId() +'&xmid=' + utils.xmid)
+            this.saveImage = utils.website("/spread/show.jhtml?id=&uid="+ event.getUId())
         },
         methods: {
             goback: function (e) {

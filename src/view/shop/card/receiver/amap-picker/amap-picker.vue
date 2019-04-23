@@ -204,7 +204,6 @@
                 let E = {
                     lat: this.latitude,
                     lng: this.longitude,
-                    xmid: utils.xmid
                 }
                 let Data = URIEncrypt(E);
                 GET("/lbs/regeoCode.jhtml?" + Data, function (res) {
@@ -270,8 +269,7 @@
                 var _this = this;
                 let E = {
                     areaId: _this.regeocode.areaId,
-                    keyword: _this.keyword,
-                    xmid: utils.xmid
+                    keyword: _this.keyword
                 }
                 let Data = URIEncrypt(E);
                 GET("/lbs/geoQuery.jhtml?" + Data, function (res) {

@@ -210,7 +210,7 @@
             // 接口
             open_lbs: function () {
                 var _this = this
-                GET("/lbs/regeoCode.jhtml?lat="+this.latitude + '&lng='+this.longitude +'&xmid=' +utils.xmid +'&isPolygon='+this.isPolygon, function (res) {
+                GET("/lbs/regeoCode.jhtml?lat="+this.latitude + '&lng='+this.longitude  +'&isPolygon='+this.isPolygon, function (res) {
                     if (res.type == "success") {
                         _this.regeocode = res.data;
                         _this.inPolygon = res.data.inPolygon;
@@ -273,7 +273,7 @@
             },
             searchPoi() {
                 var _this = this;
-                GET("/lbs/geoQuery.jhtml?areaId="+this.regeocode.areaId + '&keyword='+encodeURIComponent(this.keyword) +'&xmid=' +utils.xmid +'&isPolygon='+this.isPolygon, function (res) {
+                GET("/lbs/geoQuery.jhtml?areaId="+this.regeocode.areaId + '&keyword='+encodeURIComponent(this.keyword) +'&isPolygon='+this.isPolygon, function (res) {
                         if (res.type == 'success') {
                             _this.regeocode.pois = res.data.pois;
                             _this.inPolygon = _this.regeocode.pois.length>0;
