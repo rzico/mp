@@ -5,7 +5,7 @@
         <!--搜索-->
         <div class='search'>
             <text class="searchIcon" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-            <input class='searchInput' return-key-type="search" placeholder='搜索小区/写字楼等' v-model="keyword" @return="searchPoi"/>
+            <input class='searchInput' ref="searchInputRef" return-key-type="search" placeholder='搜索小区/写字楼等' v-model="keyword" @return="searchPoi"/>
             <div class='searchButton'>
                 <text class="searchButtonText" @click="searchPoi">搜索</text>
             </div>
@@ -266,6 +266,8 @@
 
             },
             searchPoi(e) {
+                //让input失去焦点
+                this.$refs.searchInputRef.blur();
                 var _this = this;
                 let E = {
                     areaId: _this.regeocode.areaId,

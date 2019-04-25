@@ -1,49 +1,83 @@
 <template>
     <div class="wrapper">
         <navbar :title="title"  @goback="goback" > </navbar>
-        <div class="info">
-            <text class="fz32 color999">开通分成推广,让推广者帮你推广商品,获得更多订单。</text>
-            <text class="fz32 color999">推广者包含个人以及合作渠道。</text>
-            <text class="fz32 color999">你只需为因推广者而成功售出的商品付出佣金,交易不成功无需支付任何费用。</text>
-            <div class="setting" @click="pickPattern()">
-                <div class="flex-row">
-                    <text class="fz32 primary">升级VIP条件:  {{isPattern}}</text>
-                </div>
-                <div class="flex-row flex-end">
+        <list show-scrollbar="false">
+            <cell>
+                <div class="headerCell" @click="pickType()">
+                    <text class="fz32 primary">考核指标:  {{promoterType | watchType}}</text>
                     <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
-            </div>
-            <div class="setting" v-if="isMoney()">
-                <div class="flex-row">
-                    <text class="fz32 primary">指定金额(元) :  </text>
-                    <input class="input"   placeholder="请输入金额" type="number" v-model="amount"/>
+                <div class="info" v-if="promoterType != 'any'">
+                    <div class="setting" @click="pickPattern()">
+                        <div class="flex-row">
+                            <text class="fz32 primary">升级VIP条件:  {{vipPattern | watchVipType}}</text>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                    <text class="fz32 color999 mt20">开通分成推广,让推广者帮你推广商品,获得更多订单。</text>
+                    <div class="setting" v-if="isVipMoney()">
+                        <div class="flex-row">
+                            <text class="fz32 primary">{{promoterType == 'quantity' ? '指定数量':'指定金额(元)'}} :  </text>
+                            <input class="input" :placeholder="promoterType == 'quantity' ? '请输入数量':'请输入金额'" type="number" v-model="amount"/>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="setting" @click="pickObject()">
-                <div class="flex-row">
-                    <text class="fz32 primary">谁能获得分润:  {{isobject}}</text>
+                <div class="info" v-if="promoterType != 'any'">
+                    <div class="setting" @click="pickAgent()">
+                        <div class="flex-row">
+                            <text class="fz32 primary">成为代理商条件:  {{agentPattern | watchAgentType}}</text>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                    <text class="fz32 color999 mt20">开通分成推广,让推广者帮你推广商品,获得更多订单。</text>
+                    <div class="setting" v-if="isAgentMoney()">
+                        <div class="flex-row">
+                            <text class="fz32 primary">{{promoterType == 'quantity' ? '指定数量':'指定金额(元)'}} :  </text>
+                            <input class="input" :placeholder="promoterType == 'quantity' ? '请输入数量':'请输入金额'" type="number" v-model="agentAmount"/>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-row flex-end">
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                <div class="completeButton bkg-primary" @click="complete()">
+                    <text class="fz40" style="color:white">完成</text>
                 </div>
-            </div>
-        </div>
-        <div class="completeButton bkg-primary" @click="complete()">
-            <text class="fz40" style="color:white">完成</text>
-        </div>
-        <div class="warning">
-            <text class="fz32 color999">提示:设置完成后,请添加分销政策来设置佣金比例，系统支持返现金与积分方式。</text>
-            <text class="fz32 color999">通过本平台产生的店铺积分，1分=1元可在店铺内当现金消费。</text>
-        </div>
+                <div class="warning">
+                    <text class="fz32 color999">提示:设置完成后,请添加分销政策来设置佣金比例，系统支持返现金与积分方式。</text>
+                    <text class="fz32 color999">通过本平台产生的店铺积分，1分=1元可在店铺内当现金消费。</text>
+                </div>
+                <div style="height: 500px" v-if="promoterType != 'any'"></div>
+            </cell>
+        </list>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .headerCell{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        padding: 30px;
+        border-color:#eeeeee;
+        border-width: 1px;
+        border-radius: 10px;
+        background-color: white;
+    }
     .info{
         flex-direction: column;
         justify-content: center;
-        margin: 20px;
-        padding: 30px;
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-top: 10px;
+        padding-left: 30px;
+        padding-right: 30px;
+        padding-bottom: 30px;
         border-color:#eeeeee;
         border-width: 1px;
         border-radius: 10px;
@@ -54,7 +88,10 @@
         align-items: center;
         justify-content: center;
         border-radius: 15px;
-        margin: 20px;
+        margin-top: 40px;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-bottom: 20px;
     }
     .warning{
         padding: 30px;
@@ -93,13 +130,15 @@
     export default {
         data: function () {
             return {
-                isobject:'任何用户',
                 begin:0,
                 beginPattern:0,
-                PromoterType:'',
-                Pattern:'',
-                isPattern:'无门槛',
-                amount:''
+                beginType:0,
+                beginAgent:0,
+                promoterType:'',
+                vipPattern:'',
+                agentPattern:'',
+                amount:'',
+                agentAmount:''
             }
         },
         components: {
@@ -107,6 +146,43 @@
         },
         props: {
             title: {default: "分润设置"},
+        },
+        filters:{
+          watchType(e){
+              if(e == 'any'){
+                  return '不启用'
+              }else if(e == 'quantity'){
+                  return '按购买数量考核'
+              }else if(e == 'amount'){
+                  return '按购买金额考核'
+              }
+          },
+            watchVipType(e){
+                if(e== 'pattern1'){
+                   return '无门槛'
+                } else if(e == 'pattern2'){
+                    return '购买任意商品'
+                } else if(e == 'pattern3'){
+                    return '购买分销商品'
+                }else if(e == 'pattern4'){
+                    return '单笔消费满指定金额'
+                }else if(e == 'pattern5'){
+                    return '累计消费满指定金额'
+                }
+            },
+            watchAgentType(e){
+                if(e== 'pattern1'){
+                    return '不启用'
+                } else if(e == 'pattern2'){
+                    return '购买任意商品'
+                } else if(e == 'pattern3'){
+                    return '购买分销商品'
+                }else if(e == 'pattern4'){
+                    return '单笔消费满指定金额'
+                }else if(e == 'pattern5'){
+                    return '累计消费满指定金额'
+                }
+            },
         },
         created() {
             utils.initIconFont();
@@ -116,53 +192,96 @@
             goback(){
                 event.closeURL();
             },
-//            控制指定金额是否渲染
-            isMoney:function () {
-              if(this.isPattern == '单笔消费满指定金额' || this.isPattern == '累计消费满指定金额'){
+//            控制vip指定金额是否渲染
+            isVipMoney:function () {
+              if(this.vipPattern == 'pattern4' || this.vipPattern == 'pattern5'){
                   return true
               }else{
                   return false
               }
+            },
+            //            控制代理商指定金额是否渲染
+            isAgentMoney:function () {
+                if(this.agentPattern == 'pattern4' || this.agentPattern == 'pattern5'){
+                    return true
+                }else{
+                    return false
+                }
             },
 //            获取专栏信息
             getTopic:function () {
                 let _this = this
                 GET("weex/member/topic/option.jhtml",function (res) {
                     if (res.type=='success') {
+                        _this.promoterType = res.data.promoterType;
+                        _this.amount = res.data.amount;
+                        _this.agentAmount = res.data.agentAmount;
                         if(res.data.promoterType == 'any'){
-                            _this.isobject = '任何用户';
-                            _this.begin = 0;
-                            _this.isPattern = '无门槛'
-                        }if(res.data.promoterType == 'team'){
-                            _this.isobject = 'VIP会员';
-                            _this.begin = 1;
-                            _this.isPattern = '无门槛'
-                        }if(res.data.promoterType == 'partenr'){
-                            _this.isobject = '分红股东';
-                            _this.begin = 2
-                        }if(res.data.pattern == 'pattern1'){
-                            _this.isPattern = '无门槛';
+                            _this.beginType = 0;
+                        } else if(res.data.promoterType == 'quantity'){
+                            _this.beginType = 1;
+                        } else if(res.data.promoterType == 'amount'){
+                            _this.beginType = 2
+                        }
+                        if(res.data.pattern == 'pattern1'){
+                            _this.vipPattern = res.data.pattern;
                             _this.beginPattern = 0
-                        }if(res.data.pattern == 'pattern2'){
-                            _this.isPattern = '购买任意商品';
+                        } else if(res.data.pattern == 'pattern2'){
+                            _this.vipPattern = res.data.pattern;
                             _this.beginPattern = 1
-                        }if(res.data.pattern == 'pattern3'){
-                            _this.isPattern = '购买分销商品';
+                        } else if(res.data.pattern == 'pattern3'){
+                            _this.vipPattern = res.data.pattern;
                             _this.beginPattern = 2
-                        }if(res.data.pattern == 'pattern4'){
-                            _this.isPattern = '单笔消费满指定金额';
+                        }else if(res.data.pattern == 'pattern4'){
+                            _this.vipPattern = res.data.pattern;
                             _this.beginPattern = 3
-                        }if(res.data.pattern == 'pattern5'){
-                            _this.isPattern = '累计消费满指定金额';
+                        }else if(res.data.pattern == 'pattern5'){
+                            _this.vipPattern = res.data.pattern;
                             _this.beginPattern = 4
                         }
-                        _this.amount =res.data.amount
+                        if(res.data.agentPattern == 'pattern1'){
+                            _this.agentPattern = res.data.agentPattern;
+                            _this.beginAgent = 0
+                        } else if(res.data.agentPattern == 'pattern2'){
+                            _this.agentPattern = res.data.agentPattern;
+                            _this.beginAgent = 1
+                        } else if(res.data.agentPattern == 'pattern3'){
+                            _this.agentPattern = res.data.agentPattern;
+                            _this.beginAgent = 2
+                        }else if(res.data.agentPattern == 'pattern4'){
+                            _this.agentPattern = res.data.agentPattern;
+                            _this.beginAgent = 3
+                        }else if(res.data.agentPattern == 'pattern5'){
+                            _this.agentPattern = res.data.agentPattern;
+                            _this.beginAgent = 4
+                        }
                     } else {
                         event.toast(res.content);
                     }
                 })
             },
-            //            设置门槛
+//            选择考核类型
+            pickType(){
+                let _this = this
+                picker.pick({
+                    index:_this.beginType,
+                    items:['不启用','按购买数量考核','按购买金额考核']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.promoterType = 'any';
+                            _this.beginType = e.data;
+                        }else if(e.data == 1){
+                            _this.promoterType = 'quantity';
+                            _this.beginType = e.data;
+                        }else if(e.data == 2){
+                            _this.promoterType = 'amount';
+                            _this.beginType = e.data;
+                        }
+                    }
+                })
+            },
+            // 设置vip门槛
             pickPattern:function () {
                 let _this = this
                 picker.pick({
@@ -171,56 +290,55 @@
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.isPattern = '无门槛';
                             _this.beginPattern = e.data;
-                            _this.Pattern = 'pattern1'
+                            _this.vipPattern = 'pattern1'
                         }else if(e.data == 1){
-                            _this.isPattern = '购买任意商品';
                             _this.beginPattern = e.data;
-                            _this.Pattern = 'pattern2'
+                            _this.vipPattern = 'pattern2'
                         }else if(e.data == 2){
-                            _this.isPattern = '购买分销商品';
                             _this.beginPattern = e.data;
-                            _this.Pattern = 'pattern3'
+                            _this.vipPattern = 'pattern3'
                         }else if(e.data == 3){
-                            _this.isPattern = '单笔消费满指定金额';
                             _this.beginPattern = e.data;
-                            _this.Pattern = 'pattern4'
+                            _this.vipPattern = 'pattern4'
                         }else if(e.data == 4){
-                            _this.isPattern = '累计消费满指定金额';
                             _this.beginPattern = e.data;
-                            _this.Pattern = 'pattern5'
+                            _this.vipPattern = 'pattern5'
                         }
                     }
                 })
             },
-//            设置对象
-            pickObject:function () {
+            // 设置代理商门槛
+            pickAgent:function () {
                 let _this = this
                 picker.pick({
-                    index:_this.begin,
-                    items:['任何用户','VIP会员','分红股东']
+                    index:_this.beginAgent,
+                    items:['不启用','购买任意商品','购买分销商品','单笔消费满指定金额','累计消费满指定金额']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.isobject = '任何用户';
-                            _this.begin = e.data;
-                            _this.PromoterType = 'any'
+                            _this.beginAgent = e.data;
+                            _this.agentPattern = 'pattern1'
                         }else if(e.data == 1){
-                            _this.isobject = 'VIP会员';
-                            _this.begin = e.data;
-                            _this.PromoterType = 'team'
+                            _this.beginAgent = e.data;
+                            _this.agentPattern = 'pattern2'
                         }else if(e.data == 2){
-                            _this.isobject = '分红股东';
-                            _this.begin = e.data;
-                            _this.PromoterType = 'partenr'
+                            _this.beginAgent = e.data;
+                            _this.agentPattern = 'pattern3'
+                        }else if(e.data == 3){
+                            _this.beginAgent = e.data;
+                            _this.agentPattern = 'pattern4'
+                        }else if(e.data == 4){
+                            _this.beginAgent = e.data;
+                            _this.agentPattern = 'pattern5'
                         }
                     }
                 })
             },
 //            完成
             complete:function () {
-                POST('weex/member/topic/update.jhtml?promoterType='+this.PromoterType+'&pattern='+this.Pattern+'&amount='+this.amount).then(
+                POST('weex/member/topic/update.jhtml?promoterType='+this.promoterType+'&pattern='+this.vipPattern+'&agentPattern='+this.agentPattern+'&amount='+this.amount
+                    +'&agentAmount='+this.agentAmount).then(
                     function (data) {
                         if(data.type == 'success'){
                             event.toast('设置成功');

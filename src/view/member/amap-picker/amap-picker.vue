@@ -5,7 +5,7 @@
         <!--搜索-->
         <div class='search'>
             <text class="searchIcon" :style="{fontFamily:'iconfont'}">&#xe611;</text>
-            <input class='searchInput' return-key-type="search" placeholder='搜索小区/写字楼等' v-model="keyword" @return="searchPoi"/>
+            <input class='searchInput' ref="searchInputRef" return-key-type="search" placeholder='搜索小区/写字楼等' v-model="keyword" @return="searchPoi"/>
             <div class='searchButton'>
                 <text class="searchButtonText" @click="searchPoi">搜索</text>
             </div>
@@ -272,6 +272,8 @@
 
             },
             searchPoi() {
+                //让input失去焦点
+                this.$refs.searchInputRef.blur();
                 var _this = this;
                 GET("/lbs/geoQuery.jhtml?areaId="+this.regeocode.areaId + '&keyword='+encodeURIComponent(this.keyword) +'&isPolygon='+this.isPolygon, function (res) {
                         if (res.type == 'success') {
