@@ -165,9 +165,9 @@
                 } else if(e == 'pattern3'){
                     return '购买分销商品'
                 }else if(e == 'pattern4'){
-                    return '单笔消费满指定金额'
+                    return '单笔消费满'
                 }else if(e == 'pattern5'){
-                    return '累计消费满指定金额'
+                    return '累计消费满'
                 }
             },
             watchAgentType(e){
@@ -178,9 +178,9 @@
                 } else if(e == 'pattern3'){
                     return '购买分销商品'
                 }else if(e == 'pattern4'){
-                    return '单笔消费满指定金额'
+                    return '单笔消费满'
                 }else if(e == 'pattern5'){
-                    return '累计消费满指定金额'
+                    return '累计消费满'
                 }
             },
         },
@@ -286,7 +286,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.beginPattern,
-                    items:['无门槛','购买任意商品','购买分销商品','单笔消费满指定金额','累计消费满指定金额']
+                    items:['无门槛','购买任意商品','购买分销商品','单笔消费满','累计消费满']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -313,7 +313,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.beginAgent,
-                    items:['不启用','购买任意商品','购买分销商品','单笔消费满指定金额','累计消费满指定金额']
+                    items:['不启用','购买任意商品','购买分销商品','单笔消费满','累计消费满']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
