@@ -541,7 +541,7 @@
 
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
-                        _this.pledgePayable = data.data.pledgePayable//  应收押金
+                        _this.pledgePayable = parseFloat(data.data.pledgePayable)//  应收押金
                         if (data.data.paymentPluginId!='cashPayPlugin') {
                             _this.amountPayable = 0;
                             _this.arrears = 0;
@@ -559,11 +559,11 @@
                         }
 
 
-                        _this.pledgeQuantity = data.data.pledgeQuantity;
+                        _this.pledgeQuantity = parseFloat(data.data.pledgeQuantity);
 
-                        _this.totalAmount = _this.amountPayable + _this.arrears;
-                        _this.totalPaper = _this.paperPayable + _this.ticket;
-                        _this.paymentPluginName = data.data.paymentMethod
+                        _this.totalAmount = parseFloat(_this.amountPayable) + parseFloat(_this.arrears);
+                        _this.totalPaper = parseFloat(_this.paperPayable) + parseFloat(_this.ticket);
+                        _this.paymentPluginName = data.data.paymentMethod;
                         _this.hasWater = data.data.hasWater;
                     }else{
                         event.toast(data.content);
