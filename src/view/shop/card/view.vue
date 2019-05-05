@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" :complete="complete" @goback="goback"> </navbar>
+        <navbar :title="title"  @goback="goback"> </navbar>
         <list>
             <cell v-if="data!=null">
                 <div class="box bkg-primary">

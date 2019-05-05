@@ -169,7 +169,8 @@
                 markiId:'',
                 markiName:'',
                 isSelf:false,
-                total:0
+                total:0,
+                shippingMethods:['同城配送','普通快递','到店自提']
             }
         },
         components: {
@@ -237,13 +238,33 @@
                     }
                 });
             },
+            checkedShippingMethods(idx) {
+                let n = this.shippingMethods[idx];
+                if (n=='普通快递') {
+                    return "shipping"
+                }else if (n=='同城配送') {
+                    return "warehouse"
+                }else if (n=='到店自提') {
+                    return "pickup"
+                }
+            },
             open:function () {
                 let _this = this;
                 GET('weex/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList = data.data;
-
+                        _this.isobject =  data.data.shippingMethodId;
+                        if(_this.isobject == 'shipping'){
+                            _this.shippingMethods = ['普通快递','同城配送','到店自提'];
+                            _this.begin = 0
+                        }else if(_this.isobject == 'warehouse'){
+                            _this.shippingMethods = ['同城配送','普通快递','到店自提'];
+                            _this.begin = 0
+                        }else if(_this.isobject == 'pickup'){
+                            _this.shippingMethods = ['到店自提','普通快递','同城配送'];
+                            _this.begin = 0
+                        }
                     }else{
                         event.toast(data.content);
                     }
@@ -259,19 +280,11 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['同城配送','普通快递','到店自提']
+                    items:_this.shippingMethods
                 }, e => {
                     if (e.result == 'success') {
-                        if (e.data == 0){
-                            _this.isobject = 'warehouse';
-                            _this.begin = e.data;
-                        }else if(e.data == 1){
-                            _this.isobject = 'shipping';
-                            _this.begin = e.data;
-                        }else if(e.data == 2){
-                            _this.isobject = 'pickup';
-                            _this.begin = e.data;
-                        }
+                        _this.isobject = _this.checkedShippingMethods(e.data);
+                        _this.begin = e.data;
                     }
                 })
             },

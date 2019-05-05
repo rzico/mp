@@ -208,11 +208,13 @@
             },
             watchType:function (data) {
                 if(data == 'partner'){
-                    return '股东'
+                    return '分红股东'
                 }else if(data == 'team'){
-                    return '团队'
+                    return 'VIP会员'
+                }else if(data == 'agent'){
+                    return '代理商'
                 }else{
-                    return '普通'
+                    return '普通会员'
                 }
             },
             watchCardType:function (data) {
@@ -441,7 +443,7 @@
                 }
                 picker.pick({
                     index:_this.typebegin,
-                    items:['普通','团队','股东']
+                    items:['普通会员','VIP会员','分红股东','代理商']
                 }, e => {
                     if (e.result == 'success') {
                         let type = 'member';
@@ -451,9 +453,11 @@
                         }else if(e.data == 1){
                                 type = 'team';
                                 _this.typebegin = e.data
-                        }
-                        else{
+                        }else if(e.data == 2){
                             type = 'partner';
+                            _this.typebegin = e.data
+                        }else {
+                            type = 'agent';
                             _this.typebegin = e.data
                         }
                         POST('weex/member/card/update.jhtml?id='+_this.id+'&type=' +type).then(
@@ -600,16 +604,19 @@
                     if (res.type=='success') {
                         if(res.data.card.vip == 'vip1'){
                             _this.begin =0
-                        }if(res.data.card.vip == 'vip2'){
+                        }else if(res.data.card.vip == 'vip2'){
                             _this.begin =1
-                        }if(res.data.card.vip == 'vip3'){
+                        }else if(res.data.card.vip == 'vip3'){
                             _this.begin =2
-                        }if(res.data.card.type == 'member'){
+                        }
+                        if(res.data.card.type == 'member'){
                             _this.typebegin =0
-                        }if(res.data.card.type == 'team'){
+                        }else if(res.data.card.type == 'team'){
                             _this.typebegin =1
-                        }if(res.data.card.type == 'partner'){
+                        }else if(res.data.card.type == 'partner'){
                             _this.typebegin =2
+                        }else if(res.data.card.type == 'agent'){
+                            _this.typebegin =3
                         }
                         if(res.data.card.paymentMethod == 'immediate'){
                             _this.settlemenBegin =0
