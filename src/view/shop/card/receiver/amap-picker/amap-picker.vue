@@ -31,6 +31,7 @@
                 <noData :noDataHint="'不在配送范围内'"></noData>
             </cell>
         </list>
+        <wxc-loading :show="showLoading" type="default" loading-text="定位中"></wxc-loading>
     </div>
 </template>
 <style lang="less" src="../../../../../style/wx.less"/>
@@ -145,6 +146,7 @@
     var globalEvent = weex.requireModule('globalEvent');
     const amap = weex.requireModule('amap');
     const modal = weex.requireModule('modal');
+    import { WxcLoading } from 'weex-ui';
     export default {
         data() {
             return {
@@ -159,11 +161,12 @@
                 keyword:"",
                 dress:utils.locate("resources/images/dress.png"),
                 cover:true,
+                showLoading:true,
             }
         },
         props: {},
         components: {
-            navbar,noData
+            navbar,noData,WxcLoading
         },
         filters: {},
         created() {
@@ -178,6 +181,7 @@
                     _this.latitude = e.data.lat;
                     _this.center = [_this.longitude,_this.latitude];
                     _this.open_lbs();
+                    _this.showLoading = false;
                 } else {
                     modal.alert({
                         message: '获取位置失败，请开启定位权限',
@@ -185,6 +189,7 @@
                     }, function (value) {
 
                     })
+                    _this.showLoading = false;
                     event.closeURL();
                 }
             })
@@ -239,7 +244,6 @@
                 event.closeURL({type:'success',data:ev,content:"success"});
             },
             drawlbs() {
-
                 //画围栏
                 var _this = this;
                 animation.transition(_this.$refs.amapcover, {

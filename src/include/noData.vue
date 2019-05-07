@@ -1,5 +1,5 @@
 <template>
-    <div class="noData" :style="{paddingBottom:pbNumbe+'px',paddingTop:ptNumbe+'px'}">
+    <div class="noData" :style="{paddingBottom:pdNumber+'px',paddingTop:ptNumber+'px'}">
                 <text class="noData_ico" :style="{fontFamily:'iconfont'}">&#xe615;</text>
                 <text class="noData_hint">{{noDataHint}}</text>
     </div>
