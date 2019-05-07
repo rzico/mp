@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" @goComplete="setting" > </navbar>
         <div class="totalBox">
-            <image class="memberLogo" :src="logo"></image>
+<!--            <image class="memberLogo" :src="logo"></image>-->
             <text class="totalNumber">总计:{{total}}（张）</text>
         </div>
         <noData :noDataHint="noDataHint" v-if="lists.length == 0"></noData>
@@ -189,7 +189,7 @@
             settingNumber:function (id) {
                 let _this = this;
                 modal.prompt({
-                    message: '赠送电子券',
+                    message: '赠送水票',
                     duration: 0.3,
                     okTitle:'确定',
                     cancelTitle:'取消',

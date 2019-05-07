@@ -30,7 +30,7 @@
                 </div>
                 <div class="setting" @click="pickPattern()">
                     <div class="flex-row">
-                        <text class="fz32">配送站点:  {{shopName}}</text>
+                        <text class="fz32">运送站点:  {{shopName}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="setting" @click="goMarki()">
                     <div class="flex-row">
-                        <text class="fz32">配送人员:  {{markiName}}</text>
+                        <text class="fz32">送货人员:  {{markiName}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -251,10 +251,19 @@
             open:function () {
                 let _this = this;
                 GET('weex/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
+                    // event.toast(data)
+                    modal.alert({
+                        message: JSON.stringify(data),
+                        okTitle: '确认'
+                    })
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList = data.data;
                         _this.isobject =  data.data.shippingMethodId;
+                        if(!utils.isNull(_this.shopId) && _this.shopId > 0){
+                            _this.shopId = data.data.shopId ;
+                            _this.shopName = data.data.shopName ;
+                        }
                         if(_this.isobject == 'shipping'){
                             _this.shippingMethods = ['普通快递','同城配送','到店自提'];
                             _this.begin = 0

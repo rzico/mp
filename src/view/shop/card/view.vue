@@ -104,9 +104,9 @@
         font-size: 24px;
     }
     .box {
-        margin-top: 80px;
-        width:600px;
-        margin-left: 75px;
+        margin-top: 30px;
+        width:690px;
+        margin-left: 30px;
         border-radius: 20px;
         align-items: center;
         padding-bottom: 30px;
@@ -128,8 +128,8 @@
     .logo {
         /*margin-top: -40px;*/
         position: absolute;
-        top: 40px;
-        left:335px;
+        top: 100px;
+        left:180px;
         width:80px;
         height:80px;
         border-radius: 40px;
@@ -188,8 +188,8 @@
         width:200px;
         background-color: #fff;
         color:#999;
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
         font-size: 32px;
     }
     .code {

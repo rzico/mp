@@ -90,33 +90,92 @@
                         <text class="sub_title ">买家留言: {{item.orderMemo}}</text>
                     </div>
                 </div>
+<!--                <div class="mt20  infoWhiteColor" >-->
+<!--                    <div class="priceLine boder-bottom">-->
+
+<!--                        <div class=" space-between pb10" v-if="filter('shippingFreight')">-->
+<!--                            <text class="sub_title">配送运费</text>-->
+<!--                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>-->
+<!--                        </div>-->
+<!--                        <div class=" space-between " v-if="filter('cost')">-->
+<!--                            <text class="sub_title">货款结算</text>-->
+<!--                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>-->
+<!--                        </div>-->
+<!--                        <div class=" space-between pb10">-->
+<!--                            <text class="sub_title">送货工资</text>-->
+<!--                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="priceLine ">-->
+<!--                        <div class="space-between pb10">-->
+<!--                            <text class="fz28 ">应收金额:¥{{item.amountPayable | currencyfmt}}(上期欠款:¥{{item.arrears | currencyfmt}})</text>-->
+<!--                            <text class="fz28 ">实收金额:¥{{item.amountPaid | currencyfmt}}</text>-->
+<!--                        </div>-->
+<!--                        <div class="space-between pb10">-->
+<!--                            <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>-->
+<!--                            <text class="fz28 ">实收水票:{{item.paperPaid}}</text>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="mt20  infoWhiteColor" >
                     <div class="priceLine boder-bottom">
-
-                        <div class=" space-between pb10" v-if="filter('shippingFreight')">
-                            <text class="sub_title">配送运费</text>
-                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
+                        <div class="space-between">
+                            <text class="sub_title">商品总额</text>
+                            <text class="sub_title">¥{{item.price | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between " v-if="filter('cost')">
-                            <text class="sub_title">货款结算</text>
-                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        <div class=" space-between mt10" v-if="filter('cost')">
+                            <text class="sub_title">+ 运费(楼层费)</text>
+                            <text class="sub_title">¥ {{item.freight | currencyfmt}}</text>
                         </div>
-                        <div class=" space-between pb10">
-                            <text class="sub_title">送货工资</text>
-                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
+                        <div class=" space-between mt10 " v-if="item.pledgePayable != 0 && item.pledgePayable != '0'">
+                            <text class="sub_title">+ 空桶押金</text>
+                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
                         </div>
-                    </div>
-                    <div class="priceLine ">
+                        <div class=" space-between mt10 "v-if="item.couponDiscount != 0 && item.couponDiscount != '0'">
+                            <text class="sub_title">优惠折扣</text>
+                            <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10 " v-if="item.pointDiscount != 0 && item.pointDiscount != '0'">
+                            <text class="sub_title">积分抵扣</text>
+                            <text class="sub_title">-{{item.pointDiscount | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10 " v-if="item.exchangeDiscount != 0 && item.exchangeDiscount != '0'">
+                            <text class="sub_title">电子券支付</text>
+                            <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
+                        </div>
+                        <div class="flex-row pb10">
+                            <text class="fz28 mr20">订单合计:</text>
+                            <text class="fz28" style="color: red">¥{{item.amount | currencyfmt}}</text>
+                        </div>
                         <div class="space-between pb10">
                             <text class="fz28 ">应收金额:¥{{item.amountPayable | currencyfmt}}(上期欠款:¥{{item.arrears | currencyfmt}})</text>
                             <text class="fz28 ">实收金额:¥{{item.amountPaid | currencyfmt}}</text>
                         </div>
-                        <div class="space-between pb10">
+                        <div class="space-between pb10" v-if="item.paperPayable != 0 && item.paperPayable != '0'">
                             <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
                             <text class="fz28 ">实收水票:{{item.paperPaid}}</text>
                         </div>
+
+                    </div>
+                    <div class="priceLine">
+
+                        <div class=" space-between mt10" v-if="filter('shippingFreight')">
+                            <text class="sub_title">配送运费</text>
+                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10" v-if="filter('cost')">
+                            <text class="sub_title">货款结算</text>
+                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10">
+                            <text class="sub_title">送货工资</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
+                        </div>
+
+                    </div>
                 </div>
-                </div>
+
+
             </div>
         </scroller>
 

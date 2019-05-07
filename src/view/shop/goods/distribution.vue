@@ -11,6 +11,7 @@
         </div>
         <div class="setting" @click="openWebView()">
             <text class="title " >芸打印机设置</text>
+            <text class="print">{{typeBegin == '0' ? '手动打印' : '自动打印'}}</text>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <div class="bgWhite addCorpus">
@@ -105,6 +106,7 @@
         border-top-width: 1px;
         border-top-style: solid;
         border-top-color: #ccc;
+        position:relative;
     }
     .button_box {
         margin-top: 20px;
@@ -138,7 +140,12 @@
         width: 346px;
         margin-left: 20px;
     }
-
+    .print{
+        position: absolute;
+        right: 70px;
+        color: #888888;
+        font-size: 24px;
+    }
     .remind{
         color: #888;
         padding-left: 30px;
@@ -236,7 +243,7 @@
     import navbar from '../../../include/navbar.vue'
     const animation = weex.requireModule('animation')
     const modal = weex.requireModule('modal');
-
+    const picker = weex.requireModule('picker');
     export default {
         data:function () {
             return{
@@ -250,7 +257,9 @@
                 catagoryList:[],
                 item:{id:"",name:"",percent1:"",percent2:"",percent3:"",point:'',tota:'',type:'',bgChange:false},
                 roles:'',
-                catagory:''
+                catagory:'',
+                typeName:'手动打印',
+                typeBegin:0
             }
         },
         components: {
@@ -264,19 +273,44 @@
             this.permissions();
             utils.initIconFont();
             this.catagory = utils.getUrlParameter('name');
-            this.open()
+            this.open();
+            this.print();
         },
         methods:{
             openWebView(){
                     let _this = this;
-                    if (this.clicked) {
-                        return;
+                picker.pick({
+                    index:_this.typeBegin,
+                    items:['手动打印','自动打印']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0){
+                            _this.typeName = '手动打印';
+                            _this.typeBegin = e.data;
+                            POST("weex/member/topic/update.jhtml?orderMode=manual").then(
+                                function(data){
+                                    if(data.type == "success"){
+                                        event.toast(data.content)
+                                    }else {
+                                        event.toast(data.content)
+                                    }
+                                }
+                            )
+                        }else if(e.data == 1){
+                            _this.typeName = '自动打印';
+                            _this.typeBegin = e.data;
+                            POST("weex/member/topic/update.jhtml?orderMode=automatic").then(
+                                function(data){
+                                    if(data.type == "success"){
+                                        event.toast(data.content)
+                                    }else {
+                                        event.toast(data.content)
+                                    }
+                                }
+                            )
+                        }
                     }
-                    this.clicked = true;
-                    var data = 'http://wx.zhongwuyun.com/api/index'
-                event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(data)), function () {
-                    _this.clicked = false;
-                });
+                })
             },
 //            设置分成推广
             gosetting:function () {
@@ -354,6 +388,20 @@
                         storage.removeItem(_this.catagory);
                     })
                 }
+            },
+            print:function(){
+                var _this = this
+                GET("weex/member/topic/option.jhtml",function(res){
+                    if(res.type == "success"){
+                         if(res.data.orderMode == "manual"){
+                             _this.typeBegin = 0
+                         }else if(res.data.orderMode == "automatic"){
+                             _this.typeBegin = 1
+                         }
+                    }else {
+                        event.toast(tes.data.content)
+                    }
+                })
             },
 //            save:function () {
 //                var _this = this;
