@@ -392,25 +392,28 @@
                     event.toast('商家名称未填写');
                     _this.clicked =false
                     return
-                }if(utils.isNull(_this.industryName)){
+                }else if(utils.isNull(_this.industryName)){
                     event.toast('所属行业未选择');
                     _this.clicked =false
                     return
-                }if(utils.isNull(_this.addressName)){
+                }else if(utils.isNull(_this.addressName)){
                     event.toast('商家区位未选择');
                     _this.clicked =false
                     return
-                }if(utils.isNull(_this.detailedAddress)){
+                }else if(utils.isNull(_this.detailedAddress)){
                     event.toast('商家地址未填写');
                     _this.clicked =false
                     return
-                }
-                if(utils.isNull(_this.contactName)){
+                }else if(utils.isNull(_this.contactName)){
                     event.toast('联系姓名未填写');
                     _this.clicked =false
                     return
-                }if(utils.isNull(_this.contactNumber)){
+                }else if(utils.isNull(_this.contactNumber)){
                     event.toast('联系电话未填写');
+                    _this.clicked =false
+                    return
+                }else if(!/^[0-9]+$/.test(_this.contactNumber)){
+                    event.toast('请填写正确联系电话');
                     _this.clicked =false
                     return
                 }
