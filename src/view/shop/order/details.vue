@@ -540,7 +540,7 @@
                     cancelTitle:'取消'
                 }, function (value) {
                     if(value.result == '确认'){
-                        GET('weex/member/oeder/print.jhtml?sn='+_this.orderSn+"&seqno=1", function (data) {
+                        GET('weex/member/order/print.jhtml?sn='+_this.orderSn+"&seqno=1", function (data) {
                                 if(data.type == 'success'){
                                     event.toast('打印成功')
                                 }else{
