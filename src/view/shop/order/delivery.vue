@@ -251,11 +251,6 @@
             open:function () {
                 let _this = this;
                 GET('weex/member/order/view.jhtml?sn=' + this.orderSn,function (data) {
-                    // event.toast(data)
-                    modal.alert({
-                        message: JSON.stringify(data),
-                        okTitle: '确认'
-                    })
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList = data.data;

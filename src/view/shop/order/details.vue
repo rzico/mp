@@ -401,6 +401,7 @@
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
     const clipboard = weex.requireModule('clipboard');
+    const printer = weex.requireModule('print');
     var modal = weex.requireModule('modal');
     export default {
         data:function() {
@@ -542,6 +543,9 @@
                     if(value == '确认'){
                         GET('weex/member/order/print.jhtml?sn='+_this.orderSn+"&seqno=1", function (data) {
                                 if(data.type == 'success'){
+                                    if(!utils.isNull(data.data)){
+                                        printer.print(data.data);
+                                    }
                                     event.toast('打印成功')
                                 }else{
                                     event.toast(data.content);

@@ -681,10 +681,14 @@
               if (idx<this.printList.length) {
                   let sn = this.printList[idx].sn;
                   let dx = idx +this.beginNumber;
+                  event.toast(111)
                   GET('weex/member/shipping/print.jhtml?sn='+sn+"&seqno="+  dx, function (data) {
                           if(data.type == 'success'){
+                              event.toast(data)
                               _this.printIdx = idx+1;
-                              printer.print(data.data);
+                              if(!utils.isNull(data.data)){
+                                  printer.print(data.data);
+                              }
                               setTimeout(
                                   function (){
                                      _this.printData(idx+1);
@@ -708,9 +712,10 @@
 //            打印
             print(){
                 var _this = this;
-                if (this.clicked || this.printIdx > 0) {
-                    return;
-                }
+
+                // if (this.clicked || this.printIdx > 0) {
+                //     return;
+                // }
                 this.clicked = true;
                 if(!utils.isNull(this.beginNumber)){
                     this.beginNumber = parseInt(this.beginNumber);
