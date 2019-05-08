@@ -487,7 +487,6 @@
                 }, function (value) {
                     if(value == '确认'){
                         GET('weex/member/shipping/print.jhtml?sn='+_this.shippingSn+"&seqno=1", function (data) {
-                                event.toast(data)
                                 if(data.type == 'success'){
                                     event.toast('打印成功')
                                 }else{
