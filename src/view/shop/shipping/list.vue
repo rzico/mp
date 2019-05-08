@@ -339,7 +339,7 @@
     }
     .printBox{
         position: absolute;
-        top: 200px;
+        top: 250px;
         left: 30px;
         flex-direction: column;
         justify-content: center;
