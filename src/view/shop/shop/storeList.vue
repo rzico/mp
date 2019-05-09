@@ -44,7 +44,7 @@
             </div>
             <div  class="message" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
             <div class="shopLogo" >
-                <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor "></image>
+<!--                <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor "></image>-->
             </div>
             <div class="shopInformation">
                 <div class="shopNameDiv">
