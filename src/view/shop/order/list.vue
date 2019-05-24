@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div >
-                            <text class="title red">{{item.statusDescr}}</text>
+                            <text class="title red" style="max-width: 230px;lines:1;text-overflow: ellipsis;">{{item.statusDescr}}</text>
                         </div>
                     </div>
                     <div class="flex-row goodsBody"  v-for="goods in item.orderItems" @click="goDetails(item.sn)">
@@ -85,6 +85,7 @@
                         <div class="flex-row">
                             <!--<text class="title footText">查看物流</text>-->
                             <text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>
+                            <text class="title footText" @click="showMask(item,index)">改价</text>
                             <text class="title footText " @click="confirmOrder(item.sn)">确认订单</text>
                         </div>
                     </div>
@@ -128,6 +129,7 @@
                         <div class="flex-row">
                             <!--<text class="title footText">查看物流</text>-->
                             <!--<text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>-->
+                            <text class="title footText " @click="checkLogistics(item.sn)">查看物流</text>
                             <text class="title footText " @click="shippingConfirm(item.sn)" v-if="item.isShipping==true">核销</text>
                             <text class="title footText " @click="returnGoods(item.sn)" v-if="item.isShipping==false">退货</text>
                         </div>
@@ -135,7 +137,28 @@
                 </div>
             </cell>
         </list>
-
+        <!--改价-->
+        <div class="changeMask" v-if="isMask">
+            <div class="maskContent">
+                <text class="maskTitle primary">修改价格</text>
+                <div class="maskCell">
+                    <text class="fz32">订单原价:</text>
+                    <text class="fz32 ml30" style="color: red">¥{{orderAmout}}</text>
+                </div>
+                <div class="maskCellTwo">
+                    <text class="fz32">订单现价:</text>
+                    <input type="number" class="nowAmout" placeholder="请输入该订单现价" v-model="orderNowAmout"/>
+                </div>
+                <div class="maskButtonBox bd-primary">
+                    <div class="maskLeftButton bd-primary" @click="downMask">
+                        <text class="fz35 primary">取消修改</text>
+                    </div>
+                    <div class="maskRightButton" @click="changeAmount">
+                        <text class="fz35 primary">确认修改</text>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -344,6 +367,72 @@
 
     }
 
+    .changeMask{
+        position: fixed;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right:0;
+        background-color: rgba(0,0,0,0.7);
+        align-items: center;
+    }
+    .maskContent{
+        width: 650px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 150px;
+        overflow: hidden;
+    }
+    .maskTitle{
+        font-size: 36px;
+        margin-top: 60px;
+    }
+    .maskCell{
+        width: 600px;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 50px;
+    }
+    .maskCellTwo{
+        width: 600px;
+        height: 100px;
+        flex-direction: row;
+        align-items: center;
+    }
+    .nowAmout{
+        margin-left: 30px;
+        width: 400px;
+        height: 98px;
+        font-size: 32px;
+    }
+    .maskButtonBox{
+        width: 650px;
+        border-top-width: 2px;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 50px;
+    }
+    .maskLeftButton{
+        width: 325px;
+        height: 100px;
+        align-items: center;
+        justify-content: center;
+        border-right-width: 2px;
+    }
+    .maskLeftButton:active{
+        background-color: #ccc;
+    }
+    .maskRightButton{
+        width: 325px;
+        height: 100px;
+        align-items: center;
+        justify-content: center;
+    }
+    .maskRightButton:active{
+        background-color: #ccc;
+    }
 </style>
 <script>
     import navbar from '../../../include/navbar.vue';
@@ -387,6 +476,11 @@
                 keyword:'',
                 searchHint: "输入收货人、电话、地址",
                 searchOrCancel:'取消',
+                isMask:false,
+                orderAmout:0,
+                orderNowAmout:'',
+                nowSn:'',
+                nowIndex:0
             }
         },
         props:{
@@ -644,6 +738,42 @@
                     }
                 })
             },
+            //更改订单价格
+            showMask(item,index){
+                this.isMask = true;
+                this.orderAmout = item.amount;
+                this.nowSn = item.sn;
+                this.nowIndex = index;
+            },
+            downMask(){
+                this.isMask = false;
+            },
+            changeAmount(){
+                let _this = this;
+                if(utils.isNull(this.orderNowAmout)){
+                    event.toast('请输入订单现价')
+                    return
+                }
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                this.isMask = false;
+                POST('weex/member/order/updatePrice.jhtml?sn='+this.nowSn + '&price=' +this.orderNowAmout).then(function (data) {
+                    _this.clicked = false;
+                    _this.orderNowAmout = '';
+                    if(data.type == 'success'){
+                        _this.ordersList[_this.nowIndex].amount = data.data.amount;
+                        event.toast('修改价格成功');
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    _this.clicked = false;
+                    _this.orderNowAmout = '';
+                    event.toast(err.content);
+                })
+            },
 //            确认订单
             confirmOrder:function (sn) {
                 let _this = this;
@@ -722,6 +852,27 @@
                     }
 
                 });
+            },
+            //查看物流
+            checkLogistics(sn){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                GET('deliveryCorp/query.jhtml?sn=' + sn,function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success'){
+                        event.openURL(utils.locate("view/webView/index.js?url=" + encodeURIComponent(data.data)),function (message) {
+                            _this.clicked = false;
+                        })
+                    }else{
+                        event.toast(data.content);
+                    }
+                },function (err) {
+                    _this.clicked = false;
+                    event.toast(err.content);
+                })
             },
 //            退货
             returnGoods:function (sn) {

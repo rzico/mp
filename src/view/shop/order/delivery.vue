@@ -44,7 +44,15 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="setting" @click="">
+                <div class="setting" @click="linkToLogistics" v-if="isobject == 'shipping'">
+                    <div class="flex-row">
+                        <text class="fz32">快递公司:  {{logistics}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="setting" >
                     <div class="flex-row">
                         <text class="fz32">货运单号:</text>
                         <input class="input" type="email" placeholder="请输入快递运单号"  v-model="trackingNo"/>
@@ -170,7 +178,9 @@
                 markiName:'',
                 isSelf:false,
                 total:0,
-                shippingMethods:['同城配送','普通快递','到店自提']
+                shippingMethods:['同城配送','普通快递','到店自提'],
+                logisticsId:'',
+                logistics:''
             }
         },
         components: {
@@ -238,6 +248,21 @@
                     }
                 });
             },
+            //物流公司
+            linkToLogistics(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('widget/list.js?listId=' + this.logisticsId + '&type=deliveryCorp'), function (data) {
+                    _this.clicked = false;
+                    if(data.type == 'success' && data.data != '') {
+                        _this.logisticsId = parseInt(data.data.listId);
+                        _this.logistics = data.data.listName;
+                    }
+                })
+            },
             checkedShippingMethods(idx) {
                 let n = this.shippingMethods[idx];
                 if (n=='普通快递') {
@@ -255,7 +280,7 @@
                         _this.ordersList = [];
                         _this.ordersList = data.data;
                         _this.isobject =  data.data.shippingMethodId;
-                        if(!utils.isNull(_this.shopId) && _this.shopId > 0){
+                        if(!utils.isNull(data.data.shopId) && data.data.shopId > 0){
                             _this.shopId = data.data.shopId ;
                             _this.shopName = data.data.shopName ;
                         }
@@ -298,12 +323,13 @@
                     return;
                 }
                 this.clicked = true;
-                if(this.isobject == 'warehouse' && !utils.isNull(this.shopId)){
-//                    if(utils.isNull(this.shopId)){
-//                        event.toast('请选择配送站点');
-//                        _this.clicked = false;
-//                        return
-//                    }
+                if(this.isobject == 'warehouse' && utils.isNull(this.shopId)){
+                    if(utils.isNull(this.shopId)){
+                        event.toast('请选择配送站点');
+                        _this.clicked = false;
+                        return
+                    }
+                }else if(this.isobject == 'warehouse' && !utils.isNull(this.shopId)){
                     if(this.isSelf == true || this.isSelf == 'true'){
                         if(utils.isNull(this.markiId)){
                             event.toast('请选择配送人员');
@@ -311,10 +337,16 @@
                             return
                         }
                     }
+                }else if(!utils.isNull(this.logisticsId)){
+                    if(utils.isNull(this.trackingNo)){
+                        event.toast('请输入单号');
+                        _this.clicked = false;
+                        return
+                    }
                 }
-
-                POST('weex/member/order/shipping.jhtml?sn=' + this.orderSn +'&shopId='+this.shopId +'&adminId=' + this.markiId + '&shippingMethod='+ this.isobject +'&trackingNo=' + encodeURIComponent(this.trackingNo)).then(
+                POST('weex/member/order/shipping.jhtml?sn=' + this.orderSn +'&shopId='+this.shopId +'&adminId=' + this.markiId + '&shippingMethod='+ this.isobject +'&trackingNo=' + encodeURIComponent(this.trackingNo)+'&deliveryCorpId='+this.logisticsId).then(
                     function (data) {
+                        _this.clicked = false;
                         if(data.type == 'success'){
                             let E = utils.message('success','发货成功','')
                             event.closeURL(E);
@@ -322,6 +354,7 @@
                             event.toast(data.content);
                         }
                     },function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )

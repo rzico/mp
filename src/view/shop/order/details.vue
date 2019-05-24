@@ -37,8 +37,9 @@
                             <text class="title">{{item.receiver.phone}}</text>
                             <text class="sub_title copyBtn copyBorder ml20"  @click="callPhone(item.receiver.phone)">拨号</text>
                         </div>
-                        <div class="mt10">
-                            <text class="sub_title" style="line-height: 42px">地址: {{item.receiver.areaName}}{{item.receiver.address}}</text>
+                        <div class="flex-row mt10" >
+                            <text class="sub_title" style="line-height: 42px;max-width: 500px;">地址: {{item.receiver.areaName}}{{item.receiver.address}}</text>
+                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.receiver.consignee+item.receiver.phone+item.receiver.areaName+item.receiver.address)">复制</text>
                         </div>
                     </div>
                 </div>
@@ -122,8 +123,9 @@
                     <div class="infoLines boder-bottom pt10">
                         <text class="sub_title ">派单留言: {{item.shippingMemo}}</text>
                     </div>
-                    <div class="infoLines boder-bottom ">
+                    <div class="infoLines flex-row boder-bottom ">
                         <text class="sub_title ">买家留言: {{item.memo}}</text>
+                        <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.memo)"   v-if="item.memo!=null && item.memo!=''">复制</text>
                     </div>
                 </div>
                 <div class="mt20  infoWhiteColor" >
@@ -167,7 +169,6 @@
 
                     </div>
                     <div class="priceLine">
-
                         <div class=" space-between mt10" v-if="filter('shippingFreight')">
                             <text class="sub_title">配送运费</text>
                             <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
@@ -581,11 +582,13 @@
             },
             jump:function (id) {
                 let _this =this;
-
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
-
+                    _this.clicked = false;
                 })
-
             },
             //            获取权限
             permissions:function () {
@@ -644,9 +647,9 @@
                 }, 1000)
             },
 //            点击复制
-            copyCode(sn){
-                clipboard.setString(sn);
-                event.toast('单号复制成功');
+            copyCode(value){
+                clipboard.setString(value);
+                event.toast('复制成功');
             },
 
 //            确认退款

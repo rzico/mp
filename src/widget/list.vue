@@ -53,8 +53,11 @@
             else if(urlType == 'template'){
                 this.title = '模版选择';
             }
+            else if(urlType == 'deliveryCorp'){
+                this.title = '物流选择';
+            }
             GET(urlType + '/list.jhtml',function (data) {
-                if(data.type == 'success' && data.data != ''){
+                if(data.type == 'success'){
                     _this.dataList = data.data;
                     data.data.forEach(function (item) {
                         if(item.id == _this.listId){
