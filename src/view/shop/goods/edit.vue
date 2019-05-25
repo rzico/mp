@@ -437,7 +437,7 @@
                 if(val == 'product'){
                     return'普通商品'
                 }else if(val == 'water'){
-                    return'桶装水类'
+                    return'同城商品'
                 }else if(val == 'dummy'){
                     return'虚拟商品'
                 }else if(val == 'gift'){
@@ -494,7 +494,7 @@
                 let _this = this
                 picker.pick({
                     index:_this.begin,
-                    items:['普通商品','桶装水类','虚拟商品','赠品']
+                    items:['普通商品','同城商品','虚拟商品','赠品']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
