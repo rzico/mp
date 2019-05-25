@@ -3,22 +3,22 @@
         <navbar :title="title"  @goback="goback" > </navbar>
         <div class="contentBox">
             <div class="info" >
-                <scroller style="max-height:400px">
-                <div class="" v-for="(goods,index) in ordersList.orderItems">
-                <div class="flex-row goodsBody ">
-                    <image :src="goods.thumbnail" class="goodsImg"></image>
-                    <div class="goodsInfo" >
-                        <text class="title goodsName">{{goods.name}}</text>
-                        <text class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
-                        <div class="goodsPriceNum">
-                            <!--<text class="title coral">¥ {{goods.price | currencyfmt}}</text>-->
-                            <text class="title coral">x{{goods.quantity}}</text>
-                            <!--<text class="sub_title border shopCar" >加购物车</text>-->
-                        </div>
-                    </div>
-                </div>
-                </div>
-                </scroller>
+                <!--<scroller style="max-height:400px">-->
+                    <!--<div class="" v-for="(goods,index) in ordersList.orderItems">-->
+                    <!--<div class="flex-row goodsBody ">-->
+                        <!--<image :src="goods.thumbnail" class="goodsImg"></image>-->
+                        <!--<div class="goodsInfo" >-->
+                            <!--<text class="title goodsName">{{goods.name}}</text>-->
+                            <!--<text class="sub_title ">规格:{{goods.spec | watchSpec}}</text>-->
+                            <!--<div class="goodsPriceNum">-->
+                                <!--&lt;!&ndash;<text class="title coral">¥ {{goods.price | currencyfmt}}</text>&ndash;&gt;-->
+                                <!--<text class="title coral">x{{goods.quantity}}</text>-->
+                                <!--&lt;!&ndash;<text class="sub_title border shopCar" >加购物车</text>&ndash;&gt;-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                <!--</scroller>-->
                 <!--<text class="totalText">共{{total}}件商品</text>-->
                 <div class="setting" @click="pickPay">
                     <div class="flex-row">
@@ -26,6 +26,25 @@
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="" v-if="isobject == 'shipping'">
+                    <div class="setting" @click="linkToLogistics" >
+                        <div class="flex-row">
+                            <text class="fz32">快递公司:  {{logistics}}</text>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                    <div class="setting" >
+                        <div class="flex-row">
+                            <text class="fz32">货运单号:</text>
+                            <input class="input" type="email" placeholder="请输入快递运单号"  v-model="trackingNo"/>
+                        </div>
+                        <div class="flex-row flex-end">
+                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
                     </div>
                 </div>
                 <div class="setting" @click="pickPattern()">
@@ -39,23 +58,6 @@
                 <div class="setting" @click="goMarki()">
                     <div class="flex-row">
                         <text class="fz32">送货人员:  {{markiName}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="setting" @click="linkToLogistics" v-if="isobject == 'shipping'">
-                    <div class="flex-row">
-                        <text class="fz32">快递公司:  {{logistics}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="setting" >
-                    <div class="flex-row">
-                        <text class="fz32">货运单号:</text>
-                        <input class="input" type="email" placeholder="请输入快递运单号"  v-model="trackingNo"/>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
