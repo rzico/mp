@@ -14,16 +14,20 @@
                 <text :style="{fontFamily:'iconfont'}"  class="moreIcon" >&#xe618;</text>
             </div>
         </div>
-        <!--<headerNav @search="gosearch" @menu="menu" ></headerNav>-->
-        <!--<liveHeader @search="gosearch" @menu="menu" @doLive="doLive" v-if="!isHeader"></liveHeader>-->
-        <tabNav :corpusList="corpusList"   :whichCorpus="whichCorpus" ref="tabRef" @corpusChange="corpusChange"></tabNav>
-        <slider class="pageBox" :style="{top:pageBoxTop+'px'}" infinite="false" @change="onSliderChange" :index="whichCorpus">
-            <div v-for="(item,index) in corpusList" class="categoryBox">
-                <hotsCategory  v-if="item.name == '热点' && item.load == 1"  :articleCategoryId="item.id"></hotsCategory>
-                <circleCategory v-else-if="item.name == '关注' && uId != 0 && item.load == 1"    :articleCategoryId="item.id" ></circleCategory>
-                <!--<othersCategory v-else-if=" item.load == 1"    :articleCategoryId="item.id" ></othersCategory>-->
+        <wxc-tab-page ref="wxc-tab-page"
+                      :tab-titles="list"
+                      :tab-styles="tabStyles"
+                      @wxcTabPageCurrentTabSelected="wxcTabPageCurrentTabSelected">
+            <div style="width: 750px;" :style="{ height: listHeight + 'px' }" v-if="list[0].load != 0">
+                <hotsCategory></hotsCategory>
             </div>
-        </slider>
+            <div style="width: 750px;" :style="{ height: listHeight + 'px' }" v-if="list[1].load != 0">
+                <lbs @addressChange="addressChange"></lbs>
+            </div>
+            <div style="width: 750px;" :style="{ height: listHeight + 'px' }"  v-for="item in list" v-if="item.id !='' || item.load != 0">
+                <othersCategory :articleCategoryId="item.id"  ></othersCategory>
+            </div>
+        </wxc-tab-page>
         <div v-if="showMenu" >
             <div class="maskLayer" @touchstart="maskTouch"></div>
             <div class="showBox"  style="width: 230px;">
@@ -127,6 +131,7 @@
 <script>
     const dom = weex.requireModule('dom')
     import headerNav from './header.vue';
+    import lbs from './lbs.vue';
     import liveHeader from './liveHeader.vue';
     import choose from '../live/choose.vue';
     import circleCategory from './circle.vue';
@@ -137,6 +142,9 @@
     const event = weex.requireModule('event');
     const animation = weex.requireModule('animation');
     import { POST, GET ,SCAN} from '../../assets/fetch';
+    import { WxcTabPage, WxcPanItem, Utils, BindEnv } from 'weex-ui';
+
+
     export default {
         data:function () {
             return{
@@ -150,11 +158,32 @@
                 isHeader:false,
                 pageBoxTop:0,
                 isMask:false,
-                address:'定位中'
+                address:'厦门市',
+                tabPageHeight: 1334,
+                listHeight:0,
+                list:[{title:'推荐',id:'',load:1},{title:'同城',id:'',load:0}],
+                tabStyles: {
+                    bgColor: '#313133',// 标签背景色
+                    titleColor: '#ffffff',// 标签文本未选中状态颜色
+                    activeTitleColor: '#DE6301',// 标签文本选中状态颜色
+                    activeBgColor: '#313133',// 标签选中状态背景色
+                    isActiveTitleBold: true,// 标签选中状态是否使用粗体
+                    iconWidth: 0,// 图标宽度
+                    iconHeight: 0,// 图标高度
+                    width: 120,// 标签宽度
+                    height: 80,// 标签高度
+                    fontSize: 32,// 标签文本字体大小
+                    hasActiveBottom: true,// 选中状态是否带有下划线
+                    activeBottomColor: '#ffffff',// 选中状态下划线颜色
+                    activeBottomHeight: 6,// 选中状态下划线高度
+                    activeBottomWidth: 30,// 选中状态下划线宽度
+                    textPaddingLeft: 10,// 文本的padding-left值
+                    textPaddingRight: 10// 文本的padding-right值
+                },
             }
         },
         components: {
-            choose,liveHeader,headerNav,tabNav,othersCategory,hotsCategory,circleCategory
+            choose,liveHeader,headerNav,tabNav,othersCategory,hotsCategory,circleCategory,WxcTabPage,WxcPanItem,lbs
         },
         props:{
             corpusList:{
@@ -167,37 +196,36 @@
             utils.initIconFont();
             this.pageBoxTop = utils.getHeaderHeight()+80;
             this.uId = event.getUId();
+            this.tabStyles.bgColor = utils.baseNavColor;
+            this.tabStyles.activeBgColor = utils.baseNavColor;
+            this.headerHeight = utils.getHeaderHeight();
+            this.listHeight = utils.fullScreen(316);
             var _this = this;
-            this.getGps();
-            GET('article_category/list.jhtml',function (data) {
-                if(data.type == 'success' && data.data != ''){
-                    data.data.forEach(function (item,index) {
-//                        if(index == 0){
-//                            item.load = 1
-//                        }else{
-                        item.load = 0
-//                        }
-                    })
-//                    _this.corpusList = data.data;
-                    _this.corpusList.splice(0,0,{
-                        id:'',
-                        name:"热点",
-                        load:1
-                    })
-                    if(_this.uId != 0){
-                        _this.corpusList.splice(1,0,{
-                            id:'',
-                            name:"关注",
-                            load:0
-                        })
-                    }
-                    _this.pageWidth = _this.corpusList.length * 750;
-                }
-            },function (err) {
-                event.toast(err.content);
-            })
+            this.classify();
         },
         methods: {
+            addressChange(e){
+                this.address = e
+            },
+            //获取分类
+            classify:function(){
+                var _this = this
+                GET('article_category/list.jhtml',function (data) {
+                    if(data.type == 'success' && data.data != ''){
+                        data.data.forEach(function (item,index) {
+                            let mes= {
+                                title:item.name,
+                                id:item.id,
+                                load:0,
+                            }
+                            _this.list.push(mes)
+                        })
+                        // _this.pageWidth = _this.corpusList.length * 750;
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                })
+            },
             //            获取经纬度
             getGps:function(){
                 let _this = this
@@ -208,7 +236,6 @@
                         event.toast('定位失败，请开启GPS')
                     }
                 })
-
             },
             classHeader:function () {
                 let dc = utils.device();
@@ -364,6 +391,15 @@
                 })
 
             },
+            wxcTabPageCurrentTabSelected(e){
+                var _this = this
+                _this.list.forEach(function (item,index) {
+                    if(e.page == index){
+                        item.load = 1
+                    }
+                })
+            },
+
 
         }
     }
