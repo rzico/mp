@@ -97,6 +97,7 @@
                         <div class="flex-row">
                             <!--<text class="title footText">查看物流</text>-->
                             <!--<text class="title footText">评价晒单</text>-->
+                            <text class="title footText " @click="canRefund(item.sn,'撤销退款')">撤销退款</text>
                             <text class="title footText red" @click="confirmRefund(item.sn)">确认退款</text>
                         </div>
                     </div>
@@ -119,6 +120,7 @@
                         <div class="flex-row">
                             <!--<text class="title footText">查看物流</text>-->
                             <!--<text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>-->
+                            <text class="title footText " @click="canRefund(item.sn,'撤销退货')">撤销退货</text>
                             <text class="title footText " @click="returnGoods(item.sn)">确认退货</text>
                         </div>
                     </div>
@@ -890,6 +892,32 @@
                                     _this.pageStart = 0;
                                     _this.open();
                                     event.toast('退货成功');
+                                }else{
+                                    event.toast(data.content);
+                                }
+                            },function (err) {
+                                event.toast(data.content);
+                            }
+                        )
+                    }
+                })
+            },
+            //取消退货,退款
+            canRefund(sn,title){
+                let _this = this;
+                modal.confirm({
+                    message: title,
+                    duration: 0.3,
+                    okTitle:'确定',
+                    cancelTitle:'取消',
+                }, function (value) {
+                    if(value == '确定'){
+                        POST('weex/member/order/unReturns.jhtml?sn=' + sn).then(
+                            function (data) {
+                                if(data.type == 'success'){
+                                    _this.pageStart = 0;
+                                    _this.open();
+                                    event.toast(title+'成功');
                                 }else{
                                     event.toast(data.content);
                                 }

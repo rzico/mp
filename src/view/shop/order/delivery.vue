@@ -49,7 +49,7 @@
                 </div>
                 <div class="setting" @click="pickPattern()">
                     <div class="flex-row">
-                        <text class="fz32">运送站点:  {{shopName}}</text>
+                        <text class="fz32">发货仓库:  {{shopName}}</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -325,13 +325,11 @@
                     return;
                 }
                 this.clicked = true;
-                if(this.isobject == 'warehouse' && utils.isNull(this.shopId)){
-                    if(utils.isNull(this.shopId)){
-                        event.toast('请选择配送站点');
+                if(utils.isNull(this.shopId)){
+                        event.toast('请选择发货仓库');
                         _this.clicked = false;
                         return
-                    }
-                }else if(this.isobject == 'warehouse' && !utils.isNull(this.shopId)){
+                }else if(!utils.isNull(this.shopId)){
                     if(this.isSelf == true || this.isSelf == 'true'){
                         if(utils.isNull(this.markiId)){
                             event.toast('请选择配送人员');
