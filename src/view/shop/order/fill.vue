@@ -139,6 +139,7 @@
             <div style="height: 400px"></div>
         </scroller>
         <date @confirm="confirmDate" @cancel="cancel" :isMask="isMask"></date>
+        <wxc-loading :show="isLoading" :need-mask="true" loading-text="付款中..."></wxc-loading>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -397,6 +398,7 @@
     import date from '../../../widget/date.vue'
     const picker = weex.requireModule('picker');
     const modal = weex.requireModule('modal');
+    import { WxcLoading } from 'weex-ui';
     var animationPara;//执行动画的消息
     export default {
         data: function () {
@@ -442,10 +444,11 @@
                 paySn:'',
                 hasWater:false,
                 order:null,
+                isLoading:false
             }
         },
         components: {
-            navbar,date
+            navbar,date,WxcLoading
         },
         props: {
             title: {default: "人工报单"},
@@ -959,15 +962,12 @@
                 }
                 _this.isShow = false;
                 _this.clicked = false;
+                _this.isLoading = false;
                 _this.getInfo();
             },
 
             beginTimer:function () {
                 var _this = this;
-                modal.toast({
-                    message: '付款中..',
-                    duration: 0.5
-                })
                 POST("payment/query.jhtml?sn="+_this.paySn).then(
                     function (res) {
                         if (res.type=='success') {
@@ -989,20 +989,20 @@
                             }
                         } else {
                             event.toast(res.content);
+                            _this.clicked = false;
+                            _this.isLoading = false;
                         }
                     },
                     function (err) {
                         event.toast(err.content);
+                        _this.clicked = false;
+                        _this.isLoading = false;
                     }
                 )
             },
             paymentOrder(orderSn,safeKey) {
                 var _this = this;
                 _this.orderSn = orderSn;
-                modal.toast({
-                    message: '付款中..',
-                    duration: 1
-                })
                 POST('weex/member/order/payment.jhtml?sn='+ orderSn).then( function(pay) {
                     if (pay.type == 'success') {
                         _this.paySn = pay.data.sn;
@@ -1015,26 +1015,34 @@
                                         message: data.content,
                                         okTitle: '知道了'
                                     })
+                                    _this.clicked = false;
+                                    _this.isLoading = false;
                                 }
                             },function (err) {
                                 event.toast(err.content);
+                                _this.clicked = false;
+                                _this.isLoading = false;
                             }
                         )
                     } else {
                         event.toast(pay.content)
+                        _this.clicked = false;
+                        _this.isLoading = false;
                     }
                 }, function(fail) {
                     event.toast(fail.content)
+                    _this.clicked = false;
+                    _this.isLoading = false;
                 })
 
             },
             createOrder(safeKey) {
                 var _this = this;
+                _this.isLoading = true;
                 POST('weex/member/order/create.jhtml?receiverId='+this.addressId+'&paymentPluginId='+_this.paymentPluginId+'&memo='+encodeURIComponent(this.memoData)+'&memberId='+this.memberId+'&hopeDate='+encodeURIComponent(this.dateTime)+'&shopId='+_this.shopId+'&adminId='+_this.adminId+'&shippigMethod='+ _this.sendObject +'&pledge='+_this.deposit +'&pledgeQuantity='+_this.barrel).then(function (res) {
                     if (res.type == 'success') {
                         if (res.data.status=='unpaid') {
                             _this.paymentOrder(res.data.sn,safeKey);
-                            _this.clicked = false;
                         } else {
                             modal.alert({
                                 message: '订单提交成功',
@@ -1049,10 +1057,12 @@
                             okTitle: '知道了'
                         })
                         _this.clicked = false;
+                        _this.isLoading = false;
                     }
                 }, function (err) {
                     event.toast(err.content);
                     _this.clicked = false;
+                    _this.isLoading = false;
                 })
             },
 //            确认
@@ -1112,6 +1122,8 @@
                     event.scan(function (sc) {
                         if (sc.type=='success') {
                             _this.createOrder(sc.data);
+                        }else {
+                            _this.clicked = false;
                         }
                     })
                 } else {
