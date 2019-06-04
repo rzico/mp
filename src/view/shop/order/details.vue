@@ -1,46 +1,67 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goback="goback" completeIcon="&#xe699;" @goComplete="print()"></navbar>
+        <navbar :title="title" :status="status" @choose="choose()"    @goComplete="print()" @goback="goback" addresschoose="&#xe61d;"  completeIcon="&#xe699;"></navbar>
         <scroller   @loadmore="onloading" loadmoreoffset="50">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
+            <refresh :display="refreshing ? 'show' : 'hide'" @refresh="onrefresh"  class="refreshBox">
+                <image :src="refreshImg" class="refreshImg"  ref="refreshImg" resize="cover" ></image>
             </refresh>
             <noData :noDataHint="noDataHint" v-if="ordersList.length == 0"></noData>
             <!--导航栏-->
-            <div v-else v-for="(item,index) in ordersList" :class="[item.status == 'unpaid' || item.status == 'refunding' || item.status ==  'unshipped' || item.status ==  'returning' ? 'hasPb100' : '']" >
-                <!--<div class="flex-row infoLines mt20 infoWhiteColor" >-->
-                <!--<text class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe604;</text>-->
-                <!--<text class="title">感谢您在xxx购物,欢迎您再次光临!</text>-->
-                <!--</div>-->
+            <div :class="[item.status == 'unpaid' || item.status == 'refunding' || item.status ==  'unshipped' || item.status ==  'returning' ? 'hasPb100' : '']" v-else v-for="(item,index) in ordersList" >
                 <div class="header mt20 flex-row">
-                    <div >
-                        <text  class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe62e;</text>
-                    </div>
+<!--                    <div >-->
+<!--                        <text  class="carIcon"  :style="{fontFamily:'iconfont'}">&#xe62e;</text>-->
+<!--                    </div>-->
                     <div>
-                        <div  class="logBox"  v-for="(orderLog,index) in item.orderLogs" :class="[index != 0 ? 'mt20' : '']">
+                        <div  :class="[index != 0 ? 'mt20' : '']"  class="logBox" v-for="(orderLog,index) in item.orderLogs">
                             <text class="title">{{orderLog.content}} </text>
                             <text class="subDate"> {{orderLog.createDate | watchLogDate}}</text>
                         </div>
                     </div>
-                    <!--<p class=" marginTop5 titleColor">国内承运人: 京东快递</p>-->
-                    <!--<p class=" marginTop5 titleColor">预计送达: 11月13日</p>-->
                 </div>
-                <div class="addressBox flex-row mt20" @click="jump(item.cardId)">
-                    <div style="width: 70px;">
-                        <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
-                    </div>
-                    <div style="width: 630px">
-                        <div class="flex-row">
+                <div class="infoWhiteColor boder-bottom mt20">
+                <div class="goodsBody">
+                    <text class="fz32">配送信息</text>
+                </div>
+                </div>
+                <div @click="jump(item.cardId)" class="addressBox flex-row">
+                    <div style="width: 700px">
+                        <div class="flex-row" style="position: relative">
                             <text class="title">{{item.receiver.consignee}}</text>
+                            <text class="title" style="margin-left: 10px">{{item.receiver.phone}}</text>
+                            <text @click="callPhone(item.receiver.phone)"  style="position: absolute;right: 20px"  class="sub_title copyBtn copyBorder ml20">拨号</text>
                         </div>
-                        <div class="flex-row mt10">
-                            <text class="title">{{item.receiver.phone}}</text>
-                            <text class="sub_title copyBtn copyBorder ml20"  @click="callPhone(item.receiver.phone)">拨号</text>
+<!--                        <div class="space-between mt10">-->
+<!--                            -->
+<!--                        </div>-->
+                        <div class="space-between mt10" >
+                            <text class="title" style="line-height: 42px;max-width: 500px;">{{item.receiver.areaName}}{{item.receiver.address}}</text>
+                            <text @click="copyCode(item.receiver.consignee+item.receiver.phone+item.receiver.areaName+item.receiver.address)"  class="sub_title copyBtn copyBorder ml20">复制</text>
                         </div>
-                        <div class="flex-row mt10" >
-                            <text class="sub_title" style="line-height: 42px;max-width: 500px;">地址: {{item.receiver.areaName}}{{item.receiver.address}}</text>
-                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.receiver.consignee+item.receiver.phone+item.receiver.areaName+item.receiver.address)">复制</text>
-                        </div>
+                    </div>
+                </div>
+                <div class="infoWhiteColor" style="border-top-width: 1px;border-top-style:solid;border-top-color: #eee">
+                    <div class="infoLines pb10">
+                        <text class="sub_title ">配送方式: {{item.shippingMethod}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10" v-if="item.track.method == '同城配送'">
+                        <text class="sub_title ">配送站点: {{item.shopName}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10" v-if="item.track.method == '同城配送'">
+                        <text class="sub_title ">配送人员: {{item.adminName}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10" v-if="item.track.method == '普通快递'">
+                        <text class="sub_title ">快递公司: {{item.deliveryCorpId}}</text>
+                    </div>
+                    <div class="infoLines pt0 pb10" v-if="item.track.method == '普通快递'">
+                        <text class="sub_title ">快递单号: {{item.trackingNo}}</text>
+                    </div>
+                    <div class="infoLines pt10 boder-bottom">
+                        <text class="sub_title ">派单留言: {{item.shippingMemo}}</text>
+                    </div>
+                    <div class="infoLines flex-row boder-bottom ">
+                        <text class="sub_title ">买家留言: {{item.memo}}</text>
+                        <text @click="copyCode(item.memo)"  class="sub_title copyBtn copyBorder ml20"   v-if="item.memo!=null && item.memo!=''">复制</text>
                     </div>
                 </div>
                 <div class="goodsLine mt20">
@@ -68,8 +89,6 @@
                         </div>
                     </div>
 
-
-
                     <!--<div class="flex-row goodsBody">-->
                     <!--<image :src="refreshImg" class="goodsImg"></image>-->
                     <!--<div class="goodsInfo " >-->
@@ -83,11 +102,74 @@
                     <!--</div>-->
                     <!--</div>-->
                 </div>
-                <div class="mt20 infoWhiteColor">
+
+                <div class="infoWhiteColor boder-bottom">
+                    <div class="goodsBody">
+                    <div class="space-between">
+                        <text class="sub_title">商品小计:</text>
+                        <text class="sub_title">¥{{item.price | currencyfmt}}</text>
+                    </div>
+                    <div class=" space-between mt10" v-if="item.freight !=0">
+                        <text class="sub_title">运费(楼层费):</text>
+                        <text class="sub_title">¥ {{item.freight | currencyfmt}}</text>
+                    </div>
+                    <div class=" space-between mt10" v-if="item.pledgePayable !=0">
+                        <text class="sub_title">空桶押金:</text>
+                        <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
+                    </div>
+                    <div class=" space-between mt10 "v-if="item.couponDiscount != 0 && item.couponDiscount != '0'">
+                        <text class="sub_title">优惠折扣:</text>
+                        <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
+                    </div>
+                    <div class=" space-between mt10 " v-if="item.pointDiscount != 0 && item.pointDiscount != '0'">
+                        <text class="sub_title">积分抵扣:</text>
+                        <text class="sub_title">-{{item.pointDiscount | currencyfmt}}</text>
+                    </div>
+                    <div class=" space-between mt10 " v-if="item.exchangeDiscount != 0 && item.exchangeDiscount != '0'">
+                        <text class="sub_title">电子券支付:</text>
+                        <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
+                    </div>
+                    <div class="space-between mt10">
+                        <text class="fz30 mr20">订单合计:</text>
+                        <text class="fz30" style="color: red">¥{{item.amount | currencyfmt}}</text>
+                    </div>
+                    </div>
+                </div>
+                <div class="infoWhiteColor" v-if="item.shippingFreight !=0 || item.cost !=0 || item.adminFreight !=0 ||item.amountPayable !=0 || item.paperPayable !=0">
+                    <div class="priceLine">
+                        <div class=" space-between" v-if="item.shippingFreight !=0">
+                            <text class="sub_title">配送运费:</text>
+                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10" v-if="item.cost !=0">
+                            <text class="sub_title">货款结算:</text>
+                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
+                        </div>
+                        <div class=" space-between mt10" v-if="item.adminFreight !=0">
+                            <text class="sub_title">送货工资:</text>
+                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
+                        </div>
+                        <div class="space-between mt10" v-if="item.amountPayable !=0">
+                            <text class="sub_title ">应收金额:¥{{item.amountPayable | currencyfmt}}(上期欠款:¥{{item.arrears | currencyfmt}})</text>
+                            <text class="sub_title ">实收金额:¥{{item.amountPaid | currencyfmt}}</text>
+                        </div>
+                        <div class="space-between mt10" v-if="item.paperPayable !=0">
+                            <text class="sub_title ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
+                            <text class="sub_title ">实收水票:{{item.paperPaid}}</text>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="infoWhiteColor boder-bottom mt20">
+                    <div class="goodsBody">
+                        <text class="fz32">订单信息</text>
+                    </div>
+                </div>
+                <div class="infoWhiteColor">
                     <div class="infoLines boder-bottom">
-                        <div class="flex-row">
+                        <div class="space-between">
                             <text class="sub_title">订单编号: {{item.sn}}</text>
-                            <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.sn)">复制</text>
+                            <text @click="copyCode(item.sn)"  class="sub_title copyBtn copyBorder ml20">复制</text>
                         </div>
                         <div class="mt10 ">
                             <text class="sub_title">下单时间: {{item.createDate | watchCreateDate}}</text>
@@ -108,81 +190,6 @@
                     <div class="infoLines boder-bottom pt0">
                         <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
                     </div>
-                    <div class="infoLines pb10">
-                        <text class="sub_title ">配送方式: {{item.shippingMethod}}</text>
-                    </div>
-                    <div class="infoLines pb10">
-                        <text class="sub_title ">配送状态: {{item.shippingStatus | watchShippingStatus}}</text>
-                    </div>
-                    <div class="infoLines pt0 pb10">
-                        <text class="sub_title ">配送站点: {{item.shopName}}</text>
-                    </div>
-                    <div class="infoLines pt0 pb10">
-                        <text class="sub_title ">配送人员: {{item.adminName}}</text>
-                    </div>
-                    <div class="infoLines boder-bottom pt10">
-                        <text class="sub_title ">派单留言: {{item.shippingMemo}}</text>
-                    </div>
-                    <div class="infoLines flex-row boder-bottom ">
-                        <text class="sub_title ">买家留言: {{item.memo}}</text>
-                        <text class="sub_title copyBtn copyBorder ml20"  @click="copyCode(item.memo)"   v-if="item.memo!=null && item.memo!=''">复制</text>
-                    </div>
-                </div>
-                <div class="mt20  infoWhiteColor" >
-                    <div class="priceLine boder-bottom">
-                        <div class="space-between">
-                            <text class="sub_title">商品总额</text>
-                            <text class="sub_title">¥{{item.price | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10" v-if="filter('cost')">
-                            <text class="sub_title">+ 运费(楼层费)</text>
-                            <text class="sub_title">¥ {{item.freight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10">
-                            <text class="sub_title">+ 空桶押金</text>
-                            <text class="sub_title">¥ {{item.pledgePayable | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10 "v-if="item.couponDiscount != 0 && item.couponDiscount != '0'">
-                            <text class="sub_title">优惠折扣</text>
-                            <text class="sub_title">-{{item.couponDiscount | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10 " v-if="item.pointDiscount != 0 && item.pointDiscount != '0'">
-                            <text class="sub_title">积分抵扣</text>
-                            <text class="sub_title">-{{item.pointDiscount | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10 " v-if="item.exchangeDiscount != 0 && item.exchangeDiscount != '0'">
-                            <text class="sub_title">电子券支付</text>
-                            <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
-                        </div>
-                        <div class="flex-row pb10">
-                            <text class="fz28 mr20">订单合计:</text>
-                            <text class="fz28" style="color: red">¥{{item.amount | currencyfmt}}</text>
-                        </div>
-                        <div class="space-between pb10">
-                            <text class="fz28 ">应收金额:¥{{item.amountPayable | currencyfmt}}(上期欠款:¥{{item.arrears | currencyfmt}})</text>
-                            <text class="fz28 ">实收金额:¥{{item.amountPaid | currencyfmt}}</text>
-                        </div>
-                        <div class="space-between pb10">
-                            <text class="fz28 ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
-                            <text class="fz28 ">实收水票:{{item.paperPaid}}</text>
-                        </div>
-
-                    </div>
-                    <div class="priceLine">
-                        <div class=" space-between mt10" v-if="filter('shippingFreight')">
-                            <text class="sub_title">配送运费</text>
-                            <text class="sub_title">¥ {{item.shippingFreight | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10" v-if="filter('cost')">
-                            <text class="sub_title">货款结算</text>
-                            <text class="sub_title">¥ {{item.cost | currencyfmt}}</text>
-                        </div>
-                        <div class=" space-between mt10">
-                            <text class="sub_title">送货工资</text>
-                            <text class="sub_title">¥ {{item.adminFreight | currencyfmt}}</text>
-                        </div>
-
-                    </div>
                 </div>
 
                 <div class="flex-row space-between goodsFoot boder-top"  v-if="item.status == 'unpaid'">
@@ -191,8 +198,8 @@
                     </div>
                     <div class="flex-row">
                         <!--<text class="title footText">查看物流</text>-->
-                        <text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>
-                        <text class="title footText " @click="confirmOrder(item.sn)">确认订单</text>
+                        <text @click="closeOrder(item,item.sn)" class="title footText">关闭订单</text>
+                        <text @click="confirmOrder(item.sn)" class="title footText ">确认订单</text>
                     </div>
                 </div>
                 <div class="flex-row space-between goodsFoot boder-top" v-else-if="item.status == 'refunding'">
@@ -201,7 +208,7 @@
                     </div>
                     <div class="flex-row">
                         <!--<text class="title footText">查看物流</text>-->
-                        <text class="title footText red" @click="confirmRefund(item.sn)">确认退款</text>
+                        <text @click="confirmRefund(item.sn)" class="title footText red">确认退款</text>
                     </div>
                 </div>
                 <div class="flex-row space-between goodsFoot boder-top"v-else-if="item.status == 'unshipped'">
@@ -211,7 +218,7 @@
                     <div class="flex-row">
                         <!--<text class="title footText">查看物流</text>-->
                         <!--<text class="title footText">评价晒单</text>-->
-                        <text class="title footText " @click="sendGoods(item.sn)">发货</text>
+                        <text @click="sendGoods(item.sn)" class="title footText ">发货</text>
                     </div>
                 </div>
                 <div class="flex-row space-between goodsFoot boder-top" v-else-if="item.status == 'returning'">
@@ -221,7 +228,7 @@
                     <div class="flex-row">
                         <!--<text class="title footText">查看物流</text>-->
                         <!--<text class="title footText">评价晒单</text>-->
-                        <text class="title footText " @click="returnGoods(item.sn)">确认退货</text>
+                        <text @click="returnGoods(item.sn)" class="title footText ">确认退货</text>
                     </div>
                 </div>
                 <!--<div class="flex-row flex-center goodsFoot boder-top" v-else>-->
@@ -297,7 +304,10 @@
         color: #666;
     }
     .addressBox{
-        padding: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
         background-color: #fff;
     }
 
@@ -398,12 +408,12 @@
     import navbar from '../../../include/navbar.vue';
     import utils from '../../../assets/utils';
     import {dom,event,animation,storage} from '../../../weex.js';
-    import { POST, GET } from '../../../assets/fetch';
+    import { POST, GET ,URIEncrypt} from '../../../assets/fetch';
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
     const clipboard = weex.requireModule('clipboard');
     const printer = weex.requireModule('print');
-    var modal = weex.requireModule('modal');
+    var modal = weex.requireModule('modal')
     export default {
         data:function() {
             return{
@@ -415,7 +425,8 @@
                 orderSN:'',
                 refreshImg:utils.locate('resources/images/loading.png'),
                 clicked:false,
-                roles:''
+                roles:'',
+                status:''
             }
         },
         props: {
@@ -523,7 +534,7 @@
             }
         },
         components: {
-            navbar, noData
+            navbar, noData, modal
         },
         created() {
             utils.initIconFont();
@@ -609,6 +620,7 @@
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
+                        _this.status = _this.ordersList[0].status
                     }else{
                         event.toast(data.content);
                     }
@@ -829,6 +841,18 @@
                 phone.tel(telPhone,function(){
                     return;
                 })
+            },
+            choose:function () {
+                    var _this = this;
+                    let e = {
+                        sn:_this.ordersList[0].sn,
+                        deliveryCorpId:_this.ordersList[0].deliveryCorp,
+                        trackingNo:_this.ordersList[0].trackingNo,
+                        method:_this.ordersList[0].track.method
+                    }
+                    event.openURL(utils.locate("view/shop/order/addressChoose.js?"+URIEncrypt(e)),function (res) {
+                        _this.open();
+                    });
             }
         }
     }

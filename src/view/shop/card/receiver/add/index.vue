@@ -299,7 +299,7 @@
             },
             amapLinkTo:function(){
                 var _this=this
-                event.openURL(utils.locate("pages/member/receiver/amap-picker/amap-picker.js"),function (e) {
+                event.openURL(utils.locate("view/member/amap-picker/amap-picker.js"),function (e) {
                     if (e.type=='success') {
                         _this.areaId = e.data.areaId
                         _this.areaName = e.data.areaName

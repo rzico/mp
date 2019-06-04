@@ -6,9 +6,14 @@
         </div>
         <div class="nav">
             <text class="nav_title">{{title}}</text>
+            <div style="flex-direction: row">
+            <div class="navRightBox"  @click="choose('/')" v-if="status != 'returned' && status != 'refunded' && status != 'completed'">
+                <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-if="addresschoose != ''">{{address}}</text>
+            </div>
             <div class="navRightBox"  @click="goComplete('/')">
-                <text class="nav_Complete nav_title" v-if="completeIcon ==''">{{complete}}</text>
+                <text class="nav_Complete nav_title" v-if="completeIcon == ''" >{{complete}}</text>
                 <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-else>{{getIco}}</text>
+            </div>
             </div>
          </div>
     </div>
@@ -61,13 +66,18 @@
         props: {
             title: { default: "navbar" },
             complete:{default:''},
+            addresschoose:{default:''},
             completeIcon:{default:''},
             showComplete:{default:true},
-            border:{default:true}
+            border:{default:true},
+            status:{default:"returned"}
         },
         computed: {
             getIco: function() {
                 return he.decode(this.completeIcon)
+            },
+            address:function () {
+                return he.decode(this.addresschoose)
             }
         },
         methods: {
@@ -81,7 +91,10 @@
             },
             goComplete:function (e) {
                 this.$emit('goComplete');
-            }
+            },
+            choose:function (e) {
+                this.$emit('choose')
+            },
         }
      }
 </script>
