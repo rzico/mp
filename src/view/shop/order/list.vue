@@ -744,7 +744,7 @@
             //更改订单价格
             showMask(item,index){
                 this.isMask = true;
-                this.orderAmout = item.amount;
+                this.orderAmout = item.amountPayable;
                 this.nowSn = item.sn;
                 this.nowIndex = index;
             },
