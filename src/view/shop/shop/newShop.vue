@@ -372,7 +372,7 @@
             },
             location:function () {
                 var _this = this;
-                event.openURL(utils.locate('view/member/amap-picker/amap-picker.js?title='+encodeURIComponent('选择地址')+'&isPolygon=false'), function (data) {
+                event.openURL(utils.locate('view/shop/amap-picker/amap-picker.js?title='+encodeURIComponent('选择地址')+'&isPolygon=false'), function (data) {
                     if(data.type == 'success' && data.data !='' ) {
                         _this.addressName = data.data.areaName;
                         _this.detailedAddress = data.data.building;
