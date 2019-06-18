@@ -76,6 +76,14 @@
                         <text class="sub_title">积分抵扣:</text>
                         <text class="sub_title">-{{item.pointDiscount | currencyfmt}}</text>
                     </div>
+                    <div class=" space-between mt10 " v-if="item.vipDiscount != 0 && item.vipDiscount != '0'">
+                        <text class="sub_title">会员卷抵扣:</text>
+                        <text class="sub_title">-{{item.vipDiscount | currencyfmt}}</text>
+                    </div>
+                    <div class=" space-between mt10 " v-if="item.offsetAmount != 0 && item.offsetAmount != '0'">
+                        <text class="sub_title">客服调价:</text>
+                        <text class="sub_title">{{item.offsetAmount | currencyfmt}}</text>
+                    </div>
                     <div class=" space-between mt10 " v-if="item.exchangeDiscount != 0 && item.exchangeDiscount != '0'">
                         <text class="sub_title">电子券支付:</text>
                         <text class="sub_title">-{{item.exchangeDiscount | currencyfmt}}（{{item.exchangeQuantity}}张）</text>
