@@ -778,23 +778,6 @@
             },
             //            前往搜索
             goSearch:function () {
-//                picker.pick({
-//                    items:['关键词搜索','送货时间搜索']
-//                }, e => {
-//                    if (e.result == 'success') {
-//                        if (e.data == 0) {
-//                            _this.doSearch = true;
-//                            _this.searchOrCancel = '取消';
-//                            _this.ordersList = [];
-//                            _this.noDataHint = "输入收货人、电话、地址";
-//                        } else{
-//                            _this.doSearch = true;
-//                            _this.isKeyDate = true;
-//                            _this.pickDate()
-//                        }
-//                    }
-//                })
-
                 if (this.clicked) {
                     return;
                 }
@@ -807,7 +790,8 @@
                         _this.keyAdminId = data.data.adminId;
                         _this.keyShopId = data.data.shopId;
                         _this.keyDate = data.data.time;
-                        _this.open()
+                        _this.pageStart = 0;
+                        _this.open();
                     }
                 })
             },
