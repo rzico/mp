@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title" :status="status" @choose="choose()"    @goComplete="print()" @goback="goback" addresschoose="&#xe61d;"  completeIcon="&#xe699;"></navbar>
+        <navbar :title="title"  @goback="goback" ></navbar>
         <scroller   @loadmore="onloading" loadmoreoffset="50">
             <refresh :display="refreshing ? 'show' : 'hide'" @refresh="onrefresh"  class="refreshBox">
                 <image :src="refreshImg" class="refreshImg"  ref="refreshImg" resize="cover" ></image>
@@ -208,6 +208,8 @@
                         <!--<text class="title footText">查看物流</text>-->
                         <text @click="closeOrder(item,item.sn)" class="title footText">关闭订单</text>
                         <text @click="confirmOrder(item.sn)" class="title footText ">确认订单</text>
+                        <text @click="choose()" class="title footText ">修改地址</text>
+                        <text @click="print()" class="title footText ">打印</text>
                     </div>
                 </div>
                 <div class="flex-row space-between goodsFoot boder-top" v-else-if="item.status == 'refunding'">
@@ -217,6 +219,7 @@
                     <div class="flex-row">
                         <!--<text class="title footText">查看物流</text>-->
                         <text @click="confirmRefund(item.sn)" class="title footText red">确认退款</text>
+                        <text @click="print()" class="title footText ">打印</text>
                     </div>
                 </div>
                 <div class="flex-row space-between goodsFoot boder-top"v-else-if="item.status == 'unshipped'">
@@ -227,6 +230,8 @@
                         <!--<text class="title footText">查看物流</text>-->
                         <!--<text class="title footText">评价晒单</text>-->
                         <text @click="sendGoods(item.sn)" class="title footText ">发货</text>
+                        <text @click="choose()" class="title footText ">修改地址</text>
+                        <text @click="print()" class="title footText ">打印</text>
                     </div>
                 </div>
                 <div class="flex-row space-between goodsFoot boder-top" v-else-if="item.status == 'returning'">
@@ -237,6 +242,15 @@
                         <!--<text class="title footText">查看物流</text>-->
                         <!--<text class="title footText">评价晒单</text>-->
                         <text @click="returnGoods(item.sn)" class="title footText ">确认退货</text>
+                        <text @click="print()" class="title footText ">打印</text>
+                    </div>
+                </div>
+                <div class="flex-row space-between goodsFoot boder-top" v-else-if="item.status == 'completed'">
+                    <div class="footMore">
+                        <!--<text class="title" style="color: #444">删除订单</text>-->
+                    </div>
+                    <div class="flex-row">
+                        <text @click="print()" class="title footText ">打印</text>
                     </div>
                 </div>
                 <!--<div class="flex-row flex-center goodsFoot boder-top" v-else>-->

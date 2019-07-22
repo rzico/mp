@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" >
-        <navbar :title="title"  @goComplete="print()" @goback="goback" completeIcon="&#xe699;"></navbar>
+        <navbar :title="title"   @goback="goback" ></navbar>
         <scroller   @loadmore="onloading" loadmoreoffset="50">
             <refresh :display="refreshing ? 'show' : 'hide'" @refresh="onrefresh"  class="refreshBox">
                 <image :src="refreshImg" class="refreshImg"  ref="refreshImg" resize="cover" ></image>
@@ -150,6 +150,14 @@
                         <text class="sub_title ">支付状态: {{item.paymentStatus | watchPaymentStatus}}</text>
                     </div>
                         </div>
+                    </div>
+                </div>
+                <div class="flex-row space-between goodsFoot boder-top" >
+                    <div class="footMore">
+                        <!--<text class="title" style="color: #444">删除订单</text>-->
+                    </div>
+                    <div class="flex-row">
+                        <text @click="print()" class="title footText ">打印</text>
                     </div>
                 </div>
             </div>
