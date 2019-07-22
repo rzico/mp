@@ -322,7 +322,7 @@
                     _this.soundfile = null;
                 }
                 _this.unReadMessage = event.getUnReadMessageCount();
-                var mesData = [0,0,_this.unReadMessage,0];
+                var mesData = [0,_this.unReadMessage];
                 event.setDots(mesData);
             });
             //           添加好友消息红点控制
@@ -336,7 +336,7 @@
             });
 
             this.unReadMessage = event.getUnReadMessageCount();
-            var mesData = [0,0,this.unReadMessage,0];
+            var mesData = [0,this.unReadMessage];
             event.setDots(mesData);
 
         },
