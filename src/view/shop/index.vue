@@ -142,8 +142,6 @@
 
     .wallet-panel {
         padding-top: 44px;
-        padding-left: 70px;
-        padding-right: 70px;
         height:310px;
         flex-direction: row;
         align-items:center;
