@@ -199,7 +199,6 @@
                         var date = e.data;
                         date = parseInt(new Date(date).getTime()/1000);
                         _this.time = utils.ymdtimefmt(date);
-                        event.toast(_this.time)
                     }
                 })
             },
