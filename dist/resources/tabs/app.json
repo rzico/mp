@@ -1,7 +1,7 @@
 {
   "label": "1",
   "color": "#707070",
-  "selectedColor": "#068F3D",
+  "selectedColor": "#29d1fb",
   "borderStyle": "#ececec",
   "backgroundColor": "#ffffff",
   "style": "both",
@@ -17,15 +17,6 @@
         "selectedIconPath": "tab1_focus"
       },
       {
-        "en": "发现",
-        "zh": "发现",
-        "text": "发现",
-        "path": "file://view/home/index.js",
-        "icon": "tab2",
-        "requireAuth":true,
-        "selectedIconPath": "tab2_focus"
-      },
-      {
         "en": "Message",
         "zh": "消息",
         "text": "消息",
@@ -38,7 +29,7 @@
         "en": "Mine",
         "zh": "我的",
         "text": "我的",
-        "path": "file://view/member/index.js",
+        "path": "file://view/member/mine.js",
         "icon": "tab4",
         "requireAuth":true,
         "selectedIconPath": "tab4_focus"
