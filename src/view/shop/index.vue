@@ -186,8 +186,7 @@
                 <div class="content">
                     <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
                     <div class="flex-row" style="flex-wrap:wrap">
-                        <text class="sub_title mt10">2.点击缴活店铺，支付588元技术服务费</text>
-                        <text class="sub_title mt10" style="color: #0088fb" @click="openWebView('芸店智能接单小票打印机')">《赠送芸店智能接单小票打印机》。</text>
+                        <text class="sub_title mt10">2.点击缴活店铺，并支付技术服务费</text>
                     </div>
 
                     <text class="sub_title mt10">3.下载专属二维码，开启新零售服务体验。</text>
@@ -280,6 +279,7 @@
     .sub_title {
         color:#ccc;
         font-size: 30px;
+        line-height:42px;
     }
 
     .wallet-title {
