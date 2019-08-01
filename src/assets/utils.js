@@ -11,7 +11,7 @@ const appName = 'yundian';// app类型  water 或 yundian
 let utilsFunc = {
     //0 标准版 1生鲜版 2桶装水
     version:2,
-    baseNavColor:'#068F3D',
+    baseNavColor:'#29d1fb',
     // app类型
     appType(){
         return appName;

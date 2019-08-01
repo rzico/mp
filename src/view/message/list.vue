@@ -9,12 +9,9 @@
                 <div class="userBox" >
                     <text class=" nav_title">{{pageName}}</text>
                 </div>
-                <div class="rightTop" @click="menu()" >
-                    <text class="nav_ico" :style="{fontFamily:'iconfont'}">&#xe62a;</text>
-                </div>
+                <div class="rightTop"></div>
             </div>
         </div>
-        <search @gosearch="gosearch" :keyword="searchKeyword" @scan="scan"> </search>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list v-else  class="list" :scrollable="canScroll">
             <!--朋友信息-->
@@ -294,7 +291,7 @@
             }
         },
         props:{
-            noDataHint: { default: "没有消息，快去聊天吧"},
+            noDataHint: { default: "暂无消息"},
         },
         created() {
 //            创建前
@@ -322,7 +319,7 @@
                     _this.soundfile = null;
                 }
                 _this.unReadMessage = event.getUnReadMessageCount();
-                var mesData = [0,0,_this.unReadMessage,0];
+                var mesData = [0,_this.unReadMessage,0];
                 event.setDots(mesData);
             });
             //           添加好友消息红点控制
@@ -336,7 +333,7 @@
             });
 
             this.unReadMessage = event.getUnReadMessageCount();
-            var mesData = [0,0,this.unReadMessage,0];
+            var mesData = [0,this.unReadMessage,0];
             event.setDots(mesData);
 
         },
