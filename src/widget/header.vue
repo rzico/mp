@@ -1,8 +1,10 @@
 <template>
 
         <div class="headerBox">
-            <image class="bgImg" :src="imgBg" @click="changeLogo"></image>
-            <image class="img_heightMask" :src="img_heightMask" @click="changeLogo"></image>
+            <image class="bgImg" :src="imgBg"></image>
+            <image class="img_heightMask" :src="img_heightMask" ></image>
+            <!--点击域-->
+            <div class="img_Domain" @click="changeLogo"></div>
             <!--<image class="img_mask" :src="img_mask"></image>-->
             <div class="memberBox" :class="[headerInfo()]">
                 <image class="logo" :src="logo" @click="setting()"></image>
@@ -65,6 +67,12 @@
     .img_heightMask{
         width: 750px;
         height: 750px;
+        position: absolute;
+        top: 0;
+    }
+    .img_Domain{
+        width: 750px;
+        height: 400px;
         position: absolute;
         top: 0;
     }
