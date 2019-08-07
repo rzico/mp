@@ -63,7 +63,7 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="typeBox" v-if="hasWater">
+                <div class="typeBox" v-if="hasWater && order!=null && order.shippingMethodId != 'pickup'">
                     <div class="flex-row">
                         <text class="fz32">收押金:</text>
                         <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>
@@ -73,14 +73,14 @@
                         <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel" @change="getmoneyTotal"/>
                     </div>
                 </div>
-                <div class="typeBox" @click="pickPattern()">
+                <div class="typeBox" @click="pickPattern()"  v-if="order!=null && order.shippingMethodId != 'pickup'">
                     <text class="fz32">配送站点:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{shopName}}</text>
                         <text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>
                     </div>
                 </div>
-                <div class="typeBox" @click="goMarki()">
+                <div class="typeBox" @click="goMarki()" v-if="order!=null && order.shippingMethodId != 'pickup'">
                     <text class="fz32">配送人员:</text>
                     <div class="flex-row">
                         <text class="typeBoxText">{{adminName}}</text>
