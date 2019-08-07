@@ -179,9 +179,13 @@
                     <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 120px">&#xe662;</text>
                     <text class="menuBtn">我要开店</text>
                 </div>
-                <div class="menuTwo" @click="activated()" v-if="filter('activedShop')">
+                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">
                     <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
                     <text class="menuBtn">激活店铺</text>
+                </div>
+                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">
+                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
+                    <text class="menuBtn">审核中...</text>
                 </div>
                 <div class="content">
                     <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
