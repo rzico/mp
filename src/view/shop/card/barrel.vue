@@ -271,7 +271,7 @@
             }
         },
         props: {
-            title: { default: "退货记录"},
+            title: { default: "送货记录"},
             noDataHint: { default: "尚未拥有记录"},
         },
         created() {

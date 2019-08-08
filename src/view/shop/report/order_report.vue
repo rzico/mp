@@ -8,9 +8,6 @@
             <div class="tableTwo">
                 <text class="tableText">数量</text>
             </div>
-            <div class="tableThree">
-                <text class="tableText">成本</text>
-            </div>
             <div class="tableFour">
                 <text class="tableText">金额</text>
             </div>
@@ -23,7 +20,6 @@
                 <div class="contentCell" >
                     <text class="shopName">{{c.name}}</text>
                     <text class="number">{{c.quantity}}</text>
-                    <text class="cost">¥{{c.cost}}</text>
                     <text class="money">¥{{c.amount}}</text>
                 </div>
             </cell>
@@ -47,24 +43,24 @@
                 <text class="fz32 fontStrong">商品合计: ¥{{summarylist[0].price}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">积分抵扣: ¥{{summarylist[0].pointDiscount}}</text>
-                <text class="fz28 ">优惠折扣: ¥{{summarylist[0].couponDiscount}}</text>
+                <text class="fz28 ">+ 运费/楼层费: ¥{{summarylist[0].freight}}</text>
+                <text class="fz28 ">+收押金: ¥{{summarylist[0].pledge}}</text>
             </div>
             <div class="bottomCellTwo">
+                <text class="fz28 ">-分销佣金: ¥{{summarylist[0].rebate}}</text>
+                <text class="fz28 ">-平台佣金: ¥{{summarylist[0].fee}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">活动优惠: ¥{{summarylist[0].couponDiscount}}</text>
+                <text class="fz28 fontStrong">调价优惠: ¥{{summarylist[0].offsetAmount}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">金币抵扣: ¥{{summarylist[0].pointDiscount}}</text>
                 <text class="fz28 ">电子券抵扣: ¥{{summarylist[0].exchangeDiscount}}</text>
-                <text class="fz28 ">调价: ¥{{summarylist[0].offsetAmount}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">运费: ¥{{summarylist[0].freight}}</text>
-                <text class="fz28 fontStrong">营业额: ¥{{summarylist[0].amount}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">商品成本: ¥{{summarylist[0].cost}}</text>
-                <text class="fz28 ">平台佣金: ¥{{summarylist[0].fee}}</text>
-            </div>
-            <div class="bottomCellTwo">
-                <text class="fz28 ">配送费: ¥{{summarylist[0].shippingFreight}}</text>
-                <text class="fz28 fontStrong">净利润: ¥{{summarylist[0].profit}}</text>
+                <text class="fz28 " v-if="summarylist[0].paperDiscount > 0">纸质水票抵后: ¥{{summarylist[0].paperDiscount}}</text>
+                <text class="fz28 fontStrong">营业收入: ¥{{summarylist[0].amount}}</text>
             </div>
         </div>
     </div>
@@ -90,7 +86,7 @@
         border-bottom-color: #ccc;
     }
     .tableOne{
-        width:225px;
+        width:375px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -98,7 +94,7 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:150px;
+        width:187.5px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -179,7 +175,7 @@
     }
     .shopName{
         font-size: 30px;
-        width: 225px;
+        width: 375px;
         padding-left: 30px;
         text-align: left;
         lines:1;
@@ -187,7 +183,7 @@
     }
     .number{
         font-size: 30px;
-        width: 150px;
+        width: 187.5px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;

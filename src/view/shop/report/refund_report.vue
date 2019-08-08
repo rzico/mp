@@ -3,28 +3,28 @@
         <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
             <div class="tableOne">
-                <text class="tableText">收款</text>
-            </div>
-            <div class="tableOne">
-                <text class="tableText">科目</text>
+                <text class="tableText">品名</text>
             </div>
             <div class="tableTwo">
-                <text class="tableText">退款</text>
+                <text class="tableText">数量</text>
+            </div>
+            <div class="tableFour">
+                <text class="tableText">金额</text>
             </div>
         </div>
-        <list  loadmoreoffset="180" v-if="summarylist != null">
+        <list  loadmoreoffset="180" v-if="reportList != null">
             <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
             <!--</refresh>-->
-            <cell v-for="(c,index) in summarylist" ref="adoptPull" >
+            <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="contentCell" >
-                    <text class="shopName">{{c.amount}}</text>
-                    <text class="number">{{c.typeName}}</text>
-                    <text class="returnMoney">¥{{c.refund}}</text>
+                    <text class="shopName">{{c.name}}</text>
+                    <text class="number">{{c.quantity}}</text>
+                    <text class="money">¥{{c.amount}}</text>
                 </div>
             </cell>
             <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>
-            <cell v-if="summarylist.length == 0" >
+            <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
             <cell>
@@ -33,12 +33,34 @@
 
         </list>
 
-        <div class="bottomTotal"  v-if="summarylist != null">
-            <div class="bottomCell">
-                <text class="bottomCellText">收款合计: ¥{{total}}</text>
+        <div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist.length>0">
+            <!--点击上箭头或向上滑动展开-->
+            <div class="iconBox">
+                <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>
+                <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
             <div class="bottomCell">
-                <text class="bottomCellText">退款合计: ¥{{refund}}</text>
+                <text class="fz32 fontStrong">商品合计: ¥{{summarylist[0].price}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">+ 运费/楼层费: ¥{{summarylist[0].freight}}</text>
+                <text class="fz28 ">+收押金: ¥{{summarylist[0].pledge}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">-分销佣金: ¥{{summarylist[0].rebate}}</text>
+                <text class="fz28 ">-平台佣金: ¥{{summarylist[0].fee}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">活动优惠: ¥{{summarylist[0].couponDiscount}}</text>
+                <text class="fz28 fontStrong">调价优惠: ¥{{summarylist[0].offsetAmount}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 ">金币抵扣: ¥{{summarylist[0].pointDiscount}}</text>
+                <text class="fz28 ">电子券抵扣: ¥{{summarylist[0].exchangeDiscount}}</text>
+            </div>
+            <div class="bottomCellTwo">
+                <text class="fz28 " v-if="summarylist[0].paperDiscount > 0">纸质水票抵后: ¥{{summarylist[0].paperDiscount}}</text>
+                <text class="fz28 fontStrong">退货合计: ¥{{summarylist[0].amount}}</text>
             </div>
         </div>
     </div>
@@ -51,6 +73,9 @@
         background-color: white;
 
     }
+    .fontStrong{
+        font-weight: bold;
+    }
     .classBox{
         height: 80px;
         width: 750px;
@@ -61,7 +86,7 @@
         border-bottom-color: #ccc;
     }
     .tableOne{
-        width:250px;
+        width:375px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -69,7 +94,23 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:250px;
+        width:187.5px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        border-right-width: 1px;
+        border-right-color: #777;
+    }
+    .tableThree{
+        width:187.5px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        border-right-width: 1px;
+        border-right-color: #777;
+    }
+    .tableFour{
+        width:187.5px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -79,19 +120,15 @@
         color: #444;
     }
     .bottomTotal{
+        align-items: center;
         width: 750px;
-        height: 100px;
-        padding-left: 20px;
-        padding-right: 20px;
+        height: 630px;
         background-color: white;
         position: fixed;
-        bottom:0px;
+        bottom:-500px;
         left: 0;
         border-top-width: 1px;
         border-color: #ccc;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
     }
     .bigIcon{
         font-size: 30px;
@@ -104,19 +141,20 @@
     }
     .bottomCell{
         height: 100px;
+        width: 750px;
+        background-color: #f5f5f5;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
-    }
-    .bottomCellText{
-        font-size:32px;
-        lines:1;
-        text-overflow: ellipsis;
-        max-width: 340px;
+        justify-content: flex-end;
+        padding-right: 30px;
+        border-bottom-width:1px;
+        border-color:#cccccc;
     }
     .bottomCellTwo{
         height: 100px;
         width: 750px;
+        padding-left: 30px;
+        padding-right: 30px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
@@ -137,52 +175,29 @@
     }
     .shopName{
         font-size: 30px;
-        width: 250px;
+        width: 375px;
         padding-left: 30px;
-        text-align: center;
+        text-align: left;
         lines:1;
         text-overflow: ellipsis;
     }
     .number{
         font-size: 30px;
-        width: 250px;
-        text-align: center;
+        width: 187.5px;
+        text-align: right;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .cost{
+        font-size: 30px;
+        width: 187.5px;
+        text-align: right;
         lines:1;
         text-overflow: ellipsis;
     }
     .money{
         font-size: 30px;
         width: 187.5px;
-        padding-right: 30px;
-        text-align: right;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .returnMoney{
-        font-size: 30px;
-        width: 250px;
-        text-align: right;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .typeName{
-        font-size: 28px;
-        width: 225px;
-        padding-left: 30px;
-        text-align: left;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .refund{
-        font-size: 28px;
-        width: 262.5px;
-        text-align: right;
-        lines:1;
-        text-overflow: ellipsis;
-    }
-    .amount{
-        font-size: 28px;
-        width: 262.5px;
         padding-right: 30px;
         text-align: right;
         lines:1;
@@ -204,7 +219,7 @@
         data:function(){
             return{
                 reportList:null,
-                summarylist:null,
+                summarylist:[],
                 refreshing: false,
                 loadinging:false,
                 loading: 'hide',
@@ -215,10 +230,9 @@
                 hadUpdate:false,
                 isIcon:true,
                 timeDate:'',
-                pageName:'收款统计',
+                pageName:'退货统计',
                 beginTime:'',
-                endTime:'',
-                refund:''
+                endTime:''
             }
         },
         components: {
@@ -230,9 +244,9 @@
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
-            var timeDate = utils.ymdtimefmt(Date.parse(new Date()));
-            this.beginTime = timeDate+ ' ' +'00:00:00';
-            this.endTime = timeDate+ ' ' +'23:59:59';
+            this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
+            this.beginTime = this.timeDate+ ' ' +'00:00:00';
+            this.endTime = this.timeDate+ ' ' +'23:59:59';
             this.open();
         },
 //        dom呈现完执行滚动一下
@@ -370,17 +384,21 @@
             },
             open:function () {
                 var _this = this;
-                GET('weex/member/report/payment_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime),function (res) {
+
+                GET('weex/member/report/order_return_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
-                            var total = 0;
-                            var refund = 0;
-                            res.data.data.summary.forEach(function (item) {
-                                total = total+item.amount;
-                                refund = refund + item.refund
-                            })
-                            _this.total = total;
-                            _this.refund = refund;
+                        if (_this.pageStart==0) {
+                            _this.reportList = res.data.data.data;
                             _this.summarylist = res.data.data.summary
+                        } else {
+                            res.data.data.data.forEach(function (item) {
+                                _this.reportList.push(item);
+                            })
+                        }
+                        _this.pageStart = _this.pageStart+res.data.data.data.length;
+                        setTimeout(() => {
+                            _this.loadinging = false;
+                        }, 1000)
                     } else {
                         event.toast(res.content);
                     }
@@ -391,11 +409,12 @@
 //            上拉加载
             onloading (event) {
                 this.loadinging = true
+                this.open();
             },
 //            下拉刷新
             onrefresh:function (event) {
                 var _this = this;
-
+                _this.pageStart = 0;
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
                     styles: {
@@ -417,7 +436,6 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false
-                    _this.pageStart = 0;
                     _this.open();
                 }, 1000)
             },

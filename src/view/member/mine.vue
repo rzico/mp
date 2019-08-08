@@ -203,9 +203,13 @@
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
                         <text class="iconfontText mt20">我要开店</text>
                     </div>
-                    <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated && filterApp()" @click="activated()">
+                    <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated  && member.fee >0 &&  filterApp()" @click="activated()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65" class="iconfontSize">&#xe6ce;</text>
                         <text class="iconfontText mt20">激活店铺</text>
+                    </div>
+                    <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated && member.fee ==0 &&  filterApp()" @click="activated()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65" class="iconfontSize">&#xe6ce;</text>
+                        <text class="iconfontText mt20">审核中...</text>
                     </div>
                     <div class="iconBox flexCol mt20"  v-if="member.hasShop && !member.activated" @click="modification()">
                         <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe662;</text>
