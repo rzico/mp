@@ -14,11 +14,11 @@
             </div>
             <div class="facade">
                 <text class="number">①</text>
-                <text class="facadeText">拍摄门头照</text>
+                <text class="facadeText">法人身份证正面照</text>
             </div>
             <div class="iconfontOne">
                 <div class="image">
-                    <image style="width: 200px;height: 200px;"  class="img" :src="logo"></image>
+                    <image style="width: 200px;height: 200px;"  class="img" :src="idCardFront"></image>
                 </div>
                 <div class="iconfont" >
                     <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facelogo" >&#xe618;</text>
@@ -26,11 +26,11 @@
             </div>
             <div class="place">
                 <text class="number">②</text>
-                <text class="placeText">拍摄经营场所照</text>
+                <text class="placeText">法人身份证反面照</text>
             </div>
             <div class="iconfontTwo">
                 <div class="image">
-                    <image style="width: 200px;height: 200px;"  class="img" :src="palcePhoto"></image>
+                    <image style="width: 200px;height: 200px;"  class="img" :src="idCardBack"></image>
                 </div>
                 <div class="iconfont">
                     <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palcelogo" >&#xe618;</text>
@@ -40,12 +40,24 @@
                 <text class="number">③</text>
                 <text class="licenseText">拍摄营业执照</text>
             </div>
-            <div class="iconfontThree">
+            <div class="iconfontTwo">
                 <div class="image">
                     <image style="width: 200px;height: 200px;"  class="img" :src="licensePhoto"></image>
                 </div>
                 <div class="iconfont">
                     <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
+                </div>
+            </div>
+            <div class="license">
+                <text class="number">④</text>
+                <text class="licenseText">食品经营许可证</text>
+            </div>
+            <div class="iconfontThree">
+                <div class="image">
+                    <image style="width: 200px;height: 200px;"  class="img" :src="food"></image>
+                </div>
+                <div class="iconfont">
+                    <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="uploadFood">&#xe618;</text>
                 </div>
             </div>
         </scroller>
@@ -223,6 +235,7 @@
                 palcePhoto:'',
 //              门面照
                 logo:'',
+                food:'',
 //              区位id
                 areaId:'',
                 category:'',
@@ -230,7 +243,9 @@
                 originalone:'',
                 originaltwo:'',
                 originalthree:'',
-                clicked:false
+                clicked:false,
+                idCardFront:'',
+                idCardBack:''
             }
         },
         components: {
@@ -263,13 +278,28 @@
                 _this.industryName = elevendata.categoryName;
                 storage.removeItem(eleven);
             });
-
+            this.getImg()
         },
         methods:{
             goback:function () {
                 event.closeURL()
             },
-
+            getImg(){
+                let _this = this;
+              GET('weex/member/shop/material.jhtml',function (res) {
+                  if(res.type == 'success'){
+                      _this.originalthree = res.data.license;
+                      _this.licensePhoto = res.data.license;
+                      _this.idCardFront = res.data.idCardFront;
+                      _this.idCardBack = res.data.idCardBack;
+                      _this.food = res.data.food
+                  }else {
+                      event.toast(res.content)
+                  }
+              },function (err) {
+                  event.toast(err.content)
+              })
+            },
 //          拍摄照片上传
             facelogo:function () {
                 var _this = this;
@@ -283,11 +313,10 @@
                     options,function (mes) {
                         if(mes.type == 'success') {
                             event.upload(mes.data.originalPath,function (data) {
-                                _this.originalone =data.data
+                                _this.idCardFront =data.data
                             },function () {
 
                             });
-                            _this.logo = mes.data.thumbnailSmallPath;
 
                         }
                     })
@@ -304,8 +333,7 @@
                     options,function (mes) {
                         if(mes.type == 'success') {
                             event.upload(mes.data.originalPath,function (data) {
-                                _this.originaltwo =data.data
-                                _this.palcePhoto = mes.data.thumbnailSmallPath;
+                                _this.idCardBack =data.data
                             },function () {
                             });
 
@@ -332,18 +360,37 @@
                         }
                     })
             },
+            uploadFood:function () {
+                var _this = this;
+                var options = {
+                    isCrop:true,
+                    width:1,
+                    height:1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options,function (mes) {
+                        if(mes.type == 'success') {
+                            event.upload(mes.data.originalPath,function (data) {
+                                _this.food = data.data
+                            },function () {
+
+                            });
+                        }
+                    })
+            },
             goComplete:function () {
                 if (this.clicked==true) {
                     return;
                 }
                 this.clicked = true;
                 var _this=this;
-                if(_this.logo ==''){
-                    event.toast('门头照未选择');
+                if(utils.isNull(_this.idCardFront)){
+                    event.toast('法人身份证正面照未选择');
                     _this.clicked =false
                     return
-                }if(_this.palcePhoto == ''){
-                    event.toast('经营场所照未选择');
+                }if(utils.isNull(_this.idCardBack)){
+                    event.toast('法人身份证反面照未选择');
                     _this.clicked =false
                     return
                 }if(_this.licensePhoto == ''){
@@ -352,7 +399,8 @@
                     return
                 }
                 POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.originalthree+
-                    '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category).then(
+                    '&scene=' +this.originaltwo+'&thedoor=' +this.originalone+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category +
+                    '&idCardFront='+encodeURIComponent(this.idCardFront) + '&idCardBack='+encodeURIComponent(this.idCardBack) + '&food=' + encodeURIComponent(this.food)).then(
                     function (mes) {
                         _this.clicked =false
                         if (mes.type == "success") {
