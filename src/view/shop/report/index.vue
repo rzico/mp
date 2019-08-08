@@ -31,6 +31,10 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">欠款统计</text>
                 </div>
+                <div class="menu" @click="refund_report()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                    <text class="menuBtn">退货统计</text>
+                </div>
             </div>
         </scroller>
     </div>
@@ -339,6 +343,14 @@
                 this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate("view/shop/report/arrears_report.js"),function (e) {_this.clicked = false});
+            },
+            refund_report(){
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/report/refund_report.js"),function (e) {_this.clicked = false});
             },
 //            下拉刷新
             onrefresh (event) {

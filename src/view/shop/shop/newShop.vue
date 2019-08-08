@@ -43,14 +43,14 @@
         <div class="appellation">
             <text class="contactName">联系姓名</text>
             <div style="flex-direction: row;align-items: center">
-            <input type="text" placeholder="请输入联系姓名" class="input" v-model="contactName" @change="" />
+            <input type="text" placeholder="请输入法人姓名" class="input" v-model="contactName" @change="" />
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
         <div class="appellation">
             <text class="contactNumber">联系电话</text>
             <div style="flex-direction: row;align-items: center">
-            <input type="number" placeholder="请输入联系电话"  maxlength="11" class="input" v-model="contactNumber" />
+            <input type="number" placeholder="请输入法人电话"  maxlength="11" class="input" v-model="contactNumber" />
             <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
@@ -405,15 +405,15 @@
                     _this.clicked =false
                     return
                 }else if(utils.isNull(_this.contactName)){
-                    event.toast('联系姓名未填写');
+                    event.toast('法人姓名未填写');
                     _this.clicked =false
                     return
                 }else if(utils.isNull(_this.contactNumber)){
-                    event.toast('联系电话未填写');
+                    event.toast('法人电话未填写');
                     _this.clicked =false
                     return
                 }else if(!/^[0-9]+$/.test(_this.contactNumber)){
-                    event.toast('请填写正确联系电话');
+                    event.toast('请填写正确法人电话');
                     _this.clicked =false
                     return
                 }
