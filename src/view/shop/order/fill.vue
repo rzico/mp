@@ -65,12 +65,12 @@
                 <!--</div>-->
                 <div class="typeBox" v-if="hasWater && order!=null && order.shippingMethodId != 'pickup'">
                     <div class="flex-row">
-                        <text class="fz32">收押金:</text>
+                        <text class="fz32">{{order.shippingMethodId == 'returnBerrel'?'退押金':'收押金'}}:</text>
                         <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>
                     </div>
                     <div class="flex-row">
-                        <text class="fz32">押桶数:</text>
-                        <input type="number" class="mortgageInput" placeholder="请输入押桶数" v-model="barrel" @change="getmoneyTotal"/>
+                        <text class="fz32">{{order.shippingMethodId == 'returnBerrel'?'退桶数':'押桶数'}}:</text>
+                        <input type="number" class="mortgageInput" placeholder="请输入桶数" v-model="barrel" @change="getmoneyTotal"/>
                     </div>
                 </div>
                 <div class="typeBox" @click="pickPattern()"  v-if="order!=null && order.shippingMethodId != 'pickup'">
