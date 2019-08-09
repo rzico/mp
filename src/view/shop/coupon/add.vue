@@ -27,13 +27,6 @@
                 </div>
                 <!--<text class="inputPromptText">{{}}</text>-->
             </div>
-            <div class="goods" v-if="codeName == 'exchange'" @click="goGoods()">
-                <div style="flex-direction: row;align-items: center">
-                <text class="moneyText" style="font-size: 32px">兑换商品</text>
-                <text class="goodsName">{{goodsName}}</text>
-                </div>
-                <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-            </div>
             <div class="conditions">
                 <text class="conditionsText" style="font-size: 32px">使用条件</text>
                 <text class="man" style="padding-left: 30px;font-size: 32px">满</text>
@@ -295,10 +288,8 @@
             strainer:function (data) {
                 if(data == 'fullcut'){
                     return '满减'
-                }if(data == 'discount'){
+                }else if(data == 'discount'){
                     return '满折'
-                } else {
-                    return '兑换'
                 }
             },
             judgment:function (data) {
@@ -400,7 +391,7 @@
                 var _this = this;
                 picker.pick({
                     index:_this.beginTwo,
-                    items:['满减','满折','兑换']
+                    items:['满减','满折']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
@@ -415,11 +406,6 @@
                             _this.frontTransfrom = '优惠折扣';
                             _this.bottomTransform = '请输入优惠折扣(输入0-10之间自然数)'
                             _this.beginTwo =e.data
-                        }else if(e.data == 2){
-                            _this.codeName = 'exchange';
-                            _this.bottomTransform = '请选择兑换商品';
-                            _this.beginTwo =e.data
-
                         }
                     }
                 })
@@ -509,13 +495,6 @@
                     event.toast('优惠面额未设置')
                     return
                 }}
-                if(_this.codeName =='exchange'){
-                    _this.money=0;
-                    if(_this.goodsName==''){
-                        event.toast('兑换商品未设置')
-                        return
-                    }
-                }
                 if(_this.rule==''){
                     event.toast('规则介绍未设置')
                     return
