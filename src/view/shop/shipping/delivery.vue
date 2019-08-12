@@ -11,6 +11,7 @@
                 <div class="setting" v-if="c.show == true">
                     <div class="titile">
                         <text class="fz32">{{c.name}}</text>
+                        <text class="decIcon" :style="{fontFamily:'iconfont'}" v-if="c.give ==0" @click="dec(index)">&#xe60a;</text>
                     </div>
                     <div class="money">
                         <div class="flex-row">
@@ -67,6 +68,9 @@
                     <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="totalAmount>0">
                         <text class="fz30" style="color: #999">应收现金: {{amountPayable}}元</text>
                         <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
+                    </div>
+                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="borrow>0">
+                        <text class="fz30" style="color:red">当前借桶: {{borrow}}桶</text>
                     </div>
                     <div class="flex-row mt10" style="width: 590px" v-if="totalPaper>0">
                         <text class="fz30" :class="[paperClass()]" >应收水票: {{paperPayable}}张</text>
@@ -249,12 +253,19 @@
         border-top-right-radius: 15px;
         /*border-radius: 15px;*/
         padding-left: 30px;
-        padding-right: 30px;
         background-image: linear-gradient(to right, pink,#5eb0fd);
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
         height: 100px;
+    }
+    .decIcon{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        margin-left: 30px;
+        margin-right: 30px;
+        font-size: 40px;
+        color: #fff;
     }
     .titileTwo{
         /*border-top-left-radius: 15px;*/
@@ -374,6 +385,7 @@
                 giveTotal:0,
                 takeTotal:0,
                 amountPayable:'',
+                borrow:0,
                 arrears:'',
                 paperPayable:'',
                 ticket:'',
@@ -538,7 +550,7 @@
                         _this.phone = data.data.receiver.phone;
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
-
+                        _this.borrow = data.data.borrow;
                         _this.paperPayable = data.data.paperPayable;//   应收水票
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.pledgePayable = parseFloat(data.data.pledgePayable)//  应收押金
@@ -620,6 +632,11 @@
                         }
                     }
                 })
+            },
+            dec(index){
+                this.list[index].show = false;
+                this.list[index].give = '';
+                this.list[index].take = '';
             },
             goComplete:function () {
                 if (this.clicked) {
