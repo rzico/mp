@@ -538,6 +538,9 @@
                                         event.setReadMessage(item.userId,function(data){
                                             _this.clicked = false;
                                             if(data.type == 'success'){
+                                                _this.unReadMessage = event.getUnReadMessageCount();
+                                                var mesData = [0,_this.unReadMessage];
+                                                event.setDots(mesData);
                                                 event.navToChat(item.userId);
                                             }else{
                                                 event.toast(data.content);
