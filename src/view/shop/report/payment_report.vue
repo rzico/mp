@@ -3,10 +3,10 @@
         <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
             <div class="tableOne">
-                <text class="tableText">收款</text>
+                <text class="tableText">科目</text>
             </div>
             <div class="tableOne">
-                <text class="tableText">科目</text>
+                <text class="tableText">收款</text>
             </div>
             <div class="tableTwo">
                 <text class="tableText">退款</text>
@@ -18,8 +18,8 @@
             <!--</refresh>-->
             <cell v-for="(c,index) in summarylist" ref="adoptPull" >
                 <div class="contentCell" >
-                    <text class="shopName">{{c.amount}}</text>
                     <text class="number">{{c.typeName}}</text>
+                    <text class="shopName">{{c.amount}}</text>
                     <text class="returnMoney">¥{{c.refund}}</text>
                 </div>
             </cell>
@@ -37,7 +37,7 @@
             <div class="bottomCell">
                 <text class="bottomCellText">收款合计: ¥{{total}}</text>
             </div>
-            <div class="bottomCell">
+            <div class="bottomCell ml20">
                 <text class="bottomCellText">退款合计: ¥{{refund}}</text>
             </div>
         </div>
@@ -91,7 +91,7 @@
         border-color: #ccc;
         flex-direction: row;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
     }
     .bigIcon{
         font-size: 30px;
@@ -112,7 +112,7 @@
         font-size:32px;
         lines:1;
         text-overflow: ellipsis;
-        max-width: 340px;
+        max-width: 320px;
     }
     .bottomCellTwo{
         height: 100px;
@@ -139,7 +139,7 @@
         font-size: 30px;
         width: 250px;
         padding-left: 30px;
-        text-align: center;
+        text-align: right;
         lines:1;
         text-overflow: ellipsis;
     }

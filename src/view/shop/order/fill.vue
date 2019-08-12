@@ -1088,7 +1088,7 @@
                 if(utils.isNull(_this.barrel)){
                     _this.barrel = 0
                 }
-                if (this.version == 2){
+                if (this.version == 2 && this.order.shippingMethodId != 'pickup'){
                     if (utils.isNull(this.shopId)) {
                         event.toast('请选择配送站点');
                         _this.clicked = false;
@@ -1101,7 +1101,6 @@
                         }
                     }
                 }
-
                 var mesTotal = 0;
                 _this.cart.forEach(function (item) {
                     if(utils.isNull(item.quantity) || item.quantity == 0){
