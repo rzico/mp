@@ -517,7 +517,10 @@
                                 if(message.type == 'success'){
                                     if(!utils.isNull(item.userId) && item.userId.substring(0,1) == 'g'){
                                         event.setReadMessage(item.userId,function(data) {
-                                            if (data.type == 'success') { 
+                                            if (data.type == 'success') {
+                                                _this.unReadMessage = event.getUnReadMessageCount();
+                                                var mesData = [0,0,_this.unReadMessage,0];
+                                                event.setDots(mesData);
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                                                     _this.clicked = false;
                                                 });
