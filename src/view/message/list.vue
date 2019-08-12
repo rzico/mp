@@ -519,7 +519,7 @@
                                         event.setReadMessage(item.userId,function(data) {
                                             if (data.type == 'success') {
                                                 _this.unReadMessage = event.getUnReadMessageCount();
-                                                var mesData = [0,0,_this.unReadMessage,0];
+                                                var mesData = [0,_this.unReadMessage];
                                                 event.setDots(mesData);
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                                                     _this.clicked = false;
