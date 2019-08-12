@@ -556,7 +556,7 @@
                 if(!utils.isNull(data.data.distribution.name)){
                     _this.distributionName = data.data.distribution.name;
                 }
-                if(data.data.products.length == 1 &&  utils.isNull(data.data.products[0].spec1) &&  utils.isNull(data.data.products[0].isNew)){
+                if(data.data.products.length ==1 &&  utils.isNull(data.data.products[0].spec1) &&  utils.isNull(data.data.products[0].isNew)){
 
 //                        无多规格时的商品id
                     let productId =  data.data.products[0].productId;
