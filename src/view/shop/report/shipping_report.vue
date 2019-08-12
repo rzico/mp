@@ -3,29 +3,33 @@
         <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
         <div class="classBox">
             <div class="tableOne">
-                <text class="tableText">科目</text>
+                <text class="tableText">员工</text>
             </div>
             <div class="tableOne">
-                <text class="tableText">收款</text>
+                <text class="tableText">品牌</text>
+            </div>
+            <div class="tableOne">
+                <text class="tableText">送出</text>
             </div>
             <div class="tableTwo">
-                <text class="tableText">退款</text>
+                <text class="tableText">回收</text>
             </div>
         </div>
-        <list  loadmoreoffset="180" v-if="summarylist != null">
+        <list  loadmoreoffset="180" v-if="reportList != null">
             <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
             <!--</refresh>-->
-            <cell v-for="(c,index) in summarylist" ref="adoptPull" >
+            <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="contentCell" >
-                    <text class="number">{{c.typeName}}</text>
-                    <text class="shopName">{{c.amount}}</text>
-                    <text class="returnMoney">¥{{c.refund}}</text>
+                    <text class="shopName">{{c.empName}}</text>
+                    <text class="shopName">{{c.barrelName}}</text>
+                    <text class="number">{{c.quantity}}</text>
+                    <text class="returnMoney">¥{{c.returnQuantity}}</text>
                 </div>
             </cell>
             <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>
-            <cell v-if="summarylist.length == 0" >
-                <noData > </noData>
+            <cell v-if="reportList.length == 0">
+                <noData></noData>
             </cell>
             <cell>
                 <div style="height: 130px"></div>
@@ -33,12 +37,12 @@
 
         </list>
 
-        <div class="bottomTotal"  v-if="summarylist != null">
+        <div class="bottomTotal"  v-if="reportList != null">
             <div class="bottomCell">
-                <text class="bottomCellText">收款合计: ¥{{total}}</text>
+                <text class="bottomCellText">送出合计: ¥{{total}}</text>
             </div>
             <div class="bottomCell ml20">
-                <text class="bottomCellText">退款合计: ¥{{refund}}</text>
+                <text class="bottomCellText">回收合计: ¥{{refund}}</text>
             </div>
         </div>
     </div>
@@ -61,7 +65,7 @@
         border-bottom-color: #ccc;
     }
     .tableOne{
-        width:250px;
+        width:187.5px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -69,7 +73,7 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:250px;
+        width:187.5px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -112,7 +116,7 @@
         font-size:32px;
         lines:1;
         text-overflow: ellipsis;
-        max-width: 320px;
+        max-width: 340px;
     }
     .bottomCellTwo{
         height: 100px;
@@ -137,15 +141,15 @@
     }
     .shopName{
         font-size: 30px;
-        width: 250px;
+        width: 187.5px;
         padding-left: 30px;
-        text-align: right;
+        text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
     .number{
         font-size: 30px;
-        width: 250px;
+        width: 187.5px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
@@ -160,7 +164,7 @@
     }
     .returnMoney{
         font-size: 30px;
-        width: 250px;
+        width: 187.5px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;
@@ -215,7 +219,7 @@
                 hadUpdate:false,
                 isIcon:true,
                 timeDate:'',
-                pageName:'收款统计',
+                pageName:'送货统计',
                 beginTime:'',
                 endTime:'',
                 refund:''
@@ -370,17 +374,17 @@
             },
             open:function () {
                 var _this = this;
-                GET('weex/member/report/payment_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime),function (res) {
+                GET('weex/member/report/shipping_emp_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime),function (res) {
                     if (res.type=="success") {
-                            var total = 0;
-                            var refund = 0;
-                            res.data.data.summary.forEach(function (item) {
-                                total = total+item.amount;
-                                refund = refund + item.refund
-                            })
-                            _this.total = total;
-                            _this.refund = refund;
-                            _this.summarylist = res.data.data.summary
+                        var total = 0;
+                        var refund = 0;
+                        res.data.data.forEach(function (item) {
+                            total = total+item.quantity;
+                            refund = refund + item.returnQuantity
+                        })
+                        _this.total = total;
+                        _this.refund = refund;
+                        _this.reportList = res.data.data
                     } else {
                         event.toast(res.content);
                     }

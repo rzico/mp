@@ -717,11 +717,12 @@ let utilsFunc = {
     },
     //金额保留两位小数点
     currencyfmt(value) {
-        if (value == '' || value == null || value == undefined) {
+        if (this.isNull(value)) {
             return value;
         }
         // 返回处理后的值
-        if (value != null) {
+        if (!this.isNull(value)) {
+            value = parseFloat(value)
             if (value == 0) {
                 return value.toFixed(2);
             } else {
