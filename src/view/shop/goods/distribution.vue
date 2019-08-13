@@ -5,10 +5,10 @@
             <text class="title " >营销推广设置</text>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
-        <div class="setting" @click="cardSetting()">
-            <text class="title " >充值活动设置</text>
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
+        <!--<div class="setting" @click="cardSetting()">-->
+            <!--<text class="title " >充值活动设置</text>-->
+            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+        <!--</div>-->
         <div class="setting" @click="openWebView()">
             <text class="title " >芸打印机设置</text>
             <text class="print">{{typeBegin == '0' ? '手动打印' : '自动打印'}}</text>
