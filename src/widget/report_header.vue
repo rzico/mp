@@ -1,7 +1,6 @@
 <template>
     <div class="">
-        <!--bkg-img这个样式是为了兼容直接复制 shop 在c端能用渐变-->
-        <div class="header bkg-primary bkg-img" >
+        <div class="header bkg-primary" >
             <!--顶部导航-->
             <div class="navbar" :class="[classHeader()]">
                 <div class="navBack" @click="goback()">
