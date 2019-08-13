@@ -54,83 +54,86 @@
                 <!--</div>-->
             <!--</div>-->
             <!-- 我的订单 -->
-            <div class="contentBox" v-if="conutTotal != 0 && filter('order')">
-                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">
-                    <text class="fz30">我的订单</text>
-                    <div class="flex-row">
-                        <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
-                        <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
+
+            <div><!-- dom预留节点 -->
+                <div class="contentBox" v-if="conutTotal != 0 && filter('order')">
+                    <div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">
+                        <text class="fz30">我的订单</text>
+                        <div class="flex-row">
+                            <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
+                        </div>
+                    </div>
+                    <!-- 订单消息 -->
+                    <div class="comWrap">
+                        <div class=" flexCol iconBox"  @click="goNoPay()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
+                            <text class="iconfontText ">待付款</text>
+                            <div class="shippingNumberBox"  v-if="conut.unpaid != 0">
+                                <text class="shippingNumber">{{conut.unpaid}}</text>
+                            </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goNoDelivery()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                            <text class="iconfontText ">待发货</text>
+                            <div class="shippingNumberBox" v-if="conut.unshipped != 0">
+                                <text class="shippingNumber" >{{conut.unshipped}}</text>
+                            </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goDelivery()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
+                            <text class="iconfontText ">已发货</text>
+                            <div class="shippingNumberBox" v-if="conut.shipped != 0">
+                                <text class="shippingNumber" >{{conut.shipped}}</text>
+                            </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goRefund()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
+                            <text class="iconfontText ">待退款</text>
+                            <div class="shippingNumberBox" v-if="conut.refund != 0">
+                                <text class="shippingNumber" >{{conut.refund}}</text>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- 订单消息 -->
-                <div class="comWrap">
-                    <div class=" flexCol iconBox"  @click="goNoPay()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
-                        <text class="iconfontText ">待付款</text>
-                        <div class="shippingNumberBox"  v-if="conut.unpaid != 0">
-                            <text class="shippingNumber">{{conut.unpaid}}</text>
+                <!-- 我的运单 -->
+                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping')">
+                    <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
+                        <text class="fz30">我的运单</text>
+                        <div class="flex-row">
+                            <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
                         </div>
                     </div>
-                    <div class=" flexCol iconBox"  @click="goNoDelivery()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
-                        <text class="iconfontText ">待发货</text>
-                        <div class="shippingNumberBox" v-if="conut.unshipped != 0">
-                            <text class="shippingNumber" >{{conut.unshipped}}</text>
+                    <!-- 订单消息 -->
+                    <div class="comWrap">
+                        <div class=" flexCol iconBox"  @click="goConfirm()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
+                            <text class="iconfontText ">待确认</text>
+                            <div class="shippingNumberBox"  v-if="shippingConut.unconfirmed != 0">
+                                <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
+                            </div>
                         </div>
-                    </div>
-                    <div class=" flexCol iconBox"  @click="goDelivery()">
-                        <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
-                        <text class="iconfontText ">已发货</text>
-                        <div class="shippingNumberBox" v-if="conut.shipped != 0">
-                            <text class="shippingNumber" >{{conut.shipped}}</text>
+                        <div class=" flexCol iconBox"  @click="goToMask()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                            <text class="iconfontText ">预约单</text>
+                            <div class="shippingNumberBox" v-if="shippingConut.hope != 0">
+                                <text class="shippingNumber" >{{shippingConut.hope}}</text>
+                            </div>
                         </div>
-                    </div>
-                    <div class=" flexCol iconBox"  @click="goRefund()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
-                        <text class="iconfontText ">待退款</text>
-                        <div class="shippingNumberBox" v-if="conut.refund != 0">
-                            <text class="shippingNumber" >{{conut.refund}}</text>
+                        <div class=" flexCol iconBox"  @click="goOnTheWay()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
+                            <text class="iconfontText ">配送中</text>
+                            <div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">
+                                <text class="shippingNumber" >{{shippingConut.confirmed}}</text>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 我的运单 -->
-            <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping')">
-                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
-                    <text class="fz30">我的运单</text>
-                    <div class="flex-row">
-                        <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
-                        <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
-                    </div>
-                </div>
-                <!-- 订单消息 -->
-                <div class="comWrap">
-                    <div class=" flexCol iconBox"  @click="goConfirm()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
-                        <text class="iconfontText ">待确认</text>
-                        <div class="shippingNumberBox"  v-if="shippingConut.unconfirmed != 0">
-                            <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
-                        </div>
-                    </div>
-                    <div class=" flexCol iconBox"  @click="goToMask()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
-                        <text class="iconfontText ">预约单</text>
-                        <div class="shippingNumberBox" v-if="shippingConut.hope != 0">
-                            <text class="shippingNumber" >{{shippingConut.hope}}</text>
-                        </div>
-                    </div>
-                    <div class=" flexCol iconBox"  @click="goOnTheWay()">
-                        <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
-                        <text class="iconfontText ">配送中</text>
-                        <div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">
-                            <text class="shippingNumber" >{{shippingConut.confirmed}}</text>
-                        </div>
-                    </div>
-                    <div class=" flexCol iconBox"  @click="goaArive()">
-                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
-                        <text class="iconfontText ">已送达</text>
-                        <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
-                            <text class="shippingNumber" >{{shippingConut.completed}}</text>
+                        <div class=" flexCol iconBox"  @click="goaArive()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
+                            <text class="iconfontText ">已送达</text>
+                            <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
+                                <text class="shippingNumber" >{{shippingConut.completed}}</text>
+                            </div>
                         </div>
                     </div>
                 </div>
