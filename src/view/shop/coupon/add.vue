@@ -47,24 +47,24 @@
                 <text class="introducedText" style="font-size: 32px">规则介绍</text>
                 <input type="text" placeholder="请输入使用规则(不超过80个汉字)" class="input" v-model="rule" />
             </div>
-            <div class="name" @click="activitysetting()">
-                <text class="nameText" style="font-size: 32px">活动类型</text>
-                <text class="nameText" style="font-size: 32px;color: #999999;margin-left: 30px" >{{activityName | activityWatch}}</text>
-            </div>
-            <div class="conditions" v-if="activityName == 1">
-                <text class="conditionsText" style="font-size: 32px">使用条件</text>
-                <text class="man" style="padding-left: 30px;font-size: 32px">满</text>
-                <input type="number" placeholder="" class="inputMoney" v-model="activitConditions" />
-                <text class="conditionsText" style="font-size: 32px">元,送</text>
-                <input type="number" placeholder="" class="inputMoney" v-model="activitynum" />
-                <text class="conditionsText" style="font-size: 32px">张</text>
-            </div>
-            <div class="conditions"  v-if="activityName == 2">
-                <text class="conditionsText" style="font-size: 32px">使用条件</text>
-                <text class="man" style="padding-left: 30px;font-size: 32px">领卡送</text>
-                <input type="number" placeholder="" class="inputMoney" v-model="activitynum"/>
-                <text class="conditionsText" style="font-size: 32px">张</text>
-            </div>
+            <!--<div class="name" @click="activitysetting()">-->
+                <!--<text class="nameText" style="font-size: 32px">活动类型</text>-->
+                <!--<text class="nameText" style="font-size: 32px;color: #999999;margin-left: 30px" >{{activityName | activityWatch}}</text>-->
+            <!--</div>-->
+            <!--<div class="conditions" v-if="activityName == 1">-->
+                <!--<text class="conditionsText" style="font-size: 32px">使用条件</text>-->
+                <!--<text class="man" style="padding-left: 30px;font-size: 32px">满</text>-->
+                <!--<input type="number" placeholder="" class="inputMoney" v-model="activitConditions" />-->
+                <!--<text class="conditionsText" style="font-size: 32px">元,送</text>-->
+                <!--<input type="number" placeholder="" class="inputMoney" v-model="activitynum" />-->
+                <!--<text class="conditionsText" style="font-size: 32px">张</text>-->
+            <!--</div>-->
+            <!--<div class="conditions"  v-if="activityName == 2">-->
+                <!--<text class="conditionsText" style="font-size: 32px">使用条件</text>-->
+                <!--<text class="man" style="padding-left: 30px;font-size: 32px">领卡送</text>-->
+                <!--<input type="number" placeholder="" class="inputMoney" v-model="activitynum"/>-->
+                <!--<text class="conditionsText" style="font-size: 32px">张</text>-->
+            <!--</div>-->
         </div>
         <div style="min-height: 900px"></div>
         </scroller>

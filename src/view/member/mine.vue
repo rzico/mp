@@ -600,6 +600,20 @@
 //                    _this.getShippingConut();
 //                }
             });
+            //            监听登陆成功.
+            globalEvent.addEventListener("login", function (e) {
+                _this.updateUserInfo();
+                _this.openArticle();
+                _this.permissions();
+                _this.open();
+            });
+            //            监听注销.
+            globalEvent.addEventListener("logout", function (e) {
+                _this.updateUserInfo();
+                _this.openArticle();
+                _this.permissions();
+                _this.open();
+            });
         },
         ////        dom呈现完执行滚动一下
         //        updated(){
