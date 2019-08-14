@@ -91,7 +91,7 @@
                 <!--遮住右边半圈边框-->
                 <div class="delBoxRight"></div>
                 <!--删除框-->
-                <div class="delSmallBox" @click="delLines(item,index)">
+                <div class="delSmallBox" @click="delLines(item,index)" v-if="index>0">
                     <text style="color: #fff;font-size: 32px">一</text>
                 </div>
                 <!--</div>-->
