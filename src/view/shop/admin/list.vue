@@ -1,10 +1,6 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" :complete="complete" @goback="goback" @goComplete="setting" > </navbar>
-        <div class="code" @click="scan">
-            <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe607;</text>
-            <text class="headText" style="font-size: 28px;color: #cccccc">扫码添加员工</text>
-        </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
         <list  class="list" v-if="isNoEmpty()" :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
@@ -48,7 +44,13 @@
                     </div>
                     </div>
                 </cell>
+            <cell>
+                <div style="height: 300px"></div>
+            </cell>
         </list>
+        <div class="codeBox bkg-primary" @click="scan">
+            <text class="codeText" >扫码添加员工</text>
+        </div>
         <!--<div class="shareBox" v-if="isPopup">-->
             <!--<div style="width: 750px;align-items: center;justify-content: center;height: 70px">-->
                 <!--<text class="fz30 " style="color: #444">选择所在店铺</text>-->
@@ -202,19 +204,20 @@
         margin-right: 20px;
         font-size: 28px;
     }
-    .code{
+    .codeBox{
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        background-color: white;
-        height: 60px;
-        margin-right: 20px;
-        margin-left: 20px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        border-width: 1px;
-        border-color: #cccccc;
-        border-radius: 10px;
+        width: 690px;
+        height: 80px;
+        border-radius: 40px;
+        position: fixed;
+        bottom: 100px;
+        left: 30px;
+    }
+    .codeText{
+        font-size:35px;
+        color: #ffffff;
     }
     .list {
         background-color: white;
