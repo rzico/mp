@@ -1,7 +1,6 @@
 <template>
     <div class="wrapper">
-        <!--bkg-img为了可以覆盖app做的适配-->
-        <div class="wallet-panel bkg-primary bkg-img" :style="objHeader()">
+        <div class="wallet-panel bkg-primary" :style="objHeader()">
             <div class="flex-column" @click="scan()">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
                 <text class="headerText mt20">扫一扫</text>
