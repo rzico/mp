@@ -652,6 +652,12 @@
                     }
                 );
             },
+//            扫会员提货
+            scanMember(id){
+                event.openURL(utils.locate('view/shipping/list/view.js?productCategoryId=3&index=2&memberId='+id),function (message) {
+
+                })
+            },
 
 //            扫码搜索会员
             scanFindCard(code){
@@ -683,13 +689,13 @@
                     event.toast(err.content)
                 })
             },
-            //            扫码送达
+            //            扫码接单
             scanSend(sn){
                 let _this = this
                 var uId = event.getUId();
                 event.getLocation(function (data) {
                     if(data.type == 'success'){
-                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
+                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
                         if (mes.type == 'success') {
                             modal.alert({
                                 message: mes.content,
@@ -702,7 +708,7 @@
                         event.toast(err.content)
                     })
                     }else {
-                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
+                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
                             if (mes.type == 'success') {
                                 modal.alert({
                                     message: mes.content,
@@ -730,6 +736,8 @@
                                 _this.scanFindCard(res.data.code)
                             }else if(res.data.type =='818803'){
                                 _this.scanCoupon(res.data.code,res.data.captcha)
+                            }else if(res.data.type =='818807'){
+                                _this.scanSend(res.data.sn)
                             }else if(res.data.type =='818807'){
                                 _this.scanSend(res.data.sn)
                             }

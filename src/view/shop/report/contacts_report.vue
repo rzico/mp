@@ -31,13 +31,10 @@
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
-                        <text class="fz32">代收水票: {{c.paper}}</text>
-                    </div>
-                    <div class="totalCellTwo">
                         <text class="fz32">送货工资: ¥{{c.adminFreight}}</text>
-                        <text class="fz32">送货利润: ¥{{c.profit}}</text>
                     </div>
                     <div class="totalCellTwo">
+                        <text class="fz32">代收水票: {{c.paper}}</text>
                         <text class="fz32">代收现金: ¥{{c.cash}}</text>
                     </div>
                 </div>

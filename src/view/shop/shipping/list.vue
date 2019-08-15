@@ -74,15 +74,32 @@
                             <text class="title red">{{item.statusDescr}}</text>
                         </div>
                     </div>
-                    <div class="flex-row goodsBody"  v-for="goods in item.shippingItems"  @click="info(item.orderSn,item.sn)">
-                        <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
-                        <div class="goodsInfo"  >
-                            <text class="title goodsName" >{{goods.name}}</text>
-                            <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
-                            <div class="goodsPriceNum" >
-                                <!--<text class="title coral">¥ {{goods.price | currencyfmt}}</text>-->
-                                <text class="sub_title">x{{goods.quantity}}</text>
+                    <div>
+                        <div class="flex-row goodsBody"  v-for="(goods,index) in item.shippingItems" v-if="index<2"  @click="info(item.orderSn,item.sn)">
+                            <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
+                            <div class="goodsInfo"  >
+                                <text class="title goodsName" >{{goods.name}}</text>
+                                <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                                <div class="goodsPriceNum" >
+                                    <!--<text class="title coral">¥ {{goods.price | currencyfmt}}</text>-->
+                                    <text class="sub_title">x{{goods.quantity}}</text>
+                                </div>
                             </div>
+                        </div>
+                        <div class="flex-row goodsBody"  v-for="(goods,index) in item.shippingItems" v-if="index >= 2 && showMore" @click="info(item.orderSn,item.sn)">
+                            <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
+                            <div class="goodsInfo"  >
+                                <text class="title goodsName" >{{goods.name}}</text>
+                                <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                                <div class="goodsPriceNum" >
+                                    <!--<text class="title coral">¥ {{goods.price | currencyfmt}}</text>-->
+                                    <text class="sub_title">x{{goods.quantity}}</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="moreGoods" @click="controlMore" v-if="item.shippingItems.length>2">
+                            <text class="moreIcon"  :style="{fontFamily:'iconfont'}" v-if="showMore">&#xe608;</text>
+                            <text class="moreIcon"  :style="{fontFamily:'iconfont'}" v-else>&#xe601;</text>
                         </div>
                     </div>
                     <div class="flex-row goodsTotalPrice boder-bottom">
@@ -202,6 +219,15 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .moreGoods{
+        width: 710px;
+        height: 50px;
+        align-items: center;
+        justify-content: center;
+    }
+    .moreIcon{
+        font-size:34px;
+    }
     /*<!---->*/
     /*动画*/
     .component-fade-top-enter-active{
@@ -615,6 +641,8 @@
                 recordsTotal:0,
                 keyAdminId:'',
                 keyShopId:'',
+                showMore:false,
+                memberId:''
             }
         },
         props:{
@@ -647,11 +675,17 @@
             utils.initIconFont();
             let d = utils.getUrlParameter('index')
             if(!utils.isNull(d)){
-                this.whichCorpus = d
+                this.whichCorpus = parseInt(d)
             }
             let e = utils.getUrlParameter('productCategoryId')
             if(!utils.isNull(e)){
                 this.productCategoryId = e
+//                把字符串转换成整型，否则switch识别不了
+                this.productCategoryId = parseInt(this.productCategoryId)
+            }
+            let memberId = utils.getUrlParameter('memberId')
+            if(!utils.isNull(memberId)){
+                this.memberId = memberId
 //                把字符串转换成整型，否则switch识别不了
                 this.productCategoryId = parseInt(this.productCategoryId)
             }
@@ -661,6 +695,9 @@
 
         },
         methods:{
+            controlMore(){
+                this.showMore = !this.showMore
+            },
             printMaskTap(){
                 return
             },
@@ -1083,8 +1120,6 @@
 //            },
             //分类切换
             catagoryChange:function(index,id){
-                utils.debug(this.whichCorpus)
-                utils.debug(index)
 //                event.toast(id);
                 var _this = this;
                 if(_this.whichCorpus === index){
@@ -1119,9 +1154,8 @@
                         break;
                 }
                 GET('weex/member/shipping/list.jhtml?status=' + status + '&pageStart=' + this.pageStart + '&pageSize=' + this.pageSize +'&keyword=' +encodeURIComponent(this.keyword) +'&estimateDate='+encodeURIComponent(this.keyDate)
-                    +'&shopId='+this.keyShopId +'&adminId='+this.keyAdminId,
+                    +'&shopId='+this.keyShopId +'&adminId='+this.keyAdminId +"&memberId="+this.memberId,
                     function (res) {
-
                         if (res.type=="success") {
                             if (res.data.start == 0) {
                                 _this.shippingList = res.data.data;
@@ -1130,6 +1164,7 @@
                                     _this.shippingList.push(item);
                                 });
                             }
+                            _this.memberId = '';
                             _this.pageStart = res.data.start+res.data.data.length;
                             _this.recordsTotal = res.data.recordsTotal
                         } else {
