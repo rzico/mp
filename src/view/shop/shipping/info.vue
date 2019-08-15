@@ -152,6 +152,7 @@
                         </div>
                     </div>
                 </div>
+                <div style="height: 100px;"></div>
                 <div class="flex-row space-between goodsFoot boder-top" >
                     <div class="footMore">
                         <!--<text class="title" style="color: #444">删除订单</text>-->
@@ -257,7 +258,6 @@
         /*padding-top: 20px;*/
         /*padding-bottom: 20px;*/
         height:100px;
-        lin-height:100px;
         padding-left: 15px;
         left:0;
         right:0;

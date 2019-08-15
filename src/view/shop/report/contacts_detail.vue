@@ -1,47 +1,57 @@
 <template>
     <div class="wrapper">
         <report_header :pageName="pageName" :pageTime="pageTime" @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
-        <!--<div class="classBox">-->
-            <!--<div class="tableOne">-->
-                <!--<text class="tableText">品牌</text>-->
-            <!--</div>-->
-            <!--<div class="tableTwo">-->
-                <!--<text class="tableText">数量</text>-->
-            <!--</div>-->
-            <!--<div class="tableThree">-->
-                <!--<text class="tableText">货款</text>-->
-            <!--</div>-->
-        <!--</div>-->
         <list   loadmoreoffset="180" v-if="reportList != null">
-            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
-                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
-            <!--</refresh>-->
-            <cell v-for="(c,index) in reportList" ref="adoptPull" >
-                <div class="shopNameTitle"><text class="fz32">{{c.name}}  {{c.phone}}  {{c.address}}</text> </div>
-                <!--<div class="contentCell" >-->
-                    <!--<text class="shopName">{{c.name}}</text>-->
-                    <!--<text class="number">{{c.quantity}}</text>-->
-                    <!--<text class="money">¥{{c.cost}}</text>-->
-                <!--</div>-->
-                <div class="totalBox" @click="linkToView(c.sn)">
-                    <div class="totalCellTwo">
-                        <text class="fz32">{{c.completeDate | watchDate}}</text>
-                        <text class="fz32">货款: ¥{{c.cost}}</text>
+            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
+            </refresh>
+            <cell  v-for="(item,index) in reportList">
+                <div class="goodsLine mt20">
+                    <div class="space-between goodsHead" >
+                        <div class="flex-row">
+                            <image :src="item.logo | watchLogo" class="shopImg"></image>
+                            <div class="">
+                                <text class="consignee ml20 mr20">{{item.consignee}}</text>
+                                <text class="address">{{item.address}}</text>
+                            </div>
+                        </div>
+                        <div >
+                            <text class="title red" style="max-width: 230px;lines:1;text-overflow: ellipsis;">{{item.statusDescr}}</text>
+                        </div>
                     </div>
-                    <div class="totalCellTwo">
-                        <text class="fz32">应收金额: ¥{{c.amountPayable}}(上期欠款:¥{{c.arrears}})</text>
-                        <text class="fz32">代收现金: ¥{{c.amountPaid}}</text>
+                    <div>
+                        <div class="flex-row goodsBody"  v-for="(goods,index) in item.shippingItems" v-if="index<2" @click="linkToInfo(item.orderSn,item.sn)">
+                            <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
+                            <div class="goodsInfo"  >
+                                <text class="title goodsName" >{{goods.name}}</text>
+                                <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                                <div class="goodsPriceNum" >
+                                    <text class="sub_title">x{{goods.quantity}}</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-row goodsBody"  v-for="(goods,index) in item.shippingItems" v-if="index >= 2 && showMore" @click="linkToInfo(item.orderSn,item.sn)">
+                            <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
+                            <div class="goodsInfo"  >
+                                <text class="title goodsName" >{{goods.name}}</text>
+                                <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                                <div class="goodsPriceNum" >
+                                    <text class="sub_title">x{{goods.quantity}}</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="moreGoods" @click="controlMore" v-if="item.shippingItems.length>2">
+                            <text class="moreIcon"  :style="{fontFamily:'iconfont'}" v-if="showMore">&#xe608;</text>
+                            <text class="moreIcon"  :style="{fontFamily:'iconfont'}" v-else>&#xe601;</text>
+                        </div>
                     </div>
-                    <div class="totalCellTwo">
-                        <text class="fz32">应收水票: {{c.paperPayable}}(上期欠票:{{c.ticket}})</text>
-                        <text class="fz32">代收水票: {{c.paperPaid}}</text>
-                    </div>
-                    <div class="totalCellTwo">
-                        <text class="fz32">应收押金: ¥{{c.pledgePayable}}</text>
-                        <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
-                    </div>
-                    <div class="totalCellTwo">
-                        <text class="fz32">代发工资: ¥{{c.adminFreight}}(楼层费:¥{{c.levelFreight}})</text>
+                    <div class="flex-row goodsTotalPrice boder-bottom">
+                        <div>
+                            <text class="sub_title">NO.{{index+1}} 订单号:{{item.orderSn}}</text>
+                        </div>
+                        <div class="flex-row">
+                            <text class="sub_title mr20">共{{item.quantity}}件商品</text>
+                        </div>
                     </div>
                 </div>
             </cell>
@@ -49,198 +59,87 @@
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
-            <!--<cell>-->
-                <!--<div style="height: 130px"></div>-->
-            <!--</cell>-->
-
         </list>
-
-        <!--<div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist.length>0">-->
-            <!--&lt;!&ndash;点击上箭头或向上滑动展开&ndash;&gt;-->
-            <!--<div class="iconBox">-->
-                <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>-->
-                <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>-->
-            <!--</div>-->
-            <!--<div class="bottomCellTwo">-->
-                <!--<text class="fz28 ">货款收入: ¥{{summarylist[0].cost}}</text>-->
-                <!--<text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>-->
-            <!--</div>-->
-            <!--<div class="bottomCellTwo">-->
-                <!--<text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>-->
-                <!--<text class="fz28 ">代收水票: {{summarylist[0].adminFreight}}</text>-->
-            <!--</div>-->
-            <!--<div class="bottomCellTwo">-->
-                <!--<text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>-->
-                <!--<text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>-->
-            <!--</div>-->
-        <!--</div>-->
     </div>
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-    .list{
-        padding-bottom: 140px;
-        background-color: white;
-
-    }
-    .fontStrong{
-        font-weight: bold;
-    }
-    .classBox{
-        height: 80px;
-        width: 750px;
-        flex-direction: row;
-        align-items: center;
-        background-color: white;
-        border-bottom-width: 1px;
-        border-bottom-color: #ccc;
-    }
-    .titleBox{
-        flex-direction: column;
-        align-items: center;
-    }
-    .shopNameTitle{
-        height: 80px;
-        width: 750px;
-        padding-left: 30px;
-        flex-direction: row;
-        align-items: center;
-        background-color: #cccccc;
-    }
-    .tableOne{
-        width:375px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border-right-width: 1px;
-        border-right-color: #777;
-    }
-    .tableTwo{
-        width:150px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border-right-width: 1px;
-        border-right-color: #777;
-    }
-    .tableThree{
-        width:225px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border-right-width: 1px;
-        border-right-color: #777;
-    }
-    .tableFour{
-        width:187.5px;
-        flex-direction: row;
+    .moreGoods{
+        width: 710px;
+        height: 50px;
         align-items: center;
         justify-content: center;
     }
-    .tableText{
-        font-size: 28px;
-        color: #444;
+    .moreIcon{
+        font-size:34px;
     }
-    .totalCell{
-        height: 100px;
-        width: 750px;
-        background-color: #f5f5f5;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        padding-right: 30px;
-        border-bottom-width:1px;
-        border-color:#cccccc;
+    .consignee{
+        font-size: 32px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
     }
-    .totalCellTwo{
-        height: 100px;
-        width: 750px;
-        background-color: #f5f5f5;
-        flex-direction: row;
-        align-items: center;
+    .address{
+        font-size: 26px;
+        margin-left: 20px;
+        width: 400px;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .red{
+        color: red;
+        border-color: red;
+    }
+    .coral{
+        color: coral;
+    }
+    .goodsTotalPrice{
+        padding: 20px;
         justify-content: space-between;
-        padding-left: 30px;
-        padding-right: 30px;
-        border-bottom-width:1px;
-        border-color:#cccccc;
     }
-    .bottomTotal{
-        align-items: center;
-        width: 750px;
-        height: 330px;
-        background-color: white;
-        position: fixed;
-        bottom:-200px;
-        left: 0;
-        border-top-width: 1px;
-        border-color: #ccc;
+    .goodsName{
+        line-height: 32px;
+        lines:2;
+        text-overflow: ellipsis;
     }
-    .bigIcon{
-        font-size: 30px;
-        color: #777;
-    }
-    .iconBox{
-        width: 150px;
-        align-items: center;
-        justify-content: center;
-    }
-    .bottomCell{
-        height: 100px;
-        width: 750px;
-        background-color: #f5f5f5;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-end;
-        padding-right: 30px;
-        border-bottom-width:1px;
-        border-color:#cccccc;
-    }
-    .bottomCellTwo{
-        height: 100px;
-        width: 750px;
-        padding-left: 30px;
-        padding-right: 30px;
-        flex-direction: row;
-        align-items: center;
+    .goodsPriceNum{
+        /*height: 160px;*/
+        align-items: flex-end;
         justify-content: space-between;
-        border-bottom-width:1px;
-        border-color:#cccccc;
-    }
-    .totalIcon{
-        font-size: 80px;
-    }
-    .contentCell{
-        height: 100px;
-        width: 750px;
-        background-color: white;
-        border-bottom-width: 1px;
-        border-color: #cccccc;
+        /*width: 150px;*/
+        width:530px;
+        display: flex;
         flex-direction: row;
-        align-items: center;
     }
-    .shopName{
-        font-size: 30px;
-        width: 375px;
-        padding-left: 30px;
-        text-align: left;
-        lines:1;
-        text-overflow: ellipsis;
+    .goodsInfo{
+        display: flex;flex-direction: column;justify-content: space-between;
+        height: 160px;
+        /*width: 400px;*/
+        width: 550px;
+        padding-left: 20px;
     }
-    .number{
-        font-size: 30px;
-        width: 150px;
-        text-align: right;
-        lines:1;
-        text-overflow: ellipsis;
+    .goodsBody{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: #eee;
     }
-    .money{
-        font-size: 30px;
-        width: 225px;
-        padding-right: 30px;
-        text-align: right;
-        lines:1;
-        text-overflow: ellipsis;
+    .goodsLine{
+        background-color: #fff;
+    }
+    .goodsImg{
+        height: 160px;
+        width: 160px;
+    }
+    .goodsHead{
+        background-color: #fff;
+        padding: 20px;
+    }
+    .shopImg{
+        height: 40px;
+        width: 40px;
     }
 </style>
 <script>
@@ -248,7 +147,6 @@
     import { POST, GET } from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import {dom,event,animation} from '../../../weex.js';
-    const picker = weex.requireModule('picker')
     import navbar from '../../../include/navbar.vue'
     import report_header from '../../../widget/report_header.vue';
     import noData from '../../../include/noData.vue'
@@ -274,7 +172,8 @@
                 beginTime:'',
                 endTime:'',
                 sellerId:'',
-                pageTime:''
+                pageTime:'',
+                showMore:false
             }
         },
         components: {
@@ -286,7 +185,24 @@
         filters: {
             watchDate:function (val) {
                 return utils.ymdtimefmt(val);
-            }
+            },
+            watchSpec:function (value) {
+                if(utils.isNull(value)){
+                    return '无';
+                }else{
+                    return value;
+                }
+            },
+            watchCreateDate:function (value) {
+                return utils.ymdhistimefmt(value);
+            },
+            watchThumbnail:function (value) {
+//                    没过滤前是原图
+                return utils.thumbnail(value,160,160);
+            },
+            watchlogo:function (value) {
+                return utils.thumbnail(value,40,40);
+            },
         },
         created () {
 //              页面创建时请求数据
@@ -302,22 +218,10 @@
             }
             this.open();
         },
-//        dom呈现完执行滚动一下
-        updated(){
-//            每次加载新的内容时 dom都会刷新 会执行该函数，利用变量来控制只执行一次
-            if(this.hadUpdate){
-                return;
-            }
-            this.hadUpdate = true;
-//            判断是否不是ios系统  安卓系统下需要特殊处理，模拟滑动。让初始下拉刷新box上移回去
-            if(!utils.isIosSystem()){
-                const el = this.$refs.adoptPull//跳转到相应的cell
-                dom.scrollToElement(el, {
-                    offset: -119
-                })
-            }
-        },
         methods: {
+            controlMore(){
+                this.showMore = !this.showMore
+            },
 //            点击减少时间
             deductTime:function (data) {
                 this.beginTime = data.beginTime;
@@ -439,7 +343,7 @@
             open:function () {
                 var _this = this;
 
-                GET('weex/member/report/shipping_detail_report.jhtml?type=shipping&beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize+'&sellerId='+_this.sellerId,function (res) {
+                GET('weex/member/report/shipping_list_report.jhtml?type=shipping&beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize+'&sellerId='+_this.sellerId,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
                             _this.reportList = res.data.data
@@ -492,39 +396,20 @@
                     _this.open();
                 }, 1000)
             },
-//            判断水站是否重复
-            isSellerName(index){
-                if(index != 0){
-                    if(this.reportList[index].sellerId == this.reportList[index - 1].sellerId){
-                        return false;
-                    }
-                }
-                return true;
-            },
-//            判断水站是否重复,并且在最后一个显示统计
-            isTotal(index){
-
-                if ((index==(this.reportList.length-1)) ||
-                    ((index<(this.reportList.length-1) && this.reportList[index].sellerId != this.reportList[index+1].sellerId) )
-                )  {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            linkToView(sn){
+            //            跳转详情
+            linkToInfo:function (orderSn,sn) {
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/shipping/info.js?sn=' + sn ),function (data) {
+                event.openURL(utils.locate('view/shop/shipping/info.js?orderSn=' + orderSn +'&sn=' + sn ),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 
                     }
                 });
-            }
+            },
         },
 
     }

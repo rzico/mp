@@ -44,16 +44,16 @@
                     <div class="infoLines pb10">
                         <text class="sub_title ">配送方式: {{item.shippingMethod}}</text>
                     </div>
-                    <div class="infoLines pt0 pb10" v-if="item.track.method == '同城配送'">
+                    <div class="infoLines pt0 pb10" v-if="item.shippingMethodId == 'warehouse'">
                         <text class="sub_title ">配送站点: {{item.shopName}}</text>
                     </div>
-                    <div class="infoLines pt0 pb10" v-if="item.track.method == '同城配送'">
+                    <div class="infoLines pt0 pb10" v-if="item.shippingMethodId == 'warehouse'">
                         <text class="sub_title ">配送人员: {{item.adminName}}</text>
                     </div>
-                    <div class="infoLines pt0 pb10" v-if="item.track.method == '普通快递'">
+                    <div class="infoLines pt0 pb10" v-if="item.shippingMethodId == 'shipping'">
                         <text class="sub_title ">快递公司: {{item.deliveryCorpId}}</text>
                     </div>
-                    <div class="infoLines pt0 pb10" v-if="item.track.method == '普通快递'">
+                    <div class="infoLines pt0 pb10" v-if="item.shippingMethodId == 'shipping'">
                         <text class="sub_title ">快递单号: {{item.trackingNo}}</text>
                     </div>
                     <div class="infoLines pt10 boder-bottom">

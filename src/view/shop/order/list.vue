@@ -58,15 +58,32 @@
                             <text class="title red" style="max-width: 230px;lines:1;text-overflow: ellipsis;">{{item.statusDescr}}</text>
                         </div>
                     </div>
-                    <div class="flex-row goodsBody"  v-for="goods in item.orderItems" @click="goDetails(item.sn)">
-                        <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
-                        <div class="goodsInfo"  >
-                            <text class="title goodsName" >{{goods.name}}</text>
-                            <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
-                            <div class="goodsPriceNum" >
-                                <text class="title coral">¥ {{goods.price | currencyfmt}}</text>
-                                <text class="sub_title">x{{goods.quantity}}</text>
+                    <div>
+                        <div class="flex-row goodsBody"  v-for="(goods,index) in item.orderItems" v-if="index<2" @click="goDetails(item.sn)">
+                            <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
+                            <div class="goodsInfo"  >
+                                <text class="title goodsName" >{{goods.name}}</text>
+                                <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                                <div class="goodsPriceNum" >
+                                    <text class="title coral">¥ {{goods.price | currencyfmt}}</text>
+                                    <text class="sub_title">x{{goods.quantity}}</text>
+                                </div>
                             </div>
+                        </div>
+                        <div class="flex-row goodsBody"  v-for="(goods,index) in item.orderItems" v-if="index >= 2 && showMore" @click="goDetails(item.sn)">
+                            <image :src="goods.thumbnail | watchThumbnail" class="goodsImg"></image>
+                            <div class="goodsInfo"  >
+                                <text class="title goodsName" >{{goods.name}}</text>
+                                <text  class="sub_title ">规格:{{goods.spec | watchSpec}}</text>
+                                <div class="goodsPriceNum" >
+                                    <text class="title coral">¥ {{goods.price | currencyfmt}}</text>
+                                    <text class="sub_title">x{{goods.quantity}}</text>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="moreGoods" @click="controlMore" v-if="item.orderItems.length>2">
+                            <text class="moreIcon"  :style="{fontFamily:'iconfont'}" v-if="showMore">&#xe608;</text>
+                            <text class="moreIcon"  :style="{fontFamily:'iconfont'}" v-else>&#xe601;</text>
                         </div>
                     </div>
                     <div class="flex-row goodsTotalPrice boder-bottom">
@@ -165,6 +182,15 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .moreGoods{
+        width: 710px;
+        height: 50px;
+        align-items: center;
+        justify-content: center;
+    }
+    .moreIcon{
+        font-size:34px;
+    }
     .consignee{
         font-size: 32px;
         width: 400px;
@@ -482,7 +508,8 @@
                 orderAmout:0,
                 orderNowAmout:'',
                 nowSn:'',
-                nowIndex:0
+                nowIndex:0,
+                showMore:false
             }
         },
         props:{
@@ -674,6 +701,9 @@
 
             goback:function () {
                 event.closeURL();
+            },
+            controlMore(){
+              this.showMore = !this.showMore
             },
             goDetails:function (sn) {
                 if (this.clicked) {

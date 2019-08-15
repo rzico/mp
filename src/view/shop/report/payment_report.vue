@@ -138,7 +138,7 @@
     .shopName{
         font-size: 30px;
         width: 250px;
-        padding-left: 30px;
+        padding-right: 20px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;
@@ -161,6 +161,7 @@
     .returnMoney{
         font-size: 30px;
         width: 250px;
+        padding-right: 20px;
         text-align: right;
         lines:1;
         text-overflow: ellipsis;
