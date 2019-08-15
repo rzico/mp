@@ -59,8 +59,8 @@
                 <text class="fz28 ">电子券抵扣: ¥{{summarylist[0].exchangeDiscount}}</text>
             </div>
             <div class="bottomCellTwo">
-                <div class="" v-if="summarylist[0].paperDiscount > 0">
-                    <text class="fz28 " >纸质水票抵后: ¥{{summarylist[0].paperDiscount}}</text>
+                <div class="" >
+                    <text class="fz28 " v-if="summarylist[0].paperDiscount > 0" >纸质水票抵后: ¥{{summarylist[0].paperDiscount}}</text>
                 </div>
                 <text class="fz28 fontStrong">营业收入: ¥{{summarylist[0].amount}}</text>
             </div>
