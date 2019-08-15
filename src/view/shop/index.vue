@@ -738,10 +738,9 @@
                                 _this.scanCoupon(res.data.code,res.data.captcha)
                             }else if(res.data.type =='818807'){
                                 _this.scanSend(res.data.sn)
-                            }else if(res.data.type =='818807'){
-                                _this.scanSend(res.data.sn)
+                            }else if(res.data.type =='865380'){
+                                _this.scanMember(res.data.id)
                             }
-
                         } else {
                             event.toast(res.content);
                         }
