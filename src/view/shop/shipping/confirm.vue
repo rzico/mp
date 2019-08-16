@@ -543,25 +543,31 @@
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.pledgePayable = parseFloat(data.data.pledgePayable)//  应收押金
                         if (data.data.paymentPluginId!='cashPayPlugin') {
+                            modal.alert({
+                                message:'进来了'
+                            })
                             _this.amountPayable = 0;
                             _this.arrears = 0;
                         }
 
-                        if (Math.abs(data.data.amountPaid)>0) {
-                            _this.amountPaid = '1';
-                        } else {
-                            _this.amountPaid = '0';
-                        }
-                        if (Math.abs(data.data.paperPaid)>0) {
-                            _this.paperPaid = '1';
-                        } else {
-                            _this.paperPaid = '0';
-                        }
+//                        if (Math.abs(data.data.amountPaid)>0) {
+//                            _this.amountPaid = '1';
+//                        } else {
+//                            _this.amountPaid = '0';
+//                        }
+//                        if (Math.abs(data.data.paperPaid)>0) {
+//                            _this.paperPaid = '1';
+//                        } else {
+//                            _this.paperPaid = '0';
+//                        }
 
 
                         _this.pledgeQuantity = parseFloat(data.data.pledgeQuantity);
 
                         _this.totalAmount = parseFloat(_this.amountPayable) + parseFloat(_this.arrears);
+                        modal.alert({
+                            message:_this.totalAmount
+                        })
                         _this.totalPaper = parseFloat(_this.paperPayable) + parseFloat(_this.ticket);
                         _this.paymentPluginName = data.data.paymentMethod;
                         _this.hasWater = data.data.hasWater;
