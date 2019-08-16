@@ -562,7 +562,7 @@
                     }, function (err) {
                         event.toast(err.content)
                     });
-                }else if(obj.key == 1){
+                }else if(obj.key == 2){
                     POST('weex/cart/addOFF.jhtml').then(function (mes) {
                         if (mes.type == 'success') {
                             _this.cart = mes.data.cartItems;
@@ -704,9 +704,6 @@
             //            选择付款方式
             pickPay:function () {
                 let _this = this
-                if(this.order.shippingMethodId == 'writeOff' || this.order.shippingMethodId == 'returnBerrel'){
-                    return
-                }
 //                获取支付方式
                         picker.pick({
                             index:_this.begin,
