@@ -123,12 +123,30 @@
                     <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
                 </div>
             </div>
-            <div class="cell-panel space-between ">
+            <div class="cell-panel space-between " v-if="data.card.point != 0">
                 <div class="flex-row">
-                    <text class="title ml10">积分</text>
+                    <text class="title ml10">金币</text>
                 </div>
                 <div class="flex-row flex-end" >
-                    <text class="sub_title">{{data.card.point}}</text>
+                    <text class="sub_title red">{{data.card.point}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
+                </div>
+            </div>
+            <div class="cell-panel space-between "  v-if="data.card.arrears != 0">
+                <div class="flex-row">
+                    <text class="title ml10">欠款</text>
+                </div>
+                <div class="flex-row flex-end" >
+                    <text class="sub_title red">{{data.card.arrears}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
+                </div>
+            </div>
+            <div class="cell-panel space-between " v-if="data.card.ticket != 0">
+                <div class="flex-row">
+                    <text class="title ml10 red">欠票</text>
+                </div>
+                <div class="flex-row flex-end" >
+                    <text class="sub_title">{{data.card.ticket}}</text>
                     <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
                 </div>
             </div>
@@ -158,6 +176,9 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .red{
+        color:red;
+    }
     .cell-logo {
         height: 160px;
         flex-direction: row;
