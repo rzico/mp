@@ -11,7 +11,7 @@
             </div>
         </div>
         <!--<noData :noDataHint="noDataHint" v-if="lists.length == 0"></noData>-->
-        <list  class="list"  :scrollable="canScroll" @loadmore="onloading" loadmoreoffset="50">
+        <list  class="list"  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="infoBox">
                             <text class="couponTitle">{{c.name}}</text>
-                            <text class="money">押金:{{c.pledge}}</text>
+                            <!--<text class="money">押金:{{c.pledge}}</text>-->
                             <text class="stock">余桶:{{c.stock}}   押桶:{{c.mortgage}}  借桶:{{c.borrow}}</text>
                         </div>
                         <div class="iconBox"  @click="openMask(c)">
@@ -36,10 +36,10 @@
         <div class="mask" v-if="isMask" >
             <div class="editorBox">
                 <text class="fz40 mt30">期初设置</text>
-                <div class="editorCell">
-                    <text class="fz32">期初押金:</text>
-                    <input class="editorInput pl20" type="number" placeholder="请输入押金" autofocus="true" v-model="pledge"/>
-                </div>
+                <!--<div class="editorCell">-->
+                    <!--<text class="fz32">期初押金:</text>-->
+                    <!--<input class="editorInput pl20" type="number" placeholder="请输入押金" autofocus="true" v-model="pledge"/>-->
+                <!--</div>-->
                 <div class="editorCell">
                     <text class="fz32">期初押桶:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入押桶数量" v-model="mortgage"/>
@@ -236,17 +236,13 @@
 
 <script>
     var modal = weex.requireModule('modal')
-    var prompting =''
     import { POST, GET ,SCAN} from '../../../assets/fetch'
     import utils from '../../../assets/utils'
     import filters from '../../../filters/filters'
     import {dom,event,animation} from '../../../weex.js';
-    const picker = weex.requireModule('picker')
     import navbar from '../../../include/navbar.vue';
     import search from '../../../include/search.vue';
     import noData from '../../../include/noData.vue';
-    var he = require('he');
-    var animationPara;//执行动画的消息
     export default {
         components: {
             navbar,search,noData

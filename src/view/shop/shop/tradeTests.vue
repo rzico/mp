@@ -14,7 +14,7 @@
             <text class="text">绑定完成</text>
             <text class="sweepCode" @click="openTest()">{{prompting}}</text>
         </div>
-        <div class="button bkg-primary" @click="complete">
+        <div class="button bkg-primary button-bkg-img" @click="complete">
             <text class="buttonText">完成</text>
         </div>
     </div>

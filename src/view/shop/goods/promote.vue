@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="completeButton bkg-primary" @click="complete()">
+                <div class="completeButton bkg-primary button-bkg-img" @click="complete()">
                     <text class="fz40" style="color:white">完成</text>
                 </div>
                 <div class="warning">

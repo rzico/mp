@@ -137,7 +137,7 @@
             </div>
         </div>
         </div>
-        <div class="button bw bkg-primary" v-if="!doSearch && !pageType" @click="addGoods()">
+        <div class="button bw bkg-primary button-bkg-img" v-if="!doSearch && !pageType" @click="addGoods()">
             <text class="buttonText ">新增商品</text>
         </div>
     </div>

@@ -58,10 +58,10 @@
 
         </div>
             <!-- 信息部分结束 -->
-            <div class="newAddre-save bkg-primary" @click="saveReceiver">
+            <div class="newAddre-save bkg-primary button-bkg-img" @click="saveReceiver">
                 <text class="newAddre-saveText">保存</text>
             </div>
-            <div class='newAddre-save bkg-primary' @click="goback">
+            <div class='newAddre-save bkg-primary button-bkg-img' @click="goback">
                 <text class="newAddre-saveText">返回</text>
             </div>
     </div>

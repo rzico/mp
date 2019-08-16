@@ -61,7 +61,7 @@
                 </div>
             </div>
         </scroller>
-        <div class="button bkg-primary" @click="goComplete">
+        <div class="button bkg-primary button-bkg-img" @click="goComplete">
             <text class="buttonText">下一步</text>
         </div>
 

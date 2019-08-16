@@ -160,7 +160,7 @@
             </div>
             <div style="height: 600px"></div>
         </scroller>
-        <div class="button bw bkg-primary" @click="goComplete()">
+        <div class="button bw bkg-primary button-bkg-img" @click="goComplete()">
             <text class="buttonText ">保存</text>
         </div>
 

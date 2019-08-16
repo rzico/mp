@@ -32,7 +32,7 @@
             </cell>
         </list>
         <div style='height:60px;background:#eee'></div>
-        <div class='chooseAddre-new bkg-primary' @click='newaddre'>
+        <div class='chooseAddre-new bkg-primary button-bkg-img' @click='newaddre'>
             <text class="chooseAddre-newText">+ 新建地址</text>
         </div>
 

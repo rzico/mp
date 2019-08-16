@@ -8,13 +8,14 @@
                 </div>
                 <!--导航栏名字头像-->
                 <div class="userBox">
-                    <text class="navText">{{title}}</text>
+                    <text class="nav_title">{{title}}</text>
                 </div>
-                <div style="width: 50px;">
+                <div style="width: 50px;" @click="barRightButtonClick">
+                    <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe72b;</text>
                 </div>
             </div>
         </div>
-        <div class="addressBox bkg-primary pb30" v-if="isShow" @click="jump(cardId)">
+        <div class="addressBox bkg-primary button-bkg-img pb30" v-if="isShow" @click="jump(cardId)">
             <text class="address">{{member.areaName}}{{member.address}}</text>
         </div>
         <div class="memberCard" @click="gocard()">
@@ -34,13 +35,15 @@
                 </div>
                 <div class="goodsCell"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
                     <text class="goodsTitle">{{c.name}}</text>
-                    <div class="goodsNumberBox" >
-                        <text class="fz24 mr10">数量</text>
-                        <input class="numberInput" type="number" autofocus="true" v-model="c.quantity" @change="numberChange(c)"/>
-                    </div>
-                    <div class="goodsMoneyBox">
-                        <text class="fz24 ml10 mr10" style="">单价</text>
-                        <input class="moneyInput" type="number" v-model="c.price" @change="moneyChange(c)"/>
+                    <div class="flex-row" v-if="order.shippingMethodId != 'writeOff' && order.shippingMethodId != 'returnBerrel'">
+                        <div class="goodsNumberBox" >
+                            <text class="fz24 mr10">数量</text>
+                            <input class="numberInput" type="number" autofocus="true" v-model="c.quantity" @change="numberChange(c)"/>
+                        </div>
+                        <div class="goodsMoneyBox">
+                            <text class="fz24 ml10 mr10" style="">单价</text>
+                            <input class="moneyInput" type="number" v-model="c.price" @change="moneyChange(c)"/>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,13 +136,18 @@
             </div>
 
         </div>
-        <div class="button bkg-primary" v-if="isShow" @click="confirm()">
+        <div class="button bkg-primary button-bkg-img" v-if="isShow" @click="confirm()">
             <text class="buttonText">确认</text>
         </div>
             <div style="height: 400px"></div>
         </scroller>
         <date @confirm="confirmDate" @cancel="cancel" :isMask="isMask"></date>
         <wxc-loading :show="isLoading" :need-mask="true" loading-text="付款中..."></wxc-loading>
+        <wxc-popover ref="wxc-popover"
+                     :buttons="popList"
+                     :position="popoverPosition"
+                     :arrowPosition="popoverArrowPosition"
+                     @wxcPopoverButtonClicked="popoverButtonClicked"></wxc-popover>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -163,10 +171,6 @@
         font-size: 38px;
         color: #fff;
         margin-top: 2px;
-    }
-    .navText {
-        font-size: 33px;
-        color: #fff;
     }
     .userBox {
         flex-direction: row;
@@ -398,7 +402,7 @@
     import date from '../../../widget/date.vue'
     const picker = weex.requireModule('picker');
     const modal = weex.requireModule('modal');
-    import { WxcLoading } from 'weex-ui';
+    import { WxcLoading,WxcPopover } from 'weex-ui';
     var animationPara;//执行动画的消息
     export default {
         data: function () {
@@ -444,11 +448,27 @@
                 paySn:'',
                 hasWater:false,
                 order:null,
-                isLoading:false
+                isLoading:false,
+                popList:[
+                    {
+                        text:'退桶',
+                        key:0
+                    },
+                    {
+                        text:'欠款核销',
+                        key:1
+                    },
+                    {
+                        text:'欠票核销',
+                        key:2
+                    },
+                ],
+                popoverPosition:{x:500,y:92},
+                popoverArrowPosition:{pos:'top',x:-15}
             }
         },
         components: {
-            navbar,date,WxcLoading
+            navbar,date,WxcLoading,WxcPopover
         },
         props: {
             title: {default: "人工报单"},
@@ -477,6 +497,7 @@
             utils.initIconFont();
             var _this = this;
             this.version = utils.version;
+            this.popoverPosition.y = utils.getHeaderHeight()-35
             _this.payName =[];
             _this.payId = [];
             GET('payment/plugin.jhtml',function (mes) {
@@ -504,6 +525,52 @@
             })
         },
         methods: {
+            barRightButtonClick(){
+                this.$refs['wxc-popover'].wxcPopoverShow();
+            },
+            popoverButtonClicked (obj) {
+                let _this = this;
+                if(obj.key == 0){
+                    GET('weex/cart/addRTB.jhtml',function (mes) {
+                        if (mes.type == 'success') {
+                            _this.cart = mes.data.cartItems;
+                            _this.getmoneyTotal();
+                            _this.paymentPluginId = 'cashPayPlugin';
+                            _this.paymentPluginName = '现金';
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content)
+                    });
+                }else if(obj.key == 1){
+                    GET('weex/cart/addOFF.jhtml',function (mes) {
+                        if (mes.type == 'success') {
+                            _this.cart = mes.data.cartItems;
+                            _this.getmoneyTotal();
+                            _this.paymentPluginId = 'cashPayPlugin';
+                            _this.paymentPluginName = '现金';
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content)
+                    });
+                }else if(obj.key == 1){
+                    GET('weex/cart/addOFF.jhtml',function (mes) {
+                        if (mes.type == 'success') {
+                            _this.cart = mes.data.cartItems;
+                            _this.getmoneyTotal();
+                            _this.paymentPluginId = 'couponPayPlugin';
+                            _this.paymentPluginName = '纸质水票';
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content)
+                    });
+                }
+            },
             //            监听设备型号,控制导航栏高度
             classHeader: function() {
                 let dc = utils.device();
@@ -631,6 +698,9 @@
             //            选择付款方式
             pickPay:function () {
                 let _this = this
+                if(this.order.shippingMethodId == 'writeOff' || this.order.shippingMethodId == 'returnBerrel'){
+                    return
+                }
 //                获取支付方式
                         picker.pick({
                             index:_this.begin,
@@ -741,29 +811,74 @@
             },
             //            跳转商品列表
             goGoods:function () {
+                let _this = this
                 if (this.clicked==true) {
                     return;
                 }
                 this.clicked = true;
-                let _this = this
-                event.openURL(utils.locate("view/shop/goods/manage.js?from=fill&pageType=true"),function (data) {
-                    _this.clicked = false
-                    if(data.type == 'success'){
+                if(this.order!= null && (this.order.shippingMethodId == 'writeOff' || this.order.shippingMethodId == 'returnBerrel')){
+                    modal.confirm({
+                        message: '是否取消当前操作',
+                        duration: 0.3,
+                        okTitle:'确定',
+                        cancelTitle:'取消',
+                    }, function (value) {
+                        if(value == '确定'){
+                            //            清空购物车
+                            POST('weex/cart/clear.jhtml').then(function (res) {
+                                if (res.type == 'success') {
+                                    event.openURL(utils.locate("view/shop/goods/manage.js?from=fill&pageType=true"),function (data) {
+                                        _this.clicked = false
+                                        if(data.type == 'success'){
 //                        把传回来的商品名字保存起来，用来对比购物车列表是否有改商品
-                        _this.goodsName = data.data.name;
+                                            _this.goodsName = data.data.name;
 //                        先请求接口获取productId
-                        GET('applet/product/view.jhtml?id='+ data.data.id,function (mes) {
-                            if (mes.type == 'success') {
-                                _this.product = mes.data.products;
-                                _this.addCart()
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
-                        })
-                    }
-                });
+                                            GET('applet/product/view.jhtml?id='+ data.data.id,function (mes) {
+                                                if (mes.type == 'success') {
+                                                    _this.product = mes.data.products;
+                                                    _this.addCart()
+                                                } else {
+                                                    event.toast(mes.content);
+                                                }
+                                            }, function (err) {
+                                                event.toast(err.content)
+                                            })
+                                        }
+                                    });
+                                } else {
+                                    _this.clicked = false
+                                    event.toast(res.content);
+                                }
+                            }, function (err) {
+                                _this.clicked = false
+                                event.toast(err.content)
+                            })
+                        }else {
+                            _this.clicked = false
+                            return
+                        }
+                    })
+                }else {
+                    event.openURL(utils.locate("view/shop/goods/manage.js?from=fill&pageType=true"),function (data) {
+                        _this.clicked = false
+                        if(data.type == 'success'){
+//                        把传回来的商品名字保存起来，用来对比购物车列表是否有改商品
+                            _this.goodsName = data.data.name;
+//                        先请求接口获取productId
+                            GET('applet/product/view.jhtml?id='+ data.data.id,function (mes) {
+                                if (mes.type == 'success') {
+                                    _this.product = mes.data.products;
+                                    _this.addCart()
+                                } else {
+                                    event.toast(mes.content);
+                                }
+                            }, function (err) {
+                                event.toast(err.content)
+                            })
+                        }
+                    });
+                }
+
             },
 //            购物车列表
             cartList:function () {
@@ -785,7 +900,6 @@
             },
             //            加入购物车
             addCart:function (id) {
-
                 var _this = this;
                 POST('weex/cart/add.jhtml?id='+_this.product[0].productId+'&quantity=0'+'&memberId=' +this.memberId).then(function (res) {
                     if (res.type == 'success') {
@@ -862,6 +976,9 @@
             },
             onpanmove:function (e,index) {
 //                获取当前点击的元素。
+                if(this.order.shippingMethodId == 'writeOff' || this.order.shippingMethodId == 'returnBerrel'){
+                    return
+                }
                 var _this = this;
                 if(e.direction == 'right'){
                     animation.transition(animationPara, {
@@ -893,6 +1010,9 @@
             },
             //            点击屏幕时
             onFriendtouchstart:function (e,index) {
+                if(this.order.shippingMethodId == 'writeOff' || this.order.shippingMethodId == 'returnBerrel'){
+                    return
+                }
                 var _this = this;
                 if(animationPara == null || animationPara == '' || animationPara == 'undefinded' ){
                 }else{
