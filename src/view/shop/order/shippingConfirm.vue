@@ -669,11 +669,6 @@
                     _this.clicked = false;
                     return
                 }
-
-                POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
-
-                        if(data.type == 'success'){
-                            if(data.data == true){
 //                                var body = [];
 //                                _this.ordersList[0].shippingBarrels.forEach(function(item,index){
 //                                    if(utils.isNull(item.quantity)){
@@ -706,20 +701,6 @@
                                         _this.clicked = false;
                                         event.toast(err.content);
                                     })
-                            }else {
-                                _this.clicked = false;
-                                event.toast('该订单他人正在操作，请稍后...')
-                            }
-
-                        }else{
-                            _this.clicked = false;
-                            event.toast(data.content);
-                        }
-                    },
-                    function (err) {
-                        _this.clicked = false;
-                        event.toast(err.content);
-                    })
             },
 
         }

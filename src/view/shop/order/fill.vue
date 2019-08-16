@@ -704,9 +704,6 @@
             //            选择付款方式
             pickPay:function () {
                 let _this = this
-                if(this.order.shippingMethodId == 'writeOff' || this.order.shippingMethodId == 'returnBerrel'){
-                    return
-                }
 //                获取支付方式
                         picker.pick({
                             index:_this.begin,

@@ -644,9 +644,6 @@
                 }
                 this.clicked = true;
                 let _this = this
-                POST('weex/member/shipping/lock.jhtml?sn='+this.shippingSn,).then(function (data) {
-                        if(data.type == 'success'){
-                            if(data.data == true){
                                 var body = [];
                                 _this.list.forEach(function(item,index){
                                     if(utils.isNull(item.give)){
@@ -681,22 +678,6 @@
                                             _this.clicked = false;
                                             event.toast(err.content);
                                         })
-//                                })
-
-                            }else {
-                                _this.clicked = false;
-                                event.toast('该订单他人正在操作，请稍后...')
-                            }
-
-                        }else{
-                            _this.clicked = false;
-                            event.toast(data.content);
-                        }
-                    },
-                    function (err) {
-                        _this.clicked = false;
-                        event.toast(err.content);
-                    })
             }
         }
     }
