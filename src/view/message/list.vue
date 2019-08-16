@@ -9,7 +9,7 @@
                 <div class="userBox" >
                     <text class=" nav_title">{{pageName}}</text>
                 </div>
-                <div class="rightTop"></div>
+                <div class="rightTop"  ></div>
             </div>
         </div>
         <noData :noDataHint="noDataHint" v-if="isEmpty()"></noData>
@@ -291,7 +291,7 @@
             }
         },
         props:{
-            noDataHint: { default: "暂无消息"},
+            noDataHint: { default: "没有消息，快去聊天吧"},
         },
         created() {
 //            创建前
@@ -319,7 +319,7 @@
                     _this.soundfile = null;
                 }
                 _this.unReadMessage = event.getUnReadMessageCount();
-                var mesData = [0,_this.unReadMessage,0];
+                var mesData = [0,_this.unReadMessage];
                 event.setDots(mesData);
             });
             //           添加好友消息红点控制
@@ -333,7 +333,7 @@
             });
 
             this.unReadMessage = event.getUnReadMessageCount();
-            var mesData = [0,this.unReadMessage,0];
+            var mesData = [0,this.unReadMessage];
             event.setDots(mesData);
 
         },
@@ -519,7 +519,7 @@
                                         event.setReadMessage(item.userId,function(data) {
                                             if (data.type == 'success') {
                                                 _this.unReadMessage = event.getUnReadMessageCount();
-                                                var mesData = [0,_this.unReadMessage,0];
+                                                var mesData = [0,_this.unReadMessage];
                                                 event.setDots(mesData);
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                                                     _this.clicked = false;
@@ -539,7 +539,7 @@
                                             _this.clicked = false;
                                             if(data.type == 'success'){
                                                 _this.unReadMessage = event.getUnReadMessageCount();
-                                                var mesData = [0,_this.unReadMessage,0];
+                                                var mesData = [0,_this.unReadMessage];
                                                 event.setDots(mesData);
                                                 event.navToChat(item.userId);
                                             }else{
