@@ -562,7 +562,7 @@
                     }, function (err) {
                         event.toast(err.content)
                     });
-                }else if(obj.key == 1){
+                }else if(obj.key == 2){
                     POST('weex/cart/addOFF.jhtml').then(function (mes) {
                         if (mes.type == 'success') {
                             _this.cart = mes.data.cartItems;
