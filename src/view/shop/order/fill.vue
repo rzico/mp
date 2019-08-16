@@ -530,8 +530,14 @@
             },
             popoverButtonClicked (obj) {
                 let _this = this;
+                if(!this.isShow){
+                    modal.alert({
+                        message:'请选择会员'
+                    })
+                    return
+                }
                 if(obj.key == 0){
-                    GET('weex/cart/addRTB.jhtml',function (mes) {
+                    POST('weex/cart/addRTB.jhtml').then(function (mes) {
                         if (mes.type == 'success') {
                             _this.cart = mes.data.cartItems;
                             _this.getmoneyTotal();
@@ -544,7 +550,7 @@
                         event.toast(err.content)
                     });
                 }else if(obj.key == 1){
-                    GET('weex/cart/addOFF.jhtml',function (mes) {
+                    POST('weex/cart/addOFF.jhtml').then(function (mes) {
                         if (mes.type == 'success') {
                             _this.cart = mes.data.cartItems;
                             _this.getmoneyTotal();
@@ -557,7 +563,7 @@
                         event.toast(err.content)
                     });
                 }else if(obj.key == 1){
-                    GET('weex/cart/addOFF.jhtml',function (mes) {
+                    POST('weex/cart/addOFF.jhtml').then(function (mes) {
                         if (mes.type == 'success') {
                             _this.cart = mes.data.cartItems;
                             _this.getmoneyTotal();
