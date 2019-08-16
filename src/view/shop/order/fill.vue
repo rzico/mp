@@ -115,10 +115,10 @@
                 </div>
             </div>
             <div class="moneyBox">
-                <div class="flex-row space-between pb10" v-if="amountPayable>0 || arrears>0">
+                <div class="flex-row space-between pb10" v-if="amountPayable != 0 || arrears != 0">
                     <text class="moneyBoxText" style="color:red;">应收金额: {{amountPayable}}元(上期欠款: {{arrears}}元)</text>
                 </div>
-                <div class="flex-row space-between pb10" v-if="paperPayable>0 || ticket>0">
+                <div class="flex-row space-between pb10" v-if="paperPayable !=0 || ticket !=0">
                     <text class="moneyBoxText" style="color:red;">应收水票: {{paperPayable}}张(上期欠票: {{ticket}}张)</text>
                 </div>
                 <div class="flex-row space-between pb10" v-if="order!=null && order.freight>0">
