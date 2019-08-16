@@ -11,10 +11,10 @@
             </div>
         </div>
         <!--<noData :noDataHint="noDataHint" v-if="lists.length == 0"></noData>-->
-        <list  class="list"  @loadmore="onloading" loadmoreoffset="50">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
-            </refresh>
+        <list  class="list"  loadmoreoffset="50">
+            <!--<refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">-->
+                <!--<image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>-->
+            <!--</refresh>-->
             <cell >
                 <div class="" v-for="c in lists">
                     <div class="contentBox" @click="linkToShipping(c.barrelId)">
@@ -320,18 +320,11 @@
             },
             open:function () {
                 var _this = this;
-                GET('weex/member/barrel_stock/list.jhtml?cardId='+ this.cardId + '&pageStart='+this.pageStart +'&pageSize='+this.pageSize,function (mes) {
+                GET('weex/member/barrel_stock/list.jhtml?cardId='+ this.cardId,function (mes) {
                     if (mes.type == 'success') {
                         _this.total = mes.data.stock;
                         _this.money = mes.data.pledge;
-                        if (_this.pageStart==0) {
-                            _this.lists = mes.data.data;
-                        } else {
-                            mes.data.data.forEach(function(item){
-                                _this.lists.push(item);
-                            })
-                        }
-                        _this.pageStart = _this.lists.length;
+                        _this.lists = mes.data.data;
                     } else {
                         event.toast(mes.content);
                     }
