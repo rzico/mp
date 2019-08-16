@@ -42,7 +42,7 @@
                 </div>
                 <!--详情-->
                 <div class="info" >
-                    <div class="flex-column" v-if="totalAmount>0">
+                    <div class="flex-column" v-if="totalAmount != 0">
                     <text class="herderText">应收现金</text>
                     <div class="flex-row">
                         <text style="font-size: 65px">¥</text>
@@ -53,7 +53,7 @@
                         <div :class="[amountPaid=='0'?'checkboxAct':'checkbox']" @click="amountPay('0')"><text class="fz28">未收</text></div>
                     </div>
                     </div>
-                    <div class="flex-column" v-if="totalPaper>0">
+                    <div class="flex-column" v-if="totalPaper !=0">
                     <text class="herderText">应收水票</text>
                     <div class="flex-row">
                         <text style="font-size: 65px"></text>
@@ -65,18 +65,18 @@
                     </div>
                     </div>
 
-                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="totalAmount>0">
+                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="totalAmount !=0">
                         <text class="fz30" style="color: #999">应收现金: {{amountPayable}}元</text>
                         <text class="fz30" style="color: #999">（上期欠款  {{arrears}}元）</text>
                     </div>
-                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="borrow>0">
+                    <div class="flex-row" style="width: 590px;margin-top: 20px;" v-if="borrow !=0">
                         <text class="fz30" style="color:red">当前借桶: {{borrow}}桶</text>
                     </div>
-                    <div class="flex-row mt10" style="width: 590px" v-if="totalPaper>0">
+                    <div class="flex-row mt10" style="width: 590px" v-if="totalPaper!=0">
                         <text class="fz30" :class="[paperClass()]" >应收水票: {{paperPayable}}张</text>
                         <text class="fz30" style="color: #999">（上期欠票  {{ticket}}张）</text>
                     </div>
-                    <div class="flex-row mt10" style="width: 590px" v-if="pledgePayable>0 || pledgeQuantity>0">
+                    <div class="flex-row mt10" style="width: 590px" v-if="pledgePayable!=0 || pledgeQuantity!=0">
                         <text class="fz30" :class="[paperClass()]" >空桶押金: {{pledgePayable}}元</text>
                         <text class="fz30" style="color: #999">（押桶数量: {{pledgeQuantity}}个）</text>
                     </div>

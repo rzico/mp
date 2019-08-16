@@ -402,7 +402,7 @@
             navbar
         },
         props: {
-            title: {default: "送达"},
+            title: {default: "确认送达"},
         },
         filters: {
             wacthFloor(e){
@@ -546,7 +546,6 @@
                             _this.amountPayable = 0;
                             _this.arrears = 0;
                         }
-
                         if (Math.abs(data.data.amountPaid)>0) {
                             _this.amountPaid = '1';
                         } else {
@@ -557,10 +556,7 @@
                         } else {
                             _this.paperPaid = '0';
                         }
-
-
                         _this.pledgeQuantity = parseFloat(data.data.pledgeQuantity);
-
                         _this.totalAmount = parseFloat(_this.amountPayable) + parseFloat(_this.arrears);
                         _this.totalPaper = parseFloat(_this.paperPayable) + parseFloat(_this.ticket);
                         _this.paymentPluginName = data.data.paymentMethod;
