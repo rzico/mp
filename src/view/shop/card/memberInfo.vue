@@ -119,7 +119,7 @@
                     <text class="title ml10">余额</text>
                 </div>
                 <div class="flex-row flex-end" >
-                    <text class="sub_title">{{data.card.balance}}元</text>
+                    <text class="sub_title red">{{data.card.balance}}元</text>
                     <text class="arrow" :style="{fontFamily:'iconfont'}"></text>
                 </div>
             </div>
