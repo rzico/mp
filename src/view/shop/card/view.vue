@@ -3,11 +3,12 @@
         <navbar :title="title"  @goback="goback"> </navbar>
         <list>
             <cell v-if="data!=null">
-                <div class="box bkg-primary">
-                    <div class="flex-center">
+                <div class="box bkg-primary button-bkg-img">
+                    <div class="flex-row"  style="margin-top: 60px">
+                        <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
                         <text class="name" >{{data.card.name}}</text>
                         <div class="labelType"><text class="labelText">{{data.card.type | watchType}}</text> </div>
-                        <div :class="[vipClass(data.card.vip)]" style="margin-top: 60px"><text class="labelText">{{data.card.vip | watchVip}}</text> </div>
+                        <div :class="[vipClass(data.card.vip)]"><text class="labelText">{{data.card.vip | watchVip}}</text> </div>
                          <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
                     </div>
                     <text class="code" >NO.{{data.card.code | codefmt}}</text>
@@ -50,7 +51,6 @@
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
             </cell>
         </list>
     </div>
@@ -97,7 +97,6 @@
         padding-left:5px;
         padding-right: 5px;
         margin-left: 10px;
-        margin-top: 60px;
     }
     .labelText{
         color: white;
@@ -126,21 +125,20 @@
         margin-top: 40px;
     }
     .logo {
-        /*margin-top: -40px;*/
-        position: absolute;
-        top: 100px;
-        left:180px;
         width:80px;
         height:80px;
         border-radius: 40px;
         border-color: #ccc;
         border-width: 1px;
-        z-index: 100;
     }
     .name {
-        margin-top: 60px;
         color:#fff;
         font-size: 30px;
+        max-width: 300px;
+        lines:1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-left: 20px;
     }
     .vip1 {
         height: 28px;

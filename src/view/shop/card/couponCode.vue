@@ -28,9 +28,9 @@
                             </div>
                         </div>
                         <div class="buttonCell">
-                            <div class="pickBox mr30" @click="settingNumber(c.id)">
-                                <text class="fz28 primary">赠送</text>
-                            </div>
+                            <!--<div class="pickBox mr30" @click="settingNumber(c.id)">-->
+                                <!--<text class="fz28 primary">赠送</text>-->
+                            <!--</div>-->
                             <div class="pickBox mr30" @click="linkToInfo(c.id)">
                                 <text class="fz28 primary">详情</text>
                             </div>

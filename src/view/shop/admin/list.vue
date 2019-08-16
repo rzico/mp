@@ -48,7 +48,7 @@
                 <div style="height: 300px"></div>
             </cell>
         </list>
-        <div class="codeBox bkg-primary" @click="scan">
+        <div class="codeBox bkg-primary button-bkg-img" @click="scan">
             <text class="codeText" >扫码添加员工</text>
         </div>
         <!--<div class="shareBox" v-if="isPopup">-->
@@ -209,10 +209,10 @@
         justify-content: center;
         align-items: center;
         width: 690px;
-        height: 80px;
-        border-radius: 40px;
+        height: 84px;
+        border-radius: 42px;
         position: fixed;
-        bottom: 100px;
+        bottom: 40px;
         left: 30px;
     }
     .codeText{

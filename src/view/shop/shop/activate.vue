@@ -15,7 +15,7 @@
             <text class="sweepCode">{{u == '' ? '':'设备号:'+u}}</text>
             <text class="sweepCodetwo">{{p == '' ? '':'设备密钥:'+p}}</text>
         </div>
-        <div class="button bkg-primary" @click="scan()">
+        <div class="button bkg-primary button-bkg-img" @click="scan()">
             <text class="buttonText">{{prompting}}</text>
         </div>
         <div class="skipBox">
