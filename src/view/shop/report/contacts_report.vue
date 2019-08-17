@@ -66,9 +66,6 @@
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
-                <text class="fz28 ">送货利润: ¥{{summarylist[0].profit}}</text>
-            </div>
-            <div class="bottomCellTwo">
                 <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
             </div>
         </div>

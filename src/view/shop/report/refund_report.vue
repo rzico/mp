@@ -44,22 +44,24 @@
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">+ 运费/楼层费: ¥{{summarylist[0].freight}}</text>
-                <text class="fz28 ">+收押金: ¥{{summarylist[0].pledge}}</text>
+                <text class="fz28 ">+ 收押金/退押金: ¥{{summarylist[0].pledge}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">-分销佣金: ¥{{summarylist[0].rebate}}</text>
-                <text class="fz28 ">-平台佣金: ¥{{summarylist[0].fee}}</text>
+                <text class="fz28 ">- 分销佣金: ¥{{summarylist[0].rebate}}</text>
+                <text class="fz28 ">- 平台佣金: ¥{{summarylist[0].fee}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">活动优惠: ¥{{summarylist[0].couponDiscount}}</text>
-                <text class="fz28 fontStrong">调价优惠: ¥{{summarylist[0].offsetAmount}}</text>
+                <text class="fz28 ">- 活动优惠: ¥{{summarylist[0].couponDiscount}}</text>
+                <text class="fz28 ">- 调价优惠: ¥{{summarylist[0].offsetAmount}}</text>
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">金币抵扣: ¥{{summarylist[0].pointDiscount}}</text>
                 <text class="fz28 ">电子券抵扣: ¥{{summarylist[0].exchangeDiscount}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 " v-if="summarylist[0].paperDiscount > 0">纸质水票抵后: ¥{{summarylist[0].paperDiscount}}</text>
+                <div>
+                    <text class="fz28 " v-if="summarylist[0].paperDiscount > 0">纸质水票抵后: ¥{{summarylist[0].paperDiscount}}</text>
+                </div>
                 <text class="fz28 fontStrong">退货合计: ¥{{summarylist[0].amount}}</text>
             </div>
         </div>
