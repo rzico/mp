@@ -21,6 +21,9 @@
             <!--</refresh>-->
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="contentCell" @click="linkToView(c.sn)" >
+                    <div class="titleCell">
+                        <text class="address">{{c.phone}}  {{c.address}}</text>
+                    </div>
                     <div class="contentSmallCell">
                         <text class="contentCellTypeTwo">{{c.completeDate | watchDate}}</text>
                         <text class="contentCellType">{{c.monthPay}}</text>
@@ -315,7 +318,8 @@
         created () {
 //              页面创建时请求数据
             utils.initIconFont();
-            this.memberId = utils.getUrlParameter('memberId')
+            this.memberId = utils.getUrlParameter('memberId');
+            this.pageName = utils.getUrlParameter('memberName');
             this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
             this.beginTime = this.timeDate+ ' ' +'00:00:00';
             this.endTime = this.timeDate+ ' ' +'23:59:59';
