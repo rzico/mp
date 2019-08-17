@@ -1,26 +1,16 @@
 <template>
     <div class="wrapper">
-        <report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>
+        <!--<report_header :pageName="pageName"  @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @reportYearsClick="reportYearsClick"></report_header>-->
+        <navbar title="欠款统计"  @goback="goback" > </navbar>
         <div class="classBox">
-            <div class="tableFour">
-                <text class="tableText">客户</text>
-            </div>
             <div class="tableOne">
-                <text class="tableText">月结</text>
+                <text class="tableText">客户</text>
             </div>
             <div class="tableOne">
                 <text class="tableText">欠款</text>
             </div>
-            <div class="tableOne">
-                <text class="tableText">欠票</text>
-            </div>
             <div class="tableTwo">
-                <text class="tableTextTwo">累计</text>
-                <text class="tableTextTwo">欠款</text>
-            </div>
-            <div class="tableThree">
-                <text class="tableTextTwo">累计</text>
-                <text class="tableTextTwo">欠票</text>
+                <text class="tableText">欠票</text>
             </div>
         </div>
         <list   loadmoreoffset="180" v-if="reportList !=null">
@@ -31,15 +21,12 @@
                 <!--<div class="titleCell"  v-if="isSellerName(index)">-->
                     <!--<text class="shopName">水站名</text>-->
                 <!--</div>-->
-                <div class="contentCell" @click="linkToDetail(c.memberId)" >
+                <div class="contentCell" @click="linkToDetail(c.memberId,c.name)" >
                     <div class="titleCell">
                         <text class="address">{{c.phone}}  {{c.address}}</text>
                     </div>
                     <div class="contentSmallCell">
                         <text class="contentCellName">{{c.name}}</text>
-                        <text class="contentCellType">{{c.monthPay}}</text>
-                        <text class="contentCellType">{{c.arrears}}</text>
-                        <text class="contentCellType">{{c.paper}}</text>
                         <text class="contentCellTypeTwo">{{c.arrearsBalance}}</text>
                         <text class="returnMoney">{{c.paperBalance}}</text>
                     </div>
@@ -122,7 +109,7 @@
         border-bottom-color: #ccc;
     }
     .tableOne{
-        width:107px;
+        width:250px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -130,12 +117,10 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:107px;
-        flex-direction: column;
+        width:250px;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
-        border-right-width: 1px;
-        border-right-color: #777;
     }
     .tableThree{
         width:107px;
@@ -250,14 +235,14 @@
     }
     .returnMoney{
         font-size: 30px;
-        width: 107px;
+        width: 250px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
     .contentCellName{
         font-size: 30px;
-        width: 215px;
+        width: 250px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
@@ -271,7 +256,7 @@
     }
     .contentCellTypeTwo{
         font-size: 30px;
-        width: 107px;
+        width: 250px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
@@ -338,7 +323,7 @@
             }
         },
         components: {
-            report_header,noData
+            navbar,noData
         },
         props: {
 
@@ -502,13 +487,13 @@
                 GET('weex/member/report/arrears_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
-                            _this.reportList = res.data.data;
+                            _this.reportList = res.data.data.data;
                         } else {
-                            res.data.data.forEach(function (item) {
+                            res.data.data.data.forEach(function (item) {
                                 _this.reportList.push(item);
                             })
                         }
-                        _this.pageStart = _this.pageStart+res.data.data.length;
+                        _this.pageStart = _this.pageStart+res.data.data.data.length;
                         _this.noLoading = false;
                         setTimeout(() => {
                             _this.loadinging = false;
@@ -556,13 +541,13 @@
                 }, 1000)
             },
 
-            linkToDetail(memberId){
+            linkToDetail(memberId,memberName){
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/shop/report/arrears_detail.js?memberId='+memberId+'&beginTime='+encodeURIComponent(this.beginTime)+'&endTime='+encodeURIComponent(this.endTime)), function (data) {
+                event.openURL(utils.locate('view/shop/report/arrears_detail.js?memberId='+memberId+'&beginTime='+encodeURIComponent(this.beginTime)+'&endTime='+encodeURIComponent(this.endTime)+'&memberName='+encodeURIComponent(memberName)), function (data) {
                     _this.clicked = false;
                 })
             }
