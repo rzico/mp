@@ -11,6 +11,7 @@ const appName = 'sbl';// app类型  water 或 yundian
 let utilsFunc = {
     //0 标准版 1生鲜版 2桶装水
     downloadText:'喝水@水便利',
+    download:'http://sbl.rzico.com/download/index.html',
     version:2,
     baseNavColor:'#29d1fb',
     // app类型
