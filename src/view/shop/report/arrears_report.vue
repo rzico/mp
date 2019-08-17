@@ -6,10 +6,10 @@
             <div class="tableOne">
                 <text class="tableText">客户</text>
             </div>
-            <div class="tableOne">
+            <div class="tableTwo">
                 <text class="tableText">欠款</text>
             </div>
-            <div class="tableTwo">
+            <div class="tableThree">
                 <text class="tableText">欠票</text>
             </div>
         </div>
@@ -36,59 +36,17 @@
             <cell v-if="reportList.length == 0" >
                 <noData > </noData>
             </cell>
-            <!--<cell>-->
-                <!--<div style="height: 130px"></div>-->
-            <!--</cell>-->
+            <cell>
+                <div style="height: 130px"></div>
+            </cell>
 
         </list>
 
-        <!--<div class="bottomTotal" @swipe="onpanmove($event,index)" @touchstart="onToptouchstart($event)" v-if="summarylist != null ">-->
-            <!--&lt;!&ndash;点击上箭头或向上滑动展开&ndash;&gt;-->
-            <!--<div class="iconBox">-->
-                <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="isIcon">&#xe608;</text>-->
-                <!--<text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>-->
-            <!--</div>-->
-            <!--<div class="bottomCell">-->
-                <!--<div class="contentSmallCell">-->
-                    <!--<text class="number">合计</text>-->
-                    <!--<text class="contentCellType">派单</text>-->
-                    <!--<text class="returnMoney">{{sQuantityTotal}}</text>-->
-                    <!--<text class="returnMoney">{{sReturnQuantityTotal}}</text>-->
-                    <!--<text class="returnMoney">{{sPledgeQuantityTotal}}</text>-->
-                    <!--<text class="money">{{sQuantityTotal - sReturnQuantityTotal - sPledgeQuantityTotal}}</text>-->
-                <!--</div>-->
-                <!--<div class="contentSmallCell">-->
-                    <!--<text class="number"></text>-->
-                    <!--<text class="contentCellType">送货</text>-->
-                    <!--<text class="returnMoney">{{quantityTotal}}</text>-->
-                    <!--<text class="returnMoney">{{returnQuantityTotal}}</text>-->
-                    <!--<text class="returnMoney">{{pledgeQuantityTotal}}</text>-->
-                    <!--<text class="money">{{quantityTotal - returnQuantityTotal - pledgeQuantityTotal}}</text>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<list style="max-height: 500px">-->
-                <!--<cell class="" v-for="t in summarylist">-->
-                    <!--<div class="bottomCellTwo">-->
-                        <!--<div class="contentSmallCell">-->
-                            <!--<text class="number">{{t.barrelName}}</text>-->
-                            <!--<text class="contentCellType">派单</text>-->
-                            <!--<text class="returnMoney">{{t.sQuantity}}</text>-->
-                            <!--<text class="returnMoney">{{t.sReturnQuantity}}</text>-->
-                            <!--<text class="returnMoney">{{t.sPledgeQuantity}}</text>-->
-                            <!--<text class="money">{{t.sQuantity - t.sReturnQuantity - t.sPledgeQuantity}}</text>-->
-                        <!--</div>-->
-                        <!--<div class="contentSmallCell">-->
-                            <!--<text class="number"></text>-->
-                            <!--<text class="contentCellType">送货</text>-->
-                            <!--<text class="returnMoney">{{t.quantity}}</text>-->
-                            <!--<text class="returnMoney">{{t.returnQuantity}}</text>-->
-                            <!--<text class="returnMoney">{{t.pledgeQuantity}}</text>-->
-                            <!--<text class="money">{{t.quantity - t.returnQuantity -t.pledgeQuantity}}</text>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</cell>-->
-            <!--</list>-->
-        <!--</div>-->
+        <div class="bottomTotal"  v-if="summarylist != null">
+            <text class="contentCellName">合计</text>
+            <text class="contentCellTypeTwo">{{summarylist[0].arrearsBalance}}</text>
+            <text class="returnMoney">{{summarylist[0].paperBalance}}</text>
+        </div>
     </div>
 
 </template>
@@ -109,7 +67,7 @@
         border-bottom-color: #ccc;
     }
     .tableOne{
-        width:250px;
+        width:300px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -117,13 +75,15 @@
         border-right-color: #777;
     }
     .tableTwo{
-        width:250px;
+        width:225px;
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        border-right-width: 1px;
+        border-right-color: #777;
     }
     .tableThree{
-        width:107px;
+        width:225px;
         flex-direction: column;
         align-items: center;
         justify-content: center;
@@ -146,15 +106,17 @@
         color: #444;
     }
     .bottomTotal{
-        align-items: center;
         width: 750px;
-        height: 630px;
+        height: 100px;
         background-color: white;
         position: fixed;
-        bottom:-440px;
+        bottom:0px;
         left: 0;
         border-top-width: 1px;
         border-color: #ccc;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
     }
     .bigIcon{
         font-size: 30px;
@@ -235,14 +197,14 @@
     }
     .returnMoney{
         font-size: 30px;
-        width: 250px;
+        width: 225px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }
     .contentCellName{
         font-size: 30px;
-        width: 250px;
+        width: 300px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
@@ -256,7 +218,7 @@
     }
     .contentCellTypeTwo{
         font-size: 30px;
-        width: 250px;
+        width: 225px;
         text-align: center;
         lines:1;
         text-overflow: ellipsis;
@@ -488,6 +450,7 @@
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
                             _this.reportList = res.data.data.data;
+                            _this.summarylist = res.data.data.summary
                         } else {
                             res.data.data.data.forEach(function (item) {
                                 _this.reportList.push(item);
