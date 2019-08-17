@@ -10,6 +10,7 @@ const debug = false;//删掉该属性时请查找该页所有debug变量并删�
 const appName = 'yundian';// app类型  water 或 yundian
 let utilsFunc = {
     //0 标准版 1生鲜版 2桶装水
+    downloadText:'超强图文小视频分享社区,中国版Facebook.',
     version:2,
     baseNavColor:'#29d1fb',
     // app类型
