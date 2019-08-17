@@ -1486,7 +1486,7 @@
                     title:"【"+_this.member.nickName+"】推荐给你一个好用的工具，快去看看",
                     text:utils.downloadText,
                     imageUrl:_this.member.logo,
-                    url:utils.website("?xuid="+_this.member.id),
+                    url:utils.download+"?xuid="+_this.member.id,
                     type:shareType
                 }
                 _this.showShare = false;
