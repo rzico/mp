@@ -67,10 +67,10 @@
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>
-                <text class="fz28 ">代收水票: {{summarylist[0].paper}}</text>
+                <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
+                <text class="fz28 ">代收水票: {{summarylist[0].paper}}</text>
                 <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
             </div>
         </div>
