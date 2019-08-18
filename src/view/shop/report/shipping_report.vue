@@ -378,13 +378,13 @@
                     if (res.type=="success") {
                         var total = 0;
                         var refund = 0;
-                        res.data.data.forEach(function (item) {
+                        res.data.data.data.forEach(function (item) {
                             total = total+item.quantity;
                             refund = refund + item.returnQuantity
                         })
                         _this.total = total;
                         _this.refund = refund;
-                        _this.reportList = res.data.data
+                        _this.reportList = res.data.data.data
                     } else {
                         event.toast(res.content);
                     }
