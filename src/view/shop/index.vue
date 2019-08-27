@@ -730,24 +730,26 @@
             scan:function () {
                 let _this=this
                 event.scan(function (message) {
-                    GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
-                        if (res.type=="success") {
-                            if(res.data.type =='818801'|| res.data.type =='818802'){
-                                _this.scanFindCard(res.data.code)
-                            }else if(res.data.type =='818803'){
-                                _this.scanCoupon(res.data.code,res.data.captcha)
-                            }else if(res.data.type =='818807'){
-                                _this.scanSend(res.data.sn)
-                            }else if(res.data.type =='865380'){
-                                _this.scanMember(res.data.id)
+                    if(!utils.isNull(message.data)){
+                        GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
+                            if (res.type=="success") {
+                                if(res.data.type =='818801'|| res.data.type =='818802'){
+                                    _this.scanFindCard(res.data.code)
+                                }else if(res.data.type =='818803'){
+                                    _this.scanCoupon(res.data.code,res.data.captcha)
+                                }else if(res.data.type =='818807'){
+                                    _this.scanSend(res.data.sn)
+                                }else if(res.data.type =='865380'){
+                                    _this.scanMember(res.data.id)
+                                }
+                            } else {
+                                event.toast(res.content);
                             }
-                        } else {
-                            event.toast(res.content);
-                        }
 
-                    }, function (err) {
-                        event.toast(err.content);
-                    })
+                        }, function (err) {
+                            event.toast(err.content);
+                        })
+                    }
                 });
             },
 //            //            获取经纬度
