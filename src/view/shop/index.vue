@@ -694,6 +694,10 @@
                 let _this=this
                 event.scan(function (message) {
                     if(!utils.isNull(message.data)){
+                        message.data = JSON.stringify(message.data);
+                        if(message.data == '{}'){
+                            return
+                        }
                         GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
                             if (res.type=="success") {
                                 if(res.data.type =='818801'|| res.data.type =='818802'){
