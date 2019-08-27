@@ -42,7 +42,8 @@
             <div class="deleteBox bkg-delete" @click="del(num.id,index)">
                 <text class="deleteText">删除</text>
             </div>
-            <div  class="message" @click="modification(num.id)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
+<!--            @click="modification(num.id)"-->
+            <div  class="message"  @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
             <div class="shopLogo" >
 <!--                <image style="width: 250px;height: 200px;"  class="img" :src="num.thedoor "></image>-->
             </div>
@@ -59,8 +60,14 @@
                     <text class="concretely">{{num.linkman}}</text>
                 </div>
                 <div class="shopAddressDiv">
-                    <text class="shopAddress">收款码：</text>
-                    <text class="shopCode">{{num.code}}</text>
+                    <div class="chooseBox">
+                        <div class="chooseStamp" @click="chooseStampBotton(num.id,num.p,num.u)">
+                            <text class="chooseStampTitle">设置打印机</text>
+                        </div>
+                        <div class="chooseShop" @click="chooseShopBotton(num.id)">
+                            <text class="chooseShopTitle">修改店铺</text>
+                        </div>
+                    </div>
                 </div>
             </div>
             </div>
@@ -172,12 +179,13 @@
     }
     .concretely{
         font-size: 32px;
-        width: 350px;
+        width: 600px;
         lines:1;
         text-overflow: ellipsis;
     }
     .shopNameDiv{
         flex-direction: row;
+        margin-bottom: 10px;
 
     }
     .shopNameDivthree{
@@ -195,7 +203,70 @@
     .shopAddressDiv{
         flex-direction: row;
         align-items: center;
-        margin-top: 10px;
+        width: 700px;
+        position: relative;
+        height: 40px;
+        margin-bottom: 10px;
+    }
+    .chooseBox{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        right: 0px;
+    }
+    .chooseShop{
+        /*width: 100px;*/
+        /*height: 30px;*/
+        /*border-radius: 10px;*/
+        /*display: flex;*/
+        /*justify-content: center;*/
+        /*flex-direction: row;*/
+        /*align-items: center;*/
+        /*padding: 25px;*/
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius:20px;
+        font-size:24px;
+        line-height:30px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: black;
+        margin-left: 20px;
+    }
+    .chooseShopTitle{
+        font-size: 22px;
+        color: black;
+    }
+    .chooseStamp{
+        /*width: 130px;*/
+        /*height: 30px;*/
+        /*border-radius: 10px;*/
+        /*display: flex;*/
+        /*justify-content: center;*/
+        /*flex-direction: row;*/
+        /*align-items: center;*/
+        /*padding: 25px;*/
+        /*margin-left: 20px;*/
+        /*border-style: solid;*/
+        /*border-width: 1px;*/
+        border-radius:20px;
+        font-size:24px;
+        line-height:30px;
+        border-color: #707070;
+        border-style: solid;
+        border-width: 1px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 20px;
+        padding-right: 20px;
+
+    }
+    .chooseStampTitle{
+        font-size: 22px;
+        color:#707070;
     }
 </style>
 <script>
@@ -260,12 +331,52 @@ export default {
                 })
                 return
             }
-                    event.openURL(utils.locate('view/shop/shop/newShop.js?shopId='+id),function (message) {
+                    event.openURL(utils.locate('view/shop/shop/shopChoose.js?shopId='+id),function (message) {
                         if(message.type == 'success'){
                             _this.onrefresh()
                         }
                         _this.clicked =false
                     })
+        },
+        chooseShopBotton:function(id){
+            if (this.clicked==true) {
+                return;
+            }
+            this.clicked = true;
+            let _this = this
+            if (!utils.isRoles("1",_this.roles)) {
+                modal.alert({
+                    message: '暂无权限',
+                    okTitle: '确定'
+                })
+                return
+            }
+            event.openURL(utils.locate('view/shop/shop/shopChoose.js?shopId='+id),function (message) {
+                if(message.type == 'success'){
+                    _this.onrefresh()
+                }
+                _this.clicked =false
+            })
+        },
+        chooseStampBotton:function(id,p,u){
+            if (this.clicked==true) {
+                return;
+            }
+            this.clicked = true;
+            let _this = this
+            if (!utils.isRoles("1",_this.roles)) {
+                modal.alert({
+                    message: '暂无权限',
+                    okTitle: '确定'
+                })
+                return
+            }
+            event.openURL(utils.locate('view/shop/shop/chooseStamp.js?shopId='+id+'&p='+p+'&u='+u),function (message) {
+                if(message.type == 'success'){
+                    _this.onrefresh()
+                }
+                _this.clicked =false
+            })
         },
         open:function () {
             let _this = this;
@@ -363,7 +474,7 @@ export default {
                 })
                 return
             }
-            event.openURL(utils.locate('view/shop/shop/newShop.js'),function (message) {
+            event.openURL(utils.locate('view/shop/shop/shopChoose.js'),function (message) {
                 _this.clicked =false
                 if(message.type == 'success'){
                     _this.onrefresh()
