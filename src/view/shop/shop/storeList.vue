@@ -62,7 +62,7 @@
                 <div class="shopAddressDiv">
                     <div class="chooseBox">
                         <div class="chooseStamp" @click="chooseStampBotton(num.id,num.p,num.u)">
-                            <text class="chooseStampTitle">修改打印机</text>
+                            <text class="chooseStampTitle">设置打印机</text>
                         </div>
                         <div class="chooseShop" @click="chooseShopBotton(num.id)">
                             <text class="chooseShopTitle">修改店铺</text>
@@ -185,6 +185,7 @@
     }
     .shopNameDiv{
         flex-direction: row;
+        margin-bottom: 10px;
 
     }
     .shopNameDivthree{
@@ -202,10 +203,10 @@
     .shopAddressDiv{
         flex-direction: row;
         align-items: center;
-        margin-top: 10px;
         width: 700px;
         position: relative;
         height: 40px;
+        margin-bottom: 10px;
     }
     .chooseBox{
         display: flex;

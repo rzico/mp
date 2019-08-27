@@ -129,7 +129,7 @@
             navbar
         },
         props: {
-            title: {default: "修改打印机"},
+            title: {default: "设置打印机"},
 
         },
         created() {
