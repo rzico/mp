@@ -10,8 +10,8 @@
             <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
         <!--</div>-->
         <div class="setting" @click="openWebView()">
-            <text class="title " >芸打印机设置</text>
-            <text class="print">{{typeBegin == '0' ? '手动打印' : '自动打印'}}</text>
+            <text class="title " >云打印机设置</text>
+            <text class="print">{{typeBegin == '0' ? '接单手动打印' : '接单自动打印'}}</text>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
         <div class="bgWhite addCorpus">
@@ -281,11 +281,11 @@
                     let _this = this;
                 picker.pick({
                     index:_this.typeBegin,
-                    items:['手动打印','自动打印']
+                    items:['接单手动打印','接单自动打印']
                 }, e => {
                     if (e.result == 'success') {
                         if (e.data == 0){
-                            _this.typeName = '手动打印';
+                            _this.typeName = '接单手动打印';
                             _this.typeBegin = e.data;
                             POST("weex/member/topic/update.jhtml?orderMode=manual").then(
                                 function(data){
@@ -297,7 +297,7 @@
                                 }
                             )
                         }else if(e.data == 1){
-                            _this.typeName = '自动打印';
+                            _this.typeName = '接单自动打印';
                             _this.typeBegin = e.data;
                             POST("weex/member/topic/update.jhtml?orderMode=automatic").then(
                                 function(data){
