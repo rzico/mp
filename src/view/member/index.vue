@@ -873,14 +873,29 @@
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
-                _this.pageStart = 0;
-                //           获取用户信息;
-                _this.updateUserInfo();
-//            获取文集列表
-                _this.getCorpus();
-//            获取专栏信息
-                _this.openTopic();
-                _this.getAllArticle();
+//                 _this.pageStart = 0;
+//                 //           获取用户信息;
+//                 _this.updateUserInfo();
+// //            获取文集列表
+//                 _this.getCorpus();
+// //            获取专栏信息
+//                 _this.openTopic();
+//                 _this.getAllArticle();
+                _this.settingColor=''
+                _this.imageUrl=utils.locate('resources/images/background.png')
+                _this.userName= '未填写'
+                _this.corpusList=[{
+                    name: '全部',
+                    id: ''
+                }, {
+                    name: '回收站',
+                    id: '99'
+                }]
+                _this.articleList=[]
+                _this.helpList=[]
+                _this.corpusId=0
+                _this.imgBg=''
+                _this.userSign= '未填写'
             });
 
         },
@@ -1397,108 +1412,186 @@
             },
 //            文集
             goCorpus() {
-                if (this.clicked) {
-                    return;
+                if (event.getUId() > 0) {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    var _this = this;
+                    event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
+                        _this.getCorpus();
+                        _this.clicked = false;
+                    });
+                }else {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
                 }
-                this.clicked = true;
-                var _this = this;
-                event.openURL(utils.locate('view/member/editor/corpus.js?name=corpusList'), function (data) {
-                    _this.getCorpus();
-                    _this.clicked = false;
-                });
+
             },
 //            个人信息
             goAttribute() {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/member/attribute.js'),
-                    function (data) {
-                        _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
-                            if (!utils.isNull(data.data.logo)) {
-                                _this.imageUrl = data.data.logo;
-                            }
-                            if (!utils.isNull(data.data.nickName)) {
-                                _this.userName = data.data.nickName;
-                            }
-                            if (!utils.isNull(data.data.autograph)) {
-                                _this.userSign = data.data.autograph;
-                            }
-                            if (!utils.isNull(data.data.occupation)) {
-                                _this.occupation = data.data.occupation;
-                            }
-                        } else {
-//                            return ;
-                        }
+                if(event.getUId() > 0) {
+                    if (this.clicked) {
+                        return;
                     }
-                );
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/member/attribute.js'),
+                        function (data) {
+                            _this.clicked = false;
+                            if (data.type == 'success' && data.data != '') {
+                                if (!utils.isNull(data.data.logo)) {
+                                    _this.imageUrl = data.data.logo;
+                                }
+                                if (!utils.isNull(data.data.nickName)) {
+                                    _this.userName = data.data.nickName;
+                                }
+                                if (!utils.isNull(data.data.autograph)) {
+                                    _this.userSign = data.data.autograph;
+                                }
+                                if (!utils.isNull(data.data.occupation)) {
+                                    _this.occupation = data.data.occupation;
+                                }
+                            } else {
+//                            return ;
+                            }
+                        }
+                    );
+                }else {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                }
+
             },
             goFans() {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId), function (data) {
-                        _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
-
-                        } else {
-                            //                            return ;
-                        }
+                if (event.getUId()>0){
+                    if (this.clicked) {
+                        return;
                     }
-                );
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/friend/fans.js?id=' + this.UId), function (data) {
+                            _this.clicked = false;
+                            if (data.type == 'success' && data.data != '') {
+
+                            } else {
+                                //                            return ;
+                            }
+                        }
+                    );
+                } else {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                }
+
             },
 //            我的关注
             goFocus() {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
-                    function (data) {
-                        _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
-                            _this.updateUserInfo();
-                        } else {
-                            return;
-                        }
+                if (event.getUId()>0){
+                    if (this.clicked) {
+                        return;
                     }
-                );
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/member/focus.js?id=' + this.UId),
+                        function (data) {
+                            _this.clicked = false;
+                            if (data.type == 'success' && data.data != '') {
+                                _this.updateUserInfo();
+                            } else {
+                                return;
+                            }
+                        }
+                    );
+                } else {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                }
+
             },
 //            我的收藏
             goCollect() {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
-                    function (data) {
-                        _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
-                            _this.updateUserInfo();
-                        } else {
-                            return;
-                        }
+                if (event.getUId()>0){
+                    if (this.clicked) {
+                        return;
                     }
-                );
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/member/collect.js?id=' + this.UId),
+                        function (data) {
+                            _this.clicked = false;
+                            if (data.type == 'success' && data.data != '') {
+                                _this.updateUserInfo();
+                            } else {
+                                return;
+                            }
+                        }
+                    );
+                }  else {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                }
+
             },
             //            设置中心
             goOption() {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/member/option.js'), function (data) {
-                        _this.clicked = false;
+                if (event.getUId() >0){
+                    if (this.clicked) {
+                        return;
                     }
-                );
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/member/option.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                } else {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                }
+
             },
             //            开启分享
             beginShare: function () {
@@ -1557,21 +1650,34 @@
 
 //            钱包
             goWallet() {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this;
-                event.openURL(utils.locate('view/member/wallet/index.js'),
-                    function (data) {
-                        _this.clicked = false;
-                        if (data.type == 'success' && data.data != '') {
-                            _this.updateUserInfo();
-                        } else {
-                            return;
-                        }
+                if (event.getUId() > 0) {
+                    if (this.clicked) {
+                        return;
                     }
-                );
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/member/wallet/index.js'),
+                        function (data) {
+                            _this.clicked = false;
+                            if (data.type == 'success' && data.data != '') {
+                                _this.updateUserInfo();
+                            } else {
+                                return;
+                            }
+                        }
+                    );
+                } else {
+                    if (this.clicked) {
+                        return;
+                    }
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                }
+
             },
 //            快速滑动滚动条时， 控制顶部导航栏消失
             toponappear() {
@@ -1815,49 +1921,62 @@
 
             openImageAlbum() {
                 let _this = this;
-                album.openAlbumMuti(
-                    //选完图片后触发回调函数
-                    function (data) {
-                        if (data.type == 'success') {
-                            let coverImage = data.data[0].originalPath;
-                            var paraList = [];
+                if(event.getUId() > 0){
+                    album.openAlbumMuti(
+                        //选完图片后触发回调函数
+                        function (data) {
+                            if (data.type == 'success') {
+                                let coverImage = data.data[0].originalPath;
+                                var paraList = [];
 //                    data.data里存放的是用户选取的图片路径
-                            for (let i = 0; i < data.data.length; i++) {
-                                paraList.push({
-                                    //原图
-                                    paraImage: data.data[i].originalPath,
-                                    //小缩略图
-                                    thumbnailImage: data.data[i].thumbnailSmallPath,
-                                    mediaType: "image",
-                                    paraText: '',
-                                    show: true,
-                                    serveThumbnail: '',
+                                for (let i = 0; i < data.data.length; i++) {
+                                    paraList.push({
+                                        //原图
+                                        paraImage: data.data[i].originalPath,
+                                        //小缩略图
+                                        thumbnailImage: data.data[i].thumbnailSmallPath,
+                                        mediaType: "image",
+                                        paraText: '',
+                                        show: true,
+                                        serveThumbnail: '',
 //                                            对象id
-                                    id: 0,
+                                        id: 0,
 //                                            第三方链接
-                                    url: '',
-                                });
-                            }
-
-                            let article = {
-                                coverImage: coverImage,
-                                title: "点击设置标题",
-                                paraList: paraList
-                            }
-                            storage.setItem("storageName", JSON.stringify(article), function (e) {
-                                if (e.result == 'success') {
-                                    event.openURL(utils.locate("view/member/editor/editor.js?mediaType=article"), function (data) {
-                                        if (data.type == 'success') {
-                                            _this.articleList.splice(0,0,data.data);
-                                        }
-                                    })
+                                        url: '',
+                                    });
                                 }
-                            });
-                        } else {
-                            event.closeURL();
+
+                                let article = {
+                                    coverImage: coverImage,
+                                    title: "点击设置标题",
+                                    paraList: paraList
+                                }
+                                storage.setItem("storageName", JSON.stringify(article), function (e) {
+                                    if (e.result == 'success') {
+                                        event.openURL(utils.locate("view/member/editor/editor.js?mediaType=article"), function (data) {
+                                            if (data.type == 'success') {
+                                                _this.articleList.splice(0,0,data.data);
+                                            }
+                                        })
+                                    }
+                                });
+                            } else {
+                                event.closeURL();
+                            }
                         }
+                    )
+                }else {
+                    if (this.clicked) {
+                        return;
                     }
-                )
+                    this.clicked = true;
+                    let _this = this;
+                    event.openURL(utils.locate('view/login/index.js'), function (data) {
+                            _this.clicked = false;
+                        }
+                    );
+                }
+
             },
         }
     }

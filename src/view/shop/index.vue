@@ -569,11 +569,22 @@
             });
             //            监听登陆成功.
             globalEvent.addEventListener("login", function (e) {
+                _this.conut=[],
+                _this.shippingConut=[],
+                _this.conutTotal=0,
+                _this.shippingConutTotal=0,
+                _this.cashier={},
+                _this.shopId="",
                 _this.view();
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
-                _this.view();
+                _this.conut=[],
+                _this.shippingConut=[],
+                _this.conutTotal=0,
+                _this.shippingConutTotal=0,
+                _this.cashier={},
+                _this.shopId=""
             });
         },
         methods: {
