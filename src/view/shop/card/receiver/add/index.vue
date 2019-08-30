@@ -13,10 +13,16 @@
                 </div>
 
                 <!-- 电话部分 -->
-                <div class="newAddre-item">
+                <div class="newAddre-item" v-if="defaults == false">
                     <text class="cellTitle">联系电话:</text>
                     <div class="newAddre-right">
                         <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
+                    </div>
+                </div>
+                <div class="newAddre-item" v-if="defaults == true">
+                    <text class="cellTitle">联系电话:</text>
+                    <div class="newAddre-right">
+                        <text>{{phone}}</text>
                     </div>
                 </div>
                 <!-- 收货地址部分 -->
@@ -46,15 +52,12 @@
                     <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
                 </div>
 
-                <div class='newAddre-default'>
-                    <text class="cellTitle">设为默认:</text>
-                    <div class="flex-row">
-                        <text class="fz32 mr10" @click='Return(true)'>是</text>
-                        <div class="newAddre-default-yes" :class="[defaults? 'bkg-primary':'newAddre-no']"  @click='Return(true)'></div>
-                        <text class="fz32 mr10" @click='Return(false)'>否</text>
-                        <div class="newAddre-default-no" :class="[!defaults? 'bkg-primary':'newAddre-no']" @click='Return(false)'></div>
-                    </div>
+            <div class='newAddre-default' v-if="defaults == true">
+                <text class="cellTitle">是否默认</text>
+                <div class="chooseAddre-garden act">
+                    <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>
                 </div>
+            </div>
 
         </div>
             <!-- 信息部分结束 -->
@@ -156,7 +159,22 @@
         padding-left: 30px;
         font-size: 32px;
     }
-
+    .chooseAddre-garden {
+        width: 40px;
+        height: 40px;
+        border-radius:100%;
+        margin-right: 5px;
+        display: block;
+        justify-content: center;
+        align-items: center;
+    }
+    .chooseIcon{
+        font-size: 26px;
+        color: #fff;
+    }
+    .act {
+        background-image:linear-gradient(to right, #f02711, #f4ae19);
+    }
 </style>
 <script>
 
@@ -200,16 +218,17 @@
             _this.areaId = utils.getUrlParameter("areaId");
             _this.latitude = utils.getUrlParameter("latitude");
             _this.longitude = utils.getUrlParameter("longitude");
-//            GET("weex/member/receiver/view.jhtml?id=0&memberId="+ _this.memberId, function (res) {
-//                if (res.type == 'success') {
-//                    _this.consignee = res.data.consignee;
-//                    _this.phone = res.data.phone;
-//                } else {
-//                    event.toast(res.content)
-//                }
-//            }, function (err) {
-//                event.toast(err.content)
-//            })
+           GET("weex/member/receiver/view.jhtml?id=0&memberId="+ _this.memberId, function (res) {
+               if (res.type == 'success') {
+                   _this.consignee = res.data.consignee;
+                   _this.phone = res.data.phone;
+                   _this.defaults = res.data.default
+               } else {
+                   event.toast(res.content)
+               }
+           }, function (err) {
+               event.toast(err.content)
+           })
 //            this.amapLinkTo();
 //            app.event.on("amap-picker",this.onChange)
         },
@@ -236,11 +255,11 @@
             },
 
             // 选择是否默认地址
-            Return: function (e) {
-                var _this = this
-                _this.defaults = e;
-
-            },
+            // Return: function (e) {
+            //     var _this = this
+            //     _this.defaults = e;
+            //
+            // },
 
             // 保存
             saveReceiver: function () {
@@ -279,13 +298,12 @@
                         address: this.address,
                         consignee: this.consignee,
                         phone: this.phone,
-                        isDefault: this.defaults,
+                        isDefault:false,
                         lat: this.latitude,
                         lng: this.longitude,
                         level: this.level,
                         memberId:this.memberId
                    }
-
                     POST('weex/member/receiver/add.jhtml?'+URIEncrypt(er), null).then(function (res) {
                         if (res.type == 'success') {
                             event.closeURL(res)

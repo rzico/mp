@@ -10,7 +10,7 @@
         <div class="content">
             <text class="intro" >1.邀请好友打开微信扫一扫并授权登录，办理店铺会员，享受店内会员权益。</text>
             <text class="intro" >2.办卡会员可以充值，储值卡余额只能在所属商家使用，解悉权归商家所有。</text>
-            <text class="intro" >3.拨打0592-6085128，为您寄送邀请码。</text>
+<!--            <text class="intro" >3.拨打0592-6085128，为您寄送邀请码。</text>-->
         </div>
         <div class="downBox">
             <!--weex保存图片必须要有一个image来放图-->

@@ -66,12 +66,14 @@ let utilsFunc = {
             data:_data
         }
     },
-    //判空
+    // 判空
     isNull (value) {
-        if (value == null || value == 'null' || value == undefined || value == ''  || value == 'undefined') {
-            return true
-        } else {
-            return false
+        if(typeof(value) !== 'boolean'){
+            if (value == null || value == 'null' || value == undefined || value == ''  || value == 'undefined') {
+                return true
+            } else {
+                return false
+            }
         }
     },
     //把缩略图过滤为原图
