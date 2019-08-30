@@ -322,7 +322,7 @@
                     _this.soundfile = null;
                 }
                 _this.unReadMessage = event.getUnReadMessageCount();
-                var mesData = [0,0,_this.unReadMessage,0];
+                var mesData = [0,_this.unReadMessage,0];
                 event.setDots(mesData);
             });
             //           添加好友消息红点控制
@@ -336,7 +336,7 @@
             });
 
             this.unReadMessage = event.getUnReadMessageCount();
-            var mesData = [0,0,this.unReadMessage,0];
+            var mesData = [0,this.unReadMessage,0];
             event.setDots(mesData);
 
         },
@@ -522,7 +522,7 @@
                                         event.setReadMessage(item.userId,function(data) {
                                             if (data.type == 'success') {
                                                 _this.unReadMessage = event.getUnReadMessageCount();
-                                                var mesData = [0,0,_this.unReadMessage,0];
+                                                var mesData = [0,_this.unReadMessage,0];
                                                 event.setDots(mesData);
                                                 event.openURL(utils.locate('view/message/inform.js?type=' + item.userId), function () {
                                                     _this.clicked = false;
@@ -542,7 +542,7 @@
                                             _this.clicked = false;
                                             if(data.type == 'success'){
                                                 _this.unReadMessage = event.getUnReadMessageCount();
-                                                var mesData = [0,0,_this.unReadMessage,0];
+                                                var mesData = [0,_this.unReadMessage,0];
                                                 event.setDots(mesData);
                                                 event.navToChat(item.userId);
                                             }else{
