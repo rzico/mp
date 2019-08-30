@@ -532,11 +532,22 @@
             });
             //            监听登陆成功.
             globalEvent.addEventListener("login", function (e) {
+                _this.conut=[],
+                _this.shippingConut=[],
+                _this.conutTotal=0,
+                _this.shippingConutTotal=0,
+                _this.cashier={},
+                _this.shopId="",
                 _this.view();
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
-                _this.view();
+                _this.conut=[],
+                _this.shippingConut=[],
+                _this.conutTotal=0,
+                _this.shippingConutTotal=0,
+                _this.cashier={},
+                _this.shopId=""
             });
         },
         methods: {
@@ -655,37 +666,18 @@
             //            扫码接单
             scanSend(sn){
                 let _this = this
-                var uId = event.getUId();
-                event.getLocation(function (data) {
-                    if(data.type == 'success'){
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
-                        if (mes.type == 'success') {
-                            modal.alert({
-                                message: mes.content,
-                                okTitle: 'OK'
-                            })
-                        } else {
-                            event.toast(mes.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content)
-                    })
-                    }else {
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
-                            if (mes.type == 'success') {
-                                modal.alert({
-                                    message: mes.content,
-                                    okTitle: 'OK'
-                                })
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
+                POST('weex/member/shipping/scanDispatch.jhtml?sn='+sn).then(function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
                         })
+                    } else {
+                        event.toast(mes.content);
                     }
+                }, function (err) {
+                    event.toast(err.content)
                 })
-
             },
 
 

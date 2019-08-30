@@ -1,12 +1,6 @@
 <template>
     <div style="background-color: #eeeeee">
         <navbar :title="title"  @goback="goback"  > </navbar>
-        <div class="head">
-            <text class="one">① 新增  一</text>
-            <text class="two">② 物料铺设  一</text>
-            <text class="three">③ 打印设置  </text>
-            <text class="four">④ 打印测试</text>
-        </div>
         <div class="bind">
             <div class="iconfontDiv">
                 <text class="iconfont" :style="{fontFamily:'iconfont'}">&#xe64d;</text>
@@ -20,7 +14,6 @@
         </div>
         <div class="skipBox">
             <text class="skipMessage" @click="call('13860431130')">暂无打印机，购买热线 13860431130</text>
-            <text class="skipMessage mt50" @click="skip()">跳过</text>
         </div>
     </div>
 </template>
@@ -73,11 +66,11 @@
         margin-top: 40px;
     }
     .sweepCode{
-         font-size: 28px;
-         color: #999;
-         margin-top: 20px;
-         margin-bottom: 20px;
-     }
+        font-size: 28px;
+        color: #999;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
     .sweepCodetwo{
         font-size: 28px;
         color: #999;
@@ -136,7 +129,7 @@
             navbar
         },
         props: {
-            title: {default: "第三步"},
+            title: {default: "设置打印机"},
 
         },
         created() {
@@ -153,11 +146,6 @@
         methods:{
             goback:function () {
                 event.closeURL()
-            },
-            //            跳过绑定二维码
-            skip:function () {
-                let message = utils.message('success','成功','');
-                event.closeURL(message)
             },
             call(e){
                 phone.tel(e,function(){
@@ -178,22 +166,20 @@
                     }
                     _this.u = utils.getUrlParameter('m',message.data);
                     _this.p = utils.getUrlParameter('p',message.data);
-                            POST('weex/member/shop/printer.jhtml?shopId='+_this.shopId+'&p='+_this.p + '&u='+_this.u).then(
-                                function (mes) {
-                                    if (mes.type == "success") {
-                                        event.openURL(utils.locate('view/shop/shop/tradeTests.js?shopIdthree='+_this.shopId), function (message) {
-                                            _this.clicked =false
-                                            if (message.type == "success") {
-                                                event.closeURL(message);
-                                            }
-                                        })
-                                    } else {
-                                        event.toast(mes.content);
-                                    }
-                                }, function (err) {
-                                    event.toast("网络不稳定");
-                                }
-                            )
+                    POST('weex/member/shop/printer.jhtml?shopId='+_this.shopId+'&p='+_this.p + '&u='+_this.u).then(
+                        function (mes) {
+                            event.toast(mes)
+                            if (mes.type == "success") {
+                                    _this.clicked =false
+                                let message = utils.message('success','成功');
+                                    event.closeURL(message);
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast("网络不稳定");
+                        }
+                    )
                 });
             }
         }
