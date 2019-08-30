@@ -17,15 +17,6 @@
         "selectedIconPath": "tab1_focus"
       },
       {
-        "en": "发现",
-        "zh": "发现",
-        "text": "发现",
-        "path": "file://view/home/index.js",
-        "icon": "tab2",
-        "requireAuth":true,
-        "selectedIconPath": "tab2_focus"
-      },
-      {
         "en": "Message",
         "zh": "消息",
         "text": "消息",
