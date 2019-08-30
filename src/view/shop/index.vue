@@ -703,37 +703,18 @@
             //            扫码接单
             scanSend(sn){
                 let _this = this
-                var uId = event.getUId();
-                event.getLocation(function (data) {
-                    if(data.type == 'success'){
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
-                        if (mes.type == 'success') {
-                            modal.alert({
-                                message: mes.content,
-                                okTitle: 'OK'
-                            })
-                        } else {
-                            event.toast(mes.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content)
-                    })
-                    }else {
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
-                            if (mes.type == 'success') {
-                                modal.alert({
-                                    message: mes.content,
-                                    okTitle: 'OK'
-                                })
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
+                POST('weex/member/shipping/scanDispatch.jhtml?sn='+sn).then(function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
                         })
+                    } else {
+                        event.toast(mes.content);
                     }
+                }, function (err) {
+                    event.toast(err.content)
                 })
-
             },
 
 
