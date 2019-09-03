@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <navbar title="收货地址" @goback="goback"></navbar>
+        <navbar title="新增会员" @goback="goback"></navbar>
         <!-- 信息部分开始 -->
         <div class="box">
                 <!-- 姓名部分 -->
@@ -13,18 +13,12 @@
                 </div>
 
                 <!-- 电话部分 -->
-                <div class="newAddre-item" v-if="defaults != true">
+                <div class="newAddre-item">
                     <text class="cellTitle">联系电话:</text>
                     <div class="newAddre-right">
                         <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
                     </div>
                 </div>
-            <div class="newAddre-item" v-if="defaults == true">
-                <text class="cellTitle">联系电话:</text>
-                <div class="newAddre-right">
-                    <text>{{phone}}</text>
-                </div>
-            </div>
                 <!-- 收货地址部分 -->
                 <div class="subBox"></div>
                 <div class="newAddre-item"  @click="amapLinkTo">
@@ -52,12 +46,15 @@
                     <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
                 </div>
 
-            <div class='newAddre-default' v-if="defaults == true">
-                <text class="cellTitle">是否默认</text>
-                <div class="chooseAddre-garden act">
-                    <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>
-                </div>
-            </div>
+<!--                <div class='newAddre-default'>-->
+<!--                    <text class="cellTitle">设为默认:</text>-->
+<!--                    <div class="flex-row">-->
+<!--                        <text class="fz32 mr10" @click='Return(true)'>是</text>-->
+<!--                        <div class="newAddre-default-yes" :class="[defaults? 'bkg-primary':'newAddre-no']"  @click='Return(true)'></div>-->
+<!--                        <text class="fz32 mr10" @click='Return(false)'>否</text>-->
+<!--                        <div class="newAddre-default-no" :class="[!defaults? 'bkg-primary':'newAddre-no']" @click='Return(false)'></div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
         </div>
             <!-- 信息部分结束 -->
@@ -118,6 +115,7 @@
         padding-right: 30px;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
     }
     .newAddre-default-yes{
         width:30px;
@@ -159,22 +157,6 @@
         font-size: 32px;
     }
 
-    .chooseAddre-garden {
-        width: 40px;
-        height: 40px;
-        border-radius:100%;
-        margin-right: 5px;
-        display: block;
-        justify-content: center;
-        align-items: center;
-    }
-    .chooseIcon{
-        font-size: 26px;
-        color: #fff;
-    }
-    .act {
-        background-image:linear-gradient(to right, #f02711, #f4ae19);
-    }
 </style>
 <script>
 
@@ -197,10 +179,11 @@
                 consignee:"",
                 address:'',
                 phone:'',
-                level:0,
+                level: 0,
                 latitude:0,
                 longitude:0,
                 array: ['有电梯', '1楼', '2楼', '3楼', '4楼', '5楼', '6楼', '7楼', '8楼', '9楼'],
+                memberId:0
             }
         },
         props: {},
@@ -211,27 +194,23 @@
         created() {
             utils.initIconFont();
             let _this = this;
-            this.memberId = utils.getUrlParameter('memberId');
-            _this.id = utils.getUrlParameter("id");
-            _this.phone = utils.getUrlParameter("phone");
-            _this.consignee = utils.getUrlParameter("consignee");
+            _this.memberId = utils.getUrlParameter('memberId');
             _this.areaName = utils.getUrlParameter("areaName");
             _this.address = utils.getUrlParameter("address");
-            let level = utils.getUrlParameter("level")
-            utils.isNull(level);
-            if (!utils.isNull(level)) {
-                _this.level = parseInt(level);
-            } else {
-                _this.level = 0;
-            }
             _this.areaId = utils.getUrlParameter("areaId");
             _this.latitude = utils.getUrlParameter("latitude");
             _this.longitude = utils.getUrlParameter("longitude");
-            _this.defaults = (utils.getUrlParameter("isDefault")=='true');
-            if (_this.defaults==null) {
-                _this.defaults = false
-            }
-
+//            GET("weex/member/receiver/view.jhtml?id=0&memberId="+ _this.memberId, function (res) {
+//                if (res.type == 'success') {
+//                    _this.consignee = res.data.consignee;
+//                    _this.phone = res.data.phone;
+//                } else {
+//                    event.toast(res.content)
+//                }
+//            }, function (err) {
+//                event.toast(err.content)
+//            })
+//            this.amapLinkTo();
 //            app.event.on("amap-picker",this.onChange)
         },
         methods: {
@@ -243,18 +222,17 @@
                 let arr = ["有电梯","1楼","2楼","3楼","4楼","5楼","6楼","7楼","8楼","9楼"]
                 picker.pick({
                     title:'请选择楼层',
-                    index:_this.level,
+                    index:0,
                     items:arr,
                     confirmTitle:'确定',
                     cancelTitle:'取消'
+                    },
+                    function (ret) {
+                      if (ret.result=='success') {
+                          _this.level = ret.data
+                      }
                     }
-                    ,
-                    function(ret) {
-                        if (ret.result=='success') {
-                            _this.level = ret.data
-                        }
-                    }
-            )
+                )
             },
 
             // 选择是否默认地址
@@ -297,18 +275,18 @@
                     }
 
                     let er = {
-                        id:this.id,
                         areaId: this.areaId,
                         address: this.address,
                         consignee: this.consignee,
                         phone: this.phone,
-                        isDefault: this.defaults,
+                        isDefault: true,
                         lat: this.latitude,
                         lng: this.longitude,
                         level: this.level,
                         memberId:this.memberId
                    }
-                    POST('weex/member/receiver/update.jhtml?'+URIEncrypt(er), null).then(function (res) {
+
+                    POST('weex/member/receiver/addcard.jhtml?'+URIEncrypt(er), null).then(function (res) {
                         if (res.type == 'success') {
                             event.closeURL(res)
                         } else {

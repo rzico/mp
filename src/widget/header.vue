@@ -1,8 +1,8 @@
 <template>
 
         <div class="headerBox">
-            <image class="bgImg" :src="imgBg"></image>
-            <image class="img_heightMask" :src="img_heightMask" ></image>
+            <image class="bgImg" :src="imgBg" ></image>
+            <image class="img_heightMask" :src="img_heightMask"></image>
             <!--点击域-->
             <div class="img_Domain" @click="changeLogo"></div>
             <!--<image class="img_mask" :src="img_mask"></image>-->
@@ -42,8 +42,12 @@
                     <!--<text class="fansText">关注</text>-->
                 <!--</div>-->
                 <!--<div class="flex-row"  @click="goFans">-->
-                    <!--<text class="fans mr10" >{{fans}}</text>-->
-                    <!--<text class="fansText">粉丝</text>-->
+                <!--<text class="fans mr10" >{{fans}}</text>-->
+                <!--<text class="fansText">粉丝</text>-->
+                <!--</div>-->
+                <!--<div class="focusBox" >-->
+                    <!--<text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>-->
+                    <!--<text class="focusText">关注</text>-->
                 <!--</div>-->
             <!--</div>-->
         </div>
@@ -70,12 +74,12 @@
         position: absolute;
         top: 0;
     }
-    .img_Domain{
-        width: 750px;
-        height: 400px;
-        position: absolute;
-        top: 0;
-    }
+   .img_Domain{
+       width: 750px;
+       height: 400px;
+       position: absolute;
+       top: 0;
+   }
     .img_mask{
         width: 750px;
         height: 126px;
