@@ -179,15 +179,15 @@
             </div>
             <div class="menuboxTwo" v-if="cashier.status != 'success'">
                 <div class="menuTwo" @click="goShop()" v-if="filter('openShop')">
-                    <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 120px">&#xe662;</text>
+                    <text  :style="{fontFamily:'iconfont'}" class="shopCssOne">&#xe662;</text>
                     <text class="menuBtn">我要开店</text>
                 </div>
                 <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">
-                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
+                    <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
                     <text class="menuBtn">激活店铺</text>
                 </div>
                 <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">
-                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
+                    <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
                     <text class="menuBtn">审核中...</text>
                 </div>
                 <div class="content">
@@ -215,6 +215,12 @@
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
+    .shopCssOne{
+        color: #66ccff;font-size: 120px;
+    }
+    .shopCssTwo{
+        color: #B72A65 ;font-size: 120px;
+    }
     .headerIcon{
         font-size: 60px;
         color: white;
