@@ -22,7 +22,7 @@
             <div class="newAddre-item" v-if="defaults == true">
                 <text class="cellTitle">联系电话:</text>
                 <div class="newAddre-right">
-                    <text>{{phone}}</text>
+                    <text class="fz32 pl30">{{phone}}</text>
                 </div>
             </div>
                 <!-- 收货地址部分 -->
