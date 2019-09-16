@@ -540,10 +540,20 @@
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
                     }else{
-                        event.toast(data.content);
+                        modal.alert({
+                            message: data.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 },function (err) {
-                    event.toast(err.content);
+                    modal.alert({
+                        message: err.content,
+                        okTitle: '确认'
+                    }, function () {
+                        event.closeURL();
+                    })
                 })
             },
             onloading: function () {

@@ -68,6 +68,7 @@
                 </div>
             </div>
         </div>
+        <wxc-loading :show="clicked" type="default"></wxc-loading>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -166,6 +167,7 @@
     import navbar from '../../../include/navbar.vue'
     const picker = weex.requireModule('picker');
     const modal = weex.requireModule('modal');
+    import { WxcLoading, WxcPartLoading } from 'weex-ui';
     export default {
         data: function () {
             return {
@@ -182,11 +184,11 @@
                 total:0,
                 shippingMethods:['同城配送','普通快递','到店自提'],
                 logisticsId:'',
-                logistics:''
+                logistics:'',
             }
         },
         components: {
-            navbar
+            navbar,WxcLoading,WxcPartLoading
         },
         props: {
             title: {default: "确认发货"},
@@ -297,10 +299,20 @@
                             _this.begin = 0
                         }
                     }else{
-                        event.toast(data.content);
+                        modal.alert({
+                            message: data.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 },function (err) {
-                    event.toast(err.content);
+                    modal.alert({
+                        message: err.content,
+                        okTitle: '确认'
+                    }, function () {
+                        event.closeURL();
+                    })
                 })
             },
             goback(){
@@ -351,11 +363,21 @@
                             let E = utils.message('success','发货成功','')
                             event.closeURL(E);
                         }else{
-                            event.toast(data.content);
+                            modal.alert({
+                                message: data.content,
+                                okTitle: '确认'
+                            }, function () {
+                                event.closeURL();
+                            })
                         }
                     },function (err) {
                         _this.clicked = false;
-                        event.toast(err.content);
+                        modal.alert({
+                            message: err.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 )
             }

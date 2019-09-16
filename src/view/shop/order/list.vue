@@ -178,6 +178,7 @@
                 </div>
             </div>
         </div>
+        <wxc-loading :show="clicked" type="default"></wxc-loading>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -470,6 +471,7 @@
     import filters from '../../../filters/filters.js';
     import noData from '../../../include/noData.vue';
     var modal = weex.requireModule('modal');
+    import { WxcLoading, WxcPartLoading } from 'weex-ui';
     export default {
         data:function(){
             return{
@@ -536,7 +538,7 @@
             },
         },
         components: {
-            navbar,noData
+            navbar,noData,WxcLoading,WxcPartLoading
         },
         created(){
             utils.initIconFont();
@@ -718,6 +720,10 @@
 //            确认退款
             confirmRefund:function (sn) {
                 let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 modal.confirm({
                     message: '是否确定退款?',
                     duration: 0.3,
@@ -728,14 +734,27 @@
                         POST('weex/member/order/refunds.jhtml?sn=' + sn).then(
                             function (data) {
                                 if(data.type == 'success'){
+                                    _this.clicked = false
                                     _this.pageStart = 0;
                                     _this.open();
                                     event.toast('退款成功');
                                 }else{
-                                    event.toast(data.content);
+                                    _this.clicked = false
+                                    modal.alert({
+                                        message: data.content,
+                                        okTitle: '确认'
+                                    }, function () {
+                                        event.closeURL();
+                                    })
                                 }
                             },function (err) {
-                                event.toast(err.content);
+                                _this.clicked = false
+                                modal.alert({
+                                    message: err.content,
+                                    okTitle: '确认'
+                                }, function () {
+                                    event.closeURL();
+                                })
                             }
                         )
                     }
@@ -745,6 +764,10 @@
 //            关闭订单
             closeOrder:function (item,sn) {
                 let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 modal.confirm({
                     message: '确定关闭该订单?',
                     duration: 0.3,
@@ -762,11 +785,24 @@
 //                                    _this.pageStart = 0;
 //                                    _this.open();
                                 event.toast('关闭订单成功');
+                                _this.clicked = false
                             }else{
-                                event.toast(data.content);
+                                _this.clicked = false
+                                modal.alert({
+                                    message: data.content,
+                                    okTitle: '确认'
+                                }, function () {
+                                    event.closeURL();
+                                })
                             }
                         },function (err) {
-                            event.toast(err.content);
+                            _this.clicked = false
+                            modal.alert({
+                                message: err.content,
+                                okTitle: '确认'
+                            }, function () {
+                                event.closeURL();
+                            })
                         })
                     }
                 })
@@ -822,7 +858,12 @@
                         _this.open();
                         event.toast('确认成功');
                     }else{
-
+                        modal.alert({
+                            message: data.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 });
             },
@@ -900,16 +941,30 @@
                             _this.clicked = false;
                         })
                     }else{
-                        event.toast(data.content);
+                        modal.alert({
+                            message: data.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 },function (err) {
                     _this.clicked = false;
-                    event.toast(err.content);
+                    modal.alert({
+                        message: err.content,
+                        okTitle: '确认'
+                    }, function () {
+                        event.closeURL();
+                    })
                 })
             },
 //            退货
             returnGoods:function (sn) {
                 let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 modal.confirm({
                     message: '确定退货?',
                     duration: 0.3,
@@ -920,14 +975,27 @@
                         POST('weex/member/order/returns.jhtml?sn=' + sn).then(
                             function (data) {
                                 if(data.type == 'success'){
+                                    _this.clicked = false
                                     _this.pageStart = 0;
                                     _this.open();
                                     event.toast('退货成功');
                                 }else{
-                                    event.toast(data.content);
+                                    _this.clicked = false
+                                    modal.alert({
+                                        message: data.content,
+                                        okTitle: '确认'
+                                    }, function () {
+                                        event.closeURL();
+                                    })
                                 }
                             },function (err) {
-                                event.toast(data.content);
+                                _this.clicked = false;
+                                modal.alert({
+                                    message: err.content,
+                                    okTitle: '确认'
+                                }, function () {
+                                    event.closeURL();
+                                })
                             }
                         )
                     }
@@ -936,6 +1004,10 @@
             //取消退货,退款
             canRefund(sn,title){
                 let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 modal.confirm({
                     message: title,
                     duration: 0.3,
@@ -949,11 +1021,24 @@
                                     _this.pageStart = 0;
                                     _this.open();
                                     event.toast(title+'成功');
+                                    _this.clicked = false
                                 }else{
-                                    event.toast(data.content);
+                                    _this.clicked = false
+                                    modal.alert({
+                                        message: data.content,
+                                        okTitle: '确认'
+                                    }, function () {
+                                        event.closeURL();
+                                    })
                                 }
                             },function (err) {
-                                event.toast(data.content);
+                                _this.clicked = false
+                                modal.alert({
+                                    message: err.content,
+                                    okTitle: '确认'
+                                }, function () {
+                                    event.closeURL();
+                                })
                             }
                         )
                     }
