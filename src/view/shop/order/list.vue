@@ -757,6 +757,8 @@
                                 })
                             }
                         )
+                    }else {
+                        _this.clicked = false
                     }
                 })
 
@@ -804,6 +806,8 @@
                                 event.closeURL();
                             })
                         })
+                    }else {
+                        _this.clicked = false
                     }
                 })
             },
@@ -998,6 +1002,8 @@
                                 })
                             }
                         )
+                    }else {
+                        _this.clicked = false
                     }
                 })
             },
@@ -1041,6 +1047,8 @@
                                 })
                             }
                         )
+                    }else {
+                        _this.clicked = false
                     }
                 })
             },

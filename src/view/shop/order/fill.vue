@@ -669,6 +669,7 @@
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.hasWater = data.data.hasWater;
                         _this.cardId= data.data.cardId;
+                        _this.order = data.data;
                         _this.cartList();
                     } else {
                         event.toast(data.content);
@@ -1213,18 +1214,10 @@
                 if(utils.isNull(_this.barrel)){
                     _this.barrel = 0
                 }
-                if (this.version == 2 && this.order.shippingMethodId != 'pickup'){
-                    if (utils.isNull(this.shopId)) {
-                        event.toast('请选择配送站点');
-                        _this.clicked = false;
-                        return
-                    }else if(this.isSelf == true || this.isSelf == 'true'){
-                        if (utils.isNull(this.adminId)) {
-                            event.toast('请选择配送员');
-                            _this.clicked = false;
-                            return
-                        }
-                    }
+                if (this.order.shippingMethodId != 'pickup'&& this.order.shippingMethodId != 'writeOff'&& this.order.shippingMethodId != 'cardbkg' && utils.isNull(this.shopId)){
+                    event.toast('请选择配送站点');
+                    _this.clicked = false;
+                    return
                 }
                 var mesTotal = 0;
                 _this.cart.forEach(function (item) {
