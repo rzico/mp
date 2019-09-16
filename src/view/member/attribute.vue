@@ -31,33 +31,33 @@
                         <text class="sub_title" style="margin-right:40px">{{userId}}</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between" @click="pick">
-                    <div class="flex-row">
-                         <text class="title ml10">性别</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">{{gender}}</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between" @click="pickDate">
-                    <div class="flex-row">
-                        <text class="title ml10">生日</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">{{birthday}}</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="cell-panel space-between" @click="profession">
-                    <div class="flex-row">
-                        <text class="title ml10">职业</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title">{{occupation}}</text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between" @click="pick">-->
+                    <!--<div class="flex-row">-->
+                         <!--<text class="title ml10">性别</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{gender}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-panel space-between" @click="pickDate">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">生日</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{birthday}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell-panel space-between" @click="profession">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="title ml10">职业</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title">{{occupation}}</text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!--<div class="cell-panel space-between" @click="areaChoose">-->
                     <!--<div class="flex-row">-->
                         <!--<text class="title ml10">所在地</text>-->

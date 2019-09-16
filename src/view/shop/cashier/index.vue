@@ -19,121 +19,118 @@
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <!--<div class="fontInput" v-if="hasShop()">-->
-                <!--<text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>-->
-                <!--<input class="input" type="number" placeholder="请输入消费金额" maxlength="7" v-model="amount" />-->
-                <!--<text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>-->
+            <!--<text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>-->
+            <!--<input class="input" type="number" placeholder="请输入消费金额" maxlength="7" v-model="amount" />-->
+            <!--<text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>-->
             <!--</div>-->
             <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn "  @click="payment('aliPayPlugin')">-->
-                    <!--<text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>-->
-                    <!--<text class="btn-text" value="支付宝">支付宝</text>-->
-                <!--</div>-->
-                <!--<div class="btn "  @click="payment('weixinPayPlugin')">-->
-                    <!--<text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>-->
-                    <!--<text class="btn-text" value="微信钱包">微信钱包</text>-->
-                <!--</div>-->
+            <!--<div class="btn "  @click="payment('aliPayPlugin')">-->
+            <!--<text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>-->
+            <!--<text class="btn-text" value="支付宝">支付宝</text>-->
+            <!--</div>-->
+            <!--<div class="btn "  @click="payment('weixinPayPlugin')">-->
+            <!--<text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>-->
+            <!--<text class="btn-text" value="微信钱包">微信钱包</text>-->
+            <!--</div>-->
             <!--</div>-->
             <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn "  @click="payment('cardPayPlugin')">-->
-                    <!--<text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
-                    <!--<text class="btn-text" value="会员卡">会员卡</text>-->
-                <!--</div>-->
-                <!--<div class="btn "  @click="payment('balancePayPlugin')">-->
-                    <!--<text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
-                    <!--<text class="btn-text" value="芸店钱包">芸店钱包</text>-->
-                <!--</div>-->
+            <!--<div class="btn "  @click="payment('cardPayPlugin')">-->
+            <!--<text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
+            <!--<text class="btn-text" value="会员卡">会员卡</text>-->
+            <!--</div>-->
+            <!--<div class="btn "  @click="payment('balancePayPlugin')">-->
+            <!--<text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
+            <!--<text class="btn-text" value="芸店钱包">芸店钱包</text>-->
+            <!--</div>-->
             <!--</div>-->
             <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn " @click="offline('bankPayPlugin')">-->
-                    <!--<text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>-->
-                    <!--<text class="btn-text" value="刷卡">刷卡(记账)</text>-->
-                <!--</div>-->
-                <!--<div class="btn " @click="offline('cashPayPlugin')">-->
-                    <!--<text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>-->
-                    <!--<text class="btn-text" value="现金">现金(记账)</text>-->
-                <!--</div>-->
+            <!--<div class="btn " @click="offline('bankPayPlugin')">-->
+            <!--<text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>-->
+            <!--<text class="btn-text" value="刷卡">刷卡(记账)</text>-->
+            <!--</div>-->
+            <!--<div class="btn " @click="offline('cashPayPlugin')">-->
+            <!--<text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>-->
+            <!--<text class="btn-text" value="现金">现金(记账)</text>-->
+            <!--</div>-->
             <!--</div>-->
             <!-- 我的订单 -->
-
-            <div><!-- dom预留节点 -->
-                <div class="contentBox" v-if="conutTotal != 0 && filter('order')">
-                    <div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">
-                        <text class="fz30">我的订单</text>
-                        <div class="flex-row">
-                            <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
+            <div class="contentBox" v-if="conutTotal != 0 && filter('order')">
+                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">
+                    <text class="fz30">我的订单</text>
+                    <div class="flex-row">
+                        <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
+                        <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
+                    </div>
+                </div>
+                <!-- 订单消息 -->
+                <div class="comWrap">
+                    <div class=" flexCol iconBox"  @click="goNoPay()">
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
+                        <text class="iconfontText ">待付款</text>
+                        <div class="shippingNumberBox"  v-if="conut.unpaid != 0">
+                            <text class="shippingNumber">{{conut.unpaid}}</text>
                         </div>
                     </div>
-                    <!-- 订单消息 -->
-                    <div class="comWrap">
-                        <div class=" flexCol iconBox"  @click="goNoPay()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
-                            <text class="iconfontText ">待付款</text>
-                            <div class="shippingNumberBox"  v-if="conut.unpaid != 0">
-                                <text class="shippingNumber">{{conut.unpaid}}</text>
-                            </div>
+                    <div class=" flexCol iconBox"  @click="goNoDelivery()">
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                        <text class="iconfontText ">待发货</text>
+                        <div class="shippingNumberBox" v-if="conut.unshipped != 0">
+                            <text class="shippingNumber" >{{conut.unshipped}}</text>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goNoDelivery()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
-                            <text class="iconfontText ">待发货</text>
-                            <div class="shippingNumberBox" v-if="conut.unshipped != 0">
-                                <text class="shippingNumber" >{{conut.unshipped}}</text>
-                            </div>
+                    </div>
+                    <div class=" flexCol iconBox"  @click="goDelivery()">
+                        <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
+                        <text class="iconfontText ">已发货</text>
+                        <div class="shippingNumberBox" v-if="conut.shipped != 0">
+                            <text class="shippingNumber" >{{conut.shipped}}</text>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goDelivery()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
-                            <text class="iconfontText ">已发货</text>
-                            <div class="shippingNumberBox" v-if="conut.shipped != 0">
-                                <text class="shippingNumber" >{{conut.shipped}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox"  @click="goRefund()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
-                            <text class="iconfontText ">待退款</text>
-                            <div class="shippingNumberBox" v-if="conut.refund != 0">
-                                <text class="shippingNumber" >{{conut.refund}}</text>
-                            </div>
+                    </div>
+                    <div class=" flexCol iconBox"  @click="goRefund()">
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
+                        <text class="iconfontText ">待退款</text>
+                        <div class="shippingNumberBox" v-if="conut.refund != 0">
+                            <text class="shippingNumber" >{{conut.refund}}</text>
                         </div>
                     </div>
                 </div>
-                <!-- 我的运单 -->
-                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping')">
-                    <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
-                        <text class="fz30">我的运单</text>
-                        <div class="flex-row">
-                            <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
+            </div>
+            <!-- 我的运单 -->
+            <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping')">
+                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
+                    <text class="fz30">我的运单</text>
+                    <div class="flex-row">
+                        <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
+                        <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
+                    </div>
+                </div>
+                <!-- 订单消息 -->
+                <div class="comWrap">
+                    <div class=" flexCol iconBox"  @click="goConfirm()">
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
+                        <text class="iconfontText ">待确认</text>
+                        <div class="shippingNumberBox"  v-if="shippingConut.unconfirmed != 0">
+                            <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
                         </div>
                     </div>
-                    <!-- 订单消息 -->
-                    <div class="comWrap">
-                        <div class=" flexCol iconBox"  @click="goConfirm()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
-                            <text class="iconfontText ">待确认</text>
-                            <div class="shippingNumberBox"  v-if="shippingConut.unconfirmed != 0">
-                                <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
-                            </div>
+                    <div class=" flexCol iconBox"  @click="goToMask()">
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                        <text class="iconfontText ">预约单</text>
+                        <div class="shippingNumberBox" v-if="shippingConut.hope != 0">
+                            <text class="shippingNumber" >{{shippingConut.hope}}</text>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goToMask()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
-                            <text class="iconfontText ">预约单</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.hope != 0">
-                                <text class="shippingNumber" >{{shippingConut.hope}}</text>
-                            </div>
+                    </div>
+                    <div class=" flexCol iconBox"  @click="goOnTheWay()">
+                        <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
+                        <text class="iconfontText ">配送中</text>
+                        <div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">
+                            <text class="shippingNumber" >{{shippingConut.confirmed}}</text>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goOnTheWay()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
-                            <text class="iconfontText ">配送中</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">
-                                <text class="shippingNumber" >{{shippingConut.confirmed}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox"  @click="goaArive()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
-                            <text class="iconfontText ">已送达</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
-                                <text class="shippingNumber" >{{shippingConut.completed}}</text>
-                            </div>
+                    </div>
+                    <div class=" flexCol iconBox"  @click="goaArive()">
+                        <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
+                        <text class="iconfontText ">已送达</text>
+                        <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
+                            <text class="shippingNumber" >{{shippingConut.completed}}</text>
                         </div>
                     </div>
                 </div>
@@ -179,21 +176,18 @@
             </div>
             <div class="menuboxTwo" v-if="cashier.status != 'success'">
                 <div class="menuTwo" @click="goShop()" v-if="filter('openShop')">
-                    <text  :style="{fontFamily:'iconfont'}" class="shopCssOne">&#xe662;</text>
+                    <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 120px">&#xe662;</text>
                     <text class="menuBtn">我要开店</text>
                 </div>
-                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">
-                    <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
+                <div class="menuTwo" @click="goods()" v-if="filter('activedShop')">
+                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
                     <text class="menuBtn">激活店铺</text>
-                </div>
-                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">
-                    <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
-                    <text class="menuBtn">审核中...</text>
                 </div>
                 <div class="content">
                     <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
                     <div class="flex-row" style="flex-wrap:wrap">
-                        <text class="sub_title mt10">2.点击缴活店铺，并支付技术服务费</text>
+                        <text class="sub_title mt10">2.点击缴活店铺，支付588元技术服务费</text>
+                        <text class="sub_title mt10" style="color: #0088fb" @click="openWebView('芸店智能接单小票打印机')">《赠送芸店智能接单小票打印机》。</text>
                     </div>
 
                     <text class="sub_title mt10">3.下载专属二维码，开启新零售服务体验。</text>
@@ -213,14 +207,8 @@
     </div>
 
 </template>
-<style lang="less" src="../../style/wx.less"/>
+<style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-    .shopCssOne{
-        color: #66ccff;font-size: 120px;
-    }
-    .shopCssTwo{
-        color: #B72A65 ;font-size: 120px;
-    }
     .headerIcon{
         font-size: 60px;
         color: white;
@@ -292,7 +280,6 @@
     .sub_title {
         color:#ccc;
         font-size: 30px;
-        line-height:42px;
     }
 
     .wallet-title {
@@ -499,16 +486,16 @@
     }
 </style>
 <script>
-    import qrcode from '../../include/qrcode.vue';
-    import { POST, GET ,SCAN} from '../../assets/fetch'
-    import utils from '../../assets/utils'
-    import filters from '../../filters/filters.js'
-    import {dom,event,animation} from '../../weex.js';
+    import qrcode from '../../../include/qrcode.vue';
+    import { POST, GET ,SCAN} from '../../../assets/fetch'
+    import utils from '../../../assets/utils'
+    import filters from '../../../filters/filters.js'
+    import {dom,event,animation} from '../../../weex.js';
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
     var amap = weex.requireModule('map');
-    import payment from '../../include/payment.vue'
+    import payment from '../../../include/payment.vue'
     export default {
         data() {
             return {
@@ -573,25 +560,6 @@
                     _this.getShippingConut();
                 }
             });
-            //            监听登陆成功.
-            globalEvent.addEventListener("login", function (e) {
-                _this.conut=[],
-                _this.shippingConut=[],
-                _this.conutTotal=0,
-                _this.shippingConutTotal=0,
-                _this.cashier={},
-                _this.shopId="",
-                _this.view();
-            });
-            //            监听注销.
-            globalEvent.addEventListener("logout", function (e) {
-                _this.conut=[],
-                _this.shippingConut=[],
-                _this.conutTotal=0,
-                _this.shippingConutTotal=0,
-                _this.cashier={},
-                _this.shopId=""
-            });
         },
         methods: {
             openWebView(data){
@@ -600,11 +568,8 @@
                     return;
                 }
                 this.clicked = true;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(data)), function () {
-
+                    _this.clicked = false;
                 });
             },
 //            显示收银
@@ -628,18 +593,17 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {
+                    _this.clicked =false
                     _this.getCount()
                 });
             },
@@ -650,9 +614,6 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (utils.isNull(_this.shopId)) {
                     _this.view()
                     if(utils.isNull(_this.shopId)) {
@@ -660,20 +621,15 @@
                             message: '无店铺授权',
                             okTitle: 'OK'
                         })
+                        _this.clicked = false
                         return
 
                     }
                 }
                 event.openURL(utils.locate('view/shop/card/add.js'), function(data) {
-
+                        _this.clicked = false;
                     }
                 );
-            },
-//            扫会员提货
-            scanMember(id){
-                event.openURL(utils.locate('view/shipping/list/view.js?productCategoryId=3&index=2&memberId='+id),function (message) {
-
-                })
             },
 
 //            扫码搜索会员
@@ -706,26 +662,26 @@
                     event.toast(err.content)
                 })
             },
-            //            扫码接单
+            //            扫码送达
             scanSend(sn){
                 let _this = this
                 var uId = event.getUId();
                 event.getLocation(function (data) {
                     if(data.type == 'success'){
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
-                        if (mes.type == 'success') {
-                            modal.alert({
-                                message: mes.content,
-                                okTitle: 'OK'
-                            })
-                        } else {
-                            event.toast(mes.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content)
-                    })
+                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
+                            if (mes.type == 'success') {
+                                modal.alert({
+                                    message: mes.content,
+                                    okTitle: 'OK'
+                                })
+                            } else {
+                                event.toast(mes.content);
+                            }
+                        }, function (err) {
+                            event.toast(err.content)
+                        })
                     }else {
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
+                        GET('weex/member/shipping/receive.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码送达'),function (mes) {
                             if (mes.type == 'success') {
                                 modal.alert({
                                     message: mes.content,
@@ -747,30 +703,23 @@
             scan:function () {
                 let _this=this
                 event.scan(function (message) {
-                    if(!utils.isNull(message.data)){
-                        message.data = JSON.stringify(message.data);
-                        if(message.data == '{}'){
-                            return
-                        }
-                        GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
-                            if (res.type=="success") {
-                                if(res.data.type =='818801'|| res.data.type =='818802'){
-                                    _this.scanFindCard(res.data.code)
-                                }else if(res.data.type =='818803'){
-                                    _this.scanCoupon(res.data.code,res.data.captcha)
-                                }else if(res.data.type =='818807'){
-                                    _this.scanSend(res.data.sn)
-                                }else if(res.data.type =='865380'){
-                                    _this.scanMember(res.data.id)
-                                }
-                            } else {
-                                event.toast(res.content);
+                    GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
+                        if (res.type=="success") {
+                            if(res.data.type =='818801'|| res.data.type =='818802'){
+                                _this.scanFindCard(res.data.code)
+                            }else if(res.data.type =='818803'){
+                                _this.scanCoupon(res.data.code,res.data.captcha)
+                            }else if(res.data.type =='818807'){
+                                _this.scanSend(res.data.sn)
                             }
 
-                        }, function (err) {
-                            event.toast(err.content);
-                        })
-                    }
+                        } else {
+                            event.toast(res.content);
+                        }
+
+                    }, function (err) {
+                        event.toast(err.content);
+                    })
                 });
             },
 //            //            获取经纬度
@@ -831,10 +780,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=0&productCategoryId=1'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -847,10 +794,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -863,10 +808,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -879,10 +822,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -895,10 +836,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=0&productCategoryId=1'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -911,10 +850,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=1&productCategoryId=2'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -927,10 +864,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=3'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -943,10 +878,8 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=4'), function(data) {
+                        _this.clicked = false;
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -959,22 +892,10 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                setTimeout(function () {
+                event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
                     _this.clicked = false;
-                },1500)
-                if(this.cashier.hasRealName){
-                    event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
-                        _this.view()
-                    })
-                }else {
-                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'),function (mes) {
-                        if(mes.type=="success"){
-                            event.openURL(utils.locate('view/shop/shop/newShop.js'),function (res) {
-                                _this.view()
-                            })
-                        }
-                    })
-                }
+                    _this.view()
+                })
             },
             //            激活店铺
             activated(){
@@ -983,11 +904,9 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 POST('weex/member/topic/activate.jhtml').then(
                     function (mes) {
+                        _this.clicked = false;
                         if (mes.type == "success") {
                             if (utils.isNull(mes.data)) {
                                 _this.view();
@@ -998,6 +917,7 @@
                             event.toast(mes.content);
                         }
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast(err.content);
                     }
                 )
@@ -1100,7 +1020,7 @@
                     } else {
                         event.toast(mes.content);
                     }
-                 },function (err) {
+                },function (err) {
                     event.toast(err.content);
                 });
             },
@@ -1110,15 +1030,13 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
@@ -1129,15 +1047,13 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
@@ -1153,18 +1069,16 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {_this.clicked = false});
             },
             gocoupon:function () {
                 if (this.clicked==true) {
@@ -1172,18 +1086,16 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {_this.clicked = false});
             },
             godistribution:function () {
                 if (this.clicked==true) {
@@ -1191,18 +1103,16 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {_this.clicked = false});
             },
             goods:function () {
                 if (this.clicked==true) {
@@ -1210,18 +1120,16 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/manage.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/goods/manage.js"),function (e) {_this.clicked = false});
             },
             order:function () {
                 if (this.clicked==true) {
@@ -1229,18 +1137,17 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/order/list.js"),function (e) {
+                    _this.clicked = false
                     _this.getCount()
                     _this.getShippingConut();
                 });
@@ -1299,34 +1206,22 @@
             view:function () {
                 var _this = this;
                 GET("weex/member/cashier/view.jhtml",function (res) {
-                   if (res.type=="success") {
-                       _this.cashier = res.data;
-                       _this.shopId = res.data.shopId;
-                       if(res.data.status == 'success'){
+                    if (res.type=="success") {
+                        _this.cashier = res.data;
+                        _this.shopId = res.data.shopId;
+                        if(res.data.status == 'success'){
 //                           获取订单数量
-                           _this.getCount();
+                            _this.getCount();
 //                           获取运单数量
-                           _this.getShippingConut();
+                            _this.getShippingConut();
 //                           获取权限
-                           _this.permissions()
-                           if(res.data.expire <7 && res.data.expire >0){
-                               modal.confirm({
-                                   message: '您的店铺将于'+res.data.expire+'天后到期',
-                                   duration: 0.3,
-                                   okTitle:'立即缴费',
-                                   cancelTitle:'暂不缴费'
-                               }, function (value) {
-                                   if(value.result == '立即缴费'){
-                                       _this.activated()
-                                   }
-                               })
-                           }
-                       }
-                   } else {
-                       event.toast(res.content);
-                   }
+                            _this.permissions()
+                        }
+                    } else {
+                        event.toast(res.content);
+                    }
                 },function (err) {
-                   event.toast(err.content);
+                    event.toast(err.content);
                 });
             },
             goback: function (e) {
@@ -1338,18 +1233,17 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("123",_this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
+                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/shipping/list.js"),function (e) {
+                    _this.clicked =false
                     _this.getCount()
                     _this.getShippingConut();
                 });
@@ -1360,14 +1254,12 @@
                 }
                 this.clicked = true;
                 let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
                 if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
+                    _this.clicked = false
                     return
                 }
                 event.openURL(utils.locate("view/shop/report/index.js"),function (e) {_this.clicked =false});
@@ -1375,9 +1267,9 @@
             goIndex:function () {
                 GET("weex/member/topic/owner.jhtml",function (res) {
                     if (res.type=='success') {
-                    event.openURL(utils.locate("view/topic/index.js?id=" +res.data),
-                        function (e) {}
-                    );
+                        event.openURL(utils.locate("view/topic/index.js?id=" +res.data),
+                            function (e) {}
+                        );
                     } else {
                         event.toast(res.content);
                     }
@@ -1390,16 +1282,16 @@
                 return this.time<30;
             },
             clearTimer:function () {
-               if (this.timer!=null) {
-                   clearTimeout(this.timer);
-                   this.timer = null;
-               }
-               this.time = 30;
-               this.step = "";
-               this.amount = "";
-               this.inputShow = false;
-               this.isScan = false;
-               this.isSubmit = false;
+                if (this.timer!=null) {
+                    clearTimeout(this.timer);
+                    this.timer = null;
+                }
+                this.time = 30;
+                this.step = "";
+                this.amount = "";
+                this.inputShow = false;
+                this.isScan = false;
+                this.isSubmit = false;
             },
             print:function () {
                 GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
@@ -1424,7 +1316,7 @@
 
             },
             close:function () {
-               this.clearTimer();
+                this.clearTimer();
             },
             beginTimer:function () {
                 var _this = this;
@@ -1470,8 +1362,8 @@
                 )
             },
             offline:function (pid) {
-              this.plugId = pid;
-              this.submit("");
+                this.plugId = pid;
+                this.submit("");
             },
             submit:function (safeKey) {
                 var _this = this;
@@ -1528,9 +1420,9 @@
                 _this.isScan = true;
                 _this.plugId = plugId;
                 event.scan(function (message) {
-                     if (message.type=='success') {
+                    if (message.type=='success') {
                         _this.isScan = false;
-                       let c = utils.qr2scan(message.data);
+                        let c = utils.qr2scan(message.data);
                         _this.submit(c);
                     } else {
                         _this.isScan = false;

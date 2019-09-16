@@ -116,38 +116,38 @@
                     <!--</div>-->
                 <!--</div>-->
             <!-- 我的文章 -->
-            <div class="contentBox" v-if="filter('topic')">
-                <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goMemberIndex()">
-                    <text class="fz30">我的文章</text>
-                    <div class="flex-row">
-                    <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
-                    <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
-                    </div>
-                </div>
-                <!-- 文章列表 -->
-                <div class="comWrap" >
-                    <!--<div class=" flexCol" @click="editor()">-->
-                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe65f;</text>-->
-                        <!--<text class="fz30 mt20">写文章</text>-->
+            <!--<div class="contentBox" v-if="filter('topic')">-->
+                <!--<div class="boder-bottom pl20 pr20 space-between headTitle" @click="goMemberIndex()">-->
+                    <!--<text class="fz30">我的文章</text>-->
+                    <!--<div class="flex-row">-->
+                    <!--<text class="iconfontText" style="padding-right: 10px;">查看所有</text>-->
+                    <!--<text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>-->
                     <!--</div>-->
-                    <div v-for="a in articleThree" v-if="articleThree.length != 0">
-                    <div class=" articleBox" @click="goArticle(a.id)">
-                        <image class="articleImg" :src="a.thumbnail"></image>
-                        <text class="articleImgText">{{a.title}}</text>
-                    </div>
-                    </div>
-                    <div class=" articleBox" @click="jumpEditor()" v-if="articleThree.length != 0">
-                        <div class="articleIconBox">
-                            <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
-                        </div>
-                        <text class="articleImgText">发表文章</text>
-                    </div>
-                    <div class="unArticleBox" v-if="articleThree.length == 0" @click="jumpEditor()">
-                        <text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>
-                        <text class="fz26 mt10" style="color: #cccccc">点击发表文章</text>
-                    </div>
-                </div>
-            </div>
+                <!--</div>-->
+                <!--&lt;!&ndash; 文章列表 &ndash;&gt;-->
+                <!--<div class="comWrap" >-->
+                    <!--&lt;!&ndash;<div class=" flexCol" @click="editor()">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe65f;</text>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<text class="fz30 mt20">写文章</text>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div v-for="a in articleThree" v-if="articleThree.length != 0">-->
+                    <!--<div class=" articleBox" @click="goArticle(a.id)">-->
+                        <!--<image class="articleImg" :src="a.thumbnail"></image>-->
+                        <!--<text class="articleImgText">{{a.title}}</text>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class=" articleBox" @click="jumpEditor()" v-if="articleThree.length != 0">-->
+                        <!--<div class="articleIconBox">-->
+                            <!--<text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>-->
+                        <!--</div>-->
+                        <!--<text class="articleImgText">发表文章</text>-->
+                    <!--</div>-->
+                    <!--<div class="unArticleBox" v-if="articleThree.length == 0" @click="jumpEditor()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}"  style="color: #66ccff;font-size: 70px">&#xe65f;</text>-->
+                        <!--<text class="fz26 mt10" style="color: #cccccc">点击发表文章</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <!-- 必备工具 -->
             <div class="contentBox" style="margin-bottom: 100px;">
                 <div class="boder-bottom pl20 pr20 space-between headTitle">
@@ -219,10 +219,10 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66cccc" class="iconfontSize">&#xe664;</text>-->
                         <!--<text class="iconfontText mt20">接龙管理</text>-->
                     <!--</div>-->
-                    <div class="iconBox flexCol mt20"  @click="goReviewManage()">
-                        <text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe666;</text>
-                        <text class="iconfontText mt20">评价管理</text>
-                    </div>
+                    <!--<div class="iconBox flexCol mt20"  @click="goReviewManage()">-->
+                        <!--<text :style="{fontFamily:'iconfont'}" style="color: #ff9900" class="iconfontSize">&#xe666;</text>-->
+                        <!--<text class="iconfontText mt20">评价管理</text>-->
+                    <!--</div>-->
                     <!--<div class="iconBox flexCol mt20" v-if="member.activated && member.hasShop && filter('employee')" @click="employee()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999933" class="iconfontSize">&#xe66c;</text>-->
                         <!--<text class="iconfontText mt20">员工管理</text>-->
@@ -231,10 +231,10 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #5A427C" class="iconfontSize">&#xe6e8;</text>-->
                         <!--<text class="iconfontText mt20">统计报表</text>-->
                     <!--</div>-->
-                    <!--<div class="iconBox flexCol mt20"  @click="beginShare()">-->
-                        <!--<text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>-->
-                        <!--<text class="iconfontText mt20">推荐好友</text>-->
-                    <!--</div>-->
+                    <div class="iconBox flexCol mt20"  @click="beginShare()">
+                        <text :style="{fontFamily:'iconfont'}" style=" color: #66ccff" class="iconfontSize">&#xe633;</text>
+                        <text class="iconfontText mt20">推荐好友</text>
+                    </div>
                     <!--<div class="iconBox flexCol mt20" @click="gmchat()">-->
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #66ccff" class="iconfontSize">&#xe65a;</text>-->
                         <!--<text class="iconfontText mt20">联系客服</text>-->

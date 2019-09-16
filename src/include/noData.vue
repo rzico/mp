@@ -15,6 +15,7 @@
         font-size: 72px;
     }
     .noData_hint {
+        font-size: 32px;
         color:#ccc;
         margin-top: 30px;
     }

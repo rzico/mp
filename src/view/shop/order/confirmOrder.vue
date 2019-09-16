@@ -228,7 +228,7 @@
             },
             submit:function (amount) {
                 let _this = this;
-                this.amount = parseFloat(this.amount)
+                this.amount = parseFloat(this.amount);
                 if(utils.isNull(this.paymentPluginId)){
                     event.toast('请选择付款方式')
                     return

@@ -1,8 +1,10 @@
 <template>
 
         <div class="headerBox">
-            <image class="bgImg" :src="imgBg" @click="changeLogo"></image>
-            <image class="img_heightMask" :src="img_heightMask" @click="changeLogo"></image>
+            <image class="bgImg" :src="imgBg" ></image>
+            <image class="img_heightMask" :src="img_heightMask"></image>
+            <!--点击域-->
+            <div class="img_Domain" @click="changeLogo"></div>
             <!--<image class="img_mask" :src="img_mask"></image>-->
             <div class="memberBox" :class="[headerInfo()]">
                 <image class="logo" :src="logo" @click="setting()"></image>
@@ -23,31 +25,31 @@
                     <text :style="{fontFamily:'iconfont'}" class="walletIco mr10">&#xe63e;</text>
                     <text class="walletBoxText" style="padding-top: 2px">钱包</text>
                 </div>
-                <div class="settingBox"  @click="goManage">
-                    <text  class="settingBoxText" :style="{fontFamily:'iconfont'}">&#xe62d;</text>
-                </div>
+                <!--<div class="settingBox"  @click="goManage">-->
+                    <!--<text  class="settingBoxText" :style="{fontFamily:'iconfont'}">&#xe62d;</text>-->
+                <!--</div>-->
                 <div class="shareBox" @click="goShare">
                     <text  class="shareBoxText" :style="{fontFamily:'iconfont'}">&#xe692;</text>
                 </div>
             </div>
-<!--            <div class="fansBox" :class="[headerFans()]">-->
-<!--                <div class="mr20 flex-row" @click="goCollect">-->
-<!--                    <text class="fans mr10">{{collect}}</text>-->
-<!--                    <text class="fansText">收藏</text>-->
-<!--                </div>-->
-<!--                <div class="mr20 flex-row"  @click="goFocus">-->
-<!--                    <text class="fans mr10">{{focus}}</text>-->
-<!--                    <text class="fansText">关注</text>-->
-<!--                </div>-->
-<!--                <div class="flex-row"  @click="goFans">-->
-<!--                <text class="fans mr10" >{{fans}}</text>-->
-<!--                <text class="fansText">粉丝</text>-->
-<!--                </div>-->
-<!--                &lt;!&ndash;<div class="focusBox" >&ndash;&gt;-->
-<!--                    &lt;!&ndash;<text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>&ndash;&gt;-->
-<!--                    &lt;!&ndash;<text class="focusText">关注</text>&ndash;&gt;-->
-<!--                &lt;!&ndash;</div>&ndash;&gt;-->
-<!--            </div>-->
+            <!--<div class="fansBox" :class="[headerFans()]">-->
+                <!--<div class="mr20 flex-row" @click="goCollect">-->
+                    <!--<text class="fans mr10">{{collect}}</text>-->
+                    <!--<text class="fansText">收藏</text>-->
+                <!--</div>-->
+                <!--<div class="mr20 flex-row"  @click="goFocus">-->
+                    <!--<text class="fans mr10">{{focus}}</text>-->
+                    <!--<text class="fansText">关注</text>-->
+                <!--</div>-->
+                <!--<div class="flex-row"  @click="goFans">-->
+                <!--<text class="fans mr10" >{{fans}}</text>-->
+                <!--<text class="fansText">粉丝</text>-->
+                <!--</div>-->
+                <!--<div class="focusBox" >-->
+                    <!--<text class="focusIco" :style="{fontFamily:'iconfont'}">&#xe658;</text>-->
+                    <!--<text class="focusText">关注</text>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
 
 </template>
@@ -72,6 +74,12 @@
         position: absolute;
         top: 0;
     }
+   .img_Domain{
+       width: 750px;
+       height: 400px;
+       position: absolute;
+       top: 0;
+   }
     .img_mask{
         width: 750px;
         height: 126px;
