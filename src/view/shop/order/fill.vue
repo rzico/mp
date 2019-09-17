@@ -466,7 +466,9 @@
                     },
                 ],
                 popoverPosition:{x:500,y:92},
-                popoverArrowPosition:{pos:'top',x:-15}
+                popoverArrowPosition:{pos:'top',x:-15},
+                lat:0,
+                lng:0
             }
         },
         components: {
@@ -618,7 +620,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
+                event.openURL(utils.locate('view/shop/shipping/station.js?lat='+this.lat+'&lng='+this.lng), function (data) {
                     _this.clicked = false;
                     if(data.type == 'success' && data.data != '') {
                         _this.shopName = data.data.name;
@@ -662,6 +664,11 @@
                         _this.floor = data.data.receiver.level;
                         _this.beginTwo = data.data.receiver.level;
                         _this.addressId = data.data.receiver.id;
+                        if(!utils.isNull(data.data.receiver.lat)){
+                            _this.lat = data.data.receiver.lat;
+                        }if(!utils.isNull(data.data.receiver.lng)){
+                            _this.lng = data.data.receiver.lng;
+                        }
                         _this.effectivePrice = data.data.price;//  商品合计
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款

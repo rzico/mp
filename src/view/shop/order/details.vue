@@ -19,10 +19,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="infoWhiteColor boder-bottom mt20">
-                <div class="goodsBody">
-                    <text class="fz32">配送信息</text>
-                </div>
+                <div class="infoWhiteColor boder-bottom mt20 space-between">
+                    <div class="goodsBody">
+                        <text class="fz32">配送信息</text>
+                    </div>
+                    <div class="goodsBody" @click="jump(item.cardId)">
+                        <text class="fz28 gray">查看会员资料></text>
+                    </div>
                 </div>
                 <div @click="jump(item.cardId)" class="addressBox flex-row">
                     <div style="width: 700px">
