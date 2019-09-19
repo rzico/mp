@@ -468,6 +468,7 @@
     .menubox {
         margin-top: 40px;
         flex-direction: row;
+        justify-content: center;
         flex-wrap: wrap;
         width:690px;
         margin-left: 30px;
