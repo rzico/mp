@@ -185,6 +185,8 @@
                 shippingMethods:['同城配送','普通快递','到店自提'],
                 logisticsId:'',
                 logistics:'',
+                lat:0,
+                lng:0
             }
         },
         components: {
@@ -221,7 +223,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
+                event.openURL(utils.locate('view/shop/shipping/station.js?lat='+this.lat+'&lng='+this.lng), function (data) {
                     _this.clicked = false;
                     if(data.type == 'success' && data.data != '') {
                         _this.shopName = data.data.name;
@@ -297,6 +299,11 @@
                         }else if(_this.isobject == 'pickup'){
                             _this.shippingMethods = ['到店自提','普通快递','同城配送'];
                             _this.begin = 0
+                        }
+                        if(!utils.isNull(data.data.receiver.lat)){
+                            _this.lat = data.data.receiver.lat;
+                        }if(!utils.isNull(data.data.receiver.lng)){
+                            _this.lng = data.data.receiver.lng;
                         }
                     }else{
                         modal.alert({

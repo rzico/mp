@@ -19,10 +19,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="infoWhiteColor boder-bottom mt20">
-                <div class="goodsBody">
-                    <text class="fz32">配送信息</text>
-                </div>
+                <div class="infoWhiteColor boder-bottom mt20 space-between" @click="jump(item.cardId)">
+                    <div class="goodsBody">
+                        <text class="fz32">配送信息</text>
+                    </div>
+                    <div class="goodsBody" >
+                        <text class="fz28 gray">查看会员资料></text>
+                    </div>
                 </div>
                 <div @click="jump(item.cardId)" class="addressBox flex-row">
                     <div style="width: 700px">
@@ -636,7 +639,7 @@
             },
             open:function () {
                 let _this = this;
-                POST('website/member/order/view.jhtml?sn=' + this.orderSn).then(function (data) {
+                POST('weex/member/order/view.jhtml?sn=' + this.orderSn).then(function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);

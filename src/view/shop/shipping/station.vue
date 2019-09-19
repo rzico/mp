@@ -8,10 +8,17 @@
             <cell v-if="list.length == 0">
                 <noData :noDataHint="noDataHint"></noData>
             </cell>
-            <cell>
-                <div class="contentBox" v-for="c in list">
-                    <div class="infoBox" @click="get(c.id,c.name,c.isSelf)">
-                        <text class="infoText">{{c.name}}</text>
+            <cell  v-for="item in list">
+                <div class='addressBox' @click="get(item.id,item.name,item.isSelf)">
+                    <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
+                    <div class='addressContent'>
+                        <div class='addressTitleBox'>
+                            <text class='addressTitle'>{{item.name}}</text>
+                        </div>
+                        <div class='addressSubTitleBox'>
+                            <text class='addressSubTitle'>{{item.areaName}}{{item.address}}</text>
+                            <text class='addressSubTitleTwo'>{{item.distance | watchKM}}KM</text>
+                        </div>
                     </div>
                 </div>
             </cell>
@@ -29,29 +36,67 @@
         width: 750px;
         background-color:#eee;
     }
-    .contentBox{
-
-    }
-    .infoBox{
-        background-color: white;
+    .addressBox{
+        width: 750px;
+        display: flex;
         flex-direction: row;
         align-items: center;
-        width: 750px;
-        height: 100px;
-        padding-left: 10px;
+        box-sizing: border-box;
+    }
+    .addressBox:active{
+        background-color: #f5f5f5;
+    }
+    .addressIcon{
+        width: 100px;
+        text-align: center;
+        font-size: 40px;
+        color: #999;
+    }
+    .addressContent{
+        width: 650px;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-right: 30px;
         border-bottom-width: 1px;
-        border-color: #cccccc;
+        border-bottom-color: #cccccc;
+        box-sizing: border-box;
     }
-    .image{
-        height: 80px;
-        width: 80px;
-        border-radius: 100%;
-        border-width: 5px;
-        border-color: #ccc;
+    .addressTitleBox{
+        width: 620px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
-    .infoText{
+    .addressTitle{
         font-size: 32px;
-        margin-left: 20px;
+        font-weight: 500;
+        max-width: 500px;
+        lines:1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .addressSubTitleBox{
+        width: 620px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .addressSubTitle{
+        font-size: 26px;
+        color: #999;
+        max-width: 500px;
+        lines:1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .addressSubTitleTwo{
+        font-size: 26px;
+        color: #999;
     }
 </style>
 <script>
@@ -69,11 +114,18 @@
                 pageSize:20,
                 refreshImg:utils.locate('resources/images/loading.png'),
                 refreshing:false,
-                list:[]
+                list:[],
+                lat:0,
+                lng:0,
             }
         },
         components: {
             navbar,noData
+        },
+        filters:{
+          watchKM(val){
+             return (val/1000).toFixed(2)
+          }
         },
         props: {
             noDataHint:{default:'暂无配送站'},
@@ -81,6 +133,8 @@
         },
         created() {
             utils.initIconFont();
+            this.lat = utils.getUrlParameter('lat');
+            this.lng = utils.getUrlParameter('lng');
             this.open()
         },
         methods: {
@@ -123,10 +177,14 @@
 
             open:function () {
                 let _this = this
-                GET('weex/member/shipping/shop.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize,
+                if(utils.isNull(this.lat)){
+                    this.lat = 0
+                }if(utils.isNull(this.lng)){
+                    this.lng = 0
+                }
+                GET('weex/member/shipping/shop.jhtml?pageStart=' + this.pageStart + '&pageSize=' + this.pageSize+'&lat='+this.lat+'&lng='+this.lng,
                     function (res) {
                         if (res.type=="success") {
-
                             if (res.data.start == 0) {
                                 _this.list = res.data.data;
                             } else {

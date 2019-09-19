@@ -39,6 +39,10 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe66e;</text>
                     <text class="menuBtn">送货统计</text>
                 </div>
+                <div class="menu" @click="business_report()">
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe66d;</text>
+                    <text class="menuBtn">营业汇总</text>
+                </div>
             </div>
         </scroller>
     </div>
@@ -363,6 +367,14 @@
                 this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate("view/shop/report/shipping_report.js"),function (e) {_this.clicked = false});
+            },
+            business_report(){
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/report/business_report.js"),function (e) {_this.clicked = false});
             },
 //            下拉刷新
             onrefresh (event) {

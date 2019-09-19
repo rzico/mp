@@ -103,23 +103,13 @@
                         </div>
                     </div>
                     <div class="flex-row goodsTotalPrice boder-bottom">
-                        <!--<div v-if="productCategoryId != 2">-->
-                            <text class="sub_title">NO.{{index+1}} 订单号:{{item.orderSn}}</text>
-                        <!--</div>-->
-                        <!--<div v-if="productCategoryId == 2">-->
-                            <!--<text class="sub_title">预约时间:{{item.hopeDate | watchCreateDate}}</text>-->
-                        <!--</div>-->
+                        <text class="sub_title">NO.{{index+1}} 订单号:{{item.orderSn}}</text>
                         <div class="flex-row">
                             <text class="sub_title mr20">共{{item.quantity}}件商品</text>
-                            <!--<text class="title">合计:¥ {{item.amount | currencyfmt}}</text>-->
                         </div>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-if="item.status == 'unconfirmed'  && filter('unconfirmed')">
                         <div class="flex-row">
-                        <!--<div class="selected" @click="singleChoose(index,item.groupName)">-->
-                            <!--<text :style="{fontFamily:'iconfont'}" class="selectedIcon primary" v-if="checkChoose(index)">&#xe64d;</text>-->
-                        <!--</div>-->
-                            <!--<text class="fz32 ml20" @click="singleChoose(index)">{{item.groupName}}</text>-->
                             <text class="fz28" style="color: #999999"></text>
                         </div>
                         <div class="flex-row">
@@ -132,11 +122,8 @@
                             </div>
                             </div>
                             <div class="flex-row">
-                            <text class="title footText " @click="sendSingle(item.orderSn,item.sn,item.isSelf)">派单</text>
+                                <text class="title footText " @click="sendSingle(item.orderSn,item.sn,item.isSelf)">派单</text>
                             </div>
-                        <!--<div class="flex-row" v-else>-->
-                            <!--<text class="title footText " @click="openMask(item.orderSn,item.sn)">批量派单</text>-->
-                        <!--</div>-->
                         </div>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'dispatch' && filter('dispatch')">
@@ -159,39 +146,6 @@
                 </div>
             </cell>
         </list>
-        <div class="mask" v-if="isMask" @click="downMask()">
-            <div class="info">
-                <text class="maskTitle">共  {{totalSingle}}  单</text>
-                <div class="setting" @click="pickPattern()">
-                    <div class="flex-row">
-                        <text class="fz32">配送站:  {{isPattern}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="setting" @click="goMarki()">
-                    <div class="flex-row">
-                        <text class="fz32">配送员:  {{isMarki}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="setting" >
-                    <div class="flex-row">
-                        <text class="fz32">备注    :</text>
-                        <input class="input" placeholder="请输入备注" v-model="message"/>
-                    </div>
-                    <div class="flex-row flex-end" @click="linkTo()">
-                        <div class="chooseBox"><text class="fz28 primary">快速话语</text> </div>
-                    </div>
-                </div>
-                <div class="button" @click="moreSingle()">
-                    <text class="fz40 primary">批量派单</text>
-                </div>
-            </div>
-        </div>
         <div class="mask" v-if="printMask" @click="printMaskTap()">
             <div class="printBox">
                 <text class="maskTitle mt50">打印</text>
@@ -617,15 +571,10 @@
                 productCategoryId:1,
                 clicked:false,
                 time:'',
-                isPattern:'',
                 shopId:'',
-                isMarki:'',
                 markiId:'',
                 isSelf:false,
-                message:'',
                 ids:[],
-                totalSingle:0,
-                isMask:false,
                 isPageType:false,
                 doSearch:false,
                 keyword:'',
@@ -933,149 +882,6 @@
                 }else{
                     return false
                 }
-            },
-            checkChoose(index){
-                if(this.shippingList.length > index){
-                    return (this.shippingList[index].choose == true);
-                }else{
-                    return false
-                }
-            },
-//            单选
-            singleChoose(index,groupName){
-                let _this = this;
-                var dd = this.shippingList;
-                    if(dd[index].choose == true){
-                        dd[index].choose = false
-                    }else{
-                        dd[index].choose = true
-                    }
-                    var total = 0;
-                    dd.forEach(function (item) {
-                    if(item.choose == true){
-                        total = total + 1
-                    }
-                    });
-                    this.totalSingle = total
-                    this.shippingList = dd;
-
-            },
-//            关闭遮罩层
-            downMask(){
-                this.isMask = false
-            },
-//            开启遮罩层
-            openMask(){
-                let _this = this;
-                this.isMask = true;
-                this.ids = [];
-                this.totalSingle = 0;
-                this.shippingList.forEach(function (item) {
-                    if(item.choose == true){
-                        _this.ids.push(item.id);
-                        _this.totalSingle = _this.totalSingle + 1
-                    }
-                });
-            },
-            moreSingle(){
-
-                let _this = this;
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                if(utils.isNull(this.shopId)){
-                    event.toast('请选择配送站');
-                    _this.clicked = false;
-                    return
-                }
-                if(this.isSelf == true || this.isSelf == 'true'){
-                    if(utils.isNull(this.markiId)){
-                        event.toast('请选择配送人员');
-                        _this.clicked = false;
-                        return
-                    }
-                }
-                POST('weex/member/shipping/batch_dispatch.jhtml?ids='+ _this.ids+'&shopId='+_this.shopId+'&adminId='+_this.markiId +'&memo=' +encodeURIComponent(_this.message)).then(
-                    function (data) {
-                        _this.clicked = false;
-                        if(data.type == 'success'){
-                            _this.isMask = false;
-                            _this.pageStart = 0;
-                            _this.open()
-                            event.toast('批量派单成功');
-                        }else{
-                            event.toast(data.content);
-                        }
-                    },
-                    function (err) {
-                        _this.clicked = false;
-                        event.toast(err.content);
-                    })
-            },
-            //            设置配送站
-            pickPattern:function () {
-
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                var _this = this;
-                if (!utils.isRoles("1",_this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    });
-                    _this.permissions();
-                    _this.clicked = false;
-                    return
-                }
-                event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
-                    _this.clicked = false;
-                    if(data.type == 'success' && data.data != '') {
-                        _this.isPattern = data.data.name;
-                        _this.shopId = data.data.id;
-                        _this.isSelf = data.data.isSelf;
-                        _this.isMarki = '';
-                        _this.markiId = ''
-                    }
-                })
-            },
-            //            跳转备注快速话语
-            linkTo: function () {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                var _this = this;
-                event.openURL(utils.locate('widget/list.js?type=xdict'), function (data) {
-                    _this.clicked = false;
-                    if(data.type == 'success' && data.data != '') {
-                        _this.message = data.data.listName;
-                    }
-                })
-
-            },
-
-//            跳转配送员
-            goMarki:function () {
-                if (this.clicked) {
-                    return;
-                }
-                this.clicked = true;
-                var _this = this;
-                if(utils.isNull(this.shopId)){
-                    event.toast('请先选择配送站');
-                    _this.clicked = false;
-                    return
-                }
-                event.openURL(utils.locate('view/shop/shipping/marki.js?shopId='+ this.shopId),function (data) {
-                    _this.clicked = false;
-                    if(data.type=='success') {
-                        _this.isMarki = data.data.name;
-                        _this.markiId = data.data.id
-                    }
-                });
             },
             //            获取权限
             permissions:function () {
