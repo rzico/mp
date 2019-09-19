@@ -15,17 +15,23 @@
                 </div>
             </div>
         </div>
-        <div class="addressBox bkg-primary button-bkg-img pb30" v-if="isShow" @click="jump(cardId)">
-            <text class="address">{{member.areaName}}{{member.address}}</text>
-        </div>
-        <div class="memberCard" @click="gocard()">
-            <text class="fz32" v-if="!isShow">点击选择会员</text>
-            <div class="flex-row" v-if="isShow" >
-            <!--<image class="memberLogo" :src="memberlogo"></image>-->
-                <text class="fz28 ml20">{{member.consignee}}</text>
-                <text class="fz28 ml20">{{member.phone}}</text>
+        <div class="addressBox">
+            <div class="addressBoxHeader" v-if="isShow" @click="jump(cardId)">
+                <text class="fz32">配送信息</text>
+                <text class="fz28 gray">查看会员资料></text>
             </div>
-            <text  :style="{fontFamily:'iconfont'}" style="color: #888;font-size: 32px">&#xe630;</text>
+            <div class="memberCard" @click="gocard()">
+                <text class="fz32" v-if="!isShow">点击选择会员</text>
+                <div>
+                    <div class="flex-row" v-if="isShow" >
+                        <text class="fz28">{{member.consignee}}</text>
+                        <text class="fz28 ml20">{{member.phone}}</text>
+                    </div>
+                    <text class="address">{{member.areaName}}{{member.address}}</text>
+                </div>
+                <text  :style="{fontFamily:'iconfont'}" style="color: #888;font-size: 32px">&#xe630;</text>
+            </div>
+
         </div>
         <scroller>
         <div class="infoContent"  v-if="isShow">
@@ -184,19 +190,37 @@
         padding-left: 30px;
     }
     .addressBox{
-        width: 750px;
-        flex-direction: column;
+        width: 710px;
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
+        background-color: white;
+    }
+    .addressBoxHeader{
+        flex-direction: row;
         align-items: center;
+        justify-content: space-between;
+        border-bottom-color: #ccc;
+        border-bottom-width:1px;
+        height: 80px;
+    }
+    .addressCell{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
     }
     .address{
-        padding-left: 60px;
-        padding-right: 60px;
-        text-align:center;
         font-size: 32px;
         line-height:32px;
-        color: white;
         lines:2;
+        max-width: 590px;
+        overflow: hidden;
         text-overflow: ellipsis;
+        margin-top: 20px;
     }
     .memberName{
         font-size: 28px;
@@ -212,17 +236,14 @@
         font-weight: 300;
     }
     .memberCard{
-        width: 710px;
-        height: 100px;
+        width: 650px;
+        min-height: 100px;
         flex-direction: row;
         align-items: center;
         justify-content:space-between;
-        margin-top: 20px;
-        margin-left: 20px;
-        margin-right: 20px;
-        padding-left: 30px;
-        padding-right: 30px;
         background-color: white;
+        padding-top:30px;
+        padding-bottom: 30px;
     }
     .infoContent{
         width: 710px;
