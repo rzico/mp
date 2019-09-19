@@ -178,7 +178,7 @@
                 </div>
                 <div class="menu"  v-if="filter('paused')">
                     <switch :checked="hasPaused"  @change="paused"></switch>
-                    <text class="menuBtn mt15">暂停营业</text>
+                    <text class="menuBtn mt15">{{hasPaused?'正常营业':'暂停营业'}}</text>
                 </div>
             </div>
             <div class="menuboxTwo" v-if="cashier.status != 'success'">
@@ -1341,7 +1341,7 @@
                    if (res.type=="success") {
                        _this.cashier = res.data;
                        _this.shopId = res.data.shopId;
-                       _this.hasPaused = res.data.paused;
+                       _this.hasPaused = !res.data.paused;
                        if(res.data.status == 'success'){
 //                           获取订单数量
                            _this.getCount();
