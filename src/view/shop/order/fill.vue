@@ -18,7 +18,10 @@
         <div class="addressBox">
             <div class="addressBoxHeader" v-if="isShow" @click="jump(cardId)">
                 <text class="fz32">配送信息</text>
-                <text class="fz28 gray">查看会员资料></text>
+                <div class="flex-row">
+                    <text class="fz28 gray">查看会员资料</text>
+                    <text class="fz28 gray ml10" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
             </div>
             <div class="memberCard" @click="gocard()">
                 <text class="fz32" v-if="!isShow">点击选择会员</text>
