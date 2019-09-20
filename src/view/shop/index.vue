@@ -712,6 +712,22 @@
                     event.toast(err.content)
                 })
             },
+            //            扫码抢单
+            scanRob(sn){
+                let _this = this
+                POST('weex/member/order/scanDispatch.jhtml?sn='+sn).then(function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
             //            扫码接单
             scanSend(sn){
                 let _this = this
@@ -745,6 +761,8 @@
                                     _this.scanFindCard(res.data.code)
                                 }else if(res.data.type =='818803'){
                                     _this.scanCoupon(res.data.code,res.data.captcha)
+                                }else if(res.data.type =='818806'){
+                                    _this.scanRob(res.data.sn)
                                 }else if(res.data.type =='818807'){
                                     _this.scanSend(res.data.sn)
                                 }else if(res.data.type =='865380'){
