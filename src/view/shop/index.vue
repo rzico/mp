@@ -176,6 +176,10 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
                     <text class="menuBtn">设置</text>
                 </div>
+                <div class="menu"  v-if="filter('paused')">
+                    <switch :checked="hasPaused"  @change="paused"></switch>
+                    <text class="menuBtn mt15">{{hasPaused?'正常营业':'暂停营业'}}</text>
+                </div>
             </div>
             <div class="menuboxTwo" v-if="cashier.status != 'success'">
                 <div class="menuTwo" @click="goShop()" v-if="filter('openShop')">
@@ -464,6 +468,7 @@
     .menubox {
         margin-top: 40px;
         flex-direction: row;
+        justify-content: center;
         flex-wrap: wrap;
         width:690px;
         margin-left: 30px;
@@ -533,7 +538,8 @@
                 conutTotal:0,
                 shippingConutTotal:0,
                 gpsTime:null,
-                inputShow:false
+                inputShow:false,
+                hasPaused:false
             }
         },
         components: {
@@ -706,6 +712,22 @@
                     event.toast(err.content)
                 })
             },
+            //            扫码抢单
+            scanRob(sn){
+                let _this = this
+                POST('weex/member/order/scanDispatch.jhtml?sn='+sn).then(function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
             //            扫码接单
             scanSend(sn){
                 let _this = this
@@ -758,6 +780,8 @@
                                     _this.scanFindCard(res.data.code)
                                 }else if(res.data.type =='818803'){
                                     _this.scanCoupon(res.data.code,res.data.captcha)
+                                }else if(res.data.type =='818806'){
+                                    _this.scanRob(res.data.sn)
                                 }else if(res.data.type =='818807'){
                                     _this.scanSend(res.data.sn)
                                 }else if(res.data.type =='865380'){
@@ -1083,6 +1107,13 @@
                     }else{
                         return false
                     }
+                }else if(e == 'paused'){
+//                    暂停营业
+                    if (utils.isRoles("1",_this.roles)) {
+                        return true
+                    }else{
+                        return false
+                    }
                 }else {
                     return false
                 }
@@ -1204,6 +1235,33 @@
                 }
                 event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {});
             },
+            paused(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.view()
+                }else {
+                    POST("weex/member/enterprise/paused.jhtml").then(
+                        function (data) {
+                            if (data.type=='success') {
+                                _this.view()
+                            } else {
+                                modal.alert({
+                                    message: data.content,
+                                    okTitle: '知道了'
+                                })
+                                _this.view()
+                            }
+                        },function (err) {
+                            event.toast(err.content);
+                            _this.view()
+                        }
+                    )
+                }
+            },
             goods:function () {
                 if (this.clicked==true) {
                     return;
@@ -1302,6 +1360,7 @@
                    if (res.type=="success") {
                        _this.cashier = res.data;
                        _this.shopId = res.data.shopId;
+                       _this.hasPaused = !res.data.paused;
                        if(res.data.status == 'success'){
 //                           获取订单数量
                            _this.getCount();

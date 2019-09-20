@@ -4,58 +4,46 @@
         <!-- 信息部分开始 -->
         <div class="box">
                 <!-- 姓名部分 -->
-                <div class="subBox"></div>
-                <div class="newAddre-item">
-                    <text class="cellTitle">用户姓名:</text>
-                    <div class="newAddre-right">
-                        <input type="text" class="Input" placeholder="请输入收货人" v-model="consignee"/>
-                    </div>
+            <div class="subBox"></div>
+            <div class="newAddre-item"  @click="amapLinkTo">
+                <div class="flex-row">
+                    <text class="cellTitle">所在区域:</text>
+                    <text class="fz32 pl30">{{areaName}}</text>
                 </div>
+                <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
+            </div>
+            <!-- 详细地址部分 -->
 
-                <!-- 电话部分 -->
-                <div class="newAddre-item">
-                    <text class="cellTitle">联系电话:</text>
-                    <div class="newAddre-right">
-                        <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
-                    </div>
+            <div class="newAddre-item">
+                <text class="cellTitle">详细地址:</text>
+                <div class="newAddre-right">
+                    <input class="Input" type="text" placeholder="楼号,单元,门牌号" v-model='address'/>
                 </div>
+            </div>
+
+            <!-- 楼层部分 -->
+            <div class="newAddre-item" @click="bindPickerChange">
+                <div class="flex-row">
+                    <text class="cellTitle">楼层高度:</text>
+                    <text class="picker">{{level==0?'有电梯':level+'楼'}}</text>
+                </div>
+                <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
+            </div>
                 <!-- 收货地址部分 -->
-                <div class="subBox"></div>
-                <div class="newAddre-item"  @click="amapLinkTo">
-                    <div class="flex-row">
-                        <text class="cellTitle">所在区域:</text>
-                        <text class="fz32 pl30">{{areaName}}</text>
-                    </div>
-                    <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
+            <div class="subBox"></div>
+            <div class="newAddre-item">
+                <text class="cellTitle">用户姓名:</text>
+                <div class="newAddre-right">
+                    <input type="text" class="Input" placeholder="请输入收货人" v-model="consignee"/>
                 </div>
-                <!-- 详细地址部分 -->
-                <div class="subBox"></div>
-                <div class="newAddre-item">
-                    <text class="cellTitle">详细地址:</text>
-                    <div class="newAddre-right">
-                        <input class="Input" type="text" placeholder="楼号,单元,门牌号" v-model='address'/>
-                    </div>
+            </div>
+            <!-- 电话部分 -->
+            <div class="newAddre-item">
+                <text class="cellTitle">联系电话:</text>
+                <div class="newAddre-right">
+                    <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
                 </div>
-
-                <!-- 楼层部分 -->
-                <div class="newAddre-item" @click="bindPickerChange">
-                    <div class="flex-row">
-                        <text class="cellTitle">楼层高度:</text>
-                        <text class="picker">{{level==0?'有电梯':level+'楼'}}</text>
-                    </div>
-                    <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
-                </div>
-
-<!--                <div class='newAddre-default'>-->
-<!--                    <text class="cellTitle">设为默认:</text>-->
-<!--                    <div class="flex-row">-->
-<!--                        <text class="fz32 mr10" @click='Return(true)'>是</text>-->
-<!--                        <div class="newAddre-default-yes" :class="[defaults? 'bkg-primary':'newAddre-no']"  @click='Return(true)'></div>-->
-<!--                        <text class="fz32 mr10" @click='Return(false)'>否</text>-->
-<!--                        <div class="newAddre-default-no" :class="[!defaults? 'bkg-primary':'newAddre-no']" @click='Return(false)'></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
+            </div>
         </div>
             <!-- 信息部分结束 -->
             <div class="newAddre-save bkg-primary button-bkg-img" @click="saveReceiver">

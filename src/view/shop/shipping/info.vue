@@ -535,15 +535,25 @@
             },
             open:function () {
                 let _this = this;
-                GET('weex/member/shipping/view.jhtml?sn=' + this.shippingSn,function (data) {
+                POST('weex/member/shipping/view.jhtml?sn=' + this.shippingSn).then(function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);
                     }else{
-                        event.toast(data.content);
+                        modal.alert({
+                            message: data.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 },function (err) {
-                    event.toast(err.content);
+                    modal.alert({
+                        message: err.content,
+                        okTitle: '确认'
+                    }, function () {
+                        event.closeURL();
+                    })
                 })
             },
             onloading: function () {

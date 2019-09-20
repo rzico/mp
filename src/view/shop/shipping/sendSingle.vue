@@ -360,7 +360,9 @@
                 roles:'',
                 isPageType:false,
                 isSelf:false,
-                buttonText:'派单'
+                buttonText:'派单',
+                lat:0,
+                lng:0
             }
         },
         filters:{
@@ -497,6 +499,11 @@
                             _this.markiId = data.data.adminId;
                             _this.isMarki = data.data.adminName
                         }
+                        if(!utils.isNull(data.data.receiver.lat)){
+                            _this.lat = data.data.receiver.lat;
+                        }if(!utils.isNull(data.data.receiver.lng)){
+                            _this.lng = data.data.receiver.lng;
+                        }
                     }else{
                         event.toast(data.content);
                     }
@@ -580,7 +587,7 @@
                 }
 //                本水站的单允许选择站点
                 if(this.isSelf == true || this.isSelf == 'true'){
-                    event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
+                    event.openURL(utils.locate('view/shop/shipping/station.js?lat='+this.lat+'&lng='+this.lng), function (data) {
                         _this.clicked = false;
                         if(data.type == 'success' && data.data != '') {
                             _this.isPattern = data.data.name;

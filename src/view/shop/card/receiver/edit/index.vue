@@ -5,28 +5,8 @@
         <div class="box">
                 <!-- 姓名部分 -->
                 <div class="subBox"></div>
-                <div class="newAddre-item">
-                    <text class="cellTitle">用户姓名:</text>
-                    <div class="newAddre-right">
-                        <input type="text" class="Input" placeholder="请输入收货人" v-model="consignee"/>
-                    </div>
-                </div>
 
-                <!-- 电话部分 -->
-                <div class="newAddre-item" v-if="defaults != true">
-                    <text class="cellTitle">联系电话:</text>
-                    <div class="newAddre-right">
-                        <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
-                    </div>
-                </div>
-            <div class="newAddre-item" v-if="defaults == true">
-                <text class="cellTitle">联系电话:</text>
-                <div class="newAddre-right">
-                    <text>{{phone}}</text>
-                </div>
-            </div>
                 <!-- 收货地址部分 -->
-                <div class="subBox"></div>
                 <div class="newAddre-item"  @click="amapLinkTo">
                     <div class="flex-row">
                         <text class="cellTitle">所在区域:</text>
@@ -35,7 +15,6 @@
                     <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
                 </div>
                 <!-- 详细地址部分 -->
-                <div class="subBox"></div>
                 <div class="newAddre-item">
                     <text class="cellTitle">详细地址:</text>
                     <div class="newAddre-right">
@@ -51,13 +30,34 @@
                     </div>
                     <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
                 </div>
-
-            <div class='newAddre-default' v-if="defaults == true">
-                <text class="cellTitle">是否默认</text>
-                <div class="chooseAddre-garden act">
-                    <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>
+            <div class="subBox"></div>
+            <div class="newAddre-item">
+                <text class="cellTitle">用户姓名:</text>
+                <div class="newAddre-right">
+                    <input type="text" class="Input" placeholder="请输入收货人" v-model="consignee"/>
                 </div>
             </div>
+
+            <!-- 电话部分 -->
+            <div class="newAddre-item" v-if="defaults != true">
+                <text class="cellTitle">联系电话:</text>
+                <div class="newAddre-right">
+                    <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
+                </div>
+            </div>
+            <div class="newAddre-item" v-if="defaults == true">
+                <text class="cellTitle">联系电话:</text>
+                <div class="newAddre-right">
+                    <text class="fz32">{{phone}}</text>
+                </div>
+            </div>
+
+<!--            <div class='newAddre-default' v-if="defaults == true">-->
+<!--                <text class="cellTitle">是否默认</text>-->
+<!--                <div class="chooseAddre-garden act">-->
+<!--                    <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </div>
             <!-- 信息部分结束 -->

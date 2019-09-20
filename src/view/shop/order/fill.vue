@@ -15,17 +15,26 @@
                 </div>
             </div>
         </div>
-        <div class="addressBox bkg-primary button-bkg-img pb30" v-if="isShow" @click="jump(cardId)">
-            <text class="address">{{member.areaName}}{{member.address}}</text>
-        </div>
-        <div class="memberCard" @click="gocard()">
-            <text class="fz32" v-if="!isShow">点击选择会员</text>
-            <div class="flex-row" v-if="isShow" >
-            <!--<image class="memberLogo" :src="memberlogo"></image>-->
-                <text class="fz28 ml20">{{member.consignee}}</text>
-                <text class="fz28 ml20">{{member.phone}}</text>
+        <div class="addressBox">
+            <div class="addressBoxHeader" v-if="isShow" @click="jump(cardId)">
+                <text class="fz32">配送信息</text>
+                <div class="flex-row">
+                    <text class="fz28 gray">查看会员资料</text>
+                    <text class="fz28 gray ml10" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
             </div>
-            <text  :style="{fontFamily:'iconfont'}" style="color: #888;font-size: 32px">&#xe630;</text>
+            <div class="memberCard" @click="gocard()">
+                <text class="fz32" v-if="!isShow">点击选择会员</text>
+                <div>
+                    <div class="flex-row" v-if="isShow" >
+                        <text class="fz28">{{member.consignee}}</text>
+                        <text class="fz28 ml20">{{member.phone}}</text>
+                    </div>
+                    <text class="address">{{member.areaName}}{{member.address}}</text>
+                </div>
+                <text  :style="{fontFamily:'iconfont'}" style="color: #888;font-size: 32px">&#xe630;</text>
+            </div>
+
         </div>
         <scroller>
         <div class="infoContent"  v-if="isShow">
@@ -184,19 +193,37 @@
         padding-left: 30px;
     }
     .addressBox{
-        width: 750px;
-        flex-direction: column;
+        width: 710px;
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
+        background-color: white;
+    }
+    .addressBoxHeader{
+        flex-direction: row;
         align-items: center;
+        justify-content: space-between;
+        border-bottom-color: #ccc;
+        border-bottom-width:1px;
+        height: 80px;
+    }
+    .addressCell{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
     }
     .address{
-        padding-left: 60px;
-        padding-right: 60px;
-        text-align:center;
         font-size: 32px;
         line-height:32px;
-        color: white;
         lines:2;
+        max-width: 590px;
+        overflow: hidden;
         text-overflow: ellipsis;
+        margin-top: 20px;
     }
     .memberName{
         font-size: 28px;
@@ -212,17 +239,14 @@
         font-weight: 300;
     }
     .memberCard{
-        width: 710px;
-        height: 100px;
+        width: 650px;
+        min-height: 100px;
         flex-direction: row;
         align-items: center;
         justify-content:space-between;
-        margin-top: 20px;
-        margin-left: 20px;
-        margin-right: 20px;
-        padding-left: 30px;
-        padding-right: 30px;
         background-color: white;
+        padding-top:30px;
+        padding-bottom: 30px;
     }
     .infoContent{
         width: 710px;
@@ -466,7 +490,9 @@
                     },
                 ],
                 popoverPosition:{x:500,y:92},
-                popoverArrowPosition:{pos:'top',x:-15}
+                popoverArrowPosition:{pos:'top',x:-15},
+                lat:0,
+                lng:0
             }
         },
         components: {
@@ -618,7 +644,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
+                event.openURL(utils.locate('view/shop/shipping/station.js?lat='+this.lat+'&lng='+this.lng), function (data) {
                     _this.clicked = false;
                     if(data.type == 'success' && data.data != '') {
                         _this.shopName = data.data.name;
@@ -662,6 +688,11 @@
                         _this.floor = data.data.receiver.level;
                         _this.beginTwo = data.data.receiver.level;
                         _this.addressId = data.data.receiver.id;
+                        if(!utils.isNull(data.data.receiver.lat)){
+                            _this.lat = data.data.receiver.lat;
+                        }if(!utils.isNull(data.data.receiver.lng)){
+                            _this.lng = data.data.receiver.lng;
+                        }
                         _this.effectivePrice = data.data.price;//  商品合计
                         _this.amountPayable = data.data.amountPayable ;// 应付金额
                         _this.arrears = data.data.arrears ; //  上期欠款
@@ -669,6 +700,7 @@
                         _this.ticket = data.data.ticket;// 上期欠票
                         _this.hasWater = data.data.hasWater;
                         _this.cardId= data.data.cardId;
+                        _this.order = data.data;
                         _this.cartList();
                     } else {
                         event.toast(data.content);
@@ -1213,18 +1245,10 @@
                 if(utils.isNull(_this.barrel)){
                     _this.barrel = 0
                 }
-                if (this.version == 2 && this.order.shippingMethodId != 'pickup'){
-                    if (utils.isNull(this.shopId)) {
-                        event.toast('请选择配送站点');
-                        _this.clicked = false;
-                        return
-                    }else if(this.isSelf == true || this.isSelf == 'true'){
-                        if (utils.isNull(this.adminId)) {
-                            event.toast('请选择配送员');
-                            _this.clicked = false;
-                            return
-                        }
-                    }
+                if (this.order.shippingMethodId != 'pickup'&& this.order.shippingMethodId != 'writeOff'&& this.order.shippingMethodId != 'cardbkg' && utils.isNull(this.shopId)){
+                    event.toast('请选择配送站点');
+                    _this.clicked = false;
+                    return
                 }
                 var mesTotal = 0;
                 _this.cart.forEach(function (item) {

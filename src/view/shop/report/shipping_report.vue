@@ -24,7 +24,7 @@
                     <text class="shopName">{{c.empName}}</text>
                     <text class="shopName">{{c.barrelName}}</text>
                     <text class="number">{{c.quantity}}</text>
-                    <text class="returnMoney">¥{{c.returnQuantity}}</text>
+                    <text class="returnMoney">{{c.returnQuantity}}</text>
                 </div>
             </cell>
             <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>
@@ -39,10 +39,10 @@
 
         <div class="bottomTotal"  v-if="reportList != null">
             <div class="bottomCell">
-                <text class="bottomCellText">送出合计: ¥{{total}}</text>
+                <text class="bottomCellText">送出合计: {{total}}</text>
             </div>
             <div class="bottomCell ml20">
-                <text class="bottomCellText">回收合计: ¥{{refund}}</text>
+                <text class="bottomCellText">回收合计: {{refund}}</text>
             </div>
         </div>
     </div>
@@ -165,7 +165,7 @@
     .returnMoney{
         font-size: 30px;
         width: 187.5px;
-        text-align: right;
+        text-align: center;
         lines:1;
         text-overflow: ellipsis;
     }

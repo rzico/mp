@@ -436,7 +436,7 @@
                             longitude:e.data.longitude,
                             memberId: 0
                         }
-                        event.openURL(utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev)),function (res) {
+                        event.openURL(utils.locate("view/shop/card/addMember/add/index.js?"+URIEncrypt(ev)),function (res) {
                             _this.pageStart = 0;
                             _this.open();
                         });

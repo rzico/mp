@@ -5,57 +5,64 @@
         <div class="box">
                 <!-- 姓名部分 -->
                 <div class="subBox"></div>
-                <div class="newAddre-item">
-                    <text class="cellTitle">用户姓名:</text>
-                    <div class="newAddre-right">
-                        <input type="text" class="Input" placeholder="请输入收货人" v-model="consignee"/>
-                    </div>
+            <div class="newAddre-item"  @click="amapLinkTo">
+                <div class="flex-row">
+                    <text class="cellTitle">所在区域:</text>
+                    <text class="fz32 pl30">{{areaName}}</text>
                 </div>
+                <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
+            </div>
+            <!-- 详细地址部分 -->
+            <div class="newAddre-item">
+                <text class="cellTitle">详细地址:</text>
+                <div class="newAddre-right">
+                    <input class="Input" type="text" placeholder="楼号,单元,门牌号" v-model='address'/>
+                </div>
+            </div>
 
-                <!-- 电话部分 -->
-                <div class="newAddre-item" v-if="defaults == false">
-                    <text class="cellTitle">联系电话:</text>
-                    <div class="newAddre-right">
-                        <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
-                    </div>
+            <!-- 楼层部分 -->
+            <div class="newAddre-item" @click="bindPickerChange">
+                <div class="flex-row">
+                    <text class="cellTitle">楼层高度:</text>
+                    <text class="picker">{{level==0?'有电梯':level+'楼'}}</text>
                 </div>
-                <div class="newAddre-item" v-if="defaults == true">
-                    <text class="cellTitle">联系电话:</text>
-                    <div class="newAddre-right">
-                        <text>{{phone}}</text>
-                    </div>
-                </div>
+                <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
+            </div>
                 <!-- 收货地址部分 -->
                 <div class="subBox"></div>
-                <div class="newAddre-item"  @click="amapLinkTo">
-                    <div class="flex-row">
-                        <text class="cellTitle">所在区域:</text>
-                        <text class="fz32 pl30">{{areaName}}</text>
-                    </div>
-                    <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
+            <div class="newAddre-item">
+                <text class="cellTitle">用户姓名:</text>
+                <div class="newAddre-right">
+                    <input type="text" class="Input" placeholder="请输入收货人" v-model="consignee"/>
                 </div>
-                <!-- 详细地址部分 -->
-                <div class="subBox"></div>
-                <div class="newAddre-item">
-                    <text class="cellTitle">详细地址:</text>
-                    <div class="newAddre-right">
-                        <input class="Input" type="text" placeholder="楼号,单元,门牌号" v-model='address'/>
-                    </div>
-                </div>
+            </div>
 
-                <!-- 楼层部分 -->
-                <div class="newAddre-item" @click="bindPickerChange">
-                    <div class="flex-row">
-                        <text class="cellTitle">楼层高度:</text>
-                        <text class="picker">{{level==0?'有电梯':level+'楼'}}</text>
-                    </div>
-                    <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">&#xe630;</text>
+            <!-- 电话部分 -->
+            <div class="newAddre-item" v-if="defaults == false">
+                <text class="cellTitle">联系电话:</text>
+                <div class="newAddre-right">
+                    <input class="Input" type="tel" placeholder="收货人手机号" v-model='phone'/>
                 </div>
+            </div>
+            <div class="newAddre-item" v-if="defaults == true">
+                <text class="cellTitle">联系电话:</text>
+                <div class="newAddre-right">
+                    <text  class="fz32">{{phone}}</text>
+                </div>
+            </div>
 
-            <div class='newAddre-default' v-if="defaults == true">
+            <div class="subBox"></div>
+            <div class='newAddre-default'>
                 <text class="cellTitle">是否默认</text>
-                <div class="chooseAddre-garden act">
-                    <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>
+                <!--                    <div class="chooseAddre-garden act">-->
+                <!--                        <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>-->
+                <!--                    </div>-->
+                <!--                    <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">{{defaults?'&#xe64d;':'&#xe60a;'}}</text>-->
+                <div class="flex-row">
+                    <text class="fz32 mr10" @click='Return(true)'>是</text>
+                    <div class="newAddre-default-yes" :class="[defaults? 'act':'newAddre-no']"  @click='Return(true)'></div>
+                    <text class="fz32 mr10" @click='Return(false)'>否</text>
+                    <div class="newAddre-default-no" :class="[!defaults? 'act':'newAddre-no']" @click='Return(false)'></div>
                 </div>
             </div>
 
@@ -201,7 +208,8 @@
                 latitude:0,
                 longitude:0,
                 array: ['有电梯', '1楼', '2楼', '3楼', '4楼', '5楼', '6楼', '7楼', '8楼', '9楼'],
-                memberId:0
+                memberId:0,
+                phoneBox:''
             }
         },
         props: {},
@@ -222,7 +230,8 @@
                if (res.type == 'success') {
                    _this.consignee = res.data.consignee;
                    _this.phone = res.data.phone;
-                   _this.defaults = res.data.default
+                   _this.defaults = res.data.default;
+                   _this.phoneBox = res.data.phone
                } else {
                    event.toast(res.content)
                }
@@ -255,11 +264,25 @@
             },
 
             // 选择是否默认地址
-            // Return: function (e) {
-            //     var _this = this
-            //     _this.defaults = e;
-            //
-            // },
+            Return: function (e) {
+                var _this = this
+                _this.defaults = e;
+                if (_this.defaults == false && _this.phoneBox == ''){
+                    modal.alert({
+                        message: '无法设为默认',
+                        duration: 0.3
+                    },function (value) {
+
+                    })
+                    return
+                }
+                if(_this.defaults == true){
+                    _this.phone = _this.phoneBox
+                }else if(_this.defaults == false){
+                    _this.phone = ''
+                }
+            },
+
 
             // 保存
             saveReceiver: function () {
