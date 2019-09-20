@@ -108,6 +108,12 @@
                             <text class="sub_title mr20">共{{item.quantity}}件商品</text>
                         </div>
                     </div>
+                    <div class="flex-row goodsTotalPrice boder-bottom" v-if="(item.hopeDate !=null && productCategoryId == '2') || (item.hopeDate !=null && productCategoryId == '3')">
+                        <text class="sub_title">预约时间:</text>
+                        <div class="flex-row">
+                            <text class="sub_title mr20 sub_title_Color">{{item.hopeDate | watchCreateDate}}</text>
+                        </div>
+                    </div>
                     <div class="flex-row space-between goodsFoot" v-if="item.status == 'unconfirmed'  && filter('unconfirmed')">
                         <div class="flex-row">
                             <text class="fz28" style="color: #999999"></text>
@@ -528,7 +534,9 @@
         border-style: solid;
         border-color: gainsboro;
         background-color:#fff;
-
+    }
+    .sub_title_Color{
+        color: red;
     }
 
 </style>
@@ -667,10 +675,8 @@
               if (idx<this.printList.length) {
                   let sn = this.printList[idx].sn;
                   let dx = idx +this.beginNumber;
-                  event.toast(111)
                   GET('weex/member/shipping/print.jhtml?sn='+sn+"&seqno="+  dx, function (data) {
                           if(data.type == 'success'){
-                              event.toast(data)
                               _this.printIdx = idx+1;
                               if(!utils.isNull(data.data)){
                                   printer.print(data.data);
