@@ -197,7 +197,8 @@
                 <div class="content">
                     <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
                     <div class="flex-row" style="flex-wrap:wrap">
-                        <text class="sub_title mt10">2.点击缴活店铺，并支付技术服务费</text>
+                        <text class="sub_title mt10">2.点击缴活店铺，支付技术服务费</text>
+                        <!--<text class="sub_title mt10" style="color: #0088fb" @click="openWebView('芸店智能接单小票打印机')">《赠送芸店智能接单小票打印机》。</text>-->
                     </div>
 
                     <text class="sub_title mt10">3.下载专属二维码，开启新零售服务体验。</text>
@@ -296,7 +297,6 @@
     .sub_title {
         color:#ccc;
         font-size: 30px;
-        line-height:42px;
     }
 
     .wallet-title {
@@ -731,37 +731,18 @@
             //            扫码接单
             scanSend(sn){
                 let _this = this
-                var uId = event.getUId();
-                event.getLocation(function (data) {
-                    if(data.type == 'success'){
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat='+data.data.lat +'&lng='+data.data.lng + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
-                        if (mes.type == 'success') {
-                            modal.alert({
-                                message: mes.content,
-                                okTitle: 'OK'
-                            })
-                        } else {
-                            event.toast(mes.content);
-                        }
-                    }, function (err) {
-                        event.toast(err.content)
-                    })
-                    }else {
-                        GET('weex/member/shipping/receipt.jhtml?sn='+sn+'&lat=0' +'&lng=0' + '&memo='+encodeURIComponent('扫码接单'),function (mes) {
-                            if (mes.type == 'success') {
-                                modal.alert({
-                                    message: mes.content,
-                                    okTitle: 'OK'
-                                })
-                            } else {
-                                event.toast(mes.content);
-                            }
-                        }, function (err) {
-                            event.toast(err.content)
+                POST('weex/member/shipping/scanDispatch.jhtml?sn='+sn).then(function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
                         })
+                    } else {
+                        event.toast(mes.content);
                     }
+                }, function (err) {
+                    event.toast(err.content)
                 })
-
             },
 
 
