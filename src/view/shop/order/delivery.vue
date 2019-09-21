@@ -28,6 +28,14 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <div class="setting" @click="pickPattern()">
+                    <div class="flex-row">
+                        <text class="fz32">发货仓库:  {{shopName}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="" v-if="isobject == 'shipping'">
                     <div class="setting" @click="linkToLogistics" >
                         <div class="flex-row">
@@ -47,15 +55,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="setting" @click="pickPattern()">
-                    <div class="flex-row">
-                        <text class="fz32">发货仓库:  {{shopName}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="setting" @click="goMarki()">
+
+                <div class="setting" @click="goMarki()"  v-if="isobject != 'shipping'">
                     <div class="flex-row">
                         <text class="fz32">送货人员:  {{markiName}}</text>
                     </div>
@@ -348,15 +349,8 @@
                         event.toast('请选择发货仓库');
                         _this.clicked = false;
                         return
-                }else if(!utils.isNull(this.shopId)){
-                    if(this.isSelf == true || this.isSelf == 'true'){
-                        if(utils.isNull(this.markiId)){
-                            event.toast('请选择配送人员');
-                            _this.clicked = false;
-                            return
-                        }
-                    }
-                }else if(!utils.isNull(this.logisticsId)){
+                }
+                if(!utils.isNull(this.logisticsId)){
                     if(utils.isNull(this.trackingNo)){
                         event.toast('请输入单号');
                         _this.clicked = false;
