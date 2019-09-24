@@ -1,15 +1,15 @@
 <template>
     <div class="wrapper">
         <div class="wallet-panel bkg-primary" :style="objHeader()">
-            <div class="flex-column" @click="scan()">
+            <div class="flex-column flex1" @click="scan()">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
                 <text class="headerText mt20">扫一扫</text>
             </div>
-            <div class="flex-column" @click="linkToFill">
-                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>
-                <text class="headerText mt20">人工报单</text>
-            </div>
-            <div class="flex-column" @click="showQrcode">
+            <!--<div class="flex-column" @click="linkToFill">-->
+                <!--<text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>-->
+                <!--<text class="headerText mt20">人工报单</text>-->
+            <!--</div>-->
+            <div class="flex-column flex1" @click="showQrcode">
                 <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
                 <text class="headerText mt20">邀请码</text>
             </div>
@@ -56,48 +56,48 @@
             <!-- 我的订单 -->
 
             <div><!-- dom预留节点 -->
-                <div class="contentBox" v-if="conutTotal != 0 && filter('order')">
-                    <div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">
-                        <text class="fz30">我的订单</text>
-                        <div class="flex-row">
-                            <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
-                        </div>
-                    </div>
-                    <!-- 订单消息 -->
-                    <div class="comWrap">
-                        <div class=" flexCol iconBox"  @click="goNoPay()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
-                            <text class="iconfontText ">待付款</text>
-                            <div class="shippingNumberBox"  v-if="conut.unpaid != 0">
-                                <text class="shippingNumber">{{conut.unpaid}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox"  @click="goNoDelivery()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
-                            <text class="iconfontText ">待发货</text>
-                            <div class="shippingNumberBox" v-if="conut.unshipped != 0">
-                                <text class="shippingNumber" >{{conut.unshipped}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox"  @click="goDelivery()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
-                            <text class="iconfontText ">已发货</text>
-                            <div class="shippingNumberBox" v-if="conut.shipped != 0">
-                                <text class="shippingNumber" >{{conut.shipped}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox"  @click="goRefund()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
-                            <text class="iconfontText ">待退款</text>
-                            <div class="shippingNumberBox" v-if="conut.refund != 0">
-                                <text class="shippingNumber" >{{conut.refund}}</text>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="contentBox" v-if="conutTotal != 0 && filter('order')">-->
+                    <!--<div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">-->
+                        <!--<text class="fz30">我的订单</text>-->
+                        <!--<div class="flex-row">-->
+                            <!--<text class="iconfontText" style="padding-right: 10px;">查看所有</text>-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; 订单消息 &ndash;&gt;-->
+                    <!--<div class="comWrap">-->
+                        <!--<div class=" flexCol iconBox"  @click="goNoPay()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>-->
+                            <!--<text class="iconfontText ">待付款</text>-->
+                            <!--<div class="shippingNumberBox"  v-if="conut.unpaid != 0">-->
+                                <!--<text class="shippingNumber">{{conut.unpaid}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class=" flexCol iconBox"  @click="goNoDelivery()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>-->
+                            <!--<text class="iconfontText ">待发货</text>-->
+                            <!--<div class="shippingNumberBox" v-if="conut.unshipped != 0">-->
+                                <!--<text class="shippingNumber" >{{conut.unshipped}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class=" flexCol iconBox"  @click="goDelivery()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>-->
+                            <!--<text class="iconfontText ">已发货</text>-->
+                            <!--<div class="shippingNumberBox" v-if="conut.shipped != 0">-->
+                                <!--<text class="shippingNumber" >{{conut.shipped}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class=" flexCol iconBox"  @click="goRefund()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>-->
+                            <!--<text class="iconfontText ">待退款</text>-->
+                            <!--<div class="shippingNumberBox" v-if="conut.refund != 0">-->
+                                <!--<text class="shippingNumber" >{{conut.refund}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!-- 我的运单 -->
-                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping')">
+                <div class="contentBox" v-if="filter('shipping')">
                     <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
                         <text class="fz30">我的运单</text>
                         <div class="flex-row">
@@ -138,67 +138,67 @@
                     </div>
                 </div>
             </div>
-            <div class="menubox" v-if="cashier.status == 'success'">
-                <div class="menu" @click="goods()" v-if="filter('manage')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
-                    <text class="menuBtn">商品</text>
-                </div>
-                <div class="menu" @click="order()" v-if="filter('order')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
-                    <text class="menuBtn">订单</text>
-                </div>
-                <div class="menu" @click="goShipping()" v-if="filter('shipping')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">送货</text>
-                </div>
+            <!--<div class="menubox" v-if="cashier.status == 'success'">-->
+                <!--<div class="menu" @click="goods()" v-if="filter('manage')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>-->
+                    <!--<text class="menuBtn">商品</text>-->
+                <!--</div>-->
+                <!--<div class="menu" @click="order()" v-if="filter('order')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>-->
+                    <!--<text class="menuBtn">订单</text>-->
+                <!--</div>-->
+                <!--<div class="menu" @click="goShipping()" v-if="filter('shipping')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>-->
+                    <!--<text class="menuBtn">送货</text>-->
+                <!--</div>-->
 
-                <div class="menu" @click="gocard()" v-if="filter('card')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="menuBtn">会员</text>
-                </div>
-                <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="menuBtn">优惠券</text>
-                </div>
-                <div class="menu" @click="deposit()" v-if="filter('money')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">统计</text>
-                </div>
-                <div class="menu" @click="shop()" v-if="filter('shop')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
-                    <text class="menuBtn">店铺</text>
-                </div>
-                <div class="menu" @click="employee()" v-if="filter('employee')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
-                    <text class="menuBtn">员工</text>
-                </div>
-                <div class="menu" @click="godistribution()" v-if="filter('distribution')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
-                    <text class="menuBtn">设置</text>
-                </div>
-            </div>
-            <div class="menuboxTwo" v-if="cashier.status != 'success'">
-                <div class="menuTwo" @click="goShop()" v-if="filter('openShop')">
-                    <text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 120px">&#xe662;</text>
-                    <text class="menuBtn">我要开店</text>
-                </div>
-                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">
-                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
-                    <text class="menuBtn">激活店铺</text>
-                </div>
-                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">
-                    <text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>
-                    <text class="menuBtn">审核中...</text>
-                </div>
-                <div class="content">
-                    <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
-                    <div class="flex-row" style="flex-wrap:wrap">
-                        <text class="sub_title mt10">2.点击缴活店铺，并支付技术服务费</text>
-                    </div>
+                <!--<div class="menu" @click="gocard()" v-if="filter('card')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>-->
+                    <!--<text class="menuBtn">会员</text>-->
+                <!--</div>-->
+                <!--<div class="menu" @click="gocoupon()" v-if="filter('coupon')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>-->
+                    <!--<text class="menuBtn">优惠券</text>-->
+                <!--</div>-->
+                <!--<div class="menu" @click="deposit()" v-if="filter('money')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>-->
+                    <!--<text class="menuBtn">统计</text>-->
+                <!--</div>-->
+                <!--<div class="menu" @click="shop()" v-if="filter('shop')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>-->
+                    <!--<text class="menuBtn">店铺</text>-->
+                <!--</div>-->
+                <!--<div class="menu" @click="employee()" v-if="filter('employee')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>-->
+                    <!--<text class="menuBtn">员工</text>-->
+                <!--</div>-->
+                <!--<div class="menu" @click="godistribution()" v-if="filter('distribution')">-->
+                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>-->
+                    <!--<text class="menuBtn">设置</text>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="menuboxTwo" v-if="cashier.status != 'success'">-->
+                <!--<div class="menuTwo" @click="goShop()" v-if="filter('openShop')">-->
+                    <!--<text  :style="{fontFamily:'iconfont'}" style=" color: #66ccff;font-size: 120px">&#xe662;</text>-->
+                    <!--<text class="menuBtn">我要开店</text>-->
+                <!--</div>-->
+                <!--<div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">-->
+                    <!--<text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>-->
+                    <!--<text class="menuBtn">激活店铺</text>-->
+                <!--</div>-->
+                <!--<div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">-->
+                    <!--<text :style="{fontFamily:'iconfont'}" style=" color: #B72A65 ;font-size: 120px">&#xe6ce;</text>-->
+                    <!--<text class="menuBtn">审核中...</text>-->
+                <!--</div>-->
+                <!--<div class="content">-->
+                    <!--<text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>-->
+                    <!--<div class="flex-row" style="flex-wrap:wrap">-->
+                        <!--<text class="sub_title mt10">2.点击缴活店铺，并支付技术服务费</text>-->
+                    <!--</div>-->
 
-                    <text class="sub_title mt10">3.下载专属二维码，开启新零售服务体验。</text>
-                </div>
-            </div>
+                    <!--<text class="sub_title mt10">3.下载专属二维码，开启新零售服务体验。</text>-->
+                <!--</div>-->
+            <!--</div>-->
         </scroller>
         <div class="waiting" v-if="isShow()">
             <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe710;</text>
