@@ -1,19 +1,19 @@
 <template>
     <scroller class="wrapper" >
         <navbar :title="title"  @goback="goback" :complete="complete" :showComplete="showSort"  @goComplete="cleanbgChange"> </navbar>
-        <div class="setting" @click="gosetting()">
-            <text class="title " >营销推广设置</text>
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
+        <!--<div class="setting" @click="gosetting()">-->
+            <!--<text class="title " >营销推广设置</text>-->
+            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+        <!--</div>-->
         <!--<div class="setting" @click="cardSetting()">-->
             <!--<text class="title " >充值活动设置</text>-->
             <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
         <!--</div>-->
-        <div class="setting" @click="openWebView()">
-            <text class="title " >云打印机设置</text>
-            <text class="print">{{typeBegin == '0' ? '接单手动打印' : '接单自动打印'}}</text>
-            <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
+        <!--<div class="setting" @click="openWebView()">-->
+            <!--<text class="title " >云打印机设置</text>-->
+            <!--<text class="print">{{typeBegin == '0' ? '接单手动打印' : '接单自动打印'}}</text>-->
+            <!--<text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+        <!--</div>-->
         <div class="bgWhite addCorpus">
             <div class="lineStyle pr30" @click="jump()">
                 <text class="lineText">添加策略</text>

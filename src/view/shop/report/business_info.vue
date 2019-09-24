@@ -9,7 +9,7 @@
                 <div class="lineCell" @click="linkToDetail(item.goodsId,item.name)">
                     <text class="name">{{item.name}}</text>
                     <div class="flex-row">
-                        <text class="number">{{item.balance}}</text>
+                        <text class="number">{{item.balance}}{{type =='card' ?'次':'张'}}</text>
                         <text class="moreIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>

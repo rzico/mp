@@ -31,11 +31,11 @@
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>
-                        <text class="fz32">送货工资: ¥{{c.adminFreight}}</text>
+                        <text class="fz32" v-if="c.adminFreight !=0">送货工资: ¥{{c.adminFreight}}</text>
                     </div>
                     <div class="totalCellTwo">
-                        <text class="fz32">代收水票: {{c.paper}}</text>
-                        <text class="fz32">代收现金: ¥{{c.cash}}</text>
+                        <text class="fz32" v-if="c.paper !=0">代收水票: {{c.paper}}</text>
+                        <text class="fz32" v-if="c.cash !=0">代收现金: ¥{{c.cash}}</text>
                     </div>
                 </div>
             </cell>
@@ -62,11 +62,11 @@
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">配送费用: ¥{{summarylist[0].shippingFreight}}</text>
-                <text class="fz28 ">送货工资: ¥{{summarylist[0].adminFreight}}</text>
+                <text class="fz28 " v-if="summarylist[0].adminFreight !=0">送货工资: ¥{{summarylist[0].adminFreight}}</text>
             </div>
             <div class="bottomCellTwo">
-                <text class="fz28 ">代收水票: {{summarylist[0].paper}}</text>
-                <text class="fz28 ">代收现金: ¥{{summarylist[0].cash}}</text>
+                <text class="fz28 " v-if="summarylist[0].paper !=0">代收水票: {{summarylist[0].paper}}</text>
+                <text class="fz28 " v-if="summarylist[0].cash !=0">代收现金: ¥{{summarylist[0].cash}}</text>
             </div>
         </div>
     </div>

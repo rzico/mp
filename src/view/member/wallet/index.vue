@@ -53,24 +53,24 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between" @click="reward()">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe698;</text>
-                        <text class="title ml10">我的赏金</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="noBorderCell space-between " @click="rebate()">
-                    <div class="flex-row flex-start" >
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
-                        <text class="title ml10">我的奖励</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between" @click="reward()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
+                        <!--<text class="title ml10">我的赏金</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="noBorderCell space-between " @click="rebate()">-->
+                    <!--<div class="flex-row flex-start" >-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
+                        <!--<text class="title ml10">我的奖励</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="boder-bottom"></div>
             </div>
         </scroller>
