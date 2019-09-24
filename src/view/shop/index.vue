@@ -748,6 +748,24 @@
 
             },
 
+            //            订水二维码
+            bindQrcode(code){
+                let _this = this
+                POST('weex/member/shop/bindQrcode.jhtml?code='+code).then(function (mes) {
+                    if (mes.type == 'success') {
+                        modal.alert({
+                            message: mes.content,
+                            okTitle: 'OK'
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+
+            },
+
 
 //            触发二维码方法
             scan:function () {
@@ -768,6 +786,8 @@
                                     _this.scanRob(res.data.sn)
                                 }else if(res.data.type =='818807'){
                                     _this.scanSend(res.data.sn)
+                                }else if(res.data.type =='818810'){
+                                    _this.bindQrcode(res.data.code)
                                 }else if(res.data.type =='865380'){
                                     _this.scanMember(res.data.id)
                                 }
