@@ -25,8 +25,8 @@
             </div>
             <div class="memberCard" @click="gocard()">
                 <text class="fz32" v-if="!isShow">点击选择会员</text>
-                <div>
-                    <div class="flex-row" v-if="isShow" >
+                <div v-if="isShow">
+                    <div class="flex-row"  >
                         <text class="fz28">{{member.consignee}}</text>
                         <text class="fz28 ml20">{{member.phone}}</text>
                     </div>

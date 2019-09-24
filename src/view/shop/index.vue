@@ -2,16 +2,16 @@
     <div class="wrapper">
         <div class="wallet-panel bkg-primary" :style="objHeader()">
             <div class="flex-column" @click="scan()">
-                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
-                <text class="headerText mt20">扫一扫</text>
+                <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
+                <text class="headerBoxText">扫一扫</text>
             </div>
             <div class="flex-column" @click="linkToFill">
-                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>
-                <text class="headerText mt20">人工报单</text>
+                <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>
+                <text class="headerBoxText">人工报单</text>
             </div>
             <div class="flex-column" @click="showQrcode">
-                <text class="headerIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
-                <text class="headerText mt20">邀请码</text>
+                <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
+                <text class="headerBoxText">邀请码</text>
             </div>
         </div>
         <scroller class="scroller">
@@ -195,12 +195,12 @@
                     <text class="menuBtn">审核中...</text>
                 </div>
                 <div class="content">
-                    <text class="sub_title mt10">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
+                    <text class="mesToast">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
                     <div class="flex-row" style="flex-wrap:wrap">
-                        <text class="sub_title mt10">2.点击缴活店铺，并支付技术服务费</text>
+                        <text class="mesToast">2.点击缴活店铺，并支付技术服务费</text>
                     </div>
 
-                    <text class="sub_title mt10">3.下载专属二维码，开启新零售服务体验。</text>
+                    <text class="mesToast">3.下载专属二维码，开启新零售服务体验。</text>
                 </div>
             </div>
         </scroller>
@@ -225,13 +225,14 @@
     .shopCssTwo{
         color: #B72A65 ;font-size: 120px;
     }
-    .headerIcon{
+    .headerBoxIcon{
         font-size: 60px;
         color: white;
     }
-    .headerText{
+    .headerBoxText{
         font-size: 32px;
         color: white;
+        margin-top: 20px;
     }
     .contentBox{
         width: 690px;
@@ -293,10 +294,11 @@
         color: #EB4E40;
     }
 
-    .sub_title {
+    .mesToast {
         color:#ccc;
         font-size: 30px;
         line-height:42px;
+        margin-top: 10px;
     }
 
     .wallet-title {
