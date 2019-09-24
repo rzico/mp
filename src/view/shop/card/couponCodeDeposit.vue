@@ -37,7 +37,7 @@
                             </div>
                             <div class="flex-row space-between align-bottom">
                                 <text class="datetime">{{deposit.createDate | datetimefmt}}</text>
-                                <text class="bal pr25">余额:{{deposit.balance | currencyfmt}}</text>
+                                <text class="bal pr25">余票:{{deposit.balance | currencyfmt}}</text>
                             </div>
                         </div>
                     </div>

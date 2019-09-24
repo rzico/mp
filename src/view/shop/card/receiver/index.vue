@@ -188,7 +188,6 @@
             this.openlist();
         },
         methods: {
-
             goback() {
                 event.closeURL();
             },
@@ -210,12 +209,19 @@
             setDefault(index) {
                 var _this = this
                 let item = _this.choose[index];
-                let ev =  { id: item.id, isDefault: !item.default,memberId: this.memberId};
+                let ev =  { id: item.id, isDefault:true,memberId: this.memberId};
                 POST("weex/member/receiver/default.jhtml?"+URIEncrypt(ev), null).then(function (res) {
                     if (res.type == 'success') {
+                        modal.alert({
+                            message: '设置成功',
+                            okTitle: 'OK'
+                        })
                         _this.openlist();
                     } else {
-                        event.toast(res.content);
+                        modal.alert({
+                            message: res.content,
+                            okTitle: 'OK'
+                        })
                     }
                 },function (err) {
                     event.toast(err.content);
@@ -294,7 +300,7 @@
                     cancelTitle:'取消'
                 }, function (value) {
                     if (value=='删除') {
-                        POST("weex/member/receiver/delete.jhtml?id="+item.id +'&memberId=' + this.memberId,null).then(function (res) {
+                        POST("weex/member/receiver/delete.jhtml?id="+item.id +'&memberId=' + _this.memberId,null).then(function (res) {
                             if (res.type == 'success') {
                                 _this.openlist();
                             } else {
@@ -303,6 +309,7 @@
                         },function (err) {
                             event.toast(err.content);
                         })
+                    }else {
                     }
                 })
             },

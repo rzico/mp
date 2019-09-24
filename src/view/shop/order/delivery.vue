@@ -28,6 +28,14 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
+                <div class="setting" @click="pickPattern()">
+                    <div class="flex-row">
+                        <text class="fz32">发货仓库:  {{shopName}}</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
                 <div class="" v-if="isobject == 'shipping'">
                     <div class="setting" @click="linkToLogistics" >
                         <div class="flex-row">
@@ -47,15 +55,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="setting" @click="pickPattern()">
-                    <div class="flex-row">
-                        <text class="fz32">发货仓库:  {{shopName}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
-                <div class="setting" @click="goMarki()">
+
+                <div class="setting" @click="goMarki()"  v-if="isobject != 'shipping'">
                     <div class="flex-row">
                         <text class="fz32">送货人员:  {{markiName}}</text>
                     </div>
@@ -68,6 +69,7 @@
                 </div>
             </div>
         </div>
+        <wxc-loading :show="clicked" type="default"></wxc-loading>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -166,6 +168,7 @@
     import navbar from '../../../include/navbar.vue'
     const picker = weex.requireModule('picker');
     const modal = weex.requireModule('modal');
+    import { WxcLoading, WxcPartLoading } from 'weex-ui';
     export default {
         data: function () {
             return {
@@ -182,11 +185,13 @@
                 total:0,
                 shippingMethods:['同城配送','普通快递','到店自提'],
                 logisticsId:'',
-                logistics:''
+                logistics:'',
+                lat:0,
+                lng:0
             }
         },
         components: {
-            navbar
+            navbar,WxcLoading,WxcPartLoading
         },
         props: {
             title: {default: "确认发货"},
@@ -219,7 +224,7 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                event.openURL(utils.locate('view/shop/shipping/station.js'), function (data) {
+                event.openURL(utils.locate('view/shop/shipping/station.js?lat='+this.lat+'&lng='+this.lng), function (data) {
                     _this.clicked = false;
                     if(data.type == 'success' && data.data != '') {
                         _this.shopName = data.data.name;
@@ -296,11 +301,26 @@
                             _this.shippingMethods = ['到店自提','普通快递','同城配送'];
                             _this.begin = 0
                         }
+                        if(!utils.isNull(data.data.receiver.lat)){
+                            _this.lat = data.data.receiver.lat;
+                        }if(!utils.isNull(data.data.receiver.lng)){
+                            _this.lng = data.data.receiver.lng;
+                        }
                     }else{
-                        event.toast(data.content);
+                        modal.alert({
+                            message: data.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 },function (err) {
-                    event.toast(err.content);
+                    modal.alert({
+                        message: err.content,
+                        okTitle: '确认'
+                    }, function () {
+                        event.closeURL();
+                    })
                 })
             },
             goback(){
@@ -329,15 +349,8 @@
                         event.toast('请选择发货仓库');
                         _this.clicked = false;
                         return
-                }else if(!utils.isNull(this.shopId)){
-                    if(this.isSelf == true || this.isSelf == 'true'){
-                        if(utils.isNull(this.markiId)){
-                            event.toast('请选择配送人员');
-                            _this.clicked = false;
-                            return
-                        }
-                    }
-                }else if(!utils.isNull(this.logisticsId)){
+                }
+                if(!utils.isNull(this.logisticsId)){
                     if(utils.isNull(this.trackingNo)){
                         event.toast('请输入单号');
                         _this.clicked = false;
@@ -351,11 +364,21 @@
                             let E = utils.message('success','发货成功','')
                             event.closeURL(E);
                         }else{
-                            event.toast(data.content);
+                            modal.alert({
+                                message: data.content,
+                                okTitle: '确认'
+                            }, function () {
+                                event.closeURL();
+                            })
                         }
                     },function (err) {
                         _this.clicked = false;
-                        event.toast(err.content);
+                        modal.alert({
+                            message: err.content,
+                            okTitle: '确认'
+                        }, function () {
+                            event.closeURL();
+                        })
                     }
                 )
             }

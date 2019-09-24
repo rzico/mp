@@ -77,7 +77,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="addressBox flex-row mt20" @click="jump(cardId)">
+                <div class="infoWhiteColor boder-bottom mt20 space-between" @click="jump(item.cardId)">
+                    <div class="goodsBody">
+                        <text class="fz32">配送信息</text>
+                    </div>
+                    <div class="goodsBody" >
+                        <div class="flex-row">
+                            <text class="fz28 gray">查看会员资料</text>
+                            <text class="fz28 gray ml10" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                    </div>
+                </div>
+                <div class="addressBox flex-row" @click="jump(cardId)">
                     <div style="width: 70px;">
                         <text class="addressIcon" :style="{fontFamily:'iconfont'}">&#xe792;</text>
                     </div>

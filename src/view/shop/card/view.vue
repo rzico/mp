@@ -419,20 +419,6 @@
             },
             fill: function () {
                 var _this = this;
-                if(utils.appType() == 'water'){
-                    if (!utils.isRoles("12",_this.roles)) {
-                        modal.alert({
-                            message: '暂无权限',
-                            okTitle: 'OK'
-                        })
-                        return
-                    }
-                    event.openURL(utils.locate("view/shop/card/fill.js?id="+_this.id),function (data) {
-                        if (data.type=='success') {
-                            _this.load();
-                        }
-                    })
-                }else {
                     if (!utils.isRoles("15",_this.roles)) {
                         modal.alert({
                             message: '暂无权限',
@@ -445,25 +431,9 @@
                             _this.load();
                         }
                     })
-                }
-
             },
             refund: function () {
                 var _this = this;
-                if(utils.appType() == 'water') {
-                    if (!utils.isRoles("12", _this.roles)) {
-                        modal.alert({
-                            message: '暂无权限',
-                            okTitle: 'OK'
-                        })
-                        return
-                    }
-                    event.openURL(utils.locate("view/shop/card/refund.js?id=" + _this.id), function (data) {
-                        if (data.type == 'success') {
-                            _this.load();
-                        }
-                    })
-                }else {
                     if (!utils.isRoles("15", _this.roles)) {
                         modal.alert({
                             message: '暂无权限',
@@ -476,7 +446,6 @@
                             _this.load();
                         }
                     })
-                }
             },
             load:function () {
                 var _this = this;

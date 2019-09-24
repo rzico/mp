@@ -137,7 +137,7 @@
             </div>
         </div>
         </div>
-        <div class="button bw bkg-primary button-bkg-img" v-if="!doSearch && !pageType" @click="addGoods()">
+        <div class="button bw bkg-primary button-bkg-img" v-if="!doSearch && !pageType && !hasAdd" @click="addGoods()">
             <text class="buttonText ">新增商品</text>
         </div>
     </div>
@@ -468,7 +468,8 @@
 //            switch 新品状态
             newSwitch:false,
             goodsName:'',
-            pageType:false//            选择页过来不让新增商品
+            pageType:false, //            选择页过来不让新增商品
+            hasAdd:false
 
 
         },
@@ -493,6 +494,7 @@
             if(!utils.isNull(utils.getUrlParameter('pageType'))){
                 this.pageType = utils.getUrlParameter('pageType');
             }
+            this.canAdd()
             this.permissions()
             utils.initIconFont();
 //            获取分类列表
@@ -571,6 +573,19 @@
                     }
                 )
 
+            },
+            //  是否显示新增按钮
+            canAdd:function () {
+                var _this = this;
+                GET("weex/member/product/canAdd.jhtml",function (mes) {
+                    if (mes.type=="success") {
+                        _this.hasAdd = mes.data
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
             },
             //            获取权限
             permissions:function () {

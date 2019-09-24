@@ -577,7 +577,7 @@
             },
             addCard:function() {
                 var _this = this
-                event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
+                event.openURL(utils.locate("view/shop/card/addMember/amap-picker/amap-picker.js"),function (e) {
                     if (e.type=='success') {
 
                         let ev = {
@@ -590,7 +590,7 @@
                         }
 
 
-                        let url = utils.locate("view/shop/card/receiver/add/index.js?"+URIEncrypt(ev));
+                        let url = utils.locate("view/shop/card/addMember/add/index.js?"+URIEncrypt(ev));
                         event.openURL(url,function (res) {
                             _this.pageStart = 0;
                             _this.open();

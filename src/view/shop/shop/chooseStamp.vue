@@ -12,9 +12,9 @@
         <div class="button bkg-primary button-bkg-img" @click="scan()">
             <text class="buttonText">{{prompting}}</text>
         </div>
-        <div class="skipBox">
-            <text class="skipMessage" @click="call('13860431130')">暂无打印机，购买热线 13860431130</text>
-        </div>
+<!--        <div class="skipBox">-->
+<!--            <text class="skipMessage" @click="call('13860431130')">暂无打印机，购买热线 13860431130</text>-->
+<!--        </div>-->
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
