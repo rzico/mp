@@ -30,6 +30,11 @@
                     <text class="title">%</text>
                 </div>
                 <div class="cell-panel ">
+                    <text class="title">消费返还:</text>
+                    <input type="number" v-model="item.given" return-key-type="next" class="lineContent pr20"  placeholder="消费返还比例" />
+                    <text class="title">%</text>
+                </div>
+                <div class="cell-panel ">
                     <text class="title">间接佣金:</text>
                     <input type="number" v-model="item.percent2" return-key-type="next" class="lineContent pr20"  placeholder="间接佣金比例" />
                     <text class="title">%</text>
@@ -132,6 +137,10 @@
             this.item.percent1 = utils.getUrlParameter('percent1');
             if(utils.isNull(this.item.percent1)){
                 _this.item.percent1 = ''
+            }
+            this.item.given = utils.getUrlParameter('given');
+            if(utils.isNull(this.item.given)){
+                _this.item.given = ''
             }
             this.item.percent2 = utils.getUrlParameter('percent2');
             if(utils.isNull(this.item.percent2)){
@@ -280,6 +289,10 @@
                         event.toast('请设置提现比例');
                         return;
                     }
+                    if (utils.isNull(this.item.given)) {
+                        event.toast('请输入返还比例');
+                        return;
+                    }
                     if (utils.isNull(this.item.percent1)) {
                         event.toast('请输入佣金比例');
                         return;
@@ -293,10 +306,11 @@
                         return;
                     }
 //                把字符串转换成整型
+                    this.item.given = parseInt(this.item.given)
                     this.item.percent1 = parseInt(this.item.percent1)
                     this.item.percent2 = parseInt(this.item.percent2)
                     this.item.percent3 = parseInt(this.item.percent3)
-                    if (this.item.percent1 + this.item.percent2 + this.item.percent3 > this.item.tota) {
+                    if (this.item.percent1 + this.item.given + this.item.percent2 + this.item.percent3 > this.item.tota) {
                         modal.alert({
                             message: '佣金比例总和不能大于利润分红比例',
                             okTitle: '知道了'
@@ -304,7 +318,7 @@
                         return;
                     }
                     if (utils.isNull(_this.item.id)) {
-                        POST('weex/member/distribution/add.jhtml?name=' + encodeURI(_this.item.name) + '&percent1=' + _this.item.percent1 + '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.tota).then(
+                        POST('weex/member/distribution/add.jhtml?name=' + encodeURI(_this.item.name) + '&given=' + _this.item.given + '&percent1=' + _this.item.percent1 + '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.tota).then(
                             function (res) {
                                 if (res.type == 'success') {
                                     event.toast('添加成功');
@@ -318,7 +332,7 @@
                         )
                     } else {
                         let name = encodeURI(_this.item.name);
-                        POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name + '&percent1=' + _this.item.percent1 + '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.tota).then(
+                        POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name + '&given=' + _this.item.given + '&percent1=' + _this.item.percent1 + '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.tota).then(
                             function (data) {
                                 if (data.type == 'success') {
                                     event.toast('修改成功');
@@ -335,6 +349,7 @@
                     }
                 } else {
 //                    类型为消费返现时走这接口
+                    _this.item.given = 0;
                     _this.item.percent2 = 0;
                     _this.item.percent3 = 0;
                     _this.item.tota = 0;
@@ -351,7 +366,7 @@
                         return;
                     }
                     if (utils.isNull(_this.item.id)) {
-                        POST('weex/member/distribution/add.jhtml?name=' + encodeURI(_this.item.name) + '&percent1=' + _this.item.percent1 + '&type=' + _this.item.type+ '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.dividend).then(
+                        POST('weex/member/distribution/add.jhtml?name=' + encodeURI(_this.item.name) + '&given=' + _this.item.given + '&percent1=' + _this.item.percent1 + '&type=' + _this.item.type+ '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.dividend).then(
                             function (res) {
                                 if (res.type == 'success') {
                                     event.toast('添加成功');
@@ -365,7 +380,7 @@
                         )
                     } else {
                         let name = encodeURI(_this.item.name);
-                        POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name + '&percent1=' + _this.item.percent1 + '&type=' + _this.item.type+ '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.dividend).then(
+                        POST('weex/member/distribution/update.jhtml?id=' + _this.item.id + '&name=' + name + '&given=' + _this.item.given + '&percent1=' + _this.item.percent1 + '&type=' + _this.item.type+ '&percent2=' + _this.item.percent2 + '&percent3=' + _this.item.percent3 + '&point=' + _this.begin + '&dividend=' + _this.item.dividend).then(
                             function (data) {
                                 if (data.type == 'success') {
                                     event.toast('修改成功');
