@@ -91,6 +91,10 @@
                     <text class="fz32">推荐</text>
                     <switch  :checked="recommendSwitch" @change="settingTwoLable"></switch>
                 </div>
+                <div class="switchBox">
+                    <text class="fz32">精选</text>
+                    <switch  :checked="choiceSwitch" @change="settingTrdLable"></switch>
+                </div>
                 <!--小三角-->
                 <div class="triangle">
                     <image class="triangleImg" :src="triangleImg"></image>
@@ -128,7 +132,7 @@
                         <div class="imgBox"  @click="goAcitve()">
                             <text class="primary popupImg" :style="{fontFamily:'iconfont'}">&#xe632;</text>
                         </div>
-                        <text class="fz28 mt20 color444">优惠</text>
+                        <text class="fz28 mt20 color444">活动</text>
                     </div>
                 </div>
             </div>
@@ -465,6 +469,7 @@
 //
 //            switch 推荐状态
             recommendSwitch:false,
+            choiceSwitch:false,
 //            switch 新品状态
             newSwitch:false,
             goodsName:'',
@@ -514,6 +519,10 @@
                     return {
                         backgroundColor:'#ff700b'
                     }
+                }else if(items.name == '精选'){
+                    return {
+                        backgroundColor:'#ff700b'
+                    }
                 }
             },
 //            点击标签
@@ -531,11 +540,15 @@
                 if (e.value==true) {
                     nw = 2;
                 }
+                let ch = 0;
+                if (_this.choiceSwitch) {
+                    chk = 1;
+                }
                 _this.newSwitch = (nw==2);
-                POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+nw +'&tagIds=' +rc).then(
+                POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+ch+'&tagIds='+nw +'&tagIds=' +rc).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            let tags=[{id:nw,name:'新品'},{id:rc,name:'推荐'}]
+                            let tags=[{id:nw,name:'新品'},{id:rc,name:'推荐'},{id:ch,name:'精选'}]
                             _this.goodsList[_this.goodsIndex].tags = tags;
 
                         } else {
@@ -558,11 +571,46 @@
                 if (_this.newSwitch) {
                     nw = 2;
                 }
+                let ch = 0;
+                if (_this.choiceSwitch) {
+                    chk = 1;
+                }
                 _this.recommendSwitch = (rc==3);
-                POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+nw +'&tagIds=' +rc).then(
+                POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+ch+'&tagIds='+nw +'&tagIds=' +rc).then(
                     function (mes) {
                         if (mes.type == "success") {
-                            let tags=[{id:nw,name:'新品'},{id:rc,name:'推荐'}]
+                            let tags=[{id:nw,name:'新品'},{id:rc,name:'推荐'},{id:ch,name:'精选'}]
+                            _this.goodsList[_this.goodsIndex].tags = tags;
+
+                        } else {
+                            event.toast(mes.content);
+                        }
+                    }, function (err) {
+                        event.toast(err.content);
+                    }
+                )
+
+            },
+            //            设置推荐标签
+            settingTrdLable:function (e) {
+                var _this = this;
+                let rc = 0;
+                if(e.value == true){
+                    rc = 1
+                }
+                let nw = 0;
+                if (_this.newSwitch) {
+                    nw = 2;
+                }
+                let rm = 0;
+                if (_this.recommendSwitch) {
+                    rm = 3;
+                }
+                _this.choiceSwitch = (rc==1);
+                POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+nw +'&tagIds='+rm +'&tagIds=' +rc).then(
+                    function (mes) {
+                        if (mes.type == "success") {
+                            let tags=[{id:nw,name:'新品'},{id:rm,name:'推荐'},{id:rc,name:'精选'}]
                             _this.goodsList[_this.goodsIndex].tags = tags;
 
                         } else {
