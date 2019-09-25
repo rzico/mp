@@ -228,12 +228,8 @@
                 }
             },
             watchType:function (data) {
-                if(data == 'partner'){
-                    return '分红股东'
-                }else if(data == 'team'){
-                    return 'VIP会员'
-                }else if(data == 'agent'){
-                    return '代理商'
+                if(data == 'team'){
+                    return '推广员'
                 }else{
                     return '普通会员'
                 }

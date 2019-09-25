@@ -237,10 +237,8 @@
                 }
             },
             watchType:function (data) {
-                if(data == 'partner'){
-                    return '股东'
-                }else if(data == 'team'){
-                    return '团队'
+                if(data == 'team'){
+                    return '推广员'
                 }else{
                     return '普通'
                 }

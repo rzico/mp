@@ -4,35 +4,35 @@
         <div class="lineCell" @click="linkToDetail('balance')">
             <text class="name">余额</text>
             <div class="flex-row">
-                <text class="number">{{status.balance}}</text>
+                <text class="number">{{status.balance}}元</text>
                 <text class="moreIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
         <div class="lineCell" @click="linkToDetail('point')">
             <text class="name">金币</text>
             <div class="flex-row">
-                <text class="number">{{status.point}}</text>
+                <text class="number">{{status.point}}个</text>
                 <text class="moreIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
         <div class="lineCell" @click="linkToDetail('gift')">
             <text class="name">礼卡</text>
             <div class="flex-row">
-                <text class="number">{{status.gift}}</text>
+                <text class="number">{{status.gift}}张</text>
                 <text class="moreIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
         <div class="lineCell" @click="linkToDetail('card')">
             <text class="name">套餐</text>
             <div class="flex-row">
-                <text class="number">{{status.card}}</text>
+                <text class="number">{{status.card}}次</text>
                 <text class="moreIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
         <div class="lineCell" @click="linkToDetail('water')">
             <text class="name">水票</text>
             <div class="flex-row">
-                <text class="number">{{status.water}}</text>
+                <text class="number">{{status.water}}张</text>
                 <text class="moreIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
