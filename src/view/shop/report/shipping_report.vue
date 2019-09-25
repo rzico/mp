@@ -6,13 +6,13 @@
                 <text class="tableText">员工</text>
             </div>
             <div class="tableOne">
-                <text class="tableText">品牌</text>
+                <text class="tableText">数量</text>
             </div>
             <div class="tableOne">
-                <text class="tableText">送出</text>
+                <text class="tableText">金额</text>
             </div>
             <div class="tableTwo">
-                <text class="tableText">回收</text>
+                <text class="tableText">好评</text>
             </div>
         </div>
         <list  loadmoreoffset="180" v-if="reportList != null">
@@ -22,9 +22,9 @@
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="contentCell" >
                     <text class="shopName">{{c.empName}}</text>
-                    <text class="shopName">{{c.barrelName}}</text>
-                    <text class="number">{{c.quantity}}</text>
-                    <text class="returnMoney">{{c.returnQuantity}}</text>
+                    <text class="shopName">{{c.quantity}}</text>
+                    <text class="number">{{c.amount}}</text>
+                    <text class="returnMoney">{{c.star}}</text>
                 </div>
             </cell>
             <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>
@@ -38,12 +38,10 @@
         </list>
 
         <div class="bottomTotal"  v-if="reportList != null">
-            <div class="bottomCell">
-                <text class="bottomCellText">送出合计: {{total}}</text>
-            </div>
-            <div class="bottomCell ml20">
-                <text class="bottomCellText">回收合计: {{refund}}</text>
-            </div>
+            <text class="shopName">合计</text>
+            <text class="shopName">{{total}}</text>
+            <text class="number">{{money}}</text>
+            <text class="returnMoney"></text>
         </div>
     </div>
 
@@ -85,8 +83,6 @@
     .bottomTotal{
         width: 750px;
         height: 100px;
-        padding-left: 20px;
-        padding-right: 20px;
         background-color: white;
         position: fixed;
         bottom:0px;
@@ -95,7 +91,6 @@
         border-color: #ccc;
         flex-direction: row;
         align-items: center;
-        justify-content: flex-end;
     }
     .bigIcon{
         font-size: 30px;
@@ -222,7 +217,8 @@
                 pageName:'送货统计',
                 beginTime:'',
                 endTime:'',
-                refund:''
+                total:0,
+                money:0
             }
         },
         components: {
@@ -377,13 +373,13 @@
                 GET('weex/member/report/shipping_emp_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime),function (res) {
                     if (res.type=="success") {
                         var total = 0;
-                        var refund = 0;
+                        var money = 0;
                         res.data.data.data.forEach(function (item) {
                             total = total+item.quantity;
-                            refund = refund + item.returnQuantity
+                            money = money + item.amount
                         })
                         _this.total = total;
-                        _this.refund = refund;
+                        _this.money = money;
                         _this.reportList = res.data.data.data
                     } else {
                         event.toast(res.content);
