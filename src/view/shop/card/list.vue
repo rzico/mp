@@ -343,10 +343,8 @@
                 return value.substr(-6)
             },
             watchType:function (data) {
-                if(data == 'partner'){
-                    return '股东'
-                }else if(data == 'team'){
-                    return 'VIP'
+               if(data == 'team'){
+                    return '推广员'
                 }else{
                     return '普通'
                 }
@@ -366,7 +364,7 @@
                 let _this =this;
                 GET('weex/member/card/summary.jhtml', function (data) {
                         if(data.type == 'success'){
-                            _this.summary = res.data;
+                            _this.summary = data.data;
                         }else{
                             event.toast(data.content);
                         }

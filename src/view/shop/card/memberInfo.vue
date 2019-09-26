@@ -460,7 +460,7 @@
                 }
                 picker.pick({
                     index:_this.typebegin,
-                    items:['普通会员','VIP会员','分红股东','代理商']
+                    items:['会员','推广员']
                 }, e => {
                     if (e.result == 'success') {
                         let type = 'member';
@@ -470,12 +470,6 @@
                         }else if(e.data == 1){
                                 type = 'team';
                                 _this.typebegin = e.data
-                        }else if(e.data == 2){
-                            type = 'partner';
-                            _this.typebegin = e.data
-                        }else {
-                            type = 'agent';
-                            _this.typebegin = e.data
                         }
                         POST('weex/member/card/update.jhtml?id='+_this.id+'&type=' +type).then(
                             function (mes) {

@@ -580,7 +580,7 @@
                 let _this =this;
                 GET('weex/member/order/summary.jhtml', function (data) {
                         if(data.type == 'success'){
-                            _this.summary = res.data;
+                            _this.summary = data.data;
                         }else{
                             event.toast(data.content);
                         }
