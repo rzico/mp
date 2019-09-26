@@ -542,7 +542,7 @@
                 }
                 let ch = 0;
                 if (_this.choiceSwitch) {
-                    chk = 1;
+                    ch = 1;
                 }
                 _this.newSwitch = (nw==2);
                 POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+ch+'&tagIds='+nw +'&tagIds=' +rc).then(
@@ -573,7 +573,7 @@
                 }
                 let ch = 0;
                 if (_this.choiceSwitch) {
-                    chk = 1;
+                    ch = 1;
                 }
                 _this.recommendSwitch = (rc==3);
                 POST('weex/member/product/tag.jhtml?id=' + this.goodsId +'&tagIds='+ch+'&tagIds='+nw +'&tagIds=' +rc).then(
