@@ -155,7 +155,13 @@
                     </div>
                 </div>
             </cell>
+            <cell>
+                <div style="height: 80px;"></div>
+            </cell>
         </list>
+        <div class="bottomBox">
+            <text class="fz32">今日订单:{{summary.shipped}}/{{summary.all}}单 ，{{summary.amount}}元</text>
+        </div>
         <!--改价-->
         <div class="changeMask" v-if="isMask">
             <div class="maskContent">
@@ -462,6 +468,20 @@
     .maskRightButton:active{
         background-color: #ccc;
     }
+    .bottomBox{
+        position: fixed;
+        bottom: 0;
+        width: 750px;
+        height: 80px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        border-top-width:1px;
+        border-top-color: #cccccc;
+    }
 </style>
 <script>
     import navbar from '../../../include/navbar.vue';
@@ -511,12 +531,13 @@
                 orderNowAmout:'',
                 nowSn:'',
                 nowIndex:0,
-                showMore:false
+                showMore:false,
+                summary:{}
             }
         },
         props:{
             noDataHint:{default:'暂无订单'},
-            title:{default:'订单管理'}
+            title:{default:'我的订单'}
         },
         filters:{
             watchSpec:function (value) {
@@ -552,8 +573,22 @@
                 this.pageStart = 0;
             }
             this.open();
+            this.getSum()
         },
         methods:{
+            getSum(){
+                let _this =this;
+                GET('weex/member/order/summary.jhtml', function (data) {
+                        if(data.type == 'success'){
+                            _this.summary = res.data;
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+            },
             //            前往搜索
             goSearch:function () {
                 this.doSearch = true;
