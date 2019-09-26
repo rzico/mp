@@ -4,7 +4,7 @@
         <div class="addFriend" @click="add">
             <div class="flex-row " style="align-items:center">
                 <text class="ico_big "  :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                <text class="title  " style="margin-left: 30px" >新增优惠</text>
+                <text class="title  " style="margin-left: 30px" >单品活动</text>
             </div>
             <text class="ico_small gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>

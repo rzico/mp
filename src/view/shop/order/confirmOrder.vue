@@ -181,7 +181,7 @@
         methods: {
             open:function () {
                 let _this = this;
-                GET('website/member/order/view.jhtml?sn=' + this.orderSn ,function (data) {
+                GET('weex/member/order/view.jhtml?sn=' + this.orderSn ,function (data) {
                     if(data.type == 'success'){
                         _this.ordersList = [];
                         _this.ordersList.push(data.data);

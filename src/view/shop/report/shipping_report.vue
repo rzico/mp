@@ -24,7 +24,7 @@
                     <text class="shopName">{{c.empName}}</text>
                     <text class="shopName">{{c.quantity}}</text>
                     <text class="number">{{c.amount}}</text>
-                    <text class="returnMoney">{{c.star}}</text>
+                    <text class="returnMoney">{{c.star}}%</text>
                 </div>
             </cell>
             <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>

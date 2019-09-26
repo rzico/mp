@@ -61,7 +61,13 @@
                         </div>
                     </div>
                 </cell>
+            <cell>
+                <div style="height: 80px;"></div>
+            </cell>
         </list>
+        <div class="bottomBox">
+            <text class="fz32">总会员数：{{summary.all}}个(有交易{{summary.buy}}人)</text>
+        </div>
     </div>
 </template>
 
@@ -270,6 +276,20 @@
         padding-right: 5px;
         margin-left: 10px;
     }
+    .bottomBox{
+        position: fixed;
+        bottom: 0;
+        width: 750px;
+        height: 80px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        border-top-width:1px;
+        border-top-color: #cccccc;
+    }
 </style>
 
 <script>
@@ -304,6 +324,7 @@
                 searchHint: "输入手机号、卡号、姓名搜索",
                 searchOrCancel:'取消',
                 doSearch:false,//    是否处于搜索状态
+                summary:{}
             }
         },
         props: {
@@ -314,7 +335,8 @@
             utils.initIconFont();
             this.choose = !utils.isNull(utils.getUrlParameter('choose'));
             this.open();
-            this.permissions()
+            this.permissions();
+            this.getSum()
         },
         filters:{
             watchCode:function (value) {
@@ -340,6 +362,19 @@
             },
         },
         methods: {
+            getSum(){
+                let _this =this;
+                GET('weex/member/card/summary.jhtml', function (data) {
+                        if(data.type == 'success'){
+                            _this.summary = res.data;
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+            },
             //          清空关键字
             clearBuf:function () {
                 this.keyword = '';

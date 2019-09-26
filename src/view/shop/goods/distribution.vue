@@ -46,7 +46,7 @@
                     </div>
                     <!--右侧功能-->
                     <div class="flex-row" style="width: 200px;" v-if="!item.bgChange">
-                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.percent1,item.percent2,item.percent3,item.point,item.tota,item.type)">
+                        <div class="flex-row btnHtight" @click="changeName(item.id,item.name,item.given,item.percent1,item.percent2,item.percent3,item.point,item.tota,item.type)">
                             <text  :style="{fontFamily:'iconfont'}" class="gray fontSize30">&#xe61d;</text>
                             <text class="gray fontSize30 ml5mr10">修改</text>
                         </div>
@@ -351,6 +351,7 @@
                             res.data.forEach(function (item) {
                                 _this.catagoryList.push({
                                     name:item.name,
+                                    given:item.given,
                                     percent1:item.percent1,
                                     percent2:item.percent2,
                                     percent3:item.percent3,
@@ -374,6 +375,7 @@
                             catagoryData.forEach(function (item) {
                                 _this.catagoryList.push({
                                     name:item.name,
+                                    given:item.given,
                                     percent1:item.precent1,
                                     percent2:item.precent2,
                                     percent3:item.precent3,
@@ -483,7 +485,7 @@
 //                _this.isShow  = true;
 //             },
 //            修改分类名称
-            changeName(id,name,percent1,percent2,percent3,point,tota,type){
+            changeName(id,name,given,percent1,percent2,percent3,point,tota,type){
                 let _this = this;
                 if (!utils.isRoles("A",_this.roles)) {
                     modal.alert({
@@ -498,7 +500,7 @@
                     })
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota+'&type='+type),function () {
+                event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&given='+given+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota+'&type='+type),function () {
                     _this.catagoryList =[]
                     _this.open()
                 })
@@ -604,6 +606,7 @@
                 //         方法2
                 let a = this.catagoryList[index].name;
                 let b = this.catagoryList[index].id;
+                let g = this.catagoryList[index].given;
                 let c1 = this.catagoryList[index].percent1;
                 let c2 = this.catagoryList[index].percent2;
                 let c3 = this.catagoryList[index].percent3;
@@ -612,6 +615,7 @@
                 let d = this.catagoryList[index].bgChange;
                 this.catagoryList[index].name = this.catagoryList[index - 1].name;
                 this.catagoryList[index].id = this.catagoryList[index - 1].id;
+                this.catagoryList[index].given = this.catagoryList[index - 1].given;
                 this.catagoryList[index].percent1 = this.catagoryList[index - 1].percent1;
                 this.catagoryList[index].percent2 = this.catagoryList[index - 1].percent2;
                 this.catagoryList[index].percent3 = this.catagoryList[index - 1].percent3;
@@ -620,6 +624,7 @@
                 this.catagoryList[index].bgChange = this.catagoryList[index - 1].bgChange;
                 this.catagoryList[index - 1].name = a;
                 this.catagoryList[index - 1].id = b;
+                this.catagoryList[index - 1].given = g;
                 this.catagoryList[index - 1].percent1 = c1;
                 this.catagoryList[index - 1].percent2 = c2;
                 this.catagoryList[index - 1].percent3 = c3;
@@ -633,6 +638,7 @@
                 //         方法2
                 let a = this.catagoryList[index].name;
                 let b = this.catagoryList[index].id;
+                let g = this.catagoryList[index].given;
                 let c1 = this.catagoryList[index].percent1;
                 let c2 = this.catagoryList[index].percent2;
                 let c3 = this.catagoryList[index].percent3;
@@ -641,6 +647,7 @@
                 let d = this.catagoryList[index].bgChange;
                 this.catagoryList[index].name = this.catagoryList[index + 1].name;
                 this.catagoryList[index].id = this.catagoryList[index + 1].id;
+                this.catagoryList[index].given = this.catagoryList[index + 1].given;
                 this.catagoryList[index].percent1 = this.catagoryList[index + 1].percent1;
                 this.catagoryList[index].percent2 = this.catagoryList[index + 1].percent2;
                 this.catagoryList[index].percent3 = this.catagoryList[index + 1].percent3;
@@ -649,6 +656,7 @@
                 this.catagoryList[index].bgChange = this.catagoryList[index + 1].bgChange;
                 this.catagoryList[index + 1].name = a;
                 this.catagoryList[index + 1].id = b;
+                this.catagoryList[index + 1].given = g;
                 this.catagoryList[index + 1].percent1 = c1;
                 this.catagoryList[index + 1].percent2 = c2;
                 this.catagoryList[index + 1].percent3 = c3;

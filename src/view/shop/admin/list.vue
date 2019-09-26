@@ -21,10 +21,7 @@
                     </div>
                     <div class="addFriendsBorder" @click="goeditor(num.id,num.shopId,num.shopName,num.roleName,num.mobile,num.roleId,num.name)" @swipe="onpanmove($event,index)" @touchstart="onFriendtouchstart($event,index)">
                         <div class="friendsLine">
-                            <div class="image">
-                                <image :src="num.logo" class="friendsImage"></image>
-                            </div>
-                            <div style="flex-direction: row;justify-content: space-between;align-items:center;width:610px">
+                            <div style="flex-direction: row;justify-content: space-between;align-items:center;width:710px">
                             <div class="friendsName">
                                 <text class="lineTitle ">{{num.name}}:{{num.mobile}}</text>
                                 <text class="realName">店铺:{{num.shopName}}</text>

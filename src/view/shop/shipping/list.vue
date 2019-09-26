@@ -151,7 +151,13 @@
                     </div>
                 </div>
             </cell>
+            <cell>
+                <div style="height: 80px;"></div>
+            </cell>
         </list>
+        <div class="bottomBox">
+            <text class="fz32">今日运单:{{summary.shipped}}/{{summary.all}}单 ，{{summary.amount}}元</text>
+        </div>
         <div class="mask" v-if="printMask" @click="printMaskTap()">
             <div class="printBox">
                 <text class="maskTitle mt50">打印</text>
@@ -538,7 +544,20 @@
     .sub_title_Color{
         color: red;
     }
-
+    .bottomBox{
+        position: fixed;
+        bottom: 0;
+        width: 750px;
+        height: 80px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 30px;
+        padding-right: 30px;
+        border-top-width:1px;
+        border-top-color: #cccccc;
+    }
 </style>
 <script>
     const map = weex.requireModule('map');
@@ -599,12 +618,13 @@
                 keyAdminId:'',
                 keyShopId:'',
                 showMore:false,
-                memberId:''
+                memberId:'',
+                summary:{}
             }
         },
         props:{
             noDataHint:{default:'暂无运单'},
-            title:{default:'送货管理'}
+            title:{default:'我的运单'}
         },
         filters:{
             watchSpec:function (value) {
@@ -649,9 +669,23 @@
             this.pageStart = 0;
             this.permissions()
             this.open();
+            this.getSum()
 
         },
         methods:{
+            getSum(){
+                let _this =this;
+                GET('weex/member/shipping/summary.jhtml', function (data) {
+                        if(data.type == 'success'){
+                            _this.summary = res.data;
+                        }else{
+                            event.toast(data.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+            },
             controlMore(){
                 this.showMore = !this.showMore
             },

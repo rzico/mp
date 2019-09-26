@@ -149,7 +149,7 @@
                 </div>
                 <div class="menu" @click="goShipping()" v-if="filter('shipping')">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">送货</text>
+                    <text class="menuBtn">运单</text>
                 </div>
 
                 <div class="menu" @click="gocard()" v-if="filter('card')">
