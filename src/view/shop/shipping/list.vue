@@ -156,7 +156,7 @@
             </cell>
         </list>
         <div class="bottomBox">
-            <text class="fz32">今日运单:{{summary.shipped}}/{{summary.all}}单 ，{{summary.amount}}元</text>
+            <text class="fz32">今日运单:{{summary.shipped}}/{{summary.all}}单,合计:{{summary.amount}}元(不含运费)</text>
         </div>
         <div class="mask" v-if="printMask" @click="printMaskTap()">
             <div class="printBox">
