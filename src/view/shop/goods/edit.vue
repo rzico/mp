@@ -4,7 +4,8 @@
         <scroller>
             <!--商品名称-->
             <div class="textareaBox boder-bottom boder-top" ref="textareaRef">
-                <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="nameUnitFirstInput"  @focus="onfocus" @blur="onblur"></textarea>
+                <textarea class="textarea " v-model="goodsName"  return-key-type="next" placeholder="请输入商品名称" @input="nameUnitFirstInput"  @focus="onfocus" @blur="onblur" v-if="hasAdd"></textarea>
+                <text class="textarea" v-if="!hasAdd">{{goodsName}}</text>
             </div>
             <!--<div class="onlyPriceNum boder-top boder-bottom mt30">-->
             <!--<div class="inputLine flex-row boder-bottom">-->
@@ -19,7 +20,10 @@
             <div style="width: 750px;background-color: #fff" class="mt30 boder-bottom boder-top" >
                 <div class="inputLine flex-row" >
                     <text class="title">单位</text>
-                    <input type="text" v-model="goodsUnit" return-key-type="next"class="lineContent goodsAdress"  @input="nameUnitFirstInput"  placeholder="个、件、袋等" />
+                    <div class="unitBox" v-if="!hasAdd">
+                        <text class="fz32" >{{goodsUnit}}</text>
+                    </div>
+                    <input type="text" v-model="goodsUnit" return-key-type="next"class="lineContent goodsAdress"  @input="nameUnitFirstInput"  placeholder="个、件、袋等" v-if="hasAdd"/>
                 </div>
             </div>
             <transition name="paraTransition" tag="div">
@@ -91,13 +95,13 @@
                 <!--遮住右边半圈边框-->
                 <div class="delBoxRight"></div>
                 <!--删除框-->
-                <div class="delSmallBox" @click="delLines(item,index)" v-if="index>0">
+                <div class="delSmallBox" @click="delLines(item,index)" v-if="index>0 && hasAdd">
                     <text style="color: #fff;font-size: 32px">一</text>
                 </div>
                 <!--</div>-->
             </div>
             <!--底部添加商品规格栏-->
-            <div class="flex-row ml20 pt30 pb30" @click="addLines()">
+            <div class="flex-row ml20 pt30 pb30" @click="addLines()" v-if="hasAdd">
                 <text class="fz35 primary" style="margin-top: 3px" :style="{fontFamily:'iconfont'}">&#xe6b5;</text>
                 <text class="fz35 ml10">添加商品规格</text>
             </div>
@@ -160,7 +164,7 @@
             </div>
             <div style="height: 600px"></div>
         </scroller>
-        <div class="button bw bkg-primary button-bkg-img" @click="goComplete()">
+        <div class="button bw bkg-primary button-bkg-img" @click="goComplete()" >
             <text class="buttonText ">保存</text>
         </div>
 
@@ -180,6 +184,13 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .unitBox{
+        flex-direction: row;
+        align-items: center;
+        width: 600px;
+        height: 80px;
+        margin-left: 20px;
+    }
     .brandInput{
         font-size: 32px;
         color: #888;
@@ -424,7 +435,8 @@
             begin:0,
             isobject:'product',
             barrelId:'',
-            barrelName:''
+            barrelName:'',
+            hasAdd:false
         },
         props:{
             title:{default:'新增商品'}
@@ -448,6 +460,7 @@
         created(){
             let _this = this;
             this.permissions();
+            this.canAdd();
             utils.initIconFont();
             if(!utils.isNull(utils.getUrlParameter('id'))){
                 this.title = '编辑商品';
@@ -489,6 +502,19 @@
             }
         },
         methods: {
+            //  是否显示新增按钮
+            canAdd:function () {
+                var _this = this;
+                GET("weex/member/product/canAdd.jhtml",function (mes) {
+                    if (mes.type=="success") {
+                        _this.hasAdd = mes.data
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             //            选择配送方式
             pickType:function () {
                 let _this = this

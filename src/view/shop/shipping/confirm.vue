@@ -697,7 +697,7 @@
                     });
                 });
                 body = JSON.stringify(body);
-                if(this.version ==2){
+                if(this.version ==1){
                     this.amountPaid='1';
                     this.paperPaid='1';
                 }
