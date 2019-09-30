@@ -160,7 +160,7 @@
             </cell>
         </list>
         <div class="bottomBox">
-            <text class="fz32">今日订单:{{summary.shipped}}/{{summary.all}}单 ，{{summary.amount}}元</text>
+            <text class="fz32">今日订单:{{summary.shipped}}/{{summary.all}}单,合计:{{summary.amount}}元</text>
         </div>
         <!--改价-->
         <div class="changeMask" v-if="isMask">

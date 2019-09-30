@@ -66,7 +66,7 @@
             </cell>
         </list>
         <div class="bottomBox">
-            <text class="fz32">总会员数：{{summary.all}}个(有交易{{summary.buy}}人)</text>
+            <text class="fz32">总会员数：{{summary.all}}人(其中有交易的{{summary.buy}}人)</text>
         </div>
     </div>
 </template>
