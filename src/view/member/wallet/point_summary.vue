@@ -8,16 +8,16 @@
             <cell v-for="(deposit,index) in depositList" >
                 <div class="panel">
                     <text class="name">{{deposit.memo}}</text>
-                    <text class="money">{{deposit.amount | currencyfmt}}</text>
+                    <text class="money">{{deposit.amount}}</text>
                 </div>
             </cell>
         </list>
         <div v-if="noData()" >
             <noData > </noData>
         </div>
-        <div class="panel">
-            <text class="name" >合计</text>
-            <text class="money" style="color:red;">{{total | currencyfmt}}</text>
+        <div class="panel" >
+            <text class="name">合计</text>
+            <text class="money" style="color:red;">{{total}}</text>
         </div>
     </div>
 
@@ -168,7 +168,7 @@
             utils.initIconFont();
             this.billDate = utils.getUrlParameter("billDate");
             if (utils.isNull(this.billDate)==false) {
-                this.title = "账单统计("+this.billDate.substring(0,7)+")";
+                this.title = "金币统计("+this.billDate.substring(0,7)+")";
             }
             this.open();
         },
@@ -181,7 +181,7 @@
             },
             open:function () {
                 var _this = this;
-                var addr = 'weex/member/deposit/summary.jhtml?billDate='+ encodeURIComponent(_this.billDate);
+                var addr = 'weex/member/card/point_summary.jhtml?billDate='+ encodeURIComponent(_this.billDate);
                 GET(addr, function (res) {
                     if (res.type=="success") {
                         _this.depositList = res.data;
@@ -189,7 +189,7 @@
                         _this.depositList.forEach(function (item) {
                             _this.total = _this.total + item.amount;
                         })
-                     } else {
+                    } else {
                         event.toast(res.content);
                     }
                 }, function (err) {
