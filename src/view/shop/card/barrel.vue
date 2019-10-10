@@ -267,7 +267,7 @@
             }
         },
         props: {
-            title: { default: "送货记录"},
+            title: { default: "空桶押金"},
             noDataHint: { default: "尚未拥有记录"},
         },
         created() {

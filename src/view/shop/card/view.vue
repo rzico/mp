@@ -39,16 +39,18 @@
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="integral()">
-                        <text class="cellTitle">积分记录</text>
+                        <text class="cellTitle">金币流水</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <div class="cell"  @click="goCouponCode()" >
-                        <text class="cellTitle">电子水票</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                    <div class="cell"  @click="goBarrel()">
-                        <text class="cellTitle">送货记录</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    <div v-if="version ==2">
+                        <div class="cell"  @click="goCouponCode()">
+                            <text class="cellTitle">电子水票</text>
+                            <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
+                        <div class="cell"  @click="goBarrel()">
+                            <text class="cellTitle">空桶押金</text>
+                            <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
                     </div>
                 </div>
             </cell>
@@ -261,12 +263,14 @@
                 begin:0,
                 roles:'',
                 clicked:false,
-                memberId:0
+                memberId:0,
+                version:1
             }
         },
         created(){
             utils.initIconFont();
             this.id = utils.getUrlParameter("id");
+            this.version = utils.version;
             this.load();
             this.permissions()
         },

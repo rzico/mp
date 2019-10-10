@@ -29,11 +29,11 @@
                         <div class="content flex5">
                             <div class="flex-row space-between align-bottom">
                                 <text class="title lines-ellipsis memo">积分:{{deposit.memo}}</text>
-                                <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
+                                <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount}}</text>
                             </div>
                             <div class="flex-row space-between align-bottom">
                                 <text class="datetime">{{deposit.createDate | hitimefmt}}</text>
-                                <text class="datetime" style="margin-right: 20px">余额:{{deposit.balance | currencyfmt}}</text>
+                                <text class="datetime" style="margin-right: 20px">余额:{{deposit.balance}}</text>
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
             navbar,noData
         },
         props: {
-            title: { default: "积分记录" }
+            title: { default: "金币流水" }
         },
         methods: {
             memoColor:function (memo) {
