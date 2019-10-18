@@ -10,6 +10,9 @@
                 <text class="nav_title">{{pageName}}</text>
             </div>
             <div class="chooseBox">
+                <div class="reportBox mr20" v-if="type=='all'" :class="[isStyle == reportAll ? 'reportBoxActive':'']" @click="allClick()">
+                    <text class="reportBoxText">{{reportAll | watchAll}}</text>
+                </div>
                 <div class="reportBox mr20" :class="[isStyle == reportDay ? 'reportBoxActive':'']" @click="reportDayClick()">
                     <text class="reportBoxText">{{reportDay | watchDay}}</text>
                 </div>
@@ -20,7 +23,7 @@
                     <text class="reportBoxText">{{reportYears | watchYears}}</text>
                 </div>
             </div>
-            <div class="timeBox">
+            <div class="timeBox" v-if="isStyle != reportAll">
                 <div class="leftBox">
                     <div class="deduct" @click="deductTime()">
                         <text class="fz40" style="color: #fff">-</text>
@@ -94,6 +97,7 @@
         align-items: center;
         justify-content: center;
         width: 750px;
+        padding-bottom: 20px;
     }
 
     .reportBox {
@@ -128,9 +132,10 @@
         align-items: center;
         justify-content: space-between;
         width: 750px;
-        height: 100px;
+        height: 60px;
         padding-left: 30px;
         padding-right: 30px;
+        padding-bottom: 20px;
     }
 
     .leftBox {
@@ -193,13 +198,20 @@
                 reportDay: 'day',
                 reportMonth: 'month',
                 reportYears: 'years',
+                reportAll:'all'
             }
         },
         props: {
             pageName: '',
-            pageTime: ''
+            pageTime: '',
+            type:''
         },
         filters: {
+            watchAll:function(value){
+                if (value == 'all') {
+                    return '全部'
+                }
+            },
             watchDay: function (value) {
                 if (value == 'day') {
                     return '日报'
@@ -366,6 +378,14 @@
                         _this.$emit("iconTime", data);
                     }
                 });
+            },
+            allClick:function(){
+                this.isStyle = 'all';
+                var data = {
+                    beginTime: '',
+                    endTime: '',
+                };
+                this.$emit("allClick", data);
             },
             reportDayClick: function () {
                 var beginTime = '';
