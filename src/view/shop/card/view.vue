@@ -35,7 +35,7 @@
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="deposit()">
-                        <text class="cellTitle">消费记录</text>
+                        <text class="cellTitle">账单流水</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="integral()">
@@ -43,6 +43,10 @@
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="toOrder()">
+                        <text class="cellTitle">订单明细</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="toSummary()">
                         <text class="cellTitle">订单汇总</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
@@ -362,6 +366,23 @@
                 }
                 this.clicked = true;
                 event.openURL(utils.locate("view/shop/card/orderList.js?sellerId="+this.memberId),function (data) {
+                    _this.clicked =false
+                })
+            },
+            toSummary:function () {
+                var _this = this;
+                if (!utils.isRoles("12",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/shop/card/orderSummary.js?memberId="+this.memberId+'&id='+this.id),function (data) {
                     _this.clicked =false
                 })
             },
