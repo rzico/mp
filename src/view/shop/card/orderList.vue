@@ -414,7 +414,7 @@
                 this.productCategoryId = parseInt(this.productCategoryId)
                 this.pageStart = 0;
             }
-            this.open();
+            this.allClick();
             this.getSum();
             this.permissions()
         },

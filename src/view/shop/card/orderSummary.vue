@@ -204,7 +204,7 @@
         data:function(){
             return{
                 reportList:[],
-                summaryPrice:'',
+                summaryPrice:0,
                 pageStart:0,
                 pageSize:20,
                 beginTime:'2019-1-1 32:59:59',
@@ -238,21 +238,25 @@
 
             open:function () {
                 var _this = this;
-                GET('weex/member/report/order_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
+                _this.summaryPrice = 0
+                GET('weex/member/report/order_member_summary.jhtml?memberId='+this.memberId,function (res) {
                     if (res.type=="success") {
-                        if (_this.pageStart==0) {
-                            _this.reportList = res.data.data.data;
-                            _this.summaryPrice = res.data.data.summary[0].price
-                        } else {
-                            res.data.data.data.forEach(function (item) {
-                                _this.reportList.push(item);
+                        // if (_this.pageStart==0) {
+                            _this.reportList = res.data;
+                            _this.reportList.forEach(function (item) {
+                                _this.summaryPrice += item.amount
                             })
-                        }
-                        _this.pageStart = _this.pageStart+res.data.data.data.length;
-                        setTimeout(() => {
-                            _this.loadinging = false;
-                            _this.refreshing = false
-                        }, 1000)
+                            _this.summaryPrice = _this.summaryPrice.toFixed(2)
+                        // } else {
+                        //     res.data.forEach(function (item) {
+                        //         _this.reportList.push(item);
+                        //     })
+                        // }
+                        // _this.pageStart = _this.pageStart+res.data.length;
+                        // setTimeout(() => {
+                        //     _this.loadinging = false;
+                        //     _this.refreshing = false
+                        // }, 1000)
                     } else {
                         event.toast(res.content);
                     }
@@ -277,10 +281,10 @@
 //                 this.open();
 //             },
             //            上拉加载
-            onloading (event) {
-                this.loadinging = true
-                this.open();
-            },
+            // onloading (event) {
+            //     this.loadinging = true
+            //     this.open();
+            // },
             onrefresh:function () {
                 var _this = this;
                 _this.pageStart = 0;
