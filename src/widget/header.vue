@@ -219,7 +219,7 @@
     .walletBox{
         height: 70px;
         width: 140px;
-        background-color: rgba(102,102,102,0.8);
+        background-color: rgba(102,102,102,0.9);
         flex-direction: row;
         align-items: center;
         justify-content: center;
@@ -233,7 +233,7 @@
     .settingBox{
         height: 70px;
         width: 70px;
-        background-color: rgba(102,102,102,0.8);
+        background-color: rgba(102,102,102,0.9);
         align-items: center;
         justify-content: center;
         margin-right: 10px;
@@ -246,7 +246,7 @@
     .shareBox{
         height: 70px;
         width: 70px;
-        background-color: rgba(102,102,102,0.8);
+        background-color: rgba(102,102,102,0.9);
         align-items: center;
         justify-content: center;
         border-radius: 5px;

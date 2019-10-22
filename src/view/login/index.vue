@@ -2,9 +2,9 @@
     <div class="wrapper bkg-white">
         <navbar :title="title" @goback="goback"> </navbar>
         <mobile :title="mbtitle" :value="value" @onSend="onSend" @onChange="onChange"> </mobile>
-        <div class="memo">
+        <div class="memo" @click="openWebView()">
             <text class="title">登录即注册,表示同意</text>
-            <text class="title" style="color:#0088fb">《用户注册协议》</text>
+            <text class="title" style="color:#0088fb" >《用户注册协议》</text>
         </div>
     </div>
 </template>
@@ -44,6 +44,16 @@
             })
         },
         methods: {
+            openWebView(){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(utils.website("/policy/index.html"))), function () {
+                    _this.clicked = false;
+                });
+            },
             onSend: function (e) {
                 var _this = this;
                 event.encrypt(_this.value,function (message) {

@@ -2,14 +2,20 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" border="false"> </navbar>
         <scroller class="scroller">
-            <div class="wallet-panel bkg-primary">
-                <text class="wallet-title">钱包余额（元）</text>
-                <text class="balance">{{wallet.balance | watchBalance}}</text>
-            </div>
-            <div class="cashierBox" v-if="hasCashier">
-                <div class="cashier bkg-primary">收银台</div>
-            </div>
+            <div class='moneyBox'>
+                <div class='moneyBox_box' @click="deposit()">
+                    <text class='moneyBox_box_title primary'>¥ {{wallet.balance | watchBalance}}</text>
+                    <text class='moneyBox_box_subTitle'>余额</text>
+                </div>
+                <div class='moneyBox_box' @click="point()">
+                    <div class="flex-row">
+                        <image class='moneyBox_box_img' src='http://rzico.oss-cn-shenzhen.aliyuncs.com/znzx/image/memberGold.png'></image>
+                        <text class='moneyBox_box_titleTwo'>{{vipData.point}}</text>
+                    </div>
 
+                    <text class='moneyBox_box_subTitle'>金币(佣金)</text>
+                </div>
+            </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between" @click="bindingCard()">
                     <div class="flex-row flex-start">
@@ -34,7 +40,7 @@
                 </div>
                 <div class="cell-panel space-between cell-clear" @click="filling()">
                     <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe63e;</text>
                         <text class="title ml10">钱包充值</text>
                     </div>
                     <div class="flex-row flex-end">
@@ -43,16 +49,16 @@
                     </div>
                 </div>
             </div>
-            <div class="cell-row boder-top">
-                <div class="cell-panel space-between" @click="deposit()">
-                    <div class="flex-row flex-start" >
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe61f;</text>
-                        <text class="title ml10">我的账单</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+            <!--<div class="cell-row boder-top">-->
+                <!--<div class="cell-panel space-between" >-->
+                    <!--<div class="flex-row flex-start" >-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe61f;</text>-->
+                        <!--<text class="title ml10">我的账单</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <!--<div class="cell-panel space-between" @click="reward()">-->
                     <!--<div class="flex-row flex-start">-->
                         <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
@@ -71,14 +77,57 @@
                         <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="boder-bottom"></div>
-            </div>
+                <!--<div class="boder-bottom"></div>-->
+            <!--</div>-->
         </scroller>
     </div>
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .moneyBox{
+        width: 750px;
+        height: 180px;
+        /*border-radius: 11px;*/
+        /*margin-left: 15px;*/
+        /*margin-right: 15px;*/
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+    }
+    .moneyBox_box{
+        display: flex;
+        height: 180px;
+        width: 373px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+    }
+    .moneyBox_box:active{
+        background-color: #e6e6e6;
+    }
+    .moneyBox_box_title{
+        font-size: 37px;
+        font-weight: 500;
+    }
+    .moneyBox_box_img{
+        width:30px;
+        height:30px;
+        margin-right: 10px;
+    }
+    .moneyBox_box_titleTwo{
+        font-size: 37px;
+        font-weight: 500;
+        color:rgba(241,90,36,1);
+    }
+    .moneyBox_box_subTitle{
+        font-size: 24px;
+        color: #808080;
+    }
     .noBorderCell{
         height: 98px;
         min-height: 98px;
@@ -137,7 +186,8 @@
             return {
                 wallet:{balance:0,bankinfo:"未绑定",binded:true},
                 bankinfo:'',
-                clicked:false
+                clicked:false,
+                vipData:{}
             }
         },
         components: {
@@ -159,7 +209,7 @@
         created() {
             let _this = this;
             this.load();
-
+            this.openPoint()
         },
         methods: {
             goback: function (e) {
@@ -254,6 +304,16 @@
                     _this.clicked =false
                 })
             },
+            point:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                event.openURL(utils.locate('view/member/wallet/point.js?id='+this.vipData.id),function (message) {
+                    _this.clicked =false
+                })
+            },
             load:function () {
                 var _this = this;
                 GET("weex/member/wallet/view.jhtml",function (res) {
@@ -268,7 +328,21 @@
                     event.toast(err.content);
                 })
 
-            }
+            },
+            openPoint:function () {
+                var _this = this;
+                GET("weex/member/card/view.jhtml",function (res) {
+                        if (res.type=='success') {
+                        _this.vipData = res.data.card
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+
+            },
         }
 
     }
