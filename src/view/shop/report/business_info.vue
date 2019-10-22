@@ -73,7 +73,8 @@
                 refreshImg:utils.locate('resources/images/loading.png'),
                 title:'',
                 type:'',
-                list:[]
+                list:[],
+                memberId:''
             }
         },
         components: {
@@ -85,6 +86,9 @@
             let _this = this;
             utils.initIconFont();
             this.type = utils.getUrlParameter('type');
+            if (!utils.isNull(utils.getUrlParameter('memberId'))) {
+                this.memberId = utils.getUrlParameter('memberId');
+            }
             switch (this.type) {
                 case 'gift':
                     _this.title = '礼卡汇总';
@@ -137,7 +141,7 @@
             },
             open: function () {
                 var _this = this;
-                GET('weex/member/report/business_product_list.jhtml?type='+this.type+'&pageStart='+this.pageStart+'&pageSize='+this.pageSize, function (res) {
+                GET('weex/member/report/business_product_list.jhtml?type='+this.type+'&pageStart='+this.pageStart+'&pageSize='+this.pageSize+'&memberId='+_this.memberId, function (res) {
                     if (res.type == "success") {
                         _this.list = res.data
                     } else {

@@ -765,6 +765,20 @@
                 })
 
             },
+            bindCode(code){
+                POST('weex/member/scan_order/bindScan.jhtml?code='+encodeURIComponent(code)).then(function(res){
+                    if(res.type=='success'){
+                        modal.alert({
+                            message: res.content,
+                            okTitle: 'OK'
+                        })
+                    }else{
+                        event.toast(mes.content);
+                    }
+                },function(err){
+                    event.toast(err.content)
+                })
+            },
 
 
 //            触发二维码方法
@@ -772,32 +786,44 @@
                 let _this=this
                 event.scan(function (message) {
                     if(!utils.isNull(message.data)){
-                        message.data = JSON.stringify(message.data);
+                        // message.data = JSON.stringify(message.data);
                         if(message.data == '{}'){
                             return
                         }
-                        GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
-                            if (res.type=="success") {
-                                if(res.data.type =='818801'|| res.data.type =='818802'){
-                                    _this.scanFindCard(res.data.code)
-                                }else if(res.data.type =='818803'){
-                                    _this.scanCoupon(res.data.code,res.data.captcha)
-                                }else if(res.data.type =='818806'){
-                                    _this.scanRob(res.data.sn)
-                                }else if(res.data.type =='818807'){
-                                    _this.scanSend(res.data.sn)
-                                }else if(res.data.type =='818810'){
-                                    _this.bindQrcode(res.data.code)
-                                }else if(res.data.type =='865380'){
-                                    _this.scanMember(res.data.id)
-                                }
-                            } else {
-                                event.toast(res.content);
+                        utils.readScan(message.data,function (data) {
+                            if (data.type=='error') {
+                                event.toast(data.content);
+                                return;
                             }
+                            if (data.data.type=='818820') {
+                                _this.bindCode(message.data)
+                            } else {
+                                GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
 
-                        }, function (err) {
-                            event.toast(err.content);
-                        })
+                                    if (res.type=="success") {
+                                        if(res.data.type =='818801'|| res.data.type =='818802'){
+                                            _this.scanFindCard(res.data.code)
+                                        }else if(res.data.type =='818803'){
+                                            _this.scanCoupon(res.data.code,res.data.captcha)
+                                        }else if(res.data.type =='818806'){
+                                            _this.scanRob(res.data.sn)
+                                        }else if(res.data.type =='818807'){
+                                            _this.scanSend(res.data.sn)
+                                        }else if(res.data.type =='818810'){
+                                            _this.bindQrcode(res.data.code)
+                                        }else if(res.data.type =='865380'){
+                                            _this.scanMember(res.data.id)
+                                        }
+                                    } else {
+                                        event.toast(res.content);
+                                    }
+
+                                }, function (err) {
+                                    event.toast(err.content);
+                                })
+                            }
+                        });
+
                     }
                 });
             },

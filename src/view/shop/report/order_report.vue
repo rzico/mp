@@ -386,7 +386,6 @@
             },
             open:function () {
                 var _this = this;
-
                 GET('weex/member/report/order_summary.jhtml?beginDate='+encodeURIComponent(_this.beginTime)+'&endDate='+encodeURIComponent(_this.endTime)+'&pageStart=' + _this.pageStart +'&pageSize='+_this.pageSize,function (res) {
                     if (res.type=="success") {
                         if (_this.pageStart==0) {
