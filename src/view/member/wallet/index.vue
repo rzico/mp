@@ -87,7 +87,7 @@
 <style scoped>
     .moneyBox{
         width: 750px;
-        height: 180px;
+        height: 250px;
         /*border-radius: 11px;*/
         /*margin-left: 15px;*/
         /*margin-right: 15px;*/
@@ -100,7 +100,7 @@
     }
     .moneyBox_box{
         display: flex;
-        height: 180px;
+        height: 250px;
         width: 373px;
         flex-direction: column;
         align-items: center;
