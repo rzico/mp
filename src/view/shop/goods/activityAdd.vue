@@ -132,7 +132,7 @@
             navbar
         },
         props: {
-            title: {default: "新增优惠"},
+            title: {default: "新增活动"},
 
         },
         created() {
@@ -143,7 +143,7 @@
             if(utils.isNull(this.id)){
                 this.id = ''
             }else{
-                this.title = '修改优惠';
+                this.title = '修改活动';
                 this.modification()
             }
         },
@@ -243,7 +243,6 @@
                 if(utils.isNull(this.id)){
                 POST('weex/member/promotion/add.jhtml?type='+_this.codeName+'&quantity='+_this.buyNumber+'&giftQuantity='+_this.giveNumber +'&giftId='+_this.giveGoodsId +'&goodsId='+_this.goodsId).then(
                     function (mes) {
-                        utils.debug(mes)
                         if (mes.type == "success") {
                             event.closeURL(mes)
                         } else {
@@ -253,7 +252,6 @@
                         event.toast(err.content);
                     }
                 )}else{
-                    utils.debug('weex/member/promotion/update.jhtml?id='+this.id+'&type='+_this.codeName+'&quantity='+_this.buyNumber+'&giftQuantity='+_this.giveNumber +'&giftId='+_this.giveGoodsId +'&goodsId='+_this.goodsId)
                     POST('weex/member/promotion/update.jhtml?id='+this.id+'&type='+_this.codeName+'&quantity='+_this.buyNumber+'&giftQuantity='+_this.giveNumber +'&giftId='+_this.giveGoodsId +'&goodsId='+_this.goodsId).then(
                         function (mes) {
                             utils.debug(mes)

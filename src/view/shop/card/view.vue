@@ -276,11 +276,11 @@
             }
         },
         created(){
+            this.permissions()
             utils.initIconFont();
             this.id = utils.getUrlParameter("id");
             this.version = utils.version;
             this.load();
-            this.permissions()
         },
         methods: {
             //            当前app状态
