@@ -12,7 +12,7 @@ let utilsFunc = {
     //0 标准版 1生鲜版 2桶装水
     downloadText:'喝水@水便利',
     download:'http://sbl.rzico.com/download/index.html',
-    version:1,//1标准版 2桶装水
+    version:2,//1标准版 2桶装水
     baseNavColor:'#29d1fb',
     // app类型
     appType(){
