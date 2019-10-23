@@ -242,6 +242,9 @@
                 this.timeDate = new Date(date).getTime();
                 this.showTime = utils.ymdtimefmt(this.timeDate);
             }
+            if (!utils.isNull(this.type)){
+                this.isStyle = 'all';
+            }
         },
         methods: {
             classHeader: function () {
