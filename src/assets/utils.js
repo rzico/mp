@@ -11,7 +11,7 @@ const appName = 'yundian';// app类型  water 或 yundian
 let utilsFunc = {
     downloadText:'超强图文小视频分享社区,中国版Facebook.',
     download:'https://small.rzico.com',
-    version:1,//1标准版 2桶装水
+    version:2,//1标准版 2桶装水
     baseNavColor:'#068F3D',
     // app类型
     appType(){
