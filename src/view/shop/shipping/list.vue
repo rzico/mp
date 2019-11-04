@@ -649,6 +649,8 @@
             navbar,noData
         },
         created(){
+            this.pageStart = 0;
+            this.permissions()
             utils.initIconFont();
             let d = utils.getUrlParameter('index')
             if(!utils.isNull(d)){
@@ -666,9 +668,6 @@
 //                把字符串转换成整型，否则switch识别不了
                 this.productCategoryId = parseInt(this.productCategoryId)
             }
-            this.pageStart = 0;
-            this.permissions()
-            this.open();
             this.getSum()
 
         },
@@ -932,6 +931,7 @@
                     } else {
                         event.toast(mes.content);
                     }
+                    _this.open();
                 },function (err) {
                     event.toast(err.content);
                 });

@@ -11,7 +11,7 @@
             </div>
             <div class="flex-column" @click="showQrcode">
                 <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
-                <text class="headerBoxText">邀请码</text>
+                <text class="headerBoxText">二维码</text>
             </div>
         </div>
         <scroller class="scroller">
@@ -799,7 +799,6 @@
                                 _this.bindCode(message.data)
                             } else {
                                 GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
-
                                     if (res.type=="success") {
                                         if(res.data.type =='818801'|| res.data.type =='818802'){
                                             _this.scanFindCard(res.data.code)

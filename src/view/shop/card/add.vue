@@ -15,7 +15,7 @@
         <div class="downBox">
             <!--weex保存图片必须要有一个image来放图-->
             <image class="dowImage" resize="cover" :src="saveImage" ref="downImg"></image>
-            <text class="down"  @click="saveImg">下载邀请码</text>
+            <text class="down"  @click="saveImg">下载二维码</text>
         </div>
     </div>
 </template>
@@ -94,7 +94,7 @@
             navbar
         },
         props: {
-            title: { default: "邀请码" }
+            title: { default: "二维码" }
         },
         data () {
             return {
