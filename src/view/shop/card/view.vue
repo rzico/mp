@@ -50,7 +50,6 @@
                         <text class="cellTitle">订单汇总</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <div v-if="version==2">
                         <div class="cell"  @click="goCouponCode()">
                             <text class="cellTitle">电子水票</text>
                             <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -59,7 +58,6 @@
                             <text class="cellTitle">空桶押金</text>
                             <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
-                    </div>
                 </div>
             </cell>
         </list>
