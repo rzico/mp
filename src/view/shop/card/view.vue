@@ -3,28 +3,31 @@
         <navbar :title="title"  @goback="goback"> </navbar>
         <list>
             <cell v-if="data!=null">
-                <div class="box bkg-primary button-bkg-img">
-                    <div class="flex-row"  style="margin-top: 60px">
-                        <image class="logo" resize="cover" :src="data.card.logo" @click="vipsetup()"></image>
-                        <text class="name" >{{data.card.name}}</text>
-                        <div class="labelType"><text class="labelText">{{data.card.type | watchType}}</text> </div>
-                        <div :class="[vipClass(data.card.vip)]"><text class="labelText">{{data.card.vip | watchVip}}</text> </div>
-                         <!--<text :class="[vipClass(data.card.vip)]" :style="{fontFamily:'iconfont'}">{{vip(data.card.vip)}}</text>-->
-                    </div>
-                    <text class="code" >NO.{{data.card.code | codefmt}}</text>
-                    <text class="balance" >￥{{data.card.balance | currencyfmt}}</text>
-                    <div class="flex-center">
-                        <text class="button bw" @click="fill()">充值</text>
-                        <text class="button bw" @click="refund()">退款</text>
-                        <!--<text class="label" @click="fill()">充值</text>-->
-                        <!--<text class="label" >|</text>-->
-                        <!--<text class="label" @click="refund()" >退款</text>-->
-                    </div>
-                </div>
-                <!--<div class="bbox">-->
+                <!--<div class="flex-center">-->
                     <!--<text class="button bw" @click="fill()">充值</text>-->
                     <!--<text class="button bw" @click="refund()">退款</text>-->
                 <!--</div>-->
+                <div class="newcardBox">
+                    <div class='vipCell' @click="vipsetup()">
+                        <image class="logo" resize="cover" :src="data.card.logo" ></image>
+                        <text class="name" >{{data.card.name}}</text>
+                    </div>
+                    <div class='newmoneyBox'>
+                        <div @click="deposit()" class='moneyBox_box'>
+                            <text class='moneyBox_title'>¥ {{data.card.balance | currencyfmt}}</text>
+                            <text class='moneyBox_subTitle'>余额</text>
+                        </div>
+                        <div  @click="integral()" class='moneyBox_box'>
+                            <div class="flex-row">
+                                <image class='moneyBox_img'
+                                       src='http://rzico.oss-cn-shenzhen.aliyuncs.com/znzx/image/memberGold.png'></image>
+                                <text class='moneyBox_titleTwo'>{{data.card.point | currencyfmt}}</text>
+                            </div>
+                            <text class='moneyBox_subTitle'>金币</text>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="boxTwo">
                     <div class="cell"  @click="vipsetup()">
                         <text class="cellTitle">详细资料</text>
@@ -32,14 +35,6 @@
                     </div>
                     <div class="cell"  @click="goAddress()">
                         <text class="cellTitle">收货地址</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                    <div class="cell"  @click="deposit()">
-                        <text class="cellTitle">账单流水</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                    <div class="cell"  @click="integral()">
-                        <text class="cellTitle">金币流水</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="toOrder()">
@@ -54,7 +49,7 @@
                             <text class="cellTitle">电子水票</text>
                             <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
-                        <div class="cell"  @click="goBarrel()">
+                        <div class="cellTwo"  @click="goBarrel()">
                             <text class="cellTitle">空桶押金</text>
                             <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
@@ -64,18 +59,10 @@
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
+
 <style scoped>
-    .wrapper {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 750px;
-        background-color:#ffffff;
-    }
     .cell{
-        width: 690px;
+        width: 720px;
         height: 100px;
         padding-left: 20px;
         padding-right: 20px;
@@ -86,6 +73,18 @@
         justify-content: space-between;
     }
     .cell:active{
+        background-color: #eee;
+    }
+    .cellTwo{
+        width: 720px;
+        height: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .cellTwo:active{
         background-color: #eee;
     }
     .cellTitle{
@@ -119,9 +118,9 @@
         padding-bottom: 30px;
     }
     .boxTwo{
-        margin-top: 50px;
-        width:690px;
-        margin-left: 30px;
+        margin-top: 30px;
+        width:720px;
+        margin-left: 15px;
         background-color: #fff;
         border-radius: 10px;
         align-items: center;
@@ -216,6 +215,83 @@
         color:#fff;
         height:60px;
         font-size: 32px;
+    }
+
+
+    .newcardBox{
+        border-radius: 11px;
+        overflow: hidden;
+    }
+    .vipCell {
+        width: 720px;
+        height: 100px;
+        background-image: linear-gradient(to right, #434343, #000000);
+        margin-top: 10px;
+        margin-left: 15px;
+        margin-right: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-direction: row;
+        align-items: center;
+        border-top-left-radius: 11px;
+        border-top-right-radius: 11px;
+        overflow: hidden;
+    }
+
+    .vipCell_img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 720px;
+        height: 100px;
+    }
+
+    .flex-column {
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .newmoneyBox {
+        width: 720px;
+        height: 147px;
+        margin-left: 15px;
+        margin-right: 15px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom-left-radius: 11px;
+        border-bottom-right-radius: 11px;
+        overflow: hidden;
+    }
+
+    .moneyBox_box {
+        height: 147px;
+        width: 357px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+    }
+    .moneyBox_box:active{
+        background-color: #e6e6e6;
+    }
+
+    .moneyBox_title {
+        font-size: 37px;
+        font-weight: 500;
+        color: #006837;
+    }
+
+    .moneyBox_titleTwo {
+        font-size: 37px;
+        font-weight: 500;
+        color: rgba(241, 90, 36, 1);
+    }
+
+    .moneyBox_subTitle {
+        font-size: 24px;
+        color: #808080;
     }
 
 </style>
