@@ -133,7 +133,21 @@
         left:345px;
         animation: myfirst 0.5s 3;
     }
-
+    .addressBox{
+        width: 150px;
+        height: 40px;
+        border-right-width: 1px;
+        border-right-style: solid;
+        border-right-color: #cccccc;
+        lines:1;
+    }
+    .addressTitle{
+        font-size: 28px;
+        color: #999;
+        text-align: center;
+        display: block;
+        lines:1;
+    }
 </style>
 <script>
     import noData from '../../../include/noData.vue';
@@ -163,6 +177,7 @@
                 cover:true,
                 isPolygon:true,
                 showLoading:true,
+                cityName:'定位中'
             }
         },
         props: {},

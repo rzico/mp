@@ -4,6 +4,9 @@
         <navbar :title="title" @goback="goback"></navbar>
         <!--搜索-->
         <div class='search'>
+            <div class="addressBox" @click="linkToCityChoose">
+                <text class="addressTitle">{{cityName}}</text>
+            </div>
             <text class="searchIcon" :style="{fontFamily:'iconfont'}">&#xe611;</text>
             <input class='searchInput' ref="searchInputRef" return-key-type="search" placeholder='搜索小区/写字楼等' v-model="keyword" @return="searchPoi"/>
             <div class='searchButton'>
@@ -21,7 +24,7 @@
 
         <!--列表-->
         <list show-scrollbar="false" v-if="regeocode!=null" class='list' :style="{height:listHeight + 'px'}">
-            <cell v-if="inPolygon==true" v-for="(poi,index) in regeocode.pois">
+            <cell v-if="inPolygon==true  && lbsing==false" v-for="(poi,index) in regeocode.pois">
                 <div class='listCell' @click="endedLinkto(index)">
                     <text class='cellTitle'>{{poi.name}}</text>
                     <text class='cellSubTitle'>{{poi.address}}</text>
@@ -30,8 +33,13 @@
             <cell v-if="inPolygon==false">
                 <noData :noDataHint="'不在配送范围内'"></noData>
             </cell>
+            <cell v-if="lbsing==true">
+                <view class="positioningBox">
+                    <image class="positioning-Img" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/loading.gif"></image>
+                    <text class="positioning-Title">正在定位中...</text>
+                </view>
+            </cell>
         </list>
-        <wxc-loading :show="showLoading" type="default" loading-text="定位中"></wxc-loading>
     </div>
 </template>
 <style lang="less" src="../../../../../style/wx.less"/>
@@ -102,12 +110,12 @@
     }
     .searchInput{
         padding-left: 10px;
-        width: 470px;
+        width: 370px;
         height: 60px;
         font-size: 30px;
     }
     .searchButton{
-        width: 220px;
+        width: 170px;
         height: 60px;
         border-left-width:1px;
         border-left-color: #cccccc;
@@ -134,6 +142,38 @@
         animation: myfirst 0.5s 3;
     }
 
+    .addressBox{
+        width: 150px;
+        height: 40px;
+        border-right-width: 1px;
+        border-right-style: solid;
+        border-right-color: #cccccc;
+        lines:1;
+    }
+    .addressTitle{
+        font-size: 28px;
+        color: #999;
+        text-align: center;
+        display: block;
+        lines:1;
+    }
+    .positioningBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 160px;
+    }
+    .positioning-Img{
+        width: 100px;
+        height: 100px;
+    }
+    .positioning-Title{
+        font-size: 30px;
+        font-weight: 700;
+        display: block;
+        margin-top: 20px;
+        color: #888;
+    }
 </style>
 <script>
     import noData from '../../../../../include/noData.vue';
@@ -161,7 +201,9 @@
                 keyword:"",
                 dress:utils.locate("resources/images/dress.png"),
                 cover:true,
-                showLoading:true,
+                cityName:'定位中',
+                addressID:'',
+                lbsing:true
             }
         },
         props: {},
@@ -181,7 +223,6 @@
                     _this.latitude = e.data.lat;
                     _this.center = [_this.longitude,_this.latitude];
                     _this.open_lbs();
-                    _this.showLoading = false;
                 } else {
                     modal.alert({
                         message: '获取位置失败，请开启定位权限',
@@ -189,10 +230,15 @@
                     }, function (value) {
 
                     })
-                    _this.showLoading = false;
                     event.closeURL();
                 }
+                _this.lbsing = false;
             })
+            globalEvent.addEventListener("onProductChange", function (e) {
+                _this.addressID = e.data.id,
+                _this.addressName = e.data.shortName
+                _this.choose()
+            });
         },
         methods: {
             goback: function () {
@@ -215,6 +261,7 @@
                     if (res.type == "success") {
                         _this.regeocode = res.data;
                         _this.inPolygon = res.data.inPolygon;
+                        _this.cityName = res.data.cityName;
                         _this.drawlbs();
                     }
                 }, function (err) {
@@ -290,6 +337,24 @@
                         event.toast(err.content)
                     })
             },
+            linkToCityChoose:function() {
+                event.openURL(utils.locate("view/shop/card/receiver/amap-picker/city.js"),function () {
+
+                })
+            },
+            choose:function () {
+                var _this = this
+                GET('lbs/geoCode.jhtml?areaId=' + _this.addressID +'&xmid=&isPois=false&isPolygon=false', function (res) {
+                    if (res.type == "success") {
+                        _this.longitude = res.data.location.lng;
+                        _this.latitude = res.data.location.lat;
+                        _this.center = [_this.longitude,_this.latitude];
+                        _this.open_lbs()
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            }
         }
     }
 </script>
