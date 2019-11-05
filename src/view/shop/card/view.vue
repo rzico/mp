@@ -225,7 +225,7 @@
     .vipCell {
         width: 720px;
         height: 100px;
-        background-image: linear-gradient(to right, #434343, #000000);
+        background-color: #434343;
         margin-top: 10px;
         margin-left: 15px;
         margin-right: 15px;
@@ -495,7 +495,7 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate('view/shop/card/couponCode.js?cardId='+this.id +'&logo='+this.data.card.logo),function (data) {
+                event.openURL(utils.locate('view/shop/card/couponCode.js?cardId='+this.id +'&logo='+this.data.card.logo+'&memberId='+this.memberId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 
@@ -516,7 +516,7 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+this.id),function (data) {
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 
