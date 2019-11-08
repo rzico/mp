@@ -63,35 +63,28 @@
                 <text class="smallText">退桶</text>
             </div>
         </div>
-        <div class="bottomMask" v-if="hasMask">
-            <div class="maskContent">
-                <text class="maskTitle">{{type <2 ?'押桶':'退桶'}}</text>
-                <div class="maskCell">
-                    <text class="maskCellTitle">品牌:</text>
-                    <div class="flex-row" style="position: relative" @click="openPick">
-                        <div class="maskCellValBox">
-                            <text class="maskCellVal" >{{nowVal}}</text>
-                        </div>
-                        <div style="width: 50px;height: 50px;align-items: center;justify-content: center;position: absolute;right: 0;">
-                            <text class="maskCellIcon" :style="{fontFamily:'iconfont'}">&#xe601;</text>
-                        </div>
+
+        <div class="mask" v-if="hasMask" >
+            <div class="editorBox">
+                <text class="fz40 mt30">{{type <2 ?'押桶':'退桶'}}</text>
+                <div class="editorCell">
+                    <text class="fz32">品牌:</text>
+                    <div class="flex-row" style="width: 500px" @click="openPick">
+                        <text class="maskCellVal pl20" >{{nowVal}}</text>
+                        <text class="maskCellIcon ml20" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="maskCell">
-                    <text class="maskCellTitle">数量:</text>
-                    <input class="maskCellInput" type="number" placeholder="请输入数量" v-model="quantity"/>
+                <div class="editorCell">
+                    <text class="fz32">数量:</text>
+                    <input class="editorInput pl20" type="number" placeholder="请输入押桶数量" v-model="quantity"/>
                 </div>
-                <div class="maskCell">
-                    <text class="maskCellTitle">押金:</text>
-                    <input class="maskCellInput" type="number" placeholder="请输入押金" v-model="amount"/>
+                <div class="editorCellTwo">
+                    <text class="fz32">押金:</text>
+                    <input class="editorInput pl20" type="number" placeholder="请输入借桶数量" v-model="amount"/>
                 </div>
-                <div class="buttonBox">
-                    <div class="canBox" @click="downBMask()">
-                        <text class="buttonBoxText">取消</text>
-                    </div>
-                    <div class="confrimBox" @click="confrimMask()">
-                        <text class="buttonBoxText">确定</text>
-                    </div>
+                <div class="bottomBox">
+                    <div class="leftBox" @click="downBMask()"><text class="bottomBoxText">取消</text></div>
+                    <div class="rightBox" @click="confrimMask()"><text class="bottomBoxText">确认</text></div>
                 </div>
             </div>
         </div>
@@ -254,26 +247,6 @@
         font-size: 60px;
         color: #999;
     }
-    .infoBottomBox{
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        width: 510px;
-    }
-    .price{
-        font-size: 32px;
-        color: red;
-    }
-    .pickBox{
-        padding-top: 2px;
-        padding-bottom: 2px;
-        padding-left: 15px;
-        padding-right: 15px;
-        border-radius: 10px;
-        border-color:#5eb0fd;
-        border-width: 1px;
-    }
-
     .newBottomBox{
         width: 750px;
         height: 110px;
@@ -296,98 +269,16 @@
     .smallText{
         font-size: 32px;
     }
-    .bottomMask{
-        position: fixed;
-        top:0;
-        left:0;
-        right: 0;
-        bottom: 0;
-        flex-direction: column;
-        align-items: center;
-        background-color: rgba(0,0,0,0.7);
-    }
-    .maskContent{
-        width: 600px;
-        background-color: #ffffff;
-        border-radius: 20px;
-        overflow: hidden;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 250px;
-    }
-    .maskTitle{
-        font-size: 45px;
-        color: #0088fb;
-        margin-top: 50px;
-    }
-    .maskCell{
-        flex-direction: row;
-        align-items: center;
-        margin-top: 20px;
-    }
-    .maskCellTitle{
-        font-size: 32px;
-        margin-right: 20px;
-    }
-    .maskCellValBox{
-        width: 450px;
-        height: 70px;
-        flex-direction: row;
-        align-items: center;
-        border-bottom-width: 1px;
-        border-bottom-color: #ccc;
-    }
     .maskCellVal{
         font-size: 32px;
-        max-width: 400px;
+        width: 470px;
         overflow: hidden;
         lines:1;
         text-overflow: ellipsis;
     }
-    .maskCellInput{
-        width: 450px;
-        height: 70px;
-        flex-direction: row;
-        align-items: center;
-        border-bottom-width: 1px;
-        border-bottom-color: #ccc;
-        font-size: 32px;
-    }
     .maskCellIcon{
-        font-size: 35px;
+        font-size: 32px;
         color: #999;
-    }
-    .buttonBox{
-        width: 600px;
-        border-top-width: 2px;
-        border-top-color: #0088fb;
-        flex-direction: row;
-        align-items: center;
-        margin-top: 50px;
-    }
-    .canBox{
-        width: 300px;
-        height: 90px;
-        border-right-width: 2px;
-        border-right-color: #0088fb;
-        align-items: center;
-        justify-content: center;
-    }
-    .canBox:active{
-        background-color: #ccc;
-    }
-    .confrimBox{
-        width: 300px;
-        height: 90px;
-        align-items: center;
-        justify-content: center;
-    }
-    .confrimBox:active{
-        background-color: #ccc;
-    }
-    .buttonBoxText{
-        font-size: 35px;
-        color: #0088fb;
     }
 </style>
 
@@ -594,7 +485,7 @@
                 var _this = this;
                 GET('weex/member/barrel/aList.jhtml',function (mes) {
                     if (mes.type == 'success') {
-                        _this.barrelList = mes.data.data;
+                        _this.barrelList = mes.data;
                     } else {
                         event.toast(mes.content);
                     }

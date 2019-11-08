@@ -23,16 +23,15 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="controlBox">
+                    <div class="control mr30" @click="fill()">
+                        <text class="fz32 primary">充值</text>
+                    </div>
+                    <div class="control" @click="refund()">
+                        <text class="fz32 primary">退款</text>
+                    </div>
+                </div>
                 <div class="boxTwo">
-                    <div class="cell"  @click="fill()">
-                        <text class="cellTitle">充值</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                    <div class="cell"  @click="refund()">
-                        <text class="cellTitle">退款</text>
-                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
                     <div class="cell"  @click="vipsetup()">
                         <text class="cellTitle">详细资料</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -298,6 +297,21 @@
         color: #808080;
     }
 
+    .controlBox{
+        width: 750px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    .control{
+        width: 200px;
+        height: 80px;
+        border-radius: 11px;
+        background-color: #ffffff;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 <script>
     import { POST, GET } from '../../../assets/fetch'
