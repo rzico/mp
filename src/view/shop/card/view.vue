@@ -3,10 +3,6 @@
         <navbar :title="title"  @goback="goback"> </navbar>
         <list>
             <cell v-if="data!=null">
-                <!--<div class="flex-center">-->
-                    <!--<text class="button bw" @click="fill()">充值</text>-->
-                    <!--<text class="button bw" @click="refund()">退款</text>-->
-                <!--</div>-->
                 <div class="newcardBox">
                     <div class='vipCell' @click="vipsetup()">
                         <image class="logo" resize="cover" :src="data.card.logo" ></image>
@@ -29,6 +25,14 @@
                 </div>
 
                 <div class="boxTwo">
+                    <div class="cell"  @click="fill()">
+                        <text class="cellTitle">充值</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="refund()">
+                        <text class="cellTitle">退款</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                     <div class="cell"  @click="vipsetup()">
                         <text class="cellTitle">详细资料</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>

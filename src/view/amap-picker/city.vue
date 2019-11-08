@@ -25,7 +25,7 @@
     </div>
 </template>
 
-<style lang="less" src="../../../../../style/wx.less"/>
+<style lang="less" src="../../style/wx.less"/>
 <style scoped>
     .addressBox{
         width: 750px;
@@ -115,10 +115,10 @@
 
 
 <script>
-    import navbar from '../../../../../include/navbar.vue';
-    import utils from '../../../../../assets/utils';
-    import {dom, event, animation, storage} from '../../../../../weex.js';
-    import {POST, GET, URIEncrypt} from '../../../../../assets/fetch';
+    import navbar from '../../include/navbar.vue';
+    import utils from '../../assets/utils';
+    import {dom, event, animation, storage} from '../../weex.js';
+    import {POST, GET, URIEncrypt} from '../../assets/fetch';
     export default {
         data(){
             return{
