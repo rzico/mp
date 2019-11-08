@@ -3,10 +3,6 @@
         <navbar :title="title"  @goback="goback"> </navbar>
         <list>
             <cell v-if="data!=null">
-                <!--<div class="flex-center">-->
-                    <!--<text class="button bw" @click="fill()">充值</text>-->
-                    <!--<text class="button bw" @click="refund()">退款</text>-->
-                <!--</div>-->
                 <div class="newcardBox">
                     <div class='vipCell' @click="vipsetup()">
                         <image class="logo" resize="cover" :src="data.card.logo" ></image>
@@ -29,6 +25,14 @@
                 </div>
 
                 <div class="boxTwo">
+                    <div class="cell"  @click="fill()">
+                        <text class="cellTitle">充值</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cell"  @click="refund()">
+                        <text class="cellTitle">退款</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                     <div class="cell"  @click="vipsetup()">
                         <text class="cellTitle">详细资料</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
@@ -225,7 +229,7 @@
     .vipCell {
         width: 720px;
         height: 100px;
-        background-image: linear-gradient(to right, #434343, #000000);
+        background-color: #434343;
         margin-top: 10px;
         margin-left: 15px;
         margin-right: 15px;
@@ -495,7 +499,7 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate('view/shop/card/couponCode.js?cardId='+this.id +'&logo='+this.data.card.logo),function (data) {
+                event.openURL(utils.locate('view/shop/card/couponCode.js?cardId='+this.id +'&logo='+this.data.card.logo+'&memberId='+this.memberId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 
@@ -516,7 +520,7 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+this.id),function (data) {
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 

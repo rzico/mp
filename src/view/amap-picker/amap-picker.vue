@@ -4,6 +4,9 @@
         <navbar :title="title" @goback="goback"></navbar>
         <!--搜索-->
         <div class='search'>
+            <div class="addressBox" @click="linkToCityChoose">
+                <text class="addressTitle">{{cityName}}</text>
+            </div>
             <text class="searchIcon" :style="{fontFamily:'iconfont'}">&#xe611;</text>
             <input class='searchInput' ref="searchInputRef" return-key-type="search" placeholder='搜索小区/写字楼等' v-model="keyword" @return="searchPoi"/>
             <div class='searchButton'>
@@ -21,20 +24,25 @@
 
         <!--列表-->
         <list show-scrollbar="false" v-if="regeocode!=null" class='list' :style="{height:listHeight + 'px'}">
-            <cell v-if="inPolygon==true" v-for="(poi,index) in regeocode.pois">
+            <cell v-if="inPolygon==true && lbsing==false" v-for="(poi,index) in regeocode.pois">
                 <div class='listCell' @click="endedLinkto(index)">
                     <text class='cellTitle'>{{poi.name}}</text>
                     <text class='cellSubTitle'>{{poi.address}}</text>
                 </div>
             </cell>
             <cell v-if="inPolygon==false">
-                <noData :noDataHint="'不在配送范围内'" :ptNumber="100"></noData>
+                <noData :noDataHint="'不在配送范围内'"></noData>
+            </cell>
+            <cell v-if="lbsing==true">
+                <view class="positioningBox">
+                    <image class="positioning-Img" src="http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/loading.gif"></image>
+                    <text class="positioning-Title">正在定位中...</text>
+                </view>
             </cell>
         </list>
-        <wxc-loading :show="showLoading" type="default" loading-text="定位中"></wxc-loading>
     </div>
 </template>
-<style lang="less" src="../../../style/wx.less"/>
+<style lang="less" src="../../style/wx.less"/>
 <style scoped>
 
     @keyframes myfirst {
@@ -102,12 +110,12 @@
     }
     .searchInput{
         padding-left: 10px;
-        width: 470px;
+        width: 370px;
         height: 60px;
         font-size: 30px;
     }
     .searchButton{
-        width: 220px;
+        width: 170px;
         height: 60px;
         border-left-width:1px;
         border-left-color: #cccccc;
@@ -148,14 +156,31 @@
         display: block;
         lines:1;
     }
+    .positioningBox{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 160px;
+    }
+    .positioning-Img{
+        width: 100px;
+        height: 100px;
+    }
+    .positioning-Title{
+        font-size: 30px;
+        font-weight: 700;
+        display: block;
+        margin-top: 20px;
+        color: #888;
+    }
 </style>
 <script>
-    import noData from '../../../include/noData.vue';
-    import navbar from '../../../include/navbar.vue';
-    import utils from '../../../assets/utils';
-    import {dom, event, animation, storage} from '../../../weex.js';
-    import {POST, GET, URIEncrypt} from '../../../assets/fetch';
-    import filters from '../../../filters/filters.js';
+    import noData from '../../include/noData.vue';
+    import navbar from '../../include/navbar.vue';
+    import utils from '../../assets/utils';
+    import {dom, event, animation, storage} from '../../weex.js';
+    import {POST, GET, URIEncrypt} from '../../assets/fetch';
+    import filters from '../../filters/filters.js';
 
     var globalEvent = weex.requireModule('globalEvent');
     const amap = weex.requireModule('amap');
@@ -175,9 +200,9 @@
                 keyword:"",
                 dress:utils.locate("resources/images/dress.png"),
                 cover:true,
-                isPolygon:true,
-                showLoading:true,
-                cityName:'定位中'
+                cityName:'定位中',
+                addressID:'',
+                lbsing:true
             }
         },
         props: {},
@@ -188,24 +213,15 @@
         created() {
             utils.initIconFont();
             let _this = this;
-            let title = utils.getUrlParameter('title');
-            if(!utils.isNull(title)){
-                this.title = title
-            }
-            let isPolygon = utils.getUrlParameter('isPolygon');
-            if(!utils.isNull(isPolygon)){
-                this.isPolygon = (isPolygon=='true')
-            }
             this.amapHeight = utils.fullScreen(136)/2;
             this.coverTop = this.amapHeight/2-30;
-            this.listHeight = utils.fullScreen(utils.getHeaderHeight+100) - this.amapHeight;
+            this.listHeight = utils.fullScreen(236);
             event.getLocation(function (e) {
                 if (e.type=='success') {
                     _this.longitude = e.data.lng;
                     _this.latitude = e.data.lat;
                     _this.center = [_this.longitude,_this.latitude];
                     _this.open_lbs();
-                    _this.showLoading = false;
                 } else {
                     modal.alert({
                         message: '获取位置失败，请开启定位权限',
@@ -215,7 +231,13 @@
                     })
                     event.closeURL();
                 }
+                _this.lbsing = false;
             })
+            globalEvent.addEventListener("onProductChange", function (e) {
+                _this.addressID = e.data.id,
+                _this.addressName = e.data.shortName
+                _this.choose()
+            });
         },
         methods: {
             goback: function () {
@@ -229,10 +251,16 @@
             // 接口
             open_lbs: function () {
                 var _this = this
-                GET("/lbs/regeoCode.jhtml?lat="+this.latitude + '&lng='+this.longitude  +'&isPolygon='+this.isPolygon, function (res) {
+                let E = {
+                    lat: this.latitude,
+                    lng: this.longitude,
+                }
+                let Data = URIEncrypt(E);
+                GET("/lbs/regeoCode.jhtml?" + Data, function (res) {
                     if (res.type == "success") {
                         _this.regeocode = res.data;
                         _this.inPolygon = res.data.inPolygon;
+                        _this.cityName = res.data.cityName;
                         _this.drawlbs();
                     }
                 }, function (err) {
@@ -251,8 +279,6 @@
                 this.longitude = parseFloat(arr[0]);
                 this.latitude = parseFloat(arr[1]);
 
-                this.regeocode.longitude = this.longitude;
-                this.regeocode.latitude = this.latitude;
                 this.regeocode.building = poi.address + poi.name
                 let ev = {
                     areaName: this.regeocode.areaName,
@@ -264,7 +290,6 @@
                 event.closeURL({type:'success',data:ev,content:"success"});
             },
             drawlbs() {
-
                 //画围栏
                 var _this = this;
                 animation.transition(_this.$refs.amapcover, {
@@ -290,11 +315,16 @@
                 }, 500)
 
             },
-            searchPoi() {
+            searchPoi(e) {
                 //让input失去焦点
                 this.$refs.searchInputRef.blur();
                 var _this = this;
-                GET("/lbs/geoQuery.jhtml?areaId="+this.regeocode.areaId + '&keyword='+encodeURIComponent(this.keyword) +'&isPolygon='+this.isPolygon, function (res) {
+                let E = {
+                    areaId: _this.regeocode.areaId,
+                    keyword: _this.keyword
+                }
+                let Data = URIEncrypt(E);
+                GET("/lbs/geoQuery.jhtml?" + Data, function (res) {
                         if (res.type == 'success') {
                             _this.regeocode.pois = res.data.pois;
                             _this.inPolygon = _this.regeocode.pois.length>0;
@@ -306,6 +336,24 @@
                         event.toast(err.content)
                     })
             },
+            linkToCityChoose:function() {
+                event.openURL(utils.locate("view/amap-picker/city.js"),function () {
+
+                })
+            },
+            choose:function () {
+                var _this = this
+                GET('lbs/geoCode.jhtml?areaId=' + _this.addressID +'&xmid=&isPois=false&isPolygon=false', function (res) {
+                    if (res.type == "success") {
+                        _this.longitude = res.data.location.lng;
+                        _this.latitude = res.data.location.lat;
+                        _this.center = [_this.longitude,_this.latitude];
+                        _this.open_lbs()
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            }
         }
     }
 </script>

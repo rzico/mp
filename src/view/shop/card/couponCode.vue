@@ -39,6 +39,42 @@
                 </div>
             </cell>
         </list>
+        <div class="bottomBox">
+            <div class="smallBox" @click="showMask(1)">
+                <text class="smallText">核销</text>
+            </div>
+            <div class="smallBox" @click="showMask(2)">
+                <text class="smallText">赠送</text>
+            </div>
+        </div>
+        <div class="mask" v-if="isMask">
+            <div class="maskContent">
+                <text class="maskTitle">{{type <2 ?'核销':'赠送'}}</text>
+                <div class="maskCell">
+                    <text class="maskCellTitle">水票:</text>
+                    <div class="flex-row" style="position: relative" @click="openPick">
+                        <div class="maskCellValBox">
+                            <text class="maskCellVal" >{{nowVal}}</text>
+                        </div>
+                        <div style="width: 50px;height: 50px;align-items: center;justify-content: center;position: absolute;right: 0;">
+                            <text class="maskCellIcon" :style="{fontFamily:'iconfont'}">&#xe601;</text>
+                        </div>
+                    </div>
+                </div>
+                <div class="maskCell">
+                    <text class="maskCellTitle">数量:</text>
+                    <input class="maskCellInput" type="number" placeholder="请输入数量" v-model="quantity"/>
+                </div>
+                <div class="buttonBox">
+                    <div class="canBox" @click="downMask()">
+                        <text class="buttonBoxText">取消</text>
+                    </div>
+                    <div class="confrimBox" @click="confrimMask()">
+                        <text class="buttonBoxText">确定</text>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -138,6 +174,122 @@
         border-color:#5eb0fd;
         border-width: 1px;
     }
+
+    .bottomBox{
+        width: 750px;
+        height: 110px;
+        background-color: #ffffff;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .smallBox{
+        width: 250px;
+        height: 70px;
+        border-radius: 35px;
+        align-items: center;
+        justify-content: center;
+        border-width: 1px;
+        border-color: #888888;
+    }
+    .smallText{
+        font-size: 32px;
+    }
+    .mask{
+        position: fixed;
+        top:0;
+        left:0;
+        right: 0;
+        bottom: 0;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(0,0,0,0.7);
+    }
+    .maskContent{
+        width: 600px;
+        background-color: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 250px;
+    }
+    .maskTitle{
+        font-size: 45px;
+        color: #0088fb;
+        margin-top: 50px;
+    }
+    .maskCell{
+        flex-direction: row;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .maskCellTitle{
+        font-size: 32px;
+        margin-right: 20px;
+    }
+    .maskCellValBox{
+        width: 450px;
+        height: 70px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-bottom-color: #ccc;
+    }
+    .maskCellVal{
+        font-size: 32px;
+        max-width: 400px;
+        overflow: hidden;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .maskCellInput{
+        width: 450px;
+        height: 70px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-bottom-color: #ccc;
+        font-size: 32px;
+    }
+    .maskCellIcon{
+        font-size: 35px;
+        color: #999;
+    }
+    .buttonBox{
+        width: 600px;
+        border-top-width: 2px;
+        border-top-color: #0088fb;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 50px;
+    }
+    .canBox{
+        width: 300px;
+        height: 90px;
+        border-right-width: 2px;
+        border-right-color: #0088fb;
+        align-items: center;
+        justify-content: center;
+    }
+    .canBox:active{
+        background-color: #ccc;
+    }
+    .confrimBox{
+        width: 300px;
+        height: 90px;
+        align-items: center;
+        justify-content: center;
+    }
+    .confrimBox:active{
+        background-color: #ccc;
+    }
+    .buttonBoxText{
+        font-size: 35px;
+        color: #0088fb;
+    }
 </style>
 
 <script>
@@ -168,7 +320,15 @@
                 refreshImg:utils.locate('resources/images/loading.png'),
                 cardId:'',
                 logo:'',
-                total:0
+                total:0,
+                type:1,
+                nowVal:'',
+                quantity:'',
+                pickData:[],
+                pickIndex:0,
+                productList:[],
+                memberId:'',
+                isMask:false
             }
         },
         props: {
@@ -179,12 +339,122 @@
             utils.initIconFont();
             this.logo = utils.getUrlParameter('logo');
             this.cardId = utils.getUrlParameter('cardId');
+            this.memberId = utils.getUrlParameter('memberId');
             this.open();
+            this.openProduct()
         },
         filters:{
 
         },
         methods: {
+            showMask(type){
+              if(type<2){
+                  this.type=1
+              }else{
+                  this.type = 2
+              }
+              this.pickData = [];
+              this.nowVal = '';
+              this.quantity = '';
+              this.pickIndex = 0;
+              this.isMask = true
+            },
+            downMask(){
+                this.isMask = false
+            },
+            openPick:function () {
+                let _this = this;
+                _this.pickData = [];
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                if(this.type<2){
+                    // 核销
+                    if(utils.isNull(_this.lists)){
+                        event.toast('暂无水票')
+                        _this.clicked = false;
+                        return
+                    }
+                    _this.lists.forEach(function (item) {
+                        _this.pickData.push(item.couponName)
+                    })
+                    picker.pick({
+                        items:_this.pickData
+                    }, e => {
+                        if (e.result == 'success') {
+                            _this.pickIndex = e.data;
+                            _this.nowVal = _this.lists[_this.pickIndex].couponName;
+                        }
+                    })
+                    _this.clicked = false;
+                }else {
+                    // 赠送
+                    if(utils.isNull(_this.productList)){
+                        event.toast('暂无水票')
+                        _this.clicked = false;
+                        return
+                    }
+                    _this.productList.forEach(function (item) {
+                        _this.pickData.push(item.name)
+                    });
+                    picker.pick({
+                        items:_this.pickData
+                    }, e => {
+                        if (e.result == 'success') {
+                            _this.pickIndex = e.data;
+                            _this.nowVal = _this.productList[_this.pickIndex].name;
+                        }
+                    });
+                    _this.clicked = false;
+                }
+
+            },
+            confrimMask(){
+                let _this = this
+                if(utils.isNull(this.nowVal)){
+                    event.toast('请选择水票')
+                    return
+                }else  if(utils.isNull(this.quantity) || this.quantity<1){
+                    event.toast('请输入数量')
+                    return
+                }
+                if(this.type<2){
+                    // 核销
+                    POST('weex/member/couponCode/useT.jhtml?couponCodeId='+_this.lists[_this.pickIndex].id+'&quantity='+this.quantity).then(
+                        function (mes) {
+                            if (mes.type == "success") {
+                                _this.open();
+                                event.toast('核销成功');
+                                _this.isMask = false
+                            } else {
+                                event.toast(mes.content);
+                                _this.isMask = false
+                            }
+                        }, function (err) {
+                            event.toast(err.content);
+                            _this.isMask = false
+                        }
+                    )
+                }else {
+                    // 赠送
+                    POST('weex/member/couponCode/addT.jhtml?productId='+_this.productList[_this.pickIndex].id+'&quantity='+this.quantity+'&memberId='+this.memberId).then(
+                        function (mes) {
+                            if (mes.type == "success") {
+                                _this.open();
+                                event.toast('赠送成功');
+                                _this.isMask = false
+                            } else {
+                                event.toast(mes.content);
+                                _this.isMask = false
+                            }
+                        }, function (err) {
+                            event.toast(err.content);
+                            _this.isMask = false
+                        }
+                    )
+                }
+            },
 //             设置赠送张数
             settingNumber:function (id) {
                 let _this = this;
@@ -234,6 +504,18 @@
                         mes.data.forEach(function (item,index) {
                             _this.total =  _this.total+ item.stock
                         })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            openProduct(){
+                var _this = this;
+                GET('applet/product/list.jhtml?pageStart=0&pageSize=200&subType=water',function (mes) {
+                    if (mes.type == 'success') {
+                        _this.productList = mes.data.data;
                     } else {
                         event.toast(mes.content);
                     }

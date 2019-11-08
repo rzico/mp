@@ -231,7 +231,7 @@
             newaddre: function () {
                 var _this = this;
 
-                    event.openURL(utils.locate("view/shop/card/receiver/amap-picker/amap-picker.js"),function (e) {
+                    event.openURL(utils.locate("view/amap-picker/amap-picker.js"),function (e) {
                         if (e.type=='success') {
                             let ev = {
                                 areaName: e.data.areaName,

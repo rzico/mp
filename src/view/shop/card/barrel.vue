@@ -54,6 +54,47 @@
                 </div>
             </div>
         </div>
+
+        <div class="newBottomBox">
+            <div class="smallBox" @click="showMask(1)">
+                <text class="smallText">押桶</text>
+            </div>
+            <div class="smallBox" @click="showMask(2)">
+                <text class="smallText">退桶</text>
+            </div>
+        </div>
+        <div class="bottomMask" v-if="hasMask">
+            <div class="maskContent">
+                <text class="maskTitle">{{type <2 ?'押桶':'退桶'}}</text>
+                <div class="maskCell">
+                    <text class="maskCellTitle">品牌:</text>
+                    <div class="flex-row" style="position: relative" @click="openPick">
+                        <div class="maskCellValBox">
+                            <text class="maskCellVal" >{{nowVal}}</text>
+                        </div>
+                        <div style="width: 50px;height: 50px;align-items: center;justify-content: center;position: absolute;right: 0;">
+                            <text class="maskCellIcon" :style="{fontFamily:'iconfont'}">&#xe601;</text>
+                        </div>
+                    </div>
+                </div>
+                <div class="maskCell">
+                    <text class="maskCellTitle">数量:</text>
+                    <input class="maskCellInput" type="number" placeholder="请输入数量" v-model="quantity"/>
+                </div>
+                <div class="maskCell">
+                    <text class="maskCellTitle">押金:</text>
+                    <input class="maskCellInput" type="number" placeholder="请输入押金" v-model="amount"/>
+                </div>
+                <div class="buttonBox">
+                    <div class="canBox" @click="downBMask()">
+                        <text class="buttonBoxText">取消</text>
+                    </div>
+                    <div class="confrimBox" @click="confrimMask()">
+                        <text class="buttonBoxText">确定</text>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -232,9 +273,126 @@
         border-color:#5eb0fd;
         border-width: 1px;
     }
+
+    .newBottomBox{
+        width: 750px;
+        height: 110px;
+        background-color: #ffffff;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .smallBox{
+        width: 250px;
+        height: 70px;
+        border-radius: 35px;
+        align-items: center;
+        justify-content: center;
+        border-width: 1px;
+        border-color: #888888;
+    }
+    .smallText{
+        font-size: 32px;
+    }
+    .bottomMask{
+        position: fixed;
+        top:0;
+        left:0;
+        right: 0;
+        bottom: 0;
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(0,0,0,0.7);
+    }
+    .maskContent{
+        width: 600px;
+        background-color: #ffffff;
+        border-radius: 20px;
+        overflow: hidden;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 250px;
+    }
+    .maskTitle{
+        font-size: 45px;
+        color: #0088fb;
+        margin-top: 50px;
+    }
+    .maskCell{
+        flex-direction: row;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .maskCellTitle{
+        font-size: 32px;
+        margin-right: 20px;
+    }
+    .maskCellValBox{
+        width: 450px;
+        height: 70px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-bottom-color: #ccc;
+    }
+    .maskCellVal{
+        font-size: 32px;
+        max-width: 400px;
+        overflow: hidden;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .maskCellInput{
+        width: 450px;
+        height: 70px;
+        flex-direction: row;
+        align-items: center;
+        border-bottom-width: 1px;
+        border-bottom-color: #ccc;
+        font-size: 32px;
+    }
+    .maskCellIcon{
+        font-size: 35px;
+        color: #999;
+    }
+    .buttonBox{
+        width: 600px;
+        border-top-width: 2px;
+        border-top-color: #0088fb;
+        flex-direction: row;
+        align-items: center;
+        margin-top: 50px;
+    }
+    .canBox{
+        width: 300px;
+        height: 90px;
+        border-right-width: 2px;
+        border-right-color: #0088fb;
+        align-items: center;
+        justify-content: center;
+    }
+    .canBox:active{
+        background-color: #ccc;
+    }
+    .confrimBox{
+        width: 300px;
+        height: 90px;
+        align-items: center;
+        justify-content: center;
+    }
+    .confrimBox:active{
+        background-color: #ccc;
+    }
+    .buttonBoxText{
+        font-size: 35px;
+        color: #0088fb;
+    }
 </style>
 
 <script>
+    const picker = weex.requireModule('picker')
     var modal = weex.requireModule('modal')
     import { POST, GET ,SCAN} from '../../../assets/fetch'
     import utils from '../../../assets/utils'
@@ -263,7 +421,16 @@
                 barrelId:'',
                 pledge:0,
                 mortgage:0,
-                borrow:0
+                borrow:0,
+                type:1,
+                nowVal:'',
+                quantity:'',
+                amount:'',
+                pickData:[],
+                pickIndex:0,
+                barrelList:[],
+                memberId:'',
+                hasMask:false
             }
         },
         props: {
@@ -273,12 +440,103 @@
         created() {
             utils.initIconFont();
             this.cardId = utils.getUrlParameter('cardId');
+            this.memberId = utils.getUrlParameter('memberId');
             this.open();
+            this.openBarrel()
         },
         filters:{
 
         },
         methods: {
+            showMask(type){
+                if(type<2){
+                    this.type=1
+                }else{
+                    this.type = 2
+                }
+                this.pickData = [];
+                this.nowVal = '';
+                this.quantity = '';
+                this.amount = '';
+                this.pickIndex = 0;
+                this.hasMask = true
+            },
+            downBMask(){
+                this.hasMask = false
+            },
+            openPick:function () {
+                let _this = this;
+                _this.pickData = [];
+                if(utils.isNull(this.barrelList)){
+                    event.toast('暂无品牌');
+                    return
+                }
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                _this.barrelList.forEach(function (item) {
+                    _this.pickData.push(item.name)
+                })
+                picker.pick({
+                    items:_this.pickData
+                }, e => {
+                    if (e.result == 'success') {
+                        _this.pickIndex = e.data;
+                        _this.nowVal = _this.barrelList[_this.pickIndex].name;
+                    }
+                })
+                _this.clicked = false;
+
+            },
+            confrimMask(){
+                let _this = this
+                if(utils.isNull(this.nowVal)){
+                    event.toast('请选择品牌')
+                    return
+                }else  if(utils.isNull(this.quantity) || this.quantity<1){
+                    event.toast('请输入数量')
+                    return
+                }else  if(utils.isNull(this.amount)){
+                    event.toast('请输入押金')
+                    return
+                }
+                if(this.type<2){
+                    // 押桶
+                    POST('weex/member/shippingBarrel/addB.jhtml?barrelId='+_this.barrelList[_this.pickIndex].id+'&memberId='+this.memberId+'&pledge='+this.amount+'&quantity='+this.quantity).then(
+                        function (mes) {
+                            if (mes.type == "success") {
+                                _this.open();
+                                event.toast('押桶成功');
+                                _this.hasMask = false
+                            } else {
+                                event.toast(mes.content);
+                                _this.hasMask = false
+                            }
+                        }, function (err) {
+                            event.toast(err.content);
+                            _this.hasMask = false
+                        }
+                    )
+                }else {
+                    // 退桶
+                    POST('weex/member/shippingBarrel/useB.jhtml?barrelId='+_this.barrelList[_this.pickIndex].id+'&memberId='+this.memberId+'&pledge='+this.amount+'&quantity='+this.quantity).then(
+                        function (mes) {
+                            if (mes.type == "success") {
+                                _this.open();
+                                event.toast('退桶成功');
+                                _this.hasMask = false
+                            } else {
+                                event.toast(mes.content);
+                                _this.hasMask = false
+                            }
+                        }, function (err) {
+                            event.toast(err.content);
+                            _this.hasMask = false
+                        }
+                    )
+                }
+            },
             downMask(){
               this.isMask = false
             },
@@ -325,6 +583,18 @@
                         _this.total = mes.data.stock;
                         _this.money = mes.data.pledge;
                         _this.lists = mes.data.data;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            openBarrel(){
+                var _this = this;
+                GET('weex/member/barrel/aList.jhtml',function (mes) {
+                    if (mes.type == 'success') {
+                        _this.barrelList = mes.data.data;
                     } else {
                         event.toast(mes.content);
                     }
