@@ -39,7 +39,7 @@
                 </div>
             </cell>
         </list>
-        <div class="bottomBox">
+        <div class="newBottomBox">
             <div class="smallBox" @click="showMask(1)">
                 <text class="smallText">核销</text>
             </div>
@@ -47,31 +47,24 @@
                 <text class="smallText">赠送</text>
             </div>
         </div>
-        <div class="mask" v-if="isMask">
-            <div class="maskContent">
-                <text class="maskTitle">{{type <2 ?'核销':'赠送'}}</text>
-                <div class="maskCell">
-                    <text class="maskCellTitle">水票:</text>
-                    <div class="flex-row" style="position: relative" @click="openPick">
-                        <div class="maskCellValBox">
-                            <text class="maskCellVal" >{{nowVal}}</text>
-                        </div>
-                        <div style="width: 50px;height: 50px;align-items: center;justify-content: center;position: absolute;right: 0;">
-                            <text class="maskCellIcon" :style="{fontFamily:'iconfont'}">&#xe601;</text>
-                        </div>
+
+        <div class="mask" v-if="isMask" >
+            <div class="editorBox">
+                <text class="fz40 mt30">{{type <2 ?'核销':'赠送'}}</text>
+                <div class="editorCell">
+                    <text class="fz32">水票:</text>
+                    <div class="flex-row" style="width: 500px" @click="openPick">
+                        <text class="maskCellVal pl20" >{{nowVal}}</text>
+                        <text class="maskCellIcon ml20" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="maskCell">
-                    <text class="maskCellTitle">数量:</text>
-                    <input class="maskCellInput" type="number" placeholder="请输入数量" v-model="quantity"/>
+                <div class="editorCellTwo">
+                    <text class="fz32">数量:</text>
+                    <input class="editorInput pl20" type="number" placeholder="请输入押桶数量" v-model="quantity"/>
                 </div>
-                <div class="buttonBox">
-                    <div class="canBox" @click="downMask()">
-                        <text class="buttonBoxText">取消</text>
-                    </div>
-                    <div class="confrimBox" @click="confrimMask()">
-                        <text class="buttonBoxText">确定</text>
-                    </div>
+                <div class="bottomBox">
+                    <div class="leftBox" @click="downMask()"><text class="bottomBoxText">取消</text></div>
+                    <div class="rightBox" @click="confrimMask()"><text class="bottomBoxText">确认</text></div>
                 </div>
             </div>
         </div>
@@ -175,7 +168,7 @@
         border-width: 1px;
     }
 
-    .bottomBox{
+    .newBottomBox{
         width: 750px;
         height: 110px;
         background-color: #ffffff;
@@ -207,88 +200,81 @@
         align-items: center;
         background-color: rgba(0,0,0,0.7);
     }
-    .maskContent{
-        width: 600px;
-        background-color: #ffffff;
-        border-radius: 20px;
-        overflow: hidden;
-        flex-direction: column;
+    .editorBox{
+        width: 650px;
         align-items: center;
-        margin-top: 250px;
+        background-color: white;
+        border-radius: 15px;
+        position: absolute;
+        left:50px;
+        top: 200px;
     }
-    .maskTitle{
-        font-size: 45px;
-        color: #0088fb;
-        margin-top: 50px;
-    }
-    .maskCell{
-        flex-direction: row;
-        align-items: center;
-        margin-top: 20px;
-    }
-    .maskCellTitle{
-        font-size: 32px;
+    .editorCell{
+        margin-left: 20px;
         margin-right: 20px;
-    }
-    .maskCellValBox{
-        width: 450px;
-        height: 70px;
+        width: 610px;
+        height: 100px;
         flex-direction: row;
         align-items: center;
         border-bottom-width: 1px;
-        border-bottom-color: #ccc;
+        border-color: #cccccc;
+    }
+    .editorCellTwo{
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 610px;
+        height: 100px;
+        flex-direction: row;
+        align-items: center;
+    }
+    .editorInput{
+        width: 500px;
+        height: 98px;
+        line-height: 90px;
+        font-size: 32px;
+    }
+    .bottomBox{
+        flex-direction: row;
+        align-items: center;
+        width: 650px;
+        height: 100px;
+        border-top-width: 2px;
+        border-color: #0088fb;
+    }
+    .leftBox{
+        height: 100px;
+        width: 325px;
+        border-right-width: 2px;
+        border-color: #0088fb;
+        align-items: center;
+        justify-content: center;
+    }
+    .leftBox:active{
+        background-color: #cccccc;
+    }
+    .rightBox{
+        height: 100px;
+        width: 325px;
+        align-items: center;
+        justify-content: center;
+    }
+    .rightBox:active{
+        background-color: #cccccc;
+    }
+    .bottomBoxText{
+        font-size: 40px;
+        color: #0088fb;
     }
     .maskCellVal{
         font-size: 32px;
-        max-width: 400px;
+        width: 470px;
         overflow: hidden;
         lines:1;
         text-overflow: ellipsis;
     }
-    .maskCellInput{
-        width: 450px;
-        height: 70px;
-        flex-direction: row;
-        align-items: center;
-        border-bottom-width: 1px;
-        border-bottom-color: #ccc;
-        font-size: 32px;
-    }
     .maskCellIcon{
-        font-size: 35px;
+        font-size: 32px;
         color: #999;
-    }
-    .buttonBox{
-        width: 600px;
-        border-top-width: 2px;
-        border-top-color: #0088fb;
-        flex-direction: row;
-        align-items: center;
-        margin-top: 50px;
-    }
-    .canBox{
-        width: 300px;
-        height: 90px;
-        border-right-width: 2px;
-        border-right-color: #0088fb;
-        align-items: center;
-        justify-content: center;
-    }
-    .canBox:active{
-        background-color: #ccc;
-    }
-    .confrimBox{
-        width: 300px;
-        height: 90px;
-        align-items: center;
-        justify-content: center;
-    }
-    .confrimBox:active{
-        background-color: #ccc;
-    }
-    .buttonBoxText{
-        font-size: 35px;
-        color: #0088fb;
     }
 </style>
 
@@ -438,7 +424,7 @@
                     )
                 }else {
                     // 赠送
-                    POST('weex/member/couponCode/addT.jhtml?productId='+_this.productList[_this.pickIndex].id+'&quantity='+this.quantity+'&memberId='+this.memberId).then(
+                    POST('weex/member/couponCode/addT.jhtml?productId='+_this.productList[_this.pickIndex].productId+'&quantity='+this.quantity+'&memberId='+this.memberId).then(
                         function (mes) {
                             if (mes.type == "success") {
                                 _this.open();
