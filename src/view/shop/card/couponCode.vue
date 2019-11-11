@@ -499,7 +499,7 @@
             },
             openProduct(){
                 var _this = this;
-                GET('applet/product/list.jhtml?pageStart=0&pageSize=200&subType=water',function (mes) {
+                GET('weex/member/product/list.jhtml?pageStart=0&pageSize=200&subType=water&memberId='+this.memberId,function (mes) {
                     if (mes.type == 'success') {
                         _this.productList = mes.data.data;
                     } else {
