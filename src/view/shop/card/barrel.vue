@@ -62,11 +62,14 @@
             <div class="smallBox" @click="showMask(2)">
                 <text class="smallText">退桶</text>
             </div>
+            <div class="smallBox" @click="showMask(3)">
+                <text class="smallText">借桶</text>
+            </div>
         </div>
 
         <div class="mask" v-if="hasMask" >
             <div class="editorBox">
-                <text class="fz40 mt30">{{type <2 ?'押桶':'退桶'}}</text>
+                <text class="fz40 mt30">{{type ==1 ?'押桶':type ==2 ?'退桶':'借桶'}}</text>
                 <div class="editorCell">
                     <text class="fz32">品牌:</text>
                     <div class="flex-row" style="width: 500px" @click="openPick">
@@ -78,7 +81,7 @@
                     <text class="fz32">数量:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入押桶数量" v-model="quantity"/>
                 </div>
-                <div class="editorCellTwo">
+                <div class="editorCellTwo" v-if="type < 3">
                     <text class="fz32">押金:</text>
                     <input class="editorInput pl20" type="number" placeholder="请输入借桶数量" v-model="amount"/>
                 </div>
@@ -258,7 +261,7 @@
         padding-right: 20px;
     }
     .smallBox{
-        width: 250px;
+        width: 220px;
         height: 70px;
         border-radius: 35px;
         align-items: center;
@@ -340,10 +343,12 @@
         },
         methods: {
             showMask(type){
-                if(type<2){
+                if(type==1){
                     this.type=1
-                }else{
+                }else if(type==2){
                     this.type = 2
+                }else if(type==3){
+                    this.type = 3
                 }
                 this.pickData = [];
                 this.nowVal = '';
@@ -388,11 +393,11 @@
                 }else  if(utils.isNull(this.quantity) || this.quantity<1){
                     event.toast('请输入数量')
                     return
-                }else  if(utils.isNull(this.amount)){
+                }else  if(this.type < 3 && utils.isNull(this.amount)){
                     event.toast('请输入押金')
                     return
                 }
-                if(this.type<2){
+                if(this.type==1){
                     // 押桶
                     POST('weex/member/shippingBarrel/addB.jhtml?barrelId='+_this.barrelList[_this.pickIndex].id+'&memberId='+this.memberId+'&pledge='+this.amount+'&quantity='+this.quantity).then(
                         function (mes) {
@@ -409,13 +414,30 @@
                             _this.hasMask = false
                         }
                     )
-                }else {
+                }else  if(this.type==2){
                     // 退桶
                     POST('weex/member/shippingBarrel/useB.jhtml?barrelId='+_this.barrelList[_this.pickIndex].id+'&memberId='+this.memberId+'&pledge='+this.amount+'&quantity='+this.quantity).then(
                         function (mes) {
                             if (mes.type == "success") {
                                 _this.open();
                                 event.toast('退桶成功');
+                                _this.hasMask = false
+                            } else {
+                                event.toast(mes.content);
+                                _this.hasMask = false
+                            }
+                        }, function (err) {
+                            event.toast(err.content);
+                            _this.hasMask = false
+                        }
+                    )
+                }else  if(this.type==3){
+                    // 借桶
+                    POST('weex/member/shippingBarrel/addBorrow.jhtml?barrelId='+_this.barrelList[_this.pickIndex].id+'&memberId='+this.memberId+'&quantity='+this.quantity).then(
+                        function (mes) {
+                            if (mes.type == "success") {
+                                _this.open();
+                                event.toast('借桶成功');
                                 _this.hasMask = false
                             } else {
                                 event.toast(mes.content);
