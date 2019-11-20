@@ -21,23 +21,17 @@
                     <div class="pl20">
                         <text class="fz32" >{{deposit.createDate | monthfmt}}</text>
                     </div>
-                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="cell-row cell-clear" >
                     <div class="cell-panel newHeight"  :style="addBorder(index)">
-                        <div class="flex1">
-                            <image class="logo" resize="cover"
-                                   :src="deposit.logo">
-                            </image>
-                        </div>
-                        <div class="content flex5">
-                            <div class="flex-row space-between align-bottom">
+                        <div class="content">
+                            <div class="flex-row space-between " style="width: 710px">
                                 <text class="title lines-ellipsis width400">{{deposit.memo}}</text>
                                 <text class="money" :style="moneyColor(deposit.amount)">{{deposit.amount | currencyfmt}}</text>
                             </div>
-                            <div class="flex-row space-between align-bottom">
+                            <div class="flex-row space-between" style="width: 710px">
                                 <text class="datetime">{{deposit.createDate | datetimefmt}}</text>
-                                <text class="bal pr25">余票:{{deposit.balance | currencyfmt}}</text>
+                                <text class="bal">余票:{{deposit.balance | currencyfmt}}</text>
                             </div>
                         </div>
                     </div>
@@ -157,7 +151,6 @@
     }
 
     .content {
-        margin-left: 10px;
         flex-direction: column;
         align-items: flex-start;
     }
@@ -168,7 +161,6 @@
     }
     .money {
         font-weight: 700;
-        margin-right: 20px;
         font-size: 32px;
     }
 

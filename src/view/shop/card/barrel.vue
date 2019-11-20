@@ -18,17 +18,12 @@
             <cell >
                 <div class="" v-for="c in lists">
                     <div class="contentBox" @click="linkToShipping(c.barrelId)">
-                        <div class="couponDiv">
-                            <image class="couponImg" :src="c.logo"></image>
-                        </div>
                         <div class="infoBox">
                             <text class="couponTitle">{{c.name}}</text>
                             <!--<text class="money">押金:{{c.pledge}}</text>-->
                             <text class="stock">余桶:{{c.stock}}   押桶:{{c.mortgage}}  借桶:{{c.borrow}}</text>
                         </div>
-                        <div class="iconBox"  @click="openMask(c)">
-                            <text class="editorIcon" :style="{fontFamily:'iconfont'}">&#xe61d;</text>
-                        </div>
+                        <text class="fz32 gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </cell>
@@ -59,11 +54,11 @@
             <div class="smallBox" @click="showMask(1)">
                 <text class="smallText">押桶</text>
             </div>
-            <div class="smallBox" @click="showMask(2)">
-                <text class="smallText">退桶</text>
-            </div>
             <div class="smallBox" @click="showMask(3)">
                 <text class="smallText">借桶</text>
+            </div>
+            <div class="smallBoxTwo" @click="showMask(2)">
+                <text class="smallTextTwo">退桶</text>
             </div>
         </div>
 
@@ -204,8 +199,11 @@
         margin-right: 20px;
         margin-bottom: 20px;
         background-color: white;
+        padding-left: 20px;
+        padding-right: 20px;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         border-radius: 15px;
     }
     .couponDiv{
@@ -223,8 +221,6 @@
         flex-direction: column;
         justify-content: space-between;
         height: 120px;
-        width: 430px;
-        padding-left: 20px;
     }
     .couponTitle{
         font-size: 32px;
@@ -269,8 +265,20 @@
         border-width: 1px;
         border-color: #888888;
     }
+    .smallBoxTwo{
+        width: 220px;
+        height: 70px;
+        border-radius: 35px;
+        align-items: center;
+        justify-content: center;
+        background-color: #EB4E40;
+    }
     .smallText{
         font-size: 32px;
+    }
+    .smallTextTwo{
+        font-size: 32px;
+        color: #ffffff;
     }
     .maskCellVal{
         font-size: 32px;

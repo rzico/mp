@@ -32,7 +32,11 @@
                         <text >{{c.createDate | monthfmt}}</text>
                     </div>
                     <div class="contentSmallCell" >
-                        <text class="number">{{c.createDate | ydfmt}}</text>
+                        <div class="flex-column">
+                            <text class="number gray">{{c.createDate | ydfmt}}</text>
+                            <text class="memo">{{c.memo}}</text>
+                        </div>
+
                         <text class="contentCellType">{{c.quantity}}</text>
                         <text class="contentCellType">{{c.returnQuantity}}</text>
                         <text class="contentCellType">{{c.pledgeQuantity}}</text>
@@ -144,7 +148,7 @@
         align-items: center;
     }
     .contentSmallCell{
-        height: 80px;
+        height: 110px;
         width: 750px;
         flex-direction: row;
         align-items: center;
@@ -168,6 +172,13 @@
         text-overflow: ellipsis;
     }
     .number{
+        font-size: 26px;
+        width: 187.5px;
+        text-align: center;
+        lines:1;
+        text-overflow: ellipsis;
+    }
+    .memo{
         font-size: 30px;
         width: 187.5px;
         text-align: center;

@@ -12,7 +12,7 @@
             </refresh>
             <cell >
                 <div class="" v-for="c in lists">
-                    <div class="contentBox">
+                    <div class="contentBox" @click="linkToInfo(c.id)">
                         <div class="flex-row">
                             <div class="couponDiv">
                                 <div  style="flex-direction:row; align-items:flex-end">
@@ -27,14 +27,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="buttonCell">
-                            <!--<div class="pickBox mr30" @click="settingNumber(c.id)">-->
-                                <!--<text class="fz28 primary">赠送</text>-->
-                            <!--</div>-->
-                            <div class="pickBox mr30" @click="linkToInfo(c.id)">
-                                <text class="fz28 primary">详情</text>
-                            </div>
-                        </div>
+                        <text class="fz32 gray mr20" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </cell>
@@ -95,12 +88,14 @@
     }
     .contentBox{
         padding-top: 20px;
+        padding-bottom: 20px;
         margin-left: 20px;
         margin-right: 20px;
         margin-bottom: 20px;
         background-color: white;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         border-radius: 15px;
     }
     .couponDiv{
@@ -129,7 +124,6 @@
         flex-direction: column;
         justify-content: space-between;
         height: 120px;
-        width: 530px;
         padding-left: 20px;
     }
     .buttonCell{
@@ -144,7 +138,7 @@
     }
     .couponTitle{
         font-size: 32px;
-        width: 510px;
+        max-width: 320px;
         lines:2;
         text-overflow: ellipsis;
     }
@@ -152,7 +146,6 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        width: 510px;
     }
     .price{
         font-size: 32px;
