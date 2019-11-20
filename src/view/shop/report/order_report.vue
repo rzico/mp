@@ -40,7 +40,9 @@
                 <text class="bigIcon" :style="{fontFamily:'iconfont'}"  v-if="!isIcon">&#xe601;</text>
             </div>
             <div class="bottomCell">
-                <text class="fz32 fontStrong">商品合计: ¥{{summarylist[0].price}}</text>
+                <text class="shopName">合计</text>
+                <text class="number"></text>
+                <text class="money">¥{{summarylist[0].price}}</text>
             </div>
             <div class="bottomCellTwo">
                 <text class="fz28 ">+ 运费/楼层费: ¥{{summarylist[0].freight}}</text>
@@ -147,8 +149,6 @@
         background-color: #f5f5f5;
         flex-direction: row;
         align-items: center;
-        justify-content: flex-end;
-        padding-right: 30px;
         border-bottom-width:1px;
         border-color:#cccccc;
     }

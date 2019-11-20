@@ -22,7 +22,7 @@
             <cell v-for="(c,index) in reportList" ref="adoptPull" >
                 <div class="contentCell" >
                     <text class="shopName">{{c.empName}}</text>
-                    <text class="shopName">{{c.quantity}}</text>
+                    <text class="number">{{c.quantity}}</text>
                     <text class="number">{{c.amount}}</text>
                     <text class="returnMoney">{{c.star}}%</text>
                 </div>
@@ -39,7 +39,7 @@
 
         <div class="bottomTotal"  v-if="reportList != null">
             <text class="shopName">合计</text>
-            <text class="shopName">{{total}}</text>
+            <text class="number">{{total}}</text>
             <text class="number">{{money}}</text>
             <text class="returnMoney"></text>
         </div>
@@ -138,14 +138,14 @@
         font-size: 30px;
         width: 187.5px;
         padding-left: 30px;
-        text-align: center;
+        text-align: left;
         lines:1;
         text-overflow: ellipsis;
     }
     .number{
         font-size: 30px;
         width: 187.5px;
-        text-align: center;
+        text-align: right;
         lines:1;
         text-overflow: ellipsis;
     }
