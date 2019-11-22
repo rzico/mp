@@ -74,11 +74,11 @@
                 </div>
                 <div class="editorCell">
                     <text class="fz32">数量:</text>
-                    <input class="editorInput pl20" type="number" placeholder="请输入押桶数量" v-model="quantity"/>
+                    <input class="editorInput pl20" type="number" :placeholder="placeholder" v-model="quantity"/>
                 </div>
                 <div class="editorCellTwo" v-if="type < 3">
                     <text class="fz32">押金:</text>
-                    <input class="editorInput pl20" type="number" placeholder="请输入借桶数量" v-model="amount"/>
+                    <input class="editorInput pl20" type="number" placeholder="请输入押金" v-model="amount"/>
                 </div>
                 <div class="bottomBox">
                     <div class="leftBox" @click="downBMask()"><text class="bottomBoxText">取消</text></div>
@@ -332,7 +332,8 @@
                 pickIndex:0,
                 barrelList:[],
                 memberId:'',
-                hasMask:false
+                hasMask:false,
+                placeholder:''
             }
         },
         props: {
@@ -352,11 +353,14 @@
         methods: {
             showMask(type){
                 if(type==1){
-                    this.type=1
+                    this.type=1;
+                    this.placeholder='请输入押桶数量'
                 }else if(type==2){
-                    this.type = 2
+                    this.type = 2;
+                    this.placeholder='请输入退桶数量'
                 }else if(type==3){
-                    this.type = 3
+                    this.type = 3;
+                    this.placeholder='请输入借桶数量'
                 }
                 this.pickData = [];
                 this.nowVal = '';
