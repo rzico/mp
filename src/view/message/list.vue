@@ -297,9 +297,12 @@
 //            创建前
             var _this = this;
             utils.initIconFont();
-            this.getStorage()
+//            this.getStorage()
             //            监听登陆成功.
             globalEvent.addEventListener("login", function (e) {
+                _this.unReadMessage = event.getUnReadMessageCount();
+                var mesData = [0,_this.unReadMessage,0];
+                event.setDots(mesData);
                 _this.getStorage();
             });
             //            监听注销.
@@ -332,9 +335,7 @@
                 })
             });
 
-            this.unReadMessage = event.getUnReadMessageCount();
-            var mesData = [0,this.unReadMessage,0];
-            event.setDots(mesData);
+
 
         },
 
