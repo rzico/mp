@@ -219,7 +219,8 @@
                 clicked:false,
                 time:null,
                 soundfile:null,
-                unReadMessage:0
+                unReadMessage:0,
+                UId:''
             }
         },
         components: {
@@ -297,13 +298,21 @@
 //            创建前
             var _this = this;
             utils.initIconFont();
-//            this.getStorage()
-            //            监听登陆成功.
-            globalEvent.addEventListener("login", function (e) {
+            this.UId = event.getUId();
+            if(!utils.isNull(this.UId) && this.UId >0){
                 _this.unReadMessage = event.getUnReadMessageCount();
                 var mesData = [0,_this.unReadMessage,0];
                 event.setDots(mesData);
                 _this.getStorage();
+            }
+            //            监听登陆成功.
+            globalEvent.addEventListener("login", function (e) {
+                if(_this.UId  != event.getUId()){
+                    _this.unReadMessage = event.getUnReadMessageCount();
+                    var mesData = [0,_this.unReadMessage,0];
+                    event.setDots(mesData);
+                    _this.getStorage();
+                }
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
