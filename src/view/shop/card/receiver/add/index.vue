@@ -51,20 +51,20 @@
                 </div>
             </div>
 
-            <div class="subBox"></div>
-            <div class='newAddre-default'>
-                <text class="cellTitle">是否默认</text>
-                <!--                    <div class="chooseAddre-garden act">-->
-                <!--                        <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>-->
-                <!--                    </div>-->
-                <!--                    <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">{{defaults?'&#xe64d;':'&#xe60a;'}}</text>-->
-                <div class="flex-row">
-                    <text class="fz32 mr10" @click='Return(true)'>是</text>
-                    <div class="newAddre-default-yes" :class="[defaults? 'act':'newAddre-no']"  @click='Return(true)'></div>
-                    <text class="fz32 mr10" @click='Return(false)'>否</text>
-                    <div class="newAddre-default-no" :class="[!defaults? 'act':'newAddre-no']" @click='Return(false)'></div>
-                </div>
-            </div>
+<!--            <div class="subBox"></div>-->
+<!--            <div class='newAddre-default'>-->
+<!--                <text class="cellTitle">是否默认</text>-->
+<!--                &lt;!&ndash;                    <div class="chooseAddre-garden act">&ndash;&gt;-->
+<!--                &lt;!&ndash;                        <text class="iconFont chooseIcon" :style="{fontFamily:'iconfont'}" >&#xe64d;</text>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <text :style="{fontFamily:'iconfont',transform:deg}" class="ico">{{defaults?'&#xe64d;':'&#xe60a;'}}</text>&ndash;&gt;-->
+<!--                <div class="flex-row">-->
+<!--                    <text class="fz32 mr10" @click='Return(true)'>是</text>-->
+<!--                    <div class="newAddre-default-yes" :class="[defaults? 'act':'newAddre-no']"  @click='Return(true)'></div>-->
+<!--                    <text class="fz32 mr10" @click='Return(false)'>否</text>-->
+<!--                    <div class="newAddre-default-no" :class="[!defaults? 'act':'newAddre-no']" @click='Return(false)'></div>-->
+<!--                </div>-->
+<!--            </div>-->
 
         </div>
             <!-- 信息部分结束 -->
@@ -287,6 +287,10 @@
             // 保存
             saveReceiver: function () {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var flag = false;
                 var warn = '';
                 if (utils.isNull(this.consignee)){
@@ -313,15 +317,18 @@
                         },function (value) {
 
                         })
+                        _this.clicked = false;
                         return;
                     }
-
+                if (_this.phoneBox != _this.phone){
+                    _this.defaults = false
+                }
                     let er = {
                         areaId: this.areaId,
                         address: this.address,
                         consignee: this.consignee,
                         phone: this.phone,
-                        isDefault:false,
+                        isDefault: this.defaults,
                         lat: this.latitude,
                         lng: this.longitude,
                         level: this.level,
@@ -329,11 +336,14 @@
                    }
                     POST('weex/member/receiver/add.jhtml?'+URIEncrypt(er), null).then(function (res) {
                         if (res.type == 'success') {
+                            _this.clicked = false;
                             event.closeURL(res)
                         } else {
+                            _this.clicked = false;
                             event.toast(res.content)
                         }
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast(err.content)
                     })
 
