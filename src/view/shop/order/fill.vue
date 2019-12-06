@@ -20,7 +20,7 @@
                 <text class="fz32">配送信息</text>
                 <div class="flex-row">
                     <text class="fz28 gray">查看会员资料</text>
-                    <text class="fz28 gray ml10" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    <text class="fz32 gray ml10" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
             </div>
             <div class="memberCard" @click="gocard()">
@@ -75,16 +75,16 @@
                         <!--<text :style="{fontFamily:'iconfont'}" style="color: #999;font-size: 32px">&#xe630;</text>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="typeBox" v-if="hasWater && order!=null && order.shippingMethodId != 'pickup'&& order.shippingMethodId != 'writeOff'&& order.shippingMethodId != 'cardbkg'">
-                    <div class="flex-row">
-                        <text class="fz32">{{order.shippingMethodId == 'returnBerrel'?'退押金':'收押金'}}:</text>
-                        <input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>
-                    </div>
-                    <div class="flex-row">
-                        <text class="fz32">{{order.shippingMethodId == 'returnBerrel'?'退桶数':'押桶数'}}:</text>
-                        <input type="number" class="mortgageInput" placeholder="请输入桶数" v-model="barrel" @change="getmoneyTotal"/>
-                    </div>
-                </div>
+                <!--<div class="typeBox" v-if="hasWater && order!=null && order.shippingMethodId != 'pickup'&& order.shippingMethodId != 'writeOff'&& order.shippingMethodId != 'cardbkg'">-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="fz32">{{order.shippingMethodId == 'returnBerrel'?'退押金':'收押金'}}:</text>-->
+                        <!--<input type="number" class="mortgageInput"  placeholder="请输入押金" v-model="deposit" @change="getmoneyTotal"/>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row">-->
+                        <!--<text class="fz32">{{order.shippingMethodId == 'returnBerrel'?'退桶数':'押桶数'}}:</text>-->
+                        <!--<input type="number" class="mortgageInput" placeholder="请输入桶数" v-model="barrel" @change="getmoneyTotal"/>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div v-if="order!=null && order.shippingMethodId != 'pickup'&& order.shippingMethodId != 'writeOff'&& order.shippingMethodId != 'cardbkg'">
                     <div class="typeBox" @click="pickPattern()">
                         <text class="fz32">配送站点:</text>

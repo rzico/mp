@@ -114,6 +114,10 @@
                         <text class="sub_title ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
                         <text class="sub_title ">实收水票:{{item.paperPaid}}</text>
                     </div>
+                    <div class="space-between mt10" v-if="item.borrow !=0"  @click="goBarrel(item.cardId,item.memberId)">
+                        <text class="sub_title ">上期借桶:{{item.borrow}}</text>
+                        <text  :style="{fontFamily:'iconfont'}" class="fz28 gray">&#xe630;</text>
+                    </div>
                 </div>
                 <div class="infoWhiteColor boder-bottom mt20">
                     <div class="goodsBody">
@@ -611,7 +615,28 @@
                 phone.tel(telPhone,function(){
                     return;
                 })
-            }
+            },
+            goBarrel(cardId,memberId){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+cardId+'&memberId='+memberId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
         }
     }
 </script>
