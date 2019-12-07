@@ -10,7 +10,7 @@
                     <text class="name">{{item.name}}</text>
                     <div class="flex-row">
                         <text class="number">{{item.balance}}{{type =='card' ?'次':'张'}}</text>
-                        <text class="moreIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        <text class="moreIcon" v-if="memberId==''" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
             </cell>
@@ -153,7 +153,7 @@
             },
 
             linkToDetail(goodsId,goodsName) {
-                if (this.clicked) {
+                if (this.clicked || !utils.isNull(this.memberId)) {
                     return;
                 }
                 this.clicked = true;
