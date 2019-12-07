@@ -504,7 +504,7 @@
         align-items: center;
         justify-content: center;
         /*flex: 1;*/
-        width: 150px;
+        width: 187.5px;
     }
     .allArticle{
         font-size: 31px;
@@ -582,17 +582,14 @@
                     name:'待确认',
                     id:1
                 },{
-                    name:'预约单',
+                    name:'配送中',
                     id:2
                 },{
-                    name:'配送中',
+                    name:'已送达',
                     id:3
                 },{
-                    name:'已送达',
+                    name:'已核销',
                     id:4
-                },{
-                    name:'已完成',
-                    id:5
                 }],
                 whichCorpus:0,
                 productCategoryId:1,
@@ -984,15 +981,12 @@
                         status = 'unconfirmed';
                         break;
                     case 2:
-                        status = 'hope';
-                        break;
-                    case 3:
                         status = 'dispatch';
                         break;
-                    case 4:
+                    case 3:
                         status = 'delivery';
                         break;
-                    case 5:
+                    case 4:
                         status = 'completed';
                         break;
                     default:

@@ -114,13 +114,6 @@
                                 <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goToMask()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
-                            <text class="iconfontText ">预约单</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.hope != 0">
-                                <text class="shippingNumber" >{{shippingConut.hope}}</text>
-                            </div>
-                        </div>
                         <div class=" flexCol iconBox"  @click="goOnTheWay()">
                             <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
                             <text class="iconfontText ">配送中</text>
@@ -134,6 +127,10 @@
                             <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
                                 <text class="shippingNumber" >{{shippingConut.completed}}</text>
                             </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goToCompleted()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                            <text class="iconfontText ">已核销</text>
                         </div>
                     </div>
                 </div>
@@ -893,8 +890,8 @@
                     }
                 );
             },
-//            预约单
-            goToMask(){
+//            已核销
+            goToCompleted(){
                 if (this.clicked) {
                     return;
                 }
@@ -903,7 +900,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -919,7 +916,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -935,7 +932,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
