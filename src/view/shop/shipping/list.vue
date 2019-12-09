@@ -108,7 +108,7 @@
                             <text class="sub_title mr20">共{{item.quantity}}件商品</text>
                         </div>
                     </div>
-                    <div class="flex-row goodsTotalPrice boder-bottom" v-if="(item.hopeDate !=null && productCategoryId == '2') || (item.hopeDate !=null && productCategoryId == '3')">
+                    <div class="flex-row goodsTotalPrice boder-bottom" v-if=" item.hopeDate !=null ">
                         <text class="sub_title">预约时间:</text>
                         <div class="flex-row">
                             <text class="sub_title mr20 sub_title_Color">{{item.hopeDate | watchCreateDate}}</text>
