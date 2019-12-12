@@ -16,7 +16,7 @@
                 <div class="addressBox flex-row boder-bottom" >
                     <div style="width: 700px">
                         <div class="flex-row" style="position: relative">
-                            <text class="title">{{item.receiver.consignee}}</text>
+                            <text class="title" style="max-width: 300px;lines:1;text-overflow: ellipsis;overflow: hidden;">{{item.receiver.consignee}}</text>
                             <text class="title" style="margin-left: 10px">{{item.receiver.phone}}</text>
                             <text @click="callPhone(item.receiver.phone)" class="sub_title copyBtn copyBorder ml20"  style="position: absolute;right: 20px">拨号</text>
                         </div>
@@ -114,6 +114,10 @@
                         <text class="sub_title ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
                         <text class="sub_title ">实收水票:{{item.paperPaid}}</text>
                     </div>
+                    <div class="space-between mt10" v-if="item.borrow !=0"  @click="goBarrel(item.cardId,item.memberId)">
+                        <text class="sub_title ">上期借桶:{{item.borrow}}</text>
+                        <text  :style="{fontFamily:'iconfont'}" class="fz28 gray">&#xe630;</text>
+                    </div>
                 </div>
                 <div class="infoWhiteColor boder-bottom mt20">
                     <div class="goodsBody">
@@ -209,8 +213,8 @@
     .copyBtn{
         padding-left: 20px;
         padding-right: 20px;
-        /*padding-top: 6px;*/
-        /*padding-bottom: 6px;*/
+        padding-top: 6px;
+        padding-bottom: 6px;
         border-radius: 5px;
         font-size: 26px;
     }
@@ -459,9 +463,12 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.shippingSn = utils.getUrlParameter('sn');
-            this.open();
-            this.permissions();
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         methods: {
             //            打印
@@ -511,19 +518,6 @@
                 }else{
                     return false
                 }
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
             jump:function (id) {
                 let _this =this;
@@ -611,7 +605,20 @@
                 phone.tel(telPhone,function(){
                     return;
                 })
-            }
+            },
+            goBarrel(cardId,memberId){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+cardId+'&memberId='+memberId+"&lock=true"),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
         }
     }
 </script>

@@ -570,6 +570,9 @@
 //        },
         created: function() {
             let _this = this;
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+            });//获取权限
             utils.initIconFont();
             //            获取屏幕的高度
             this.screenHeight = utils.fullScreen(216);
@@ -578,8 +581,6 @@
             this.updateUserInfo();
 //            获取前三篇文章
             this.openArticle();
-//            获取权限
-            this.permissions();
 //            获取店铺是否完善
             this.open();
             //            监听用户信息的变化。
@@ -604,14 +605,12 @@
             globalEvent.addEventListener("login", function (e) {
                 _this.updateUserInfo();
                 _this.openArticle();
-                _this.permissions();
                 _this.open();
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
                 _this.updateUserInfo();
                 _this.openArticle();
-                _this.permissions();
                 _this.open();
             });
         },
@@ -763,13 +762,12 @@
             //            获取权限
             permissions:function () {
                 var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
+                POST("weex/member/access_token.jhtml").then(function (mes) {
                     if (mes.type=="success") {
-                        _this.roles = mes.data;
-//                            开启定时器，每分钟定位一次经纬度
-//                            _this.time = setInterval(function () {
-//                                _this.getGps()
-//                            },120000);
+                        var roles = JSON.stringify(mes.data);
+                        storage.setItem('token', roles , e => {
+                        })
+                        _this.roles = mes.data.roles;
                     } else {
                         event.toast(mes.content);
                     }
@@ -1346,7 +1344,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/cashier/index.js'),function (mes) {
+                event.openURL(utils.locate('view/shop/index.js'),function (mes) {
                     _this.clicked = false;
                     if(mes.type == 'success') {
                         _this.member.useCashier = false;

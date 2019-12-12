@@ -108,7 +108,7 @@
                             <text class="sub_title mr20">共{{item.quantity}}件商品</text>
                         </div>
                     </div>
-                    <div class="flex-row goodsTotalPrice boder-bottom" v-if="(item.hopeDate !=null && productCategoryId == '2') || (item.hopeDate !=null && productCategoryId == '3')">
+                    <div class="flex-row goodsTotalPrice boder-bottom" v-if=" item.hopeDate !=null ">
                         <text class="sub_title">预约时间:</text>
                         <div class="flex-row">
                             <text class="sub_title mr20 sub_title_Color">{{item.hopeDate | watchCreateDate}}</text>
@@ -504,7 +504,7 @@
         align-items: center;
         justify-content: center;
         /*flex: 1;*/
-        width: 150px;
+        width: 187.5px;
     }
     .allArticle{
         font-size: 31px;
@@ -582,17 +582,14 @@
                     name:'待确认',
                     id:1
                 },{
-                    name:'预约单',
+                    name:'配送中',
                     id:2
                 },{
-                    name:'配送中',
+                    name:'已送达',
                     id:3
                 },{
-                    name:'已送达',
+                    name:'已核销',
                     id:4
-                },{
-                    name:'已完成',
-                    id:5
                 }],
                 whichCorpus:0,
                 productCategoryId:1,
@@ -650,7 +647,7 @@
         },
         created(){
             this.pageStart = 0;
-            this.permissions()
+            let _this = this;
             utils.initIconFont();
             let d = utils.getUrlParameter('index')
             if(!utils.isNull(d)){
@@ -668,8 +665,11 @@
 //                把字符串转换成整型，否则switch识别不了
                 this.productCategoryId = parseInt(this.productCategoryId)
             }
-            this.getSum()
-
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+                _this.getSum();
+            });//获取权限
         },
         methods:{
             getSum(){
@@ -922,20 +922,6 @@
                     return false
                 }
             },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                    _this.open();
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
 //            //  关闭定时器.
 //            clearDummyProcess(){
 ////              解除定时器
@@ -984,15 +970,12 @@
                         status = 'unconfirmed';
                         break;
                     case 2:
-                        status = 'hope';
-                        break;
-                    case 3:
                         status = 'dispatch';
                         break;
-                    case 4:
+                    case 3:
                         status = 'delivery';
                         break;
-                    case 5:
+                    case 4:
                         status = 'completed';
                         break;
                     default:

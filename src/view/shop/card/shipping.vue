@@ -33,10 +33,9 @@
                     </div>
                     <div class="contentSmallCell" >
                         <div class="flex-column">
-                            <text class="number gray">{{c.createDate | ydfmt}}</text>
+                            <text class="number gray">{{c.createDate | datetimefmt}}</text>
                             <text class="memo">{{c.memo}}</text>
                         </div>
-
                         <text class="contentCellType">{{c.quantity}}</text>
                         <text class="contentCellType">{{c.returnQuantity}}</text>
                         <text class="contentCellType">{{c.pledgeQuantity}}</text>

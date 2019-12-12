@@ -171,6 +171,10 @@
                             <text class="sub_title ">应收水票:{{item.paperPayable}}(上期欠票:{{item.ticket}})</text>
                             <text class="sub_title ">实收水票:{{item.paperPaid}}</text>
                         </div>
+                        <div class="space-between mt10" v-if="item.borrow !=0"  @click="goBarrel(item.cardId,item.memberId)">
+                            <text class="sub_title ">上期借桶:{{item.borrow}}</text>
+                            <text  :style="{fontFamily:'iconfont'}" class="fz28 gray">&#xe630;</text>
+                        </div>
                     </div>
                 </div>
 
@@ -564,9 +568,12 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.orderSn = utils.getUrlParameter('sn');
-            this.open();
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         methods: {
             //            打印
@@ -626,19 +633,6 @@
                 event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
                     _this.clicked = false;
                 })
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
             open:function () {
                 let _this = this;
@@ -889,7 +883,20 @@
                     event.openURL(utils.locate("view/shop/order/addressChoose.js?"+URIEncrypt(e)),function (res) {
                         _this.open();
                     });
-            }
+            },
+            goBarrel(cardId,memberId){
+                let _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+cardId+'&memberId='+memberId+"&lock=true"),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
         }
     }
 </script>

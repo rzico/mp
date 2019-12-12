@@ -114,13 +114,6 @@
                                 <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goToMask()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
-                            <text class="iconfontText ">预约单</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.hope != 0">
-                                <text class="shippingNumber" >{{shippingConut.hope}}</text>
-                            </div>
-                        </div>
                         <div class=" flexCol iconBox"  @click="goOnTheWay()">
                             <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
                             <text class="iconfontText ">配送中</text>
@@ -134,6 +127,10 @@
                             <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
                                 <text class="shippingNumber" >{{shippingConut.completed}}</text>
                             </div>
+                        </div>
+                        <div class=" flexCol iconBox"  @click="goToCompleted()">
+                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                            <text class="iconfontText ">已核销</text>
                         </div>
                     </div>
                 </div>
@@ -506,6 +503,7 @@
     }
 </style>
 <script>
+    const storage = weex.requireModule('storage');
     import qrcode from '../../include/qrcode.vue';
     import { POST, GET ,SCAN} from '../../assets/fetch'
     import utils from '../../assets/utils'
@@ -563,7 +561,7 @@
             //amap.startBackGroundLocationUpdates();
             this.isIndex = (utils.getUrlParameter("index")=='true');
             this.view();
-
+            this.permissions();//获取权限存入缓存
 //            globalEvent.addEventListener("onCashierChange", function (e) {
 //                _this.view();
 //            });
@@ -583,25 +581,42 @@
             });
             //            监听登陆成功.
             globalEvent.addEventListener("login", function (e) {
-                _this.conut=[],
-                _this.shippingConut=[],
-                _this.conutTotal=0,
-                _this.shippingConutTotal=0,
-                _this.cashier={},
-                _this.shopId="",
+                _this.permissions();//获取权限存入缓存
+                _this.conut=[];
+                _this.shippingConut=[];
+                _this.conutTotal=0;
+                _this.shippingConutTotal=0;
+                _this.cashier={};
+                _this.shopId="";
                 _this.view();
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
-                _this.conut=[],
-                _this.shippingConut=[],
-                _this.conutTotal=0,
-                _this.shippingConutTotal=0,
-                _this.cashier={},
+                _this.conut=[];
+                _this.shippingConut=[];
+                _this.conutTotal=0;
+                _this.shippingConutTotal=0;
+                _this.cashier={};
                 _this.shopId=""
             });
         },
         methods: {
+            //            获取权限
+            permissions:function () {
+                var _this = this;
+                POST("weex/member/access_token.jhtml").then(function (mes) {
+                    if (mes.type=="success") {
+                        var roles = JSON.stringify(mes.data);
+                        storage.setItem('token', roles , e => {
+                        })
+                        _this.roles = mes.data.roles;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                },function (err) {
+                    event.toast(err.content);
+                });
+            },
             openWebView(data){
                 let _this = this;
                 if (this.clicked) {
@@ -893,8 +908,8 @@
                     }
                 );
             },
-//            预约单
-            goToMask(){
+//            已核销
+            goToCompleted(){
                 if (this.clicked) {
                     return;
                 }
@@ -903,7 +918,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -919,7 +934,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -935,7 +950,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -1147,23 +1162,7 @@
                     return false
                 }
             },
-//            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-//                        开启定时器，每两钟定位一次经纬度
-//                        _this.gpsTime = setInterval(function () {
-//                            _this.getGps()
-//                        },120000);
-                    } else {
-                        event.toast(mes.content);
-                    }
-                 },function (err) {
-                    event.toast(err.content);
-                });
-            },
+
             employee:function () {
                 if (this.clicked==true) {
                     return;
@@ -1395,8 +1394,6 @@
                            _this.getCount();
 //                           获取运单数量
                            _this.getShippingConut();
-//                           获取权限
-                           _this.permissions()
                            if(res.data.expire <7 && res.data.expire >0){
                                modal.confirm({
                                    message: '您的店铺将于'+res.data.expire+'天后到期',
@@ -1404,7 +1401,7 @@
                                    okTitle:'立即缴费',
                                    cancelTitle:'暂不缴费'
                                }, function (value) {
-                                   if(value.result == '立即缴费'){
+                                   if(value == '立即缴费'){
                                        _this.activated()
                                    }
                                })

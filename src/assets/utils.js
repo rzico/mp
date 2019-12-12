@@ -2,6 +2,7 @@
  * Created by zwwill on 2017/8/27.
  */
 var modal = weex.requireModule('modal');
+const storage = weex.requireModule('storage');
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'https://sbl.rzico.com';
@@ -9,11 +10,23 @@ const event = weex.requireModule('event');
 const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
 const appName = 'sbl';// app类型  water 或 yundian
 let utilsFunc = {
-    //0 标准版 1生鲜版 2桶装水
     downloadText:'喝水@水便利',
     download:'http://sbl.rzico.com/download/index.html',
     version:1,//1标准版 2桶装水
     baseNavColor:'#29d1fb',
+
+    //获取本地存储的权限
+    getToken(fn){
+        storage.getItem('token', e => {
+            if(e.result == 'success' && !this.isNull(e.data)){
+                var storageData = JSON.parse(e.data);
+                fn(storageData);
+            }else {
+                //获取不到缓存时跳转登陆
+                event.openURL(this.locate('view/login/index.js'), function (data) {});
+            }
+        })
+    },
     // app类型
     appType(){
         return appName;

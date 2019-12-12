@@ -233,6 +233,10 @@
             // 保存
             saveReceiver: function () {
                 var _this = this;
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
                 var flag = false;
                 var warn = '';
                 if (utils.isNull(this.consignee)){
@@ -259,6 +263,7 @@
                         },function (value) {
 
                         })
+                        _this.clicked = false;
                         return;
                     }
 
@@ -276,11 +281,14 @@
 
                     POST('weex/member/receiver/addcard.jhtml?'+URIEncrypt(er), null).then(function (res) {
                         if (res.type == 'success') {
+                            _this.clicked = false;
                             event.closeURL(res)
                         } else {
+                            _this.clicked = false;
                             event.toast(res.content)
                         }
                     }, function (err) {
+                        _this.clicked = false;
                         event.toast(err.content)
                     })
 

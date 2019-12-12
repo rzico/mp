@@ -169,9 +169,12 @@
             noDataHint: { default: "暂无收货地址"},
         },
         created() {
+            let _this  = this;
             utils.initIconFont();
-            this.open();
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         filters:{
             watchCode:function (value) {
@@ -247,19 +250,6 @@
                     _this.pageStart = 0;
                     _this.searchCard()
                 }
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
             classHeader:function () {
                 let dc = utils.device();

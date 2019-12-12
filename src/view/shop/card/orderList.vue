@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper" >
-        <report_header :pageName="pageName" :type="type" :pageTime="pageTime" @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @allClick="allClick" @reportYearsClick="reportYearsClick"></report_header>
+        <report_header :pageName="pageName" :type="type" :pageTime="pageTime" complete="统计" @goComplete="toSummary" @iconTime="iconTime" @deductTime="deductTime" @addTime="addTime" @reportDayClick="reportDayClick" @reportMonthClick="reportMonthClick" @allClick="allClick" @reportYearsClick="reportYearsClick"></report_header>
         <list  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
@@ -360,7 +360,7 @@
                 nowIndex:0,
                 showMore:false,
                 summary:{},
-                pageName:'订单明细',
+                pageName:'消费记录',
                 type:'all',
                 pageTime:'',
                 beginTime:'',
@@ -369,8 +369,8 @@
             }
         },
         props:{
-            noDataHint:{default:'暂无订单'},
-            title:{default:'我的订单'}
+            noDataHint:{default:'暂无消费记录'},
+            title:{default:'消费记录'}
         },
         filters:{
             watchSpec:function (value) {
@@ -397,6 +397,7 @@
         created(){
             utils.initIconFont();
             this.sellerId = utils.getUrlParameter('sellerId');
+            this.cardId = utils.getUrlParameter('cardId');
             this.timeDate = utils.ymdtimefmt(Date.parse(new Date()));
             this.beginTime = this.timeDate+ ' ' +'00:00:00';
             this.endTime = this.timeDate+ ' ' +'23:59:59';
@@ -416,7 +417,6 @@
             }
             this.allClick();
             this.getSum();
-            this.permissions()
         },
         methods:{
             getSum(){
@@ -896,6 +896,17 @@
                 this.endTime = data.endTime;
                 this.pageStart = 0 ;
                 this.open()
+            },
+
+            toSummary:function () {
+                var _this = this;
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate("view/shop/card/orderSummary.js?memberId="+this.sellerId+'&id='+this.cardId),function (data) {
+                    _this.clicked =false
+                })
             },
         }
     }

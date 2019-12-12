@@ -206,6 +206,9 @@
                             })
                         }
                         _this.pageStart = _this.list.length
+                        setTimeout(() => {
+                            _this.loadinging = false;
+                        }, 1000)
                     } else {
                         event.toast(res.content);
                     }

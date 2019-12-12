@@ -226,8 +226,11 @@
         },
         created() {
             utils.initIconFont();
-            this.open(function () {});
-            this.permissions()
+            let _this = this;
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         filters:{
             judgment:function (data) {
@@ -242,19 +245,6 @@
             }
         },
         methods: {
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
             vipClass:function (v) {
                 if (v=='vip3') {
                     return "vip3";

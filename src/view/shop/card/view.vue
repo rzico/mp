@@ -41,21 +41,31 @@
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                     <div class="cell"  @click="toOrder()">
-                        <text class="cellTitle">订单明细</text>
+                        <text class="cellTitle">消费记录</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                    <div class="cell"  @click="toSummary()">
-                        <text class="cellTitle">订单汇总</text>
+                    <div class="cell"  @click="goPromoteOrder()">
+                        <text class="cellTitle">推广订单</text>
                         <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
+                    <div v-if="version == 1">
                         <div class="cell"  @click="goCouponCode()">
                             <text class="cellTitle">电子水票</text>
                             <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
-                        <div class="cellTwo"  @click="goBarrel()">
+                        <div class="cell"  @click="goBarrel()">
                             <text class="cellTitle">空桶押金</text>
                             <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                         </div>
+                    </div>
+                    <div class="cell"  @click="goBom()" v-if="version == 2">
+                        <text class="cellTitle">套餐记录</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                    <div class="cellTwo"  @click="goCoupon()">
+                        <text class="cellTitle">优惠券</text>
+                        <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
                 </div>
             </cell>
         </list>
@@ -364,15 +374,19 @@
                 roles:'',
                 clicked:false,
                 memberId:0,
-                version:2
+                version:1
             }
         },
         created(){
-            this.permissions()
+            let _this = this;
             utils.initIconFont();
             this.id = utils.getUrlParameter("id");
-            this.version = utils.version;
-            this.load();
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.version = mes.version;
+                _this.load();
+            });//获取权限
+
         },
         methods: {
             //            当前app状态
@@ -387,19 +401,6 @@
                 let dc = utils.device();
 
                 return dc
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
             vipClass:function (v) {
                 if (v=='vip3') {
@@ -461,7 +462,7 @@
                     _this.clicked =false
                 })
             },
-            toSummary:function () {
+            goPromoteOrder(){
                 var _this = this;
                 if (!utils.isRoles("12",_this.roles)) {
                     modal.alert({
@@ -474,7 +475,7 @@
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate("view/shop/card/orderSummary.js?memberId="+this.memberId+'&id='+this.id),function (data) {
+                event.openURL(utils.locate("view/shop/card/promoteOrder.js?promoteId="+this.memberId +"&cardId="+this.id),function (data) {
                     _this.clicked =false
                 })
             },
@@ -520,6 +521,27 @@
                     }
                 });
             },
+            goCoupon(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/coupon.js?cardId='+this.id +'&logo='+this.data.card.logo+'&memberId='+this.memberId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
             goBarrel(){
                 let _this = this;
                 if (!utils.isRoles("1",_this.roles)) {
@@ -535,6 +557,27 @@
                 }
                 this.clicked = true;
                 event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
+                    _this.clicked = false;
+                    if(data.type=='success') {
+
+                    }
+                });
+            },
+            goBom(){
+                let _this = this;
+                if (!utils.isRoles("1",_this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: '确定'
+                    })
+                    return
+                }
+
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                event.openURL(utils.locate('view/shop/card/bom.js?cardId='+this.id+'&memberId='+this.memberId),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 

@@ -333,10 +333,13 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.choose = !utils.isNull(utils.getUrlParameter('choose'));
-            this.open();
-            this.permissions();
-            this.getSum()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+                _this.getSum();
+            });//获取权限
         },
         filters:{
             watchCode:function (value) {
@@ -424,19 +427,6 @@
                     _this.pageStart = 0;
                     _this.searchCard()
                 }
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
             classHeader:function () {
                 let dc = utils.device();
