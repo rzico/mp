@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="newBottomBox">
+        <div class="newBottomBox" v-if="!lock">
             <div class="smallBox" @click="showMask(1)">
                 <text class="smallText">押桶</text>
             </div>
@@ -333,7 +333,8 @@
                 barrelList:[],
                 memberId:'',
                 hasMask:false,
-                placeholder:''
+                placeholder:'',
+                lock:false
             }
         },
         props: {
@@ -344,6 +345,9 @@
             utils.initIconFont();
             this.cardId = utils.getUrlParameter('cardId');
             this.memberId = utils.getUrlParameter('memberId');
+            if(!utils.isNull(utils.getUrlParameter("lock"))){
+                this.lock = true;
+            }
             this.open();
             this.openBarrel()
         },
@@ -528,7 +532,7 @@
                 })
             },
             linkToShipping:function (barrelId) {
-                if (this.clicked==true) {
+                if (this.clicked==true || this.hasMask) {
                     return;
                 }
                 this.clicked = true;

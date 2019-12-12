@@ -2,6 +2,7 @@
  * Created by zwwill on 2017/8/27.
  */
 var modal = weex.requireModule('modal');
+const storage = weex.requireModule('storage');
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
 const websiteURL = 'https://small.rzico.com';
@@ -13,6 +14,18 @@ let utilsFunc = {
     download:'https://small.rzico.com',
     version:1,//1标准版 2桶装水
     baseNavColor:'#068F3D',
+    //获取本地存储的权限
+    getToken(fn){
+        storage.getItem('token', e => {
+            if(e.result == 'success' && !this.isNull(e.data)){
+                var storageData = JSON.parse(e.data);
+                fn(storageData);
+            }else {
+                //获取不到缓存时跳转登陆
+                event.openURL(this.locate('view/login/index.js'), function (data) {});
+            }
+        })
+    },
     // app类型
     appType(){
         return appName;

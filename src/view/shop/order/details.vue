@@ -568,9 +568,12 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.orderSn = utils.getUrlParameter('sn');
-            this.open();
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         methods: {
             //            打印
@@ -630,19 +633,6 @@
                 event.openURL(utils.locate('view/shop/card/view.js?id='+id),function () {
                     _this.clicked = false;
                 })
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
             open:function () {
                 let _this = this;
@@ -896,19 +886,11 @@
             },
             goBarrel(cardId,memberId){
                 let _this = this;
-                if (!utils.isRoles("1",_this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: '确定'
-                    })
-                    return
-                }
-
                 if (this.clicked) {
                     return;
                 }
                 this.clicked = true;
-                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+cardId+'&memberId='+memberId),function (data) {
+                event.openURL(utils.locate('view/shop/card/barrel.js?cardId='+cardId+'&memberId='+memberId+"&lock=true"),function (data) {
                     _this.clicked = false;
                     if(data.type=='success') {
 

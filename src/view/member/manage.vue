@@ -241,23 +241,12 @@
         created() {
             utils.initIconFont();
             var _this = this;
-            _this.open();
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         methods: {
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
             maskTouch(){
                 this.showShare = false;
             },
@@ -271,7 +260,7 @@
                 }
                 this.clicked = true;
                 let _this = this;
-                event.openURL(utils.locate('view/shop/cashier/index.js'),function (mes) {
+                event.openURL(utils.locate('view/shop/index.js'),function (mes) {
                     _this.clicked = false;
                     if(mes.type == 'success') {
                         _this.member.useCashier = false;

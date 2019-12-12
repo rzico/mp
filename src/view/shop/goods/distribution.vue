@@ -270,11 +270,14 @@
             complete: {default : "完成"},
         },
         created(){
-            this.permissions();
+            let _this = this;
             utils.initIconFont();
             this.catagory = utils.getUrlParameter('name');
-            this.open();
-            this.print();
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+                _this.print();
+            });//获取权限
         },
         methods:{
             openWebView(){
@@ -321,19 +324,6 @@
                 this.clicked = true;
                 event.openURL(utils.locate("view/shop/goods/promote.js"),function (e) {
                     _this.clicked = false;
-                });
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
                 });
             },
             goback(){

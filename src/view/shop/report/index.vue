@@ -278,22 +278,11 @@
         created() {
             var _this = this;
             utils.initIconFont();
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+            });//获取权限
         },
         methods: {
-//            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
             order_report:function () {
                 if (this.clicked==true) {
                     return;
@@ -400,7 +389,6 @@
                         delay: 0 //ms
                     })
                     this.refreshing = false
-                    _this.permissions()
                 }, 1000)
             },
             goback: function (e) {

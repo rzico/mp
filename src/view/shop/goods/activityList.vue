@@ -221,10 +221,13 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.goodsId = utils.getUrlParameter('id');
             this.goodsName = utils.getUrlParameter('goodsName');
-            this.open(function () {});
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         filters:{
             wacthType:function (data) {
@@ -236,19 +239,6 @@
             }
         },
         methods: {
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
 //            新增活动
             add:function() {
                 let _this = this

@@ -473,6 +473,7 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
             this.isPageType = utils.getUrlParameter('isPageType');
@@ -481,8 +482,11 @@
                 this.title = '转派';
                 this.buttonText = '转派'
             }
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
             this.open();
-            this.permissions()
         },
         methods: {
             open:function () {
@@ -555,19 +559,6 @@
             goback(){
                 event.closeURL();
             },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
             //            设置配送站
             pickPattern:function () {
 
@@ -581,7 +572,6 @@
                         message: '暂无权限',
                         okTitle: 'OK'
                     });
-                    _this.permissions();
                     _this.clicked = false;
                     return
                 }

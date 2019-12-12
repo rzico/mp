@@ -525,10 +525,13 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
-            this.open();
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         methods: {
             chooseFloor:function () {
@@ -651,19 +654,6 @@
                     })
 
             },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
 //            点击核销
             confirm:function () {
                 let _this = this
@@ -676,7 +666,6 @@
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
-                    _this.permissions();
                     _this.clicked = false;
                     return
                 }

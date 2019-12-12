@@ -493,6 +493,10 @@
             }
         },
         created(){
+            let _this = this;
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+            });//获取权限
             if(!utils.isNull(utils.getUrlParameter('from'))){
                 this.pageFrom = utils.getUrlParameter('from');
             }
@@ -500,7 +504,6 @@
                 this.pageType = utils.getUrlParameter('pageType');
             }
             this.canAdd()
-            this.permissions()
             utils.initIconFont();
 //            获取分类列表
             this.getCatagory();
@@ -628,19 +631,6 @@
                 GET("weex/member/product/canAdd.jhtml",function (mes) {
                     if (mes.type=="success") {
                         _this.hasAdd = mes.data
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
                     } else {
                         event.toast(mes.content);
                     }

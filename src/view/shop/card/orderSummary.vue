@@ -1,23 +1,23 @@
 <template>
     <div class="wrapper" >
         <navbar :title="title" @goback="goback" :border="false"> </navbar>
+        <div class="summaryHeader">
+            <div class="headerOne">
+                <text class="headerTitle">品名</text>
+            </div>
+            <div class="headerTwo">
+                <text class="headerTitle">数量</text>
+            </div>
+            <div class="headerThree">
+                <text class="headerTitle">金额</text>
+            </div>
+        </div>
         <list  @loadmore="onloading" loadmoreoffset="50">
             <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
             </refresh>
             <cell>
                 <div class="summaryBox">
-                    <div class="summaryHeader">
-                        <div class="headerOne">
-                            <text class="headerTitle">品名</text>
-                        </div>
-                        <div class="headerTwo">
-                            <text class="headerTitle">数量</text>
-                        </div>
-                        <div class="headerThree">
-                            <text class="headerTitle">金额</text>
-                        </div>
-                    </div>
                     <div class="shopList" v-if="reportList.length != 0" v-for="item in reportList">
                         <div class="shopName">
                             <text class="shopNameTitle">{{item.name}}</text>
@@ -31,7 +31,7 @@
                     </div>
                     <noData  v-if="reportList.length == 0" :noDataHint="noDataHint"></noData>
                 </div>
-                <div style="width: 750px;height: 500px"></div>
+                <div style="width: 750px;height: 100px"></div>
                 <div class="summaryBottomBox">
                     <div class="shopSummary">
                         <div>
@@ -39,36 +39,6 @@
                         </div>
                         <div>
                             <text style="font-weight: 700;color: red;">¥{{summaryPrice}}</text>
-                        </div>
-                    </div>
-                    <div class="summaryBottom">
-                        <div class="summary" @click="linkToDetail('card')" v-if="status.card != '0'">
-                            <text>套餐</text>
-                            <div class="summaryNumber">
-                                <text>{{status.card}}次</text>
-                                <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                            </div>
-                        </div>
-                        <div class="summary" @click="linkToDetail('water')" v-if="status.water != '0'">
-                            <text>水票</text>
-                            <div class="summaryNumber">
-                                <text>{{status.water}}张</text>
-                                <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                            </div>
-                        </div>
-                        <div class="summary" @click="linkToDetail('point')" v-if="status.point != '0'">
-                            <text>金币</text>
-                            <div class="summaryNumber">
-                                <text>{{status.point}}个</text>
-                                <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                            </div>
-                        </div>
-                        <div class="summary" @click="linkToDetail('balance')" v-if="status.balance != '0'">
-                            <text>余额</text>
-                            <div class="summaryNumber">
-                                <text>{{status.balance}}元</text>
-                                <text class="cellIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,7 +55,6 @@
     .summaryBox{
         width: 750px;
         background-color: white;
-        border-radius: 12px;
     }
     .summaryBottomBox{
         position: fixed;
@@ -103,6 +72,7 @@
        border-bottom-style: solid;
        border-bottom-color: #e6e6e6;
        border-bottom-width: 1px;
+        background-color: #ffffff;
     }
     .headerOne{
        width: 350px;
@@ -218,8 +188,8 @@
             }
         },
         props:{
-            noDataHint:{default:'暂无订单'},
-            title:{default:'订单汇总'}
+            noDataHint:{default:'暂无消费统计'},
+            title:{default:'消费统计'}
         },
         filters:{
 
@@ -232,7 +202,6 @@
             this.memberId = utils.getUrlParameter('memberId');
             this.id = utils.getUrlParameter("id");
             this.open();
-            this.openSummary()
         },
         methods:{
 
@@ -257,18 +226,6 @@
                         //     _this.loadinging = false;
                         //     _this.refreshing = false
                         // }, 1000)
-                    } else {
-                        event.toast(res.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content);
-                })
-            },
-            openSummary: function () {
-                var _this = this;
-                GET('weex/member/report/business_status.jhtml?memberId='+_this.memberId, function (res) {
-                    if (res.type == "success") {
-                        _this.status = res.data
                     } else {
                         event.toast(res.content);
                     }

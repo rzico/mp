@@ -8,6 +8,10 @@
                 </div>
                 <!--页面名称-->
                 <text class="nav_title">{{pageName}}</text>
+                <div class="navRightBox"  @click="goComplete('/')">
+                    <text class="nav_Complete " v-if="completeIcon == ''" >{{complete}}</text>
+                    <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-else>{{getIco}}</text>
+                </div>
             </div>
             <div class="chooseBox">
                 <div class="reportBox mr20" v-if="type=='all'" :class="[isStyle == reportAll ? 'reportBoxActive':'']" @click="allClick()">
@@ -70,6 +74,33 @@
         position: absolute;
         left: 0;
     }
+    .navRightBox{
+        min-width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+    }
+    .nav_CompleteIcon{
+        /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+        font-size: 44px;
+        line-height: 44px;
+        color: #FFFFFF;
+    }
+    .nav_Complete {
+        padding-left: 27px;
+        padding-right: 27px;
+        font-size: 32px;
+        color: #ffffff;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+    }
+
     .rightTop {
         height: 96px;
         width: 98px;
@@ -185,7 +216,7 @@
     import utils from '../assets/utils';
     import filters from '../filters/filters.js';
     import noData from '../include/noData.vue';
-
+    var he = require('he');
     const picker = weex.requireModule('picker')
     export default {
         components: {},
@@ -204,7 +235,14 @@
         props: {
             pageName: '',
             pageTime: '',
-            type:''
+            type:'',
+            complete:{default:''},
+            completeIcon:{default:''},
+        },
+        computed: {
+            getIco: function() {
+                return he.decode(this.completeIcon)
+            }
         },
         filters: {
             watchAll:function(value){
@@ -436,6 +474,10 @@
                     endTime: endTime,
                 };
                 this.$emit("reportYearsClick", data);
+            },
+
+            goComplete:function (e) {
+                this.$emit('goComplete');
             },
 
 //methods 方法到此为止

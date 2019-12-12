@@ -647,7 +647,7 @@
         },
         created(){
             this.pageStart = 0;
-            this.permissions()
+            let _this = this;
             utils.initIconFont();
             let d = utils.getUrlParameter('index')
             if(!utils.isNull(d)){
@@ -665,8 +665,11 @@
 //                把字符串转换成整型，否则switch识别不了
                 this.productCategoryId = parseInt(this.productCategoryId)
             }
-            this.getSum()
-
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+                _this.getSum();
+            });//获取权限
         },
         methods:{
             getSum(){
@@ -918,20 +921,6 @@
                 }else{
                     return false
                 }
-            },
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                    _this.open();
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
 //            //  关闭定时器.
 //            clearDummyProcess(){

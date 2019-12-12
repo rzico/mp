@@ -97,27 +97,12 @@
             }
         },
         created(){
-            this.permissions()
             utils.initIconFont();
 //            获取商品列表
             this.getAllGoods();
 
         },
         methods:{
-
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
-            },
 //            获取商品id传回上个页面
             getId:function (goodsId) {
                 if(!utils.isNull(goodsId)) {

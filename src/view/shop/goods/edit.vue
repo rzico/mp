@@ -459,7 +459,9 @@
         },
         created(){
             let _this = this;
-            this.permissions();
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+            });//获取权限
             this.canAdd();
             utils.initIconFont();
             if(!utils.isNull(utils.getUrlParameter('id'))){
@@ -630,20 +632,6 @@
                         _this.list.push(item);
                     })
                 }
-            },
-
-            //            获取权限
-            permissions:function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                },function (err) {
-                    event.toast(err.content);
-                });
             },
 //            添加商品规格行
             addLines() {

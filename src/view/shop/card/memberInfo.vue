@@ -258,9 +258,12 @@
         },
         created() {
             utils.initIconFont();
+            let _this = this;
             this.id = utils.getUrlParameter("id");
-            this.open();
-            this.permissions()
+            utils.getToken(function (mes) {
+                _this.roles = mes.roles;
+                _this.open();
+            });//获取权限
         },
         methods: {
 //            当前app状态
@@ -270,19 +273,6 @@
                 }else{
                     return false
                 }
-            },
-            //            获取权限
-            permissions: function () {
-                var _this = this;
-                POST("weex/member/roles.jhtml").then(function (mes) {
-                    if (mes.type == "success") {
-                        _this.roles = mes.data;
-                    } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content);
-                });
             },
 //            我的地址
             goAddress(){
