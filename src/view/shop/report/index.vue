@@ -19,6 +19,11 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
                     <text class="menuBtn">派单结算</text>
                 </div>
+                <div class="menu" @click="day_report()">
+                    <text class="ico_big" style="color: #89BE1F" :style="{fontFamily:'iconfont'}">&#xe66d;</text>
+                    <text class="menuBtn">营业日报</text>
+                </div>
+
                 <div class="menu" @click="barrel_report()">
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
                     <text class="menuBtn">空桶结算</text>
@@ -39,10 +44,7 @@
                     <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe66e;</text>
                     <text class="menuBtn">送货统计</text>
                 </div>
-                <div class="menu" @click="business_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe66d;</text>
-                    <text class="menuBtn">营业汇总</text>
-                </div>
+
             </div>
         </scroller>
     </div>
@@ -364,6 +366,14 @@
                 this.clicked = true;
                 let _this = this
                 event.openURL(utils.locate("view/shop/report/business_report.js"),function (e) {_this.clicked = false});
+            },
+            day_report(){
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                event.openURL(utils.locate("view/shop/report/day_report.js"),function (e) {_this.clicked = false});
             },
 //            下拉刷新
             onrefresh (event) {
