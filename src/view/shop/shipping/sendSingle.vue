@@ -639,14 +639,6 @@
                     _this.clicked = false;
                     return
                 }
-                //                派单必须选择送水工
-                if(this.isPageType == true || this.isPageType == 'true'){
-                    if(utils.isNull(this.markiId)){
-                        event.toast('请选择配送人员');
-                        _this.clicked = false;
-                        return
-                    }
-                }
                             POST('weex/member/shipping/dispatch.jhtml?sn='+_this.shippingSn+'&shopId='+_this.shopId+'&adminId='+_this.markiId +'&memo=' +encodeURIComponent(_this.message)).then(
                                 function (data) {
                                     _this.clicked = false;

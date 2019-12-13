@@ -218,7 +218,6 @@
 //                showMenu:false,
                 clicked:false,
                 time:null,
-                soundfile:null,
                 unReadMessage:0,
                 UId:''
             }
@@ -325,11 +324,6 @@
 
 ////                audio.play('http://music.163.com/song/media/outer/url?id=5247677.mp3');
 //                utils.debug(e.data)
-
-                if (!utils.isNull(_this.soundfile)) {
-                    audio.play(_this.soundfile);
-                    _this.soundfile = null;
-                }
                 _this.unReadMessage = event.getUnReadMessageCount();
                 var mesData = [0,_this.unReadMessage,0];
                 event.setDots(mesData);
