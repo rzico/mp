@@ -1,60 +1,89 @@
 <template>
     <div class="wrapper">
-        <div class="wallet-panel bkg-primary" :style="objHeader()">
-            <div class="flex-column" @click="scan()">
-                <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}" >&#xe607;</text>
-                <text class="headerBoxText">扫一扫</text>
-            </div>
-            <div class="flex-column" @click="linkToFill">
-                <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}" >&#xe6e8;</text>
-                <text class="headerBoxText">人工报单</text>
-            </div>
-            <div class="flex-column" @click="showQrcode">
-                <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}" >&#xe675;</text>
-                <text class="headerBoxText">二维码</text>
+        <div class="navbar bkg-primary" :class="[classHeader()]">
+            <!--<div class="navBack" @click="goback()">-->
+                <!--<text class="navIco" :style="{fontFamily:'iconfont'}">&#xe669;</text>-->
+            <!--</div>-->
+            <text class="nav_title">{{yesterday.shortName}}</text>
+            <div class="navRightBox" @click="scan()">
+                <text class="nav_CompleteIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
             </div>
         </div>
-        <scroller class="scroller">
-            <refresh class="refreshBox" @refresh="onrefresh"  :display="refreshing ? 'show' : 'hide'">
-                <image resize="cover" class="refreshImg"  ref="refreshImg" :src="refreshImg" ></image>
+        <scroller show-scrollbar="false" class="scroller" v-if="status == 1">
+            <refresh class="refreshBox" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
+                <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg"></image>
             </refresh>
-            <!--<div class="fontInput" v-if="hasShop()">-->
-                <!--<text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>-->
-                <!--<input class="input" type="number" placeholder="请输入消费金额" maxlength="7" v-model="amount" />-->
-                <!--<text class="ico clear" :style="{fontFamily:'iconfont'}" @click="clearTimer()">&#xe60a;</text>-->
-            <!--</div>-->
-            <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn "  @click="payment('aliPayPlugin')">-->
-                    <!--<text class="ico alipay" :style="{fontFamily:'iconfont'}">&#xe621;</text>-->
-                    <!--<text class="btn-text" value="支付宝">支付宝</text>-->
-                <!--</div>-->
-                <!--<div class="btn "  @click="payment('weixinPayPlugin')">-->
-                    <!--<text class="ico weixin" :style="{fontFamily:'iconfont'}">&#xe659;</text>-->
-                    <!--<text class="btn-text" value="微信钱包">微信钱包</text>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn "  @click="payment('cardPayPlugin')">-->
-                    <!--<text class="ico card" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>-->
-                    <!--<text class="btn-text" value="会员卡">会员卡</text>-->
-                <!--</div>-->
-                <!--<div class="btn "  @click="payment('balancePayPlugin')">-->
-                    <!--<text class="ico wallet primary" :style="{fontFamily:'iconfont'}">&#xe698;</text>-->
-                    <!--<text class="btn-text" value="芸店钱包">芸店钱包</text>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="buttombox"  v-if="hasInput()">-->
-                <!--<div class="btn " @click="offline('bankPayPlugin')">-->
-                    <!--<text class="ico bank" :style="{fontFamily:'iconfont'}">&#xe63a;</text>-->
-                    <!--<text class="btn-text" value="刷卡">刷卡(记账)</text>-->
-                <!--</div>-->
-                <!--<div class="btn " @click="offline('cashPayPlugin')">-->
-                    <!--<text class="ico cash" :style="{fontFamily:'iconfont'}">&#xe622;</text>-->
-                    <!--<text class="btn-text" value="现金">现金(记账)</text>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!-- 我的订单 -->
+            <div class="bkg-primary">
+                <div class="payBillBox">
+                    <div class="dayPayBox">
+                        <div class="flex-row">
+                            <text class="dayPay">今日收款(元)</text>
+                            <text class="dayPay ml10" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                        </div>
 
+                        <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
+                            <text class="dayPayAmount">{{today.amount}}</text>
+                            <text class="dayPayQuantity">共{{today.count}}笔</text>
+                        </div>
+                    </div>
+                    <text class="yesterday">昨日收款: ¥{{yesterday.amount}}</text>
+                </div>
+                <div class="wallet-panel">
+                    <div class="flex-column" @click="showQrcode">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe675;</text>
+                        <text class="headerBoxText">二维码</text>
+                    </div>
+                    <div class="flex-column" @click="linkToFill">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
+                        <text class="headerBoxText">人工报单</text>
+                    </div>
+                    <div class="flex-column" @click="linkToPayment">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe673;</text>
+                        <text class="headerBoxText">去收款</text>
+                    </div>
+                </div>
+            </div>
+            <div class="menuBox">
+                <div class="menuCell">
+                    <div class="menu" @click="order()" v-if="filter('order')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe665;</text>
+                        <text class="menuName">订单</text>
+                    </div>
+                    <div class="menu" @click="goShipping()" v-if="filter('shipping')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66e;</text>
+                        <text class="menuName">运单</text>
+                    </div>
+                    <div class="menu" @click="goods()" v-if="filter('manage')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe667;</text>
+                        <text class="menuName">商品</text>
+                    </div>
+                    <div class="menu" @click="gocard()" v-if="filter('card')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66a;</text>
+                        <text class="menuName">会员</text>
+                    </div>
+
+                </div>
+                <div class="menuCell">
+                    <div class="menu" @click="linkShop()" v-if="filter('shop')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66d;</text>
+                        <text class="menuName">店铺</text>
+                    </div>
+                    <div class="menu" @click="employee()" v-if="filter('employee')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66c;</text>
+                        <text class="menuName">员工</text>
+                    </div>
+                    <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe7fc;</text>
+                        <text class="menuName">优惠券</text>
+                    </div>
+                    <div class="menu" @click="deposit()" v-if="filter('money')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
+                        <text class="menuName">统计</text>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 我的订单 -->
             <div><!-- dom预留节点 -->
                 <div class="contentBox" v-if="conutTotal != 0 && filter('order')">
                     <div class="boder-bottom pl20 pr20 space-between headTitle" @click="order()">
@@ -66,32 +95,32 @@
                     </div>
                     <!-- 订单消息 -->
                     <div class="comWrap">
-                        <div class=" flexCol iconBox"  @click="goNoPay()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
+                        <div class=" flexCol iconBox" @click="goNoPay()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe683;</text>
                             <text class="iconfontText ">待付款</text>
-                            <div class="shippingNumberBox"  v-if="conut.unpaid != 0">
+                            <div class="shippingNumberBox" v-if="conut.unpaid != 0">
                                 <text class="shippingNumber">{{conut.unpaid}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goNoDelivery()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                        <div class=" flexCol iconBox" @click="goNoDelivery()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe685;</text>
                             <text class="iconfontText ">待发货</text>
                             <div class="shippingNumberBox" v-if="conut.unshipped != 0">
-                                <text class="shippingNumber" >{{conut.unshipped}}</text>
+                                <text class="shippingNumber">{{conut.unshipped}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goDelivery()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
+                        <div class=" flexCol iconBox" @click="goDelivery()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe688;</text>
                             <text class="iconfontText ">已发货</text>
                             <div class="shippingNumberBox" v-if="conut.shipped != 0">
-                                <text class="shippingNumber" >{{conut.shipped}}</text>
+                                <text class="shippingNumber">{{conut.shipped}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goRefund()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
+                        <div class=" flexCol iconBox" @click="goRefund()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe68d;</text>
                             <text class="iconfontText ">待退款</text>
                             <div class="shippingNumberBox" v-if="conut.refund != 0">
-                                <text class="shippingNumber" >{{conut.refund}}</text>
+                                <text class="shippingNumber">{{conut.refund}}</text>
                             </div>
                         </div>
                     </div>
@@ -107,160 +136,279 @@
                     </div>
                     <!-- 订单消息 -->
                     <div class="comWrap">
-                        <div class=" flexCol iconBox"  @click="goConfirm()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe6e2;</text>
+                        <div class=" flexCol iconBox" @click="goConfirm()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe68b;</text>
                             <text class="iconfontText ">待确认</text>
-                            <div class="shippingNumberBox"  v-if="shippingConut.unconfirmed != 0">
+                            <div class="shippingNumberBox" v-if="shippingConut.unconfirmed != 0">
                                 <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goOnTheWay()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize primary">&#xe72c;</text>
+                        <div class=" flexCol iconBox" @click="goOnTheWay()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe690;</text>
                             <text class="iconfontText ">配送中</text>
                             <div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">
-                                <text class="shippingNumber" >{{shippingConut.confirmed}}</text>
+                                <text class="shippingNumber">{{shippingConut.confirmed}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goaArive()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xea20;</text>
+                        <div class=" flexCol iconBox" @click="goaArive()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe682;</text>
                             <text class="iconfontText ">已送达</text>
                             <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
-                                <text class="shippingNumber" >{{shippingConut.completed}}</text>
+                                <text class="shippingNumber">{{shippingConut.completed}}</text>
                             </div>
                         </div>
-                        <div class=" flexCol iconBox"  @click="goToCompleted()">
-                            <text :style="{fontFamily:'iconfont'}"  class="iconfontSize primary">&#xe718;</text>
+                        <div class=" flexCol iconBox" @click="goToCompleted()">
+                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe686;</text>
                             <text class="iconfontText ">已核销</text>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="menubox" v-if="cashier.status == 'success'">
-                <div class="menu" @click="goods()" v-if="filter('manage')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
-                    <text class="menuBtn">商品</text>
+            <div class="mesBox">
+                <div class="menu" v-if="filter('paused')">
+                    <switch :checked="hasPaused" @change="paused"></switch>
+                    <text class="menuName">{{hasPaused ? '正常营业' : '暂停营业'}}</text>
                 </div>
-                <div class="menu" @click="order()" v-if="filter('order')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
-                    <text class="menuBtn">订单</text>
-                </div>
-                <div class="menu" @click="goShipping()" v-if="filter('shipping')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">运单</text>
-                </div>
-
-                <div class="menu" @click="gocard()" v-if="filter('card')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                    <text class="menuBtn">会员</text>
-                </div>
-                <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe632;</text>
-                    <text class="menuBtn">优惠券</text>
-                </div>
-                <div class="menu" @click="deposit()" v-if="filter('money')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                    <text class="menuBtn">统计</text>
-                </div>
-                <div class="menu" @click="shop()" v-if="filter('shop')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6ab;</text>
-                    <text class="menuBtn">店铺</text>
-                </div>
-                <div class="menu" @click="employee()" v-if="filter('employee')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe70e;</text>
-                    <text class="menuBtn">员工</text>
-                </div>
-                <div class="menu" @click="godistribution()" v-if="filter('distribution')">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe7c8;</text>
-                    <text class="menuBtn">设置</text>
-                </div>
-                <div class="menu"  v-if="filter('paused')">
-                    <switch :checked="hasPaused"  @change="paused"></switch>
-                    <text class="menuBtn mt15">{{hasPaused?'正常营业':'暂停营业'}}</text>
-                </div>
-            </div>
-            <div class="menuboxTwo" v-if="cashier.status != 'success'">
-                <div class="menuTwo" @click="goShop()" v-if="filter('openShop')">
-                    <text  :style="{fontFamily:'iconfont'}" class="shopCssOne">&#xe662;</text>
-                    <text class="menuBtn">我要开店</text>
-                </div>
-                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">
-                    <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
-                    <text class="menuBtn">激活店铺</text>
-                </div>
-                <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">
-                    <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
-                    <text class="menuBtn">审核中...</text>
-                </div>
-                <div class="content">
-                    <text class="mesToast">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
-                    <div class="flex-row" style="flex-wrap:wrap">
-                        <text class="mesToast">2.点击缴活店铺，并支付技术服务费</text>
-                    </div>
-
-                    <text class="mesToast">3.下载专属二维码，开启新零售服务体验。</text>
+                <div class="flex-row">
+                    <text class="mes">———</text>
+                    <text class="mes ml20 mr20">芸店提供技术支持</text>
+                    <text class="mes">———</text>
                 </div>
             </div>
         </scroller>
-        <div class="waiting" v-if="isShow()">
-            <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe710;</text>
-            <text class="paymenting">支付中</text>
-            <text class="paymenting">{{step}}</text>
-            <div class="close"  @click="close()">
-                <text class="close_button" :style="{fontFamily:'iconfont' }">&#xe60a;</text>
+
+        <div class="popupBox" v-if="status == 2">
+            <div class="menuTwo" @click="goShop()" v-if="filter('openShop')">
+                <text :style="{fontFamily:'iconfont'}" class="shopCssOne">&#xe662;</text>
+                <text class="menuBtn">我要开店</text>
+            </div>
+            <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">
+                <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
+                <text class="menuBtn">激活店铺</text>
+            </div>
+            <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">
+                <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
+                <text class="menuBtn">审核中...</text>
+            </div>
+            <div class="content">
+                <text class="mesToast">1.点击我要开店,填写店铺资料并上传相关证件,请在店内操作确保位置准确。</text>
+                <div class="flex-row" style="flex-wrap:wrap">
+                    <text class="mesToast">2.点击缴活店铺，并支付技术服务费</text>
+                </div>
+                <text class="mesToast">3.下载专属二维码，开启新零售服务体验。</text>
             </div>
         </div>
-        <payment ref="payment" @notify="notify"></payment>
-        <qrcode ref="qrcode" ></qrcode>
+        <qrcode ref="qrcode"></qrcode>
     </div>
 
 </template>
 <style lang="less" src="../../style/wx.less"/>
 <style scoped>
-    .shopCssOne{
-        color: #66ccff;font-size: 120px;
+    .header {
+        flex-direction: column;
+        position: sticky;
     }
-    .shopCssTwo{
-        color: #B72A65 ;font-size: 120px;
+
+    .navbar {
+        width: 750px;
+        height: 136px;
+        padding-top: 44px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
     }
-    .headerBoxIcon{
-        font-size: 60px;
-        color: white;
+
+    .navIco {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
     }
-    .headerBoxText{
+
+    .navBack {
+        flex-direction: row;
+        width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+    }
+
+    .shopLogo {
+        width: 60px;
+        height: 60px;
+        border-width: 3px;
+        border-color: #ffffff;
+        border-radius: 100%;
+        background-color: #eeeeee;
+    }
+
+    .shopName {
+        font-size: 38px;
+        color: #ffffff;
+        margin-left: 25px;
+    }
+
+    .navRightBox {
+        flex-direction: row;
+        width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+    }
+
+    .nav_CompleteIcon {
+        /*如果nav_ico的字体大小改变这个值也需要变。 （左边box宽度-back图标宽度)/2 */
+        padding-left: 27px;
+        padding-right: 27px;
+        /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
+        /*font-family: Verdana, Geneva, sans-serif;*/
+        font-size: 44px;
+        line-height: 44px;
+        color: #FFFFFF;
+    }
+
+    .payBillBox {
+        padding-left: 60px;
+        padding-right: 60px;
+        flex-direction: column;
+    }
+
+    .dayPayBox {
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    .dayPay {
+        font-size: 27px;
+        color: #ffffff;
+    }
+
+    .dayPayAmount {
+        font-size: 80px;
+        line-height: 80px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .dayPayQuantity {
         font-size: 32px;
-        color: white;
-        margin-top: 20px;
+        color: #ffffff;
+        margin-left: 15px;
+        margin-bottom: 5px;
     }
-    .contentBox{
-        width: 690px;
-        margin-top: 40px;
-        margin-left: 30px;
-        margin-right: 30px;
+
+    .yesterday {
+        font-size: 27px;
+        color: #fff;
+        margin-top: 20px;
+        font-weight: 300;
+    }
+
+    .menuBox {
+        width: 750px;
+        background-color: #fff;
+        min-height: 180px;
+    }
+
+    .menuCell {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .menu {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 187px;
+        height: 170px;
+    }
+
+    .menuIco {
+        font-size: 52px;
+        color: #333;
+    }
+
+    .menuName {
+        font-size: 26px;
+        color: #444;
+        margin-top: 10px;
+    }
+
+    .popupBox{
+        width: 710px;
+        height: 800px;
+        margin-left: 20px;
+        margin-top: 150px;
+        border-radius: 20px;
+        background-color: #ffffff;
+        flex-direction: column;
+        align-items: center;
+    }
+    .menuTwo{
+        margin-top: 100px;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .shopCssOne {
+        color: #66ccff;
+        font-size: 120px;
+    }
+
+    .shopCssTwo {
+        color: #B72A65;
+        font-size: 120px;
+    }
+
+    .headerBoxIcon {
+        font-size: 52px;
+        color: white;
+    }
+
+    .headerBoxText {
+        font-size: 28px;
+        color: white;
+        margin-top: 10px;
+    }
+
+    .contentBox {
+        width: 710px;
+        margin-top: 20px;
+        margin-left: 20px;
         background-color: white;
         border-radius: 20px;
     }
+
     .headTitle {
         height: 80px;
         line-height: 80px;
         position: relative;
     }
-    .iconfontSize{
+
+    .iconfontSize {
         font-size: 60px;
+        color: #333;
     }
-    .iconfontText{
+
+    .iconfontText {
         font-size: 26px;
         line-height: 40px;
         color: #444;
     }
+
     .comWrap {
-        width: 690px;
+        width: 710px;
         padding: 20px;
         border-radius: 20px;
         flex-direction: row;
         justify-content: space-between;
         position: relative;
-        background-color: rgba(255,255,255,0.5);
+        background-color: rgba(255, 255, 255, 0.5);
     }
+
     .flexCol {
         flex-direction: column;
         align-items: center;
@@ -268,33 +416,34 @@
         position: relative;
         height: 140px;
     }
-    .iconBox{
+
+    .iconBox {
         width: 162.5px;
     }
-    .shippingNumberBox{
+
+    .shippingNumberBox {
         padding-top: 3px;
         min-height: 35px;
         min-width: 35px;
         border-radius: 100%;
-        border-color: #EB4E40;
-        border-width:2px;
-        color: #EB4E40;
+        background-color: red;
         position: absolute;
-        top:0;
+        top: 0;
         right: 40px;
         align-items: center;
         justify-content: center;
     }
-    .shippingNumber{
+
+    .shippingNumber {
         font-size: 26px;
         line-height: 26px;
-        color: #EB4E40;
+        color: #fff;
     }
 
     .mesToast {
-        color:#ccc;
+        color: #999;
         font-size: 30px;
-        line-height:42px;
+        line-height: 42px;
         margin-top: 10px;
     }
 
@@ -303,42 +452,46 @@
         margin-top: 10px;
         font-size: 32px;
         color: #fff;
-        margin-left:40px;
+        margin-left: 40px;
         justify-content: space-between;
         flex-direction: row;
         align-items: center;
     }
 
     .wallet-panel {
-        padding-top: 44px;
-        padding-left: 70px;
-        padding-right: 70px;
-        height:310px;
+        padding-left: 60px;
+        padding-right: 60px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        margin-top: 25px;
         flex-direction: row;
-        align-items:center;
+        align-items: center;
         justify-content: space-between;
+        background-color: rgba(85, 85, 85, 0.1);
     }
 
     .balance {
         margin-top: 30px;
         font-size: 120px;
         color: #fff;
-        margin-left:40px;
+        margin-left: 40px;
     }
+
     .exit {
         position: absolute;
-        right:0px;
-        top:44px;
+        right: 0px;
+        top: 44px;
         color: #fff;
-        font-size:48px;
+        font-size: 48px;
         width: 80px;
         height: 80px;
         line-height: 80px;
     }
-    .fontInput{
+
+    .fontInput {
         border-style: solid;
-        border-width:1px;
-        border-color:#CCC;
+        border-width: 1px;
+        border-color: #CCC;
         border-radius: 5px;
         padding-left: 20px;
         margin-top: 30px;
@@ -346,18 +499,20 @@
         margin-right: 30px;
         margin-bottom: 10px;
         flex-direction: row;
-        align-items:center;
+        align-items: center;
         height: 120px;
     }
-    .iconFont{
+
+    .iconFont {
         margin-top: 10px;
         font-size: 80px;
     }
-    .input{
-        margin-left:10px;
+
+    .input {
+        margin-left: 10px;
         width: 500px;
         height: 100px;
-        font-size:50px;
+        font-size: 50px;
     }
 
     .buttombox {
@@ -376,50 +531,57 @@
         align-items: center;
         padding-top: 0px;
         height: 80px;
-        flex:1;
+        flex: 1;
         padding-left: 40px;
-        border-radius:12px;
+        border-radius: 12px;
         border-width: 1px;
-        border-color:#ccc;
+        border-color: #ccc;
         background-color: #eee;
     }
+
     .btn-text {
         margin-left: 10px;
         font-size: 32px;
-        color:#666;
+        color: #666;
     }
 
     .menuBtn {
         margin-top: 10px;
         font-size: 32px;
-        color:#666;
+        color: #666;
     }
 
     .btn:active {
-        background-color:#ccc;
+        background-color: #ccc;
     }
+
     .weixin {
-        color:limegreen;
+        color: limegreen;
         margin-top: 4px;
     }
+
     .alipay {
-        color:#0088fb;
+        color: #0088fb;
         margin-top: 4px;
     }
+
     .card {
-        color:red;
+        color: red;
         margin-top: 3px;
     }
+
     .wallet {
         margin-top: 4px;
     }
+
     .cash {
-        color:#F0AD3C;
+        color: #F0AD3C;
         margin-top: 3px;
     }
+
     .bank {
         margin-top: 4px;
-        color:tomato;
+        color: tomato;
     }
 
     .content {
@@ -427,8 +589,9 @@
         padding-left: 30px;
         margin-top: 100px;
     }
+
     .waiting {
-        position:fixed;
+        position: fixed;
         flex-direction: column;
         left: 125px;
         top: 420px;
@@ -436,13 +599,14 @@
         background-color: navajowhite;
         border: 1px;
         border-color: #eee;
-        border-radius:10px;
+        border-radius: 10px;
         padding-bottom: 35px;
         padding-top: 20px;
         justify-content: center;
         align-items: center;
-        height:300px;
+        height: 300px;
     }
+
     .paymenting {
         justify-content: center;
         font-size: 32px;
@@ -450,107 +614,87 @@
     }
 
     .close {
-        position:absolute;
-        width:60px;
+        position: absolute;
+        width: 60px;
         height: 60px;
         right: 0px;
-        top : 10px;
+        top: 10px;
         flex-direction: column;
         justify-content: center;
     }
 
     .close_button {
         font-size: 48px;
-        color:#ccc
+        color: #ccc
     }
 
-    .menubox {
-        margin-top: 40px;
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
-        width:690px;
-        margin-left: 30px;
-        border:1px;
-        border-top-left-radius: 20px;
-        border-top-right-radius:20px;
-        background-color: #fff;
-        min-height: 900px;
-    }
-    .menuboxTwo {
-        margin-top: 40px;
+    .mesBox {
+        width: 750px;
         flex-direction: column;
         align-items: center;
-        width:690px;
-        margin-left: 30px;
-        border:1px;
-        border-top-left-radius: 20px;
-        border-top-right-radius:20px;
-        background-color: #fff;
-        min-height: 900px;
+        margin-top: 250px;
+        margin-bottom: 30px;
     }
 
-    .menu {
-        flex-direction: column;
-        align-items: center;
-        width:229px;
-        padding:40px;
-    }
-    .menuTwo{
-        margin-top: 100px;
-        flex-direction: column;
-        align-items: center;
+    .mes {
+        font-size: 26px;
+        color: #999;
     }
 </style>
 <script>
     const storage = weex.requireModule('storage');
     import qrcode from '../../include/qrcode.vue';
-    import { POST, GET ,SCAN} from '../../assets/fetch'
+    import {POST, GET, SCAN} from '../../assets/fetch'
     import utils from '../../assets/utils'
     import filters from '../../filters/filters.js'
-    import {dom,event,animation} from '../../weex.js';
+    import {dom, event, animation} from '../../weex.js';
+
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
     var amap = weex.requireModule('map');
     import payment from '../../include/payment.vue'
+
     export default {
         data() {
             return {
-                roles:"",
-                isIndex:false,
-                refreshing:false,
-                id:0,
-                sn:"",
-                step:"",
-                cashier:{today:0,yesterday:0,shopId:""},
-                shopId:"",
-                amount:"",
-                timer:null,
-                time:30,
-                isScan:false,
-                isSubmit:false,
-                plugId:"",
-                refreshImg:utils.locate('resources/images/loading.png'),
-                clicked:false,
-                conut:[],
-                shippingConut:[],
-                conutTotal:0,
-                shippingConutTotal:0,
-                gpsTime:null,
-                inputShow:false,
-                hasPaused:false
+                roles: "",
+                isIndex: false,
+                refreshing: false,
+                id: 0,
+                sn: "",
+                step: "",
+                cashier: {today: 0, yesterday: 0, shopId: ""},
+                shopId: "",
+                amount: "",
+                timer: null,
+                time: 30,
+                isScan: false,
+                isSubmit: false,
+                plugId: "",
+                refreshImg: utils.locate('resources/images/loading.png'),
+                clicked: false,
+                conut: [],
+                shippingConut: [],
+                conutTotal: 0,
+                shippingConutTotal: 0,
+                gpsTime: null,
+                inputShow: false,
+                hasPaused: false,
+                status:0,
+                today:{},
+                yesterday:{},
             }
         },
         components: {
-            qrcode,payment
+            qrcode, payment
         },
         props: {
-            title: { default: "收银台" }
+            title: {default: "收银台"}
         },
         beforeDestory() {
 //            页面销毁时解除定时器
-            if (!utils.isNull(this.gpsTime))  {
+            if (!utils.isNull(this.gpsTime)) {
                 clearInterval(this.gpsTime);
                 this.gpsTime = null;
             }
@@ -559,17 +703,13 @@
             var _this = this;
             utils.initIconFont();
             //amap.startBackGroundLocationUpdates();
-            this.isIndex = (utils.getUrlParameter("index")=='true');
+            this.isIndex = (utils.getUrlParameter("index") == 'true');
             this.view();
+            this.getToday();
+            this.getyesterday();
             this.permissions();//获取权限存入缓存
-//            globalEvent.addEventListener("onCashierChange", function (e) {
-//                _this.view();
-//            });
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
-//                if(!utils.isNull(e.data.data.id)  && e.data.data.id == 'gm_10212'){
-//                    _this.view();
-//                }
                 if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10200') {
 //                   获取订单数量
                     _this.getCount();
@@ -578,46 +718,81 @@
 //                   获取运单数量
                     _this.getShippingConut();
                 }
+                _this.getToday();
             });
             //            监听登陆成功.
             globalEvent.addEventListener("login", function (e) {
                 _this.permissions();//获取权限存入缓存
-                _this.conut=[];
-                _this.shippingConut=[];
-                _this.conutTotal=0;
-                _this.shippingConutTotal=0;
-                _this.cashier={};
-                _this.shopId="";
+                _this.conut = [];
+                _this.shippingConut = [];
+                _this.conutTotal = 0;
+                _this.shippingConutTotal = 0;
+                _this.cashier = {};
+                _this.shopId = "";
                 _this.view();
+                _this.today = {};
+                _this.yesterday = {};
+                _this.getToday();
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
-                _this.conut=[];
-                _this.shippingConut=[];
-                _this.conutTotal=0;
-                _this.shippingConutTotal=0;
-                _this.cashier={};
-                _this.shopId=""
+                _this.conut = [];
+                _this.shippingConut = [];
+                _this.conutTotal = 0;
+                _this.shippingConutTotal = 0;
+                _this.cashier = {};
+                _this.shopId = "";
+                _this.today = {};
+                _this.yesterday = {};
+            });
+            //监听最小化app后打开app
+            globalEvent.addEventListener("WXApplicationDidBecomeActiveEvent", function (e) {
+                _this.getToday();
             });
         },
         methods: {
+            //今日收款
+            getToday(){
+              let _this = this;
+              GET("weex/member/payment/summary_count.jhtml?beginDate="+utils.ymdtimefmt(Date.parse(new Date()))+"&endDate="+utils.ymdtimefmt(Date.parse(new Date())),function (res) {
+                  if (res.type == 'success') {
+                     _this.today =  res.data;
+                  } else {
+                      event.toast(res.content);
+                  }
+              }, function (err) {
+                  event.toast(err.content);
+              })
+            },
+            getyesterday(){
+                let _this = this;
+                GET("weex/member/payment/summary_count.jhtml?beginDate="+utils.ymdtimefmt(new Date().getTime() - 24*60*60*1000)+"&endDate="+utils.ymdtimefmt(Date.parse(new Date())),function (res) {
+                    if (res.type == 'success') {
+                        _this.yesterday =  res.data;
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content);
+                })
+            },
             //            获取权限
-            permissions:function () {
+            permissions: function () {
                 var _this = this;
                 POST("weex/member/access_token.jhtml").then(function (mes) {
-                    if (mes.type=="success") {
+                    if (mes.type == "success") {
                         var roles = JSON.stringify(mes.data);
-                        storage.setItem('token', roles , e => {
+                        storage.setItem('token', roles, e => {
                         })
                         _this.roles = mes.data.roles;
                     } else {
                         event.toast(mes.content);
                     }
-                },function (err) {
+                }, function (err) {
                     event.toast(err.content);
                 });
             },
-            openWebView(data){
+            openWebView(data) {
                 let _this = this;
                 if (this.clicked) {
                     return;
@@ -625,27 +800,27 @@
                 this.clicked = true;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate("view/webView/index.js?url="+ encodeURIComponent(data)), function () {
+                }, 1500)
+                event.openURL(utils.locate("view/webView/index.js?url=" + encodeURIComponent(data)), function () {
 
                 });
             },
 //            显示收银
-            contolInput(){
+            contolInput() {
                 var _this = this;
-                if (!utils.isRoles("12",_this.roles)) {
+                if (!utils.isRoles("12", _this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
                     return
-                }else{
+                } else {
                     this.inputShow = !this.inputShow
                 }
 
             },
-            linkToFill(){
+            linkToPayment(){
                 if (this.clicked) {
                     return;
                 }
@@ -653,8 +828,21 @@
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("12",_this.roles)) {
+                }, 1500)
+                event.openURL(utils.locate("view/shop/payment/index.js"), function (e) {
+
+                });
+            },
+            linkToFill() {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500)
+                if (!utils.isRoles("12", _this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -662,7 +850,7 @@
                     _this.view()
                     return
                 }
-                event.openURL(utils.locate("view/shop/order/fill.js"),function (e) {
+                event.openURL(utils.locate("view/shop/order/fill.js"), function (e) {
                     _this.getCount()
                 });
             },
@@ -675,10 +863,10 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
+                }, 1500)
                 if (utils.isNull(_this.shopId)) {
                     _this.view()
-                    if(utils.isNull(_this.shopId)) {
+                    if (utils.isNull(_this.shopId)) {
                         modal.alert({
                             message: '无店铺授权',
                             okTitle: 'OK'
@@ -687,24 +875,24 @@
 
                     }
                 }
-                event.openURL(utils.locate('view/shop/card/add.js'), function(data) {
+                event.openURL(utils.locate('view/shop/card/add.js'), function (data) {
 
                     }
                 );
             },
 //            扫会员提货
-            scanMember(id){
-                event.openURL(utils.locate('view/shipping/list/view.js?productCategoryId=3&index=2&memberId='+id),function (message) {
+            scanMember(id) {
+                event.openURL(utils.locate('view/shipping/list/view.js?productCategoryId=3&index=2&memberId=' + id), function (message) {
 
                 })
             },
 
 //            扫码搜索会员
-            scanFindCard(code){
-                GET('weex/member/card/infobycode.jhtml?code='+code,function (mes) {
+            scanFindCard(code) {
+                GET('weex/member/card/infobycode.jhtml?code=' + code, function (mes) {
                     if (mes.type == 'success') {
                         var id = mes.data.card.id;
-                        event.openURL(utils.locate('view/shop/card/view.js?id='+id),function (message) {
+                        event.openURL(utils.locate('view/shop/card/view.js?id=' + id), function (message) {
 
                         })
                     } else {
@@ -715,8 +903,8 @@
                 })
             },
             //            扫码核销优惠券
-            scanCoupon(code,captcha){
-                GET('weex/member/couponCode/use.jhtml?code='+code +'&captcha='+captcha,function (mes) {
+            scanCoupon(code, captcha) {
+                GET('weex/member/couponCode/use.jhtml?code=' + code + '&captcha=' + captcha, function (mes) {
                     if (mes.type == 'success') {
                         modal.alert({
                             message: mes.content,
@@ -730,9 +918,9 @@
                 })
             },
             //            扫码抢单
-            scanRob(sn){
+            scanRob(sn) {
                 let _this = this
-                POST('weex/member/order/scanDispatch.jhtml?sn='+sn).then(function (mes) {
+                POST('weex/member/order/scanDispatch.jhtml?sn=' + sn).then(function (mes) {
                     if (mes.type == 'success') {
                         modal.alert({
                             message: mes.content,
@@ -746,9 +934,9 @@
                 })
             },
             //            扫码接单
-            scanSend(sn){
+            scanSend(sn) {
                 let _this = this
-                POST('weex/member/shipping/scanDispatch.jhtml?sn='+sn).then(function (mes) {
+                POST('weex/member/shipping/scanDispatch.jhtml?sn=' + sn).then(function (mes) {
                     if (mes.type == 'success') {
                         modal.alert({
                             message: mes.content,
@@ -764,9 +952,9 @@
             },
 
             //            订水二维码
-            bindQrcode(code){
+            bindQrcode(code) {
                 let _this = this
-                POST('weex/member/shop/bindQrcode.jhtml?code='+code).then(function (mes) {
+                POST('weex/member/shop/bindQrcode.jhtml?code=' + code).then(function (mes) {
                     if (mes.type == 'success') {
                         modal.alert({
                             message: mes.content,
@@ -780,52 +968,52 @@
                 })
 
             },
-            bindCode(code){
-                POST('weex/member/scan_order/bindScan.jhtml?code='+encodeURIComponent(code)).then(function(res){
-                    if(res.type=='success'){
+            bindCode(code) {
+                POST('weex/member/scan_order/bindScan.jhtml?code=' + encodeURIComponent(code)).then(function (res) {
+                    if (res.type == 'success') {
                         modal.alert({
                             message: res.content,
                             okTitle: 'OK'
                         })
-                    }else{
+                    } else {
                         event.toast(mes.content);
                     }
-                },function(err){
+                }, function (err) {
                     event.toast(err.content)
                 })
             },
 
 
 //            触发二维码方法
-            scan:function () {
-                let _this=this
+            scan: function () {
+                let _this = this
                 event.scan(function (message) {
-                    if(!utils.isNull(message.data)){
+                    if (!utils.isNull(message.data)) {
                         // message.data = JSON.stringify(message.data);
-                        if(message.data == '{}'){
+                        if (message.data == '{}') {
                             return
                         }
-                        utils.readScan(message.data,function (data) {
-                            if (data.type=='error') {
+                        utils.readScan(message.data, function (data) {
+                            if (data.type == 'error') {
                                 event.toast(data.content);
                                 return;
                             }
-                            if (data.data.type=='818820') {
+                            if (data.data.type == '818820') {
                                 _this.bindCode(message.data)
                             } else {
-                                GET('/q/scan.jhtml?code='+ encodeURIComponent(message.data),function (res) {
-                                    if (res.type=="success") {
-                                        if(res.data.type =='818801'|| res.data.type =='818802'){
+                                GET('/q/scan.jhtml?code=' + encodeURIComponent(message.data), function (res) {
+                                    if (res.type == "success") {
+                                        if (res.data.type == '818801' || res.data.type == '818802') {
                                             _this.scanFindCard(res.data.code)
-                                        }else if(res.data.type =='818803'){
-                                            _this.scanCoupon(res.data.code,res.data.captcha)
-                                        }else if(res.data.type =='818806'){
+                                        } else if (res.data.type == '818803') {
+                                            _this.scanCoupon(res.data.code, res.data.captcha)
+                                        } else if (res.data.type == '818806') {
                                             _this.scanRob(res.data.sn)
-                                        }else if(res.data.type =='818807'){
+                                        } else if (res.data.type == '818807') {
                                             _this.scanSend(res.data.sn)
-                                        }else if(res.data.type =='818810'){
+                                        } else if (res.data.type == '818810') {
                                             _this.bindQrcode(res.data.code)
-                                        }else if(res.data.type =='865380'){
+                                        } else if (res.data.type == '865380') {
                                             _this.scanMember(res.data.id)
                                         }
                                     } else {
@@ -863,10 +1051,10 @@
 //                })
 //            },
             //            获取订单数量
-            getCount(){
+            getCount() {
                 var _this = this
-                POST('weex/member/order/count.jhtml').then( function (res) {
-                    if (res.type=="success") {
+                POST('weex/member/order/count.jhtml').then(function (res) {
+                    if (res.type == "success") {
                         _this.conut = res.data;
                         _this.conutTotal = res.data.unpaid + res.data.unshipped + res.data.shipped + res.data.refund
                     } else {
@@ -878,10 +1066,10 @@
                 })
             },
             //            获取运单数量
-            getShippingConut(){
+            getShippingConut() {
                 var _this = this
-                POST('weex/member/shipping/count.jhtml').then( function (res) {
-                    if (res.type=="success") {
+                POST('weex/member/shipping/count.jhtml').then(function (res) {
+                    if (res.type == "success") {
                         _this.shippingConut = res.data;
                         _this.shippingConutTotal = res.data.unconfirmed + res.data.hope + res.data.confirmed + res.data.completed
                     } else {
@@ -893,7 +1081,7 @@
                 })
             },
             //            待确认
-            goConfirm(){
+            goConfirm() {
                 if (this.clicked) {
                     return;
                 }
@@ -901,15 +1089,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=0&productCategoryId=1'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=0&productCategoryId=1'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
 //            已核销
-            goToCompleted(){
+            goToCompleted() {
                 if (this.clicked) {
                     return;
                 }
@@ -917,15 +1105,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=3&productCategoryId=4'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
 //            配送中
-            goOnTheWay(){
+            goOnTheWay() {
                 if (this.clicked) {
                     return;
                 }
@@ -933,15 +1121,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=1&productCategoryId=2'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
 //            已送达
-            goaArive(){
+            goaArive() {
                 if (this.clicked) {
                     return;
                 }
@@ -949,15 +1137,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/shipping/list.js?index=2&productCategoryId=3'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
 //            待付款
-            goNoPay(){
+            goNoPay() {
                 if (this.clicked) {
                     return;
                 }
@@ -965,15 +1153,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/order/list.js?index=0&productCategoryId=1'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/order/list.js?index=0&productCategoryId=1'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
             //            待发货
-            goNoDelivery(){
+            goNoDelivery() {
                 if (this.clicked) {
                     return;
                 }
@@ -981,15 +1169,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/order/list.js?index=1&productCategoryId=2'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/order/list.js?index=1&productCategoryId=2'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
             //            已发货
-            goDelivery(){
+            goDelivery() {
                 if (this.clicked) {
                     return;
                 }
@@ -997,15 +1185,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=3'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=3'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
             //            待退款
-            goRefund(){
+            goRefund() {
                 if (this.clicked) {
                     return;
                 }
@@ -1013,15 +1201,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=4'), function(data) {
+                }, 1500)
+                event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=4'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
                 );
             },
             //            我要开店
-            goShop:function () {
+            goShop: function () {
                 if (this.clicked) {
                     return;
                 }
@@ -1029,15 +1217,15 @@
                 let _this = this;
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                if(this.cashier.hasRealName){
-                    event.openURL(utils.locate('view/shop/shop/newShop.js'),function (mes) {
+                }, 1500)
+                if (this.cashier.hasRealName) {
+                    event.openURL(utils.locate('view/shop/shop/newShop.js'), function (mes) {
                         _this.view()
                     })
-                }else {
-                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'),function (mes) {
-                        if(mes.type=="success"){
-                            event.openURL(utils.locate('view/shop/shop/newShop.js'),function (res) {
+                } else {
+                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (mes) {
+                        if (mes.type == "success") {
+                            event.openURL(utils.locate('view/shop/shop/newShop.js'), function (res) {
                                 _this.view()
                             })
                         }
@@ -1045,7 +1233,7 @@
                 }
             },
             //            激活店铺
-            activated(){
+            activated() {
                 if (this.clicked) {
                     return;
                 }
@@ -1053,7 +1241,7 @@
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
+                }, 1500)
                 POST('weex/member/topic/activate.jhtml').then(
                     function (mes) {
                         if (mes.type == "success") {
@@ -1072,107 +1260,100 @@
 
             },
             //            权限过滤器
-            filter(e){
+            filter(e) {
                 var _this = this;
-                if(e == 'openShop'){
+                if (e == 'openShop') {
 //                    开店
-                    if (utils.isNull(_this.shopId)|| _this.shopId ==0) {
+                    if (utils.isNull(_this.shopId) || _this.shopId == 0) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                } else if(e == 'activedShop'){
+                } else if (e == 'activedShop') {
 //                    激活
-                    if (!utils.isNull(_this.shopId)&&_this.shopId !=0 && _this.cashier.status != 'success') {
+                    if (!utils.isNull(_this.shopId) && _this.shopId != 0 && _this.cashier.status != 'success') {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                } else if(e == 'order'){
+                } else if (e == 'order') {
 //                    订单
-                    if (utils.isRoles("12",_this.roles)) {
+                    if (utils.isRoles("12", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                } else if(e == 'shipping'){
+                } else if (e == 'shipping') {
 //                    运单
-                    if (utils.isRoles("123",_this.roles)) {
+                    if (utils.isRoles("123", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                } else if(e == 'card'){
+                } else if (e == 'card') {
 //                    会员卡
                     if (!utils.isNull(_this.shopId)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                }else if(e == 'coupon'){
+                } else if (e == 'coupon') {
 //                    优惠券
-                    if (utils.isRoles("1",_this.roles)) {
+                    if (utils.isRoles("1", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                } else if(e == 'distribution'){
-//                    新营销
-                    if (utils.isRoles("1",_this.roles)) {
-                        return true
-                    }else{
-                        return false
-                    }
-                } else if(e == 'manage'){
+                } else if (e == 'manage') {
 //                    商品
-                    if (utils.isRoles("1",_this.roles)) {
+                    if (utils.isRoles("1", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                } else if(e == 'shop'){
+                } else if (e == 'shop') {
 //                    店铺
-                    if (utils.isRoles("1",_this.roles)) {
+                    if (utils.isRoles("1", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                } else if(e == 'employee'){
+                } else if (e == 'employee') {
 //                    员工
-                    if (utils.isRoles("1",_this.roles)) {
+                    if (utils.isRoles("1", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                }else if(e == 'money'){
+                } else if (e == 'money') {
 //                    报表
-                    if (utils.isRoles("1",_this.roles)) {
+                    if (utils.isRoles("1", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                }else if(e == 'paused'){
+                } else if (e == 'paused') {
 //                    暂停营业
-                    if (utils.isRoles("1",_this.roles)) {
+                    if (utils.isRoles("1", _this.roles)) {
                         return true
-                    }else{
+                    } else {
                         return false
                     }
-                }else {
+                } else {
                     return false
                 }
             },
 
-            employee:function () {
-                if (this.clicked==true) {
+            employee: function () {
+                if (this.clicked == true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("1",_this.roles)) {
+                }, 1500)
+                if (!utils.isRoles("1", _this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1180,41 +1361,43 @@
                     _this.view()
                     return
                 }
-                event.openURL(utils.locate("view/shop/admin/list.js"),function (e) {_this.clicked =false});
-            },
-            shop:function () {
-                if (this.clicked==true) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("1",_this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    })
-                    _this.view()
-                    return
-                }
-                event.openURL(utils.locate("view/shop/shop/storeList.js"),function (mes) {
-                    if(mes.type =='success'&&mes.data==''){
-                        event.closeURL(mes)
-                    }
-                    _this.clicked =false
+                event.openURL(utils.locate("view/shop/admin/list.js"), function (e) {
+                    _this.clicked = false
                 });
             },
-            gocard:function () {
-                if (this.clicked==true) {
+            linkShop: function () {
+                if (this.clicked == true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
+                }, 1500)
+                if (!utils.isRoles("1", _this.roles)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.view()
+                    return
+                }
+                event.openURL(utils.locate("view/shop/shop/storeList.js"), function (mes) {
+                    if (mes.type == 'success' && mes.data == '') {
+                        event.closeURL(mes)
+                    }
+                    _this.clicked = false
+                });
+            },
+            gocard: function () {
+                if (this.clicked == true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500)
                 if (utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
@@ -1223,17 +1406,18 @@
                     _this.view()
                     return
                 }
-                event.openURL(utils.locate("view/shop/card/list.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/card/list.js"), function (e) {
+                });
             },
-            gocoupon:function () {
-                if (this.clicked==true) {
+            gocoupon: function () {
+                if (this.clicked == true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
+                }, 1500)
                 if (utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
@@ -1242,39 +1426,21 @@
                     _this.view()
                     return
                 }
-                event.openURL(utils.locate("view/shop/coupon/list.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/coupon/list.js"), function (e) {
+                });
             },
-            godistribution:function () {
-                if (this.clicked==true) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this
-                setTimeout(function () {
-                    _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    })
-                    _this.view()
-                    return
-                }
-                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {});
-            },
-            paused(){
+            paused() {
                 let _this = this;
-                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
+                if (!utils.isRoles("1", _this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     _this.view()
-                }else {
+                } else {
                     POST("weex/member/enterprise/paused.jhtml").then(
                         function (data) {
-                            if (data.type=='success') {
+                            if (data.type == 'success') {
                                 _this.view()
                             } else {
                                 modal.alert({
@@ -1283,23 +1449,23 @@
                                 })
                                 _this.view()
                             }
-                        },function (err) {
+                        }, function (err) {
                             event.toast(err.content);
                             _this.view()
                         }
                     )
                 }
             },
-            goods:function () {
-                if (this.clicked==true) {
+            goods: function () {
+                if (this.clicked == true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("1",_this.roles) || utils.isNull(_this.shopId)) {
+                }, 1500)
+                if (!utils.isRoles("1", _this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1307,18 +1473,19 @@
                     _this.view()
                     return
                 }
-                event.openURL(utils.locate("view/shop/goods/manage.js"),function (e) {});
+                event.openURL(utils.locate("view/shop/goods/manage.js"), function (e) {
+                });
             },
-            order:function () {
-                if (this.clicked==true) {
+            order: function () {
+                if (this.clicked == true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("12",_this.roles) || utils.isNull(_this.shopId)) {
+                }, 1500)
+                if (!utils.isRoles("12", _this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1326,37 +1493,37 @@
                     _this.view()
                     return
                 }
-                event.openURL(utils.locate("view/shop/order/list.js"),function (e) {
+                event.openURL(utils.locate("view/shop/order/list.js"), function (e) {
                     _this.getCount()
                     _this.getShippingConut();
                 });
             },
-            objHeader:function () {
-                if (utils.device()=='V1') {
-                    return {backgroundColor:'#000'}
+            objHeader: function () {
+                if (utils.device() == 'V1') {
+                    return {backgroundColor: '#000'}
                 }
             },
-            hasShop:function () {
+            hasShop: function () {
                 let _this = this
-                if (utils.isRoles("1",_this.roles) && !utils.isNull(_this.shopId) && _this.shopId>0) {
+                if (utils.isRoles("1", _this.roles) && !utils.isNull(_this.shopId) && _this.shopId > 0) {
                     return true
-                }else {
+                } else {
                     return false
                 }
             },
-            hasInput:function () {
-                if(!utils.isNull(this.amount) || this.inputShow == true){
+            hasInput: function () {
+                if (!utils.isNull(this.amount) || this.inputShow == true) {
                     return true
-                }else {
+                } else {
                     return false
                 }
 
             },
-            classHeader:function () {
+            classHeader: function () {
                 return utils.device();
             },
 //            下拉刷新
-            onrefresh (event) {
+            onrefresh(event) {
                 var _this = this;
                 this.refreshing = true;
                 animation.transition(_this.$refs.refreshImg, {
@@ -1365,7 +1532,7 @@
                     },
                     duration: 1000, //ms
                     timingFunction: 'linear',//350 duration配合这个效果目前较好
-                    needLayout:false,
+                    needLayout: false,
                     delay: 0 //ms
                 })
                 setTimeout(() => {
@@ -1375,58 +1542,61 @@
                         },
                         duration: 10, //ms
                         timingFunction: 'linear',//350 duration配合这个效果目前较好
-                        needLayout:false,
+                        needLayout: false,
                         delay: 0 //ms
                     })
                     this.refreshing = false
                     _this.view();
                 }, 1000)
             },
-            view:function () {
+            view: function () {
                 var _this = this;
-                GET("weex/member/cashier/view.jhtml",function (res) {
-                   if (res.type=="success") {
-                       _this.cashier = res.data;
-                       _this.shopId = res.data.shopId;
-                       _this.hasPaused = !res.data.paused;
-                       if(res.data.status == 'success'){
+                GET("weex/member/cashier/view.jhtml", function (res) {
+                    if (res.type == "success") {
+                        _this.cashier = res.data;
+                        _this.shopId = res.data.shopId;
+                        _this.hasPaused = !res.data.paused;
+                        if (res.data.status == 'success') {
+                            _this.status = 1;
 //                           获取订单数量
-                           _this.getCount();
+                            _this.getCount();
 //                           获取运单数量
-                           _this.getShippingConut();
-                           if(res.data.expire <7 && res.data.expire >0){
-                               modal.confirm({
-                                   message: '您的店铺将于'+res.data.expire+'天后到期',
-                                   duration: 0.3,
-                                   okTitle:'立即缴费',
-                                   cancelTitle:'暂不缴费'
-                               }, function (value) {
-                                   if(value == '立即缴费'){
-                                       _this.activated()
-                                   }
-                               })
-                           }
-                       }
-                   } else {
-                       event.toast(res.content);
-                   }
-                },function (err) {
-                   event.toast(err.content);
+                            _this.getShippingConut();
+                            if (res.data.expire < 7 && res.data.expire > 0) {
+                                modal.confirm({
+                                    message: '您的店铺将于' + res.data.expire + '天后到期',
+                                    duration: 0.3,
+                                    okTitle: '立即缴费',
+                                    cancelTitle: '暂不缴费'
+                                }, function (value) {
+                                    if (value == '立即缴费') {
+                                        _this.activated()
+                                    }
+                                })
+                            }
+                        }else {
+                            _this.status = 2;
+                        }
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content);
                 });
             },
             goback: function (e) {
                 event.closeURL();
             },
-            goShipping:function () {
-                if (this.clicked==true) {
+            goShipping: function () {
+                if (this.clicked == true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("123",_this.roles) || utils.isNull(_this.shopId)) {
+                }, 1500)
+                if (!utils.isRoles("123", _this.roles) || utils.isNull(_this.shopId)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
@@ -1434,62 +1604,65 @@
                     _this.view()
                     return
                 }
-                event.openURL(utils.locate("view/shop/shipping/list.js"),function (e) {
+                event.openURL(utils.locate("view/shop/shipping/list.js"), function (e) {
                     _this.getCount()
                     _this.getShippingConut();
                 });
             },
-            deposit:function () {
-                if (this.clicked==true) {
+            deposit: function () {
+                if (this.clicked == true) {
                     return;
                 }
                 this.clicked = true;
                 let _this = this
                 setTimeout(function () {
                     _this.clicked = false;
-                },1500)
-                if (!utils.isRoles("1",_this.roles)) {
+                }, 1500)
+                if (!utils.isRoles("1", _this.roles)) {
                     modal.alert({
                         message: '暂无权限',
                         okTitle: 'OK'
                     })
                     return
                 }
-                event.openURL(utils.locate("view/shop/report/index.js"),function (e) {_this.clicked =false});
+                event.openURL(utils.locate("view/shop/report/index.js"), function (e) {
+                    _this.clicked = false
+                });
             },
-            goIndex:function () {
-                GET("weex/member/topic/owner.jhtml",function (res) {
-                    if (res.type=='success') {
-                    event.openURL(utils.locate("view/topic/index.js?id=" +res.data),
-                        function (e) {}
-                    );
+            goIndex: function () {
+                GET("weex/member/topic/owner.jhtml", function (res) {
+                    if (res.type == 'success') {
+                        event.openURL(utils.locate("view/topic/index.js?id=" + res.data),
+                            function (e) {
+                            }
+                        );
                     } else {
                         event.toast(res.content);
                     }
-                },function (err) {
+                }, function (err) {
                     event.toast(err.content);
                 })
 
             },
-            isShow:function () {
-                return this.time<30;
+            isShow: function () {
+                return this.time < 30;
             },
-            clearTimer:function () {
-               if (this.timer!=null) {
-                   clearTimeout(this.timer);
-                   this.timer = null;
-               }
-               this.time = 30;
-               this.step = "";
-               this.amount = "";
-               this.inputShow = false;
-               this.isScan = false;
-               this.isSubmit = false;
+            clearTimer: function () {
+                if (this.timer != null) {
+                    clearTimeout(this.timer);
+                    this.timer = null;
+                }
+                this.time = 30;
+                this.step = "";
+                this.amount = "";
+                this.inputShow = false;
+                this.isScan = false;
+                this.isSubmit = false;
             },
-            print:function () {
-                GET("weex/member/paybill/print.jhtml?id="+this.id,function (mes) {
-                    if (mes.type=='success') {
-                        if (utils.device()=='V1') {
+            print: function () {
+                GET("weex/member/paybill/print.jhtml?id=" + this.id, function (mes) {
+                    if (mes.type == 'success') {
+                        if (utils.device() == 'V1') {
                             printer.print(mes.data);
                         } else {
                             modal.alert({
@@ -1503,28 +1676,28 @@
                             okTitle: '知道了'
                         })
                     }
-                },function (err) {
+                }, function (err) {
                     event.toast(err.content);
                 })
 
             },
-            close:function () {
-               this.clearTimer();
+            close: function () {
+                this.clearTimer();
             },
-            beginTimer:function () {
+            beginTimer: function () {
                 var _this = this;
-                if (_this.time==0) {
+                if (_this.time == 0) {
                     _this.clearTimer();
                     return;
                 }
-                _this.step = _this.step +'..';
-                POST("payment/query.jhtml?sn="+_this.sn).then(
+                _this.step = _this.step + '..';
+                POST("payment/query.jhtml?sn=" + _this.sn).then(
                     function (res) {
-                        if (res.type=='success') {
-                            if (res.data=='0000') {
+                        if (res.type == 'success') {
+                            if (res.data == '0000') {
                                 _this.clearTimer();
                                 _this.view();
-                                if (utils.device()=='V1') {
+                                if (utils.device() == 'V1') {
                                     event.toast("付款成功");
                                     _this.print();
                                 } else {
@@ -1533,15 +1706,16 @@
                                         okTitle: '知道了'
                                     })
                                 }
-                            } else
-                            if (res.data=='0001') {
+                            } else if (res.data == '0001') {
                                 modal.alert({
                                     message: '付款失败',
                                     okTitle: '知道了'
                                 })
                                 _this.clearTimer();
                             } else {
-                                _this.timer = setTimeout(function () {_this.beginTimer()},1000);
+                                _this.timer = setTimeout(function () {
+                                    _this.beginTimer()
+                                }, 1000);
                             }
                         } else {
                             _this.clearTimer();
@@ -1554,13 +1728,13 @@
                     }
                 )
             },
-            offline:function (pid) {
-              this.plugId = pid;
-              this.submit("");
+            offline: function (pid) {
+                this.plugId = pid;
+                this.submit("");
             },
-            submit:function (safeKey) {
+            submit: function (safeKey) {
                 var _this = this;
-                if (_this.isSubmit==true) {
+                if (_this.isSubmit == true) {
                     return;
                 }
                 _this.isSubmit = true;
@@ -1572,16 +1746,18 @@
                     });
                     return;
                 }
-                POST("weex/member/cashier/submit.jhtml?shopId="+_this.shopId+"&amount="+_this.amount).then(
+                POST("weex/member/cashier/submit.jhtml?shopId=" + _this.shopId + "&amount=" + _this.amount).then(
                     function (res) {
-                        if (res.type=='success') {
+                        if (res.type == 'success') {
                             _this.id = res.data.id;
                             _this.sn = res.data.sn;
-                            POST("payment/submit.jhtml?sn="+_this.sn+"&paymentPluginId="+_this.plugId+"&safeKey="+encodeURIComponent(safeKey)).then(
+                            POST("payment/submit.jhtml?sn=" + _this.sn + "&paymentPluginId=" + _this.plugId + "&safeKey=" + encodeURIComponent(safeKey)).then(
                                 function (data) {
-                                    if (data.type=='success') {
+                                    if (data.type == 'success') {
                                         _this.time = 29;
-                                        _this.timer = setTimeout(function () {_this.beginTimer()},500);
+                                        _this.timer = setTimeout(function () {
+                                            _this.beginTimer()
+                                        }, 500);
                                     } else {
                                         _this.isSubmit = false;
                                         modal.alert({
@@ -1589,7 +1765,7 @@
                                             okTitle: '知道了'
                                         })
                                     }
-                                },function (err) {
+                                }, function (err) {
                                     _this.isSubmit = false;
                                     event.toast(err.content);
                                 }
@@ -1605,17 +1781,17 @@
                     }
                 )
             },
-            payment:function (plugId) {
+            payment: function (plugId) {
                 var _this = this;
-                if (_this.isScan==true) {
+                if (_this.isScan == true) {
                     return;
                 }
                 _this.isScan = true;
                 _this.plugId = plugId;
                 event.scan(function (message) {
-                     if (message.type=='success') {
+                    if (message.type == 'success') {
                         _this.isScan = false;
-                       let c = utils.qr2scan(message.data);
+                        let c = utils.qr2scan(message.data);
                         _this.submit(c);
                     } else {
                         _this.isScan = false;

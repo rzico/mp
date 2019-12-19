@@ -10,9 +10,10 @@
                     </div>
                     <div class="nav">
                         <text class="nav_title">{{title}}</text>
-                        <div class="navRightBox"  @click="goSearch()">
+                        <div class="navRightBox">
                             <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
-                            <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" >&#xe611;</text>
+                            <text class="nav_CompleteIcon mr15"  :style="{fontFamily:'iconfont'}" @click="godistribution()">&#xe62d;</text>
+                            <text class="nav_CompleteIcon "  :style="{fontFamily:'iconfont'}" @click="goSearch()">&#xe611;</text>
                         </div>
                     </div>
                 </div>
@@ -283,6 +284,7 @@
     .navRightBox{
         min-width: 92px;
         height: 92px;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
     }
@@ -298,7 +300,7 @@
         /*ios识别不出该字体，warn警告。  推测可能隐藏到字体图标的渲染*/
         /*font-family: Verdana, Geneva, sans-serif;*/
         font-size: 44px;
-        line-height: 44px;
+        line-height: 90px;
         color: #FFFFFF;
     }
     .nav_Complete {
@@ -480,7 +482,7 @@
         },
         props:{
             noDataHint:{default:'暂无商品'},
-            title:{default:'商品管理'},
+            title:{default:'商品'},
 //            searchHint: { default: "输入商品名" },
 //            searchOrCancel:{default:'取消'},
         },
@@ -972,6 +974,17 @@
 //            返回
             goback:function () {
                 event.closeURL();
+            },
+            godistribution:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {});
             },
 //            前往搜索
             goSearch:function () {

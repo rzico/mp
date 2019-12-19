@@ -1,11 +1,10 @@
 <template>
     <div class="header" :class="[classHeader(),border==true?'':'cb']" >
-        <!--<image class="nav_bg" :src="'file://resources/images/nav_bg.png'"></image>-->
         <div class="nav_back" @click="goback('/')">
             <text class="nav_ico"  :style="{fontFamily:'iconfont'}">&#xe669;</text>
         </div>
         <div class="nav">
-            <text class="nav_title">{{title}}</text>
+            <text class="nav_title" @click="goback('/')">{{title}}</text>
             <div style="flex-direction: row">
             <div class="navRightBox"  @click="choose('/')" v-if="status != 'returned' && status != 'refunded' && status != 'completed'">
                 <text class="nav_CompleteIcon"  :style="{fontFamily:'iconfont'}" v-if="addresschoose != ''">{{address}}</text>
