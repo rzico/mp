@@ -14,7 +14,7 @@
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg"></image>
             </refresh>
             <div class="bkg-primary">
-                <div class="payBillBox">
+                <div class="payBillBox" @click="linkPaymentBill">
                     <div class="dayPayBox">
                         <div class="flex-row">
                             <text class="dayPay">今日收款(元)</text>
@@ -22,11 +22,11 @@
                         </div>
 
                         <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
-                            <text class="dayPayAmount">{{today.amount}}</text>
+                            <text class="dayPayAmount">{{today.amount | currencyfmt}}</text>
                             <text class="dayPayQuantity">共{{today.count}}笔</text>
                         </div>
                     </div>
-                    <text class="yesterday">昨日收款: ¥{{yesterday.amount}}</text>
+                    <text class="yesterday">昨日收款: ¥{{yesterday.amount | currencyfmt}}</text>
                 </div>
                 <div class="wallet-panel">
                     <div class="flex-column" @click="showQrcode">
@@ -182,11 +182,11 @@
                 <text :style="{fontFamily:'iconfont'}" class="shopCssOne">&#xe662;</text>
                 <text class="menuBtn">我要开店</text>
             </div>
-            <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee >0">
+            <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && shopData.fee >0">
                 <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
                 <text class="menuBtn">激活店铺</text>
             </div>
-            <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && cashier.fee ==0">
+            <div class="menuTwo" @click="activated()" v-if="filter('activedShop') && shopData.fee ==0">
                 <text :style="{fontFamily:'iconfont'}" class="shopCssTwo">&#xe6ce;</text>
                 <text class="menuBtn">审核中...</text>
             </div>
@@ -198,6 +198,7 @@
                 <text class="mesToast">3.下载专属二维码，开启新零售服务体验。</text>
             </div>
         </div>
+        <payment ref="payment" @notify="notify"></payment>
         <qrcode ref="qrcode"></qrcode>
     </div>
 
@@ -659,12 +660,11 @@
         data() {
             return {
                 roles: "",
-                isIndex: false,
                 refreshing: false,
                 id: 0,
                 sn: "",
                 step: "",
-                cashier: {today: 0, yesterday: 0, shopId: ""},
+                shopData:{},
                 shopId: "",
                 amount: "",
                 timer: null,
@@ -678,7 +678,6 @@
                 shippingConut: [],
                 conutTotal: 0,
                 shippingConutTotal: 0,
-                gpsTime: null,
                 inputShow: false,
                 hasPaused: false,
                 status:0,
@@ -693,17 +692,11 @@
             title: {default: "收银台"}
         },
         beforeDestory() {
-//            页面销毁时解除定时器
-            if (!utils.isNull(this.gpsTime)) {
-                clearInterval(this.gpsTime);
-                this.gpsTime = null;
-            }
+
         },
         created() {
             var _this = this;
             utils.initIconFont();
-            //amap.startBackGroundLocationUpdates();
-            this.isIndex = (utils.getUrlParameter("index") == 'true');
             this.view();
             this.getToday();
             this.getyesterday();
@@ -727,12 +720,11 @@
                 _this.shippingConut = [];
                 _this.conutTotal = 0;
                 _this.shippingConutTotal = 0;
-                _this.cashier = {};
+                _this.shopData = {};
                 _this.shopId = "";
                 _this.view();
-                _this.today = {};
-                _this.yesterday = {};
                 _this.getToday();
+                _this.getyesterday();
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
@@ -740,10 +732,8 @@
                 _this.shippingConut = [];
                 _this.conutTotal = 0;
                 _this.shippingConutTotal = 0;
-                _this.cashier = {};
+                _this.shopData = {};
                 _this.shopId = "";
-                _this.today = {};
-                _this.yesterday = {};
             });
             //监听最小化app后打开app
             globalEvent.addEventListener("WXApplicationDidBecomeActiveEvent", function (e) {
@@ -766,7 +756,8 @@
             },
             getyesterday(){
                 let _this = this;
-                GET("weex/member/payment/summary_count.jhtml?beginDate="+utils.ymdtimefmt(new Date().getTime() - 24*60*60*1000)+"&endDate="+utils.ymdtimefmt(Date.parse(new Date())),function (res) {
+                var yesterday =  utils.decDate(Date.parse(new Date()));
+                GET("weex/member/payment/summary_count.jhtml?beginDate="+utils.ymdtimefmt(yesterday)+"&endDate="+utils.ymdtimefmt(Date.parse(new Date())),function (res) {
                     if (res.type == 'success') {
                         _this.yesterday =  res.data;
                     } else {
@@ -805,21 +796,6 @@
 
                 });
             },
-//            显示收银
-            contolInput() {
-                var _this = this;
-                if (!utils.isRoles("12", _this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    })
-                    _this.view()
-                    return
-                } else {
-                    this.inputShow = !this.inputShow
-                }
-
-            },
             linkToPayment(){
                 if (this.clicked) {
                     return;
@@ -829,7 +805,35 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 }, 1500)
-                event.openURL(utils.locate("view/shop/payment/index.js"), function (e) {
+                if(this.shopData.scanPay && this.shopData.isUpload){
+                    event.openURL(utils.locate("view/shop/payment/index.js"), function (e) {
+
+                    });
+                }else if(!this.shopData.scanPay && this.shopData.isUpload){
+                    event.openURL(utils.locate("view/shop/payment/status.js?status=1"), function (e) {
+
+                    });
+                }else if(this.shopData.scanPay && !this.shopData.isUpload){
+                    event.openURL(utils.locate("view/shop/payment/status.js"), function (e) {
+
+                    });
+                }else if(!this.shopData.scanPay && !this.shopData.isUpload){
+                    event.openURL(utils.locate("view/shop/payment/status.js"), function (e) {
+
+                    });
+                }
+
+            },
+            linkPaymentBill(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500)
+                event.openURL(utils.locate("view/shop/payment/bill.js"), function (e) {
 
                 });
             },
@@ -1218,19 +1222,13 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 }, 1500)
-                if (this.cashier.hasRealName) {
-                    event.openURL(utils.locate('view/shop/shop/newShop.js'), function (mes) {
-                        _this.view()
-                    })
-                } else {
-                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (mes) {
+                    event.openURL(utils.locate('view/shop/bank/bind.js'), function (mes) {
                         if (mes.type == "success") {
                             event.openURL(utils.locate('view/shop/shop/newShop.js'), function (res) {
                                 _this.view()
                             })
                         }
                     })
-                }
             },
             //            激活店铺
             activated() {
@@ -1271,7 +1269,7 @@
                     }
                 } else if (e == 'activedShop') {
 //                    激活
-                    if (!utils.isNull(_this.shopId) && _this.shopId != 0 && _this.cashier.status != 'success') {
+                    if (!utils.isNull(_this.shopId) && _this.shopId != 0 && _this.shopData.status != 'success') {
                         return true
                     } else {
                         return false
@@ -1498,11 +1496,6 @@
                     _this.getShippingConut();
                 });
             },
-            objHeader: function () {
-                if (utils.device() == 'V1') {
-                    return {backgroundColor: '#000'}
-                }
-            },
             hasShop: function () {
                 let _this = this
                 if (utils.isRoles("1", _this.roles) && !utils.isNull(_this.shopId) && _this.shopId > 0) {
@@ -1510,14 +1503,6 @@
                 } else {
                     return false
                 }
-            },
-            hasInput: function () {
-                if (!utils.isNull(this.amount) || this.inputShow == true) {
-                    return true
-                } else {
-                    return false
-                }
-
             },
             classHeader: function () {
                 return utils.device();
@@ -1551,9 +1536,9 @@
             },
             view: function () {
                 var _this = this;
-                GET("weex/member/cashier/view.jhtml", function (res) {
+                GET("weex/member/shop/status.jhtml", function (res) {
                     if (res.type == "success") {
-                        _this.cashier = res.data;
+                        _this.shopData = res.data;
                         _this.shopId = res.data.shopId;
                         _this.hasPaused = !res.data.paused;
                         if (res.data.status == 'success') {
@@ -1629,175 +1614,6 @@
                     _this.clicked = false
                 });
             },
-            goIndex: function () {
-                GET("weex/member/topic/owner.jhtml", function (res) {
-                    if (res.type == 'success') {
-                        event.openURL(utils.locate("view/topic/index.js?id=" + res.data),
-                            function (e) {
-                            }
-                        );
-                    } else {
-                        event.toast(res.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content);
-                })
-
-            },
-            isShow: function () {
-                return this.time < 30;
-            },
-            clearTimer: function () {
-                if (this.timer != null) {
-                    clearTimeout(this.timer);
-                    this.timer = null;
-                }
-                this.time = 30;
-                this.step = "";
-                this.amount = "";
-                this.inputShow = false;
-                this.isScan = false;
-                this.isSubmit = false;
-            },
-            print: function () {
-                GET("weex/member/paybill/print.jhtml?id=" + this.id, function (mes) {
-                    if (mes.type == 'success') {
-                        if (utils.device() == 'V1') {
-                            printer.print(mes.data);
-                        } else {
-                            modal.alert({
-                                message: "官方指定机器才能打印",
-                                okTitle: '知道了'
-                            })
-                        }
-                    } else {
-                        modal.alert({
-                            message: mes.content,
-                            okTitle: '知道了'
-                        })
-                    }
-                }, function (err) {
-                    event.toast(err.content);
-                })
-
-            },
-            close: function () {
-                this.clearTimer();
-            },
-            beginTimer: function () {
-                var _this = this;
-                if (_this.time == 0) {
-                    _this.clearTimer();
-                    return;
-                }
-                _this.step = _this.step + '..';
-                POST("payment/query.jhtml?sn=" + _this.sn).then(
-                    function (res) {
-                        if (res.type == 'success') {
-                            if (res.data == '0000') {
-                                _this.clearTimer();
-                                _this.view();
-                                if (utils.device() == 'V1') {
-                                    event.toast("付款成功");
-                                    _this.print();
-                                } else {
-                                    modal.alert({
-                                        message: '付款成功',
-                                        okTitle: '知道了'
-                                    })
-                                }
-                            } else if (res.data == '0001') {
-                                modal.alert({
-                                    message: '付款失败',
-                                    okTitle: '知道了'
-                                })
-                                _this.clearTimer();
-                            } else {
-                                _this.timer = setTimeout(function () {
-                                    _this.beginTimer()
-                                }, 1000);
-                            }
-                        } else {
-                            _this.clearTimer();
-                            event.toast(res.content);
-                        }
-                    },
-                    function (err) {
-                        _this.clearTimer();
-                        event.toast(err.content);
-                    }
-                )
-            },
-            offline: function (pid) {
-                this.plugId = pid;
-                this.submit("");
-            },
-            submit: function (safeKey) {
-                var _this = this;
-                if (_this.isSubmit == true) {
-                    return;
-                }
-                _this.isSubmit = true;
-                if (utils.isNull(_this.amount)) {
-                    _this.isSubmit = false;
-                    modal.alert({
-                        message: "请输入消费金额",
-                        okTitle: '知道了'
-                    });
-                    return;
-                }
-                POST("weex/member/cashier/submit.jhtml?shopId=" + _this.shopId + "&amount=" + _this.amount).then(
-                    function (res) {
-                        if (res.type == 'success') {
-                            _this.id = res.data.id;
-                            _this.sn = res.data.sn;
-                            POST("payment/submit.jhtml?sn=" + _this.sn + "&paymentPluginId=" + _this.plugId + "&safeKey=" + encodeURIComponent(safeKey)).then(
-                                function (data) {
-                                    if (data.type == 'success') {
-                                        _this.time = 29;
-                                        _this.timer = setTimeout(function () {
-                                            _this.beginTimer()
-                                        }, 500);
-                                    } else {
-                                        _this.isSubmit = false;
-                                        modal.alert({
-                                            message: data.content,
-                                            okTitle: '知道了'
-                                        })
-                                    }
-                                }, function (err) {
-                                    _this.isSubmit = false;
-                                    event.toast(err.content);
-                                }
-                            )
-                        } else {
-                            _this.isSubmit = false;
-                            event.toast(res.content);
-                        }
-                    },
-                    function (err) {
-                        _this.isSubmit = false;
-                        event.toast(err.content);
-                    }
-                )
-            },
-            payment: function (plugId) {
-                var _this = this;
-                if (_this.isScan == true) {
-                    return;
-                }
-                _this.isScan = true;
-                _this.plugId = plugId;
-                event.scan(function (message) {
-                    if (message.type == 'success') {
-                        _this.isScan = false;
-                        let c = utils.qr2scan(message.data);
-                        _this.submit(c);
-                    } else {
-                        _this.isScan = false;
-                    }
-                });
-            }
         }
 
     }

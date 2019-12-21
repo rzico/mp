@@ -170,7 +170,7 @@
                 if(this.steped1 == true) {
                     var _this = this;
                     if (_this.steped2 == false) {
-                        event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+                        event.openURL(utils.locate('view/shop/bank/bind.js'), function (message) {
                             _this.clicked = false
                             _this.open();
                         })

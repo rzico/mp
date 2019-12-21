@@ -12,7 +12,7 @@
                 <text class="fz32 mt30">{{status == 'success'?'收款成功':'收款失败'}}</text>
             </div>
             <text class="codePriceTitle" >¥{{amount}}</text>
-            <div class="promptBox">
+            <div class="promptBox" @click="linkPaymentBill">
                 <text class="promptBoxTitle">收款账单</text>
                 <text class="fz32 gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
@@ -148,7 +148,8 @@
                 loadingText:'请求中...',
                 time:null,
                 safeKey:'',
-                status:''
+                status:'',
+                clicked:false
             }
         },
         props: {
@@ -209,6 +210,19 @@
                     }
                 }, function (err) {
                     event.toast(err.content);
+                });
+            },
+            linkPaymentBill(){
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500)
+                event.openURL(utils.locate("view/shop/payment/bill.js"), function (e) {
+
                 });
             },
         }

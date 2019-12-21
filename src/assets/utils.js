@@ -740,7 +740,7 @@ let utilsFunc = {
         if (!this.isNull(value)) {
             value = parseFloat(value)
             if (value == 0) {
-                return value.toFixed(2);
+                return '0.00';
             } else {
                 var price = (Math.round(value * Math.pow(10, 2)) / Math.pow(10, 2)).toFixed(2);
                 return price;

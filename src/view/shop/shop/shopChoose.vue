@@ -311,7 +311,7 @@
             navbar
         },
         props: {
-            title: {default: "修改店铺"},
+            title: {default: "新增店铺"},
 
         },
         created() {
@@ -320,10 +320,7 @@
             if(utils.isNull(this.shopId)) {
                 this.shopId = ''
             }else {
-                if(this.shopId == '#'){
-                    this.shopId = ''
-                }
-                this.hasChange = true;
+                this.title = '修改店铺';
                 this.modification();
             }
         },
@@ -411,13 +408,18 @@
                     _this.clicked =false
                     return
                 }
-                POST('weex/member/shop/submit.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+'&license=' +this.licensePhoto+
-                    '&scene=' +this.palcePhoto+'&thedoor=' +this.logo+'&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category+"&lng=" + _this.lng + "&lat=" +_this.lat).then(
+                var baseUrl ='weex/member/shop/add.jhtml?name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+
+                    '&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category+"&lng=" + _this.lng + "&lat=" +_this.lat;
+                if(!utils.isNull(this.shopId)){
+                    baseUrl ='weex/member/shop/update.jhtml?id='+this.shopId +'&name=' +encodeURI(this.vendorName)+'&areaId='+this.areaId+'&address=' +encodeURI(this.detailedAddress)+
+                        '&linkman=' +encodeURI(this.contactName)+'&telephone=' +this.contactNumber+'&categoryId='+this.category+"&lng=" + _this.lng + "&lat=" +_this.lat;
+                }
+                POST(baseUrl).then(
                     function (mes) {
                         _this.clicked =false
                         if (mes.type == "success") {
                             event.toast(mes.content)
-                            let message = utils.message('success','成功');
+                            let message = utils.message('success','成功','');
                             event.closeURL(message)
                         } else {
                             event.toast(mes.content);

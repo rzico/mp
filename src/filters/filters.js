@@ -1,4 +1,5 @@
 import utils from '../assets/utils.js';
+const modal = weex.requireModule('modal');
 //时间格式化 今天 昨天 前天  年月日
 Vue.filter('daydayfmt', function (value) {
     let res = utils.resolvetimefmt(value);
@@ -262,12 +263,13 @@ Vue.filter('hitimefmt', function (value) {
 
 //金额保留两位小数点
 Vue.filter('currencyfmt', function (value) {
-    if(value == '' || value == null || value == undefined){
+    if(value == null){
         return value;
     }
     // 返回处理后的值
     if (value != null) {
         value = parseFloat(value);
+
         if(value == 0 || value == '0'){
             return '0.00';
         }else{

@@ -223,7 +223,7 @@
                 var _this = this;
                 if (this.wallet.binded==false) {
                     _this.clicked = false
-                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+                    event.openURL(utils.locate('view/shop/bank/bind.js'), function (message) {
                         _this.clicked = false
                         if (message.type=='success') {
                             _this.wallet.binded = true;
@@ -255,7 +255,7 @@
                         _this.clicked = false
                     })
                 }else {
-                    event.openURL(utils.locate('view/member/bank/bindFirstStep.js'), function (message) {
+                    event.openURL(utils.locate('view/shop/bank/bind.js'), function (message) {
                         if (message.type == 'success') {
                             _this.load();
                         }
