@@ -365,7 +365,7 @@
                         var total = 0;
                         var money = 0;
                         res.data.forEach(function (item) {
-                            total = total+item.quantity;
+                            total = total+item.count;
                             money = money + item.amount
                         })
                         _this.total = total;

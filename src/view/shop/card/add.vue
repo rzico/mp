@@ -1,86 +1,65 @@
 <template>
     <div class="wrapper bkg-primary">
         <navbar :title="title" @goback="goback" border="false"> </navbar>
-
-        <div class="box">
-            <text class="name" >{{data.name}}</text>
-            <image class="qrcode" resize="cover" :src="qrcode" ></image>
-        </div>
-        <image class="logo" resize="cover" :src="data.logo" ></image>
-        <div class="content">
-            <text class="intro" >1.邀请好友打开微信扫一扫并授权登录，办理店铺会员，享受店内会员权益。</text>
-            <text class="intro" >2.办卡会员可以充值，储值卡余额只能在所属商家使用，解悉权归商家所有。</text>
-<!--            <text class="intro" >3.拨打0592-6085128，为您寄送邀请码。</text>-->
-        </div>
-        <div class="downBox">
-            <!--weex保存图片必须要有一个image来放图-->
-            <image class="dowImage" resize="cover" :src="saveImage" ref="downImg"></image>
-            <text class="down"  @click="saveImg">下载二维码</text>
+        <div class="codeBox">
+            <text class="codeHeaderTitle">{{data.name}}</text>
+            <image class="codeImg" :src="qrcode"  ref="downImg"></image>
+            <text class="down"  @click="saveImg">下载推广码</text>
+            <div class="promptBox">
+                <text class="intro" >邀请好友打开微信扫一扫进入小程序并授权登录，即可成为本店会员。</text>
+            </div>
         </div>
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-    .box {
-        margin-top: 100px;
-        width:650px;
-        margin-left: 50px;
-        background-color: #fff;
-        height:600px;
-        border-radius: 10px;
-        border-color: #ccc;
-        border-width: 1px;
+    .codeBox {
+        width: 670px;
+        border-radius: 6px;
+        background-color: white;
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
         align-items: center;
+        margin-left: 40px;
     }
-    .logo {
-        /*margin-top: -40px;*/
-        position: absolute;
-        top: 202px;
-        left:335px;
-        width:80px;
-        height:80px;
-        border-radius: 40px;
-        border-color: #ccc;
-        border-width: 1px;
-        z-index: 100;
-    }
-    .name {
-        margin-top: 60px;
-        color:#bbb;
+    .codeHeaderTitle {
+        margin-top: 80px;
         font-size: 30px;
+        color: #444;
     }
-    .content {
-        margin-top: 40px;
-        width:650px;
-        margin-left: 50px;
+    .codeImg {
+        width: 520px;
+        height: 520px;
     }
+    .promptBox {
+        width: 630px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top-width: 1px;
+        border-top-color: #ccc;
+        margin-top: 50px;
+        padding-top: 30px;
+        padding-bottom: 50px;
+    }
+
     .intro {
-        margin-left: 10px;
         width:630px;
-        color:#eee;
+        padding-left: 20px;
+        padding-right: 20px;
+        color:#444;
         margin-top: 20px;
         font-size: 28px;
     }
-    .qrcode {
-        width:480px;
-        height:480px;
-    }
-    .downBox{
-        width: 750px;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-    }
+
     .down{
-        font-size: 32px;
-        color: #fff;
+        font-size: 30px;
+        color: #6495ED;
         text-decoration:underline;
-        margin: 30px;
-    }
-    .dowImage{
-        width: 50px;
-        height: 50px;
-        opacity: 0;
+        margin-left: 30px;
+        margin-right: 30px;
+        margin-bottom: 30px;
     }
 
 </style>
@@ -94,7 +73,7 @@
             navbar
         },
         props: {
-            title: { default: "二维码" }
+            title: { default: "推广码" }
         },
         data () {
             return {
@@ -130,7 +109,7 @@
                 const $image = this.$refs.downImg
                 $image.save(result => {
                     if (result.success) {
-                        event.toast('邀请码已保存至相册')
+                        event.toast('推广码已保存至相册')
                     } else {
                     }
                 })

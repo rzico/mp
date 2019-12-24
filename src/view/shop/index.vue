@@ -31,7 +31,7 @@
                 <div class="wallet-panel">
                     <div class="flex-column" @click="showQrcode">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe675;</text>
-                        <text class="headerBoxText">二维码</text>
+                        <text class="headerBoxText">推广码</text>
                     </div>
                     <div class="flex-column" @click="linkToFill">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
@@ -39,7 +39,7 @@
                     </div>
                     <div class="flex-column" @click="linkToPayment">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe673;</text>
-                        <text class="headerBoxText">去收款</text>
+                        <text class="headerBoxText">收款码</text>
                     </div>
                 </div>
             </div>
@@ -806,7 +806,7 @@
                     _this.clicked = false;
                 }, 1500)
                 if(this.shopData.scanPay && this.shopData.isUpload){
-                    event.openURL(utils.locate("view/shop/payment/index.js"), function (e) {
+                    event.openURL(utils.locate("view/shop/payment/code.js"), function (e) {
 
                     });
                 }else if(!this.shopData.scanPay && this.shopData.isUpload){

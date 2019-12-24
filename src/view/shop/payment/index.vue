@@ -16,9 +16,6 @@
         <div class="transfer_Botton bkg-primary" :style="{opacity:amount==''?0.5:1}" @click="linkToScan">
             <text class="transfer_BottonTitle">点击扫码收款</text>
         </div>
-        <!--<div class="transfer_Botton bkg-primary mt40" :style="{opacity:amount==''?0.5:1}" @click="complete">-->
-            <!--<text class="transfer_BottonTitle">创建收款码</text>-->
-        <!--</div>-->
     </div>
 </template>
 <style lang="less" src="../../../style/wx.less"/>
@@ -143,26 +140,6 @@
             goback: function (e) {
                 event.closeURL();
             },
-            complete() {
-                if (this.clicked || utils.isNull(this.amount)) {
-                    return;
-                }
-                this.clicked = true;
-                let _this = this
-                POST("weex/member/payment/create.jhtml?amount=" + this.amount + "&memo=" + encodeURIComponent(this.memo)).then(function (mes) {
-                    _this.clicked = false;
-                    if (mes.type == "success") {
-                        event.openURL(utils.locate("view/shop/payment/code.js?sn=" + mes.data.sn + "&amount=" + mes.data.amount), function (e) {
-                        });
-                    } else {
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    _this.clicked = false;
-                    event.toast(err.content);
-                });
-
-            },
             linkToScan() {
                 let _this = this
                 if (this.clicked || utils.isNull(this.amount)) {
@@ -177,8 +154,12 @@
                                 if (message.data == '{}') {
                                     return
                                 }
-                                event.openURL(utils.locate("view/shop/payment/code.js?sn=" + mes.data.sn + "&amount=" + mes.data.amount +"&safeKey="+encodeURIComponent(message.data)), function (e) {
-                                });
+                                let closeData = {
+                                    sn:mes.data.sn,
+                                    amount: mes.data.amount,
+                                    safeKey:message.data
+                                }
+                                event.closeURL(utils.message('success','成功',closeData));
                             }
                         });
                     } else {

@@ -2,42 +2,42 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback"></navbar>
         <div class='headerBox bkg-primary' v-if="status == 0">
-            <text class="title">无需添加好友，扫码付款</text>
+            <text class="title">无需添加好友，扫码收款</text>
             <div class="flex-row mt30">
                 <div class="menuBox">
                     <div class="flex-row">
                         <text class="menuIcon" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
-                        <text class="menuIconTwo">省钱</text>
+                        <text class="menuIconTwo">费率</text>
                     </div>
-                    <text class="menuText">帮你省人工</text>
+                    <text class="menuText">低至0.38%</text>
                 </div>
                 <div class="menuBox">
                     <div class="flex-row">
                         <text class="menuIcon" :style="{fontFamily:'iconfont'}">&#xe742;</text>
                         <text class="menuIconTwo">方便</text>
                     </div>
-                    <text class="menuText">扫码能收钱</text>
+                    <text class="menuText">无需现金</text>
                 </div>
                 <div class="menuBoxTwo">
                     <div class="flex-row">
                         <text class="menuIcon" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
-                        <text class="menuIconTwo">免费</text>
+                        <text class="menuIconTwo">安全</text>
                     </div>
-                    <text class="menuText">没有服务费</text>
+                    <text class="menuText">资金直达</text>
                 </div>
             </div>
         </div>
         <div class='statusBox bkg-primary' v-if="status == 1">
-            <text class="statusTitle">审核中...</text>
+            <text class="statusTitle">审核中...</text>3
             <text class="statusSubTitle">您的信息已提交成功，审核妹妹会尽快审核您的信息</text>
         </div>
         <div class="memoBox">
             <div class="flex-row">
                 <text class="fz32 gray">—</text>
-                <text class="memoTitle">什么是扫码收款?</text>
+                <text class="memoTitle">为什么要开通收款码?</text>
                 <text class="fz32 gray">—</text>
             </div>
-            <text class="memoSubTitle">你只需要和大家尽快发健身房多方卡积分开始放开了手懒得说</text>
+            <text class="memoSubTitle">推出无现金业务，免去送货员收款、缴款、对账等繁琐工作，资金直达店主账户，安全零差错。收单手续费低至0.38%，同时支持信用卡及借记卡。</text>
         </div>
         <div class="buttonBox bkg-primary" @click='submit()' v-if="status == 0">
             <text class='buttonBoxText'>立即开通</text>
@@ -102,8 +102,6 @@
         max-width: 550px;
         font-size: 26px;
         color: #777;
-        text-align: center;
-        white-space: pre-line;
     }
     .statusBox{
         width: 750px;
