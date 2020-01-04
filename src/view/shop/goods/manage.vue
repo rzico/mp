@@ -12,8 +12,8 @@
                         <text class="nav_title">{{title}}</text>
                         <div class="navRightBox">
                             <!--<text class="nav_Complete nav_title" v-if="complete != 'textIcon'">{{complete}}</text>-->
-                            <text class="nav_CompleteIcon mr15"  :style="{fontFamily:'iconfont'}" @click="godistribution()">&#xe62d;</text>
-                            <text class="nav_CompleteIcon "  :style="{fontFamily:'iconfont'}" @click="goSearch()">&#xe611;</text>
+                            <text class="nav_CompleteIcon mr15"  :style="{fontFamily:'iconfont'}" @click="goSearch()">&#xe611;</text>
+                            <text class="nav_CompleteIcon "  :style="{fontFamily:'iconfont'}" @click="godistribution()">&#xe62d;</text>
                         </div>
                     </div>
                 </div>

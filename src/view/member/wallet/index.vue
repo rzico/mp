@@ -1,21 +1,28 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" border="false"> </navbar>
-        <scroller class="scroller">
-            <div class='moneyBox'>
-                <div class='moneyBox_box' @click="deposit()">
-                    <text class='moneyBox_box_title primary'>¥ {{wallet.balance | watchBalance}}</text>
-                    <text class='moneyBox_box_subTitle'>余额</text>
-                </div>
-                <div class='moneyBox_box' @click="point()">
-                    <div class="flex-row">
-                        <image class='moneyBox_box_img' src='http://rzico.oss-cn-shenzhen.aliyuncs.com/znzx/image/memberGold.png'></image>
-                        <text class='moneyBox_box_titleTwo'>{{vipData.point}}</text>
+        <div class="bkg-primary"  style="position: relative">
+            <text class="fz40 white ml20">{{vipData.name}}</text>
+            <div style="height: 150px"></div> <!--增高dom-->
+            <div class="transition transitionEEE"></div><!--过渡色-->
+            <div class="payBillBox" >
+                <div class="dayPayBox" @click="deposit">
+                    <text class="dayPay">余额</text>
+                    <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
+                        <text class="dayPayIcon">¥</text>
+                        <text class="dayPayAmount">{{wallet.balance | watchBalance}}</text>
                     </div>
-
-                    <text class='moneyBox_box_subTitle'>金币(佣金)</text>
+                    <text class="dayMes">查看账单</text>
+                </div>
+                <div class="yesPayBox" @click="point()">
+                    <text class="dayPay">金币(佣金)</text>
+                    <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
+                        <text class="dayPayAmount">{{vipData.point}}</text>
+                    </div>
+                    <text class="dayMes">查看明细</text>
                 </div>
             </div>
+        </div>
             <div class="cell-row cell-line">
                 <div class="cell-panel space-between" @click="bindingCard()">
                     <div class="flex-row flex-start">
@@ -79,12 +86,63 @@
                 <!--</div>-->
                 <!--<div class="boder-bottom"></div>-->
             <!--</div>-->
-        </scroller>
     </div>
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .transition{
+        width: 750px;
+        height: 100px;
+    }
+    .payBillBox {
+        width: 710px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background-color: white;
+        border-radius: 20px;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        left: 20px;
+        bottom: 0px;
+    }
+    .dayPayBox{
+        width: 355px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-right-width: 1px;
+        border-right-color: #eeeeee;
+    }
+    .yesPayBox {
+        width: 355px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .dayPay {
+        font-size: 27px;
+        color: #999;
+    }
+
+    .dayPayAmount {
+        font-size: 63px;
+        line-height: 63px;
+    }
+
+    .dayMes{
+        font-size: 26px;
+        color:  #398FEE;
+        margin-top: 15px;
+    }
+
+    .dayPayIcon{
+        font-size: 40px;
+        margin-right: 15px;
+        margin-bottom: 5px;
+    }
     .moneyBox{
         width: 750px;
         height: 180px;

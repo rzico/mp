@@ -2,21 +2,13 @@
     <div style="background-color: #eeeeee">
             <navbar :title="title" :complete="complete" @goback="goback" > </navbar>
     <div class="big">
-        <div class="bankWechat">
-        <div class="bank bd-primary" @click="bankmessage()">
-                <text class="bankIconFont primary" :style="{fontFamily:'iconfont'}" >&#xe64f;</text>
+        <div class="bank bd-primary" @click="linkToUnBind()">
+            <text class="bankIconFont primary" :style="{fontFamily:'iconfont'}" >&#xe64f;</text>
             <div class="bankInformation">
                 <text class="bankName">{{wdata.bankName}}</text>
                 <text class="bankTailnumber">{{wdata.cardNo}}</text>
             </div>
-        </div>
-            <div class="wechat" @click="wechatmessage" >
-                <text class="wechatIconFont" :style="{fontFamily:'iconfont'}" >&#xe659;</text>
-                <div class="wechatInformation">
-                <text class="wechatFont">微信提现</text>
-                    <text class="wechatName">{{wdata.nickName}}</text>
-            </div>
-        </div>
+            <text class="fz32 gray" :style="{fontFamily:'iconfont'}" >&#xe630;</text>
         </div>
         <div class="money">
             <text class="maxQuota">{{message}}</text>
@@ -42,20 +34,12 @@
 <style lang="less" src="../../../style/wx.less"/>
 <style>
 
-    .bankWechat{
-        flex-direction: row;
-        justify-content: space-between;
-    }
     .bank{
         background-color:#ffffff;
         border-style: solid;
         border-top-width:1px;
         border-top-color:#CCC;
         border-bottom-width: 2px;
-        /*border-bottom-color:#D9141E ;*/
-        /*border-right-style: dashed;*/
-        border-right-width: 1px;
-        border-right-color:#CCC;
         height: 120px;
         margin-top: 30px;
         flex-direction: row;
@@ -68,7 +52,7 @@
         margin-top:5px;
     }
     .bankInformation{
-        width:auto;
+        width:570px;
         height:120px;
         border-style: solid;
         flex-direction: column;
@@ -83,7 +67,7 @@
         color:#cccccc;
         lines:1;
         text-overflow: ellipsis;
-        width:200px;
+        width:570px;
     }
     .wechat{
         background-color:#ffffff;
@@ -231,7 +215,31 @@
             this.load();
         },
         methods: {
+            linkToUnBind(){
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500)
+                GET("weex/member/wallet/view.jhtml",function (res) {
+                        if (res.type=='success') {
+                            event.openURL(utils.locate("view/member/bank/unbingBank.js?banknum="+encodeURI(res.data.bankinfo)), function (message) {
+                                if (message.type=='success') {
+                                    _this.load();
+                                }
+                            })
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
 
+            },
             onmoney:function (e){
                 if (e.value=='') {
                     this.quota = 0;

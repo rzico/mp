@@ -235,7 +235,7 @@
             submit(){
                 let _this = this;
                 this.loading = true;
-                POST("payment/submit.jhtml?paymentPluginId=weixinQRPlugin&sn="+this.sn+"&safeKey="+this.safeKey).then(function (mes) {
+                POST("payment/submit.jhtml?paymentPluginId=allinQRPlugin&sn="+this.sn+"&safeKey="+this.safeKey).then(function (mes) {
                     if (mes.type == "success") {
                         _this.loading = false;
                         _this.query()

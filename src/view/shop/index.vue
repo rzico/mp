@@ -4,52 +4,64 @@
             <!--<div class="navBack" @click="goback()">-->
                 <!--<text class="navIco" :style="{fontFamily:'iconfont'}">&#xe669;</text>-->
             <!--</div>-->
-            <text class="nav_title">{{yesterday.shortName}}</text>
-            <div class="navRightBox" @click="scan()">
-                <text class="nav_CompleteIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+            <text class="nav_title">{{today.shortName}}</text>
+            <div class="navRightBox" @click="showPop()">
+                <text class="nav_CompleteIcon" :style="{fontFamily:'iconfont'}">&#xe72b;</text>
             </div>
         </div>
         <scroller show-scrollbar="false" class="scroller" v-if="status == 1">
             <refresh class="refreshBox" @refresh="onrefresh" :display="refreshing ? 'show' : 'hide'">
                 <image resize="cover" class="refreshImg" ref="refreshImg" :src="refreshImg"></image>
             </refresh>
-            <div class="bkg-primary">
-                <div class="payBillBox" @click="linkPaymentBill">
-                    <div class="dayPayBox">
-                        <div class="flex-row">
-                            <text class="dayPay">今日收款(元)</text>
-                            <text class="dayPay ml10" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-
-                        <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
-                            <text class="dayPayAmount">{{today.amount | currencyfmt}}</text>
-                            <text class="dayPayQuantity">共{{today.count}}笔</text>
-                        </div>
-                    </div>
-                    <text class="yesterday">昨日收款: ¥{{yesterday.amount | currencyfmt}}</text>
-                </div>
-                <div class="wallet-panel">
-                    <div class="flex-column" @click="showQrcode">
-                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe675;</text>
-                        <text class="headerBoxText">推广码</text>
-                    </div>
-                    <div class="flex-column" @click="linkToFill">
+            <div class="bkg-primary" style="position: relative">
+                <div class="mainCell">
+                    <div class="mainBox" @click="linkToFill" v-if="version != 4 ">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
                         <text class="headerBoxText">人工报单</text>
                     </div>
-                    <div class="flex-column" @click="linkToPayment">
+                    <div class="mainBox" @click="scan" v-if="version == 4 ">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+                        <text class="headerBoxText">扫一扫</text>
+                    </div>
+                    <div class="mainBox" @click="showQrcode">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe675;</text>
+                        <text class="headerBoxText">推广码</text>
+                    </div>
+                    <div class="mainBox" @click="linkToPayment">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe673;</text>
                         <text class="headerBoxText">收款码</text>
                     </div>
+                    <div class="mainBox" @click="goWallet">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe63e;</text>
+                        <text class="headerBoxText">钱包</text>
+                    </div>
+                </div>
+                <div style="height: 130px"></div> <!--增高dom-->
+                <div class="transition transitionEEE"></div><!--过渡色-->
+                <div class="payBillBox" >
+                    <div class="dayPayBox" @click="linkPaymentBill">
+                        <text class="dayPay">今日收款(元)</text>
+                        <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
+                            <text class="dayPayIcon">¥</text>
+                            <text class="dayPayAmount">{{today.amount | currencyfmt}}</text>
+                        </div>
+                        <text class="dayMes">查看账单</text>
+                    </div>
+                    <div class="yesPayBox" @click="order()">
+                        <text class="dayPay">今日收单(笔)</text>
+                        <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
+                            <text class="dayPayAmount">{{today.count}}</text>
+                        </div>
+                        <text class="dayMes">查看订单</text>
+                    </div>
                 </div>
             </div>
-            <div class="menuBox">
                 <div class="menuCell">
                     <div class="menu" @click="order()" v-if="filter('order')">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe665;</text>
                         <text class="menuName">订单</text>
                     </div>
-                    <div class="menu" @click="goShipping()" v-if="filter('shipping')">
+                    <div class="menu" @click="goShipping()" v-if="filter('shipping') && version != 4">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66e;</text>
                         <text class="menuName">运单</text>
                     </div>
@@ -61,9 +73,10 @@
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66a;</text>
                         <text class="menuName">会员</text>
                     </div>
-
-                </div>
-                <div class="menuCell">
+                    <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
+                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe7fc;</text>
+                        <text class="menuName">优惠券</text>
+                    </div>
                     <div class="menu" @click="linkShop()" v-if="filter('shop')">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66d;</text>
                         <text class="menuName">店铺</text>
@@ -72,16 +85,11 @@
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66c;</text>
                         <text class="menuName">员工</text>
                     </div>
-                    <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
-                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe7fc;</text>
-                        <text class="menuName">优惠券</text>
-                    </div>
                     <div class="menu" @click="deposit()" v-if="filter('money')">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
                         <text class="menuName">统计</text>
                     </div>
                 </div>
-            </div>
 
             <!-- 我的订单 -->
             <div><!-- dom预留节点 -->
@@ -126,7 +134,7 @@
                     </div>
                 </div>
                 <!-- 我的运单 -->
-                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping')">
+                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping') && version != 4 ">
                     <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
                         <text class="fz30">我的运单</text>
                         <div class="flex-row">
@@ -200,6 +208,11 @@
         </div>
         <payment ref="payment" @notify="notify"></payment>
         <qrcode ref="qrcode"></qrcode>
+        <wxc-popover ref="wxc-popover"
+                     :buttons="btns"
+                     :position="popoverPosition"
+                     :arrowPosition="popoverArrowPosition"
+                     @wxcPopoverButtonClicked="popoverButtonClicked"></wxc-popover>
     </div>
 
 </template>
@@ -272,28 +285,53 @@
     }
 
     .payBillBox {
-        padding-left: 60px;
-        padding-right: 60px;
-        flex-direction: column;
+        width: 710px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        background-color: white;
+        border-radius: 20px;
+        flex-direction: row;
+        align-items: center;
+        position: absolute;
+        left: 20px;
+        bottom: 0px;
     }
-
-    .dayPayBox {
+    .dayPayBox{
+        width: 355px;
         flex-direction: column;
-        margin-top: 10px;
+        align-items: center;
+        justify-content: center;
+        border-right-width: 1px;
+        border-right-color: #eeeeee;
+    }
+    .yesPayBox {
+        width: 355px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .dayPay {
         font-size: 27px;
-        color: #ffffff;
+        color: #999;
     }
 
     .dayPayAmount {
-        font-size: 80px;
-        line-height: 80px;
-        font-weight: 600;
-        color: #ffffff;
+        font-size: 63px;
+        line-height: 63px;
     }
 
+    .dayMes{
+        font-size: 26px;
+        color:  #398FEE;
+        margin-top: 15px;
+    }
+
+    .dayPayIcon{
+        font-size: 40px;
+        margin-right: 15px;
+        margin-bottom: 5px;
+    }
     .dayPayQuantity {
         font-size: 32px;
         color: #ffffff;
@@ -308,15 +346,13 @@
         font-weight: 300;
     }
 
-    .menuBox {
-        width: 750px;
-        background-color: #fff;
-        min-height: 180px;
-    }
-
     .menuCell {
+        width: 750px;
+        /*background-color: #fff;*/
+        /*min-height: 180px;*/
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
     }
 
     .menu {
@@ -324,7 +360,7 @@
         align-items: center;
         justify-content: center;
         width: 187px;
-        height: 170px;
+        height: 155px;
     }
 
     .menuIco {
@@ -366,12 +402,12 @@
 
     .headerBoxIcon {
         font-size: 52px;
-        color: white;
+        color: #fff;
     }
 
     .headerBoxText {
         font-size: 28px;
-        color: white;
+        color: #fff;
         margin-top: 10px;
     }
 
@@ -459,16 +495,23 @@
         align-items: center;
     }
 
-    .wallet-panel {
-        padding-left: 60px;
-        padding-right: 60px;
-        padding-top: 30px;
+    .mainCell {
+        width: 750px;
+        padding-top: 20px;
         padding-bottom: 30px;
-        margin-top: 25px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        background-color: rgba(85, 85, 85, 0.1);
+    }
+    .mainBox {
+        width: 187px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .transition{
+        width: 750px;
+        height: 100px;
     }
 
     .balance {
@@ -649,7 +692,7 @@
     import utils from '../../assets/utils'
     import filters from '../../filters/filters.js'
     import {dom, event, animation} from '../../weex.js';
-
+    import { WxcPopover} from 'weex-ui';
     const modal = weex.requireModule('modal');
     const printer = weex.requireModule('print');
     var globalEvent = weex.requireModule('globalEvent');
@@ -682,11 +725,30 @@
                 hasPaused: false,
                 status:0,
                 today:{},
-                yesterday:{},
+                version:1,
+                btns:[
+                    {
+                        icon: 'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/scan.png',
+                        text:'扫一扫',
+                        key:'scan'
+                    },
+                    {
+                        icon: 'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/gonggao.png',
+                        text:'发公告',
+                        key:'ad'
+                    },
+                    {
+                        icon: 'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/setting.png',
+                        text:'设置',
+                        key:'setting'
+                    },
+                ],
+                popoverPosition:{x:-13,y:136},
+                popoverArrowPosition:{pos:'top',x:-17},
             }
         },
         components: {
-            qrcode, payment
+            qrcode, payment,WxcPopover
         },
         props: {
             title: {default: "收银台"}
@@ -697,9 +759,9 @@
         created() {
             var _this = this;
             utils.initIconFont();
+            this.popoverPosition.y = utils.getHeaderHeight();
             this.view();
             this.getToday();
-            this.getyesterday();
             this.permissions();//获取权限存入缓存
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
@@ -724,7 +786,6 @@
                 _this.shopId = "";
                 _this.view();
                 _this.getToday();
-                _this.getyesterday();
             });
             //            监听注销.
             globalEvent.addEventListener("logout", function (e) {
@@ -741,6 +802,19 @@
             });
         },
         methods: {
+            showPop(){
+                this.$refs['wxc-popover'].wxcPopoverShow();
+            },
+            popoverButtonClicked (obj) {
+                var _this = this;
+                if (obj.key == 'scan') {
+                    this.scan()
+                } else if (obj.key == 'ad') {
+                    this.linkToAd()
+                }else if (obj.key == 'setting') {
+                    this.godistribution()
+                }
+            },
             //今日收款
             getToday(){
               let _this = this;
@@ -754,19 +828,6 @@
                   event.toast(err.content);
               })
             },
-            getyesterday(){
-                let _this = this;
-                var yesterday =  utils.decDate(Date.parse(new Date()));
-                GET("weex/member/payment/summary_count.jhtml?beginDate="+utils.ymdtimefmt(yesterday)+"&endDate="+utils.ymdtimefmt(Date.parse(new Date())),function (res) {
-                    if (res.type == 'success') {
-                        _this.yesterday =  res.data;
-                    } else {
-                        event.toast(res.content);
-                    }
-                }, function (err) {
-                    event.toast(err.content);
-                })
-            },
             //            获取权限
             permissions: function () {
                 var _this = this;
@@ -776,6 +837,21 @@
                         storage.setItem('token', roles, e => {
                         })
                         _this.roles = mes.data.roles;
+                        _this.version = mes.data.version;
+                        if(_this.version == 4){
+                            _this.btns = [
+                                {
+                                    icon: 'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/gonggao.png',
+                                    text:'发公告',
+                                    key:'ad'
+                                },
+                                {
+                                    icon: 'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/setting.png',
+                                    text:'设置',
+                                    key:'setting'
+                                },
+                            ]
+                        }
                     } else {
                         event.toast(mes.content);
                     }
@@ -796,6 +872,18 @@
 
                 });
             },
+            // 钱包
+            goWallet() {
+                if (this.clicked) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this;
+                setTimeout(function () {
+                    _this.clicked = false;
+                }, 1500)
+                event.openURL(utils.locate('view/member/wallet/index.js'), function(data) {});
+            },
             linkToPayment(){
                 if (this.clicked) {
                     return;
@@ -805,6 +893,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 }, 1500)
+
                 if(this.shopData.scanPay && this.shopData.isUpload){
                     event.openURL(utils.locate("view/shop/payment/code.js"), function (e) {
 
@@ -1453,6 +1542,44 @@
                         }
                     )
                 }
+            },
+            linkToAd:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                if (!utils.isRoles("12", _this.roles) || utils.isNull(_this.shopId)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.view()
+                    return
+                }
+                event.openURL(utils.locate("view/shop/ad/index.js"),function (e) {});
+            },
+            godistribution:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                let _this = this
+                setTimeout(function () {
+                    _this.clicked = false;
+                },1500)
+                if (!utils.isRoles("1", _this.roles) || utils.isNull(_this.shopId)) {
+                    modal.alert({
+                        message: '暂无权限',
+                        okTitle: 'OK'
+                    })
+                    _this.view()
+                    return
+                }
+                event.openURL(utils.locate("view/shop/goods/distribution.js"),function (e) {});
             },
             goods: function () {
                 if (this.clicked == true) {

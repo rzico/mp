@@ -29,6 +29,17 @@
                         </div>
                     </cell>
                     <cell>
+                        <div class="location" @click="pick">
+                            <div class="left">
+                                <text class="businessLocation">公司类型</text>
+                            </div>
+                            <div class="right">
+                                <text class="generalLocation">{{shopType | watchType}}</text>
+                                <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                            </div>
+                        </div>
+                    </cell>
+                    <cell>
                         <div class="location" @click="location">
                             <div class="left">
                                 <text class="businessLocation">所在地区</text>
@@ -39,6 +50,7 @@
                             </div>
                         </div>
                     </cell>
+
                     <cell>
                         <div class="appellation">
                             <text class="detailedAddress">详细地址</text>
@@ -52,7 +64,7 @@
                         <div class="appellation">
                             <text class="contactName">联系姓名</text>
                             <div style="flex-direction: row;align-items: center">
-                                <input type="text" placeholder="请输入法人姓名" class="input" v-model="contactName" @change=""/>
+                                <input type="text" placeholder="请输入法人姓名" class="input" v-model="contactName"/>
                                 <text class="fontsIcon" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                             </div>
                         </div>
@@ -85,20 +97,76 @@
                     <cell>
                         <div class="facade">
                             <text class="number">①</text>
-                            <text class="facadeText">法人身份证正面照</text>
+                            <text class="facadeText">门头照(经营者手持有效证件合照)</text>
+                        </div>
+                        <div class="iconfontOne">
+                            <div class="image">
+                                <image style="width: 200px;height: 200px;" class="img" :src="logo"></image>
+                            </div>
+                            <div class="iconfont">
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="logoUp">&#xe618;</text>
+                            </div>
+                        </div>
+                    </cell>
+                    <cell>
+                        <div class="facade">
+                            <text class="number">②</text>
+                            <text class="facadeText">店内场景照(含收银台)</text>
+                        </div>
+                        <div class="iconfontOne">
+                            <div class="image">
+                                <image style="width: 200px;height: 200px;" class="img" :src="palcePhoto"></image>
+                            </div>
+                            <div class="iconfont">
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palceUp">&#xe618;</text>
+                            </div>
+                        </div>
+                    </cell>
+                    <cell>
+                        <div class="license">
+                            <text class="number">③</text>
+                            <text class="licenseText">营业执照</text>
+                        </div>
+                        <div class="iconfontTwo">
+                            <div class="image">
+                                <image style="width: 200px;height: 200px;" class="img" :src="licensePhoto"></image>
+                            </div>
+                            <div class="iconfont">
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenseUp">&#xe618;</text>
+                            </div>
+                        </div>
+                    </cell>
+                    <cell>
+                        <div class="place">
+                            <text class="number">④</text>
+                            <text class="placeText">{{shopType == 'enterprise'?'开户许可证':'银行卡正面照'}}</text>
+                        </div>
+                        <div class="iconfontTwo">
+                            <div class="image">
+                                <image style="width: 200px;height: 200px;" class="img" :src="bankinfoPhoto"></image>
+                            </div>
+                            <div class="iconfont">
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="bankUp">&#xe618;</text>
+                            </div>
+                        </div>
+                    </cell>
+                    <cell>
+                        <div class="facade">
+                            <text class="number">⑤</text>
+                            <text class="facadeText">法人手持身份证正面照</text>
                         </div>
                         <div class="iconfontOne">
                             <div class="image">
                                 <image style="width: 200px;height: 200px;" class="img" :src="idCardFront"></image>
                             </div>
                             <div class="iconfont">
-                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="facelogo">&#xe618;</text>
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="cardFrontUp">&#xe618;</text>
                             </div>
                         </div>
                     </cell>
                     <cell>
                         <div class="place">
-                            <text class="number">②</text>
+                            <text class="number">⑥</text>
                             <text class="placeText">法人身份证反面照</text>
                         </div>
                         <div class="iconfontTwo">
@@ -106,35 +174,35 @@
                                 <image style="width: 200px;height: 200px;" class="img" :src="idCardBack"></image>
                             </div>
                             <div class="iconfont">
-                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="palcelogo">&#xe618;</text>
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="cardBackUp">&#xe618;</text>
                             </div>
                         </div>
                     </cell>
                     <cell>
-                        <div class="license">
-                            <text class="number">③</text>
-                            <text class="licenseText">拍摄营业执照</text>
+                        <div class="place">
+                            <text class="number">⑦</text>
+                            <text class="placeText">推广员门头合影</text>
                         </div>
                         <div class="iconfontTwo">
                             <div class="image">
-                                <image style="width: 200px;height: 200px;" class="img" :src="licensePhoto"></image>
+                                <image style="width: 200px;height: 200px;" class="img" :src="promoterPhoto"></image>
                             </div>
                             <div class="iconfont">
-                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="licenselogo">&#xe618;</text>
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="promoterUp">&#xe618;</text>
                             </div>
                         </div>
                     </cell>
                     <cell>
                         <div class="license">
-                            <text class="number">④</text>
-                            <text class="licenseText">食品经营许可证</text>
+                            <text class="number">⑧</text>
+                            <text class="licenseText">其他辅助材料(选填)</text>
                         </div>
                         <div class="iconfontThree">
                             <div class="image">
-                                <image style="width: 200px;height: 200px;" class="img" :src="food"></image>
+                                <image style="width: 200px;height: 200px;" class="img" :src="otherPhoto"></image>
                             </div>
                             <div class="iconfont">
-                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="uploadFood">&#xe618;</text>
+                                <text class="plusSign" :style="{fontFamily:'iconfont'}" @click="otherUp">&#xe618;</text>
                             </div>
                         </div>
                     </cell>
@@ -399,7 +467,8 @@
     import utils from '../../../assets/utils';
     import {POST, GET} from '../../../assets/fetch'
     import {WxcTabPage, BindEnv} from 'weex-ui';
-
+    const modal = weex.requireModule('modal');
+    const picker = weex.requireModule('picker');
     export default {
         data: function () {
             return {
@@ -419,6 +488,9 @@
                 palcePhoto: '',
 //              门面照
                 logo: '',
+                bankinfoPhoto:'',
+                promoterPhoto:'',
+                otherPhoto:'',
 //              区位id
                 areaId: '',
 //              =========================================
@@ -434,6 +506,8 @@
                 idCardFront: '',
                 idCardBack: '',
                 food: '',
+                shopType:'enterprise',
+                shopIndex:0,
                 list: [0,1],//该变量几个页面就要有几个值，否者setPage失效
                 tabStyles: {
                     bgColor: '#ffffff',// 标签背景色
@@ -466,12 +540,73 @@
             title: {default: "上传资料"},
 
         },
+        filters:{
+            watchType(val){
+                if(val == 'enterprise'){
+                    return '企业'
+                }else if(val == 'individual'){
+                    return '个体户'
+                }else {
+                    return '个人'
+                }
+            }
+        },
         created() {
             utils.initIconFont();
             this.headerHeight = utils.getHeaderHeight();
             this.listHeight = utils.fullScreen(this.headerHeight);
+            this.modification()
         },
         methods: {
+            modification:function () {
+                var _this = this;
+                GET('weex/member/shop/info.jhtml',function (mes) {
+                    if (mes.type == 'success'&& mes.data !=null) {
+                        _this.shopId = mes.data.id;
+                        _this.addressName = mes.data.areaName;
+                        _this.licensePhoto = mes.data.license;
+                        _this.logo = mes.data.thedoor;
+                        _this.areaId = mes.data.areaId;
+                        _this.palcePhoto = mes.data.scene;
+                        _this.vendorName = mes.data.name;
+                        _this.detailedAddress = mes.data.address;
+                        _this.contactName = mes.data.linkman;
+                        _this.contactNumber = mes.data.telephone;
+                        _this.category = mes.data.categoryId;
+                        _this.industryName = mes.data.categoryName;
+                        _this.idCardFront = mes.data.idCardFront;
+                        _this.idCardBack = mes.data.idCardBack;
+                        _this.bankinfoPhoto = mes.data.bankinfoPhoto;
+                        _this.promoterPhoto = mes.data.promoterPhoto;
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
+            pick () {
+                var _this = this;
+                picker.pick({
+                    index:_this.shopIndex,
+                    items:['企业','个体户','个人']
+                }, e => {
+                    if (e.result == 'success') {
+                        if (e.data == 0) {
+                            _this.shopType = 'enterprise';
+                            _this.shopIndex = e.data
+
+                        } else if (e.data == 1) {
+                            _this.shopType = 'individual';
+                            _this.shopIndex = e.data
+                        }
+                        else {
+                            _this.shopType = 'personal';
+                            _this.shopIndex = e.data
+                        }
+                    }
+                })
+            },
             wxcTabPageCurrentTabSelected(e) {
                 this.pageIndex = e.page;
             },
@@ -503,8 +638,48 @@
                     }
                 })
             },
+            logoUp(){
+                var _this = this;
+                var options = {
+                    isCrop: true,
+                    width: 1,
+                    height: 1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options, function (mes) {
+                        if (mes.type == 'success') {
+                            event.upload(mes.data.originalPath, function (data) {
+                                _this.logo = data.data
+                            }, function () {
+
+                            });
+
+                        }
+                    })
+            },
+            palceUp(){
+                var _this = this;
+                var options = {
+                    isCrop: true,
+                    width: 1,
+                    height: 1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options, function (mes) {
+                        if (mes.type == 'success') {
+                            event.upload(mes.data.originalPath, function (data) {
+                                _this.palcePhoto = data.data
+                            }, function () {
+
+                            });
+
+                        }
+                    })
+            },
             //          拍摄照片上传
-            facelogo: function () {
+            cardFrontUp: function () {
                 var _this = this;
                 var options = {
                     isCrop: true,
@@ -524,7 +699,7 @@
                         }
                     })
             },
-            palcelogo: function () {
+            cardBackUp: function () {
                 var _this = this;
                 var options = {
                     isCrop: true,
@@ -543,7 +718,7 @@
                         }
                     })
             },
-            licenselogo: function () {
+            bankUp(){
                 var _this = this;
                 var options = {
                     isCrop: true,
@@ -555,11 +730,64 @@
                     options, function (mes) {
                         if (mes.type == 'success') {
                             event.upload(mes.data.originalPath, function (data) {
-                                _this.originalthree = data.data
+                                _this.bankinfoPhoto = data.data
                             }, function () {
-
                             });
-                            _this.licensePhoto = mes.data.thumbnailSmallPath;
+
+                        }
+                    })
+            },
+            promoterUp(){
+                var _this = this;
+                var options = {
+                    isCrop: true,
+                    width: 1,
+                    height: 1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options, function (mes) {
+                        if (mes.type == 'success') {
+                            event.upload(mes.data.originalPath, function (data) {
+                                _this.promoterPhoto = data.data
+                            }, function () {
+                            });
+                        }
+                    })
+            },
+            otherUp(){
+                var _this = this;
+                var options = {
+                    isCrop: true,
+                    width: 1,
+                    height: 1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options, function (mes) {
+                        if (mes.type == 'success') {
+                            event.upload(mes.data.originalPath, function (data) {
+                                _this.otherPhoto = data.data
+                            }, function () {
+                            });
+                        }
+                    })
+            },
+            licenseUp: function () {
+                var _this = this;
+                var options = {
+                    isCrop: true,
+                    width: 1,
+                    height: 1
+                };
+                album.openAlbumSingle(
+                    //选完图片后触发回调函数
+                    options, function (mes) {
+                        if (mes.type == 'success') {
+                            event.upload(mes.data.originalPath, function (data) {
+                                _this.licensePhoto = data.data
+                            }, function () {
+                            });
                         }
                     })
             },
@@ -626,24 +854,39 @@
                 }
                 this.clicked = true;
                 var _this = this;
-                if (utils.isNull(_this.idCardFront)) {
+                if (utils.isNull(_this.logo)) {
+                    event.toast('门头照未选择');
+                    _this.clicked = false
+                    return
+                }else if (utils.isNull(_this.palcePhoto)) {
+                    event.toast('店内场景照未选择');
+                    _this.clicked = false
+                    return
+                }else if (utils.isNull(_this.licensePhoto)) {
+                    event.toast('营业执照未选择');
+                    _this.clicked = false
+                    return
+                }else if (utils.isNull(_this.idCardFront)) {
                     event.toast('法人身份证正面照未选择');
                     _this.clicked = false
                     return
-                }
-                if (utils.isNull(_this.idCardBack)) {
+                }else if (utils.isNull(_this.idCardBack)) {
                     event.toast('法人身份证反面照未选择');
                     _this.clicked = false
                     return
-                }
-                if (_this.licensePhoto == '') {
-                    event.toast('营业执照未选择');
+                }else  if (utils.isNull(_this.bankinfoPhoto)) {
+                    event.toast(_this.shopType == 'enterprise'?'开户许可证未选择':'银行卡正面照未选择');
+                    _this.clicked = false
+                    return
+                }else  if (utils.isNull(_this.promoterPhoto)) {
+                    event.toast('推广员门头合影未选择');
                     _this.clicked = false
                     return
                 }
                 POST('weex/member/shop/upload.jhtml?name=' + encodeURI(this.vendorName) + '&areaId=' + this.areaId + '&address=' + encodeURI(this.detailedAddress) + '&license=' + this.licensePhoto +
                     '&scene=' + this.palcePhoto+ '&idCardFront='+encodeURIComponent(this.idCardFront) + '&idCardBack='+encodeURIComponent(this.idCardBack)+ '&food=' + encodeURIComponent(this.food)+
-                    '&thedoor=' + this.logo + '&linkman=' + encodeURI(this.contactName) + '&telephone=' + this.contactNumber + '&categoryId=' + this.category + "&lng=" + _this.lng + "&lat=" + _this.lat).then(
+                    '&thedoor=' + this.logo + '&linkman=' + encodeURI(this.contactName) + '&telephone=' + this.contactNumber + '&categoryId=' + this.category + "&lng=" + _this.lng + "&lat=" + _this.lat+
+                '&bankinfoPhoto='+_this.bankinfoPhoto +'&promoterPhoto='+_this.promoterPhoto+'&otherPhoto='+_this.otherPhoto +'&shopType='+_this.shopType).then(
                     function (mes) {
                         _this.clicked = false
                         if (mes.type == "success") {
