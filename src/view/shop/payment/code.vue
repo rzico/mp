@@ -203,7 +203,7 @@
             }
         },
         props: {
-            title: {default: "扫码收款"}
+            title: {default: "收款码"}
         },
         components: {
             navbar,WxcLoading,WxcPartLoading
@@ -222,9 +222,9 @@
             },
             loadCode:function () {
                 var _this = this;
-                GET("weex/member/card/qrcode.jhtml",function (res) {
+                GET("weex/member/payment/qrcode.jhtml",function (res) {
                     if (res.type=='success') {
-                        _this.qrcode = utils.website("/q/show.jhtml?url="+encodeURI(res.data.qrcode));
+                        _this.qrcode = utils.website("/q/show.jhtml?url="+encodeURIComponent(res.data.qrcode));
                     } else {
                         event.toast(res.content);
                     }

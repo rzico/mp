@@ -11,7 +11,7 @@
             <text class="fz32 gray" :style="{fontFamily:'iconfont'}" >&#xe630;</text>
         </div>
         <div class="money">
-            <text class="maxQuota">{{message}}</text>
+            <text class="maxQuota">提现比例为1:100</text>
             <div class="fontInput">
                 <text class="iconFont" :style="{fontFamily:'iconfont'}" >&#xe69f;</text>
                 <input class="input" type="number" placeholder="" maxlength="7" :autofocus="true" value="" @input="onmoney"  />
@@ -200,7 +200,7 @@
             navbar
         },
         props: {
-            title: { default: "余额提现" },
+            title: { default: "佣金提现" },
         },
         computed:{
             creditedAmount:function(){
@@ -246,43 +246,15 @@
                 },1000)
                 _this.hide= 'visible'
             },
-            bankmessage: function () {
-                var self = this
-                self.message = '单笔最大限额 5万元'
-                this.wechatstyle=1
-                this.wechatcolor='#ccc'
-                this.bankWithdrawals ='bankcard'
-            },
-            wechatmessage: function (event) {
-                var self = this
-//                self.message = '单笔最大限度 1万元'
-//                this.wechatstyle=2
-//                this.wechatcolor='#D9141E'
-//                this.bankstyle=1
-//                this.bankcolor='#ccc'
-//                this.bankWithdrawals ='weixin'
-//                console.log('will show alert')
-                modal.alert({
-                    message: '微信提现功能尚未开通，敬请谅解',
-                    okTitle: '知道了'
-                })
-                this.bankmessage()
-            },
             withdrawals:function () {
                 var _this = this;
                 if (this.clicked==true) {
                     return;
                 }
                 this.clicked = true;
-                POST('weex/member/transfer/submit.jhtml?type='+ this.bankWithdrawals +'&amount=' +this.quota).then(
+                POST('weex/member/point/transfer.jhtml?amount=' +this.quota).then(
                     function (data) {
                         if (data.type == "success") {
-                            event.sendGlobalEvent('onUserInfoChange',data);
-//                            modal.alert({
-//                                message: '提交成功，请注意到账情况',
-//                                okTitle: '知道了'
-//                            }, function (value) {
-//                            })
                             event.toast('提交成功，请注意到账情况');
                             event.closeURL(data);
                         } else {
@@ -300,7 +272,7 @@
                 if (this.quota==0) {
                     _this.service = 0;
                 } else {
-                    POST('weex/member/transfer/calculate.jhtml?amount=' +this.quota ).then(
+                    POST('weex/member/point/calculate.jhtml?amount=' +this.quota ).then(
                         function (data) {
                             if (data.type == "success") {
                                 if(!utils.isNull(data.data)){

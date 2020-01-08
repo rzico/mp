@@ -182,7 +182,7 @@
     import navbar from '../../../include/navbar.vue'
     import noData from '../../../include/noData.vue'
     import filters from '../../../filters/filters.js'
-
+    const modal = weex.requireModule('modal');
     export default {
         data:function(){
             return{
@@ -238,7 +238,7 @@
                 let res = utils.resolvetimefmt(e);
                 let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
                 let m = tds.m - res.m;
-                let y = tds.y - tds.y;
+                let y = tds.y - res.y;
                 if (y<1 && m<1) {
 //                    本月
                     return true

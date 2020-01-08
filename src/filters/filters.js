@@ -152,7 +152,7 @@ Vue.filter('monthfmt', function (value) {
     let tds = utils.resolvetimefmt(Math.round(new Date().getTime()));
 
     let m = tds.m - res.m;
-    let y = tds.y - tds.y;
+    let y = tds.y - res.y;
     if (y<1 && m<1) {
         return "本月"
     }

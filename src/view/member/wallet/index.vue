@@ -38,7 +38,17 @@
                 <div class="cell-panel space-between" @click="cashCard()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe626;</text>
-                        <text class="title ml10">提现到银行卡</text>
+                        <text class="title ml10">余额提现</text>
+                    </div>
+                    <div class="flex-row flex-end">
+                        <text class="sub_title"></text>
+                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="cell-panel space-between" @click="cashPoint()">
+                    <div class="flex-row flex-start">
+                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe681;</text>
+                        <text class="title ml10">佣金提现</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>
@@ -297,6 +307,32 @@
                     event.openURL(utils.locate('view/member/wallet/transfer.js'), function (message) {
                                 _this.load();
                         })
+                }
+            },
+            cashPoint:function () {
+                if (this.clicked==true) {
+                    return;
+                }
+                this.clicked = true;
+                var _this = this;
+                if (this.wallet.binded==false) {
+                    _this.clicked = false
+                    event.openURL(utils.locate('view/shop/bank/bind.js'), function (message) {
+                        _this.clicked = false
+                        if (message.type=='success') {
+                            _this.wallet.binded = true;
+                            _this.wallet.bankinfo = "已绑定";
+                            event.openURL(utils.locate('view/member/wallet/pointTransfer.js'), function () {
+                                _this.clicked = false
+                                _this.openPoint();
+                            })
+                        }
+                    })
+                }  else {
+                    _this.clicked = false
+                    event.openURL(utils.locate('view/member/wallet/pointTransfer.js'), function (message) {
+                        _this.openPoint();
+                    })
                 }
             },
             bindingCard:function () {

@@ -1,31 +1,65 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback" > </navbar>
-        <scroller class="scroller">
+        <div class="bkg-primary" style="position: relative">
+            <text class="fz40 white ml30">{{today.shortName}}</text>
+            <div style="height: 200px"></div> <!--增高dom-->
+            <div class="transition transitionEEE"></div><!--过渡色-->
+            <div class="todayBox" @click="day_report()">
+                <div class="todayHeaderBox">
+                    <div class="flex-row">
+                        <text class="fz40 primary" :style="{fontFamily:'iconfont'}">&#xe66d;</text>
+                        <text class="ml10 fz35">营业日报</text>
+                    </div>
+                    <div class="flex-row">
+                        <text class="fz28 gray">详情</text>
+                        <text class="fz28 gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                    </div>
+                </div>
+                <div class="todayContentBox">
+                    <div class="todayContent">
+                        <text class="fz32">今日销售</text>
+                        <div class="flex-end mt10">
+                            <text class="fz28" style="margin-top: 5px">¥</text>
+                            <text class="fz40">{{today.saleAmount | currencyfmt}}</text>
+                        </div>
+                    </div>
+                    <div class="todayContent">
+                        <text class="fz32">今日订单</text>
+                        <div class="flex-end mt10">
+                            <text class="fz40">{{today.count}}</text>
+                            <text class="fz28"  style="margin-top: 3px">笔</text>
+                        </div>
+                    </div>
+                    <div class="todayContent">
+                        <text class="fz32">今日收款</text>
+                        <div class="flex-end mt10">
+                            <text class="fz28"  style="margin-top: 5px">¥</text>
+                            <text class="fz40">{{today.amount | currencyfmt}}</text>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
             <div class="menubox">
                 <div class="menu" @click="order_report()" >
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe684;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe695;</text>
                     <text class="menuBtn">订单统计</text>
                 </div>
                 <div class="menu" @click="payment_report()" >
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6b1;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6d6;</text>
                     <text class="menuBtn">收款统计</text>
                 </div>
                 <div class="menu" @click="contacts_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe690;</text>
                     <text class="menuBtn">配送结算</text>
                 </div>
                 <div class="menu" @click="sendSingle_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe63b;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe68f;</text>
                     <text class="menuBtn">派单结算</text>
                 </div>
-                <div class="menu" @click="day_report()">
-                    <text class="ico_big" style="color: #89BE1F" :style="{fontFamily:'iconfont'}">&#xe66d;</text>
-                    <text class="menuBtn">营业日报</text>
-                </div>
-
                 <div class="menu" @click="barrel_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe691;</text>
                     <text class="menuBtn">空桶结算</text>
                 </div>
                 <!--<div class="menu" @click="money_report()">-->
@@ -33,191 +67,63 @@
                     <!--<text class="menuBtn">收银统计</text>-->
                 <!--</div>-->
                 <div class="menu" @click="arrears_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe693;</text>
                     <text class="menuBtn">欠款统计</text>
                 </div>
                 <div class="menu" @click="refund_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xea20;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe69a;</text>
                     <text class="menuBtn">退货统计</text>
                 </div>
                 <div class="menu" @click="shipping_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe66e;</text>
+                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe69b;</text>
                     <text class="menuBtn">送货统计</text>
                 </div>
-
             </div>
-        </scroller>
     </div>
 
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
-
-    .sub_title {
-        color:#ccc;
-        font-size: 30px;
-    }
-
-    .wallet-title {
-        width: 620px;
-        margin-top: 10px;
-        font-size: 32px;
-        color: #fff;
-        margin-left:40px;
-        justify-content: space-between;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .wallet-panel {
-        padding-top: 44px;
-        height:310px;
-        flex-direction: column;
-        align-items:flex-start;
-    }
-
-    .balance {
-        margin-top: 30px;
-        font-size: 120px;
-        color: #fff;
-        margin-left:40px;
-    }
-    .exit {
-        position: absolute;
-        right:0px;
-        top:44px;
-        color: #fff;
-        font-size:48px;
-        width: 80px;
-        height: 80px;
-        line-height: 80px;
-    }
-    .fontInput{
-        border-style: solid;
-        border-width:1px;
-        border-color:#CCC;
-        border-radius: 5px;
-        padding-left: 20px;
-        margin-top: 30px;
-        margin-left: 30px;
-        margin-right: 30px;
-        margin-bottom: 10px;
-        flex-direction: row;
-        align-items:center;
-        height: 120px;
-    }
-    .iconFont{
-        margin-top: 10px;
-        font-size: 80px;
-    }
-    .input{
-        margin-left:10px;
-        width: 500px;
+    .transition{
+        width: 750px;
         height: 100px;
-        font-size:50px;
     }
-
-    .buttombox {
-        margin-top: 10px;
-        margin-left: 30px;
-        margin-right: 30px;
-        flex-direction: row;
+    .todayBox{
         width: 690px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 15px;
+        background-color: #ffffff;
+        position: absolute;
+        bottom: 0;
+        left: 30px;
     }
-
-    .btn {
-        margin-left: 20px;
-        margin-right: 20px;
-        margin-top: 10px;
+    .todayHeaderBox{
+        width: 650px;
+        height: 90px;
+        border-bottom-width: 1px;
+        border-bottom-color: #ccc;
         flex-direction: row;
         align-items: center;
-        padding-top: 0px;
-        height: 80px;
-        flex:1;
-        padding-left: 40px;
-        border-radius:12px;
-        border-width: 1px;
-        border-color:#ccc;
-        background-color: #eee;
+        justify-content: space-between;
     }
-    .btn-text {
-        margin-left: 10px;
-        font-size: 32px;
-        color:#666;
+    .todayContentBox{
+        width: 650px;
+        margin-top: 40px;
+        flex-direction: row;
+        align-items: center;
+    }
+    .todayContent{
+        width: 216px;
+        height: 150px;
+        flex-direction: column;
+        align-items: center;
     }
 
     .menuBtn {
         margin-top: 10px;
         font-size: 32px;
         color:#666;
-    }
-
-    .btn:active {
-        background-color:#ccc;
-    }
-    .weixin {
-        color:limegreen;
-        margin-top: 4px;
-    }
-    .alipay {
-        color:#0088fb;
-        margin-top: 4px;
-    }
-    .card {
-        color:red;
-        margin-top: 3px;
-    }
-    .wallet {
-        margin-top: 4px;
-    }
-    .cash {
-        color:#F0AD3C;
-        margin-top: 3px;
-    }
-    .bank {
-        margin-top: 4px;
-        color:tomato;
-    }
-
-    .content {
-        margin-left: 30px;
-        margin-top: 50px;
-    }
-    .waiting {
-        position:fixed;
-        flex-direction: column;
-        left: 125px;
-        top: 420px;
-        width: 500px;
-        background-color: navajowhite;
-        border: 1px;
-        border-color: #eee;
-        border-radius:10px;
-        padding-bottom: 35px;
-        padding-top: 20px;
-        justify-content: center;
-        align-items: center;
-        height:300px;
-    }
-    .paymenting {
-        justify-content: center;
-        font-size: 32px;
-        margin-top: 10px;
-    }
-
-    .close {
-        position:absolute;
-        width:60px;
-        height: 60px;
-        right: 0px;
-        top : 10px;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .close_button {
-        font-size: 48px;
-        color:#ccc
     }
 
     .menubox {
@@ -227,10 +133,8 @@
         width:690px;
         margin-left: 30px;
         border:1px;
-        border-top-left-radius: 10px;
-        border-top-right-radius:10px;
+        border-radius: 10px;
         background-color: #fff;
-        min-height: 900px;
     }
 
     .menu {
@@ -259,7 +163,6 @@
                 id:0,
                 sn:"",
                 step:"",
-                cashier:{today:0,yesterday:0,shopId:""},
                 shopId:"",
                 amount:"",
                 timer:null,
@@ -268,7 +171,8 @@
                 isSubmit:false,
                 plugId:"",
                 refreshImg:utils.locate('resources/images/loading.png'),
-                clicked:false
+                clicked:false,
+                today:{}
             }
         },
         components: {
@@ -280,11 +184,24 @@
         created() {
             var _this = this;
             utils.initIconFont();
+            this.getToday()
             utils.getToken(function (mes) {
                 _this.roles = mes.roles;
             });//获取权限
         },
         methods: {
+            getToday(){
+                let _this = this;
+                GET("weex/member/report/summary_view.jhtml?beginDate="+utils.ymdtimefmt(Date.parse(new Date()))+"&endDate="+utils.ymdtimefmt(Date.parse(new Date())),function (res) {
+                    if (res.type == 'success') {
+                        _this.today =  res.data;
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content);
+                })
+            },
             order_report:function () {
                 if (this.clicked==true) {
                     return;

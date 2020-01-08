@@ -17,7 +17,7 @@
                 <div class="mainCell">
                     <div class="mainBox" @click="linkToFill" v-if="version != 4 ">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
-                        <text class="headerBoxText">人工报单</text>
+                        <text class="headerBoxText">报单</text>
                     </div>
                     <div class="mainBox" @click="scan" v-if="version == 4 ">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
@@ -32,7 +32,7 @@
                         <text class="headerBoxText">收款码</text>
                     </div>
                     <div class="mainBox" @click="goWallet">
-                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe63e;</text>
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe683;</text>
                         <text class="headerBoxText">钱包</text>
                     </div>
                 </div>
@@ -319,6 +319,7 @@
     .dayPayAmount {
         font-size: 63px;
         line-height: 63px;
+        color: #333;
     }
 
     .dayMes{
