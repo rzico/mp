@@ -43,39 +43,39 @@
         </div>
             <div class="menubox">
                 <div class="menu" @click="order_report()" >
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe695;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe695;</text>
                     <text class="menuBtn">订单统计</text>
                 </div>
                 <div class="menu" @click="payment_report()" >
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe6d6;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe6d6;</text>
                     <text class="menuBtn">收款统计</text>
                 </div>
                 <div class="menu" @click="contacts_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe690;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe690;</text>
                     <text class="menuBtn">配送结算</text>
                 </div>
                 <div class="menu" @click="sendSingle_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe68f;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe68f;</text>
                     <text class="menuBtn">派单结算</text>
                 </div>
                 <div class="menu" @click="barrel_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe691;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe691;</text>
                     <text class="menuBtn">空桶结算</text>
                 </div>
                 <!--<div class="menu" @click="money_report()">-->
-                    <!--<text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe67a;</text>-->
+                    <!--<text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe67a;</text>-->
                     <!--<text class="menuBtn">收银统计</text>-->
                 <!--</div>-->
                 <div class="menu" @click="arrears_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe693;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe693;</text>
                     <text class="menuBtn">欠款统计</text>
                 </div>
                 <div class="menu" @click="refund_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe69a;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe69a;</text>
                     <text class="menuBtn">退货统计</text>
                 </div>
                 <div class="menu" @click="shipping_report()">
-                    <text class="ico_big" :style="{fontFamily:'iconfont'}">&#xe69b;</text>
+                    <text class="menuIco" :style="{fontFamily:'iconfont'}">&#xe69b;</text>
                     <text class="menuBtn">送货统计</text>
                 </div>
             </div>
@@ -118,6 +118,11 @@
         height: 150px;
         flex-direction: column;
         align-items: center;
+    }
+
+    .menuIco {
+        font-size: 52px;
+        color: #333;
     }
 
     .menuBtn {

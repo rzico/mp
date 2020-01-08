@@ -23,7 +23,7 @@
                 <div class="contentCell" >
                     <text class="shopName">{{c.empName}}</text>
                     <text class="number">{{c.quantity}}</text>
-                    <text class="number">{{c.amount}}</text>
+                    <text class="number">{{c.amount | currencyfmt}}</text>
                     <text class="returnMoney">{{c.star}}%</text>
                 </div>
             </cell>
@@ -40,7 +40,7 @@
         <div class="bottomTotal"  v-if="reportList != null">
             <text class="shopName">合计</text>
             <text class="number">{{total}}</text>
-            <text class="number">{{money}}</text>
+            <text class="number">{{money | currencyfmt}}</text>
             <text class="returnMoney"></text>
         </div>
     </div>

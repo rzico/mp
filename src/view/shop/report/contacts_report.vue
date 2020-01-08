@@ -21,13 +21,13 @@
                 <div class="contentCell" >
                     <text class="shopName">{{c.name}}</text>
                     <text class="number">{{c.quantity}}</text>
-                    <text class="money">¥{{c.cost}}</text>
+                    <text class="money">¥{{c.cost | currencyfmt}}</text>
                 </div>
                 <div class="totalBox"  v-if="isTotal(index)" @click="linkToDetail(c.sellerId)">
                     <div class="totalCell">
                         <text class="shopName">合计:</text>
                         <text class="number">{{c.subQuantity}}</text>
-                        <text class="money">¥{{c.subTotal}}</text>
+                        <text class="money">¥{{c.subTotal | currencyfmt}}</text>
                     </div>
                     <div class="totalCellTwo">
                         <text class="fz32">配送费用: ¥{{c.shippingFreight}}</text>

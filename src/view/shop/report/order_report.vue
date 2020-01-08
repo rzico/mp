@@ -20,7 +20,7 @@
                 <div class="contentCell" >
                     <text class="shopName">{{c.name}}</text>
                     <text class="number">{{c.quantity}}</text>
-                    <text class="money">¥{{c.amount}}</text>
+                    <text class="money">¥{{c.amount | currencyfmt}}</text>
                 </div>
             </cell>
             <loading @loading="onloading" :display="loadinging ? 'show' : 'hide'"></loading>

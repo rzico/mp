@@ -19,7 +19,7 @@
             <cell v-for="(c,index) in summarylist" ref="adoptPull" >
                 <div class="contentCell" >
                     <text class="number">{{c.typeName}}</text>
-                    <text class="shopName">¥{{c.amount}}</text>
+                    <text class="shopName">¥{{c.amount | currencyfmt}}</text>
                     <text class="returnMoney">¥{{c.refund}}</text>
                 </div>
             </cell>
@@ -35,7 +35,7 @@
 
         <div class="bottomTotal"  v-if="summarylist != null">
             <text class="number">合计</text>
-            <text class="shopName">¥{{total}}</text>
+            <text class="shopName">¥{{total | currencyfmt}}</text>
             <text class="returnMoney">¥{{refund}}</text>
         </div>
     </div>
