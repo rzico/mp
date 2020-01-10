@@ -27,11 +27,11 @@
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe673;</text>
                         <text class="headerBoxText">收款码</text>
                     </div>
-                    <div class="mainBox" @click="linkToFill" v-if="version == 2 ">
+                    <div class="mainBox" @click="linkToFill" v-if="version == 1 ">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
                         <text class="headerBoxText">报单</text>
                     </div>
-                    <div class="mainBox" @click="scan" v-if="version != 2 ">
+                    <div class="mainBox" @click="scan" v-if="version != 1 ">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
                         <text class="headerBoxText">扫一扫</text>
                     </div>
@@ -61,7 +61,7 @@
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe665;</text>
                         <text class="menuName">订单</text>
                     </div>
-                    <div class="menu" @click="goShipping()" v-if="filter('shipping') && version == 2">
+                    <div class="menu" @click="goShipping()" v-if="filter('shipping') && version == 1">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66e;</text>
                         <text class="menuName">运单</text>
                     </div>
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <!-- 我的运单 -->
-                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping') && version == 2 ">
+                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping') && version == 1 ">
                     <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
                         <text class="fz30">我的运单</text>
                         <div class="flex-row">
@@ -841,7 +841,7 @@
                         })
                         _this.roles = mes.data.roles;
                         _this.version = mes.data.version;
-                        if(_this.version != 2){
+                        if(_this.version != 1){
                             _this.btns = [
                                 {
                                     icon: 'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/gonggao.png',
