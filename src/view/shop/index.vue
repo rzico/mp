@@ -15,13 +15,9 @@
             </refresh>
             <div class="bkg-primary" style="position: relative">
                 <div class="mainCell">
-                    <div class="mainBox" @click="linkToFill" v-if="version != 4 ">
-                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
-                        <text class="headerBoxText">报单</text>
-                    </div>
-                    <div class="mainBox" @click="scan" v-if="version == 4 ">
-                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
-                        <text class="headerBoxText">扫一扫</text>
+                    <div class="mainBox" @click="goWallet">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe683;</text>
+                        <text class="headerBoxText">钱包</text>
                     </div>
                     <div class="mainBox" @click="showQrcode">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe675;</text>
@@ -31,9 +27,13 @@
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe673;</text>
                         <text class="headerBoxText">收款码</text>
                     </div>
-                    <div class="mainBox" @click="goWallet">
-                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe683;</text>
-                        <text class="headerBoxText">钱包</text>
+                    <div class="mainBox" @click="linkToFill" v-if="version == 2 ">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
+                        <text class="headerBoxText">报单</text>
+                    </div>
+                    <div class="mainBox" @click="scan" v-if="version != 2 ">
+                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
+                        <text class="headerBoxText">扫一扫</text>
                     </div>
                 </div>
                 <div style="height: 130px"></div> <!--增高dom-->
@@ -61,7 +61,7 @@
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe665;</text>
                         <text class="menuName">订单</text>
                     </div>
-                    <div class="menu" @click="goShipping()" v-if="filter('shipping') && version != 4">
+                    <div class="menu" @click="goShipping()" v-if="filter('shipping') && version == 2">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66e;</text>
                         <text class="menuName">运单</text>
                     </div>
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <!-- 我的运单 -->
-                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping') && version != 4 ">
+                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping') && version == 2 ">
                     <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
                         <text class="fz30">我的运单</text>
                         <div class="flex-row">
@@ -774,7 +774,9 @@
 //                   获取运单数量
                     _this.getShippingConut();
                 }
-                _this.getToday();
+                if (e.data.data.id == 'gm_10212' || e.data.data.id == 'gm_10200') {
+                    _this.getToday();
+                }
             });
             //            监听登陆成功.
             globalEvent.addEventListener("login", function (e) {
@@ -839,7 +841,7 @@
                         })
                         _this.roles = mes.data.roles;
                         _this.version = mes.data.version;
-                        if(_this.version == 4){
+                        if(_this.version != 2){
                             _this.btns = [
                                 {
                                     icon: 'http://rzico.oss-cn-shenzhen.aliyuncs.com/weex/resources/images/gonggao.png',
@@ -1076,6 +1078,21 @@
                     event.toast(err.content)
                 })
             },
+            //绑定通联二维码
+            bindPayCode(code) {
+                POST('weex/member/payment/bindAllin.jhtml?q=' + encodeURIComponent(code)).then(function (res) {
+                    if (res.type == 'success') {
+                        modal.alert({
+                            message: res.content,
+                            okTitle: 'OK'
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
 
 
 //            触发二维码方法
@@ -1085,6 +1102,10 @@
                     if (!utils.isNull(message.data)) {
                         // message.data = JSON.stringify(message.data);
                         if (message.data == '{}') {
+                            return
+                        }
+                        if(message.data.indexOf('syb.allinpay.com') > -1){
+                            _this.bindPayCode(message.data);
                             return
                         }
                         utils.readScan(message.data, function (data) {

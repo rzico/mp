@@ -184,6 +184,7 @@
         width:750px;
         background-color: #fff;
         flex-direction: row;
+        align-items: center;
     }
     .friendsBorder{
         border-bottom-width: 1px;

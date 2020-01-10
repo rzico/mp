@@ -21,48 +21,27 @@
                 <!--</scroller>-->
                 <!--<text class="totalText">共{{total}}件商品</text>-->
                 <div class="setting" @click="pickPay">
-                    <div class="flex-row">
-                        <text class="fz32">发货方式:  {{isobject | watchType}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
+                    <text class="fz32">发货方式:  {{isobject | watchType}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="setting" @click="pickPattern()">
-                    <div class="flex-row">
-                        <text class="fz32">发货仓库:  {{shopName}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
+                    <text class="fz32">发货仓库:  {{shopName}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
+                </div>
+                    <div class="setting" @click="linkToLogistics" v-if="isobject == 'shipping'">
+                        <text class="fz32">快递公司:  {{logistics}}</text>
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
-                </div>
-                <div class="" v-if="isobject == 'shipping'">
-                    <div class="setting" @click="linkToLogistics" >
-                        <div class="flex-row">
-                            <text class="fz32">快递公司:  {{logistics}}</text>
-                        </div>
-                        <div class="flex-row flex-end">
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
-                    <div class="setting" >
+                    <div class="setting" v-if="isobject == 'shipping'">
                         <div class="flex-row">
                             <text class="fz32">货运单号:</text>
                             <input class="input" type="email" placeholder="请输入快递运单号"  v-model="trackingNo"/>
                         </div>
-                        <div class="flex-row flex-end">
-                            <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="setting" @click="goMarki()"  v-if="isobject != 'shipping'">
-                    <div class="flex-row">
-                        <text class="fz32">送货人员:  {{markiName}}</text>
-                    </div>
-                    <div class="flex-row flex-end">
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
+                <div class="setting" @click="goMarki()"  v-if="isobject != 'shipping'">
+                    <text class="fz32">送货人员:  {{markiName}}</text>
+                    <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                 </div>
                 <div class="button ml30 mr30 mt30" @click="sendGoods">
                     <text class="fz40" style="color:#fff;">确认发货</text>

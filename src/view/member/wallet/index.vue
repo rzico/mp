@@ -48,7 +48,7 @@
                 <div class="cell-panel space-between" @click="cashPoint()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe681;</text>
-                        <text class="title ml10">佣金提现</text>
+                        <text class="title ml10">金币提现</text>
                     </div>
                     <div class="flex-row flex-end">
                         <text class="sub_title"></text>

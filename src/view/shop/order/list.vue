@@ -928,28 +928,6 @@
 //            发货
             sendGoods:function(sn){
                 let _this = this;
-//                modal.confirm({
-//                    message: '确认发货?',
-//                    duration: 0.3,
-//                    okTitle:'确认',
-//                    cancelTitle:'取消',
-//                }, function (value) {
-//                    if(value == '确认'){
-//                        POST('weex/member/order/shipping.jhtml?sn=' + sn).then(
-//                            function (data) {
-//                                if(data.type == 'success'){
-//                                    _this.pageStart = 0;
-//                                    _this.open();
-//                                    event.toast('发货成功');
-//                                }else{
-//                                    event.toast(data.content);
-//                                }
-//                            },function (err) {
-//                                event.toast(err.content);
-//                            }
-//                        )
-//                    }
-//                })
                 if (this.clicked) {
                     return;
                 }

@@ -14,7 +14,7 @@
             <text class="PriceTitle">{{amount}}</text>
         </div>
         <div class="transfer_Botton bkg-primary" :style="{opacity:amount==''?0.5:1}" @click="linkToScan">
-            <text class="transfer_BottonTitle">点击扫码收款</text>
+            <text class="transfer_BottonTitle">完成</text>
         </div>
     </div>
 </template>
@@ -146,24 +146,17 @@
                     return;
                 }
                 this.clicked = true;
-                POST("weex/member/payment/create.jhtml?amount=" + this.amount + "&memo=" + encodeURIComponent(this.memo)).then(function (mes) {
+                POST("weex/member/payment/create.jhtml?amount=" + this.amount + "&memo=" + encodeURIComponent(this.memo)).then(function (res) {
                     _this.clicked = false;
-                    if (mes.type == "success") {
-                        event.scan(function (message) {
-                            if (message.type !='error' &&!utils.isNull(message.data)) {
-                                if (message.data == '{}') {
-                                    return
-                                }
-                                let closeData = {
-                                    sn:mes.data.sn,
-                                    amount: mes.data.amount,
-                                    safeKey:message.data
-                                }
-                                event.closeURL(utils.message('success','成功',closeData));
-                            }
-                        });
+                    if (res.type == "success") {
+                        let closeData = {
+                            amount:_this.amount,
+                            qrcode:res.data.url+'?amt='+res.data.amt+'&appid='+res.data.appid+'&c='+res.data.c+'&oid='+res.data.oid+'&sign='+res.data.sign+'&trxreserve='+encodeURIComponent(res.data.trxreserve),
+                            sn:res.data.sn
+                        }
+                        event.closeURL(utils.message('success','成功',closeData));
                     } else {
-                        event.toast(mes.content);
+                        event.toast(res.content);
                     }
                 }, function (err) {
                     _this.clicked = false;

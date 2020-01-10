@@ -200,7 +200,7 @@
             navbar
         },
         props: {
-            title: { default: "佣金提现" },
+            title: { default: "金币提现" },
         },
         computed:{
             creditedAmount:function(){

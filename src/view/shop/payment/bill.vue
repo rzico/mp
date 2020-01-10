@@ -19,10 +19,10 @@
                     </div>
                     <div class="rightBox">
                         <text class="typeStatus">{{b.status | filterStatus}}</text>
-                        <div class="refundButton" v-if="b.status == 'success'" @click="linkToReturn(b.sn,b.status,index)">
+                        <div class="refundButton" v-if="(b.status == 'success' || b.status == 'refund_waiting') && b.canRefund" @click="linkToReturn(b.sn,b.status,index)">
                             <text class="fz24 white">退款</text>
                         </div>
-                        <div class="refundButton" v-if="b.status != 'success' && b.status != 'refund_success'" @click="query(b.sn,b.status,index)">
+                        <div class="refundButton" v-if="b.status != 'success' && b.status != 'refund_success'&& b.status != 'refund_waiting'" @click="query(b.sn,b.status,index)">
                             <text class="fz24 white">查询</text>
                         </div>
                     </div>
@@ -356,12 +356,11 @@
                                 POST("refunds/submit.jhtml?sn="+mes.data).then(function (res) {
                                     if (res.type == "success") {
                                         _this.isLoading = false;
-                                        _this.billList[index].status = 'refund_waiting';
-                                        setTimeout(function () {
-                                            _this.query(sn,status,index);
-                                        },3000)
+                                        _this.billList[index].status = 'refund_success';
+
                                     } else {
                                         _this.isLoading = false;
+                                        _this.billList[index].status = 'refund_waiting';
                                         event.toast(res.content);
                                     }
                                 }, function (error) {

@@ -2,9 +2,6 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback"></navbar>
         <list>
-            <cell v-if="list.length == 0">
-                <noData :noDataHint="noDataHint"></noData>
-            </cell>
             <cell :style="{minHeight:screenHeight + 'px'}">
                 <div v-for="(c,index) in list">
                     <!--默认显示-->
@@ -38,6 +35,7 @@
                 <!--列表按钮控制-->
                 <div class="iconBox" v-if="hasWater==true">
                     <div class="icon" @click="contorlList()">
+                        <text class="fz26 mt10" style="color: #444">点击添加品牌</text>
                         <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="!hasList">&#xe601;</text>
                         <text class="bigIcon" :style="{fontFamily:'iconfont'}" v-if="hasList">&#xe608;</text>
                     </div>
@@ -50,12 +48,18 @@
                             <text style="font-size: 65px">¥</text>
                             <text class="herderAmount">{{totalAmount}}</text>
                         </div>
-                        <div class="flex-center" style="width: 590px" v-if="version == 2">
-                            <div :class="[amountPaid=='1'?'checkboxAct':'checkbox']" @click="amountPay('1')">
-                                <text class="fz28">已收</text>
+                        <div class="flex-center" style="width: 590px">
+                            <div class="flex-row pdAll20" @click="amountPay('1')">
+                                <div :class="[amountPaid=='1'?'checkboxAct':'checkbox']" ></div>
+                                <text class="fz28 ml20">收现金</text>
                             </div>
-                            <div :class="[amountPaid=='0'?'checkboxAct':'checkbox']" @click="amountPay('0')">
-                                <text class="fz28">未收</text>
+                            <div class="flex-row pdAll20" @click="amountPay('0')">
+                                <div :class="[amountPaid=='0'?'checkboxAct':'checkbox']" ></div>
+                                <text class="fz28 ml20">欠款</text>
+                            </div>
+                            <div class="flex-row pdAll20" @click="amountPay('3')" v-if="scanPay">
+                                <div :class="[amountPaid=='3'?'checkboxAct':'checkbox']" ></div>
+                                <text class="fz28 ml20">收款码</text>
                             </div>
                         </div>
                     </div>
@@ -65,12 +69,14 @@
                             <text style="font-size: 65px"></text>
                             <text class="herderAmount">{{totalPaper}}张</text>
                         </div>
-                        <div class="flex-center" style="width: 590px" v-if="version == 2">
-                            <div :class="[paperPaid=='1'?'checkboxAct':'checkbox']" @click="paperPay('1')">
-                                <text class="fz28">已收</text>
+                        <div class="flex-center" style="width: 590px">
+                            <div class="flex-row pdAll20" @click="paperPay('1')">
+                                <div :class="[paperPaid=='1'?'checkboxAct':'checkbox']" ></div>
+                                <text class="fz28 ml20">已收</text>
                             </div>
-                            <div :class="[paperPaid=='0'?'checkboxAct':'checkbox']" @click="paperPay('0')">
-                                <text class="fz28">未收</text>
+                            <div class="flex-row pdAll20" @click="paperPay('0')">
+                                <div :class="[paperPaid=='0'?'checkboxAct':'checkbox']" ></div>
+                                <text class="fz28 ml20">未收</text>
                             </div>
                         </div>
                     </div>
@@ -139,6 +145,9 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style>
+    .pdAll20{
+        padding: 20px;
+    }
     .codeMask {
         position: fixed;
         top: 0px;
@@ -211,13 +220,15 @@
         border-top-width: 1px;
         border-bottom-width: 1px;
         border-color: #cccccc;
-        width: 150px;
+        width: 200px;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
 
     .bigIcon {
-        font-size: 60px;
+        font-size: 40px;
+        line-height: 40px;
         color: #777;
     }
 
@@ -256,28 +267,26 @@
     }
 
     .checkbox {
-        width: 200px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         border-width: 1px;
         border-color: #cccccc;
-        border-radius: 10px;
+        border-radius: 50%;
         align-items: center;
         justify-content: center;
         position: relative;
-        margin: 10px;
     }
 
     .checkboxAct {
-        width: 200px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         border-width: 1px;
-        border-color: red;
-        border-radius: 10px;
+        border-color: #ccc;
+        border-radius: 50%;
         align-items: center;
         justify-content: center;
         position: relative;
         background-color: #ff4a6c;
-        margin: 10px;
     }
 
     .titile {
@@ -438,22 +447,26 @@
                 totalPaper: 0,
                 pledgePayable: '',
                 paymentPluginName: '',
-                amountPaid: '',
-                paperPaid: '',
+                amountPaid: '1',
+                paperPaid: '1',
                 isMask: false,
                 isButton: true,
                 qrcode: '',
                 hasWater: false,
+                scanPay:false,
                 version: 1
             }
         },
         created: function () {
             utils.initIconFont();
+            let _this  = this;
             this.screenHeight = utils.fullScreen(136) + 500;
             this.orderSn = utils.getUrlParameter('orderSn');
             this.shippingSn = utils.getUrlParameter('sn');
             this.shippingId = utils.getUrlParameter('shippingId');
-            this.version = utils.version;
+            utils.getToken(function (mes) {
+                _this.version = mes.version;
+            });//获取权限
             this.open();
             this.load()
         },
@@ -499,7 +512,18 @@
                 })
             },
             amountPay: function (w) {
+                let _this = this;
                 this.amountPaid = w;
+                if(w =='3'){
+                    //收款码
+                    event.openURL(utils.locate("view/shop/payment/code.js?shippingSn="+this.shippingSn+'&totalAmount='+this.totalAmount), function (e) {
+                        if(e.type == 'success'){
+                            _this.load()
+                        }else {
+                            _this.amountPaid = '1'
+                        }
+                    });
+                }
             },
             paperPay: function (w) {
                 this.paperPaid = w;
@@ -612,6 +636,7 @@
 
                         _this.paymentPluginName = data.data.paymentMethod
                         _this.hasWater = data.data.hasWater;
+                        _this.scanPay = data.data.scanPay;
                     } else {
                         event.toast(data.content);
                     }
@@ -710,10 +735,6 @@
                 });
                 body = JSON.stringify(body);
 
-                if (this.version == 1) {
-                    this.amountPaid = '1';
-                    this.paperPaid = '1';
-                }
                 POST('weex/member/shipping/delivery.jhtml?sn=' + _this.shippingSn + '&memo=' + encodeURIComponent(_this.noteInput) + '&level=' + _this.floor + "&amountPaid=" + _this.amountPaid + "&paperPaid=" + _this.paperPaid + "&lng=0&lat=0", body).then(
                     function (res) {
                         _this.clicked = false;

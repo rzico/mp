@@ -11,24 +11,17 @@
                 </div>
                 <text class="fz32 mt30">{{status == 'success'?'收款成功':'收款失败'}}</text>
             </div>
-            <text class="codePriceTitle" v-if="status != '' ">¥{{amount}}</text>
-            <text class="down"  v-if="status == '' " @click="saveImg">保存收款码</text>
+            <text class="codePriceTitle" v-if="amount != '' ">¥{{amount | currencyfmt}}</text>
+            <text class="down"  v-if="amount == '' " @click="saveImg">保存收款码</text>
             <div class="promptBox" @click="linkPaymentBill">
                 <text class="promptBoxTitle">收款账单</text>
                 <text class="fz32 gray" :style="{fontFamily:'iconfont'}">&#xe630;</text>
             </div>
         </div>
-        <div class="cellBox" @click="linkToIndex"  v-if="status == '' ">
+        <div class="cellBox" @click="linkToIndex" v-if="shippingSn=='' || shippingSn==null">
             <div class="flex-row">
-                <text class="scanIco" :style="{fontFamily:'iconfont'}">&#xe607;</text>
-                <text class="scanText">扫码收款</text>
-            </div>
-            <text class="fz32 white" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-        </div>
-        <div class="cellBox" @click="linkToCode"  v-if="status != '' ">
-            <div class="flex-row">
-                <text class="scanIco" :style="{fontFamily:'iconfont'}">&#xe675;</text>
-                <text class="scanText">二维码收款</text>
+                <text class="scanIco" :style="{fontFamily:'iconfont'}">&#xe6ce;</text>
+                <text class="scanText">设置金额</text>
             </div>
             <text class="fz32 white" :style="{fontFamily:'iconfont'}">&#xe630;</text>
         </div>
@@ -199,7 +192,8 @@
                 time:null,
                 safeKey:'',
                 status:'',
-                clicked:false
+                clicked:false,
+                shippingSn:''
             }
         },
         props: {
@@ -212,6 +206,11 @@
             let _this = this;
             utils.initIconFont();
             this.loadCode();
+            this.shippingSn = utils.getUrlParameter('shippingSn');
+            if(!utils.isNull(this.shippingSn)){
+                this.getPayCode();
+                this.amount = utils.getUrlParameter('totalAmount')
+            }
         },
         beforeDestory() {
 
@@ -220,11 +219,32 @@
             goback: function (e) {
                 event.closeURL();
             },
+
+            getPayCode(){
+                let _this = this;
+                POST("weex/member/payment/create.jhtml?sn=" + this.shippingSn ).then(function (res) {
+                    _this.clicked = false;
+                    if (res.type == "success") {
+                        _this.qrcode = utils.website("/q/show.jhtml?url="+encodeURIComponent(res.data.url+'?amt='+res.data.amt+'&appid='+res.data.appid+'&c='+res.data.c+'&oid='+res.data.oid+'&sign='+res.data.sign+'&trxreserve='+encodeURIComponent(res.data.trxreserve)));
+                        _this.sn = res.data.sn;
+                        setTimeout(function () {
+                            _this.query()
+                        },2000)
+                    } else {
+                        event.toast(res.content);
+                    }
+                }, function (err) {
+                    _this.clicked = false;
+                    event.toast(err.content);
+                });
+            },
+
             loadCode:function () {
                 var _this = this;
                 GET("weex/member/payment/qrcode.jhtml",function (res) {
                     if (res.type=='success') {
                         _this.qrcode = utils.website("/q/show.jhtml?url="+encodeURIComponent(res.data.qrcode));
+
                     } else {
                         event.toast(res.content);
                     }
@@ -232,29 +252,15 @@
                     event.toast(err.content);
                 })
             },
-            submit(){
-                let _this = this;
-                this.loading = true;
-                POST("payment/submit.jhtml?paymentPluginId=allinQRPlugin&sn="+this.sn+"&safeKey="+this.safeKey).then(function (mes) {
-                    if (mes.type == "success") {
-                        _this.loading = false;
-                        _this.query()
-                    } else {
-                        _this.status = 'error';
-                        _this.loading = false;
-                        event.toast(mes.content);
-                    }
-                }, function (err) {
-                    _this.loading = false;
-                    event.toast(err.content);
-                });
-            },
             query(){
                 let _this = this;
                 POST("payment/query.jhtml?sn="+this.sn).then(function (mes) {
                     if (mes.type == "success") {
                         if(mes.data  == '0000'){
                             _this.status = 'success'
+                            if(!utils.isNull(_this.shippingSn)){
+                                event.closeURL(utils.message('success','付款成功',''));
+                            }
                         }else if(mes.data  == '0001'){
                             _this.status = 'error'
                         }else {
@@ -294,9 +300,11 @@
                 event.openURL(utils.locate("view/shop/payment/index.js"), function (e) {
                     if(e.type == 'success'){
                         _this.amount = e.data.amount;
-                        _this.sn =  e.data.sn;
-                        _this.safeKey = e.data.safeKey;
-                        _this.submit()
+                        _this.qrcode = utils.website("/q/show.jhtml?url="+encodeURIComponent(e.data.qrcode));
+                        _this.sn = e.data.sn;
+                        setTimeout(function () {
+                            _this.query()
+                        },2000)
                     }
                 });
             },
