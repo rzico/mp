@@ -255,7 +255,7 @@
                 wallet:{balance:0,bankinfo:"未绑定",binded:true},
                 bankinfo:'',
                 clicked:false,
-                vipData:{}
+                vipData:{name:''}
             }
         },
         components: {

@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class='statusBox bkg-primary' v-if="status == 1">
-            <text class="statusTitle">审核中...</text>3
+            <text class="statusTitle">审核中...</text>
             <text class="statusSubTitle">您的信息已提交成功，审核妹妹会尽快审核您的信息</text>
         </div>
         <div class="memoBox">
@@ -175,7 +175,7 @@
             }
         },
         props: {
-            title: {default: "开通收款"}
+            title: {default: "开通收款码"}
         },
         components: {
             navbar,

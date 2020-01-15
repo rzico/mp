@@ -122,7 +122,7 @@
                             </div>
                         </div>
                     </cell>
-                    <cell>
+                    <cell v-if="shopType != 'personal'">
                         <div class="license">
                             <text class="number">③</text>
                             <text class="licenseText">营业执照</text>
@@ -138,8 +138,8 @@
                     </cell>
                     <cell>
                         <div class="place">
-                            <text class="number">④</text>
-                            <text class="placeText">{{shopType == 'enterprise'?'开户许可证':'银行卡正面照'}}</text>
+                            <text class="number">{{shopType == 'personal' ? '③':'④'}}</text>
+                            <text class="placeText">{{shopType == 'enterprise'?'开户许可证/开户证明':'银行卡正面照'}}</text>
                         </div>
                         <div class="iconfontTwo">
                             <div class="image">
@@ -152,8 +152,8 @@
                     </cell>
                     <cell>
                         <div class="facade">
-                            <text class="number">⑤</text>
-                            <text class="facadeText">法人手持身份证正面照</text>
+                            <text class="number">{{shopType == 'personal' ? '④':'⑤'}}</text>
+                            <text class="facadeText">{{shopType == 'personal'?'手持身份证正面照':'法人手持身份证正面照'}}</text>
                         </div>
                         <div class="iconfontOne">
                             <div class="image">
@@ -166,8 +166,8 @@
                     </cell>
                     <cell>
                         <div class="place">
-                            <text class="number">⑥</text>
-                            <text class="placeText">法人身份证反面照</text>
+                            <text class="number">{{shopType == 'personal' ? '⑤':'⑥'}}</text>
+                            <text class="placeText">{{shopType == 'personal'?'身份证反面照':'法人身份证反面照'}}</text>
                         </div>
                         <div class="iconfontTwo">
                             <div class="image">
@@ -180,7 +180,7 @@
                     </cell>
                     <cell>
                         <div class="place">
-                            <text class="number">⑦</text>
+                            <text class="number">{{shopType == 'personal' ? '⑥':'⑦'}}</text>
                             <text class="placeText">推广员门头合影</text>
                         </div>
                         <div class="iconfontTwo">
@@ -194,7 +194,7 @@
                     </cell>
                     <cell>
                         <div class="license">
-                            <text class="number">⑧</text>
+                            <text class="number">{{shopType == 'personal' ? '⑦':'⑧'}}</text>
                             <text class="licenseText">其他辅助材料(选填)</text>
                         </div>
                         <div class="iconfontThree">
@@ -862,20 +862,20 @@
                     event.toast('店内场景照未选择');
                     _this.clicked = false
                     return
-                }else if (utils.isNull(_this.licensePhoto)) {
+                }else if (_this.licensePhoto!='personal' &&utils.isNull(_this.licensePhoto)) {
                     event.toast('营业执照未选择');
                     _this.clicked = false
                     return
                 }else if (utils.isNull(_this.idCardFront)) {
-                    event.toast('法人身份证正面照未选择');
+                    event.toast('身份证正面照未选择');
                     _this.clicked = false
                     return
                 }else if (utils.isNull(_this.idCardBack)) {
-                    event.toast('法人身份证反面照未选择');
+                    event.toast('身份证反面照未选择');
                     _this.clicked = false
                     return
                 }else  if (utils.isNull(_this.bankinfoPhoto)) {
-                    event.toast(_this.shopType == 'enterprise'?'开户许可证未选择':'银行卡正面照未选择');
+                    event.toast(_this.shopType == 'enterprise'?'开户许可证/开户证明未选择':'银行卡正面照未选择');
                     _this.clicked = false
                     return
                 }else  if (utils.isNull(_this.promoterPhoto)) {

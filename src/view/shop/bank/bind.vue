@@ -309,7 +309,7 @@
             navbar, WxcTabPage
         },
         props: {
-            title: {default: "添加银行卡"},
+            title: {default: "绑定银行卡"},
 
         },
 
