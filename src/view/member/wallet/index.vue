@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" border="false"> </navbar>
         <div class="bkg-primary"  style="position: relative">
-            <text class="fz40 white ml20">{{vipData.name}}</text>
+            <text class="shopName">{{vipData.name}}</text>
             <div style="height: 150px"></div> <!--增高dom-->
             <div class="transition transitionEEE"></div><!--过渡色-->
             <div class="payBillBox" >
@@ -101,6 +101,13 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .shopName{
+        font-size: 40px;
+        color: #fff;
+        margin-left: 20px;
+        line-height: 60px;
+        min-height: 60px;
+    }
     .transition{
         width: 750px;
         height: 100px;

@@ -2,7 +2,7 @@
     <div class="wrapper">
         <navbar :title="title" @goback="goback" > </navbar>
         <div class="bkg-primary" style="position: relative">
-            <text class="fz40 white ml30">{{today.shortName}}</text>
+            <text class="shopName">{{today.shortName}}</text>
             <div style="height: 200px"></div> <!--增高dom-->
             <div class="transition transitionEEE"></div><!--过渡色-->
             <div class="todayBox" @click="day_report()">
@@ -84,6 +84,13 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .shopName{
+        font-size: 40px;
+        color: #fff;
+        margin-left: 20px;
+        line-height: 60px;
+        min-height: 60px;
+    }
     .transition{
         width: 750px;
         height: 100px;
