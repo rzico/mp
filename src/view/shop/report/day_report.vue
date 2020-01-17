@@ -34,7 +34,7 @@
                     <text class="amount">{{day.amount}}元</text>
                 </div>
                 <div class="contentCell">
-                    <text class="name pl50">微信</text>
+                    <text class="name pl50">线上</text>
                     <text class="quantity"></text>
                     <text class="amount">{{day.wxAmount}}元</text>
                 </div>
@@ -48,11 +48,6 @@
                     <text class="quantity"></text>
                     <text class="amount">{{day.bankAmount}}元</text>
                 </div>
-                <div class="contentCell">
-                    <text class="name pl50">纸质水票</text>
-                    <text class="quantity">{{day.couponAmount}}张</text>
-                    <text class="amount"></text>
-                </div>
             </cell>
             <cell>
                 <div class="contentCell">
@@ -61,7 +56,7 @@
                     <text class="amount">{{day.returnAmount}}元</text>
                 </div>
                 <div class="contentCell">
-                    <text class="name pl50">微信</text>
+                    <text class="name pl50">线上</text>
                     <text class="quantity"></text>
                     <text class="amount">{{day.returnWxAmount}}元</text>
                 </div>
@@ -74,11 +69,6 @@
                     <text class="name pl50">转账</text>
                     <text class="quantity"></text>
                     <text class="amount">{{day.returnBankAmount}}元</text>
-                </div>
-                <div class="contentCell">
-                    <text class="name pl50">纸质水票</text>
-                    <text class="quantity">{{day.returnCouponAmount}}张</text>
-                    <text class="amount"></text>
                 </div>
             </cell>
             <cell>
