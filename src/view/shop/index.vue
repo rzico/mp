@@ -1093,6 +1093,21 @@
                     event.toast(err.content)
                 })
             },
+            //绑定收款二维码
+            bindPay(code) {
+                POST('weex/member/payment/bindIPay.jhtml?q=' + encodeURIComponent(code)).then(function (res) {
+                    if (res.type == 'success') {
+                        modal.alert({
+                            message: res.content,
+                            okTitle: 'OK'
+                        })
+                    } else {
+                        event.toast(mes.content);
+                    }
+                }, function (err) {
+                    event.toast(err.content)
+                })
+            },
 
 
 //            触发二维码方法
@@ -1115,7 +1130,9 @@
                             }
                             if (data.data.type == '818820') {
                                 _this.bindCode(message.data)
-                            } else {
+                            }else if (data.data.type == '818804') {
+                                _this.bindPay(message.data)
+                            }else {
                                 GET('/q/scan.jhtml?code=' + encodeURIComponent(message.data), function (res) {
                                     if (res.type == "success") {
                                         if (res.data.type == '818801' || res.data.type == '818802') {
