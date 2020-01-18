@@ -180,7 +180,6 @@
         border-radius: 100%;
         border-width: 1px;
         border-color: #cccccc;
-        box-shadow: 10px 20px 10px -20px #ccc;
         background-color: #ffffff;
         align-items: center;
         justify-content: center;

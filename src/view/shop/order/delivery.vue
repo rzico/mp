@@ -67,7 +67,6 @@
         width: 650px;
         background-color: white;
         border-radius: 15px;
-        /*box-shadow:0px 0px  10px 5px #aaa;*/
         position: absolute;
         left: 50px;
         top: 200px;

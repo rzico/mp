@@ -50,7 +50,6 @@
         flex-direction: column;
         align-items:center;
         border-radius: 15px;
-        box-shadow:0 0  3px 1px #ccc;
         position: fixed;
         top:200px;
         left: 100px;
