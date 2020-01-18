@@ -349,7 +349,7 @@
                 this.clicked = true;
                 var _this = this;
                 if(_this.wallet.bankinfo!='未绑定'){
-                    event.openURL(utils.locate("view/member/bank/unbingBank.js?banknum="+encodeURI(_this.bankinfo)), function (message) {
+                    event.openURL(utils.locate("view/shop/bank/unbindBank.js?banknum="+encodeURI(_this.bankinfo)), function (message) {
                         if (message.type=='success') {
                             _this.load();
                         }

@@ -224,7 +224,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 }, 1500)
-                event.openURL(utils.locate("view/member/bank/unbingBank.js?banknum="+encodeURI(res.data.bankinfo)), function (message) {
+                event.openURL(utils.locate("view/shop/bank/unbindBank.js?banknum="+encodeURI(res.data.bankinfo)), function (message) {
                     if (message.type=='success') {
                         _this.load();
                     }
