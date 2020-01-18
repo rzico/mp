@@ -238,6 +238,12 @@
         margin-top: 2px;
     }
 
+    .nav_title{
+        font-size: 38px;
+        color: #fff;
+        line-height:  38px;
+    }
+
     .navBack {
         flex-direction: row;
         width: 92px;

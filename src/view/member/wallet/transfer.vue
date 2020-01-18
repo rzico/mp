@@ -193,7 +193,8 @@
                 hide:'hidden',
                 wdata:{bankname:"",cardno:""},
                 timer:null,
-                clicked:false
+                clicked:false,
+                bankInfo:''
             }
         },
         components: {
@@ -213,6 +214,7 @@
         },
         created() {
             this.load();
+            this.loadInfo()
         },
         methods: {
             linkToUnBind(){
@@ -224,9 +226,10 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 }, 1500)
-                event.openURL(utils.locate("view/shop/bank/unbindBank.js?banknum="+encodeURI(res.data.bankinfo)), function (message) {
+                event.openURL(utils.locate("view/shop/bank/unbindBank.js?banknum="+encodeURI(this.bankInfo)), function (message) {
                     if (message.type=='success') {
                         _this.load();
+                        _this.loadInfo()
                     }
                 })
             },
@@ -328,7 +331,20 @@
                 },function (err) {
                     event.toast(err.content);
                 })
-            }
+            },
+            loadInfo:function () {
+                var _this = this;
+                GET("weex/member/wallet/view.jhtml",function (res) {
+                        if (res.type=='success') {
+                            _this.bankInfo = res.data.bankinfo
+                        } else {
+                            event.toast(res.content);
+                        }
+                    },
+                    function (err) {
+                        event.toast(err.content);
+                    })
+            },
         }
     }
 </script>

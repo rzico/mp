@@ -1,6 +1,11 @@
 <template>
     <div class="wrapper">
-        <navbar :title="title" @goback="goback" border="false"> </navbar>
+        <div class="navbar bkg-primary" :class="[classHeader()]">
+            <div class="navBack" @click="goback()">
+                <text class="navIco" :style="{fontFamily:'iconfont'}">&#xe669;</text>
+            </div>
+            <text class="nav_title">{{title}}</text>
+        </div>
         <div class="bkg-primary"  style="position: relative">
             <text class="shopName">{{vipData.name}}</text>
             <div style="height: 150px"></div> <!--增高dom-->
@@ -101,6 +106,36 @@
 </template>
 <style lang="less" src="../../../style/wx.less"/>
 <style scoped>
+    .navbar {
+        width: 750px;
+        height: 136px;
+        padding-top: 44px;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .navIco {
+        font-size: 38px;
+        color: #fff;
+        margin-top: 2px;
+    }
+
+    .nav_title{
+        font-size: 38px;
+        color: #fff;
+        line-height:  38px;
+    }
+
+    .navBack {
+        flex-direction: row;
+        width: 92px;
+        height: 92px;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+    }
     .shopName{
         font-size: 40px;
         color: #fff;
@@ -289,6 +324,9 @@
         methods: {
             goback: function (e) {
                 event.closeURL();
+            },
+            classHeader: function () {
+                return utils.device();
             },
             cashCard:function () {
                 if (this.clicked==true) {
