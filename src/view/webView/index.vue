@@ -40,12 +40,17 @@
         methods: {
             //ios
             pagefinish(e){
-                this.title = e.title
+                //判断系统，否则会冲突
+                if(utils.isIosSystem()){
+                    this.title = e.title
+                }
             },
             //安卓
             receivedtitle(e){
-                event.toast(e)
-                this.title = e.title
+                //判断系统，否则会冲突
+                if(!utils.isIosSystem()){
+                    this.title = e.title
+                }
             },
             goback:function(e) {
                 event.closeURL();
