@@ -21,8 +21,7 @@ let utilsFunc = {
                 var storageData = JSON.parse(e.data);
                 fn(storageData);
             }else {
-                //获取不到缓存时跳转登陆
-                event.openURL(this.locate('view/login/index.js'), function (data) {});
+                fn({version:0,roles:'',uid:0});
             }
         })
     },

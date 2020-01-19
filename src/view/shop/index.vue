@@ -769,7 +769,10 @@
             this.popoverPosition.y = utils.getHeaderHeight();
             this.view();
             this.getToday();
-            this.permissions();//获取权限存入缓存
+            let selfId = event.getUId();
+            if(selfId > 0){
+                this.permissions();//获取权限存入缓存
+            }
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {
                 if (!utils.isNull(e.data.data.id) && e.data.data.id == 'gm_10200') {
