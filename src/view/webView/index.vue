@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
         <navbar :title="title" @goback="goback"> </navbar>
-        <web class="webView"  @pagefinish="pagefinish" :src="webUrl" ></web>
+        <web class="webView"  @pagefinish="pagefinish" @receivedtitle="receivedtitle" :src="webUrl" ></web>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
@@ -38,7 +38,13 @@
             this.webUrl = utils.getUrlParameter('url')
         },
         methods: {
+            //ios
             pagefinish(e){
+                this.title = e.title
+            },
+            //安卓
+            receivedtitle(e){
+                event.toast(e)
                 this.title = e.title
             },
             goback:function(e) {
