@@ -5,15 +5,15 @@ var modal = weex.requireModule('modal');
 const storage = weex.requireModule('storage');
 const resLocateURL = 'file://';
 const resRemoteURL = 'http://cdn.rzico.com/weex/';
-const websiteURL = 'https://small.rzico.com';
+const websiteURL = 'https://sbl.rzico.com';
 const event = weex.requireModule('event');
 const debug = false;//删掉该属性时请查找该页所有debug变量并删除变量
-const appName = 'yundian';// app类型  water 或 yundian
+const appName = 'sbl';// app类型  water 或 yundian
 let utilsFunc = {
-    downloadText:'超强图文小视频分享社区,中国版Facebook.',
-    download:'https://small.rzico.com',
+    downloadText:'喝水@水便利',
+    download:'http://sbl.rzico.com/download/index.html',
     version:1,//1标准版 2桶装水
-    baseNavColor:'#068F3D',
+    baseNavColor:'#29d1fb',
     //获取本地存储的权限
     getToken(fn){
         storage.getItem('token', e => {
