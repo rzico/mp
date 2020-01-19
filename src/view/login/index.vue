@@ -3,7 +3,7 @@
         <navbar :title="title" @goback="goback"> </navbar>
         <mobile :title="mbtitle" :value="value" @onSend="onSend" @onChange="onChange"> </mobile>
         <div class="memo" @click="openWebView()">
-            <text class="title">登录即注册,表示同意</text>
+            <text class="fz28">登录即注册,表示同意</text>
             <text class="selectedText"  >《隐私政策》</text>
             <text class="selectedText"  >《服务协议》</text>
         </div>
@@ -13,7 +13,7 @@
 
 <style scoped>
     .selectedText{
-        font-size: 32px;
+        font-size: 28px;
         color: #0088fb;
     }
     .memo {
