@@ -464,13 +464,6 @@
 ////            添加分类
 //            addCatagory(){
 //                let _this = this;
-//                if (!utils.isRoles("A",_this.roles)) {
-//                    modal.alert({
-//                        message: '请点亮专栏',
-//                        okTitle: 'OK'
-//                    })
-//                    return
-//                }
 //                _this.item = {id:"",name:"",percent1:"",percent2:"",percent3:"",point:"",tota:"",bgChange:false};
 //                _this.isShow  = true;
 //             },
