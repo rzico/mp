@@ -477,19 +477,6 @@
 //            修改分类名称
             changeName(id,name,given,percent1,percent2,percent3,point,tota,type){
                 let _this = this;
-                if (!utils.isRoles("A",_this.roles)) {
-                    modal.alert({
-                        message: '请点亮专栏',
-                        okTitle: 'OK'
-                    })
-                    return
-                }else  if (!utils.isRoles("1",_this.roles)) {
-                    modal.alert({
-                        message: '暂无权限',
-                        okTitle: 'OK'
-                    })
-                    return
-                }
                 event.openURL(utils.locate("view/shop/goods/distributionList.js?id="+id+'&name='+encodeURI(name)+'&given='+given+'&percent1='+percent1+'&percent2='+percent2+'&percent3='+percent3+'&point='+point+'&tota='+tota+'&type='+type),function () {
                     _this.catagoryList =[]
                     _this.open()
@@ -656,13 +643,6 @@
             },
             jump:function () {
                 let _this = this;
-                if (!utils.isRoles("A",_this.roles)) {
-                    modal.alert({
-                        message: '请点亮专栏',
-                        okTitle: 'OK'
-                    })
-                    return
-                }
                 event.openURL(utils.locate("view/shop/goods/distributionList.js"),function () {
                     _this.catagoryList =[]
                     _this.open()

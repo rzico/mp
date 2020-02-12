@@ -3,14 +3,19 @@
         <navbar :title="title" @goback="goback"> </navbar>
         <mobile :title="mbtitle" :value="value" @onSend="onSend" @onChange="onChange"> </mobile>
         <div class="memo" @click="openWebView()">
-            <text class="title">登录即注册,表示同意</text>
-            <text class="title" style="color:#0088fb" >《用户注册协议》</text>
+            <text class="fz28">登录即注册,表示同意</text>
+            <text class="selectedText"  >《隐私政策》</text>
+            <text class="selectedText"  >《服务协议》</text>
         </div>
     </div>
 </template>
 <style lang="less" src="../../style/wx.less"/>
 
 <style scoped>
+    .selectedText{
+        font-size: 28px;
+        color: #0088fb;
+    }
     .memo {
         margin-top: 20px;
         padding-left: 60px;
