@@ -767,11 +767,11 @@
             var _this = this;
             utils.initIconFont();
             this.popoverPosition.y = utils.getHeaderHeight();
-            this.view();
-            this.getToday();
             let selfId = event.getUId();
             if(selfId > 0){
                 this.permissions();//获取权限存入缓存
+                this.view();
+                this.getToday();
             }
 //            监听账单消息提醒.
             globalEvent.addEventListener("onMessage", function (e) {

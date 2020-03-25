@@ -163,7 +163,7 @@
         align-items: center;
         justify-content: space-between;
         width: 750px;
-        height: 60px;
+        height: 65px;
         padding-left: 30px;
         padding-right: 30px;
         padding-bottom: 20px;
