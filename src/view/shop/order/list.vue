@@ -379,7 +379,7 @@
         align-items: center;
         justify-content: center;
         /*flex: 1;*/
-        width: 125px;
+        width: 187px;
     }
     .allArticle{
         font-size: 31px;
@@ -504,14 +504,8 @@
                     name:'待付款',
                     id:1
                 },{
-                    name:'待发货',
+                    name:'待认领',
                     id:2
-                },{
-                    name:'已发货',
-                    id:3
-                },{
-                    name:'待退款',
-                    id:4
                 },{
                     name:'已完成',
                     id:0
@@ -668,12 +662,6 @@
                         break;
                     case 2:
                         status = 'unshipped';
-                        break;
-                    case 3:
-                        status = 'shipped';
-                        break;
-                    case 4:
-                        status = 'refunding';
                         break;
                     case 5:
                         status = 'cancelled';

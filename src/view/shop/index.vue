@@ -27,11 +27,11 @@
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe673;</text>
                         <text class="headerBoxText">收款码</text>
                     </div>
-                    <div class="mainBox" @click="linkToFill" v-if="version == 1 ">
-                        <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
-                        <text class="headerBoxText">报单</text>
-                    </div>
-                    <div class="mainBox" @click="scan" v-if="version != 1 ">
+                    <!--<div class="mainBox" @click="linkToFill" v-if="version == 1 ">-->
+                        <!--<text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe6e8;</text>-->
+                        <!--<text class="headerBoxText">报单</text>-->
+                    <!--</div>-->
+                    <div class="mainBox" @click="scan">
                         <text class="headerBoxIcon" :style="{fontFamily:'iconfont'}">&#xe607;</text>
                         <text class="headerBoxText">扫一扫</text>
                     </div>
@@ -56,27 +56,27 @@
                     </div>
                 </div>
             </div>
-                <div class="menuCell">
+                <div class="menuCell" v-if="isShow">
                     <div class="menu" @click="order()" v-if="filter('order')">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe665;</text>
                         <text class="menuName">订单</text>
                     </div>
-                    <div class="menu" @click="goShipping()" v-if="filter('shipping') && version == 1">
-                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66e;</text>
-                        <text class="menuName">运单</text>
-                    </div>
-                    <div class="menu" @click="goods()" v-if="filter('manage')">
-                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe667;</text>
-                        <text class="menuName">商品</text>
-                    </div>
+                    <!--<div class="menu" @click="goShipping()" v-if="filter('shipping') && version == 1">-->
+                        <!--<text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66e;</text>-->
+                        <!--<text class="menuName">运单</text>-->
+                    <!--</div>-->
+                    <!--<div class="menu" @click="goods()" v-if="filter('manage')">-->
+                        <!--<text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe667;</text>-->
+                        <!--<text class="menuName">商品</text>-->
+                    <!--</div>-->
                     <div class="menu" @click="gocard()" v-if="filter('card')">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66a;</text>
                         <text class="menuName">会员</text>
                     </div>
-                    <div class="menu" @click="gocoupon()" v-if="filter('coupon')">
-                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe7fc;</text>
-                        <text class="menuName">优惠券</text>
-                    </div>
+                    <!--<div class="menu" @click="gocoupon()" v-if="filter('coupon')">-->
+                        <!--<text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe7fc;</text>-->
+                        <!--<text class="menuName">优惠券</text>-->
+                    <!--</div>-->
                     <div class="menu" @click="linkShop()" v-if="filter('shop')">
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66d;</text>
                         <text class="menuName">店铺</text>
@@ -85,10 +85,10 @@
                         <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe66c;</text>
                         <text class="menuName">员工</text>
                     </div>
-                    <div class="menu" @click="deposit()" v-if="filter('money')">
-                        <text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe6e8;</text>
-                        <text class="menuName">统计</text>
-                    </div>
+                    <!--<div class="menu" @click="deposit()" v-if="filter('money')">-->
+                        <!--<text class="menuIco"  :style="{fontFamily:'iconfont'}">&#xe6e8;</text>-->
+                        <!--<text class="menuName">统计</text>-->
+                    <!--</div>-->
                 </div>
 
             <!-- 我的订单 -->
@@ -112,65 +112,59 @@
                         </div>
                         <div class=" flexCol iconBox" @click="goNoDelivery()">
                             <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe685;</text>
-                            <text class="iconfontText ">待发货</text>
+                            <text class="iconfontText ">待认领</text>
                             <div class="shippingNumberBox" v-if="conut.unshipped != 0">
                                 <text class="shippingNumber">{{conut.unshipped}}</text>
                             </div>
                         </div>
                         <div class=" flexCol iconBox" @click="goDelivery()">
                             <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe688;</text>
-                            <text class="iconfontText ">已发货</text>
-                            <div class="shippingNumberBox" v-if="conut.shipped != 0">
-                                <text class="shippingNumber">{{conut.shipped}}</text>
-                            </div>
+                            <text class="iconfontText ">已完成</text>
                         </div>
                         <div class=" flexCol iconBox" @click="goRefund()">
                             <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe68d;</text>
-                            <text class="iconfontText ">待退款</text>
-                            <div class="shippingNumberBox" v-if="conut.refund != 0">
-                                <text class="shippingNumber">{{conut.refund}}</text>
-                            </div>
+                            <text class="iconfontText ">已关闭</text>
                         </div>
                     </div>
                 </div>
                 <!-- 我的运单 -->
-                <div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping') && version == 1 ">
-                    <div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">
-                        <text class="fz30">我的运单</text>
-                        <div class="flex-row">
-                            <text class="iconfontText" style="padding-right: 10px;">查看所有</text>
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>
-                        </div>
-                    </div>
-                    <!-- 订单消息 -->
-                    <div class="comWrap">
-                        <div class=" flexCol iconBox" @click="goConfirm()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe68b;</text>
-                            <text class="iconfontText ">待确认</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.unconfirmed != 0">
-                                <text class="shippingNumber">{{shippingConut.unconfirmed}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox" @click="goOnTheWay()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe690;</text>
-                            <text class="iconfontText ">配送中</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">
-                                <text class="shippingNumber">{{shippingConut.confirmed}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox" @click="goaArive()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe682;</text>
-                            <text class="iconfontText ">已送达</text>
-                            <div class="shippingNumberBox" v-if="shippingConut.completed != 0">
-                                <text class="shippingNumber">{{shippingConut.completed}}</text>
-                            </div>
-                        </div>
-                        <div class=" flexCol iconBox" @click="goToCompleted()">
-                            <text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe686;</text>
-                            <text class="iconfontText ">已核销</text>
-                        </div>
-                    </div>
-                </div>
+                <!--<div class="contentBox" v-if="shippingConutTotal != 0 && filter('shipping') && version == 1 ">-->
+                    <!--<div class="boder-bottom pl20 pr20 space-between headTitle" @click="goShipping()">-->
+                        <!--<text class="fz30">我的运单</text>-->
+                        <!--<div class="flex-row">-->
+                            <!--<text class="iconfontText" style="padding-right: 10px;">查看所有</text>-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="iconfontText">&#xe630;</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash; 订单消息 &ndash;&gt;-->
+                    <!--<div class="comWrap">-->
+                        <!--<div class=" flexCol iconBox" @click="goConfirm()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe68b;</text>-->
+                            <!--<text class="iconfontText ">待确认</text>-->
+                            <!--<div class="shippingNumberBox" v-if="shippingConut.unconfirmed != 0">-->
+                                <!--<text class="shippingNumber">{{shippingConut.unconfirmed}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class=" flexCol iconBox" @click="goOnTheWay()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe690;</text>-->
+                            <!--<text class="iconfontText ">配送中</text>-->
+                            <!--<div class="shippingNumberBox" v-if="shippingConut.confirmed != 0">-->
+                                <!--<text class="shippingNumber">{{shippingConut.confirmed}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class=" flexCol iconBox" @click="goaArive()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe682;</text>-->
+                            <!--<text class="iconfontText ">已送达</text>-->
+                            <!--<div class="shippingNumberBox" v-if="shippingConut.completed != 0">-->
+                                <!--<text class="shippingNumber">{{shippingConut.completed}}</text>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class=" flexCol iconBox" @click="goToCompleted()">-->
+                            <!--<text :style="{fontFamily:'iconfont'}" class="iconfontSize ">&#xe686;</text>-->
+                            <!--<text class="iconfontText ">已核销</text>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
             <div class="mesBox">
                 <div class="menu" v-if="filter('paused')">
@@ -354,9 +348,12 @@
     }
 
     .menuCell {
-        width: 750px;
-        /*background-color: #fff;*/
-        /*min-height: 180px;*/
+        width: 710px;
+        padding: 20px;
+        margin-top: 20px;
+        margin-left: 20px;
+        border-radius: 20px;
+        background-color: #fff;
         flex-direction: row;
         align-items: center;
         flex-wrap: wrap;
@@ -366,7 +363,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 187px;
+        width: 167.5px;
         height: 155px;
     }
 
@@ -752,6 +749,7 @@
                 ],
                 popoverPosition:{x:-13,y:136},
                 popoverArrowPosition:{pos:'top',x:-17},
+                isShow:false
             }
         },
         components: {
@@ -849,6 +847,11 @@
                         storage.setItem('token', roles, e => {
                         })
                         _this.roles = mes.data.roles;
+                        if(utils.isRoles("1", _this.roles)){
+                            _this.isShow = true
+                        }else {
+                            _this.isShow = false
+                        }
                         _this.version = mes.data.version;
                         if(_this.version != 1){
                             _this.btns = [
@@ -1327,7 +1330,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 }, 1500)
-                event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=3'), function (data) {
+                event.openURL(utils.locate('view/shop/order/list.js?index=2&productCategoryId=0'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }
@@ -1343,7 +1346,7 @@
                 setTimeout(function () {
                     _this.clicked = false;
                 }, 1500)
-                event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=4'), function (data) {
+                event.openURL(utils.locate('view/shop/order/list.js?index=3&productCategoryId=5'), function (data) {
                         _this.getCount()
                         _this.getShippingConut();
                     }

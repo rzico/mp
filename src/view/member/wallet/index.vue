@@ -19,13 +19,13 @@
                     </div>
                     <text class="dayMes">查看账单</text>
                 </div>
-                <div class="yesPayBox" @click="point()">
-                    <text class="dayPay">金币(佣金)</text>
-                    <div style="flex-direction: row;align-items: flex-end;margin-top: 10px">
-                        <text class="dayPayAmount">{{vipData.point}}</text>
-                    </div>
-                    <text class="dayMes">查看明细</text>
-                </div>
+                <!--<div class="yesPayBox" @click="point()">-->
+                    <!--<text class="dayPay">金币(佣金)</text>-->
+                    <!--<div style="flex-direction: row;align-items: flex-end;margin-top: 10px">-->
+                        <!--<text class="dayPayAmount">{{vipData.point}}</text>-->
+                    <!--</div>-->
+                    <!--<text class="dayMes">查看明细</text>-->
+                <!--</div>-->
             </div>
         </div>
             <div class="cell-row cell-line">
@@ -50,16 +50,16 @@
                         <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
                     </div>
                 </div>
-                <div class="cell-panel space-between" @click="cashPoint()">
-                    <div class="flex-row flex-start">
-                        <text class="ico" :style="{fontFamily:'iconfont'}">&#xe681;</text>
-                        <text class="title ml10">金币提现</text>
-                    </div>
-                    <div class="flex-row flex-end">
-                        <text class="sub_title"></text>
-                        <text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>
-                    </div>
-                </div>
+                <!--<div class="cell-panel space-between" @click="cashPoint()">-->
+                    <!--<div class="flex-row flex-start">-->
+                        <!--<text class="ico" :style="{fontFamily:'iconfont'}">&#xe681;</text>-->
+                        <!--<text class="title ml10">金币提现</text>-->
+                    <!--</div>-->
+                    <!--<div class="flex-row flex-end">-->
+                        <!--<text class="sub_title"></text>-->
+                        <!--<text class="arrow" :style="{fontFamily:'iconfont'}">&#xe630;</text>-->
+                    <!--</div>-->
+                <!--</div>-->
                 <div class="cell-panel space-between cell-clear" @click="filling()">
                     <div class="flex-row flex-start">
                         <text class="ico" :style="{fontFamily:'iconfont'}">&#xe63e;</text>
@@ -164,8 +164,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        border-right-width: 1px;
-        border-right-color: #eeeeee;
+        /*border-right-width: 1px;*/
+        /*border-right-color: #eeeeee;*/
     }
     .yesPayBox {
         width: 355px;
