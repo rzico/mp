@@ -239,7 +239,7 @@
                     <div class="flex-row">
                         <!--<text class="title footText">查看物流</text>-->
                         <!--<text class="title footText">评价晒单</text>-->
-                        <text @click="sendGoods(item.sn)" class="title footText ">发货</text>
+                        <text @click="sendGoods(item.sn)" class="title footText ">认领</text>
                         <text @click="choose()" class="title footText ">修改地址</text>
                         <text @click="print()" class="title footText ">打印</text>
                     </div>
@@ -822,7 +822,7 @@
                     if(data.type == 'success') {
                         _this.pageStart = 0;
                         _this.open();
-                        event.toast('发货成功');
+                        event.toast('认领成功');
                     }
                 });
             },

@@ -126,7 +126,7 @@
                             <!--<text class="title footText">查看物流</text>-->
                             <!--<text class="title footText" @click="closeOrder(item,item.sn)">关闭订单</text>-->
                             <text class="title footText " @click="confirmRefund(item.sn)">退款</text>
-                            <text class="title footText " @click="sendGoods(item.sn)">发货</text>
+                            <text class="title footText " @click="sendGoods(item.sn)">认领</text>
                         </div>
                     </div>
                     <div class="flex-row space-between goodsFoot" v-else-if="item.status == 'returning'">
@@ -925,7 +925,7 @@
                     if(data.type == 'success'){
                         _this.pageStart = 0;
                         _this.open();
-                        event.toast('发货成功');
+                        event.toast('认领成功');
                     }else{
 
                     }
