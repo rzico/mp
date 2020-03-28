@@ -163,7 +163,6 @@
         align-items: center;
         justify-content: space-between;
         width: 750px;
-        height: 65px;
         padding-left: 30px;
         padding-right: 30px;
         padding-bottom: 20px;
@@ -172,6 +171,9 @@
     .leftBox {
         flex-direction: row;
         align-items: center;
+        border-width: 1px;
+        border-color: #fff;
+        border-radius: 10px;
     }
 
     .deduct {
@@ -180,9 +182,7 @@
         align-items: center;
         justify-content: center;
         border-color: #fff;
-        border-width: 1px;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
+        border-right-width: 1px;
     }
 
     .add {
@@ -191,9 +191,7 @@
         align-items: center;
         justify-content: center;
         border-color: #fff;
-        border-width: 1px;
-        border-top-right-radius: 10px;
-        border-bottom-right-radius: 10px;
+        border-left-width: 1px;
     }
 
     .timeContent {
@@ -201,9 +199,6 @@
         width: 170px;
         align-items: center;
         justify-content: center;
-        border-color: #fff;
-        border-top-width: 1px;
-        border-bottom-width: 1px;
     }
 
     .rightBox {
