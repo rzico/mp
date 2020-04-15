@@ -822,9 +822,9 @@
 //            选择营销策略
             goChooseDistri(){
                 let _this = this;
-                if (!utils.isRoles("A",_this.roles)) {
+                if (!utils.isRoles("1",_this.roles)) {
                     modal.alert({
-                        message: '请点亮专栏',
+                        message: '暂无权限',
                         okTitle: 'OK'
                     })
                     return
